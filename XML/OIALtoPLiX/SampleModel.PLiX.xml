@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:exsl="http://exslt.org/common" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
   <plx:namespaceImport name="System" />
   <plx:namespaceImport name="System.Collections.Generic" />
   <plx:namespaceImport name="System.Collections.ObjectModel" />
   <plx:namespaceImport name="System.ComponentModel" />
   <plx:namespaceImport name="System.Xml" />
+  <plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute" />
   <plx:namespace name="TestNamespace">
     <plx:namespace name="SampleModel">
       <plx:class visibility="public" modifier="abstract" partial="true" name="PersonDrivesCar">
@@ -14,6 +15,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="PersonDrivesCar" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -259,12 +268,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="DrivesCar_vin" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -404,9 +413,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="DrivesCar_vin" />
@@ -541,12 +550,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="DrivenByPerson" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -686,9 +695,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="DrivenByPerson" />
@@ -771,6 +780,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="PersonBoughtCarFromPersonOnDate" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -1016,12 +1033,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="CarSold_vin" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -1161,9 +1178,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="CarSold_vin" />
@@ -1298,12 +1315,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="SaleDate_YMD" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -1443,9 +1460,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="SaleDate_YMD" />
@@ -1580,12 +1597,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Buyer" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -1725,9 +1742,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Buyer" />
@@ -1862,12 +1879,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Seller" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -2007,9 +2024,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Seller" />
@@ -2108,6 +2125,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="Review" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -2353,12 +2378,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Car_vin" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -2498,9 +2523,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Car_vin" />
@@ -2635,12 +2660,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Rating_Nr_Integer" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -2780,9 +2805,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Rating_Nr_Integer" />
@@ -2917,12 +2942,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Criteria_Name" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -3062,9 +3087,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Criteria_Name" />
@@ -3155,6 +3180,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="PersonHasNickName" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -3400,12 +3433,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="NickName" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -3545,9 +3578,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="NickName" />
@@ -3682,12 +3715,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -3827,9 +3860,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -3912,6 +3945,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="Person" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -4157,12 +4198,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="FirstName" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -4302,9 +4343,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="FirstName" />
@@ -4439,12 +4480,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person_id" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -4584,9 +4625,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person_id" />
@@ -4721,12 +4762,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Date_YMD" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -4866,9 +4907,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Date_YMD" />
@@ -5003,12 +5044,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="LastName" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -5148,9 +5189,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="LastName" />
@@ -5285,12 +5326,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="SocialSecurityNumber" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -5430,9 +5471,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="SocialSecurityNumber" />
@@ -5567,12 +5608,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="HatType_ColorARGB" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -5712,9 +5753,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="HatType_ColorARGB" />
@@ -5849,12 +5890,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="HatType_HatTypeStyle_HatTypeStyle_Description" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -5994,9 +6035,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="HatType_HatTypeStyle_HatTypeStyle_Description" />
@@ -6131,12 +6172,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="OwnsCar_vin" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -6276,9 +6317,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="OwnsCar_vin" />
@@ -6413,12 +6454,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Gender_Gender_Code" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -6558,9 +6599,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Gender_Gender_Code" />
@@ -6695,12 +6736,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="PersonHasParents" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -6840,9 +6881,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="PersonHasParents" />
@@ -6977,12 +7018,12 @@
               <plx:passTypeParam dataTypeName="ValueType1" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="ValueType1" />
                   <plx:passParam>
                     <plx:callThis type="property" name="ValueType1" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -7122,9 +7163,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="ValueType1" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="ValueType1" />
@@ -7259,12 +7300,12 @@
               <plx:passTypeParam dataTypeName="MalePerson" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="MalePerson" />
                   <plx:passParam>
                     <plx:callThis type="property" name="MalePerson" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -7404,9 +7445,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="MalePerson" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="MalePerson" />
@@ -7541,12 +7582,12 @@
               <plx:passTypeParam dataTypeName="FemalePerson" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="FemalePerson" />
                   <plx:passParam>
                     <plx:callThis type="property" name="FemalePerson" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -7686,9 +7727,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="FemalePerson" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="FemalePerson" />
@@ -7823,12 +7864,12 @@
               <plx:passTypeParam dataTypeName="ChildPerson" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="ChildPerson" />
                   <plx:passParam>
                     <plx:callThis type="property" name="ChildPerson" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -7968,9 +8009,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="ChildPerson" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="ChildPerson" />
@@ -8105,12 +8146,12 @@
               <plx:passTypeParam dataTypeName="Death" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Death" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Death" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -8250,9 +8291,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Death" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Death" />
@@ -8455,6 +8496,202 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castNarrow">
+          <plx:param dataTypeName="Person" name="Person" />
+          <plx:returns dataTypeName="MalePerson" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Person" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Person</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:callInstance type="property" name="MalePerson">
+                    <plx:callObject>
+                      <plx:nameRef type="parameter" name="Person" />
+                    </plx:callObject>
+                  </plx:callInstance>
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="InvalidCastException" />
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="MalePerson">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Person" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
+        <plx:operatorFunction type="castNarrow">
+          <plx:param dataTypeName="Person" name="Person" />
+          <plx:returns dataTypeName="FemalePerson" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Person" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Person</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:callInstance type="property" name="FemalePerson">
+                    <plx:callObject>
+                      <plx:nameRef type="parameter" name="Person" />
+                    </plx:callObject>
+                  </plx:callInstance>
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="InvalidCastException" />
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="FemalePerson">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Person" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
+        <plx:operatorFunction type="castNarrow">
+          <plx:param dataTypeName="Person" name="Person" />
+          <plx:returns dataTypeName="ChildPerson" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Person" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Person</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:callInstance type="property" name="ChildPerson">
+                    <plx:callObject>
+                      <plx:nameRef type="parameter" name="Person" />
+                    </plx:callObject>
+                  </plx:callInstance>
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="InvalidCastException" />
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="ChildPerson">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Person" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
+        <plx:operatorFunction type="castNarrow">
+          <plx:param dataTypeName="Person" name="Person" />
+          <plx:returns dataTypeName="Death" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Person" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Person</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:callInstance type="property" name="Death">
+                    <plx:callObject>
+                      <plx:nameRef type="parameter" name="Person" />
+                    </plx:callObject>
+                  </plx:callInstance>
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="InvalidCastException" />
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Death">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Person" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="MalePerson">
         <plx:leadingInfo>
@@ -8463,6 +8700,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="MalePerson" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -8708,12 +8953,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -8853,9 +9098,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -8926,6 +9171,36 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castWiden">
+          <plx:param dataTypeName="MalePerson" name="MalePerson" />
+          <plx:returns dataTypeName="Person" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="MalePerson" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>MalePerson</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Person">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="MalePerson" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="FemalePerson">
         <plx:leadingInfo>
@@ -8934,6 +9209,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="FemalePerson" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -9179,12 +9462,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -9324,9 +9607,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -9397,6 +9680,36 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castWiden">
+          <plx:param dataTypeName="FemalePerson" name="FemalePerson" />
+          <plx:returns dataTypeName="Person" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="FemalePerson" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>FemalePerson</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Person">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="FemalePerson" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="ChildPerson">
         <plx:leadingInfo>
@@ -9405,6 +9718,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="ChildPerson" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -9650,12 +9971,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="BirthOrder_BirthOrder_Nr" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -9795,9 +10116,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="BirthOrder_BirthOrder_Nr" />
@@ -9932,12 +10253,12 @@
               <plx:passTypeParam dataTypeName="MalePerson" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="MalePerson" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Father" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -10077,9 +10398,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="MalePerson" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Father" />
@@ -10214,12 +10535,12 @@
               <plx:passTypeParam dataTypeName="FemalePerson" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="FemalePerson" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Mother" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -10359,9 +10680,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="FemalePerson" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Mother" />
@@ -10496,12 +10817,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -10641,9 +10962,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -10734,6 +11055,36 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castWiden">
+          <plx:param dataTypeName="ChildPerson" name="ChildPerson" />
+          <plx:returns dataTypeName="Person" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="ChildPerson" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>ChildPerson</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Person">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="ChildPerson" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="Death">
         <plx:leadingInfo>
@@ -10742,6 +11093,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="Death" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -10987,12 +11346,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Date_YMD" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -11132,9 +11491,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Date_YMD" />
@@ -11269,12 +11628,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="DeathCause_DeathCause_Type" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -11414,9 +11773,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="DeathCause_DeathCause_Type" />
@@ -11551,12 +11910,12 @@
               <plx:passTypeParam dataTypeName="NaturalDeath" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="NaturalDeath" />
                   <plx:passParam>
                     <plx:callThis type="property" name="NaturalDeath" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -11696,9 +12055,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="NaturalDeath" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="NaturalDeath" />
@@ -11833,12 +12192,12 @@
               <plx:passTypeParam dataTypeName="UnnaturalDeath" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="UnnaturalDeath" />
                   <plx:passParam>
                     <plx:callThis type="property" name="UnnaturalDeath" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -11978,9 +12337,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="UnnaturalDeath" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="UnnaturalDeath" />
@@ -12115,12 +12474,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -12260,9 +12619,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -12361,6 +12720,134 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castWiden">
+          <plx:param dataTypeName="Death" name="Death" />
+          <plx:returns dataTypeName="Person" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Death" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Death</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Person">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Death" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
+        <plx:operatorFunction type="castNarrow">
+          <plx:param dataTypeName="Death" name="Death" />
+          <plx:returns dataTypeName="NaturalDeath" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Death" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Death</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:callInstance type="property" name="NaturalDeath">
+                    <plx:callObject>
+                      <plx:nameRef type="parameter" name="Death" />
+                    </plx:callObject>
+                  </plx:callInstance>
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="InvalidCastException" />
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="NaturalDeath">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Death" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
+        <plx:operatorFunction type="castNarrow">
+          <plx:param dataTypeName="Death" name="Death" />
+          <plx:returns dataTypeName="UnnaturalDeath" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="Death" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>Death</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:callInstance type="property" name="UnnaturalDeath">
+                    <plx:callObject>
+                      <plx:nameRef type="parameter" name="Death" />
+                    </plx:callObject>
+                  </plx:callInstance>
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="InvalidCastException" />
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="UnnaturalDeath">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="Death" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="NaturalDeath">
         <plx:leadingInfo>
@@ -12369,6 +12856,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="NaturalDeath" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -12614,12 +13109,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="NaturalDeathIsFromProstateCancer" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -12759,9 +13254,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="NaturalDeathIsFromProstateCancer" />
@@ -12896,12 +13391,12 @@
               <plx:passTypeParam dataTypeName="Death" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Death" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Death" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -13041,9 +13536,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Death" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Death" />
@@ -13118,6 +13613,36 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castWiden">
+          <plx:param dataTypeName="NaturalDeath" name="NaturalDeath" />
+          <plx:returns dataTypeName="Death" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="NaturalDeath" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>NaturalDeath</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Death">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="NaturalDeath" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="UnnaturalDeath">
         <plx:leadingInfo>
@@ -13126,6 +13651,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="UnnaturalDeath" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -13371,12 +13904,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="UnnaturalDeathIsViolent" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -13516,9 +14049,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="UnnaturalDeathIsViolent" />
@@ -13653,12 +14186,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="UnnaturalDeathIsBloody" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -13798,9 +14331,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="UnnaturalDeathIsBloody" />
@@ -13935,12 +14468,12 @@
               <plx:passTypeParam dataTypeName="Death" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Death" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Death" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -14080,9 +14613,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Death" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Death" />
@@ -14165,6 +14698,36 @@
             </plx:callStatic>
           </plx:return>
         </plx:function>
+        <plx:operatorFunction type="castWiden">
+          <plx:param dataTypeName="UnnaturalDeath" name="UnnaturalDeath" />
+          <plx:returns dataTypeName="Death" />
+          <plx:branch>
+            <plx:condition>
+              <plx:binaryOperator type="identityEquality">
+                <plx:left>
+                  <plx:nameRef type="parameter" name="UnnaturalDeath" />
+                </plx:left>
+                <plx:right>
+                  <plx:nullKeyword />
+                </plx:right>
+              </plx:binaryOperator>
+            </plx:condition>
+            <plx:throw>
+              <plx:callNew dataTypeName="ArgumentNullException">
+                <plx:passParam>
+                  <plx:string>UnnaturalDeath</plx:string>
+                </plx:passParam>
+              </plx:callNew>
+            </plx:throw>
+          </plx:branch>
+          <plx:return>
+            <plx:callInstance type="property" name="Death">
+              <plx:callObject>
+                <plx:nameRef type="parameter" name="UnnaturalDeath" />
+              </plx:callObject>
+            </plx:callInstance>
+          </plx:return>
+        </plx:operatorFunction>
       </plx:class>
       <plx:class visibility="public" modifier="abstract" partial="true" name="Task">
         <plx:leadingInfo>
@@ -14173,6 +14736,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="Task" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -14418,12 +14989,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Task_id" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -14563,9 +15134,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Task_id" />
@@ -14700,12 +15271,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -14845,9 +15416,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -14930,6 +15501,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="ValueType1" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="INotifyPropertyChanged" />
         <plx:function name=".construct" visibility="protected" />
         <plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -15175,12 +15754,12 @@
               <plx:passTypeParam dataTypeName=".string" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:callThis type="property" name="ValueType1Value" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -15320,9 +15899,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName=".string" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="ValueType1Value" />
@@ -15457,12 +16036,12 @@
               <plx:passTypeParam dataTypeName="Person" />
               <plx:initialize>
                 <plx:callNew dataTypeName="PropertyChangingEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef name="newValue" />
+                    <plx:nameRef type="parameter" name="newValue" />
                   </plx:passParam>
                 </plx:callNew>
               </plx:initialize>
@@ -15602,9 +16181,9 @@
               </plx:passParam>
               <plx:passParam>
                 <plx:callNew dataTypeName="PropertyChangedEventArgs">
-                  <plx:passTypeParam />
+                  <plx:passTypeParam dataTypeName="Person" />
                   <plx:passParam>
-                    <plx:nameRef name="oldValue" />
+                    <plx:nameRef type="parameter" name="oldValue" />
                   </plx:passParam>
                   <plx:passParam>
                     <plx:callThis type="property" name="Person" />
@@ -15691,6 +16270,14 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="ISampleModelContext" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:property visibility="public" modifier="abstract" name="IsDeserializing">
           <plx:returns dataTypeName=".boolean" />
           <plx:get />
@@ -15917,29 +16504,37 @@
         <plx:trailingInfo>
           <plx:pragma type="closeRegion" data="SampleModelContext" />
         </plx:trailingInfo>
+        <plx:attribute dataTypeName="GeneratedCodeAttribute">
+          <plx:passParam>
+            <plx:string>OIALtoPLiX</plx:string>
+          </plx:passParam>
+          <plx:passParam>
+            <plx:string>1.0</plx:string>
+          </plx:passParam>
+        </plx:attribute>
         <plx:implementsInterface dataTypeName="ISampleModelContext" />
         <plx:function name=".construct" visibility="public" />
-        <plx:field name="_IsDeserializing" visibility="private" dataTypeName=".boolean" />
+        <plx:field name="myIsDeserializing" visibility="private" dataTypeName=".boolean" />
         <plx:property visibility="public" name="IsDeserializing">
           <plx:interfaceMember memberName="IsDeserializing" dataTypeName="ISampleModelContext" />
           <plx:returns dataTypeName=".boolean" />
           <plx:get>
             <plx:return>
-              <plx:callThis name="_IsDeserializing" type="field" />
+              <plx:callThis accessor="this" type="field" name="myIsDeserializing" />
             </plx:return>
           </plx:get>
         </plx:property>
-        <plx:field visibility="private" name="_InternalUniquenessConstraint18Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myInternalUniquenessConstraint18Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="DrivesCar_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="DrivenByPerson" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="PersonDrivesCar" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="DrivesCar_vin" dataTypeName=".string" />
-                <plx:passTypeParam name="DrivenByPerson" dataTypeName="Person" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName="Person" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="PersonDrivesCar" />
             </plx:callNew>
@@ -15953,12 +16548,12 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_InternalUniquenessConstraint18Dictionary" />
+                <plx:callThis type="field" name="myInternalUniquenessConstraint18Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="DrivesCar_vin" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="DrivenByPerson" dataTypeName="Person" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="DrivesCar_vin" />
                   </plx:passParam>
@@ -15973,8 +16568,8 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint18Changing">
           <plx:param name="instance" dataTypeName="PersonDrivesCar" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="DrivesCar_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="DrivenByPerson" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -15997,7 +16592,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_InternalUniquenessConstraint18Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myInternalUniquenessConstraint18Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16026,12 +16621,12 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint18Changed">
           <plx:param name="instance" dataTypeName="PersonDrivesCar" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="DrivesCar_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="DrivenByPerson" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="DrivesCar_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="DrivenByPerson" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16046,7 +16641,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint18Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint18Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16066,7 +16661,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint18Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint18Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -16077,19 +16672,19 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_InternalUniquenessConstraint23Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myInternalUniquenessConstraint23Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="Buyer" dataTypeName="Person" />
-                <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-                <plx:passTypeParam name="Seller" dataTypeName="Person" />
+                <plx:passTypeParam dataTypeName="Person" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName="Person" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
             </plx:callNew>
@@ -16104,13 +16699,13 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_InternalUniquenessConstraint23Dictionary" />
+                <plx:callThis type="field" name="myInternalUniquenessConstraint23Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="Buyer" dataTypeName="Person" />
-                  <plx:passMemberTypeParam name="CarSold_vin" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Seller" dataTypeName="Person" />
+                  <plx:passMemberTypeParam dataTypeName="Person" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="Buyer" />
                   </plx:passParam>
@@ -16128,9 +16723,9 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint23Changing">
           <plx:param name="instance" dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -16153,7 +16748,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_InternalUniquenessConstraint23Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myInternalUniquenessConstraint23Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16182,14 +16777,14 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint23Changed">
           <plx:param name="instance" dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16204,7 +16799,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint23Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint23Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16224,7 +16819,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint23Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint23Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -16235,19 +16830,19 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_InternalUniquenessConstraint24Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myInternalUniquenessConstraint24Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-                <plx:passTypeParam name="Seller" dataTypeName="Person" />
-                <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName="Person" />
+                <plx:passTypeParam dataTypeName=".string" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
             </plx:callNew>
@@ -16262,13 +16857,13 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_InternalUniquenessConstraint24Dictionary" />
+                <plx:callThis type="field" name="myInternalUniquenessConstraint24Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Seller" dataTypeName="Person" />
-                  <plx:passMemberTypeParam name="CarSold_vin" dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName="Person" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="SaleDate_YMD" />
                   </plx:passParam>
@@ -16286,9 +16881,9 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint24Changing">
           <plx:param name="instance" dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -16311,7 +16906,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_InternalUniquenessConstraint24Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myInternalUniquenessConstraint24Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16340,14 +16935,14 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint24Changed">
           <plx:param name="instance" dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Seller" dataTypeName="Person" />
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16362,7 +16957,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint24Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint24Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16382,7 +16977,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint24Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint24Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -16393,19 +16988,19 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_InternalUniquenessConstraint25Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myInternalUniquenessConstraint25Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-                <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-                <plx:passTypeParam name="Buyer" dataTypeName="Person" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName="Person" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
             </plx:callNew>
@@ -16420,13 +17015,13 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_InternalUniquenessConstraint25Dictionary" />
+                <plx:callThis type="field" name="myInternalUniquenessConstraint25Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="CarSold_vin" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Buyer" dataTypeName="Person" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="CarSold_vin" />
                   </plx:passParam>
@@ -16444,9 +17039,9 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint25Changing">
           <plx:param name="instance" dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -16469,7 +17064,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_InternalUniquenessConstraint25Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myInternalUniquenessConstraint25Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16498,14 +17093,14 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint25Changed">
           <plx:param name="instance" dataTypeName="PersonBoughtCarFromPersonOnDate" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="CarSold_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="SaleDate_YMD" dataTypeName=".string" />
-            <plx:passTypeParam name="Buyer" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16520,7 +17115,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint25Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint25Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16540,7 +17135,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint25Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint25Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -16551,17 +17146,17 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_InternalUniquenessConstraint26Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myInternalUniquenessConstraint26Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="Car_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Criteria_Name" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="Review" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="Car_vin" dataTypeName=".string" />
-                <plx:passTypeParam name="Criteria_Name" dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="Review" />
             </plx:callNew>
@@ -16575,12 +17170,12 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_InternalUniquenessConstraint26Dictionary" />
+                <plx:callThis type="field" name="myInternalUniquenessConstraint26Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="Car_vin" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Criteria_Name" dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="Car_vin" />
                   </plx:passParam>
@@ -16595,8 +17190,8 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint26Changing">
           <plx:param name="instance" dataTypeName="Review" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Car_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Criteria_Name" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -16619,7 +17214,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_InternalUniquenessConstraint26Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myInternalUniquenessConstraint26Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16648,12 +17243,12 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint26Changed">
           <plx:param name="instance" dataTypeName="Review" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Car_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Criteria_Name" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Car_vin" dataTypeName=".string" />
-            <plx:passTypeParam name="Criteria_Name" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16668,7 +17263,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint26Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint26Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16688,7 +17283,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint26Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint26Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -16699,17 +17294,17 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_InternalUniquenessConstraint33Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myInternalUniquenessConstraint33Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="NickName" dataTypeName=".string" />
-            <plx:passTypeParam name="Person" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="PersonHasNickName" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="NickName" dataTypeName=".string" />
-                <plx:passTypeParam name="Person" dataTypeName="Person" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName="Person" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="PersonHasNickName" />
             </plx:callNew>
@@ -16723,12 +17318,12 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_InternalUniquenessConstraint33Dictionary" />
+                <plx:callThis type="field" name="myInternalUniquenessConstraint33Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="NickName" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Person" dataTypeName="Person" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName="Person" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="NickName" />
                   </plx:passParam>
@@ -16743,8 +17338,8 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint33Changing">
           <plx:param name="instance" dataTypeName="PersonHasNickName" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="NickName" dataTypeName=".string" />
-            <plx:passTypeParam name="Person" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -16767,7 +17362,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_InternalUniquenessConstraint33Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myInternalUniquenessConstraint33Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16796,12 +17391,12 @@
         <plx:function visibility="private" name="OnInternalUniquenessConstraint33Changed">
           <plx:param name="instance" dataTypeName="PersonHasNickName" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="NickName" dataTypeName=".string" />
-            <plx:passTypeParam name="Person" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="NickName" dataTypeName=".string" />
-            <plx:passTypeParam name="Person" dataTypeName="Person" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="Person" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16816,7 +17411,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint33Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint33Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16836,7 +17431,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_InternalUniquenessConstraint33Dictionary" type="field" />
+                <plx:callThis name="myInternalUniquenessConstraint33Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -16847,19 +17442,19 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_ExternalUniquenessConstraint3Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myExternalUniquenessConstraint3Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="Father" dataTypeName="MalePerson" />
-            <plx:passTypeParam name="BirthOrder_BirthOrder_Nr" dataTypeName=".string" />
-            <plx:passTypeParam name="Mother" dataTypeName="FemalePerson" />
+            <plx:passTypeParam dataTypeName="MalePerson" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="FemalePerson" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="ChildPerson" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="Father" dataTypeName="MalePerson" />
-                <plx:passTypeParam name="BirthOrder_BirthOrder_Nr" dataTypeName=".string" />
-                <plx:passTypeParam name="Mother" dataTypeName="FemalePerson" />
+                <plx:passTypeParam dataTypeName="MalePerson" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName="FemalePerson" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="ChildPerson" />
             </plx:callNew>
@@ -16874,13 +17469,13 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_ExternalUniquenessConstraint3Dictionary" />
+                <plx:callThis type="field" name="myExternalUniquenessConstraint3Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="Father" dataTypeName="MalePerson" />
-                  <plx:passMemberTypeParam name="BirthOrder_BirthOrder_Nr" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Mother" dataTypeName="FemalePerson" />
+                  <plx:passMemberTypeParam dataTypeName="MalePerson" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName="FemalePerson" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="Father" />
                   </plx:passParam>
@@ -16898,9 +17493,9 @@
         <plx:function visibility="private" name="OnExternalUniquenessConstraint3Changing">
           <plx:param name="instance" dataTypeName="ChildPerson" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Father" dataTypeName="MalePerson" />
-            <plx:passTypeParam name="BirthOrder_BirthOrder_Nr" dataTypeName=".string" />
-            <plx:passTypeParam name="Mother" dataTypeName="FemalePerson" />
+            <plx:passTypeParam dataTypeName="MalePerson" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="FemalePerson" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -16923,7 +17518,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_ExternalUniquenessConstraint3Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myExternalUniquenessConstraint3Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -16952,14 +17547,14 @@
         <plx:function visibility="private" name="OnExternalUniquenessConstraint3Changed">
           <plx:param name="instance" dataTypeName="ChildPerson" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Father" dataTypeName="MalePerson" />
-            <plx:passTypeParam name="BirthOrder_BirthOrder_Nr" dataTypeName=".string" />
-            <plx:passTypeParam name="Mother" dataTypeName="FemalePerson" />
+            <plx:passTypeParam dataTypeName="MalePerson" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="FemalePerson" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="Father" dataTypeName="MalePerson" />
-            <plx:passTypeParam name="BirthOrder_BirthOrder_Nr" dataTypeName=".string" />
-            <plx:passTypeParam name="Mother" dataTypeName="FemalePerson" />
+            <plx:passTypeParam dataTypeName="MalePerson" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName="FemalePerson" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -16974,7 +17569,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_ExternalUniquenessConstraint3Dictionary" type="field" />
+                <plx:callThis name="myExternalUniquenessConstraint3Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -16994,7 +17589,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_ExternalUniquenessConstraint3Dictionary" type="field" />
+                <plx:callThis name="myExternalUniquenessConstraint3Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -17005,17 +17600,17 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_ExternalUniquenessConstraint1Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myExternalUniquenessConstraint1Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="FirstName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="Person" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="FirstName" dataTypeName=".string" />
-                <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="Person" />
             </plx:callNew>
@@ -17029,12 +17624,12 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_ExternalUniquenessConstraint1Dictionary" />
+                <plx:callThis type="field" name="myExternalUniquenessConstraint1Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="FirstName" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Date_YMD" dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="FirstName" />
                   </plx:passParam>
@@ -17049,8 +17644,8 @@
         <plx:function visibility="private" name="OnExternalUniquenessConstraint1Changing">
           <plx:param name="instance" dataTypeName="Person" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="FirstName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -17073,7 +17668,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_ExternalUniquenessConstraint1Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myExternalUniquenessConstraint1Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -17102,12 +17697,12 @@
         <plx:function visibility="private" name="OnExternalUniquenessConstraint1Changed">
           <plx:param name="instance" dataTypeName="Person" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="FirstName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="FirstName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -17122,7 +17717,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_ExternalUniquenessConstraint1Dictionary" type="field" />
+                <plx:callThis name="myExternalUniquenessConstraint1Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -17142,7 +17737,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_ExternalUniquenessConstraint1Dictionary" type="field" />
+                <plx:callThis name="myExternalUniquenessConstraint1Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -17153,17 +17748,17 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
-        <plx:field visibility="private" name="_ExternalUniquenessConstraint2Dictionary" dataTypeName="Dictionary">
+        <plx:field visibility="private" readOnly="true" name="myExternalUniquenessConstraint2Dictionary" dataTypeName="Dictionary">
           <plx:passTypeParam dataTypeName="Tuple">
-            <plx:passTypeParam name="LastName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:passTypeParam>
           <plx:passTypeParam dataTypeName="Person" />
           <plx:initialize>
             <plx:callNew dataTypeName="Dictionary">
               <plx:passTypeParam dataTypeName="Tuple">
-                <plx:passTypeParam name="LastName" dataTypeName=".string" />
-                <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
+                <plx:passTypeParam dataTypeName=".string" />
               </plx:passTypeParam>
               <plx:passTypeParam dataTypeName="Person" />
             </plx:callNew>
@@ -17177,12 +17772,12 @@
           <plx:return>
             <plx:callInstance type="indexerCall" name=".implied">
               <plx:callObject>
-                <plx:callThis type="field" name="_ExternalUniquenessConstraint2Dictionary" />
+                <plx:callThis type="field" name="myExternalUniquenessConstraint2Dictionary" />
               </plx:callObject>
               <plx:passParam>
                 <plx:callStatic name="CreateTuple" dataTypeName="Tuple">
-                  <plx:passMemberTypeParam name="LastName" dataTypeName=".string" />
-                  <plx:passMemberTypeParam name="Date_YMD" dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
+                  <plx:passMemberTypeParam dataTypeName=".string" />
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="LastName" />
                   </plx:passParam>
@@ -17197,8 +17792,8 @@
         <plx:function visibility="private" name="OnExternalUniquenessConstraint2Changing">
           <plx:param name="instance" dataTypeName="Person" />
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="LastName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:returns dataTypeName=".boolean" />
           <plx:branch>
@@ -17221,7 +17816,7 @@
               <plx:condition>
                 <plx:callInstance name="TryGetValue">
                   <plx:callObject>
-                    <plx:callThis accessor="this" type="field" name="_ExternalUniquenessConstraint2Dictionary" />
+                    <plx:callThis accessor="this" type="field" name="myExternalUniquenessConstraint2Dictionary" />
                   </plx:callObject>
                   <plx:passParam>
                     <plx:nameRef type="parameter" name="newValue" />
@@ -17250,12 +17845,12 @@
         <plx:function visibility="private" name="OnExternalUniquenessConstraint2Changed">
           <plx:param name="instance" dataTypeName="Person" />
           <plx:param name="oldValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="LastName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:param name="newValue" dataTypeName="Tuple">
-            <plx:passTypeParam name="LastName" dataTypeName=".string" />
-            <plx:passTypeParam name="Date_YMD" dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
+            <plx:passTypeParam dataTypeName=".string" />
           </plx:param>
           <plx:branch>
             <plx:condition>
@@ -17270,7 +17865,7 @@
             </plx:condition>
             <plx:callInstance name="Remove">
               <plx:callObject>
-                <plx:callThis name="_ExternalUniquenessConstraint2Dictionary" type="field" />
+                <plx:callThis name="myExternalUniquenessConstraint2Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="oldValue" />
@@ -17290,7 +17885,7 @@
             </plx:condition>
             <plx:callInstance name="Add">
               <plx:callObject>
-                <plx:callThis name="_ExternalUniquenessConstraint2Dictionary" type="field" />
+                <plx:callThis name="myExternalUniquenessConstraint2Dictionary" type="field" />
               </plx:callObject>
               <plx:passParam>
                 <plx:nameRef type="parameter" name="newValue" />
@@ -17301,25 +17896,130 @@
             </plx:callInstance>
           </plx:branch>
         </plx:function>
+        <plx:field visibility="private" readOnly="true" name="myPersonPerson_idDictionary" dataTypeName="Dictionary">
+          <plx:passTypeParam dataTypeName=".string" />
+          <plx:passTypeParam dataTypeName="Person" />
+          <plx:initialize>
+            <plx:callNew dataTypeName="Dictionary">
+              <plx:passTypeParam dataTypeName=".string" />
+              <plx:passTypeParam dataTypeName="Person" />
+            </plx:callNew>
+          </plx:initialize>
+        </plx:field>
         <plx:function visibility="public" name="GetPersonByPerson_id">
+          <plx:interfaceMember memberName="GetPersonByPerson_id" dataTypeName="ISampleModelContext" />
           <plx:param name="Person_id" dataTypeName=".string" />
           <plx:returns dataTypeName="Person" />
+          <plx:return>
+            <plx:callInstance type="indexerCall" name=".implied">
+              <plx:callObject>
+                <plx:callThis type="field" name="myPersonPerson_idDictionary" />
+              </plx:callObject>
+              <plx:passParam>
+                <plx:nameRef type="parameter" name="Person_id" />
+              </plx:passParam>
+            </plx:callInstance>
+          </plx:return>
         </plx:function>
+        <plx:field visibility="private" readOnly="true" name="myPersonSocialSecurityNumberDictionary" dataTypeName="Dictionary">
+          <plx:passTypeParam dataTypeName=".string" />
+          <plx:passTypeParam dataTypeName="Person" />
+          <plx:initialize>
+            <plx:callNew dataTypeName="Dictionary">
+              <plx:passTypeParam dataTypeName=".string" />
+              <plx:passTypeParam dataTypeName="Person" />
+            </plx:callNew>
+          </plx:initialize>
+        </plx:field>
         <plx:function visibility="public" name="GetPersonBySocialSecurityNumber">
+          <plx:interfaceMember memberName="GetPersonBySocialSecurityNumber" dataTypeName="ISampleModelContext" />
           <plx:param name="SocialSecurityNumber" dataTypeName=".string" />
           <plx:returns dataTypeName="Person" />
+          <plx:return>
+            <plx:callInstance type="indexerCall" name=".implied">
+              <plx:callObject>
+                <plx:callThis type="field" name="myPersonSocialSecurityNumberDictionary" />
+              </plx:callObject>
+              <plx:passParam>
+                <plx:nameRef type="parameter" name="SocialSecurityNumber" />
+              </plx:passParam>
+            </plx:callInstance>
+          </plx:return>
         </plx:function>
+        <plx:field visibility="private" readOnly="true" name="myPersonOwnsCar_vinDictionary" dataTypeName="Dictionary">
+          <plx:passTypeParam dataTypeName=".string" />
+          <plx:passTypeParam dataTypeName="Person" />
+          <plx:initialize>
+            <plx:callNew dataTypeName="Dictionary">
+              <plx:passTypeParam dataTypeName=".string" />
+              <plx:passTypeParam dataTypeName="Person" />
+            </plx:callNew>
+          </plx:initialize>
+        </plx:field>
         <plx:function visibility="public" name="GetPersonByOwnsCar_vin">
+          <plx:interfaceMember memberName="GetPersonByOwnsCar_vin" dataTypeName="ISampleModelContext" />
           <plx:param name="OwnsCar_vin" dataTypeName=".string" />
           <plx:returns dataTypeName="Person" />
+          <plx:return>
+            <plx:callInstance type="indexerCall" name=".implied">
+              <plx:callObject>
+                <plx:callThis type="field" name="myPersonOwnsCar_vinDictionary" />
+              </plx:callObject>
+              <plx:passParam>
+                <plx:nameRef type="parameter" name="OwnsCar_vin" />
+              </plx:passParam>
+            </plx:callInstance>
+          </plx:return>
         </plx:function>
+        <plx:field visibility="private" readOnly="true" name="myTaskTask_idDictionary" dataTypeName="Dictionary">
+          <plx:passTypeParam dataTypeName=".string" />
+          <plx:passTypeParam dataTypeName="Task" />
+          <plx:initialize>
+            <plx:callNew dataTypeName="Dictionary">
+              <plx:passTypeParam dataTypeName=".string" />
+              <plx:passTypeParam dataTypeName="Task" />
+            </plx:callNew>
+          </plx:initialize>
+        </plx:field>
         <plx:function visibility="public" name="GetTaskByTask_id">
+          <plx:interfaceMember memberName="GetTaskByTask_id" dataTypeName="ISampleModelContext" />
           <plx:param name="Task_id" dataTypeName=".string" />
           <plx:returns dataTypeName="Task" />
+          <plx:return>
+            <plx:callInstance type="indexerCall" name=".implied">
+              <plx:callObject>
+                <plx:callThis type="field" name="myTaskTask_idDictionary" />
+              </plx:callObject>
+              <plx:passParam>
+                <plx:nameRef type="parameter" name="Task_id" />
+              </plx:passParam>
+            </plx:callInstance>
+          </plx:return>
         </plx:function>
+        <plx:field visibility="private" readOnly="true" name="myValueType1ValueType1ValueDictionary" dataTypeName="Dictionary">
+          <plx:passTypeParam dataTypeName=".string" />
+          <plx:passTypeParam dataTypeName="ValueType1" />
+          <plx:initialize>
+            <plx:callNew dataTypeName="Dictionary">
+              <plx:passTypeParam dataTypeName=".string" />
+              <plx:passTypeParam dataTypeName="ValueType1" />
+            </plx:callNew>
+          </plx:initialize>
+        </plx:field>
         <plx:function visibility="public" name="GetValueType1ByValueType1Value">
+          <plx:interfaceMember memberName="GetValueType1ByValueType1Value" dataTypeName="ISampleModelContext" />
           <plx:param name="ValueType1Value" dataTypeName=".string" />
           <plx:returns dataTypeName="ValueType1" />
+          <plx:return>
+            <plx:callInstance type="indexerCall" name=".implied">
+              <plx:callObject>
+                <plx:callThis type="field" name="myValueType1ValueType1ValueDictionary" />
+              </plx:callObject>
+              <plx:passParam>
+                <plx:nameRef type="parameter" name="ValueType1Value" />
+              </plx:passParam>
+            </plx:callInstance>
+          </plx:return>
         </plx:function>
       </plx:class>
     </plx:namespace>

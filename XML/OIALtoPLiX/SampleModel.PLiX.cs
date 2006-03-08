@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml;
+using GeneratedCodeAttribute = System.CodeDom.Compiler.GeneratedCodeAttribute;
 namespace TestNamespace
 {
 	namespace SampleModel
 	{
 		#region PersonDrivesCar
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class PersonDrivesCar : INotifyPropertyChanged
 		{
 			protected PersonDrivesCar()
@@ -64,7 +66,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.DrivesCar_vin, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.DrivesCar_vin, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -86,7 +88,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.DrivesCar_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.DrivesCar_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("DrivesCar_vin");
 				}
 			}
@@ -106,7 +108,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.DrivenByPerson, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.DrivenByPerson, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -128,7 +130,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.DrivenByPerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.DrivenByPerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("DrivenByPerson");
 				}
 			}
@@ -153,6 +155,7 @@ namespace TestNamespace
 		}
 		#endregion // PersonDrivesCar
 		#region PersonBoughtCarFromPersonOnDate
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class PersonBoughtCarFromPersonOnDate : INotifyPropertyChanged
 		{
 			protected PersonBoughtCarFromPersonOnDate()
@@ -209,7 +212,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.CarSold_vin, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.CarSold_vin, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -231,7 +234,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.CarSold_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.CarSold_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("CarSold_vin");
 				}
 			}
@@ -251,7 +254,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.SaleDate_YMD, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.SaleDate_YMD, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -273,7 +276,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.SaleDate_YMD), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.SaleDate_YMD), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("SaleDate_YMD");
 				}
 			}
@@ -293,7 +296,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Buyer, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Buyer, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -315,7 +318,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Buyer), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Buyer), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Buyer");
 				}
 			}
@@ -335,7 +338,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Seller, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Seller, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -357,7 +360,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Seller), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Seller), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Seller");
 				}
 			}
@@ -392,6 +395,7 @@ namespace TestNamespace
 		}
 		#endregion // PersonBoughtCarFromPersonOnDate
 		#region Review
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class Review : INotifyPropertyChanged
 		{
 			protected Review()
@@ -448,7 +452,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Car_vin, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Car_vin, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -470,7 +474,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Car_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Car_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Car_vin");
 				}
 			}
@@ -490,7 +494,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Rating_Nr_Integer, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Rating_Nr_Integer, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -512,7 +516,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Rating_Nr_Integer), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Rating_Nr_Integer), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Rating_Nr_Integer");
 				}
 			}
@@ -532,7 +536,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Criteria_Name, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Criteria_Name, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -554,7 +558,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Criteria_Name), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Criteria_Name), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Criteria_Name");
 				}
 			}
@@ -584,6 +588,7 @@ namespace TestNamespace
 		}
 		#endregion // Review
 		#region PersonHasNickName
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class PersonHasNickName : INotifyPropertyChanged
 		{
 			protected PersonHasNickName()
@@ -640,7 +645,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.NickName, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.NickName, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -662,7 +667,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.NickName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.NickName), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("NickName");
 				}
 			}
@@ -682,7 +687,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -704,7 +709,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -729,6 +734,7 @@ namespace TestNamespace
 		}
 		#endregion // PersonHasNickName
 		#region Person
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class Person : INotifyPropertyChanged
 		{
 			protected Person()
@@ -785,7 +791,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.FirstName, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.FirstName, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -807,7 +813,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.FirstName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.FirstName), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("FirstName");
 				}
 			}
@@ -827,7 +833,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Person_id, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Person_id, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -849,7 +855,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person_id), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Person_id), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person_id");
 				}
 			}
@@ -869,7 +875,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Date_YMD, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Date_YMD, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -891,7 +897,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Date_YMD), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Date_YMD), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Date_YMD");
 				}
 			}
@@ -911,7 +917,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.LastName, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.LastName, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -933,7 +939,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.LastName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.LastName), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("LastName");
 				}
 			}
@@ -953,7 +959,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.SocialSecurityNumber, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.SocialSecurityNumber, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -975,7 +981,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[5] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.SocialSecurityNumber), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.SocialSecurityNumber), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("SocialSecurityNumber");
 				}
 			}
@@ -995,7 +1001,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[6] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.HatType_ColorARGB, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.HatType_ColorARGB, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1017,7 +1023,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[6] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.HatType_ColorARGB), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.HatType_ColorARGB), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("HatType_ColorARGB");
 				}
 			}
@@ -1037,7 +1043,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[7] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.HatType_HatTypeStyle_HatTypeStyle_Description, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.HatType_HatTypeStyle_HatTypeStyle_Description, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1059,7 +1065,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[7] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.HatType_HatTypeStyle_HatTypeStyle_Description), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.HatType_HatTypeStyle_HatTypeStyle_Description), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("HatType_HatTypeStyle_HatTypeStyle_Description");
 				}
 			}
@@ -1079,7 +1085,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[8] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.OwnsCar_vin, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.OwnsCar_vin, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1101,7 +1107,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.OwnsCar_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.OwnsCar_vin), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("OwnsCar_vin");
 				}
 			}
@@ -1121,7 +1127,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[9] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Gender_Gender_Code, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Gender_Gender_Code, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1143,7 +1149,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[9] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Gender_Gender_Code), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Gender_Gender_Code), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Gender_Gender_Code");
 				}
 			}
@@ -1163,7 +1169,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[10] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.PersonHasParents, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.PersonHasParents, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1185,7 +1191,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[10] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.PersonHasParents), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.PersonHasParents), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("PersonHasParents");
 				}
 			}
@@ -1205,7 +1211,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<ValueType1>> eventHandler = this.Events[11] as EventHandler<PropertyChangingEventArgs<ValueType1>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<ValueType1> eventArgs = new PropertyChangingEventArgs<void>(this.ValueType1, newValue);
+					PropertyChangingEventArgs<ValueType1> eventArgs = new PropertyChangingEventArgs<ValueType1>(this.ValueType1, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1227,7 +1233,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<ValueType1>> eventHandler = this.Events[11] as EventHandler<PropertyChangedEventArgs<ValueType1>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.ValueType1), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<ValueType1>(oldValue, this.ValueType1), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("ValueType1");
 				}
 			}
@@ -1247,7 +1253,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<MalePerson>> eventHandler = this.Events[12] as EventHandler<PropertyChangingEventArgs<MalePerson>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<MalePerson> eventArgs = new PropertyChangingEventArgs<void>(this.MalePerson, newValue);
+					PropertyChangingEventArgs<MalePerson> eventArgs = new PropertyChangingEventArgs<MalePerson>(this.MalePerson, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1269,7 +1275,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<MalePerson>> eventHandler = this.Events[12] as EventHandler<PropertyChangedEventArgs<MalePerson>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.MalePerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<MalePerson>(oldValue, this.MalePerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("MalePerson");
 				}
 			}
@@ -1289,7 +1295,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<FemalePerson>> eventHandler = this.Events[13] as EventHandler<PropertyChangingEventArgs<FemalePerson>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<FemalePerson> eventArgs = new PropertyChangingEventArgs<void>(this.FemalePerson, newValue);
+					PropertyChangingEventArgs<FemalePerson> eventArgs = new PropertyChangingEventArgs<FemalePerson>(this.FemalePerson, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1311,7 +1317,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<FemalePerson>> eventHandler = this.Events[13] as EventHandler<PropertyChangedEventArgs<FemalePerson>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.FemalePerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<FemalePerson>(oldValue, this.FemalePerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("FemalePerson");
 				}
 			}
@@ -1331,7 +1337,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<ChildPerson>> eventHandler = this.Events[14] as EventHandler<PropertyChangingEventArgs<ChildPerson>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<ChildPerson> eventArgs = new PropertyChangingEventArgs<void>(this.ChildPerson, newValue);
+					PropertyChangingEventArgs<ChildPerson> eventArgs = new PropertyChangingEventArgs<ChildPerson>(this.ChildPerson, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1353,7 +1359,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<ChildPerson>> eventHandler = this.Events[14] as EventHandler<PropertyChangedEventArgs<ChildPerson>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.ChildPerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<ChildPerson>(oldValue, this.ChildPerson), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("ChildPerson");
 				}
 			}
@@ -1373,7 +1379,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Death>> eventHandler = this.Events[15] as EventHandler<PropertyChangingEventArgs<Death>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Death> eventArgs = new PropertyChangingEventArgs<void>(this.Death, newValue);
+					PropertyChangingEventArgs<Death> eventArgs = new PropertyChangingEventArgs<Death>(this.Death, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1395,7 +1401,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Death>> eventHandler = this.Events[15] as EventHandler<PropertyChangedEventArgs<Death>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Death), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Death>(oldValue, this.Death), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Death");
 				}
 			}
@@ -1506,9 +1512,58 @@ namespace TestNamespace
 			{
 				return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Person_id = ""{3}"",{0}{1}Date_YMD = ""{4}"",{0}{1}LastName = ""{5}"",{0}{1}SocialSecurityNumber = ""{6}"",{0}{1}HatType_ColorARGB = ""{7}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{8}"",{0}{1}OwnsCar_vin = ""{9}"",{0}{1}Gender_Gender_Code = ""{10}"",{0}{1}PersonHasParents = ""{11}"",{0}{1}ValueType1 = {12},{0}{1}MalePerson = {13},{0}{1}FemalePerson = {14},{0}{1}ChildPerson = {15},{0}{1}Death = {16}{0}}}", Environment.NewLine, "	", this.FirstName, this.Person_id, this.Date_YMD, this.LastName, this.SocialSecurityNumber, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.PersonHasParents, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 			}
+			public static explicit operator MalePerson(Person Person)
+			{
+				if (Person == null)
+				{
+					throw new ArgumentNullException("Person");
+				}
+				if (Person.MalePerson == null)
+				{
+					throw new InvalidCastException();
+				}
+				return Person.MalePerson;
+			}
+			public static explicit operator FemalePerson(Person Person)
+			{
+				if (Person == null)
+				{
+					throw new ArgumentNullException("Person");
+				}
+				if (Person.FemalePerson == null)
+				{
+					throw new InvalidCastException();
+				}
+				return Person.FemalePerson;
+			}
+			public static explicit operator ChildPerson(Person Person)
+			{
+				if (Person == null)
+				{
+					throw new ArgumentNullException("Person");
+				}
+				if (Person.ChildPerson == null)
+				{
+					throw new InvalidCastException();
+				}
+				return Person.ChildPerson;
+			}
+			public static explicit operator Death(Person Person)
+			{
+				if (Person == null)
+				{
+					throw new ArgumentNullException("Person");
+				}
+				if (Person.Death == null)
+				{
+					throw new InvalidCastException();
+				}
+				return Person.Death;
+			}
 		}
 		#endregion // Person
 		#region MalePerson
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class MalePerson : INotifyPropertyChanged
 		{
 			protected MalePerson()
@@ -1565,7 +1620,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1587,7 +1642,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -1608,9 +1663,18 @@ namespace TestNamespace
 			{
 				return string.Format(provider, "MalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "	", "TODO: Recursively call ToString for customTypes...");
 			}
+			public static implicit operator Person(MalePerson MalePerson)
+			{
+				if (MalePerson == null)
+				{
+					throw new ArgumentNullException("MalePerson");
+				}
+				return MalePerson.Person;
+			}
 		}
 		#endregion // MalePerson
 		#region FemalePerson
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class FemalePerson : INotifyPropertyChanged
 		{
 			protected FemalePerson()
@@ -1667,7 +1731,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1689,7 +1753,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -1710,9 +1774,18 @@ namespace TestNamespace
 			{
 				return string.Format(provider, "FemalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "	", "TODO: Recursively call ToString for customTypes...");
 			}
+			public static implicit operator Person(FemalePerson FemalePerson)
+			{
+				if (FemalePerson == null)
+				{
+					throw new ArgumentNullException("FemalePerson");
+				}
+				return FemalePerson.Person;
+			}
 		}
 		#endregion // FemalePerson
 		#region ChildPerson
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class ChildPerson : INotifyPropertyChanged
 		{
 			protected ChildPerson()
@@ -1769,7 +1842,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.BirthOrder_BirthOrder_Nr, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.BirthOrder_BirthOrder_Nr, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1791,7 +1864,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.BirthOrder_BirthOrder_Nr), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.BirthOrder_BirthOrder_Nr), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("BirthOrder_BirthOrder_Nr");
 				}
 			}
@@ -1811,7 +1884,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<MalePerson>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<MalePerson>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<MalePerson> eventArgs = new PropertyChangingEventArgs<void>(this.Father, newValue);
+					PropertyChangingEventArgs<MalePerson> eventArgs = new PropertyChangingEventArgs<MalePerson>(this.Father, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1833,7 +1906,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<MalePerson>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<MalePerson>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Father), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<MalePerson>(oldValue, this.Father), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Father");
 				}
 			}
@@ -1853,7 +1926,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<FemalePerson>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<FemalePerson>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<FemalePerson> eventArgs = new PropertyChangingEventArgs<void>(this.Mother, newValue);
+					PropertyChangingEventArgs<FemalePerson> eventArgs = new PropertyChangingEventArgs<FemalePerson>(this.Mother, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1875,7 +1948,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<FemalePerson>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<FemalePerson>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Mother), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<FemalePerson>(oldValue, this.Mother), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Mother");
 				}
 			}
@@ -1895,7 +1968,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -1917,7 +1990,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -1949,9 +2022,18 @@ namespace TestNamespace
 			{
 				return string.Format(provider, @"ChildPerson{0}{{{0}{1}BirthOrder_BirthOrder_Nr = ""{2}"",{0}{1}Father = {3},{0}{1}Mother = {4},{0}{1}Person = {5}{0}}}", Environment.NewLine, "	", this.BirthOrder_BirthOrder_Nr, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 			}
+			public static implicit operator Person(ChildPerson ChildPerson)
+			{
+				if (ChildPerson == null)
+				{
+					throw new ArgumentNullException("ChildPerson");
+				}
+				return ChildPerson.Person;
+			}
 		}
 		#endregion // ChildPerson
 		#region Death
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class Death : INotifyPropertyChanged
 		{
 			protected Death()
@@ -2008,7 +2090,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Date_YMD, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Date_YMD, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2030,7 +2112,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Date_YMD), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Date_YMD), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Date_YMD");
 				}
 			}
@@ -2050,7 +2132,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.DeathCause_DeathCause_Type, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.DeathCause_DeathCause_Type, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2072,7 +2154,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.DeathCause_DeathCause_Type), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.DeathCause_DeathCause_Type), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("DeathCause_DeathCause_Type");
 				}
 			}
@@ -2092,7 +2174,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<NaturalDeath>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<NaturalDeath>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<NaturalDeath> eventArgs = new PropertyChangingEventArgs<void>(this.NaturalDeath, newValue);
+					PropertyChangingEventArgs<NaturalDeath> eventArgs = new PropertyChangingEventArgs<NaturalDeath>(this.NaturalDeath, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2114,7 +2196,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<NaturalDeath>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<NaturalDeath>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.NaturalDeath), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<NaturalDeath>(oldValue, this.NaturalDeath), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("NaturalDeath");
 				}
 			}
@@ -2134,7 +2216,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<UnnaturalDeath>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<UnnaturalDeath> eventArgs = new PropertyChangingEventArgs<void>(this.UnnaturalDeath, newValue);
+					PropertyChangingEventArgs<UnnaturalDeath> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath>(this.UnnaturalDeath, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2156,7 +2238,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<UnnaturalDeath>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.UnnaturalDeath), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath>(oldValue, this.UnnaturalDeath), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("UnnaturalDeath");
 				}
 			}
@@ -2176,7 +2258,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[5] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2198,7 +2280,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[5] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -2235,9 +2317,42 @@ namespace TestNamespace
 			{
 				return string.Format(provider, @"Death{0}{{{0}{1}Date_YMD = ""{2}"",{0}{1}DeathCause_DeathCause_Type = ""{3}"",{0}{1}NaturalDeath = {4},{0}{1}UnnaturalDeath = {5},{0}{1}Person = {6}{0}}}", Environment.NewLine, "	", this.Date_YMD, this.DeathCause_DeathCause_Type, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 			}
+			public static implicit operator Person(Death Death)
+			{
+				if (Death == null)
+				{
+					throw new ArgumentNullException("Death");
+				}
+				return Death.Person;
+			}
+			public static explicit operator NaturalDeath(Death Death)
+			{
+				if (Death == null)
+				{
+					throw new ArgumentNullException("Death");
+				}
+				if (Death.NaturalDeath == null)
+				{
+					throw new InvalidCastException();
+				}
+				return Death.NaturalDeath;
+			}
+			public static explicit operator UnnaturalDeath(Death Death)
+			{
+				if (Death == null)
+				{
+					throw new ArgumentNullException("Death");
+				}
+				if (Death.UnnaturalDeath == null)
+				{
+					throw new InvalidCastException();
+				}
+				return Death.UnnaturalDeath;
+			}
 		}
 		#endregion // Death
 		#region NaturalDeath
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class NaturalDeath : INotifyPropertyChanged
 		{
 			protected NaturalDeath()
@@ -2294,7 +2409,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.NaturalDeathIsFromProstateCancer, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.NaturalDeathIsFromProstateCancer, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2316,7 +2431,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.NaturalDeathIsFromProstateCancer), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.NaturalDeathIsFromProstateCancer), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("NaturalDeathIsFromProstateCancer");
 				}
 			}
@@ -2336,7 +2451,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Death>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Death>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Death> eventArgs = new PropertyChangingEventArgs<void>(this.Death, newValue);
+					PropertyChangingEventArgs<Death> eventArgs = new PropertyChangingEventArgs<Death>(this.Death, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2358,7 +2473,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Death>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Death>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Death), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Death>(oldValue, this.Death), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Death");
 				}
 			}
@@ -2380,9 +2495,18 @@ namespace TestNamespace
 			{
 				return string.Format(provider, @"NaturalDeath{0}{{{0}{1}NaturalDeathIsFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "	", this.NaturalDeathIsFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
 			}
+			public static implicit operator Death(NaturalDeath NaturalDeath)
+			{
+				if (NaturalDeath == null)
+				{
+					throw new ArgumentNullException("NaturalDeath");
+				}
+				return NaturalDeath.Death;
+			}
 		}
 		#endregion // NaturalDeath
 		#region UnnaturalDeath
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class UnnaturalDeath : INotifyPropertyChanged
 		{
 			protected UnnaturalDeath()
@@ -2439,7 +2563,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.UnnaturalDeathIsViolent, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.UnnaturalDeathIsViolent, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2461,7 +2585,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.UnnaturalDeathIsViolent), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.UnnaturalDeathIsViolent), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("UnnaturalDeathIsViolent");
 				}
 			}
@@ -2481,7 +2605,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.UnnaturalDeathIsBloody, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.UnnaturalDeathIsBloody, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2503,7 +2627,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.UnnaturalDeathIsBloody), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.UnnaturalDeathIsBloody), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("UnnaturalDeathIsBloody");
 				}
 			}
@@ -2523,7 +2647,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Death>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Death>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Death> eventArgs = new PropertyChangingEventArgs<void>(this.Death, newValue);
+					PropertyChangingEventArgs<Death> eventArgs = new PropertyChangingEventArgs<Death>(this.Death, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2545,7 +2669,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Death>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<Death>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Death), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Death>(oldValue, this.Death), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Death");
 				}
 			}
@@ -2572,9 +2696,18 @@ namespace TestNamespace
 			{
 				return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}UnnaturalDeathIsViolent = ""{2}"",{0}{1}UnnaturalDeathIsBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "	", this.UnnaturalDeathIsViolent, this.UnnaturalDeathIsBloody, "TODO: Recursively call ToString for customTypes...");
 			}
+			public static implicit operator Death(UnnaturalDeath UnnaturalDeath)
+			{
+				if (UnnaturalDeath == null)
+				{
+					throw new ArgumentNullException("UnnaturalDeath");
+				}
+				return UnnaturalDeath.Death;
+			}
 		}
 		#endregion // UnnaturalDeath
 		#region Task
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class Task : INotifyPropertyChanged
 		{
 			protected Task()
@@ -2631,7 +2764,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.Task_id, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Task_id, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2653,7 +2786,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Task_id), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Task_id), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Task_id");
 				}
 			}
@@ -2673,7 +2806,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2695,7 +2828,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -2720,6 +2853,7 @@ namespace TestNamespace
 		}
 		#endregion // Task
 		#region ValueType1
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public abstract partial class ValueType1 : INotifyPropertyChanged
 		{
 			protected ValueType1()
@@ -2776,7 +2910,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<void>(this.ValueType1Value, newValue);
+					PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.ValueType1Value, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2798,7 +2932,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.ValueType1Value), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.ValueType1Value), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("ValueType1Value");
 				}
 			}
@@ -2818,7 +2952,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangingEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<void>(this.Person, newValue);
+					PropertyChangingEventArgs<Person> eventArgs = new PropertyChangingEventArgs<Person>(this.Person, newValue);
 					eventHandler(this, eventArgs);
 					return !(eventArgs.Cancel);
 				}
@@ -2840,7 +2974,7 @@ namespace TestNamespace
 				EventHandler<PropertyChangedEventArgs<Person>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person>>;
 				if (eventHandler != null)
 				{
-					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<void>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
+					eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person>(oldValue, this.Person), new System.AsyncCallback(eventHandler.EndInvoke), null);
 					this.RaisePropertyChangedEvent("Person");
 				}
 			}
@@ -2869,6 +3003,7 @@ namespace TestNamespace
 		}
 		#endregion // ValueType1
 		#region ISampleModelContext
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public interface ISampleModelContext
 		{
 			bool IsDeserializing
@@ -2957,30 +3092,31 @@ namespace TestNamespace
 		}
 		#endregion // ISampleModelContext
 		#region SampleModelContext
+		[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 		public sealed class SampleModelContext : ISampleModelContext
 		{
 			public SampleModelContext()
 			{
 			}
-			private bool _IsDeserializing;
+			private bool myIsDeserializing;
 			public bool IsDeserializing
 			{
 				get
 				{
-					return this._IsDeserializing;
+					return this.myIsDeserializing;
 				}
 			}
-			private Dictionary<Tuple<string, Person>, PersonDrivesCar> _InternalUniquenessConstraint18Dictionary = new Dictionary<Tuple<string, Person>, PersonDrivesCar>();
+			private readonly Dictionary<Tuple<string, Person>, PersonDrivesCar> myInternalUniquenessConstraint18Dictionary = new Dictionary<Tuple<string, Person>, PersonDrivesCar>();
 			public PersonDrivesCar GetPersonDrivesCarByInternalUniquenessConstraint18(string DrivesCar_vin, Person DrivenByPerson)
 			{
-				return this._InternalUniquenessConstraint18Dictionary[Tuple.CreateTuple(DrivesCar_vin, DrivenByPerson)];
+				return this.myInternalUniquenessConstraint18Dictionary[Tuple.CreateTuple(DrivesCar_vin, DrivenByPerson)];
 			}
 			private bool OnInternalUniquenessConstraint18Changing(PersonDrivesCar instance, Tuple<string, Person> newValue)
 			{
 				if (newValue != null)
 				{
 					PersonDrivesCar currentInstance = instance;
-					if (this._InternalUniquenessConstraint18Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myInternalUniquenessConstraint18Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -2991,24 +3127,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._InternalUniquenessConstraint18Dictionary.Remove(oldValue);
+					this.myInternalUniquenessConstraint18Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._InternalUniquenessConstraint18Dictionary.Add(newValue, instance);
+					this.myInternalUniquenessConstraint18Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<Person, string, Person>, PersonBoughtCarFromPersonOnDate> _InternalUniquenessConstraint23Dictionary = new Dictionary<Tuple<Person, string, Person>, PersonBoughtCarFromPersonOnDate>();
+			private readonly Dictionary<Tuple<Person, string, Person>, PersonBoughtCarFromPersonOnDate> myInternalUniquenessConstraint23Dictionary = new Dictionary<Tuple<Person, string, Person>, PersonBoughtCarFromPersonOnDate>();
 			public PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint23(Person Buyer, string CarSold_vin, Person Seller)
 			{
-				return this._InternalUniquenessConstraint23Dictionary[Tuple.CreateTuple(Buyer, CarSold_vin, Seller)];
+				return this.myInternalUniquenessConstraint23Dictionary[Tuple.CreateTuple(Buyer, CarSold_vin, Seller)];
 			}
 			private bool OnInternalUniquenessConstraint23Changing(PersonBoughtCarFromPersonOnDate instance, Tuple<Person, string, Person> newValue)
 			{
 				if (newValue != null)
 				{
 					PersonBoughtCarFromPersonOnDate currentInstance = instance;
-					if (this._InternalUniquenessConstraint23Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myInternalUniquenessConstraint23Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3019,24 +3155,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._InternalUniquenessConstraint23Dictionary.Remove(oldValue);
+					this.myInternalUniquenessConstraint23Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._InternalUniquenessConstraint23Dictionary.Add(newValue, instance);
+					this.myInternalUniquenessConstraint23Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<string, Person, string>, PersonBoughtCarFromPersonOnDate> _InternalUniquenessConstraint24Dictionary = new Dictionary<Tuple<string, Person, string>, PersonBoughtCarFromPersonOnDate>();
+			private readonly Dictionary<Tuple<string, Person, string>, PersonBoughtCarFromPersonOnDate> myInternalUniquenessConstraint24Dictionary = new Dictionary<Tuple<string, Person, string>, PersonBoughtCarFromPersonOnDate>();
 			public PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint24(string SaleDate_YMD, Person Seller, string CarSold_vin)
 			{
-				return this._InternalUniquenessConstraint24Dictionary[Tuple.CreateTuple(SaleDate_YMD, Seller, CarSold_vin)];
+				return this.myInternalUniquenessConstraint24Dictionary[Tuple.CreateTuple(SaleDate_YMD, Seller, CarSold_vin)];
 			}
 			private bool OnInternalUniquenessConstraint24Changing(PersonBoughtCarFromPersonOnDate instance, Tuple<string, Person, string> newValue)
 			{
 				if (newValue != null)
 				{
 					PersonBoughtCarFromPersonOnDate currentInstance = instance;
-					if (this._InternalUniquenessConstraint24Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myInternalUniquenessConstraint24Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3047,24 +3183,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._InternalUniquenessConstraint24Dictionary.Remove(oldValue);
+					this.myInternalUniquenessConstraint24Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._InternalUniquenessConstraint24Dictionary.Add(newValue, instance);
+					this.myInternalUniquenessConstraint24Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<string, string, Person>, PersonBoughtCarFromPersonOnDate> _InternalUniquenessConstraint25Dictionary = new Dictionary<Tuple<string, string, Person>, PersonBoughtCarFromPersonOnDate>();
+			private readonly Dictionary<Tuple<string, string, Person>, PersonBoughtCarFromPersonOnDate> myInternalUniquenessConstraint25Dictionary = new Dictionary<Tuple<string, string, Person>, PersonBoughtCarFromPersonOnDate>();
 			public PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint25(string CarSold_vin, string SaleDate_YMD, Person Buyer)
 			{
-				return this._InternalUniquenessConstraint25Dictionary[Tuple.CreateTuple(CarSold_vin, SaleDate_YMD, Buyer)];
+				return this.myInternalUniquenessConstraint25Dictionary[Tuple.CreateTuple(CarSold_vin, SaleDate_YMD, Buyer)];
 			}
 			private bool OnInternalUniquenessConstraint25Changing(PersonBoughtCarFromPersonOnDate instance, Tuple<string, string, Person> newValue)
 			{
 				if (newValue != null)
 				{
 					PersonBoughtCarFromPersonOnDate currentInstance = instance;
-					if (this._InternalUniquenessConstraint25Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myInternalUniquenessConstraint25Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3075,24 +3211,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._InternalUniquenessConstraint25Dictionary.Remove(oldValue);
+					this.myInternalUniquenessConstraint25Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._InternalUniquenessConstraint25Dictionary.Add(newValue, instance);
+					this.myInternalUniquenessConstraint25Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<string, string>, Review> _InternalUniquenessConstraint26Dictionary = new Dictionary<Tuple<string, string>, Review>();
+			private readonly Dictionary<Tuple<string, string>, Review> myInternalUniquenessConstraint26Dictionary = new Dictionary<Tuple<string, string>, Review>();
 			public Review GetReviewByInternalUniquenessConstraint26(string Car_vin, string Criteria_Name)
 			{
-				return this._InternalUniquenessConstraint26Dictionary[Tuple.CreateTuple(Car_vin, Criteria_Name)];
+				return this.myInternalUniquenessConstraint26Dictionary[Tuple.CreateTuple(Car_vin, Criteria_Name)];
 			}
 			private bool OnInternalUniquenessConstraint26Changing(Review instance, Tuple<string, string> newValue)
 			{
 				if (newValue != null)
 				{
 					Review currentInstance = instance;
-					if (this._InternalUniquenessConstraint26Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myInternalUniquenessConstraint26Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3103,24 +3239,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._InternalUniquenessConstraint26Dictionary.Remove(oldValue);
+					this.myInternalUniquenessConstraint26Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._InternalUniquenessConstraint26Dictionary.Add(newValue, instance);
+					this.myInternalUniquenessConstraint26Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<string, Person>, PersonHasNickName> _InternalUniquenessConstraint33Dictionary = new Dictionary<Tuple<string, Person>, PersonHasNickName>();
+			private readonly Dictionary<Tuple<string, Person>, PersonHasNickName> myInternalUniquenessConstraint33Dictionary = new Dictionary<Tuple<string, Person>, PersonHasNickName>();
 			public PersonHasNickName GetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person)
 			{
-				return this._InternalUniquenessConstraint33Dictionary[Tuple.CreateTuple(NickName, Person)];
+				return this.myInternalUniquenessConstraint33Dictionary[Tuple.CreateTuple(NickName, Person)];
 			}
 			private bool OnInternalUniquenessConstraint33Changing(PersonHasNickName instance, Tuple<string, Person> newValue)
 			{
 				if (newValue != null)
 				{
 					PersonHasNickName currentInstance = instance;
-					if (this._InternalUniquenessConstraint33Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myInternalUniquenessConstraint33Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3131,24 +3267,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._InternalUniquenessConstraint33Dictionary.Remove(oldValue);
+					this.myInternalUniquenessConstraint33Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._InternalUniquenessConstraint33Dictionary.Add(newValue, instance);
+					this.myInternalUniquenessConstraint33Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<MalePerson, string, FemalePerson>, ChildPerson> _ExternalUniquenessConstraint3Dictionary = new Dictionary<Tuple<MalePerson, string, FemalePerson>, ChildPerson>();
+			private readonly Dictionary<Tuple<MalePerson, string, FemalePerson>, ChildPerson> myExternalUniquenessConstraint3Dictionary = new Dictionary<Tuple<MalePerson, string, FemalePerson>, ChildPerson>();
 			public ChildPerson GetChildPersonByExternalUniquenessConstraint3(MalePerson Father, string BirthOrder_BirthOrder_Nr, FemalePerson Mother)
 			{
-				return this._ExternalUniquenessConstraint3Dictionary[Tuple.CreateTuple(Father, BirthOrder_BirthOrder_Nr, Mother)];
+				return this.myExternalUniquenessConstraint3Dictionary[Tuple.CreateTuple(Father, BirthOrder_BirthOrder_Nr, Mother)];
 			}
 			private bool OnExternalUniquenessConstraint3Changing(ChildPerson instance, Tuple<MalePerson, string, FemalePerson> newValue)
 			{
 				if (newValue != null)
 				{
 					ChildPerson currentInstance = instance;
-					if (this._ExternalUniquenessConstraint3Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myExternalUniquenessConstraint3Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3159,24 +3295,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._ExternalUniquenessConstraint3Dictionary.Remove(oldValue);
+					this.myExternalUniquenessConstraint3Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._ExternalUniquenessConstraint3Dictionary.Add(newValue, instance);
+					this.myExternalUniquenessConstraint3Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<string, string>, Person> _ExternalUniquenessConstraint1Dictionary = new Dictionary<Tuple<string, string>, Person>();
+			private readonly Dictionary<Tuple<string, string>, Person> myExternalUniquenessConstraint1Dictionary = new Dictionary<Tuple<string, string>, Person>();
 			public Person GetPersonByExternalUniquenessConstraint1(string FirstName, string Date_YMD)
 			{
-				return this._ExternalUniquenessConstraint1Dictionary[Tuple.CreateTuple(FirstName, Date_YMD)];
+				return this.myExternalUniquenessConstraint1Dictionary[Tuple.CreateTuple(FirstName, Date_YMD)];
 			}
 			private bool OnExternalUniquenessConstraint1Changing(Person instance, Tuple<string, string> newValue)
 			{
 				if (newValue != null)
 				{
 					Person currentInstance = instance;
-					if (this._ExternalUniquenessConstraint1Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myExternalUniquenessConstraint1Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3187,24 +3323,24 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._ExternalUniquenessConstraint1Dictionary.Remove(oldValue);
+					this.myExternalUniquenessConstraint1Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._ExternalUniquenessConstraint1Dictionary.Add(newValue, instance);
+					this.myExternalUniquenessConstraint1Dictionary.Add(newValue, instance);
 				}
 			}
-			private Dictionary<Tuple<string, string>, Person> _ExternalUniquenessConstraint2Dictionary = new Dictionary<Tuple<string, string>, Person>();
+			private readonly Dictionary<Tuple<string, string>, Person> myExternalUniquenessConstraint2Dictionary = new Dictionary<Tuple<string, string>, Person>();
 			public Person GetPersonByExternalUniquenessConstraint2(string LastName, string Date_YMD)
 			{
-				return this._ExternalUniquenessConstraint2Dictionary[Tuple.CreateTuple(LastName, Date_YMD)];
+				return this.myExternalUniquenessConstraint2Dictionary[Tuple.CreateTuple(LastName, Date_YMD)];
 			}
 			private bool OnExternalUniquenessConstraint2Changing(Person instance, Tuple<string, string> newValue)
 			{
 				if (newValue != null)
 				{
 					Person currentInstance = instance;
-					if (this._ExternalUniquenessConstraint2Dictionary.TryGetValue(newValue, out currentInstance))
+					if (this.myExternalUniquenessConstraint2Dictionary.TryGetValue(newValue, out currentInstance))
 					{
 						return currentInstance == instance;
 					}
@@ -3215,27 +3351,37 @@ namespace TestNamespace
 			{
 				if (oldValue != null)
 				{
-					this._ExternalUniquenessConstraint2Dictionary.Remove(oldValue);
+					this.myExternalUniquenessConstraint2Dictionary.Remove(oldValue);
 				}
 				if (newValue != null)
 				{
-					this._ExternalUniquenessConstraint2Dictionary.Add(newValue, instance);
+					this.myExternalUniquenessConstraint2Dictionary.Add(newValue, instance);
 				}
 			}
+			private readonly Dictionary<string, Person> myPersonPerson_idDictionary = new Dictionary<string, Person>();
 			public Person GetPersonByPerson_id(string Person_id)
 			{
+				return this.myPersonPerson_idDictionary[Person_id];
 			}
+			private readonly Dictionary<string, Person> myPersonSocialSecurityNumberDictionary = new Dictionary<string, Person>();
 			public Person GetPersonBySocialSecurityNumber(string SocialSecurityNumber)
 			{
+				return this.myPersonSocialSecurityNumberDictionary[SocialSecurityNumber];
 			}
+			private readonly Dictionary<string, Person> myPersonOwnsCar_vinDictionary = new Dictionary<string, Person>();
 			public Person GetPersonByOwnsCar_vin(string OwnsCar_vin)
 			{
+				return this.myPersonOwnsCar_vinDictionary[OwnsCar_vin];
 			}
+			private readonly Dictionary<string, Task> myTaskTask_idDictionary = new Dictionary<string, Task>();
 			public Task GetTaskByTask_id(string Task_id)
 			{
+				return this.myTaskTask_idDictionary[Task_id];
 			}
+			private readonly Dictionary<string, ValueType1> myValueType1ValueType1ValueDictionary = new Dictionary<string, ValueType1>();
 			public ValueType1 GetValueType1ByValueType1Value(string ValueType1Value)
 			{
+				return this.myValueType1ValueType1ValueDictionary[ValueType1Value];
 			}
 		}
 		#endregion // SampleModelContext

@@ -5,8 +5,9 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
+	exclude-result-prefixes="oil odt prop"
+	extension-element-prefixes="exsl">
 
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 
@@ -16,9 +17,21 @@
 	<xsl:param name="GenerateCodeAnalysisAttributes" select="false()"/>
 	<xsl:param name="RaiseEventsAsynchronously" select="true()"/>
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
-	<xsl:param name="PrivateMemberPrefix" select="'_'"/>
+	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
 	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'public'"/>
+
+	<xsl:param name="GeneratedCodeAttributeFragment">
+		<plx:attribute dataTypeName="GeneratedCodeAttribute">
+			<plx:passParam>
+				<plx:string>OIALtoPLiX</plx:string>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:string>1.0</plx:string>
+			</plx:passParam>
+		</plx:attribute>
+	</xsl:param>
+	<xsl:param name="GeneratedCodeAttribute" select="exsl:node-set($GeneratedCodeAttributeFragment)/child::*"/>
 
 	<xsl:template name="GenerateCLSCompliantAttributeIfNecessary">
 		<xsl:variable name="dataTypeFragment">
@@ -133,6 +146,7 @@
 			<plx:namespaceImport name="System.Collections.ObjectModel"/>
 			<plx:namespaceImport name="System.ComponentModel"/>
 			<plx:namespaceImport name="System.Xml"/>
+			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
 			<xsl:if test="$GenerateGlobalSupportClasses='true'">
 				<xsl:call-template name="GenerateGlobalSupportClasses"/>
 			</xsl:if>
@@ -182,6 +196,7 @@
 				<plx:trailingInfo>
 					<plx:pragma type="closeRegion" data="I{$ModelContextName}"/>
 				</plx:trailingInfo>
+				<xsl:copy-of select="$GeneratedCodeAttribute"/>
 				<xsl:call-template name="GenerateModelContextInterfaceMethods">
 					<xsl:with-param name="Model" select="$Model"/>
 					<xsl:with-param name="AllProperties" select="$AllProperties"/>
@@ -251,21 +266,23 @@
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="InformationTypeFormatMappings"/>
 		<xsl:param name="Properties"/>
-		<xsl:variable name="Events" select="$Properties[@isCollection='false']"/>
-		<plx:class visibility="public" modifier="abstract" partial="true" name="{@name}">
+		<xsl:variable name="className" select="@name"/>
+		<xsl:variable name="eventProperties" select="$Properties[@isCollection='false']"/>
+		<plx:class visibility="public" modifier="abstract" partial="true" name="{$className}">
 			<plx:leadingInfo>
-				<plx:pragma type="region" data="{@name}"/>
+				<plx:pragma type="region" data="{$className}"/>
 			</plx:leadingInfo>
 			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="{@name}"/>
+				<plx:pragma type="closeRegion" data="{$className}"/>
 			</plx:trailingInfo>
+			<xsl:copy-of select="$GeneratedCodeAttribute"/>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged"/>
 			<plx:function name=".construct" visibility="protected"/>
 			<plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
 				<plx:initialize>
 					<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate">
 						<plx:passParam>
-							<plx:value type="i4" data="{count($Events)+1}"/>
+							<plx:value type="i4" data="{count($eventProperties)+1}"/>
 						</plx:passParam>
 					</plx:callNew>
 				</plx:initialize>
@@ -275,12 +292,103 @@
 				<plx:returns dataTypeName="{$ModelContextName}"/>
 				<plx:get/>
 			</plx:property>
-			<xsl:apply-templates select="$Events" mode="GeneratePropertyChangeEvents"/>
+			<xsl:apply-templates select="$eventProperties" mode="GeneratePropertyChangeEvents"/>
 			<xsl:apply-templates select="$Properties" mode="GenerateAbstractProperty"/>
 			<xsl:call-template name="GenerateToString">
-				<xsl:with-param name="ClassName" select="@name"/>
+				<xsl:with-param name="ClassName" select="$className"/>
 				<xsl:with-param name="Properties" select="$Properties"/>
 			</xsl:call-template>
+			<xsl:if test="parent::oil:conceptType">
+				<!-- Generate an implicit cast operator for the oil:conceptType that contains this oil:conceptType -->
+				<xsl:variable name="parentConceptTypeName" select="parent::oil:conceptType/@name"/>
+				<plx:operatorFunction type="castWiden">
+					<plx:param dataTypeName="{$className}" name="{$className}"/>
+					<plx:returns dataTypeName="{$parentConceptTypeName}"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="{$className}"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>
+										<xsl:value-of select="$className"/>
+									</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:return>
+						<plx:callInstance type="property" name="{$parentConceptTypeName}">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="{$className}"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:return>
+				</plx:operatorFunction>
+			</xsl:if>
+			<xsl:for-each select="child::oil:conceptType">
+				<!-- Generate an explicit cast operator for all oil:conceptType elements nested within this oil:conceptType -->
+				<xsl:variable name="childConceptTypeName" select="@name"/>
+				<plx:operatorFunction type="castNarrow">
+					<plx:param dataTypeName="{$className}" name="{$className}"/>
+					<plx:returns dataTypeName="{$childConceptTypeName}"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="{$className}"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentNullException">
+								<plx:passParam>
+									<plx:string>
+										<xsl:value-of select="$className"/>
+									</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callInstance type="property" name="{$childConceptTypeName}">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="{$className}"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="InvalidCastException"/>
+						</plx:throw>
+					</plx:branch>
+					<plx:return>
+						<plx:callInstance type="property" name="{$childConceptTypeName}">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="{$className}"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:return>
+				</plx:operatorFunction>
+			</xsl:for-each>
 		</plx:class>
 	</xsl:template>
 	<xsl:template match="prop:Property" mode="GenerateAbstractProperty">
@@ -459,8 +567,8 @@
 					</xsl:variable>
 					<plx:callNew dataTypeName="Property{$ChangeType}EventArgs">
 						<plx:passTypeParam>
-							<xsl:copy-of select="DataType/@*"/>
-							<xsl:copy-of select="DataType/child::*"/>
+							<xsl:copy-of select="prop:DataType/@*"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
 						</plx:passTypeParam>
 						<plx:passParam>
 							<xsl:choose>
@@ -468,14 +576,14 @@
 									<xsl:copy-of select="$CurrentValue"/>
 								</xsl:when>
 								<xsl:when test="$isChanged">
-									<plx:nameRef name="oldValue"/>
+									<plx:nameRef type="parameter" name="oldValue"/>
 								</xsl:when>
 							</xsl:choose>
 						</plx:passParam>
 						<plx:passParam>
 							<xsl:choose>
 								<xsl:when test="$isChanging">
-									<plx:nameRef name="newValue"/>
+									<plx:nameRef type="parameter" name="newValue"/>
 								</xsl:when>
 								<xsl:when test="$isChanged">
 									<xsl:copy-of select="$CurrentValue"/>

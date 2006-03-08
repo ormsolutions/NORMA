@@ -14,16 +14,14 @@
     <None Include="ModelContext.xslt" />
     <None Include="ModelContextCode.xslt" />
     <None Include="SerializationEngine.xslt" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="OIALtoPLiX_Implementation.xslt" />
     <Content Include="OIALtoPLiX.xslt" />
-    <None Include="Properties.xsd">
+    <Content Include="Properties.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="SampleModel.PLiX.xml" />
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SampleModel.PLiX.cs" />
+    <None Include="SampleModel.PLiX.xml" />
+    <None Include="SampleModel.PLiX.cs" />
   </ItemGroup>
 </Project>

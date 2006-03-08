@@ -5,8 +5,9 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties">
+	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
+	exclude-result-prefixes="oil odt prop"
+	extension-element-prefixes="exsl">
 
 	<xsl:import href="OIALtoPLiX.xslt"/>
 
@@ -25,6 +26,7 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$ModelContextName}"/>
 			</plx:trailingInfo>
+			<xsl:copy-of select="$GeneratedCodeAttribute"/>
 			<plx:implementsInterface dataTypeName="I{$ModelContextName}"/>
 			<plx:function name=".construct"  visibility="public"/>
 
@@ -51,7 +53,7 @@
 			<plx:returns dataTypeName=".boolean"/>
 			<plx:get>
 				<plx:return>
-					<plx:callThis name="{$PrivateMemberPrefix}IsDeserializing" type="field"/>
+					<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}IsDeserializing"/>
 				</plx:return>
 			</plx:get>
 		</plx:property>
@@ -65,6 +67,7 @@
 		<xsl:param name="Model"/>
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="AllProperties"/>
+		
 		<!-- TODO: This will break for oil:roleSequenceUniquenessConstraint elements that contain oil:typeRef elements with more than one oil:conceptType reference by @targetConceptType. -->
 		<xsl:for-each select="$Model//oil:roleSequenceUniquenessConstraint">
 			<xsl:variable name="uniqueConceptTypeName" select="parent::oil:conceptType/@name"/>
@@ -81,14 +84,14 @@
 			<xsl:variable name="passTypeParamsFragment">
 				<xsl:for-each select="$parameters">
 					<plx:passTypeParam>
-						<xsl:copy-of select="self::plx:param/@*"/>
+						<xsl:copy-of select="self::plx:param/@*[not(local-name()='name')]"/>
 						<xsl:copy-of select="self::plx:param/child::*"/>
 					</plx:passTypeParam>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="passTypeParams" select="exsl:node-set($passTypeParamsFragment)/child::*"/>
 			
-			<plx:field visibility="private" name="{$PrivateMemberPrefix}{@name}Dictionary" dataTypeName="Dictionary">
+			<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}{@name}Dictionary" dataTypeName="Dictionary">
 				<plx:passTypeParam dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:passTypeParam>
@@ -113,10 +116,10 @@
 							<plx:callThis type="field" name="{$PrivateMemberPrefix}{@name}Dictionary"/>
 						</plx:callObject>
 						<plx:passParam>
-							<plx:callStatic name="CreateTuple" dataTypeName="Tuple">
+							<plx:callStatic type="methodCall" name="CreateTuple" dataTypeName="Tuple">
 								<xsl:for-each select="$parameters">
 									<plx:passMemberTypeParam>
-										<xsl:copy-of select="self::plx:param/@*"/>
+										<xsl:copy-of select="self::plx:param/@*[not(local-name()='name')]"/>
 										<xsl:copy-of select="self::plx:param/child::*"/>
 									</plx:passMemberTypeParam>
 								</xsl:for-each>
@@ -236,20 +239,52 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			
-			
+				
 		</xsl:for-each>
+
 		<xsl:for-each select="$AllProperties/prop:Property[@isUnique='true' and not(@isCustomType='true')]">
+			<!-- The 'On<Property>Changing' and 'On<Property>Changed' methods are generated later in another transform. -->
 			<xsl:variable name="uniqueConceptTypeName" select="parent::prop:Properties/@conceptTypeName"/>
+
+			<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}{$uniqueConceptTypeName}{@name}Dictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam>
+					<xsl:copy-of select="prop:DataType/@*"/>
+					<xsl:copy-of select="prop:DataType/child::*"/>
+				</plx:passTypeParam>
+				<plx:passTypeParam dataTypeName="{$uniqueConceptTypeName}"/>
+				<plx:initialize>
+					<plx:callNew dataTypeName="Dictionary">
+						<plx:passTypeParam>
+							<xsl:copy-of select="prop:DataType/@*"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName="{$uniqueConceptTypeName}"/>
+					</plx:callNew>
+				</plx:initialize>
+			</plx:field>
+			
 			<!-- TODO: In Get{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
-			<plx:function visibility="public" name="Get{$uniqueConceptTypeName}By{@name}">
+			<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="Get{$uniqueConceptTypeName}By{@name}">
+				<plx:interfaceMember memberName="Get{$uniqueConceptTypeName}By{@name}" dataTypeName="I{$ModelContextName}"/>
 				<plx:param name="{@name}">
 					<xsl:copy-of select="prop:DataType/@*"/>
 					<xsl:copy-of select="prop:DataType/child::*"/>
 				</plx:param>
 				<plx:returns dataTypeName="{$uniqueConceptTypeName}"/>
+				<plx:return>
+					<plx:callInstance type="indexerCall" name=".implied">
+						<plx:callObject>
+							<plx:callThis type="field" name="{$PrivateMemberPrefix}{$uniqueConceptTypeName}{@name}Dictionary"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="{@name}"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
 			</plx:function>
+
 		</xsl:for-each>
+		
 	</xsl:template>
 
 </xsl:stylesheet>
