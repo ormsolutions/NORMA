@@ -30,6 +30,7 @@
 	<xsl:param name="CoRefFactIdDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefValueDataTypeIdDecorator" select="'_Data_Type'"/>
+	<xsl:param name="CoRefRoleNamePreposition" select="' as '" />
 	<xsl:variable name="ExistingTrueOrFalseLogicalDataType" select="ormRoot:ORM2/orm:ORMModel/orm:DataTypes/orm:TrueOrFalseLogicalDataType"/>
 	<xsl:variable name="CoRefLogicalDataTypeIdDecoratorFragment">
 		<xsl:choose>
@@ -253,8 +254,24 @@
 				<xsl:for-each select="$fact/orm:FactRoles/orm:Role">
 					<orm:Fact id="{$factId}{$CoRefFactIdDecorator}{position()}" Name="{$fact/@Name}{$CoRefFactNameDecorator}{position()}">
 						<orm:FactRoles>
+							<xsl:variable name="EntityType" select="$Model/orm:Objects/orm:EntityType[orm:PlayedRoles/orm:Role/@ref=current()/@id]/@Name"/>
+							<xsl:variable name="ValueType" select="$Model/orm:Objects/orm:ValueType[orm:PlayedRoles/orm:Role/@ref=current()/@id]/@Name"/>
+							<xsl:variable name="RoleName" select="@Name"/>
+							<xsl:variable name="RoleNameEndDecorator">
+								<xsl:choose>
+									<xsl:when test="$RoleName and $RoleName !=''">
+										<xsl:value-of select="$RoleName"/>
+									</xsl:when>
+									<xsl:when test="$EntityType">
+										<xsl:value-of select="$EntityType"/>
+									</xsl:when>
+									<xsl:when test="$ValueType">
+										<xsl:value-of select="$ValueType"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
 							<!-- UNDONE: Consider getting multiplicity right for both these roles -->
-							<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="" _IsMandatory="true">
+							<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="{../../@Name}{$CoRefRoleNamePreposition}{$RoleNameEndDecorator}" _IsMandatory="true">
 								<orm:RolePlayer ref="{$factId}"/>
 							</orm:Role>
 							<xsl:copy>
