@@ -14,23 +14,14 @@ namespace TestSample.FCMinMaxTests
 	public class FCMinMaxTests
 	{
 		#region Boilerplate code
-		public FCMinMaxTests(IORMToolServices services)
-		{
-			InitializeServices(services);
-		}
-		public FCMinMaxTests() { }
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		private void InitializeServices(IORMToolServices services)
+		public FCMinMaxTests(IORMToolServices services)
 		{
 			myServices = services;
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-		[TestFixtureSetUp]
-		public void InitNUnitFixture()
-		{
-			InitializeServices(Suite.CreateServices());
-		}
+		public FCMinMaxTests() : this(Suite.CreateServices()) { }
 		#endregion // Boilerplate code
 		/*	Tests annotated with 1 for a load test and 2 for tests that change the condition causing the error
 		 * 1a - tests serialization and deserialization of the error and condition
@@ -41,7 +32,7 @@ namespace TestSample.FCMinMaxTests
 		 */
 
 		//method bodies intentionally empty. Loading the file should
-		//fixup the obect model, which will be verified on save.
+		//fixup the object model, which will be verified on save.
 
 		[Test(Description = "Load/Save with FrequenceConstraintMinMaxError")]
 		[NUnitCategory("ExternalConstraints")]

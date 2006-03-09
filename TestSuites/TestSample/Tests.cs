@@ -19,10 +19,10 @@ namespace TestSample
 	[TestFixture(Description="Sample ORM Test Cases")]
 	public class Tests
 	{
-		#region Boilerplate Code, regardlessof testing host
+		#region Boilerplate code for ORMTestDriver integration
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		private void InitializeServices(IORMToolServices services)
+		public Tests(IORMToolServices services)
 		{
 			// Cache the services for future use
 			myServices = services;
@@ -30,22 +30,11 @@ namespace TestSample
 			// from the code services service provider.
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-		#endregion // Boilerplate code, regardless of testing host
-		#region Required boilerplate code for ORMTestDriver integration
-		public Tests(IORMToolServices services)
-		{
-			InitializeServices(services);
-		}
-		#endregion // Required boilerplate code for ORMTestDriver integration
-		#region Required boilerplate code for NUnit integration
-		public Tests() { }
-		[TestFixtureSetUp]
-		public void InitNUnitFixture()
-		{
-			InitializeServices(Suite.CreateServices());
-		}
-		#endregion // Required boilderplate code for NUnit integration
-		#region Sample test - missing internal constraint
+		#endregion // Boilerplate code for ORMTestDriver integration
+		#region Additional boilerplate code for NUnit integration
+		public Tests() : this(Suite.CreateServices()) { }
+		#endregion // Additional boilerplate code for NUnit integration
+		#region Sample test - missing internal uniqueness constraint
 		/// <summary>
 		/// A sample NUnit test method. Automatically forwards
 		/// to test of the same name with a loaded store.
@@ -95,7 +84,7 @@ namespace TestSample
 			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
 			// with a reference name to distinguish the intermediate stages from the automatic comparison.
 		}
-		#endregion
+		#endregion // Sample test - missing internal uniqueness constraint
 		#region constraint duplication error
 		[Test(Description = "Clear implied internal uniqueness")]
 		[NUnitCategory("InternalConstraints")]

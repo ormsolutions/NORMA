@@ -14,23 +14,14 @@ namespace TestSample.NMinus1Tests
 	public class NMinus1Tests
 	{
 		#region Boilerplate code
-		public NMinus1Tests(IORMToolServices services)
-		{
-			InitializeServices(services);
-		}
-		public NMinus1Tests() { }
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		private void InitializeServices(IORMToolServices services)
+		public NMinus1Tests(IORMToolServices services)
 		{
 			myServices = services;
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-		[TestFixtureSetUp]
-		public void InitNUnitFixture()
-		{
-			InitializeServices(Suite.CreateServices());
-		}
+		public NMinus1Tests() : this(Suite.CreateServices()) { }
 		#endregion // Boilerplate code
 		/*	Tests annotated with 1 for a load test and 2 for tests that change the condition causing the error
 		 * 1a - tests serialization and deserialization of the error and condition
@@ -41,7 +32,7 @@ namespace TestSample.NMinus1Tests
 		 */
 
 		//method bodies intentionally empty. Loading the file should
-		//fixup the obect model, which will be verified on save.
+		//fixup the object model, which will be verified on save.
 
 		[Test(Description = "Load/Save with NMinusOneError")]
 		[NUnitCategory("InternalConstraints")]

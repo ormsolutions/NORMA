@@ -17,23 +17,14 @@ namespace TestSample.DTBlankTests
 	public class DTBlankTests
 	{
 		#region Boilerplate code
-		public DTBlankTests(IORMToolServices services)
-		{
-			InitializeServices(services);
-		}
-		public DTBlankTests() { }
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		private void InitializeServices(IORMToolServices services)
+		public DTBlankTests(IORMToolServices services)
 		{
 			myServices = services;
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-		[TestFixtureSetUp]
-		public void InitNUnitFixture()
-		{
-			InitializeServices(Suite.CreateServices());
-		}
+		public DTBlankTests() : this(Suite.CreateServices()) { }
 		#endregion // Boilerplate code
 
 		/*	Tests annotated with 1 for a load test and 2 for tests that change the condition causing the error
