@@ -4,21 +4,37 @@ using System.Reflection;
 using Neumont.Tools.ORM.SDK.TestEngine;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
+using NUnit.Framework;
+using NUnitCategory = NUnit.Framework.CategoryAttribute;
 
 namespace TestSample.DTBlankTests
 {
-	//For the UnspecifiedDataTypeError
-	[Tests]
+	/// <summary>
+	/// Tests for the UnspecifiedDataTypeError
+	/// </summary>
+	[ORMTestFixture]
+	[TestFixture(Description="Test the DataTypeNotSpecifiedError")]
 	public class DTBlankTests
 	{
+		#region Boilerplate code
+		public DTBlankTests(IORMToolServices services)
+		{
+			InitializeServices(services);
+		}
+		public DTBlankTests() { }
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		public DTBlankTests(IORMToolServices services)
+		private void InitializeServices(IORMToolServices services)
 		{
 			myServices = services;
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-
+		[TestFixtureSetUp]
+		public void InitNUnitFixture()
+		{
+			InitializeServices(Suite.CreateServices());
+		}
+		#endregion // Boilerplate code
 
 		/*	Tests annotated with 1 for a load test and 2 for tests that change the condition causing the error
 		 * 1a - tests serialization and deserialization of the error and condition
@@ -28,21 +44,46 @@ namespace TestSample.DTBlankTests
 		 * 2b - Verify that removing the condition removes the bug
 		 */
 
-		//method bodies intentionally empty
-		[Test("ExternalConstraints", "DTBlank")]
+
+		[Test(Description = "Load/Save with DataTypeNotSpecifiedError")]
+		[NUnitCategory("DataTypeNotSpecifiedError")]
+		public void DTBlankTest1a()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("DataTypeNotSpecifiedError")]
 		public void DTBlankTest1a(Store store)
 		{}
-		[Test("ExternalConstraints", "DTBlank")]
+
+		[Test(Description = "Verify DataTypeNotSpecifiedError added automatically on load")]
+		[NUnitCategory("DataTypeNotSpecifiedError")]
+		public void DTBlankTest1b()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("DataTypeNotSpecifiedError")]
 		public void DTBlankTest1b(Store store)
 		{}
-		[Test("ExternalConstraints", "DTBlank")]
+
+		[Test(Description = "Verify DataTypeNotSpecifiedError removed automatically on load")]
+		[NUnitCategory("DataTypeNotSpecifiedError")]
+		public void DTBlankTest1c()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("DataTypeNotSpecifiedError")]
 		public void DTBlankTest1c(Store store)
 		{}
 
-		[Test("ExternalConstraints", "DTBlank")]
+		[Test(Description = "Add DataTypeNotSpecified Error")]
+		[NUnitCategory("DataTypeNotSpecifiedError")]
+		public void DTBlankTest2a()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("DataTypeNotSpecifiedError")]
 		public void DTBlankTest2a(Store store)
 		{
-			
 			myTestServices.LogValidationErrors("Before adding error");
 
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
@@ -61,7 +102,13 @@ namespace TestSample.DTBlankTests
 			myTestServices.LogValidationErrors("After adding error");
 		}
 
-		[Test("ExternalConstraints", "DTBlank")]
+		[Test(Description = "Remove DataTypeNotSpecified Error")]
+		[NUnitCategory("DataTypeNotSpecifiedError")]
+		public void DTBlankTest2b()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("DataTypeNotSpecifiedError")]
 		public void DTBlankTest2b(Store store)
 		{
 

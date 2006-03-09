@@ -14,12 +14,12 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 	/// Neumont.Tools.ORM.ObjectModel.IORMToolServices.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
-	public sealed class TestsAttribute : Attribute
+	public sealed class ORMTestFixtureAttribute : Attribute
 	{
 		/// <summary>
 		/// This class contains methods with the Test attribute
 		/// </summary>
-		public TestsAttribute() { }
+		public ORMTestFixtureAttribute() { }
 	}
 	#endregion // TestsAttribute class
 	#region TestAttribute class
@@ -28,22 +28,22 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 	/// method. A test method must take a single parameter of type
 	/// Microsoft.VisualStudio.Modeling.Store
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = false)]
-	public sealed class TestAttribute : Attribute
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+	public sealed class ORMTestAttribute : Attribute
 	{
 		private string[] myCategories;
 
 		/// <summary>
 		/// This method is run as a test
 		/// </summary>
-		public TestAttribute()
+		public ORMTestAttribute()
 		{
 		}
 		/// <summary>
 		/// This method is run as a test with specified categories
 		/// </summary>
 		/// <param name="categories">A list of categories</param>
-		public TestAttribute(params string[] categories)
+		public ORMTestAttribute(params string[] categories)
 		{
 			ProcessCandidateCategories(categories);
 		}

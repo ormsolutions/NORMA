@@ -4,21 +4,34 @@ using System.Reflection;
 using Neumont.Tools.ORM.SDK.TestEngine;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
+using NUnit.Framework;
+using NUnitCategory = NUnit.Framework.CategoryAttribute;
 
 namespace TestSample.NMinus1Tests
 {
-	[Tests]
+	[ORMTestFixture]
+	[TestFixture(Description = "Test the NMinusOneError")]
 	public class NMinus1Tests
 	{
+		#region Boilerplate code
+		public NMinus1Tests(IORMToolServices services)
+		{
+			InitializeServices(services);
+		}
+		public NMinus1Tests() { }
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		public NMinus1Tests(IORMToolServices services)
+		private void InitializeServices(IORMToolServices services)
 		{
 			myServices = services;
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-
-
+		[TestFixtureSetUp]
+		public void InitNUnitFixture()
+		{
+			InitializeServices(Suite.CreateServices());
+		}
+		#endregion // Boilerplate code
 		/*	Tests annotated with 1 for a load test and 2 for tests that change the condition causing the error
 		 * 1a - tests serialization and deserialization of the error and condition
 		 * 1b - tests that if the condition exists but not the error, the error is added on load
@@ -27,18 +40,50 @@ namespace TestSample.NMinus1Tests
 		 * 2b - Verify that removing the condition removes the bug
 		 */
 
-		//method bodies intentionally empty
-		[Test("Sample", "InternalConstraints", "NMinus1")]
+		//method bodies intentionally empty. Loading the file should
+		//fixup the obect model, which will be verified on save.
+
+		[Test(Description = "Load/Save with NMinusOneError")]
+		[NUnitCategory("InternalConstraints")]
+		[NUnitCategory("NMinusOneError")]
+		public void NMinus1Test1a()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("InternalConstraints", "NMinusOneError")]
 		public void NMinus1Test1a(Store store)
 		{}
-		[Test("Sample", "InternalConstraints", "NMinus1")]
+
+		[Test(Description = "Verify NMinusOneError automated automatically added on load")]
+		[NUnitCategory("InternalConstraints")]
+		[NUnitCategory("NMinusOneError")]
+		public void NMinus1Test1b()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("InternalConstraints", "NMinusOneError")]
 		public void NMinus1Test1b(Store store)
 		{}
-		[Test("Sample", "InternalConstraints", "NMinus1")]
+
+		[Test(Description = "Verify NMinusOneError automated automatically removed on load")]
+		[NUnitCategory("InternalConstraints")]
+		[NUnitCategory("NMinusOneError")]
+		public void NMinus1Test1c()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("InternalConstraints", "NMinusOneError")]
 		public void NMinus1Test1c(Store store)
 		{}
 
-		[Test("Sample", "InternalConstraints", "NMinus1")]
+		[Test(Description = "Verify NMinusOneError added automatically")]
+		[NUnitCategory("InternalConstraints")]
+		[NUnitCategory("NMinusOneError")]
+		public void NMinus1Test2a()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("InternalConstraints", "NMinusOneError")]
 		public void NMinus1Test2a(Store store)
 		{
 			myTestServices.LogValidationErrors("Before adding error");
@@ -60,8 +105,14 @@ namespace TestSample.NMinus1Tests
 
 		}
 
-
-		[Test("Sample", "InternalConstraints", "NMinus1")]
+		[Test(Description = "Verify NMinusOneError removed automatically")]
+		[NUnitCategory("InternalConstraints")]
+		[NUnitCategory("NMinusOneError")]
+		public void NMinus1Test2b()
+		{
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("InternalConstraints", "NMinusOneError")]
 		public void NMinus1Test2b(Store store)
 		{
 			myTestServices.LogValidationErrors("Before repair");

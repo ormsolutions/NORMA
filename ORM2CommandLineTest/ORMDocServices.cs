@@ -791,58 +791,6 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					}
 					myWriter.WriteEndElement();
 				}
-				/// <summary>
-				/// Get the formatting the way we want it. Duplicates
-				/// reader contents into the current writer.
-				/// </summary>
-				/// <param name="reader">The xml to format</param>
-				/// <param name="writer">The writer for the new Xml</param>
-				private static void FormatXml(XmlReader reader, XmlWriter writer)
-				{
-					bool emptyElement;
-					while (reader.Read())
-					{
-						switch (reader.NodeType)
-						{
-							case XmlNodeType.Element:
-								writer.WriteStartElement(reader.Prefix, reader.LocalName, reader.NamespaceURI);
-								emptyElement = reader.IsEmptyElement; // Read this before moving to an attribute
-								while (reader.MoveToNextAttribute())
-								{
-									writer.WriteAttributeString(reader.Prefix, reader.LocalName, reader.NamespaceURI, reader.Value);
-								}
-								if (emptyElement)
-								{
-									writer.WriteEndElement();
-								}
-								break;
-							case XmlNodeType.Text:
-								writer.WriteString(reader.Value);
-								break;
-							case XmlNodeType.CDATA:
-								writer.WriteCData(reader.Value);
-								break;
-							case XmlNodeType.ProcessingInstruction:
-								writer.WriteProcessingInstruction(reader.Name, reader.Value);
-								break;
-							case XmlNodeType.Comment:
-								writer.WriteComment(reader.Value);
-								break;
-							case XmlNodeType.Document:
-								Debug.Assert(false, "Hit XmlNodeType.Document, not expected"); // Not expected
-								break;
-							case XmlNodeType.Whitespace:
-								break;
-							case XmlNodeType.SignificantWhitespace:
-								writer.WriteWhitespace(reader.Value);
-								break;
-							case XmlNodeType.EndElement:
-								writer.WriteEndElement();
-								break;
-						}
-					}
-					reader.Close();
-				}
 				ORMSuiteReportResult IORMToolTestSuiteReport.CloseSuiteReport()
 				{
 					myOpenElements = 0;

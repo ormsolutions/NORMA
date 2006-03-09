@@ -3,18 +3,26 @@ using System.Reflection;
 using Neumont.Tools.ORM.SDK.TestEngine;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
+using NUnit.Framework;
+using NUnitCategory = NUnit.Framework.CategoryAttribute;
 
 namespace TestSample
 {
 	/// <summary>
-	/// A sample class to demonstrate how to run a test
+	/// A sample class to demonstrate how to run a test. The class runs
+	/// using both the ORMTestDriver console application and the NUnit
+	/// testing tools. The Xml output is easier to see and analyze with
+	/// the ORMTestDriver application, but there are significantly more tools
+	/// for processing NUnit output.
 	/// </summary>
-	[Tests]
+	[ORMTestFixture]
+	[TestFixture(Description="Sample ORM Test Cases")]
 	public class Tests
 	{
+		#region Boilerplate Code, regardlessof testing host
 		private IORMToolServices myServices;
 		private IORMToolTestServices myTestServices;
-		public Tests(IORMToolServices services)
+		private void InitializeServices(IORMToolServices services)
 		{
 			// Cache the services for future use
 			myServices = services;
@@ -22,13 +30,39 @@ namespace TestSample
 			// from the code services service provider.
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
-
+		#endregion // Boilerplate code, regardless of testing host
+		#region Required boilerplate code for ORMTestDriver integration
+		public Tests(IORMToolServices services)
+		{
+			InitializeServices(services);
+		}
+		#endregion // Required boilerplate code for ORMTestDriver integration
+		#region Required boilerplate code for NUnit integration
+		public Tests() { }
+		[TestFixtureSetUp]
+		public void InitNUnitFixture()
+		{
+			InitializeServices(Suite.CreateServices());
+		}
+		#endregion // Required boilderplate code for NUnit integration
 		#region Sample test - missing internal constraint
+		/// <summary>
+		/// A sample NUnit test method. Automatically forwards
+		/// to test of the same name with a loaded store.
+		/// </summary>
+		[Test(Description = "Sample Test")]
+		[NUnitCategory("Sample")]
+		[NUnitCategory("InternalConstraints")]
+		public void Test1()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
 		/// <summary>
 		/// A sample test method.
 		/// </summary>
 		/// <param name="store">A preloaded store. All test methods must have this signature.</param>
-		[Test("Sample", "InternalConstraints")]
+		[ORMTest("Sample", "InternalConstraints")]
 		public void Test1(Store store)
 		{
 			// The store has been preloaded at this point with the .orm file specified in the
@@ -63,10 +97,14 @@ namespace TestSample
 		}
 		#endregion
 		#region constraint duplication error
-
-
-
-		[Test("Sample", "InternalConstraints")]
+		[Test(Description = "Clear implied internal uniqueness")]
+		[NUnitCategory("InternalConstraints")]
+		public void Test2()
+		{
+			// Forward the call
+			Suite.RunNUnitTest(this, myTestServices);
+		}
+		[ORMTest("InternalConstraints")]
 		public void Test2(Store store)
 		{
 			myTestServices.LogValidationErrors("Before constraint duplication/implication repair");
@@ -76,16 +114,7 @@ namespace TestSample
 			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType4").SingleElement;
 			fact.RemoveImpliedInternalUniquenessConstraints();
 			myTestServices.LogValidationErrors("After constraint duplication/implication repair");
-			//Role role = fact.RoleCollection[1];
-			//ImpliedInternalUniquenessConstraintError impError1 = fact.ImpliedInternalUniquenessConstraintError;
-
-			// After the method exits, the Compare and LogValidationErrors methods will be run automatically against
-			// the test service. The expected results for the Compare are in Tests.Test1.Compare.orm. You can also
-			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
-			// with a reference name to distinguish the intermediate stages from the automatic comparison.
 		}
 		#endregion //constraint duplication error
-
-
-    }
+	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using System.IO;
+using System.Text;
 using System.Diagnostics;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
@@ -551,7 +552,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					for (int j = 0; j < typeCount; ++j)
 					{
 						Type type = types[j];
-						if (0 != type.GetCustomAttributes(typeof(TestsAttribute), true).Length)
+						if (0 != type.GetCustomAttributes(typeof(ORMTestFixtureAttribute), true).Length)
 						{
 							RunTests(type, services, suiteReport);
 						}
@@ -579,10 +580,10 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			for (int i = 0; i < methodCount; ++i)
 			{
 				MethodInfo method = methods[i];
-				object[] testAttributes = method.GetCustomAttributes(typeof(TestAttribute), false);
+				object[] testAttributes = method.GetCustomAttributes(typeof(ORMTestAttribute), false);
 				Debug.Assert(testAttributes.Length < 2, "Single use attribute with inherit=false, should only pick up zero or one attributes");
 				// Make sure that the method is flagged as a Test method that can be run per the current category settings
-				if (testAttributes.Length == 0 || !CheckCategoryFilters((TestAttribute)testAttributes[0]))
+				if (testAttributes.Length == 0 || !CheckCategoryFilters((ORMTestAttribute)testAttributes[0]))
 				{
 					continue;
 				}
@@ -710,7 +711,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		/// </summary>
 		/// <param name="testAttr">A TestAttribute from a test method</param>
 		/// <returns>true to run the test</returns>
-		private bool CheckCategoryFilters(TestAttribute testAttr)
+		private bool CheckCategoryFilters(ORMTestAttribute testAttr)
 		{
 			bool runTest = true; // Default to true
 			IList<SuiteCategory> categories = myCategories;
@@ -755,6 +756,167 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			return runTest;
 		}
 		#endregion // RunTests method and helper functions
+		#region NUnit Integration
+		/// <summary>
+		/// Run a test of the same name as the calling method
+		/// for the NUnit testing framework.
+		/// </summary>
+		/// <param name="testInstance">The instance being called</param>
+		/// <param name="testServices">A services instance, created by CreateServices followed
+		/// by a GetService call to retrieve IORMToolTestServices</param>
+		public static void RunNUnitTest(object testInstance, IORMToolTestServices testServices)
+		{
+			MethodInfo nunitMethod = (MethodInfo)(new StackTrace(1, false)).GetFrame(0).GetMethod();
+			MethodInfo testMethod = nunitMethod.DeclaringType.GetMethod(nunitMethod.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(Store) }, null);
+			Store store = null;
+			try
+			{
+				testServices.OpenReport();
+				store = testServices.Load(testMethod, null);
+				testMethod.Invoke(testInstance, new object[] { store });
+			}
+			finally
+			{
+				// Compare the current contents of the store with the
+				// expected state
+				testServices.Compare(store, testMethod, null);
+				testServices.LogValidationErrors(null);
+				Type testType = testMethod.DeclaringType;
+				using (XmlReader reportReader = testServices.CloseReport(testMethod))
+				{
+					string methodName = testMethod.Name;
+					string resourceName = string.Concat(testType.FullName, ".", methodName, ".Report.xml");
+					Stream baselineStream = null;
+					try
+					{
+						Assembly testAssembly = testType.Assembly;
+						// Get the baseline that we're comparing to
+						if (null != testAssembly.GetManifestResourceInfo(resourceName))
+						{
+							baselineStream = testAssembly.GetManifestResourceStream(resourceName);
+						}
+						if (baselineStream != null)
+						{
+							bool hasDiff = false;
+
+							// See if the data is different.
+							XmlDiff diff = Suite.DiffEngine;
+							XmlReaderSettings readerSettings = DetachableReaderSettings;
+							XmlWriterSettings writerSettings = DetachableWriterSettings;
+							using (MemoryStream diffStream = new MemoryStream())
+							{
+								using (XmlReader baselineReader = XmlReader.Create(baselineStream, readerSettings))
+								{
+									using (XmlWriter diffWriter = XmlWriter.Create(diffStream, writerSettings))
+									{
+										hasDiff = !diff.Compare(baselineReader, reportReader, diffWriter);
+									}
+								}
+								if (hasDiff)
+								{
+									// Record the diffgram in the suite report
+									diffStream.Seek(0, SeekOrigin.Begin);
+									using (XmlReader diffReader = XmlTextReader.Create(diffStream, readerSettings))
+									{
+										StringBuilder builder = new StringBuilder();
+										using (XmlWriter xmlWriter = XmlWriter.Create(builder, DetachableWriterSettings))
+										{
+											xmlWriter.WriteStartElement("TestFailure");
+											xmlWriter.WriteAttributeString("result", "failReportDiffgram");
+											FormatXml(diffReader, xmlWriter);
+											xmlWriter.WriteEndElement();
+										}
+										NUnit.Framework.Assert.Fail(builder.ToString());
+										//suiteReport.ReportTestResults(methodName, ORMTestResult.FailReportDiffgram, diffReader);
+									}
+								}
+								else
+								{
+									// Record a passing result by being quiet
+									//suiteReport.ReportTestResults(methodName, ORMTestResult.Pass, null);
+								}
+							}
+						}
+						else
+						{
+							// Record the full report, we have no baseline to compare against
+							StringBuilder builder = new StringBuilder();
+							using (XmlWriter xmlWriter = XmlWriter.Create(builder, DetachableWriterSettings))
+							{
+								xmlWriter.WriteStartElement("TestFailure");
+								xmlWriter.WriteAttributeString("result", "failReportMissingBaseline");
+								FormatXml(reportReader, xmlWriter);
+								xmlWriter.WriteEndElement();
+							}
+							NUnit.Framework.Assert.Fail(builder.ToString());
+							//suiteReport.ReportTestResults(methodName, ORMTestResult.FailReportBaseline, reportReader);
+						}
+					}
+					finally
+					{
+						if (baselineStream != null)
+						{
+							((IDisposable)baselineStream).Dispose();
+						}
+					}
+				}
+			}
+		}
+		#endregion // NUnit Integration
+		#region FormatXml Helper Function
+		/// <summary>
+		/// Get the formatting the way we want it. Duplicates
+		/// reader contents into the current writer.
+		/// </summary>
+		/// <param name="reader">The xml to format</param>
+		/// <param name="writer">The writer for the new Xml</param>
+		private static void FormatXml(XmlReader reader, XmlWriter writer)
+		{
+			bool emptyElement;
+			while (reader.Read())
+			{
+				switch (reader.NodeType)
+				{
+					case XmlNodeType.Element:
+						writer.WriteStartElement(reader.Prefix, reader.LocalName, reader.NamespaceURI);
+						emptyElement = reader.IsEmptyElement; // Read this before moving to an attribute
+						while (reader.MoveToNextAttribute())
+						{
+							writer.WriteAttributeString(reader.Prefix, reader.LocalName, reader.NamespaceURI, reader.Value);
+						}
+						if (emptyElement)
+						{
+							writer.WriteEndElement();
+						}
+						break;
+					case XmlNodeType.Text:
+						writer.WriteString(reader.Value);
+						break;
+					case XmlNodeType.CDATA:
+						writer.WriteCData(reader.Value);
+						break;
+					case XmlNodeType.ProcessingInstruction:
+						writer.WriteProcessingInstruction(reader.Name, reader.Value);
+						break;
+					case XmlNodeType.Comment:
+						writer.WriteComment(reader.Value);
+						break;
+					case XmlNodeType.Document:
+						Debug.Assert(false, "Hit XmlNodeType.Document, not expected"); // Not expected
+						break;
+					case XmlNodeType.Whitespace:
+						break;
+					case XmlNodeType.SignificantWhitespace:
+						writer.WriteWhitespace(reader.Value);
+						break;
+					case XmlNodeType.EndElement:
+						writer.WriteEndElement();
+						break;
+				}
+			}
+			reader.Close();
+		}
+		#endregion // FormatXml Helper Function
 	}
 	#endregion // Suite structure
 }
