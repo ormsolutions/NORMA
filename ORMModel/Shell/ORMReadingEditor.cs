@@ -30,6 +30,9 @@ using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using System.Diagnostics;
 using Microsoft.VisualStudio;
 using System.ComponentModel.Design;
+using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.Shell;
+using System.Collections;
 
 #endregion
 
@@ -40,50 +43,21 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("992C221B-4BE5-4A9B-900D-9882B4FA0F99")]
 	[CLSCompliant(false)]
-	public class ORMReadingEditorToolWindow : ToolWindow, MSOLE.IOleCommandTarget
+	public class ORMReadingEditorToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
 	{
 		#region Member variables
 		private ReadingsViewForm myForm = new ReadingsViewForm();
-		private ORMDesignerDocData myCurrentDocument;
 		#endregion // Member variables
 
 		#region construction
 		/// <summary>
 		/// Creates a new instance of the reading editor tool window.
 		/// </summary>
-		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider) : base(serviceProvider)
-		{
-			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
-			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
-			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
-			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
-		}
+		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider) : base(serviceProvider) { }
 		#endregion
 
 		#region selection monitor event handlers and helpers
-		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
-		{
-			CurrentDocument = ((IMonitorSelectionService)sender).CurrentDocument as ORMDesignerDocData;
-		}
 
-		private void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
-		{
-			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
-			if (theView != null)
-			{
-				FactType theFact = EditorUtility.ResolveContextFactType(theView.PrimarySelection);
-				FactType currentFact = EditingFactType;
-				if (theFact == null && currentFact != null)
-				{
-					EditingFactType = null;
-				}
-				//selection could change between the shapes that are related to the fact
-				else if (!object.ReferenceEquals(theFact, currentFact))
-				{
-					EditingFactType = theFact;
-				}
-			}
-		}
 		#endregion
 
 		#region ToolWindow overrides
@@ -152,6 +126,34 @@ namespace Neumont.Tools.ORM.Shell
 			myForm.ActivateReading(fact);
 		}
 		#endregion // Reading activation helper
+		/// <summary>
+		/// First calls the base implementation of SelectionChanged, and then call custom logic.
+		/// </summary>
+		protected override void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
+		{
+			base.MonitorSelectionChanged(sender, e);
+			if (myCurrentORMSelectionContainer != null)
+			{
+				ICollection selectedObjects = base.GetSelectedComponents();
+				object my = null;
+				foreach (object o in selectedObjects)
+				{
+					my = o;
+					break;
+				}
+				FactType theFact = EditorUtility.ResolveContextFactType(my);
+				FactType currentFact = EditingFactType;
+				if (theFact == null && currentFact != null)
+				{
+					EditingFactType = null;
+				}
+				//selection could change between the shapes that are related to the fact
+				else if (!object.ReferenceEquals(theFact, currentFact))
+				{
+					EditingFactType = theFact;
+				}
+			}
+		}
 
 		#region properties
 		/// <summary>
@@ -166,30 +168,6 @@ namespace Neumont.Tools.ORM.Shell
 			set
 			{
 				myForm.EditingFactType = value;
-			}
-		}
-
-		private ORMDesignerDocData CurrentDocument
-		{
-			set
-			{
-				if (myCurrentDocument != null)
-				{
-					if (value != null && object.ReferenceEquals(myCurrentDocument, value))
-					{
-						return;
-					}
-					myForm.ReadingEditor.DetachEventHandlers(myCurrentDocument.Store);
-				}
-				myCurrentDocument = value;
-				if (value != null)
-				{
-					myForm.ReadingEditor.AttachEventHandlers(myCurrentDocument.Store);
-				}
-				else
-				{
-					EditingFactType = null;
-				}
 			}
 		}
 		#endregion
@@ -448,6 +426,36 @@ namespace Neumont.Tools.ORM.Shell
 		int MSOLE.IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
 		{
 			return Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+		}
+
+		#endregion
+
+		#region event handler attach/detach methods
+
+		/// <summary>
+		/// Attaches the event handlers to the store so that the tool window
+		/// contents can be updated to reflect any model changes.
+		/// </summary>
+		protected override void AttachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			ReadingEditor readingEditor = myForm.ReadingEditor;
+			if (readingEditor != null)
+			{
+				readingEditor.AttachEventHandlers(store);
+			}
+		}
+
+		/// <summary>
+		/// removes the event handlers from the store that were placed to allow
+		/// the tool window to keep in sync with the mdoel
+		/// </summary>
+		protected override void DetachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			ReadingEditor readingEditor = myForm.ReadingEditor;
+			if (readingEditor != null)
+			{
+				readingEditor.DetachEventHandlers(store);
+			}
 		}
 
 		#endregion

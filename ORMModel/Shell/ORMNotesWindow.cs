@@ -28,6 +28,9 @@ using Neumont.Tools.ORM.ObjectModel.Editors;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using System.Diagnostics;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using System.Collections;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -37,13 +40,11 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498")]
 	[CLSCompliant(false)]
-	public class ORMNotesToolWindow : ToolWindow, MSOLE.IOleCommandTarget
+	public class ORMNotesToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
 	{
 		#region Private data members
 		private TextBox myTextBox;
-		private ORMDesignerDocData myCurrentDocument;
 		private List<RootType> mySelectedRootTypes;
-		private ORMDesignerDocView myCurrentView;
 		#endregion // Private data members
 		#region Construction
 		/// <summary>
@@ -52,94 +53,9 @@ namespace Neumont.Tools.ORM.Shell
 		public ORMNotesToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
-			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			mySelectedRootTypes = new List<RootType>();
-			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(Monitor_SelectionChanged);
-			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
-			CurrentView = monitor.CurrentDocumentView as ORMDesignerDocView;
+			PopulateSelectedRootTypes();
 		}
-
-		/// <summary>
-		/// Handles the event fired when the document window is changed.
-		/// </summary>
-		private void DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
-		{
-			CurrentDocument = ((IMonitorSelectionService)sender).CurrentDocument as ORMDesignerDocData;	// If the document window has changed, re-set
-			CurrentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;	// the CurrentDocument and the CurrentView.
-		}
-
-		/// <summary>
-		/// Sets the current document.
-		/// </summary>
-		private ORMDesignerDocData CurrentDocument
-		{
-			set
-			{
-				if (myCurrentDocument != null)	// If the current document is not null
-				{
-					if (value != null && object.ReferenceEquals(myCurrentDocument, value))
-					{
-						return;
-					}
-					// If we get to this point, we know that the document window
-					// has really changed, so we need to unwire the event handlers
-					// from the model store.
-					DetachEventHandlers(myCurrentDocument.Store);
-				}
-				myCurrentDocument = value;
-				if (value != null)	// If the new DocData is actually an ORMDesignerDocData,
-				{
-					AttachEventHandlers(myCurrentDocument.Store);	// wire the event handlers to the model store.
-				}
-			}
-		}
-
-		/// <summary>
-		/// Sets the current view.
-		/// </summary>
-		private ORMDesignerDocView CurrentView
-		{
-			set
-			{
-				myCurrentView = value;
-				// This is called for an intra-document selection change as well
-				// as a view change, so we always want to repopulate at this point.
-				PopulateSelectedRootTypes();
-			}
-		}
-		/// <summary>
-		/// Populates mySelectedRootTypes with all currently selected root
-		/// types in the passed in ORMDesignerDocView.
-		/// </summary>
-		private void PopulateSelectedRootTypes()
-		{
-			ORMDesignerDocView docView = myCurrentView;
-			mySelectedRootTypes.Clear();	// Clear the list of selected root types.
-			if (docView != null)	// If what was passed in is an ORMDesignerDocView,
-			{
-				foreach (object o in docView.GetSelectedComponents())	// get all of the selected components,
-				{
-					RootType rootType = EditorUtility.ResolveContextInstance(o, false) as RootType;	// and if they are a RootType,
-					if (rootType != null)
-					{
-						mySelectedRootTypes.Add(rootType);	// add them to the list of selected RootTypes.
-					}
-				}
-			}
-			DisplayNotes();	// Display the notes for all selected RootTypes.
-		}
-		/// <summary>
-		/// Returns the title of the window.
-		/// </summary>
-		public override string WindowTitle
-		{
-			get
-			{
-				return ResourceStrings.ModelNotesWindowTitle;
-			}
-		}
-
 		/// <summary>
 		/// Returns the parent of myTextBox.
 		/// </summary>
@@ -165,71 +81,12 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Construction
 		#region Event handlers
 		/// <summary>
-		/// Event handler for a selection changed event.  Forces the
-		/// selectedRootTypes List to be regenerated.
-		/// </summary>
-		private void Monitor_SelectionChanged(object sender, MonitorSelectionEventArgs e)
-		{
-			// If a different object is selected on the diagram, both
-			// the old and new values will be ORMDesignerDocViews.  In
-			// this case, choose the new value.  If the new value is not
-			// a doc view, try to pick up the old value (fall back to null).
-			// If the new value is a doc view, use it.
-			ORMDesignerDocView newView = e.NewValue as ORMDesignerDocView;
-			CurrentView = (newView != null) ? newView : e.OldValue as ORMDesignerDocView;
-		}
-		/// <summary>
-		/// Attaches event handlers to the store.
-		/// </summary>
-		public void AttachEventHandlers(Store store)
-		{
-			if (store == null || store.Disposed)
-			{
-				return; // Bail out
-			}
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			// Track Note changes
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(RootTypeHasNote.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
-
-			// Track Note.Text changes
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(Note.TextMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(NoteAlteredEventHandler));
-		}
-
-		/// <summary>
-		/// Detaches event handlers from the store.
-		/// </summary>
-		public void DetachEventHandlers(Store store)
-		{
-			if (store == null || store.Disposed)
-			{
-				return; // Bail out
-			}
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-
-			// Track Note changes
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(RootTypeHasNote.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
-
-			// Track Note.Text changes
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(Note.TextMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(NoteAlteredEventHandler));
-		}
-
-		/// <summary>
 		/// Handles note added, changed, or removed events.
 		/// </summary>
 		private void NoteAlteredEventHandler(object sender, EventArgs e)
 		{
 			DisplayNotes();
 		}
-
 		/// <summary>
 		/// Event handler for the note textbox.  Forces the note to be saved
 		/// if the textbox is enabled.
@@ -250,12 +107,38 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="text">The text of the note.</param>
 		private void SetNote(RootType owner, string text)
 		{
-			if (owner != null)	// Be really defensive.
+			if (owner != null && owner.Store != null)	// Be really defensive.
 			{
 				owner.CreatePropertyDescriptor(owner.Store.MetaDataDirectory.FindMetaAttribute(RootType.NoteTextMetaAttributeGuid), owner).SetValue(owner, text);
 			}
 		}
+		/// <summary>
+		/// Populates mySelectedRootTypes with all currently selected root
+		/// types in the passed in ORMDesignerDocView.
+		/// </summary>
+		private void PopulateSelectedRootTypes()
+		{
+			if (mySelectedRootTypes == null)
+			{
+				mySelectedRootTypes = new List<RootType>();
+			}
+			mySelectedRootTypes.Clear();	// Clear the list of selected root types.
+			IORMSelectionContainer selectionContainer = myCurrentORMSelectionContainer;
+			if (selectionContainer != null)
+			{
 
+				ICollection objects = base.GetSelectedComponents();
+				foreach (object o in objects)
+				{
+					RootType rootType = EditorUtility.ResolveContextInstance(o, false) as RootType;	// and if they are a RootType,
+					if (rootType != null)
+					{
+						mySelectedRootTypes.Add(rootType);	// add them to the list of selected RootTypes.
+					}
+				}
+			}
+			DisplayNotes();	// Display the notes for all selected RootTypes.
+		}
 		/// <summary>
 		/// Displays the notes for all selected RootTypes in the Notes Window.
 		/// </summary>
@@ -433,29 +316,73 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			return Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 		}
+		#endregion
+		#region ORMToolWindow Implementation
+		/// <summary>
+		/// Retains base CurrentModelElementSelectionContainer implementation and adds a
+		/// method call to PopulateSelectedRootTypes.
+		/// </summary>
+		protected override IORMSelectionContainer CurrentModelElementSelectionContainer
+		{
+			set
+			{
+				base.CurrentModelElementSelectionContainer = value;
+				PopulateSelectedRootTypes();
+			}
+		}
+		/// <summary>
+		/// Attaches event handlers to the store.
+		/// </summary>
+		protected override void AttachEventHandlers(Store store)
+		{
+			if (store == null || store.Disposed)
+			{
+				return; // Bail out
+			}
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-		#endregion
-		#region ToolWindow overrides
+			// Track Note changes
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(RootTypeHasNote.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
+
+			// Track Note.Text changes
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(Note.TextMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(NoteAlteredEventHandler));
+		}
+
 		/// <summary>
-		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// Detaches event handlers from the store.
 		/// </summary>
-		protected override int BitmapResource
+		protected override void DetachEventHandlers(Store store)
+		{
+			if (store == null || store.Disposed)
+			{
+				return; // Bail out
+			}
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			// Track Note changes
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(RootTypeHasNote.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
+
+			// Track Note.Text changes
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(Note.TextMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(NoteAlteredEventHandler));
+		}
+		/// <summary>
+		/// Returns the title of the window.
+		/// </summary>
+		public override string WindowTitle
 		{
 			get
 			{
-				return 125;
+				return ResourceStrings.ModelNotesWindowTitle;
 			}
 		}
-		/// <summary>
-		/// See <see cref="ToolWindow.BitmapResource"/>.
-		/// </summary>
-		protected override int BitmapIndex
-		{
-			get
-			{
-				return 5;
-			}
-		}
-		#endregion
+		#endregion // ORMToolWindow Implementation
 	}
 }

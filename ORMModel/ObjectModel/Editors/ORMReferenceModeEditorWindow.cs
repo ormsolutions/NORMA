@@ -25,7 +25,8 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Editors;
-using Microsoft.VisualStudio.Modeling;  
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 
 #endregion
 
@@ -36,27 +37,22 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("c2415d9f-dba8-49bc-8bf2-008f24f10559")]
 	[CLSCompliant(false)]
-	public class ORMReferenceModeEditorToolWindow : ToolWindow
+	public class ORMReferenceModeEditorToolWindow : ORMToolWindow
 	{
 		private ReferenceModeViewForm myForm = new ReferenceModeViewForm();
 
-		#region construction
+		#region Construction
 		/// <summary>
 		/// Default constructor 
 		/// </summary>
-		/// <param name="serviceProvder">Service provider</param>
-		public ORMReferenceModeEditorToolWindow(IServiceProvider serviceProvder) : base(serviceProvder)
+		/// <param name="serviceProvider">Service provider</param>
+		public ORMReferenceModeEditorToolWindow(IServiceProvider serviceProvider)
+			: base(serviceProvider)
 		{
-			IMonitorSelectionService service = serviceProvder.GetService(typeof(IMonitorSelectionService)) as IMonitorSelectionService;
-			if (service != null)
-			{
-				service.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(service_DocumentWindowChanged);
-			}
-			ORMDesignerDocView docView = service.CurrentDocumentView as ORMDesignerDocView;
-			LoadWindow(docView);
+			LoadWindow();
 		}
 		#endregion
-		#region Accessor properties
+		#region TreeControl Property
 		/// <summary>
 		/// Get the tree control for this editor
 		/// </summary>
@@ -68,7 +64,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Accessor properties
-		#region ToolWindow overrides
+		#region ToolWindow Overrides
 		/// <summary>
 		/// See <see cref="ToolWindow.BitmapResource"/>.
 		/// </summary>
@@ -90,36 +86,23 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Returns the localized Tital for the too window
-		/// </summary>
-		/// <value></value>
-		public override string WindowTitle
-		{
-			get 
-			{
-				string editorWindowTitle = ResourceStrings.ModelReferenceModeEditorEditorWindowTitle;
-				return editorWindowTitle;
-			}
-		}
-
-		/// <summary>
 		/// Provides and interface to expose Win32 handles
 		/// </summary>
 		/// <value></value>
 		public override IWin32Window Window
 		{
-			get 
+			get
 			{
 				return myForm;
 			}
 		}
 		#endregion // ToolWindow overrides
-		#region nested class ReadingsViewForm
+		#region Nested Class ReadingsViewForm
 		private class ReferenceModeViewForm : Form
 		{
 			private CustomReferenceModeEditor myRefModeEditor;
 
-			#region construction
+			#region Construction
 			public ReferenceModeViewForm()
 			{
 				Initialize();
@@ -133,14 +116,14 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 
-			#region methods
+			#region SetModel
 			public void SetModel(ORMModel model)
 			{
 				myRefModeEditor.SetModel(model);
 			}
 			#endregion
 
-			#region Accessor Properties
+			#region TreeControl Property
 			/// <summary>
 			/// Get the tree control for this editor
 			/// </summary>
@@ -154,22 +137,50 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Accessor Properties
 		}
 		#endregion
-		#region Event handlers
-		void service_DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
-		{
-			ORMDesignerDocView docView = (sender as IMonitorSelectionService).CurrentDocumentView as ORMDesignerDocView;
-			LoadWindow(docView);
-
-		}
-		private void LoadWindow(ORMDesignerDocView docView)
+		#region LoadWindow Method
+		private void LoadWindow()
 		{
 			ORMModel model = null;
-			if (docView != null)
+			ORMDesignerDocData docData = myCurrentDocument;
+			if (docData != null)
 			{
-				model = docView.CurrentDiagram.ModelElement as ORMModel;
+				ORMDesignerDocView docView = docData.DocViews[0] as ORMDesignerDocView;
+				if (docView != null)
+				{
+					Diagram diagram = docView.CurrentDiagram;
+					if (diagram != null)
+					{
+						model = diagram.ModelElement as ORMModel;
+					}
+				}
+				myForm.SetModel(model);
 			}
-			myForm.SetModel(model);
 		}
-		#endregion // Event handlers
+		#endregion // LoadWindow Method
+		#region ORMToolWindow Implementation
+		/// <summary>
+		/// Returns the localized title of the Reference Mode Editor.
+		/// </summary>
+		public override string WindowTitle
+		{
+			get { return ResourceStrings.ModelReferenceModeEditorEditorWindowTitle; }
+		}
+		/// <summary>
+		/// Handles the IMonitorSelectionService DocumentWindowChanged event.
+		/// </summary>
+		protected override void DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
+		{
+			base.DocumentWindowChanged(sender, e);
+			LoadWindow();
+		}
+		/// <summary>
+		/// NOT IMPLEMENTED: There are no event handlers to attach for this class.
+		/// </summary>
+		protected override void AttachEventHandlers(Store store) { }
+		/// <summary>
+		/// NOT IMPLEMENTED: There are no event handlers to detach for this class.
+		/// </summary>
+		protected override void DetachEventHandlers(Store store) { }
+		#endregion
 	}
 }

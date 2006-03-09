@@ -29,7 +29,9 @@ using Microsoft.VisualStudio.Shell;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using System.Windows.Forms;
 using System.Globalization;
 namespace Neumont.Tools.ORM.Shell
@@ -175,7 +177,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <see cref="DiagramDocView"/> designed to contain multiple <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
-	public partial class ORMDesignerDocView : TabbedDiagramDocView
+	public partial class ORMDesignerDocView : TabbedDiagramDocView, IORMSelectionContainer
 	{
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;

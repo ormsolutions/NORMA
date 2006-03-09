@@ -33,6 +33,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Editors;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ShapeModel;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -41,7 +42,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A")]
 	[CLSCompliant(false)]
-	public partial class ORMBrowserToolWindow : ModelExplorerToolWindow
+	public partial class ORMBrowserToolWindow : ModelExplorerToolWindow, IORMSelectionContainer
 	{
 		private ORMDesignerCommands myVisibleCommands;
 		private ORMDesignerCommands myCheckedCommands;
@@ -235,6 +236,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				base.OnCreateControl();
 				TreeView browser = ObjectModelBrowser;
+				browser.HideSelection = false;
 				browser.ItemDrag += new ItemDragEventHandler(browser_ItemDrag);
 			}
 			void browser_ItemDrag(object sender, ItemDragEventArgs e)

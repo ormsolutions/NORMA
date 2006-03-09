@@ -38,15 +38,13 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("C9AA5E71-9193-46c9-971A-CB6365ACA338")]
 	[CLSCompliant(false)]
-	public class ORMVerbalizationToolWindow : ToolWindow
+	public class ORMVerbalizationToolWindow : ORMToolWindow
 	{
 		#region Member variables
 		private WebBrowser myWebBrowser;
-		private ORMDesignerDocView myCurrentDocumentView;
 		private bool myShowNegativeVerbalizations;
 		private StringWriter myStringWriter;
 		private static string[] myDocumentHeaderReplacementFields;
-
 		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
@@ -77,18 +75,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// Construct a verbalization window with a monitor selection service
 		/// </summary>
 		/// <param name="serviceProvider">Service provider</param>
-		public ORMVerbalizationToolWindow(IServiceProvider serviceProvider)
-			: base(serviceProvider)
-		{
-			// create the string writer to hold the html
-			StringBuilder builder = new StringBuilder();
-			myStringWriter = new StringWriter(builder, CultureInfo.CurrentUICulture);
-
-			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
-			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
-			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
-			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
-		}
+		public ORMVerbalizationToolWindow(IServiceProvider serviceProvider) : base(serviceProvider) { }
 		/// <summary>
 		/// Initialize here after we have the frame so we can grab the toolbar host
 		/// </summary>
@@ -103,6 +90,9 @@ namespace Neumont.Tools.ORM.Shell
 				Guid commandGuid = command.Guid;
 				host.AddToolbar(VSTWT_LOCATION.VSTWT_LEFT, ref commandGuid, (uint)command.ID);
 			}
+			// create the string writer to hold the html
+			StringBuilder builder = new StringBuilder();
+			myStringWriter = new StringWriter(builder, CultureInfo.CurrentUICulture);
 		}
 		/// <summary>
 		/// Make sure the toolbar flag gets set
@@ -116,65 +106,9 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Construction
 		#region Selection monitor event handlers and helpers
-		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
-		{
-			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
-		}
-		private void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
-		{
-			UpdateVerbalization();
-		}
 		private void ModelStateChangedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
 			UpdateVerbalization();
-		}
-		private ORMDesignerDocView CurrentDocumentView
-		{
-			get
-			{
-				return myCurrentDocumentView;
-			}
-			set
-			{
-				ORMDesignerDocView oldView = myCurrentDocumentView;
-				if (oldView != null)
-				{
-					ORMDesignerDocData oldDoc = oldView.DocData as ORMDesignerDocData;
-					if (value != null)
-					{
-						if (object.ReferenceEquals(oldView, value))
-						{
-							return;
-						}
-						else if (object.ReferenceEquals(oldDoc, value.DocData))
-						{
-							myCurrentDocumentView = value;
-							return;
-						}
-					}
-					if (oldDoc != null)
-					{
-						Store store = oldDoc.Store;
-						if (store != null && !store.Disposed)
-						{
-							store.EventManagerDirectory.ElementEventsEnded.Remove(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
-						}
-					}
-				}
-				myCurrentDocumentView = value;
-				if (value != null)
-				{
-					ORMDesignerDocData docData = value.DocData as ORMDesignerDocData;
-					if (docData != null)
-					{
-						Store store = docData.Store;
-						if (store != null && !store.Disposed)
-						{
-							store.EventManagerDirectory.ElementEventsEnded.Add(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
-						}
-					}
-				}
-			}
 		}
 		/// <summary>
 		/// Called when the options dialog settings have changed
@@ -207,22 +141,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Gets the title that will be displayed on the tool window.
-		/// </summary>
-		public override string WindowTitle
-		{
-			get
-			{
-				return ResourceStrings.ModelVerbalizationWindowTitle;
-			}
-		}
-
-		/// <summary>
 		/// Gets the web browser control hosted in the tool window
 		/// </summary>
 		public override IWin32Window Window
 		{
-			get 
+			get
 			{
 				WebBrowser browser = myWebBrowser;
 				if (browser == null)
@@ -301,45 +224,46 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void UpdateVerbalization()
 		{
-			ORMDesignerDocView theView = CurrentDocumentView;
-			if (theView == null)
+			if (myCurrentORMSelectionContainer == null)
 			{
 				return;
 			}
+			if (myStringWriter != null)
+			{
+				myStringWriter.GetStringBuilder().Length = 0;
 
-			myStringWriter.GetStringBuilder().Length = 0;
-
-			ICollection selectedObjects = theView.GetSelectedComponents();
-			VerbalizationSets snippets = VerbalizationSets.Default; // UNDONE: Support loading from somewhere other than default
-			myStringWriter.NewLine = snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerNewLine);
-			bool showNegative = myShowNegativeVerbalizations;
-			bool firstCallPending = true;
-			foreach (ModelElement melIter in selectedObjects)
-			{
-				ModelElement mel = melIter;
-				PresentationElement pel = mel as PresentationElement;
-				if (pel != null)
+				ICollection selectedObjects = base.GetSelectedComponents();
+				VerbalizationSets snippets = VerbalizationSets.Default; // UNDONE: Support loading from somewhere other than default
+				myStringWriter.NewLine = snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerNewLine);
+				bool showNegative = myShowNegativeVerbalizations;
+				bool firstCallPending = true;
+				foreach (ModelElement melIter in selectedObjects)
 				{
-					mel = pel.ModelElement;
+					ModelElement mel = melIter;
+					PresentationElement pel = mel as PresentationElement;
+					if (pel != null)
+					{
+						mel = pel.ModelElement;
+					}
+					if (mel != null)
+					{
+						VerbalizeElement(mel, snippets, showNegative, myStringWriter, ref firstCallPending);
+					}
 				}
-				if (mel != null)
+				if (!firstCallPending)
 				{
-					VerbalizeElement(mel, snippets, showNegative, myStringWriter, ref firstCallPending);
+					// Write footer
+					myStringWriter.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerDocumentFooter));
 				}
-			}
-			if (!firstCallPending)
-			{
-				// Write footer
-				myStringWriter.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerDocumentFooter));
-			}
-			else
-			{
-				// Nothing happened, put in text for nothing happened
-			}
-			WebBrowser browser = myWebBrowser;
-			if (browser != null)
-			{
-				browser.DocumentText = myStringWriter.ToString();
+				else
+				{
+					// Nothing happened, put in text for nothing happened
+				}
+				WebBrowser browser = myWebBrowser;
+				if (browser != null)
+				{
+					browser.DocumentText = myStringWriter.ToString();
+				}
 			}
 		}
 		/// <summary>
@@ -484,5 +408,45 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Verbalization Implementation
+		#region ORMToolWindow Implementation
+		/// <summary>
+		/// Calls the base selection changed functionality first, and then calls UpdateVerbalization().
+		/// </summary>
+		protected override void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
+		{
+			base.MonitorSelectionChanged(sender, e);
+			UpdateVerbalization();
+		}
+		/// <summary>
+		/// Gets the title that will be displayed on the tool window.
+		/// </summary>
+		public override string WindowTitle
+		{
+			get
+			{
+				return ResourceStrings.ModelVerbalizationWindowTitle;
+			}
+		}
+		/// <summary>
+		/// Wires event handlers to the store.
+		/// </summary>
+		protected override void AttachEventHandlers(Store store)
+		{
+			if (store != null && !store.Disposed)
+			{
+				store.EventManagerDirectory.ElementEventsEnded.Add(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
+			}
+		}
+		/// <summary>
+		/// Unwires event handlers from the store.
+		/// </summary>
+		protected override void DetachEventHandlers(Store store)
+		{
+			if (store != null && !store.Disposed)
+			{
+				store.EventManagerDirectory.ElementEventsEnded.Remove(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
+			}
+		}
+		#endregion // ORMToolWindow Implementation
 	}
 }
