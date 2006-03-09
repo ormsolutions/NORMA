@@ -152,7 +152,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// DeleteAnyShape will survive most complex multi-select cases whereas the Delete*Shape
 		/// will not. This is handled specially for the delete case.
 		/// </summary>
-		DeleteAnyShape = 0x1000000,
+        DeleteAnyShape = 0x1000000,
+        /// <summary>
+        /// Expand the error list for the selected object
+        /// </summary>
+        ErrorList = 0x10000000, 
 		/// <summary>
 		/// Align top level shape elements. Applies to all of the standard Format.Align commands.
 		/// </summary>
@@ -558,10 +562,10 @@ namespace Neumont.Tools.ORM.Shell
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
 				}
 
-				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
-				ExternalConstraintShape constraintShape;
-				IConstraint constraint;
-				ORMDiagram ormDiagram;
+                // Extra menu commands may be visible if there is a StickyObject active on the diagram.
+                ExternalConstraintShape constraintShape;
+                IConstraint constraint;
+                ORMDiagram ormDiagram;
 
 				if (null != (ormDiagram = CurrentDiagram as ORMDiagram)
 					&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
@@ -614,7 +618,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage | ORMDesignerCommands.ErrorList;
 			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage;
 		}
 		
@@ -1387,6 +1391,13 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ExtensionManager.ShowDialog(ServiceProvider, this.DocData as ORMDesignerDocData);
 		}
+        /// <summary>
+        /// Expand the context menu to display local errors
+        /// </summary>
+        protected virtual void OnMenuErrorList()
+        {
+           
+        }
 		#region OnMenuCopyImage
 #if CUSTOM_COPY_IMAGE
 		#region NativeMethods

@@ -18,6 +18,7 @@
 // IMPORTANT: keep constants in sync with ORMModel\Shell\ORMCommandSet.cs
 #define menuIdContextMenu				0x0100
 #define menuIdVerbalizationToolBar		0x0101
+#define menuIdErrorList					0x0102
 
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
@@ -31,6 +32,8 @@
 #define groupIdConstraintEditContext	0x1004
 #define groupIdVerbalizationCommands	0x1005
 #define groupIdORMToolWindows			0x1006
+#define groupIdErrorList				0x1007
+#define groupIdErrorListTest			0x1008
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -65,6 +68,10 @@
 #define cmdIdViewNotesWindow			0x2913
 
 #define cmdIdDeleteAlternate			0x2914
+
+#define cmdIdErrorList					0x2a00
+#define cmdIdErrorListEnd				0x2aff
+// Reserve 2a00 range for errors, start at 2b00
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs for BitmapResourceStrip.bmp
 #define bmpIdShowNegativeVerbalization		1

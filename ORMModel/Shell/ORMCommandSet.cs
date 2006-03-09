@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 
 namespace Neumont.Tools.ORM.Shell
 {	
@@ -194,6 +195,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusAlignShapes),
 				new EventHandler(OnMenuAlignShapes),
 				StandardCommands.AlignVerticalCenters)
+				,new DynamicErrorCommand(
+				new EventHandler(OnStatusErrorList),
+				new EventHandler(OnMenuErrorList),
+				ORMDesignerCommandIds.ErrorList)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -510,6 +515,114 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuAlignShapes((sender as MenuCommand).CommandID.ID);
+				}
+			}
+			private class DynamicErrorCommand : DynamicStatusMenuCommand
+			{
+				public DynamicErrorCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id) : base(statusHandler, invokeHandler, id)
+				{
+					//Declare class variable with object containing error list
+				}
+				public override bool DynamicItemMatch(int cmdId)
+				{
+					int baseCmdId = CommandID.ID;
+					int testId = cmdId - baseCmdId;
+					
+					
+					if (testId >= 0 && testId < ORMDesignerCommandIds.ErrorListLength)
+					{
+						MatchedCommandId = testId;
+						return true;
+					}
+					return false;
+				}
+			}
+			//private System.Collections.Generic.IEnumerator<string> strings;
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusErrorList(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				ORMDesignerDocView.OnStatusCommand(sender, docView, ORMDesignerCommands.ErrorList);
+				OleMenuCommand cmd = sender as OleMenuCommand;
+				if (cmd.Visible)
+				{
+					string errorText = null;
+					int matchErrorIndex = cmd.MatchedCommandId;
+					if (docView.SelectionCount > 0)
+					{
+						IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(docView.SelectedElements[0], false) as IModelErrorOwner;
+						if (errorOwner != null)
+						{
+							int count = 0;
+							foreach (ModelError error in errorOwner.ErrorCollection)
+							{
+								if (count == matchErrorIndex)
+								{
+									errorText = error.Name;
+									break;
+								}
+								++count;
+							}
+						}
+					}
+					if (errorText != null)
+					{
+						cmd.Enabled = true;
+						cmd.Visible = true;
+						cmd.Supported = true;
+						cmd.Text = errorText;
+					}
+					else
+					{
+						cmd.Supported = false;
+					}
+				}
+				cmd.MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuErrorList(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				OleMenuCommand cmd = sender as OleMenuCommand;
+				string errorText = cmd.Text;
+				if (cmd.Visible)
+				{
+					if (docView.SelectionCount > 0)
+					{
+						IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(docView.SelectedElements[0], false) as IModelErrorOwner;
+						if (errorOwner != null)
+						{
+							foreach (ModelError error in errorOwner.ErrorCollection)
+							{
+								if (errorText == error.Name)
+								{
+									IORMToolTaskItem task;
+									IORMToolServices services;
+									IORMToolTaskProvider provider;
+									if (null != (task = error.TaskData as IORMToolTaskItem) &&
+										null != (services = error.Store as IORMToolServices) &&
+										null != (provider = services.TaskProvider))
+									{
+										provider.NavigateTo(task);
+									}
+									break;
+								}
+							}
+						}
+					}
+				}
+				//if(docView.SelectionCount > 0)
+				//{
+				//    (docView.SelectedElements[0] as IModelErrorOwner).ErrorCollection[0];
+				//}
+				if (docView != null)
+				{
+					// Defer to the doc view
+					//docView.OnMenuErrorList();
 				}
 			}
 			#region External Constraint editing menu options
@@ -894,7 +1007,17 @@ namespace Neumont.Tools.ORM.Shell
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
 			public static readonly CommandID ViewMoveRoleSequenceDown = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleSequenceDown);
-			#endregion //CommandID objects for menus
+            /// <summary>
+            /// Available to any type that is in a state of error
+            /// </summary>
+            public static readonly CommandID ErrorList = new CommandID(guidORMDesignerCommandSet, cmdIdErrorList);
+			/// <summary>
+			/// Indicates the number of command ids reserved for reporting errors
+			/// </summary>
+			public const int ErrorListLength = cmdIdErrorListEnd - cmdIdErrorList + 1;
+            #endregion //CommandID objects for menus
+
+            
 
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
@@ -994,6 +1117,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Control-Delete and does the command not handled directly by delete.
 			/// </summary>
 			private const int cmdIdDeleteAlternate = 0x2914;
+            /// <summary>
+            /// The context menu for the local errors
+            /// </summary>
+            private const int cmdIdErrorList = 0x2a00;
+			/// <summary>
+			/// The last allowed id for an error list
+			/// </summary>
+			private const int cmdIdErrorListEnd = 0x2aff;
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

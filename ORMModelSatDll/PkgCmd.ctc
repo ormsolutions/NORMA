@@ -42,6 +42,7 @@ CMDS_SECTION guidORMDesignerPackage
 		// Context menus
 		guidORMDesignerCommandSet:menuIdContextMenu,				guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Designer Context Menu",			"ORMDesignerContextMenu";
 		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0000,	TOOLWINDOWTOOLBAR,	"ORM Verbalization Toolbar",			"ORMDesignerVerbalizationToolbar";
+		guidORMDesignerCommandSet:menuIdErrorList,					guidORMDesignerCommandSet:groupIdErrorList,				0x0000,	CONTEXT,			"ORM Model Error List",					"Validation E&rrors";
 	MENUS_END
 
 	NEWGROUPS_BEGIN
@@ -49,6 +50,7 @@ CMDS_SECTION guidORMDesignerPackage
 #ifdef DEBUG
 		guidORMDesignerCommandSet:groupIdDebugCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x1000;
 #endif
+		guidORMDesignerCommandSet:groupIdErrorList,					guidORMDesignerCommandSet:menuIdContextMenu,			0x0008;
 		guidORMDesignerCommandSet:groupIdRoleCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0010;
 		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0018;
 		guidORMDesignerCommandSet:groupIdORMToolWindows,			guidORMDesignerCommandSet:menuIdContextMenu,			0x0020;
@@ -56,6 +58,8 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:groupIdModelCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0040;
 		guidORMDesignerCommandSet:groupIdConstraintEditContext,		guidORMDesignerCommandSet:menuIdContextMenu,			0x0050;
 		guidORMDesignerCommandSet:groupIdVerbalizationCommands,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0060;
+
+		guidORMDesignerCommandSet:groupIdErrorListTest,				guidORMDesignerCommandSet:menuIdErrorList,				0x0010;
 	NEWGROUPS_END
 
 	BUTTONS_BEGIN
@@ -69,8 +73,10 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceUp			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0606,		guidOfficeIcon:msotcidUpArrow2,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Role Sequence U&p";
 		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceDown			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0607,		guidOfficeIcon:msotcidDownArrow2,									BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Role Sequence &Down";
 
-		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0610,		guidORMToolWindowIcons:bmpIdToolWindowReadingEditor,				BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Reading Editor";
-		guidORMDesignerCommandSet:cmdIdExtensionManager,			guidORMDesignerCommandSet:groupIdModelCommands,			0x0500,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"E&xtension Manager...";
+		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0610,		guidORMToolWindowIcons:bmpIdToolWindowReadingEditor,				BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Reading Edi&tor";
+		guidORMDesignerCommandSet:cmdIdExtensionManager,			guidORMDesignerCommandSet:groupIdModelCommands,			0x0500,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"E&xtension Manager...";
+		guidORMDesignerCommandSet:cmdIdErrorList,					guidORMDesignerCommandSet:groupIdErrorListTest,			0x0500,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DYNAMICITEMSTART|DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"No Errors &Present";
+		
 
 		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	0,												"ORM M&odel Browser";
 		guidORMDesignerCommandSet:cmdIdViewVerbalizationBrowser,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0200,		guidORMToolWindowIcons:bmpIdToolWindowVerbalizationBrowser,			BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Verbalization Browser";
