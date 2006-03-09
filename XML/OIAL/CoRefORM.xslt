@@ -30,7 +30,7 @@
 	<xsl:param name="CoRefFactIdDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefValueDataTypeIdDecorator" select="'_Data_Type'"/>
-	<xsl:param name="CoRefRoleNamePreposition" select="'AS'" />
+	<xsl:param name="CoRefRoleNamePreposition" select="'As'" />
 	<xsl:variable name="ExistingTrueOrFalseLogicalDataType" select="ormRoot:ORM2/orm:ORMModel/orm:DataTypes/orm:TrueOrFalseLogicalDataType"/>
 	<xsl:variable name="CoRefLogicalDataTypeIdDecoratorFragment">
 		<xsl:choose>
@@ -271,9 +271,18 @@
 								</xsl:choose>
 							</xsl:variable>
 							<!-- UNDONE: Consider getting multiplicity right for both these roles -->
-							<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="{../../@Name}{$CoRefRoleNamePreposition}{$RoleNameEndDecorator}" _IsMandatory="true">
-								<orm:RolePlayer ref="{$factId}"/>
-							</orm:Role>
+							<xsl:choose>
+								<xsl:when test="count(../orm:Role) > 1">
+									<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="{../../@Name}{$CoRefRoleNamePreposition}{$RoleNameEndDecorator}" _IsMandatory="true">
+										<orm:RolePlayer ref="{$factId}"/>
+									</orm:Role>
+								</xsl:when>
+								<xsl:otherwise>
+									<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="" _IsMandatory="true">
+										<orm:RolePlayer ref="{$factId}"/>
+									</orm:Role>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:copy>
 								<xsl:copy-of select="@*[local-name()!='_Multiplicity']"/>
 								<xsl:copy-of select="orm:RolePlayer"/>
