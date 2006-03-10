@@ -48,6 +48,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			None = 0,
 			AddedPostLoadEvents = 1,
+			SaveDisabled = 2,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -197,6 +198,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (dontSave)
 			{
+				SetFlag(PrivateFlags.SaveDisabled, true);
 				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable) ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 				docTable.ModifyDocumentFlags(Cookie, (uint) _VSRDTFLAGS.RDT_DontSave, 1);
 			}
@@ -272,6 +274,15 @@ namespace Neumont.Tools.ORM.Shell
 			using (FileStream fileStream = File.Create(fileName))
 			{
 				(new ORMSerializer(Store)).Save(fileStream);
+			}
+
+			if (GetFlag(PrivateFlags.SaveDisabled))
+			{
+				SetFlag(PrivateFlags.SaveDisabled, false);
+				// An imported file does not have the Save menu enabled. We should
+				// turn it on after a successful SaveAs
+				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 0);
 			}
 		}
 		/// <summary>
