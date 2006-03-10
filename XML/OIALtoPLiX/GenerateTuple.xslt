@@ -1,59 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:gnsoc="urn:schemas-neumont-edu:CodeGeneration:GetNodeSetOfCount"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	extension-element-prefixes="gnsoc">
+	extension-element-prefixes="exsl">
 
 	<xsl:variable name="SpecifyParamNameForArgumentNullException" select="false()"/>
 	
-	<msxsl:script language="C#" implements-prefix="gnsoc"><![CDATA[
-		public XPathNodeIterator GetNodeSetOfCount(double count)
-		{
-			int iCount = (int)count;
-			XmlDocument xmldoc = new XmlDocument();
-			xmldoc.AppendChild(xmldoc.CreateElement("Root"));
-			for (int i = 0; i < iCount; i++)
-			{
-				xmldoc.DocumentElement.AppendChild(xmldoc.CreateElement("PlaceHolder"));
-			}
-			return xmldoc.DocumentElement.CreateNavigator().SelectChildren(XPathNodeType.Element);
-		}
-	]]></msxsl:script>
+	<xsl:template name="GetNodeSetOfCount">
+		<xsl:param name="count"/>
+		<PlaceHolder/>
+		<xsl:if test="$count - 1 > 0">
+			<xsl:call-template name="GetNodeSetOfCount">
+				<xsl:with-param name="count" select="$count - 1"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template name="GenerateCommonTuples">
 		<xsl:call-template name="GenerateTupleBase"/>
-		<xsl:variable name="items2">
-			<PlaceHolder/>
-			<PlaceHolder/>
-		</xsl:variable>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="msxsl:node-set($items2)/child::*"/>
+			<xsl:with-param name="arityNumber" select="2"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="3"/>
+			<xsl:with-param name="arityNumber" select="3"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="4"/>
+			<xsl:with-param name="arityNumber" select="4"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="5"/>
+			<xsl:with-param name="arityNumber" select="5"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="6"/>
+			<xsl:with-param name="arityNumber" select="6"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="7"/>
+			<xsl:with-param name="arityNumber" select="7"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="8"/>
+			<xsl:with-param name="arityNumber" select="8"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="9"/>
+			<xsl:with-param name="arityNumber" select="9"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateTuple">
-			<xsl:with-param name="itemsCount" select="10"/>
+			<xsl:with-param name="arityNumber" select="10"/>
 		</xsl:call-template>
 	</xsl:template>
 	
@@ -187,32 +178,42 @@
 	-->
 
 	<xsl:template name="GenerateTuple">
-		<!-- itemsCount determines the arity of the Tuple to be created. -->
-		<!-- If itemsCount is a node-set, the number of nodes it contains is used as the arity of the Tuple to be created. -->
-		<!-- If itemsCount is a number, it is used as the arity of the Tuple to be created.-->
-		<!-- BUGBUG: If you pass 2 for itemsCount, bad things happen. Make sure that for a two-Tuple you pass a node-set. -->
-		<xsl:param name="itemsCount"/>
+		<!-- arityNodeSet or arityNumber determines the arity of the Tuple to be created. -->
+		<!-- If arityNodeSet is specified, the number of nodes it contains is used as the arity of the Tuple to be created. -->
+		<!-- If arityNumber is specified, it is used as the arity of the Tuple to be created.-->
+		<xsl:param name="arityNodeSet"/>
+		<xsl:param name="arityNumber"/>
 
 		<xsl:variable name="itemsFragment">
 			<xsl:choose>
-				<xsl:when test="number($itemsCount)">
-					<xsl:if test="not(function-available('gnsoc:GetNodeSetOfCount'))">
+				<xsl:when test="($arityNodeSet and $arityNumber) or (not($arityNodeSet) and not($arityNumber))">
+					<xsl:message terminate="yes">
+						<xsl:text>Exactly one of the arityNodeSet and arityNumber parameters must be specified.</xsl:text>
+					</xsl:message>
+				</xsl:when>
+				<xsl:when test="$arityNumber">
+					<xsl:if test="$arityNumber &lt; 2">
 						<xsl:message terminate="yes">
-							<xsl:text>A number was passed for itemsCount, but the GetNodeSetOfCount function is not available.</xsl:text>
+							<xsl:text>A Tuple cannot have an arity less than two.</xsl:text>
 						</xsl:message>
 					</xsl:if>
-					<xsl:for-each select="gnsoc:GetNodeSetOfCount(number($itemsCount))">
+					<xsl:variable name="tempNodeSetsFragment">
+						<xsl:call-template name="GetNodeSetOfCount">
+							<xsl:with-param name="count" select="$arityNumber"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:for-each select="exsl:node-set($tempNodeSetsFragment)/child::*">
 						<Item name="Item{position()}" paramName="item{position()}"  dataTypeName="T{position()}"/>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:for-each select="$itemsCount">
+					<xsl:for-each select="exsl:node-set($arityNodeSet)/child::*">
 						<Item name="Item{position()}" paramName="item{position()}"  dataTypeName="T{position()}"/>
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="items" select="msxsl:node-set($itemsFragment)/child::*"/>
+		<xsl:variable name="items" select="exsl:node-set($itemsFragment)/child::*"/>
 		<xsl:variable name="arity" select="count($items)"/>
 
 		<xsl:variable name="paramsFragment">
@@ -220,21 +221,21 @@
 				<plx:param type="in" name="{@paramName}" dataTypeName="{@dataTypeName}"/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="params" select="msxsl:node-set($paramsFragment)/child::*"/>
+		<xsl:variable name="params" select="exsl:node-set($paramsFragment)/child::*"/>
 
 		<xsl:variable name="typeParamsFragment">
 			<xsl:for-each select="$items">
 				<plx:typeParam name="{@dataTypeName}"/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="typeParams" select="msxsl:node-set($typeParamsFragment)/child::*"/>
+		<xsl:variable name="typeParams" select="exsl:node-set($typeParamsFragment)/child::*"/>
 
 		<xsl:variable name="passTypeParamsFragment">
 			<xsl:for-each select="$items">
 				<plx:passTypeParam dataTypeName="{@dataTypeName}"/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="passTypeParams" select="msxsl:node-set($passTypeParamsFragment)/child::*"/>
+		<xsl:variable name="passTypeParams" select="exsl:node-set($passTypeParamsFragment)/child::*"/>
 
 		<plx:class visibility="public" modifier="static" partial="true" name="Tuple">
 			<plx:leadingInfo>

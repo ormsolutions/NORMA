@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:odt="http://schemas.orm.net/ORMDataTypes" 
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
@@ -40,16 +41,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="DataType">
-					<xs:annotation>
-						<xs:documentation>The data type of this Property.</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:complexContent>
-							<xs:extension base="plx:typeRefType"/>
-						</xs:complexContent>
-					</xs:complexType>
-				</xs:element>
+				<xs:element ref="prop:DataType"/>
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="xs:token">
 				<xs:annotation>
@@ -81,6 +73,42 @@
 				<xs:annotation>
 					<xs:documentation>The name of the Property that represents the other end of this relationship.</xs:documentation>
 					<xs:documentation>Note that if @isCustomType is true, this attribute must be present. If @isCustomType is false, this attribute must not be present.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DataType">
+		<xs:annotation>
+			<xs:documentation>The data type of this Property.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="plx:typeRefType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FormatMapping">
+		<xs:annotation>
+			<xs:documentation>A mapping from an oil:informationTypeFormat to a prop:DataType (i.e. a PLiX data type).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="prop:DataType"/>
+				<xs:any minOccurs="0" processContents="strict" namespace="http://schemas.neumont.edu/CodeGeneration/PLiX">
+					<xs:annotation>
+						<xs:documentation>Constraint enforcement code, if any, for this data type. Should return plx:trueKeyword if the value is valid.</xs:documentation>
+						<xs:documentation>Use plx:valueKeyword for references to the variable being validated.</xs:documentation>
+					</xs:annotation>
+				</xs:any>
+			</xs:sequence>
+			<xs:attribute name="name" use="required" type="xs:token">
+				<xs:annotation>
+					<xs:documentation>The name of the oil:informationTypeFormat that this prop:FormatMapping is for.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="isIdentity" use="optional" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is this prop:FormatMapping for an odt:identity?</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>

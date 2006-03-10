@@ -89,22 +89,6 @@
 				<plx:derivesFromClass dataTypeName="EventArgs"/>
 				<xsl:copy-of select="$PropertyChangeEventArgsClassBody"/>
 			</plx:class>
-			<!--
-				PLIX_TODO: When PLiX supports rendering delegates in C#, uncomment the following block,
-				and move the closeRegion pragma (above) into it.
-			-->
-			<!--<plx:delegate visibility="public" name="PropertyChangeEventHandler">
-				<plx:typeParam name="TSender"/>
-				<plx:typeParam name="TPropertyChangeEventArgs">
-					<plx:typeConstraint dataTypeName="EventArgs"/>
-					<plx:typeConstraint dataTypeName="IPropertyChangeEventArgs">
-						<plx:passTypeParam dataTypeName="TProperty"/>
-					</plx:typeConstraint>
-				</plx:typeParam>
-				<plx:typeParam name="TProperty"/>
-				<plx:param type="in" name="sender" dataTypeName="TSender"/>
-				<plx:param type="in" name="e" dataTypeName="TPropertyChangeEventArgs"/>
-			</plx:delegate>-->
 		</plx:namespace>
 	</xsl:template>
 

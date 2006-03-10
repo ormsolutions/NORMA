@@ -13,13 +13,15 @@
 
 	<xsl:include href="GenerateGlobalSupportClasses.xslt"/>
 
-	<xsl:param name="GenerateGlobalSupportClasses" select="false()"/>
-	<xsl:param name="GenerateCodeAnalysisAttributes" select="false()"/>
+	<xsl:param name="GenerateGlobalSupportClasses" select="true()"/>
+	<xsl:param name="GenerateCodeAnalysisAttributes" select="true()"/>
 	<xsl:param name="RaiseEventsAsynchronously" select="true()"/>
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
-	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'public'"/>
+	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'private'"/>
+
+	<xsl:param name="Int32MaxValue" select="number(2147483647)"/>
 
 	<xsl:param name="GeneratedCodeAttributeFragment">
 		<plx:attribute dataTypeName="GeneratedCodeAttribute">
@@ -177,7 +179,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="AllProperties" select="exsl:node-set($AllPropertiesFragment)/child::*"/>
-		
+
 		<plx:namespace name="{$ModelName}">
 
 			<xsl:for-each select="$ConceptTypes">
@@ -212,6 +214,7 @@
 			<xsl:apply-templates select="$Model" mode="OIALtoPLiX_Implementation">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
+				<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
 				<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
 				<xsl:with-param name="AllProperties" select="$AllProperties"/>
 			</xsl:apply-templates>
@@ -223,12 +226,13 @@
 		<xsl:param name="ConceptTypeRefs"/>
 		<xsl:param name="InformationTypeFormatMappings"/>
 		<xsl:variable name="thisClassName" select="@name"/>
+		<xsl:variable name="identityFormatRefNames" select="$InformationTypeFormatMappings[@isIdentity='true']/@name"/>
 
 		<!--Process directly contained oil:conceptTypeRef and oil:informationType elements,
 			as well as nested oil:conceptType elements and oil:conceptType elements that we are nested within.
 			Also process all oil:conceptTypeRef elements that are targetted at us.-->
 
-		<xsl:for-each select="oil:informationType">
+		<xsl:for-each select="oil:informationType[not(@formatRef=$identityFormatRefNames)]">
 			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="false">
 				<xsl:copy-of select="$InformationTypeFormatMappings[@name=current()/@formatRef]/prop:DataType"/>
 			</prop:Property>
@@ -249,16 +253,213 @@
 			</prop:Property>
 		</xsl:for-each>
 		<xsl:for-each select="$ConceptTypeRefs[@target=current()/@name]">
-			<prop:Property name="{@oppositeName}" mandatory="false" isUnique="true" isCollection="{not(boolean(oil:singleRoleUniquenessConstraint))}" isCustomType="true" oppositeName="{@name}">
-				<prop:DataType dataTypeName="{parent::oil:conceptType/@name}"/>
+			<xsl:variable name="isCollection" select="not(boolean(oil:singleRoleUniquenessConstraint))"/>
+			<prop:Property name="{@oppositeName}" mandatory="false" isUnique="true" isCollection="{$isCollection}" isCustomType="true" oppositeName="{@name}">
+				<xsl:variable name="parentConceptTypeName" select="parent::oil:conceptType/@name"/>
+				<xsl:choose>
+					<xsl:when test="$isCollection">
+						<prop:DataType dataTypeName="ICollection">
+							<plx:passTypeParam dataTypeName="{$parentConceptTypeName}"/>
+						</prop:DataType>
+					</xsl:when>
+					<xsl:otherwise>
+						<prop:DataType dataTypeName="{$parentConceptTypeName}"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</prop:Property>
 		</xsl:for-each>
 	</xsl:template>
-	<xsl:template match="*" mode="GenerateInformationTypeFormatMapping">
-		<!--TODO:-->
-		<FormatMapping name="{@name}">
+
+	<xsl:template match="odt:identity" mode="GenerateInformationTypeFormatMapping">
+		<prop:FormatMapping name="{@name}" isIdentity="true"/>
+	</xsl:template>
+	<xsl:template match="odt:boolean" mode="GenerateInformationTypeFormatMapping">
+		<prop:FormatMapping name="{@name}">
+			<prop:DataType dataTypeName=".boolean"/>
+			<xsl:if test="string-length(@fixed)">
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:valueKeyword/>
+					</plx:left>
+					<plx:right>
+						<xsl:element name="{@fixed}Keyword" namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:if>
+		</prop:FormatMapping>
+	</xsl:template>
+	<xsl:template match="odt:decimalNumber" mode="GenerateInformationTypeFormatMapping">
+		<prop:FormatMapping name="{@name}">
+			<xsl:variable name="hasConstraints" select="boolean(child::*)"/>
+			<xsl:choose>
+				<xsl:when test="@fractionDigits=0">
+					<!-- Integral type -->
+					<!-- TODO: Process @totalDigits and all child elements -->
+					<prop:DataType dataTypeName=".i4"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- Fraction type -->
+					<!-- TODO: Process @totalDigits, @fractionDigits, and all child elements -->
+					<prop:DataType dataTypeName=".decimal"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</prop:FormatMapping>
+	</xsl:template>
+	<xsl:template match="odt:floatingPointNumber" mode="GenerateInformationTypeFormatMapping">
+		<prop:FormatMapping name="{@name}">
+			<xsl:choose>
+				<xsl:when test="@precision='single' or @precision&lt;=24">
+					<prop:DataType dataTypeName=".r4"/>
+				</xsl:when>
+				<xsl:when test="@precision='double' or @precision&lt;=53">
+					<prop:DataType dataTypeName=".r8"/>
+				</xsl:when>
+				<xsl:when test="@precision='quad' or @precision&lt;=113">
+					<!-- TODO: We need a .NET quad-precision floating point type -->
+					<prop:DataType dataTypeName=".r16"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- TODO: We need a .NET arbitrary-precision floating point type -->
+					<prop:DataType dataTypeName=".r"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- TODO: Process all child elements -->
+		</prop:FormatMapping>
+	</xsl:template>
+	<xsl:template match="odt:string" mode="GenerateInformationTypeFormatMapping">
+		<prop:FormatMapping name="{@name}">
 			<prop:DataType dataTypeName=".string"/>
-		</FormatMapping>
+			<!-- TODO: Process all child elements -->
+			<xsl:if test="(@minLength and not(@minLength=0)) or @maxLength">
+				<xsl:call-template name="GetLengthValidationCode">
+					<xsl:with-param name="MinLength" select="@minLength"/>
+					<xsl:with-param name="MaxLength" select="@maxLength"/>
+				</xsl:call-template>
+			</xsl:if>
+		</prop:FormatMapping>
+	</xsl:template>
+	<xsl:template match="odt:binary" mode="GenerateInformationTypeFormatMapping">
+		<prop:FormatMapping name="{@name}">
+			<prop:DataType dataTypeName=".u1" dataTypeIsSimpleArray="true"/>
+			<xsl:if test="(@minLength and not(@minLength=0)) or @maxLength">
+				<xsl:call-template name="GetLengthValidationCode">
+					<xsl:with-param name="MinLength" select="@minLength"/>
+					<xsl:with-param name="MaxLength" select="@maxLength"/>
+				</xsl:call-template>
+			</xsl:if>
+		</prop:FormatMapping>
+	</xsl:template>
+	<xsl:template match="*" mode="GenerateInformationTypeFormatMapping">
+		<xsl:message terminate="no">
+			<xsl:text>WARNING: Unrecognized data type.</xsl:text>
+		</xsl:message>
+	</xsl:template>
+
+	<xsl:template name="GetLengthValidationCode">
+		<xsl:param name="MinLength"/>
+		<xsl:param name="MaxLength"/>
+		<xsl:variable name="hasMinLength" select="boolean($MinLength) and not($MinLength=0)"/>
+		<xsl:variable name="hasMaxLength" select="boolean($MaxLength)"/>
+		<xsl:variable name="minLengthExceedsInt32MaxValue" select="$hasMinLength and $MinLength>$Int32MaxValue"/>
+		<xsl:variable name="maxLengthExceedsInt32MaxValue" select="$hasMaxLength and $MaxLength>$Int32MaxValue"/>
+		<xsl:variable name="minLengthDataType">
+			<xsl:choose>
+				<xsl:when test="$minLengthExceedsInt32MaxValue">
+					<xsl:value-of select="'i8'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'i4'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="maxLengthDataType">
+			<xsl:choose>
+				<xsl:when test="$maxLengthExceedsInt32MaxValue">
+					<xsl:value-of select="'i8'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'i4'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="plxLeftMinValueFragment">
+			<plx:left>
+				<plx:callInstance type="property" name="Length">
+					<xsl:if test="$minLengthExceedsInt32MaxValue">
+						<xsl:attribute name="name">
+							<xsl:value-of select="'LongLength'"/>
+						</xsl:attribute>
+					</xsl:if>
+					<plx:callObject>
+						<plx:valueKeyword/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:left>
+		</xsl:variable>
+		<xsl:variable name="plxLeftMaxValueFragment">
+			<plx:left>
+				<plx:callInstance type="property" name="Length">
+					<xsl:if test="$maxLengthExceedsInt32MaxValue">
+						<xsl:attribute name="name">
+							<xsl:value-of select="'LongLength'"/>
+						</xsl:attribute>
+					</xsl:if>
+					<plx:callObject>
+						<plx:valueKeyword/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:left>
+		</xsl:variable>
+		<xsl:variable name="plxLeftMinValue" select="exsl:node-set($plxLeftMinValueFragment)/child::*"/>
+		<xsl:variable name="plxLeftMaxValue" select="exsl:node-set($plxLeftMaxValueFragment)/child::*"/>
+		<xsl:variable name="minLengthTestFragment">
+			<plx:binaryOperator type="greaterThanOrEqual">
+				<xsl:copy-of select="$plxLeftMinValue"/>
+				<plx:right>
+					<plx:value type="{$minLengthDataType}" data="{$MinLength}"/>
+				</plx:right>
+			</plx:binaryOperator>
+		</xsl:variable>
+		<xsl:variable name="minLengthTest" select="exsl:node-set($minLengthTestFragment)/child::*"/>
+		<xsl:variable name="maxLengthTestFragment">
+			<plx:binaryOperator type="lessThanOrEqual">
+				<xsl:copy-of select="$plxLeftMaxValue"/>
+				<plx:right>
+					<plx:value type="{$maxLengthDataType}" data="{$MaxLength}"/>
+				</plx:right>
+			</plx:binaryOperator>
+		</xsl:variable>
+		<xsl:variable name="maxLengthTest" select="exsl:node-set($maxLengthTestFragment)/child::*"/>
+		<xsl:choose>
+			<xsl:when test="$hasMinLength and $hasMaxLength">
+				<xsl:choose>
+					<xsl:when test="$MinLength=$MaxLength">
+						<xsl:copy-of select="$minLengthTest"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<xsl:copy-of select="$minLengthTest"/>
+							</plx:left>
+							<plx:right>
+								<xsl:copy-of select="$maxLengthTest"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$hasMinLength  and not($hasMaxLength)">
+				<xsl:copy-of select="$minLengthTest"/>
+			</xsl:when>
+			<xsl:when test="not($hasMinLength) and $hasMaxLength">
+				<xsl:copy-of select="$maxLengthTest"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>SANITY CHECK: This template shouldn't be called if neither a non-zero @minLength nor @maxLength is present.</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="oil:conceptType" mode="GenerateAbstractClass">
@@ -277,7 +478,7 @@
 			</plx:trailingInfo>
 			<xsl:copy-of select="$GeneratedCodeAttribute"/>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged"/>
-			<plx:function name=".construct" visibility="protected"/>
+			<plx:function visibility="protected" name=".construct"/>
 			<plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
 				<plx:initialize>
 					<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate">
@@ -315,23 +516,19 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<plx:throw>
-							<plx:callNew dataTypeName="ArgumentNullException">
-								<plx:passParam>
-									<plx:string>
-										<xsl:value-of select="$className"/>
-									</plx:string>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:throw>
+						<plx:return>
+							<plx:nullKeyword/>
+						</plx:return>
 					</plx:branch>
-					<plx:return>
-						<plx:callInstance type="property" name="{$parentConceptTypeName}">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="{$className}"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
+					<plx:fallbackBranch>
+						<plx:return>
+							<plx:callInstance type="property" name="{$parentConceptTypeName}">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="{$className}"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:return>
+					</plx:fallbackBranch>
 				</plx:operatorFunction>
 			</xsl:if>
 			<xsl:for-each select="child::oil:conceptType">
@@ -351,17 +548,11 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<plx:throw>
-							<plx:callNew dataTypeName="ArgumentNullException">
-								<plx:passParam>
-									<plx:string>
-										<xsl:value-of select="$className"/>
-									</plx:string>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:throw>
+						<plx:return>
+							<plx:nullKeyword/>
+						</plx:return>
 					</plx:branch>
-					<plx:branch>
+					<plx:alternateBranch>
 						<plx:condition>
 							<plx:binaryOperator type="identityEquality">
 								<plx:left>
@@ -379,14 +570,16 @@
 						<plx:throw>
 							<plx:callNew dataTypeName="InvalidCastException"/>
 						</plx:throw>
-					</plx:branch>
-					<plx:return>
-						<plx:callInstance type="property" name="{$childConceptTypeName}">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="{$className}"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:return>
+					</plx:alternateBranch>
+					<plx:fallbackBranch>
+						<plx:return>
+							<plx:callInstance type="property" name="{$childConceptTypeName}">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="{$className}"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:return>
+					</plx:fallbackBranch>
 				</plx:operatorFunction>
 			</xsl:for-each>
 		</plx:class>
