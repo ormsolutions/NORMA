@@ -189,6 +189,17 @@ namespace Neumont.Tools.ORM.Shell
 		private string myDoubleTagName;
 
 		/// <summary>
+		/// Return true if no values are set in the structure
+		/// </summary>
+		public virtual bool IsDefault
+		{
+			get
+			{
+				return myCustomPrefix == null && myCustomName == null && myCustomNamespace == null && myDoubleTagName == null;
+			}
+		}
+
+		/// <summary>
 		/// The custom prefix to use.
 		/// </summary>
 		/// <value>The custom prefix to use.</value>
@@ -265,6 +276,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// Default ORMCustomSerializedElementInfo
 		/// </summary>
 		public static readonly ORMCustomSerializedElementInfo Default = new ORMCustomSerializedElementInfo();
+
+		/// <summary>
+		/// Return true if no values are set in the structure
+		/// </summary>
+		public override bool IsDefault
+		{
+			get
+			{
+				return myWriteStyle == 0 && base.IsDefault;
+			}
+		}
 
 		/// <summary>
 		/// The style to use when writting.
@@ -1149,6 +1171,10 @@ namespace Neumont.Tools.ORM.Shell
 				else if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) != 0)
 				{
 					customInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link);
+					if (customInfo.IsDefault && !object.ReferenceEquals(GetParentModel(rolePlayer), GetParentModel(oppositeRolePlayer)))
+					{
+						return;
+					}
 				}
 			}
 

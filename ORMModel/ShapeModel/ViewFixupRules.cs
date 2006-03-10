@@ -387,6 +387,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 					FactTypeShape shape = pel as FactTypeShape;
 					if (shape != null)
 					{
+						//This part handles inserting the role in the correct location if the facttypeshape has 
+						//a different display order for the roles than the native one.
+						RoleMoveableCollection roles = shape.RoleDisplayOrderCollection;
+						if (roles.Count != 0)
+						{
+							Store store = shape.Store;
+							Role newRole = link.RoleCollection;
+							IDictionary contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+							int insertIndex = -1;
+							if (contextInfo.Contains(FactTypeShape.InsertAfterRoleKey))
+							{
+								Role insertAfter = (Role)contextInfo[FactTypeShape.InsertAfterRoleKey];
+								insertIndex = roles.IndexOf(insertAfter);
+								if (insertIndex != -1)
+								{
+									++insertIndex;
+								}
+							}
+							else if (contextInfo.Contains(FactTypeShape.InsertBeforeRoleKey))
+							{
+								Role insertBefore = (Role)contextInfo[FactTypeShape.InsertBeforeRoleKey];
+								insertIndex = roles.IndexOf(insertBefore);
+							}
+							if (insertIndex != -1)
+							{
+								roles.Insert(insertIndex, newRole);
+							}
+							else
+							{
+								roles.Add(newRole);
+							}
+						}
 						shape.AutoResize();
 					}
 				}

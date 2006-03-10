@@ -63,8 +63,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
 			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
-		}
 
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeShapeHasRoleDisplayOrder.MetaRelationshipGuid);
+			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedHandler));
+		}
 		/// <summary>
 		/// Detaches event listeners for the purpose of notifying the
 		/// ReadingShape to invalidate its cached data.
@@ -89,14 +91,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
 			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
+
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeShapeHasRoleDisplayOrder.MetaRelationshipGuid);
+			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedHandler));
 		}
 		#endregion // Event Hookup
 		#region Reading Events
 		/// <summary>
+		/// Handles when the roleplayer order position has changed.
+		/// </summary>
+		private static void RolePlayerOrderChangedHandler(object sender, RolePlayerOrderChangedEventArgs e)
+		{
+			FactTypeShape factShape = e.SourceElement as FactTypeShape;
+			if (factShape != null)
+			{
+				FactType factType = factShape.ModelElement as FactType;
+				if (factType != null)
+				{
+					ReadingOrderMoveableCollection readings = factType.ReadingOrderCollection;
+					int readingCount = readings.Count;
+					for (int i = 0; i < readingCount; ++i)
+					{
+						RefreshPresentationElements(readings[i].PresentationRolePlayers);
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Event handler that listens for when ReadingOrderHasReading link is being added
 		/// and then tells associated model elements to invalidate their cache
 		/// </summary>
-		public static void ReadingAddedEvent(object sender, ElementAddedEventArgs e)
+		private static void ReadingAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 			if (link.ReadingCollection.IsPrimary)
@@ -109,7 +134,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Event handler that listens for when ReadingOrderHasReading link is being removed
 		/// and then tells associated model elements to invalidate their cache
 		/// </summary>
-		public static void ReadingRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private static void ReadingRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 			Reading read = link.ReadingCollection;
@@ -125,7 +150,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Event handler that listens for when a Reading attribute is changed
 		/// and then tells associated model elements to invalidate their cache
 		/// </summary>
-		public static void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
 			Reading read = e.ModelElement as Reading;
 			Guid attrGuid = e.MetaAttribute.Id;
@@ -322,12 +347,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Debug.Assert(readingOrd != null);
 
 					FactType factType = readingOrd.FactType;
+					FactTypeShape factShape = this.ParentShape as FactTypeShape;
 					if (factType == null || factType.IsRemoved)
 					{
 						return "";
 					}
 					ReadingOrderMoveableCollection readingOrderCollection = factType.ReadingOrderCollection;
-					ReadingOrder primaryReadingOrder = FactType.FindMatchingReadingOrder(factType);
+					ReadingOrder primaryReadingOrder = FactTypeShape.FindMatchingReadingOrder(factShape);
 					int numReadingOrders = readingOrderCollection.Count;
 					for (int i = 0; i < numReadingOrders; ++i)
 					{
@@ -346,7 +372,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (roleCount <= 2 || (numReadingOrders > 1 && i == 0))
 						{
 							aReading = regCountPlaces.Replace(aReading, ellipsis).Trim();
-							if (i == 0 && roleCollection[0] != factType.RoleCollection[0])
+							if (i == 0 && roleCollection[0] != factShape.DisplayedRoleOrder[0])
 							{
 								//Terry's preffered character to append is \u25C4 which can
 								//be found in the "Arial Unicode MS" font
@@ -361,7 +387,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
-							RoleMoveableCollection factRoleCollection = factType.RoleCollection;
+							RoleMoveableCollection factRoleCollection = factShape.DisplayedRoleOrder;
+							//RoleMoveableCollection factRoleCollection = factType.RoleCollection;
 							bool primaryOrder = object.ReferenceEquals(primaryReadingOrder, readingOrder);
 							//UNDONE: the roleCount should be factRoleCollection.Count. However, this causes
 							//an error when a role is added to a factType because the factType attempts to
@@ -494,7 +521,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to detect changes to the ReadingText so that the shape knows the
 		/// display text needs to be recreated.
 		/// </summary>
-		[RuleOn(typeof(ReadingOrder))]
+		[RuleOn(typeof(ReadingOrder), FireTime=TimeToFire.LocalCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)]
 		private class ReadingOrderReadingTextChanged : ChangeRule
 		{
 			/// <summary>
@@ -517,6 +544,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							reading.InvalidateDisplayText();
 						}
+					}
+				}
+			}
+		}
+		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class RoleDisplayOrderAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeShape factShape = (e.ModelElement as FactTypeShapeHasRoleDisplayOrder).FactTypeShape;
+				foreach (ShapeElement shape in factShape.RelativeChildShapes)
+				{
+					ReadingShape readingShape = shape as ReadingShape;
+					if (readingShape != null)
+					{
+						readingShape.InvalidateDisplayText();
+					}
+				}
+			}
+		}
+		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class RoleDisplayOrderPositionChanged : RolePlayerPositionChangeRule
+		{
+			public override void  RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			{
+
+				FactTypeShape factShape = e.SourceElement as FactTypeShape;
+				foreach (ShapeElement shape in factShape.RelativeChildShapes)
+				{
+					ReadingShape readingShape = shape as ReadingShape;
+					if (readingShape != null)
+					{
+						readingShape.InvalidateDisplayText();
 					}
 				}
 			}

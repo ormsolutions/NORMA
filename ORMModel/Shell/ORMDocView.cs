@@ -152,15 +152,23 @@ namespace Neumont.Tools.ORM.Shell
 		/// DeleteAnyShape will survive most complex multi-select cases whereas the Delete*Shape
 		/// will not. This is handled specially for the delete case.
 		/// </summary>
-        DeleteAnyShape = 0x1000000,
-        /// <summary>
-        /// Expand the error list for the selected object
-        /// </summary>
-        ErrorList = 0x10000000, 
+		DeleteAnyShape = 0x1000000,
+		/// <summary>
+		/// Expand the error list for the selected object
+		/// </summary>
+		ErrorList = 0x10000000,
 		/// <summary>
 		/// Align top level shape elements. Applies to all of the standard Format.Align commands.
 		/// </summary>
 		AlignShapes = 0x2000000,
+		/// <summary>
+		/// Move a role's order to the left within the fact type.
+		/// </summary>
+		MoveRoleLeft = 0x4000000, 
+		/// <summary>
+		/// Move a role's order to the right within the fact type.
+		/// </summary>
+		MoveRoleRight = 0x8000000, 
 		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
@@ -562,64 +570,98 @@ namespace Neumont.Tools.ORM.Shell
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
 				}
 
-                // Extra menu commands may be visible if there is a StickyObject active on the diagram.
-                ExternalConstraintShape constraintShape;
-                IConstraint constraint;
-                ORMDiagram ormDiagram;
+				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
+				ExternalConstraintShape constraintShape;
+				IConstraint constraint;
+				ORMDiagram ormDiagram;
 
-				if (null != (ormDiagram = CurrentDiagram as ORMDiagram)
-					&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
-					&& null != (constraint = constraintShape.AssociatedConstraint))
+				if (null != (ormDiagram = CurrentDiagram as ORMDiagram))
 				{
-					bool thisRoleInConstraint = false;
-					switch (constraint.ConstraintStorageStyle)
+					FactTypeShape factShape;
+					FactType fact;
+					if (null != (fact = role.FactType) &&
+						null != (factShape = ormDiagram.FindShapeForElement<FactTypeShape>(fact)))
 					{
-						case ConstraintStorageStyle.SingleColumnExternalConstraint:
-							SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
-							if (scec.RoleCollection.IndexOf(role) >= 0)
-							{
-								thisRoleInConstraint = true;
-								visibleCommands |= ORMDesignerCommands.ActivateRoleSequence;
-								enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
-							}
-							break;
-						case ConstraintStorageStyle.MultiColumnExternalConstraint:
-							MultiColumnExternalConstraint mcec = constraint as MultiColumnExternalConstraint;
-							int indexOfRole = -1;
-							RoleMoveableCollection currentRoleSequence = null;
-							foreach (MultiColumnExternalConstraintRoleSequence rs in mcec.RoleSequenceCollection)
-							{
-								currentRoleSequence = rs.RoleCollection;
-								indexOfRole = currentRoleSequence.IndexOf(role);
-								if (indexOfRole >= 0)
+						UpdateMoveRoleCommandStatus(factShape, role, ref visibleCommands, ref enabledCommands);
+					}
+
+					if (null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
+						&& null != (constraint = constraintShape.AssociatedConstraint))
+					{
+						bool thisRoleInConstraint = false;
+						switch (constraint.ConstraintStorageStyle)
+						{
+							case ConstraintStorageStyle.SingleColumnExternalConstraint:
+								SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
+								if (scec.RoleCollection.IndexOf(role) >= 0)
 								{
 									thisRoleInConstraint = true;
-									indexOfRole = mcec.RoleSequenceCollection.IndexOf(rs);
-									break;
+									visibleCommands |= ORMDesignerCommands.ActivateRoleSequence;
+									enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
 								}
-							}
-							if (thisRoleInConstraint)
-							{
-								visibleCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
-								enabledCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
-								if (indexOfRole == 0)
+								break;
+							case ConstraintStorageStyle.MultiColumnExternalConstraint:
+								MultiColumnExternalConstraint mcec = constraint as MultiColumnExternalConstraint;
+								int indexOfRole = -1;
+								RoleMoveableCollection currentRoleSequence = null;
+								foreach (MultiColumnExternalConstraintRoleSequence rs in mcec.RoleSequenceCollection)
 								{
-									enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
+									currentRoleSequence = rs.RoleCollection;
+									indexOfRole = currentRoleSequence.IndexOf(role);
+									if (indexOfRole >= 0)
+									{
+										thisRoleInConstraint = true;
+										indexOfRole = mcec.RoleSequenceCollection.IndexOf(rs);
+										break;
+									}
 								}
-								else if (indexOfRole == currentRoleSequence.Count - 1)
+								if (thisRoleInConstraint)
 								{
-									enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
+									visibleCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
+									enabledCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
+									if (indexOfRole == 0)
+									{
+										enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
+									}
+									else if (indexOfRole == currentRoleSequence.Count - 1)
+									{
+										enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
+									}
 								}
-							}
-							break;
-						default:
-							break;
+								break;
+							default:
+								break;
+						}
 					}
 				}
 			}
 			// Turn on the verbalization window command for all selections
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage | ORMDesignerCommands.ErrorList;
 			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage;
+		}
+		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
+		{
+			RoleMoveableCollection roles = factShape.DisplayedRoleOrder;
+			enabledCommands &= ~(ORMDesignerCommands.MoveRoleRight | ORMDesignerCommands.MoveRoleLeft);
+			visibleCommands |= ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight;
+			int roleIndex = roles.IndexOf(role);
+			int rolesCount = roles.Count;
+			if (roleIndex != 0)
+			{
+				enabledCommands |= ORMDesignerCommands.MoveRoleLeft;
+				if (rolesCount == 2)
+				{
+					visibleCommands &= ~ORMDesignerCommands.MoveRoleRight;
+				}
+			}
+			if (roleIndex < (rolesCount - 1))
+			{
+				enabledCommands |= ORMDesignerCommands.MoveRoleRight;
+				if (rolesCount == 2)
+				{
+					visibleCommands &= ~ORMDesignerCommands.MoveRoleLeft;
+				}
+			}
 		}
 		
 		/// <summary>
@@ -664,6 +706,21 @@ namespace Neumont.Tools.ORM.Shell
 							// the state has been changed.
 							command.Checked = role.IsMandatory;
 							break;
+						}
+					}
+				}
+				else if (0 != (commandFlag & (ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight)))
+				{
+					foreach (ModelElement mel in docView.GetSelectedComponents())
+					{
+						Role role = mel as Role;
+						if (role != null)
+						{
+							FactType fact;
+							if (null != (fact = role.FactType))
+							{
+								((OleMenuCommand)sender).Text = (fact.RoleCollection.Count == 2) ? ResourceStrings.CommandSwapRoleOrderText : null;
+							}
 						}
 					}
 				}
@@ -1262,22 +1319,23 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					RoleMoveableCollection roles = factType.RoleCollection;
 					int insertIndex = roles.IndexOf(role);
-					if (insertAfter)
-					{
-						++insertIndex;
-					}
 					Store store = factType.Store;
 					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InsertRoleTransactionName))
 					{
-						Role newRole = Role.CreateRole(store);
-						if (insertIndex == roles.Count)
+						IDictionary contextInfo = t.TopLevelTransaction.Context.ContextInfo;
+						if (insertAfter)
 						{
-							roles.Add(newRole);
+							++insertIndex;
+							contextInfo[FactTypeShape.InsertAfterRoleKey] = role;
 						}
 						else
 						{
-							roles.Insert(insertIndex, newRole);
+							contextInfo[FactTypeShape.InsertBeforeRoleKey] = role;
 						}
+						//bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
+
+						Role newRole = Role.CreateRole(store);
+						roles.Insert(insertIndex, newRole);
 						t.Commit();
 					}
 					// We've just added a role, so we have more than 1 and
@@ -1846,6 +1904,52 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 					connectAction.ChainMouseAction(constraintShape, ormDiagram.ActiveDiagramView.DiagramClientView);
+				}
+			}
+		}
+		/// <summary>
+		/// Move the selected role to the left.
+		/// </summary>
+		protected virtual void OnMenuMoveRoleLeft(ORMDesignerDocView docView)
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			foreach (ModelElement mel in docView.GetSelectedComponents())
+			{
+				Role role = mel as Role;
+				if (role != null)
+				{
+					FactTypeShape factShape = diagram.FindShapeForElement<FactTypeShape>(role.FactType);
+					if (null != factShape)
+					{
+						if (factShape.MoveRoleLeft(role))
+						{
+							UpdateMoveRoleCommandStatus(factShape, role, ref myVisibleCommands, ref myEnabledCommands);
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Move the selected role to the right.
+		/// </summary>
+		protected virtual void OnMenuMoveRoleRight(ORMDesignerDocView docView)
+		{
+			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
+			foreach (ModelElement mel in docView.GetSelectedComponents())
+			{
+				Role role = mel as Role;
+				if (role != null)
+				{
+					FactTypeShape factShape = diagram.FindShapeForElement<FactTypeShape>(role.FactType);
+					if (null != factShape)
+					{
+						if (factShape.MoveRoleRight(role))
+						{
+							UpdateMoveRoleCommandStatus(factShape, role, ref myVisibleCommands, ref myEnabledCommands);
+						}
+						return;
+					}
 				}
 			}
 		}

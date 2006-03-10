@@ -39,30 +39,163 @@ namespace Neumont.Tools.Converters
 	/// on an .ims file in the Solution Explorer.
 	/// </summary>
 	[Guid("a4febd86-790b-43a9-a6e7-2813886ab0d5")]
-	public sealed class ImsToDmdCustomTool : IVsSingleFileGenerator, MsOle.IObjectWithSite
+	public sealed class ImsToDmdCustomTool : ImsConverterCustomTool
+	{
+		#region Member variables
+		private const string ModelFileExtension = ".dsldm";
+		#endregion // Member variables
+		#region Constructor
+		/// <summary>
+		/// Public contructor
+		/// </summary>
+		public ImsToDmdCustomTool() : base() { }
+		#endregion // Constructor
+		#region CustomTool Specific
+		protected override string  DefaultExtension
+		{
+			get
+			{
+				return ModelFileExtension;
+			}
+		}
+		/// <summary>
+		/// Generate a dmd file for the current ims file contents. Note that this
+		/// takes a contents instead of a file name so that we don't have to save
+		/// the file to regenerate the .dmd.
+		/// </summary>
+		/// <param name="sourceContents">Contents of an ims file</param>
+		/// <returns>Contents of the corresponding dmd file</returns>
+		protected override string Convert(string sourceContents)
+		{
+			Store store = CreateStore();
+			using (MemoryStream contentsStream = new MemoryStream())
+			{
+				using (StreamWriter writer = new StreamWriter(contentsStream))
+				{
+					// Get the contents into a stream for the ImsReader API
+					writer.Write(sourceContents);
+					writer.Flush();
+					// Note: don't close the writer yet, we'll recycle the stream
+
+					// Set the stream back to the beginning and read it in
+					contentsStream.Position = 0;
+					ImsReader.Load(store, contentsStream, false);
+
+					// Resuse the stream to save the store back into
+					contentsStream.Position = 0;
+					DmdWriter.Save(store, contentsStream);
+					// If the saved stream is smaller than the starting stream
+					// then the length will be wrong
+					contentsStream.SetLength(contentsStream.Position);
+
+					// Dump it back out as a string
+					contentsStream.Position = 0;
+					using (StreamReader reader = new StreamReader(contentsStream))
+					{
+						return reader.ReadToEnd();
+					}
+				}
+			}
+		}
+		#endregion // CustomTool Specific
+	}
+	/// <summary>
+	/// A custom tool to replace the ImsToDmd.exe tool provided by Microsoft
+	/// in earlier drops of the DSLTools SDK.
+	/// Generates a .dsldm file from a .ims file when applied as a custom tool
+	/// on an .ims file in the Solution Explorer.
+	/// </summary>
+	[Guid("131a1bbb-3047-4a1c-aeb4-7e873c353a8a")]
+	public sealed class DmdToImsCustomTool : ImsConverterCustomTool
+	{
+		#region Member variables
+		private const string ModelFileExtension = ".ims";
+		#endregion // Member variables
+		#region Constructor
+		/// <summary>
+		/// Public contructor
+		/// </summary>
+		public DmdToImsCustomTool() : base() { }
+		#endregion // Constructor
+		#region CustomTool Specific
+		protected override string DefaultExtension
+		{
+			get
+			{
+				return ModelFileExtension;
+			}
+		}
+		/// <summary>
+		/// Generate a dmd file for the current ims file contents. Note that this
+		/// takes a contents instead of a file name so that we don't have to save
+		/// the file to regenerate the .dmd.
+		/// </summary>
+		/// <param name="sourceContents">Contents of an ims file</param>
+		/// <returns>Contents of the corresponding dmd file</returns>
+		protected override string Convert(string sourceContents)
+		{
+			Store store = CreateStore();
+			using (MemoryStream contentsStream = new MemoryStream())
+			{
+				using (StreamWriter writer = new StreamWriter(contentsStream))
+				{
+					// Get the contents into a stream for the ImsReader API
+					writer.Write(sourceContents);
+					writer.Flush();
+					// Note: don't close the writer yet, we'll recycle the stream
+
+					// Set the stream back to the beginning and read it in
+					contentsStream.Position = 0;
+					DmdReader.Load(store, contentsStream);
+
+					// Resuse the stream to save the store back into
+					contentsStream.Position = 0;
+					ImsWriter.Save(store, contentsStream);
+					// If the saved stream is smaller than the starting stream
+					// then the length will be wrong
+					contentsStream.SetLength(contentsStream.Position);
+
+					// Dump it back out as a string
+					contentsStream.Position = 0;
+					using (StreamReader reader = new StreamReader(contentsStream))
+					{
+						return reader.ReadToEnd();
+					}
+				}
+			}
+		}
+		#endregion // CustomTool Specific
+	}
+	/// <summary>
+	/// A base class used to move between different IMS model representations
+	/// </summary>
+	public abstract class ImsConverterCustomTool : IVsSingleFileGenerator, MsOle.IObjectWithSite
 	{
 		#region Member Variables
 		private MsOle.IServiceProvider myServiceProvider;
-		private const string ModelFileExtension = ".dsldm";
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
 		/// Public constructor
 		/// </summary>
-		public ImsToDmdCustomTool()
+		protected ImsConverterCustomTool()
 		{
 		}
 		#endregion // Constructor
 		#region IVsSingleFileGenerator Implementation
 		int IVsSingleFileGenerator.DefaultExtension(out string pbstrDefaultExtension)
 		{
-			pbstrDefaultExtension = ModelFileExtension;
+			pbstrDefaultExtension = DefaultExtension;
 			return VSConstants.S_OK;
 		}
+		/// <summary>
+		/// The default extension for the generated file
+		/// </summary>
+		protected abstract string DefaultExtension{get;}
 		int IVsSingleFileGenerator.Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
 		{
 			pGenerateProgress.Progress(1, 4);
-			byte[] bytes = Encoding.UTF8.GetBytes(GenerateDmd(bstrInputFileContents));
+			byte[] bytes = Encoding.UTF8.GetBytes(Convert(bstrInputFileContents));
 			pGenerateProgress.Progress(3, 4);
 			byte[] preamble = Encoding.UTF8.GetPreamble();
 			int bufferLength = bytes.Length + preamble.Length;
@@ -86,45 +219,16 @@ namespace Neumont.Tools.Converters
 		#endregion // IObjectWithSite Implementation
 		#region CustomTool Specific
 		/// <summary>
-		/// Generate a dmd file for the current ims file contents. Note that this
-		/// takes a contents instead of a file name so that we don't have to save
-		/// the file to regenerate the .dmd.
+		/// Overridden by the derived class to generate converted file contents
 		/// </summary>
-		/// <param name="imsContents">Contents of an ims file</param>
-		/// <returns>Contents of the corresponding dmd file</returns>
-		private string GenerateDmd(string imsContents)
-		{
-			Store store = CreateStore();
-			using (MemoryStream contentsStream = new MemoryStream())
-			{
-				using (StreamWriter writer = new StreamWriter(contentsStream))
-				{
-					// Get the contents into a stream for the ImsReader API
-					writer.Write(imsContents);
-					writer.Flush();
-					// Note: don't close the writer yet, we'll recycle the stream
-					
-					// Set the stream back to the beginning and read it in
-					contentsStream.Position = 0;
-					ImsReader.Load(store, contentsStream, false);
-
-					// Resuse the stream to save the store back into
-					contentsStream.Position = 0;
-					DmdWriter.Save(store, contentsStream);
-					// If the saved stream is smaller than the starting stream
-					// then the length will be wrong
-					contentsStream.SetLength(contentsStream.Position);
-
-					// Dump it back out as a string
-					contentsStream.Position = 0;
-					using (StreamReader reader = new StreamReader(contentsStream))
-					{
-						return reader.ReadToEnd();
-					}
-				}
-			}
-		}
-		private static Store CreateStore()
+		/// <param name="sourceContents">Contents of the original file</param>
+		/// <returns>Contents of the converted file</returns>
+		protected abstract string Convert(string sourceContents);
+		/// <summary>
+		/// Create a store with the standard IMS object models loaded
+		/// </summary>
+		/// <returns>Store</returns>
+		protected static Store CreateStore()
 		{
 			Store store = new Store();
 			Type[] substoreTypes = new Type[] { typeof(CoreDesignSurface), typeof(CoronaConcepts), typeof(PhoenixMetaModel) };

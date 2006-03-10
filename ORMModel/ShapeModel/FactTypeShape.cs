@@ -77,6 +77,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region FactTypeShape class
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
 	{
+		#region Public token values
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate the role that
+		/// a newly added role should be added after.
+		/// </summary>
+		public static readonly object InsertAfterRoleKey = new object();
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate the role that
+		/// a newly added role should be added before.
+		/// </summary>
+		public static readonly object InsertBeforeRoleKey = new object();
+		#endregion // Public token values
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
 		/// The activity of a role in a ConstraintBox
@@ -165,7 +177,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Debug.Assert(factConstraint != null);
 				Debug.Assert(uniqueConstraintRoles != null);
 				Debug.Assert(roleActivity != null);
-				if (!object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_FullySpanning) && !object.ReferenceEquals(roleActivity,PreDefinedConstraintBoxRoleActivities_AntiSpanning))
+				if (!object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_FullySpanning) && !object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_AntiSpanning))
 				{
 					int roleActivityCount = roleActivity.Length;
 					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= uniqueConstraintRoles.Count);
@@ -342,26 +354,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Array.Sort(
 					boxes,
 					delegate(ConstraintBox c1, ConstraintBox c2)
-				{
-					ConstraintType ct1 = c1.ConstraintType;
-					ConstraintType ct2 = c2.ConstraintType;
-					int retVal = 0;
-
-					if (ct1 != ct2)
 					{
-						int ctOrder1 = RelativeSortPosition(ct1);
-						int ctOrder2 = RelativeSortPosition(ct2);
-						if (ctOrder1 < ctOrder2)
+						ConstraintType ct1 = c1.ConstraintType;
+						ConstraintType ct2 = c2.ConstraintType;
+						int retVal = 0;
+
+						if (ct1 != ct2)
 						{
-							retVal = -1;
+							int ctOrder1 = RelativeSortPosition(ct1);
+							int ctOrder2 = RelativeSortPosition(ct2);
+							if (ctOrder1 < ctOrder2)
+							{
+								retVal = -1;
+							}
+							else if (ctOrder1 > ctOrder2)
+							{
+								retVal = 1;
+							}
 						}
-						else if (ctOrder1 > ctOrder2)
-						{
-							retVal = 1;
-						}
-					}
-					return retVal;
-				});
+						return retVal;
+					});
 				return CalculateSignificantCount(boxes, boxes.Length);
 			}
 			private static int CalculateSignificantCount(ConstraintBox[] boxes, int fullCount)
@@ -400,62 +412,62 @@ namespace Neumont.Tools.ORM.ShapeModel
 					//0,
 					//fullCount, // UNDONE: This is dumb. Sort should have an overload that takes a Comparer<T> with index, count. Check in Beta2
 					delegate(ConstraintBox c1, ConstraintBox c2)
-				{
-					if (object.ReferenceEquals(c1.FactConstraint, c2.FactConstraint))
 					{
-						// Same object
-						return 0;
-					}
-
-					// Order the constraints by IsHidden, ConstraintType, RoleCount
-					int retVal = 0;
-
-					if (c1.IsHidden)
-					{
-						if (!c2.IsHidden)
+						if (object.ReferenceEquals(c1.FactConstraint, c2.FactConstraint))
 						{
-							retVal = 1;
+							// Same object
+							return 0;
 						}
-					}
-					else if (c2.IsHidden)
-					{
-						retVal = -1;
-					}
-					else
-					{
-						ConstraintType ct1 = c1.ConstraintType;
-						ConstraintType ct2 = c2.ConstraintType;
-						if (ct1 != ct2)
+
+						// Order the constraints by IsHidden, ConstraintType, RoleCount
+						int retVal = 0;
+
+						if (c1.IsHidden)
 						{
-							int ctOrder1 = RelativeSortPosition(ct1);
-							int ctOrder2 = RelativeSortPosition(ct2);
-							if (ctOrder1 < ctOrder2)
-							{
-								retVal = -1;
-							}
-							else if (ctOrder1 > ctOrder2)
+							if (!c2.IsHidden)
 							{
 								retVal = 1;
 							}
 						}
-						else if (IsConstraintTypeVisible(ct1))
+						else if (c2.IsHidden)
 						{
-							// Constraints with less roles sink to the bottom.
-							int c1RoleCount = c1.RoleCollection.Count;
-							int c2RoleCount = c2.RoleCollection.Count;
-							if (c1RoleCount < c2RoleCount)
+							retVal = -1;
+						}
+						else
+						{
+							ConstraintType ct1 = c1.ConstraintType;
+							ConstraintType ct2 = c2.ConstraintType;
+							if (ct1 != ct2)
 							{
-								retVal = 1;
+								int ctOrder1 = RelativeSortPosition(ct1);
+								int ctOrder2 = RelativeSortPosition(ct2);
+								if (ctOrder1 < ctOrder2)
+								{
+									retVal = -1;
+								}
+								else if (ctOrder1 > ctOrder2)
+								{
+									retVal = 1;
+								}
 							}
-							else if (c1RoleCount > c2RoleCount)
+							else if (IsConstraintTypeVisible(ct1))
 							{
-								retVal = -1;
+								// Constraints with less roles sink to the bottom.
+								int c1RoleCount = c1.RoleCollection.Count;
+								int c2RoleCount = c2.RoleCollection.Count;
+								if (c1RoleCount < c2RoleCount)
+								{
+									retVal = 1;
+								}
+								else if (c1RoleCount > c2RoleCount)
+								{
+									retVal = -1;
+								}
 							}
 						}
-					}
 
-					return retVal;
-				});
+						return retVal;
+					});
 				return CalculateSignificantCount(boxes, fullCount);
 			}
 			/// <summary>
@@ -514,6 +526,123 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			#endregion // Array sorting code
 		}
+			#region Move Roles
+			/// <summary>
+			/// Moves the display order of a role to the left in a fact type shape.
+			/// </summary>
+			/// <param name="roleToMove">The role to move to the left.</param>
+			/// <returns>True if it actually moved the role.</returns>
+			public bool MoveRoleLeft(Role roleToMove)
+			{
+				return MoveRole(true, roleToMove);
+			}
+			/// <summary>
+			/// Moves the display order of a role to the right in a fact type shape.
+			/// </summary>
+			/// <param name="roleToMove">The role to move to the right.</param>
+			/// <returns>True if it actually moved the role.</returns>
+			public bool MoveRoleRight(Role roleToMove)
+			{
+				return MoveRole(false, roleToMove);
+			}
+			private bool MoveRole(bool movingLeft, Role roleToMove)
+			{
+				bool moveOccured = false;
+				using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleOrderTransactionName))
+				{
+					RoleMoveableCollection roles = EnsureDisplayOrderCollection();
+					int index = roles.IndexOf(roleToMove);
+					if (index != 0 && movingLeft)
+					{
+						roles.Move(index, index - 1);
+					}
+					else if (index < roles.Count - 1 && !movingLeft)
+					{
+						roles.Move(index, index + 1);
+					}
+
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+						moveOccured = true;
+					}
+				}
+				return moveOccured;
+			}
+			private RoleMoveableCollection EnsureDisplayOrderCollection()
+			{
+				RoleMoveableCollection displayRoles = RoleDisplayOrderCollection;
+				if (displayRoles.Count == 0)
+				{
+					FactType fact = AssociatedFactType;
+					if (fact != null)
+					{
+						RoleMoveableCollection nativeRoles = fact.RoleCollection;
+						int nativeRoleCount = nativeRoles.Count;
+						for (int i = 0; i < nativeRoleCount; ++i)
+						{
+							displayRoles.Add(nativeRoles[i]);
+						}
+					}
+				}
+				return displayRoles;
+			}
+			/// <summary>
+			/// Gets the currently displayed order of the roles in the fact type.
+			/// If there is not a custom display order then it will return the default
+			/// role collection.
+			/// </summary>
+			public RoleMoveableCollection DisplayedRoleOrder
+			{
+				get
+				{
+					RoleMoveableCollection alternateOrder = RoleDisplayOrderCollection;
+					return (alternateOrder.Count == 0) ? AssociatedFactType.RoleCollection : alternateOrder;
+				}
+			}
+			/// <summary>
+			/// Gets the reading order that matches the currently displayed order of the
+			/// fact that is passed in.
+			/// </summary>
+			/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
+			public static ReadingOrder FindMatchingReadingOrder(FactTypeShape theFact)
+			{
+				RoleMoveableCollection factRoles = theFact.DisplayedRoleOrder;
+				Role[] roleOrder = new Role[factRoles.Count];
+				factRoles.CopyTo(roleOrder, 0);
+				return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
+			}
+			#region RoleDisplayOrderChanged class
+			[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+			private class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
+			{
+				public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+				{
+					Role role;
+					if (null != (role = e.CounterpartRolePlayer as Role))
+					{
+						foreach (PresentationElement pElem in role.FactType.PresentationRolePlayers)
+						{
+							FactTypeShape factShape;
+							if (null != (factShape = pElem as FactTypeShape))
+							{
+								foreach (LinkConnectsToNode connection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+								{
+									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+									if (binaryLink != null)
+									{
+										binaryLink.RipUp();
+									}
+								}
+
+								factShape.Invalidate();
+							}
+						}
+					}
+				}
+			}
+			#endregion // RoleDisplayOrderChanged class
+			#endregion // Move Roles
 		#endregion // ConstraintBox struct
 		#region Pre-defined ConstraintBoxRoleActivity arrays
 		// Used for the WalkConstraints method.  Having these static arrays is very
@@ -521,11 +650,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for a fully-spanning uniqueness constraint.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_FullySpanning = new ConstraintBoxRoleActivity[0] {};
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_FullySpanning = new ConstraintBoxRoleActivity[0] { };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an undefined uniqueness constraint.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_AntiSpanning = new ConstraintBoxRoleActivity[0] {};
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_AntiSpanning = new ConstraintBoxRoleActivity[0] { };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the first role active.
 		/// </summary>
@@ -604,7 +733,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// initialize variables
 			FactType parentFact = AssociatedFactType;
-			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			RoleMoveableCollection factRoles = DisplayedRoleOrder;
 			int factRoleCount = factRoles.Count;
 			if (fullBounds.IsEmpty)
 			{
@@ -810,10 +939,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					#endregion // Manual ConstraintRoleBox assignment
 					++currentConstraintIndex;
 				}
-				
+
 				// Get an initial grouping
 				int significantConstraintCount = ConstraintBox.GroupConstraintBoxes(constraintBoxes);
-				
+
 				// Determine which boxes should be hidden
 				int internalsCount = 0;
 				for (int i = 0; i < significantConstraintCount; ++i)
@@ -1131,16 +1260,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					this,
 					myDisplayPosition,
 					delegate(ref ConstraintBox constraintBox)
-				{
-					RectangleD fullBounds = constraintBox.Bounds;
-					if (fullBounds.Contains(point))
 					{
-						IFactConstraint factConstraint = constraintBox.FactConstraint;
-						diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new ConstraintSubField(factConstraint.Constraint));
-						return false; // Don't continue, we got our item
-					}
-					return true;
-				});
+						RectangleD fullBounds = constraintBox.Bounds;
+						if (fullBounds.Contains(point))
+						{
+							IFactConstraint factConstraint = constraintBox.FactConstraint;
+							diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new ConstraintSubField(factConstraint.Constraint));
+							return false; // Don't continue, we got our item
+						}
+						return true;
+					});
 			}
 			/// <summary>
 			/// Return the number of child constraints displayed in this shape
@@ -1154,10 +1283,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					this,
 					myDisplayPosition,
 					delegate(ref ConstraintBox constraintBox)
-				{
-					++total;
-					return true; // Keep going to get the full total
-				});
+					{
+						++total;
+						return true; // Keep going to get the full total
+					});
 				return total;
 			}
 			/// <summary>
@@ -1173,15 +1302,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 					this,
 					myDisplayPosition,
 					delegate(ref ConstraintBox constraintBox)
-				{
-					if (index == 0)
 					{
-						retVal = new ConstraintSubField(constraintBox.FactConstraint.Constraint);
-						return false; // Don't continue, we got our item
-					}
-					--index;
-					return true; // Keep going
-				});
+						if (index == 0)
+						{
+							retVal = new ConstraintSubField(constraintBox.FactConstraint.Constraint);
+							return false; // Don't continue, we got our item
+						}
+						--index;
+						return true; // Keep going
+					});
 				return retVal;
 			}
 			/// <summary>
@@ -1208,13 +1337,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 					RectangleD.Empty,
 					myDisplayPosition,
 					delegate(ref ConstraintBox constraintBox)
-				{
-					wasVisited = true;
-					RectangleD bounds = constraintBox.Bounds;
-					minY = Math.Min(minY, bounds.Top);
-					maxY = Math.Max(maxY, bounds.Bottom);
-					return true;
-				});
+					{
+						wasVisited = true;
+						RectangleD bounds = constraintBox.Bounds;
+						minY = Math.Min(minY, bounds.Top);
+						maxY = Math.Max(maxY, bounds.Bottom);
+						return true;
+					});
 				return wasVisited ? maxY - minY : 0;
 			}
 
@@ -1249,267 +1378,267 @@ namespace Neumont.Tools.ORM.ShapeModel
 					this,
 					position,
 					delegate(ref ConstraintBox constraintBox)
-				{
-					bool isInternalConstraint = constraintBox.ConstraintType == ConstraintType.InternalUniqueness;
-
-					//default variables
-					IFactConstraint factConstraint = constraintBox.FactConstraint;
-					IConstraint currentConstraint = factConstraint.Constraint;
-					RectangleF boundsF = RectangleD.ToRectangleF(constraintBox.Bounds);
-					float verticalPos = boundsF.Top + (float)(ConstraintHeight / 2);
-					ConstraintBoxRoleActivity[] rolePosToDraw = constraintBox.ActiveRoles;
-					int numRoles = rolePosToDraw.Length;
-					float roleWidth = (float)FactTypeShape.RoleBoxWidth;
-					bool isDeontic = currentConstraint.Modality == ConstraintModality.Deontic;
-					Pen constraintPen = isDeontic ? deonticConstraintPen : alethicConstraintPen;
-					Color startColor = constraintPen.Color;
-					DashStyle startDashStyle = constraintPen.DashStyle;
-
-					if (isInternalConstraint)
 					{
-						//test if constraint is valid and apply appropriate pen
-						if (!constraintBox.IsValid)
-						{
-							constraintPen.Color = factShape.ConstraintErrorForeColor;
-						}
-						if (constraintBox.IsAntiSpanning)
-						{
-							constraintPen.DashStyle = DashStyle.Dash;
-						}
-					}
+						bool isInternalConstraint = constraintBox.ConstraintType == ConstraintType.InternalUniqueness;
 
-					// Draw active constraint highlight
-					bool isHighlighted = false;
-					bool isSticky = false;
-					if (isInternalConstraint)
-					{
-						InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
-						if (activeInternalAction != null)
+						//default variables
+						IFactConstraint factConstraint = constraintBox.FactConstraint;
+						IConstraint currentConstraint = factConstraint.Constraint;
+						RectangleF boundsF = RectangleD.ToRectangleF(constraintBox.Bounds);
+						float verticalPos = boundsF.Top + (float)(ConstraintHeight / 2);
+						ConstraintBoxRoleActivity[] rolePosToDraw = constraintBox.ActiveRoles;
+						int numRoles = rolePosToDraw.Length;
+						float roleWidth = (float)FactTypeShape.RoleBoxWidth;
+						bool isDeontic = currentConstraint.Modality == ConstraintModality.Deontic;
+						Pen constraintPen = isDeontic ? deonticConstraintPen : alethicConstraintPen;
+						Color startColor = constraintPen.Color;
+						DashStyle startDashStyle = constraintPen.DashStyle;
+
+						if (isInternalConstraint)
 						{
-							InternalUniquenessConstraint activeInternalConstraint = activeInternalAction.ActiveConstraint;
-							InternalUniquenessConstraint targetConstraint = currentConstraint as InternalUniquenessConstraint;
-							if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
+							//test if constraint is valid and apply appropriate pen
+							if (!constraintBox.IsValid)
 							{
-								isSticky = true;
-								constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
+								constraintPen.Color = factShape.ConstraintErrorForeColor;
+							}
+							if (constraintBox.IsAntiSpanning)
+							{
+								constraintPen.DashStyle = DashStyle.Dash;
 							}
 						}
-					}
-					else
-					{
-						ExternalConstraintShape externalConstraintShape = diagram.StickyObject as ExternalConstraintShape;
-						if (externalConstraintShape != null &&
-							object.ReferenceEquals(externalConstraintShape.AssociatedConstraint, currentConstraint))
-						{
-							constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
-						}
-					}
 
-					// test for and draw highlights
-					if (highlightedShapes != null)
-					{
-						foreach (DiagramItem item in highlightedShapes)
+						// Draw active constraint highlight
+						bool isHighlighted = false;
+						bool isSticky = false;
+						if (isInternalConstraint)
 						{
-							if (object.ReferenceEquals(factShape, item.Shape))
+							InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
+							if (activeInternalAction != null)
 							{
-								ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
-								if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
+								InternalUniquenessConstraint activeInternalConstraint = activeInternalAction.ActiveConstraint;
+								InternalUniquenessConstraint targetConstraint = currentConstraint as InternalUniquenessConstraint;
+								if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
 								{
-									isHighlighted = true;
-									constraintPen.Color = ORMDiagram.ModifyLuminosity(constraintPen.Color);
-									break;
+									isSticky = true;
+									constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
 								}
 							}
 						}
-					}
-					if (isHighlighted || isSticky)
-					{
-						factShape.DrawHighlight(g, boundsF, isSticky, isHighlighted);
-					}
-
-					if (isInternalConstraint)
-					{
-						if (selection != null)
+						else
 						{
-							if (testSubField == null)
+							ExternalConstraintShape externalConstraintShape = diagram.StickyObject as ExternalConstraintShape;
+							if (externalConstraintShape != null &&
+								object.ReferenceEquals(externalConstraintShape.AssociatedConstraint, currentConstraint))
 							{
-								testSubField = new ConstraintSubField(currentConstraint);
-								testSelect = new DiagramItem(parentShape, this, testSubField);
+								constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
+							}
+						}
+
+						// test for and draw highlights
+						if (highlightedShapes != null)
+						{
+							foreach (DiagramItem item in highlightedShapes)
+							{
+								if (object.ReferenceEquals(factShape, item.Shape))
+								{
+									ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
+									if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
+									{
+										isHighlighted = true;
+										constraintPen.Color = ORMDiagram.ModifyLuminosity(constraintPen.Color);
+										break;
+									}
+								}
+							}
+						}
+						if (isHighlighted || isSticky)
+						{
+							factShape.DrawHighlight(g, boundsF, isSticky, isHighlighted);
+						}
+
+						if (isInternalConstraint)
+						{
+							if (selection != null)
+							{
+								if (testSubField == null)
+								{
+									testSubField = new ConstraintSubField(currentConstraint);
+									testSelect = new DiagramItem(parentShape, this, testSubField);
+								}
+								else
+								{
+									testSubField.AssociatedConstraint = currentConstraint;
+								}
+								if (selection.Contains(testSelect))
+								{
+									RectangleF constraintBounds = boundsF;
+									StyleSetResourceId pen1Id;
+									StyleSetResourceId pen2Id;
+									if (testSelect.Equals(selection.FocusedItem))
+									{
+										pen1Id = DiagramPens.FocusIndicatorBackground;
+										pen2Id = DiagramPens.FocusIndicator;
+									}
+									else
+									{
+										pen1Id = DiagramPens.SelectionBackground;
+										pen2Id = testSelect.Equals(selection.PrimaryItem) ? DiagramPens.SelectionPrimaryOutline : DiagramPens.SelectionNonPrimaryOutline;
+									}
+									Pen pen = styleSet.GetPen(pen1Id);
+									if (pen.Alignment == PenAlignment.Center)
+									{
+										float adjust = -pen.Width / 2;
+										constraintBounds.Inflate(adjust, adjust);
+									}
+									g.DrawRectangle(pen, constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
+									g.DrawRectangle(styleSet.GetPen(pen2Id), constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
+								}
+							}
+							float startPos = boundsF.Left, endPos = startPos;
+							bool drawConstraintPreffered = factShape.ShouldDrawConstraintPreferred(currentConstraint);
+							if (constraintBox.IsSpanning || constraintBox.IsAntiSpanning)
+							{
+								endPos = boundsF.Right;
+								//draw fully spanning constraint
+								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && constraintBox.IsSpanning);
 							}
 							else
 							{
-								testSubField.AssociatedConstraint = currentConstraint;
-							}
-							if (selection.Contains(testSelect))
-							{
-								RectangleF constraintBounds = boundsF;
-								StyleSetResourceId pen1Id;
-								StyleSetResourceId pen2Id;
-								if (testSelect.Equals(selection.FocusedItem))
+								bool positionChanged = false;
+								bool constraintHasDrawn = false;
+								int i = 0;
+								ConstraintBoxRoleActivity currentActivity = rolePosToDraw[i];
+								bool drawCalled = false;
+								for (; i < numRoles; ++i)
 								{
-									pen1Id = DiagramPens.FocusIndicatorBackground;
-									pen2Id = DiagramPens.FocusIndicator;
-								}
-								else
-								{
-									pen1Id = DiagramPens.SelectionBackground;
-									pen2Id = testSelect.Equals(selection.PrimaryItem) ? DiagramPens.SelectionPrimaryOutline : DiagramPens.SelectionNonPrimaryOutline;
-								}
-								Pen pen = styleSet.GetPen(pen1Id);
-								if (pen.Alignment == PenAlignment.Center)
-								{
-									float adjust = -pen.Width / 2;
-									constraintBounds.Inflate(adjust, adjust);
-								}
-								g.DrawRectangle(pen, constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
-								g.DrawRectangle(styleSet.GetPen(pen2Id), constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
-							}
-						}
-						float startPos = boundsF.Left, endPos = startPos;
-						bool drawConstraintPreffered = factShape.ShouldDrawConstraintPreferred(currentConstraint);
-						if (constraintBox.IsSpanning || constraintBox.IsAntiSpanning)
-						{
-							endPos = boundsF.Right;
-							//draw fully spanning constraint
-							DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && constraintBox.IsSpanning);
-						}
-						else
-						{
-							bool positionChanged = false;
-							bool constraintHasDrawn = false;
-							int i = 0;
-							ConstraintBoxRoleActivity currentActivity = rolePosToDraw[i];
-							bool drawCalled = false;
-							for (; i < numRoles; ++i)
-							{
-								ConstraintBoxRoleActivity currentBoxActivity = rolePosToDraw[i];
-								if (currentActivity != currentBoxActivity)
-								{
-									//activity has changed; draw previous activity
-									if (positionChanged && currentActivity != ConstraintBoxRoleActivity.NotInBox)
+									ConstraintBoxRoleActivity currentBoxActivity = rolePosToDraw[i];
+									if (currentActivity != currentBoxActivity)
 									{
-										if (currentActivity == ConstraintBoxRoleActivity.Active)
+										//activity has changed; draw previous activity
+										if (positionChanged && currentActivity != ConstraintBoxRoleActivity.NotInBox)
 										{
-											constraintPen.DashStyle = startDashStyle;
-											constraintHasDrawn = true;
+											if (currentActivity == ConstraintBoxRoleActivity.Active)
+											{
+												constraintPen.DashStyle = startDashStyle;
+												constraintHasDrawn = true;
+											}
+											else
+											{
+												Debug.Assert(currentActivity == ConstraintBoxRoleActivity.Inactive); // enforces if statement above
+												constraintPen.DashStyle = DashStyle.Dash;
+											}
+											//draw constraint
+											if (constraintHasDrawn)
+											{
+												DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
+												drawCalled = true;
+											}
+											startPos = endPos;
+											positionChanged = false;
 										}
-										else
-										{
-											Debug.Assert(currentActivity == ConstraintBoxRoleActivity.Inactive); // enforces if statement above
-											constraintPen.DashStyle = DashStyle.Dash;
-										}
-										//draw constraint
-										if (constraintHasDrawn)
-										{
-											DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
-											drawCalled = true;
-										}
-										startPos = endPos;
+										currentActivity = currentBoxActivity;
+									}
+									// move to next position
+									if (currentActivity != ConstraintBoxRoleActivity.NotInBox)
+									{
+										endPos += roleWidth;
+										positionChanged = true;
+									}
+									else if (boundsF.Width > roleWidth)
+									{
+										// this covers BinaryRights when not compressing constraints
+										startPos += roleWidth;
+										endPos = startPos;
 										positionChanged = false;
 									}
-									currentActivity = currentBoxActivity;
 								}
-								// move to next position
-								if (currentActivity != ConstraintBoxRoleActivity.NotInBox)
+								// set DashStyle to original setting (solid)
+								if (constraintPen.DashStyle != startDashStyle)
 								{
-									endPos += roleWidth;
-									positionChanged = true;
+									constraintPen.DashStyle = startDashStyle;
 								}
-								else if (boundsF.Width > roleWidth)
+								//We've reached the end. Draw out any right constraints that may exist.
+								if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
 								{
-									// this covers BinaryRights when not compressing constraints
-									startPos += roleWidth;
-									endPos = startPos;
-									positionChanged = false;
+									DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
 								}
 							}
-							// set DashStyle to original setting (solid)
-							if (constraintPen.DashStyle != startDashStyle)
-							{
-								constraintPen.DashStyle = startDashStyle;
-							}
-							//We've reached the end. Draw out any right constraints that may exist.
-							if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
-							{
-								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
-							}
-						}
-					}
-					else
-					{
-						int firstActive = -1;
-						int lastActive = -1;
-						float targetVertical;
-						if (position == ConstraintDisplayPosition.Bottom)
-						{
-							verticalPos += (float)ExternalConstraintBarCenterAdjust;
-							targetVertical = boundsF.Top;
 						}
 						else
 						{
-							verticalPos -= (float)ExternalConstraintBarCenterAdjust;
-							targetVertical = boundsF.Bottom;
-						}
-						bool fullySpanning = rolePosToDraw == PreDefinedConstraintBoxRoleActivities_FullySpanning;
-						if (fullySpanning)
-						{
-							numRoles = factConstraint.FactType.RoleCollection.Count;
-						}
-						float startPos = boundsF.Left;
-						for (int i = 0; i < numRoles; ++i)
-						{
-							ConstraintBoxRoleActivity currentActivity = fullySpanning ? ConstraintBoxRoleActivity.Active : rolePosToDraw[i];
-							if (currentActivity == ConstraintBoxRoleActivity.Active)
+							int firstActive = -1;
+							int lastActive = -1;
+							float targetVertical;
+							if (position == ConstraintDisplayPosition.Bottom)
 							{
-								if (firstActive == -1)
-								{
-									firstActive = i;
-								}
-								else
-								{
-									float x = startPos + (firstActive + .5f) * roleWidth;
-									g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
-									x += (i - firstActive) * roleWidth;
-									g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
-								}
-								lastActive = i;
+								verticalPos += (float)ExternalConstraintBarCenterAdjust;
+								targetVertical = boundsF.Top;
 							}
-							else if (firstActive == -1 && currentActivity == ConstraintBoxRoleActivity.NotInBox)
+							else
 							{
-								startPos -= roleWidth;
+								verticalPos -= (float)ExternalConstraintBarCenterAdjust;
+								targetVertical = boundsF.Bottom;
+							}
+							bool fullySpanning = rolePosToDraw == PreDefinedConstraintBoxRoleActivities_FullySpanning;
+							if (fullySpanning)
+							{
+								numRoles = factConstraint.FactType.RoleCollection.Count;
+							}
+							float startPos = boundsF.Left;
+							for (int i = 0; i < numRoles; ++i)
+							{
+								ConstraintBoxRoleActivity currentActivity = fullySpanning ? ConstraintBoxRoleActivity.Active : rolePosToDraw[i];
+								if (currentActivity == ConstraintBoxRoleActivity.Active)
+								{
+									if (firstActive == -1)
+									{
+										firstActive = i;
+									}
+									else
+									{
+										float x = startPos + (firstActive + .5f) * roleWidth;
+										g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+										x += (i - firstActive) * roleWidth;
+										g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+									}
+									lastActive = i;
+								}
+								else if (firstActive == -1 && currentActivity == ConstraintBoxRoleActivity.NotInBox)
+								{
+									startPos -= roleWidth;
+								}
+							}
+							if (lastActive == firstActive)
+							{
+								// Draw a box on a single role. This is used only for accessibility
+								// cases when the ExternalConstraintRoleBarDisplay is set to AnyRole.
+								// This is designed to provide a selectable accessibility object for
+								// all constraints associated with a fact.
+								float x1 = startPos + (firstActive + .3f) * roleWidth;
+								float x2 = x1 + .4f * roleWidth;
+								g.DrawLine(constraintPen, x1, verticalPos, x1, targetVertical);
+								g.DrawLine(constraintPen, x1, verticalPos, x2, verticalPos);
+								g.DrawLine(constraintPen, x2, verticalPos, x2, targetVertical);
+							}
+							else
+							{
+								g.DrawLine(constraintPen, startPos + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
 							}
 						}
-						if (lastActive == firstActive)
-						{
-							// Draw a box on a single role. This is used only for accessibility
-							// cases when the ExternalConstraintRoleBarDisplay is set to AnyRole.
-							// This is designed to provide a selectable accessibility object for
-							// all constraints associated with a fact.
-							float x1 = startPos + (firstActive + .3f) * roleWidth;
-							float x2 = x1 + .4f * roleWidth;
-							g.DrawLine(constraintPen, x1, verticalPos, x1, targetVertical);
-							g.DrawLine(constraintPen, x1, verticalPos, x2, verticalPos);
-							g.DrawLine(constraintPen, x2, verticalPos, x2, targetVertical);
-						}
-						else
-						{
-							g.DrawLine(constraintPen, startPos + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
-						}
-					}
 
-					// set colors back to normal if they changed
-					if (constraintPen.Color != startColor)
-					{
-						constraintPen.Color = startColor;
-					}
-					// set DashStyle to original setting (solid)
-					if (constraintPen.DashStyle != startDashStyle)
-					{
-						constraintPen.DashStyle = startDashStyle;
-					}
+						// set colors back to normal if they changed
+						if (constraintPen.Color != startColor)
+						{
+							constraintPen.Color = startColor;
+						}
+						// set DashStyle to original setting (solid)
+						if (constraintPen.DashStyle != startDashStyle)
+						{
+							constraintPen.DashStyle = startDashStyle;
+						}
 
-					return true;
-				});
+						return true;
+					});
 			}
 
 			/// <summary>
@@ -1683,8 +1812,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RectangleD fullBounds = GetBounds(parentShape);
 				if (fullBounds.Contains(point))
 				{
-					FactType factType = (parentShape as FactTypeShape).AssociatedFactType;
-					RoleMoveableCollection roles = factType.RoleCollection;
+					FactTypeShape parentFactShape = parentShape as FactTypeShape;
+					RoleMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
 					int roleCount = roles.Count;
 					if (roleCount != 0)
 					{
@@ -1735,7 +1864,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
 				FactType factType = parentFactShape.AssociatedFactType;
-				RoleMoveableCollection roles = factType.RoleCollection;
+				RoleMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
 				int roleCount = roles.Count;
 				bool objectified = factType.NestingType != null;
 				if (roleCount > 0 || objectified)
@@ -1755,7 +1884,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								RoleSubField roleField = item.SubField as RoleSubField;
 								if (roleField != null)
 								{
-									highlightRoleBox = roleField.RoleIndex;
+									highlightRoleBox = roles.IndexOf(roleField.AssociatedRole);
 									break;
 								}
 							}
@@ -2069,7 +2198,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
 			{
 				RectangleD retVal = parentField.GetBounds(parentShape);
-				RoleMoveableCollection roles = myAssociatedRole.FactType.RoleCollection;
+				FactTypeShape parentFactShape = parentShape as FactTypeShape;
+				RoleMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
 				retVal.Width /= roles.Count;
 				int roleIndex = roles.IndexOf(myAssociatedRole);
 				if (roleIndex > 0)
@@ -2102,27 +2232,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				set
 				{
 					myAssociatedRole = value;
-				}
-			}
-			/// <summary>
-			/// Returns the index of the associated Role element in its
-			/// containing collection, or -1 if the role is removed.
-			/// </summary>
-			public int RoleIndex
-			{
-				get
-				{
-					// Be very defensive here. This can get called attempting to
-					// determine a highlighted shape for a deleted item.
-					if (myAssociatedRole != null && !myAssociatedRole.IsRemoved)
-					{
-						FactType factType = myAssociatedRole.FactType;
-						if (factType != null)
-						{
-							return factType.RoleCollection.IndexOf(myAssociatedRole);
-						}
-					}
-					return -1;
 				}
 			}
 			#endregion // Accessor functions
@@ -2626,7 +2735,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (element is Role)
 			{
 				Role role = element as Role;
-				foreach(PresentationElement pElement in role.FactType.PresentationRolePlayers)
+				foreach (PresentationElement pElement in role.FactType.PresentationRolePlayers)
 				{
 					FactTypeShape fts = pElement as FactTypeShape;
 					if (fts != null)
@@ -2659,7 +2768,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return base.ChooseShape(element, shapeTypes);
 		}
 		/// <summary>
-		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, or ValueConstraintShape a
+		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, RoleNameShape, or ValueConstraintShape a
 		/// relative child element.
 		/// </summary>
 		/// <param name="childShape">The ShapeElement to get the ReleationshipType for.</param>
@@ -2774,7 +2883,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			/// <param name="wrapElement">ModelElement</param>
 			/// <param name="converter">TypeConverter (can be null)</param>
-			public HeaderDescriptor(ModelElement wrapElement, TypeConverter converter) : base(wrapElement.GetComponentName(), new Attribute[]{})
+			public HeaderDescriptor(ModelElement wrapElement, TypeConverter converter)
+				: base(wrapElement.GetComponentName(), new Attribute[] { })
 			{
 				myWrappedElement = wrapElement;
 				myConverter = converter;
@@ -3010,7 +3120,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (rangeShape = oppositeShape as ValueConstraintShape))
 			{
 				factType = AssociatedFactType;
-				RoleMoveableCollection factRoles = factType.RoleCollection;
+				RoleMoveableCollection factRoles = DisplayedRoleOrder;
 				factRoleCount = factRoles.Count;
 				roleIndex = factRoles.IndexOf(((RoleValueConstraint)rangeShape.AssociatedValueConstraint).Role);
 			}
@@ -3059,7 +3169,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								switch (roleCount)
 								{
 									case 1:
-										factRoles = factType.RoleCollection;
+										factRoles = DisplayedRoleOrder;
 										factRoleCount = factRoles.Count;
 										roleIndex = factRoles.IndexOf(roles[0]);
 										break;
@@ -3079,7 +3189,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											}
 											else
 											{
-												factRoles = factType.RoleCollection;
+												factRoles = DisplayedRoleOrder;
 												factRoleCount = factRoles.Count;
 												int index1 = factRoles.IndexOf(role0);
 												int index2 = factRoles.IndexOf(role1);
@@ -3141,7 +3251,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			if (factType != null && objectType != null)
 			{
-				RoleMoveableCollection roles = factType.RoleCollection;
+				RoleMoveableCollection roles = DisplayedRoleOrder;
 				factRoleCount = roles.Count;
 				Role role = null;
 				ORMDiagram parentDiagram = (ORMDiagram)Diagram;
@@ -3163,7 +3273,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// OK for display, but does not work if we ever attach anything to the lines
 					// or make them selectable. The code here includes the RolePlayerLink.RolePlayerRemoving
 					// and the RolePlayeLink.HasBeenConnected properties.
-					role = (Role)roles[i];
+					role = roles[i];
 					IList rolePlayerLinks = role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
 					if (rolePlayerLinks.Count != 0)
 					{
@@ -3470,8 +3580,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					Guid g = new Guid();
 					int pnResult;
-					shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName, 
-						ResourceStrings.ImpliedInternalConstraintFixMessage, 
+					shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
+						ResourceStrings.ImpliedInternalConstraintFixMessage,
 						"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
 						OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
 					if (pnResult == (int)DialogResult.Yes)
@@ -3590,14 +3700,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 					(position == ConstraintDisplayPosition.Top) ? myTopConstraintShapeField.GetBounds(this) : myBottomConstraintShapeField.GetBounds(this),
 					position,
 					delegate(ref ConstraintBox constraintBox)
-				{
-					if (constraintBox.FactConstraint.Constraint == constraint)
 					{
-						rect = constraintBox.Bounds;
-						return false;
-					}
-					return true;
-				});
+						if (constraintBox.FactConstraint.Constraint == constraint)
+						{
+							rect = constraintBox.Bounds;
+							return false;
+						}
+						return true;
+					});
 				rect.Offset(Bounds.Location);
 				retVal = rect.Center;
 			}
@@ -3615,69 +3725,69 @@ namespace Neumont.Tools.ORM.ShapeModel
 						constraintShapeField.GetBounds(this),
 						position,
 						delegate(ref ConstraintBox constraintBox)
-					{
-						if (constraintBox.FactConstraint.Constraint == constraint)
 						{
-							rect = constraintBox.Bounds;
-							ConstraintBoxRoleActivity[] roles = constraintBox.ActiveRoles;
-							int roleCount = roles.Length;
-							int firstActive = -1;
-							int lastActive = -1;
-							int leadingNotInBox = 0;
-							int trailingNotInBox = 0;
-							if (roleCount == 0)
+							if (constraintBox.FactConstraint.Constraint == constraint)
 							{
-								if (roles == PreDefinedConstraintBoxRoleActivities_FullySpanning)
+								rect = constraintBox.Bounds;
+								ConstraintBoxRoleActivity[] roles = constraintBox.ActiveRoles;
+								int roleCount = roles.Length;
+								int firstActive = -1;
+								int lastActive = -1;
+								int leadingNotInBox = 0;
+								int trailingNotInBox = 0;
+								if (roleCount == 0)
 								{
-									roleCount = AssociatedFactType.RoleCollection.Count;
-									firstActive = 0;
-									lastActive = roleCount - 1;
-								}
-							}
-							else if (roleCount > 0)
-							{
-								for (int i = 0; i < roleCount; ++i)
-								{
-									switch (roles[i])
+									if (roles == PreDefinedConstraintBoxRoleActivities_FullySpanning)
 									{
-										case ConstraintBoxRoleActivity.Active:
-											if (firstActive == -1)
-											{
-												firstActive = i;
-											}
-											lastActive = i;
-											break;
-										case ConstraintBoxRoleActivity.NotInBox:
-											if (firstActive == -1)
-											{
-												++leadingNotInBox;
-											}
-											else
-											{
-												++trailingNotInBox;
-											}
-											break;
+										roleCount = AssociatedFactType.RoleCollection.Count;
+										firstActive = 0;
+										lastActive = roleCount - 1;
 									}
 								}
-							}
-							Debug.Assert(firstActive != -1 && lastActive != -1);
-							if (firstActive > 0)
-							{
-								rect.X += (firstActive - leadingNotInBox) * RoleBoxWidth;
-								if (leadingNotInBox == 0 && firstActive != 0)
+								else if (roleCount > 0)
 								{
-									rect.Width -= firstActive * RoleBoxWidth;
+									for (int i = 0; i < roleCount; ++i)
+									{
+										switch (roles[i])
+										{
+											case ConstraintBoxRoleActivity.Active:
+												if (firstActive == -1)
+												{
+													firstActive = i;
+												}
+												lastActive = i;
+												break;
+											case ConstraintBoxRoleActivity.NotInBox:
+												if (firstActive == -1)
+												{
+													++leadingNotInBox;
+												}
+												else
+												{
+													++trailingNotInBox;
+												}
+												break;
+										}
+									}
 								}
+								Debug.Assert(firstActive != -1 && lastActive != -1);
+								if (firstActive > 0)
+								{
+									rect.X += (firstActive - leadingNotInBox) * RoleBoxWidth;
+									if (leadingNotInBox == 0 && firstActive != 0)
+									{
+										rect.Width -= firstActive * RoleBoxWidth;
+									}
+								}
+								int trailingCount = roleCount - trailingNotInBox - lastActive - 1;
+								if (trailingCount > 0)
+								{
+									rect.Width -= trailingCount * RoleBoxWidth;
+								}
+								return false;
 							}
-							int trailingCount = roleCount - trailingNotInBox - lastActive - 1;
-							if (trailingCount > 0)
-							{
-								rect.Width -= trailingCount * RoleBoxWidth;
-							}
-							return false;
-						}
-						return true;
-					});
+							return true;
+						});
 					if (!rect.IsEmpty)
 					{
 						rect.Offset(Bounds.Location);
@@ -3700,7 +3810,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Debug.Assert(role.FactType == AssociatedFactType);
 			FactType factType = role.FactType;
-			RoleMoveableCollection roles = factType.RoleCollection;
+			RoleMoveableCollection roles = DisplayedRoleOrder;
 			int roleCount = roles.Count;
 			if (roleCount != 0)
 			{
@@ -4013,7 +4123,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						foreach (LinkConnectsToNode connection in externalConstraintShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
 						{
 							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-							if (binaryLink != null && ! binaryLink.IsRemoved)
+							if (binaryLink != null && !binaryLink.IsRemoved)
 							{
 								Debug.Assert(binaryLink.ToShape == externalConstraintShape);
 								FactTypeShape factShape = binaryLink.FromShape as FactTypeShape;
@@ -4046,7 +4156,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 													}
 													else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
 													{
-														factRoles = factConstraint.FactType.RoleCollection;
+														factRoles = factShape.DisplayedRoleOrder;
 														constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
 													}
 													else

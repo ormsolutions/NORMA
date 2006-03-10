@@ -169,6 +169,14 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusExtensionManager),
 				new EventHandler(OnMenuExtensionManager),
 				ORMDesignerCommandIds.ExtensionManager)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusMoveRoleLeft), 
+				new EventHandler(OnMenuMoveRoleLeft),
+				ORMDesignerCommandIds.MoveRoleLeft)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusMoveRoleRight), 
+				new EventHandler(OnMenuMoveRoleRight),
+				ORMDesignerCommandIds.MoveRoleRight)
 
 				// Alignment Commands
 				,new DynamicStatusMenuCommand(
@@ -496,6 +504,38 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuExtensionManager();
+				}
+			}
+			private void OnStatusMoveRoleLeft(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleLeft);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuMoveRoleLeft(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuMoveRoleLeft(docView);
+				}
+			}
+			private void OnStatusMoveRoleRight(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleRight);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuMoveRoleRight(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuMoveRoleRight(docView);
 				}
 			}
 			/// <summary>
@@ -972,6 +1012,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Control-Delete and does the command not handled directly by delete.
 			/// </summary>
 			public static readonly CommandID DeleteAlternate = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteAlternate);
+			/// <summary>
+			/// Move a role to the left in its order within the fact type.
+			/// </summary>
+			public static readonly CommandID MoveRoleLeft = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleLeft);
+			/// <summary>
+			/// Move a role to the right in its order within the fact type.
+			/// </summary>
+			public static readonly CommandID MoveRoleRight = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleRight);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -1133,6 +1181,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// The toolbar for the verbalization window
 			/// </summary>
 			private const int menuIdVerbalizationToolBar = 0x0101;
+			/// <summary>
+			/// Moves the role to the left in its order with the fact type.
+			/// </summary>
+			private const int cmdIdMoveRoleLeft = 0x2915;
+			/// <summary>
+			/// Moves the role to the right in its order with the fact type.
+			/// </summary>
+			private const int cmdIdMoveRoleRight = 0x2916;
 			#endregion
 		}
 	}

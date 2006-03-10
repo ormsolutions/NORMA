@@ -81,6 +81,17 @@
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="Subject" type="SubjectRef"/>
+					<xs:element name="RoleDisplayOrder" minOccurs="0">
+						<xs:complexType>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="Role">
+									<xs:complexType>
+										<xs:attribute name="ref" type="xs:IDREF"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 				<xs:attribute name="DisplayRoleNames" default="UserDefault">
 					<xs:simpleType>

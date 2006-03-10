@@ -175,7 +175,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			double y = -0.2;
 			FactType factType = factShape.AssociatedFactType;
 			// Cascades RoleNameShapes for facts that contain more than one role
-			RoleMoveableCollection roles = factType.RoleCollection;
+			RoleMoveableCollection roles = factShape.DisplayedRoleOrder;
 			int roleIndex = roles.IndexOf((Role)ModelElement);
 			if (roleIndex != -1)
 			{

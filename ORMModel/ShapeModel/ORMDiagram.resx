@@ -186,6 +186,10 @@
 		<value xml:space="preserve">Edit Reading</value>
 		<comment xml:space="preserve">This text appears on the undo/redo menu when a reading is edited.</comment>
 	</data>
+	<data name="Command.SwapRoleOrder.Text">
+		<value xml:space="preserve">Swap Role Order</value>
+		<comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
+	</data>
   <data name="DeleteRoleSequence.TransactionName">
     <value xml:space="preserve">Delete Role Sequence</value>
     <comment xml:space="preserve">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -378,6 +382,10 @@
     <value xml:space="preserve">The only shape representing this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
   </data>
+	<data name="MoveRoleOrder.TransactionName">
+		<value xml:space="preserve">Move Role Order</value>
+		<comment xml:space="preserve">The transaction name used for moving a role order in a fact type shape.</comment>
+	</data>
   <data name="MoveRoleSequenceDown.TransactionName">
     <value xml:space="preserve">Move Role Sequence Down</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>

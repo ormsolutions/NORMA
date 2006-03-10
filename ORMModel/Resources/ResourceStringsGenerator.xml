@@ -236,6 +236,9 @@
 	<ResourceString name="DeleteRoleSequenceTransactionName" model="Diagram" resourceName="DeleteRoleSequence.TransactionName">
 		<comment type="summary">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
+	<ResourceString name="MoveRoleOrderTransactionName" model="Diagram" resourceName="MoveRoleOrder.TransactionName">
+		<comment type="summary">The transaction name used for moving a role order in a fact type. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
 	<ResourceString name="MoveRoleSequenceDownTransactionName" model="Diagram" resourceName="MoveRoleSequenceDown.TransactionName">
 		<comment type="summary">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
@@ -361,6 +364,9 @@
 	</ResourceString>
 	<ResourceString name="CommandEditReadingText" model="Diagram" resourceName="Command.EditReading.Text">
 		<comment type="summary">This text appears on the undo/redo menu when a reading is edited.</comment>
+	</ResourceString>
+	<ResourceString name="CommandSwapRoleOrderText" model="Diagram" resourceName="Command.SwapRoleOrder.Text">
+		<comment type="summary">This text appears on the move role left/right when the fact type is binary.</comment>
 	</ResourceString>
 	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText">
 		<comment type="summary">Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text</comment>

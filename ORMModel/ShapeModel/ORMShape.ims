@@ -16,6 +16,7 @@
 \**************************************************************************/</copyright>
 	<extendsmetamodel model="2b131234-7959-458d-834f-2dc0769ce683" />
 	<extendsmetamodel model="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
+	<extendsmetamodel model="83ad9e12-0e90-47cd-8e2f-a79f8d9c7288" />
 	<stringtable resxfile="ORMShape.dsldm.resx" resourcesfile="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
 	<copyclosure name="ORMShapeModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
 	<removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
@@ -180,6 +181,15 @@
 			<deriveddiagrams />
 		</diagram>
 	</diagrams>
-	<metarelationships/>
+	<metarelationships>
+		<metarelationship namespace="Neumont.Tools.ORM.ShapeModel" name="FactTypeShapeHasRoleDisplayOrder" identity="94b3aeef-4c8d-4d1a-a7cc-42f7ebdc68a2" category="" description="" doccomment="" localize="false">
+			<metaattributes />
+			<metaroles>
+				<metarole name="FactTypeShape" identity="30c6b725-2d74-47f7-852a-d02c644a447b" type="Neumont.Tools.ORM.ShapeModel.FactTypeShape" isoptional="false" isordered="false" isaggregate="false" isnavigablefrom="true" propagateremove="false" propagatecopy="false" cardinality="many" category="" description="" doccomment="" localize="false" generateaccessor="true" />
+				<metarole name="RoleDisplayOrderCollection" identity="4ca45c6e-0400-4976-af8c-0cad7c7bc2ee" type="Neumont.Tools.ORM.ObjectModel.Role" isoptional="false" isordered="true" isaggregate="false" isnavigablefrom="true" propagateremove="false" propagatecopy="false" cardinality="many" category="" description="" doccomment="" localize="false" generateaccessor="false" />
+			</metaroles>
+			<derivedmetarelationships />
+		</metarelationship>
+	</metarelationships>
 	<visualdata />
 </metamodel>

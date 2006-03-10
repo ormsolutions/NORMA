@@ -68,10 +68,12 @@
 #define cmdIdViewNotesWindow			0x2913
 
 #define cmdIdDeleteAlternate			0x2914
+#define cmdIdMoveRoleLeft				0x2915
+#define cmdIdMoveRoleRight				0x2916
 
 #define cmdIdErrorList					0x2a00
 #define cmdIdErrorListEnd				0x2aff
-// Reserve 2a00 range for errors, start at 2b00
+// Reserve 2a00 range for errors, start additional commands after
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs for BitmapResourceStrip.bmp
 #define bmpIdShowNegativeVerbalization		1

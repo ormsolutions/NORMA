@@ -571,6 +571,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The transaction name used for moving a role order in a fact type. The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string MoveRoleOrderTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleOrder.TransactionName");
+			}
+		}
+		/// <summary>
 		/// The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.
 		/// </summary>
 		public static string MoveRoleSequenceDownTransactionName
@@ -988,6 +998,16 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.EditReading.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears on the move role left/right when the fact type is binary.
+		/// </summary>
+		public static string CommandSwapRoleOrderText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.SwapRoleOrder.Text");
 			}
 		}
 		/// <summary>

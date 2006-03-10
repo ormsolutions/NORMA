@@ -797,7 +797,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -806,6 +806,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return this.SupportedCustomSerializedOperations;
 			}
+		}
+		private static ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
+		/// </summary>
+		protected new ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			ORMCustomSerializedChildElementInfo[] ret = FactTypeShape.myCustomSerializedChildElementInfo;
+			if (ret == null)
+			{
+				ORMCustomSerializedChildElementInfo[] baseInfo = null;
+				int baseInfoCount = 0;
+				if (0 != (ORMCustomSerializedElementSupportedOperations.ChildElementInfo & base.SupportedCustomSerializedOperations))
+				{
+					baseInfo = base.GetCustomSerializedChildElementInfo();
+					if (baseInfo != null)
+					{
+						baseInfoCount = baseInfo.Length;
+					}
+				}
+				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
+				if (!(baseInfoCount == 0))
+				{
+					baseInfo.CopyTo(ret, 1);
+				}
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "RoleDisplayOrder", null, ORMCustomSerializedElementWriteStyle.Element, null, FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid);
+				FactTypeShape.myCustomSerializedChildElementInfo = ret;
+			}
+			return ret;
+		}
+		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
@@ -833,6 +866,125 @@ namespace Neumont.Tools.ORM.ShapeModel
 		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
 		{
 			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			if (rolePlayedInfo.Id == FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
+		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+		{
+			private Dictionary<string, int> myRoleOrderDictionary;
+			private IComparer<MetaRoleInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<MetaRoleInfo> baseComparer)
+			{
+				this.myBaseComparer = baseComparer;
+				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				MetaRoleInfo metaRole;
+				metaRole = metaDataDir.FindMetaRole(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
+			{
+				if (this.myBaseComparer != null)
+				{
+					int baseOpinion = this.myBaseComparer.Compare(x, y);
+					if (0 != baseOpinion)
+					{
+						return baseOpinion;
+					}
+				}
+				int xPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
+				{
+					yPos = int.MaxValue;
+				}
+				if (xPos == yPos)
+				{
+					return 0;
+				}
+				else if (xPos < yPos)
+				{
+					return -1;
+				}
+				return 1;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		/// </summary>
+		protected new IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<MetaRoleInfo> retVal = FactTypeShape.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					IComparer<MetaRoleInfo> baseComparer = null;
+					if (0 != (ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					{
+						baseComparer = base.CustomSerializedChildRoleComparer;
+					}
+					retVal = new CustomSortChildComparer(this.Store, baseComparer);
+					FactTypeShape.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactTypeShape.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|RoleDisplayOrder|http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Role", match);
+				FactTypeShape.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			}
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>

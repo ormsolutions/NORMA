@@ -66,7 +66,7 @@
 	<se:Element Class="RoleNameShape" Override="true">
 		<se:Attribute ID="RoleName" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="FactTypeShape" Override="true">
+	<se:Element Class="FactTypeShape" Override="true" SortChildElements="true">
 		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">
@@ -80,5 +80,9 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="RolesPosition" WriteStyle="NotWritten"/>
+		<se:ChildElement Name="RoleDisplayOrder">
+			<se:Link RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrderCollection"/>
+		</se:ChildElement>
+		<se:Link Name="Role" RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrderCollection"/>
 	</se:Element>
 </se:CustomSerializedElements>

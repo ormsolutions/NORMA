@@ -91,6 +91,8 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdAddInternalUniqueness,		guidORMDesignerCommandSet:groupIdRoleCommands,			0x020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Add &Uniquess Constraint";
 		guidORMDesignerCommandSet:cmdIdInsertRoleAfter,				guidORMDesignerCommandSet:groupIdRoleCommands,			0x030,		guidOfficeIcon:msotcidShapeRightArrow,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &After";
 		guidORMDesignerCommandSet:cmdIdInsertRoleBefore,			guidORMDesignerCommandSet:groupIdRoleCommands,			0x040,		guidOfficeIcon:msotcidShapeLeftArrow,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &Before";
+		guidORMDesignerCommandSet:cmdIdMoveRoleLeft,				guidORMDesignerCommandSet:groupIdRoleCommands,			0x050,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"Move Role Lef&t";
+		guidORMDesignerCommandSet:cmdIdMoveRoleRight,				guidORMDesignerCommandSet:groupIdRoleCommands,			0x060,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"Move Role Ri&ght";
 
 		guidORMDesignerCommandSet:cmdIdShowPositiveVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x030,		guidORMVerbalizationToolbarImages:bmpIdShowPositiveVerbalization,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Show positive verbalizations";
 		guidORMDesignerCommandSet:cmdIdShowNegativeVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x040,		guidORMVerbalizationToolbarImages:bmpIdShowNegativeVerbalization,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Show negative verbalizations, if available";
