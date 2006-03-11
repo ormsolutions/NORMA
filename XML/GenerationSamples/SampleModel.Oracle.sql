@@ -45,7 +45,7 @@ CREATE TABLE Person
 	OwnsCar_vin NUMBER(38) , 
 	Gender_Gender_Code CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LENGTH(TRIM(BOTH FROM Gender_Gender_Code))) >= 1 AND Gender_Gender_Code IN ('M', 'F')) NOT NULL, 
 	PersonHasParents NCHAR, 
-	VlTyp1_VlTyp1Vl NUMBER(38) , 
+	VT1DSEWVT1V NUMBER(38) , 
 	CPBOBON NUMBER(38) , 
 	Father_Person_id NUMBER(38) NOT NULL, 
 	Mother_Person_id NUMBER(38) NOT NULL, 
@@ -72,7 +72,7 @@ CREATE TABLE Task
 CREATE TABLE ValueType1
 (
 	ValueType1Value NUMBER(38) NOT NULL, 
-	Person_Person_id NUMBER(38) , 
+	DSWPP NUMBER(38) , 
 	CONSTRAINT VlTyp1Vl_Unq PRIMARY KEY(ValueType1Value)
 );
 
@@ -84,7 +84,7 @@ ALTER TABLE PBCFPOD ADD CONSTRAINT PBCFPOD_Seller_FK FOREIGN KEY (Seller_Person_
 
 ALTER TABLE PersonHasNickName ADD CONSTRAINT PHNNPFK FOREIGN KEY (Person_Person_id)  REFERENCES Person (Person_id) ;
 
-ALTER TABLE Person ADD CONSTRAINT Prsn_VlTyp1_FK FOREIGN KEY (VlTyp1_VlTyp1Vl)  REFERENCES ValueType1 (ValueType1Value) ;
+ALTER TABLE Person ADD CONSTRAINT Person_VT1DSEWFK FOREIGN KEY (VT1DSEWVT1V)  REFERENCES ValueType1 (ValueType1Value) ;
 
 ALTER TABLE Person ADD CONSTRAINT Person_Father_FK FOREIGN KEY (Father_Person_id)  REFERENCES Person (Person_id) ;
 
@@ -92,7 +92,7 @@ ALTER TABLE Person ADD CONSTRAINT Person_Mother_FK FOREIGN KEY (Mother_Person_id
 
 ALTER TABLE Task ADD CONSTRAINT Task_Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES Person (Person_id) ;
 
-ALTER TABLE ValueType1 ADD CONSTRAINT VlTyp1_Prsn_FK FOREIGN KEY (Person_Person_id)  REFERENCES Person (Person_id) ;
+ALTER TABLE ValueType1 ADD CONSTRAINT VT1DSWPFK FOREIGN KEY (DSWPP)  REFERENCES Person (Person_id) ;
 
 COMMIT WORK;
 

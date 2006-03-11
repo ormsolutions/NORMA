@@ -29,7 +29,41 @@
 			</plx:trailingInfo>
 			<xsl:copy-of select="$GeneratedCodeAttribute"/>
 			<plx:implementsInterface dataTypeName="I{$ModelContextName}"/>
-			<plx:function name=".construct"  visibility="public"/>
+
+			<plx:function name=".construct"  visibility="public">
+				<xsl:for-each select="$ConceptTypes">
+					<xsl:variable name="ClassName" select="@name"/>
+					<plx:local name="{$ClassName}List" dataTypeName="List">
+						<plx:passTypeParam dataTypeName="{$ClassName}"/>
+						<plx:initialize>
+							<plx:callNew dataTypeName="List">
+								<plx:passTypeParam dataTypeName="{$ClassName}"/>
+							</plx:callNew>
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$ClassName}List"/>
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="local" name="{$ClassName}List"/>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$ClassName}ReadOnlyCollection"/>
+						</plx:left>
+						<plx:right>
+							<plx:callNew dataTypeName="ReadOnlyCollection">
+								<plx:passTypeParam dataTypeName="{$ClassName}"/>
+								<plx:passParam>
+									<plx:nameRef type="local" name="{$ClassName}List"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:right>
+					</plx:assign>
+				</xsl:for-each>
+			</plx:function>
 
 			<xsl:call-template name="GenerateConstraintEnforcementCollection"/>
 			
@@ -304,6 +338,12 @@
 		<xsl:param name="Properties"/>
 		<xsl:variable name="ClassName" select="@name"/>
 		<xsl:variable name="ImplementationClassName" select="concat($ClassName,$ImplementationClassSuffix)"/>
+		<xsl:variable name="mandatoryParametersFragment">
+			<xsl:call-template name="GenerateMandatoryParameters">
+				<xsl:with-param name="Properties" select="$Properties"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="mandatoryParameters" select="exsl:node-set($mandatoryParametersFragment)/child::*"/>
 
 		<xsl:variable name="allRoleSequenceUniquenessConstraints" select="$Model//oil:roleSequenceUniquenessConstraint"/>
 		
@@ -313,6 +353,99 @@
 			<xsl:with-param name="Properties" select="$Properties"/>
 			<xsl:with-param name="AllRoleSequenceUniquenessConstraints" select="$allRoleSequenceUniquenessConstraints"/>
 		</xsl:apply-templates>
+
+		<plx:function visibility="public" name="Create{$ClassName}">
+			<xsl:copy-of select="$mandatoryParameters"/>
+			<plx:returns dataTypeName="{$ClassName}"/>
+			<plx:branch>
+				<plx:condition>
+					<plx:unaryOperator type="booleanNot">
+						<plx:callThis accessor="this" type="property" name="IsDeserializing"/>
+					</plx:unaryOperator>
+				</plx:condition>
+				<xsl:for-each select="$mandatoryParameters">
+					<xsl:if test="@canBeNull='true'">
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:nameRef type="parameter" name="{@name}"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentNullException">
+									<plx:passParam>
+										<plx:string>
+											<xsl:value-of select="@name"/>
+										</plx:string>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:throw>
+						</plx:branch>
+					</xsl:if>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callThis accessor="this" type="methodCall" name="On{$ClassName}{@name}Changing">
+									<plx:passParam>
+										<plx:nullKeyword/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="parameter" name="{@name}"/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:throw>
+							<plx:callNew dataTypeName="ArgumentException">
+								<plx:passParam>
+									<plx:string>Argument failed constraint enforcement.</plx:string>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:string>
+										<xsl:value-of select="@name"/>
+									</plx:string>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:throw>
+					</plx:branch>
+				</xsl:for-each>
+			</plx:branch>
+			<plx:return>
+				<plx:callNew dataTypeName="{$ImplementationClassName}">
+					<plx:passParam>
+						<plx:thisKeyword/>
+					</plx:passParam>
+					<xsl:for-each select="$mandatoryParameters">
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="{@name}"/>
+						</plx:passParam>
+					</xsl:for-each>
+				</plx:callNew>
+			</plx:return>
+		</plx:function>
+
+		<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}{$ClassName}List" dataTypeName="List">
+			<plx:passTypeParam dataTypeName="{$ClassName}"/>
+		</plx:field>
+		<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}{$ClassName}ReadOnlyCollection" dataTypeName="ReadOnlyCollection">
+			<plx:passTypeParam dataTypeName="{$ClassName}"/>
+		</plx:field>
+		<plx:property visibility="{$ModelContextInterfaceImplementationVisibility}" name="{$ClassName}Collection">
+			<plx:interfaceMember memberName="{$ClassName}Collection" dataTypeName="I{$ModelContextName}"/>
+			<plx:returns dataTypeName="ReadOnlyCollection">
+				<plx:passTypeParam dataTypeName="{$ClassName}"/>
+			</plx:returns>
+			<plx:get>
+				<plx:return>
+					<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$ClassName}ReadOnlyCollection"/>
+				</plx:return>
+			</plx:get>
+		</plx:property>
 		
 		<plx:class visibility="private" modifier="sealed" name="{$ImplementationClassName}">
 			<plx:leadingInfo>
@@ -323,7 +456,56 @@
 			</plx:trailingInfo>
 			<plx:derivesFromClass dataTypeName="{$ClassName}"/>
 			<plx:function visibility="public" name=".construct">
-				<!-- TODO: Do stuff here. -->
+				<plx:param name="context" dataTypeName="{$ModelContextName}"/>
+				<xsl:copy-of select="$mandatoryParameters"/>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Context"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="parameter" name="context"/>
+					</plx:right>
+				</plx:assign>
+				<xsl:apply-templates select="$Properties" mode="GenerateImplementationPropertyFieldInitializer">
+					<xsl:with-param name="ClassName" select="$ClassName"/>
+				</xsl:apply-templates>
+				<xsl:variable name="mandatoryProperties" select="$Properties[@name=$mandatoryParameters/@name]"/>
+				<xsl:for-each select="$mandatoryProperties">
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{@name}"/>
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="{@name}"/>
+						</plx:right>
+					</plx:assign>
+					<xsl:variable name="roleSequenceUniquenessConstraints" select="$allRoleSequenceUniquenessConstraints[oil:roleSequence/oil:typeRef[@targetConceptType=$ClassName and @targetChild=current()/@name]]"/>
+					<xsl:if test="@isUnique='true' or @isCustomType='true' or $roleSequenceUniquenessConstraints">
+						<plx:callInstance type="methodCall" name="On{$ClassName}{@name}Changed">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="context"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:thisKeyword/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nullKeyword/>
+							</plx:passParam>
+						</plx:callInstance>
+					</xsl:if>
+				</xsl:for-each>
+				<plx:callInstance type="methodCall" name="Add">
+					<plx:callObject>
+						<plx:callInstance type="field" name="{$PrivateMemberPrefix}{$ClassName}List">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="context"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:thisKeyword/>
+					</plx:passParam>
+				</plx:callInstance>
 			</plx:function>
 
 			<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}Context" dataTypeName="{$ModelContextName}"/>
@@ -343,66 +525,82 @@
 		</plx:class>
 	</xsl:template>
 
+	<xsl:template match="prop:Property[@isCollection='true']" mode="GenerateImplementationPropertyFieldInitializer">
+		<xsl:param name="ClassName"/>
+		<plx:assign>
+			<plx:left>
+				<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{@name}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callNew dataTypeName="ConstraintEnforcementCollection">
+					<plx:passTypeParam dataTypeName="{$ClassName}"/>
+					<xsl:copy-of select="prop:DataType/child::*"/>
+					<plx:passParam>
+						<plx:thisKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callNew type="newDelegate" dataTypeName="PotentialCollectionModificationCallback">
+							<plx:passTypeParam dataTypeName="{$ClassName}"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+							<plx:passParam>
+								<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Adding">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="context"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callNew type="newDelegate" dataTypeName="CommittedCollectionModificationCallback">
+							<plx:passTypeParam dataTypeName="{$ClassName}"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+							<plx:passParam>
+								<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Added">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="context"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callNew type="newDelegate" dataTypeName="PotentialCollectionModificationCallback">
+							<plx:passTypeParam dataTypeName="{$ClassName}"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+							<plx:passParam>
+								<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Removing">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="context"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callNew type="newDelegate" dataTypeName="CommittedCollectionModificationCallback">
+							<plx:passTypeParam dataTypeName="{$ClassName}"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+							<plx:passParam>
+								<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Removed">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="context"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:passParam>
+				</plx:callNew>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	
 	<xsl:template match="prop:Property" mode="GenerateImplementationProperty">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="AllRoleSequenceUniquenessConstraints"/>
 		<plx:field visibility="private" readOnly="{@isCollection}" name="{$PrivateMemberPrefix}{@name}">
 			<xsl:copy-of select="prop:DataType/@*"/>
 			<xsl:copy-of select="prop:DataType/child::*"/>
-			<xsl:if test="@isCollection='true'">
-				<plx:initialize>
-					<plx:callNew dataTypeName="ConstraintEnforcementCollection">
-						<xsl:copy-of select="prop:DataType/child::*"/>
-						<plx:passParam>
-							<plx:thisKeyword/>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew type="newDelegate" dataTypeName="PotentialCollectionModificationCallback">
-								<plx:passParam>
-									<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Adding">
-										<plx:callObject>
-											<plx:callThis accessor="this" type="property" name="Context"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew type="newDelegate" dataTypeName="CommittedCollectionModificationCallback">
-								<plx:passParam>
-									<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Added">
-										<plx:callObject>
-											<plx:callThis accessor="this" type="property" name="Context"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew type="newDelegate" dataTypeName="PotentialCollectionModificationCallback">
-								<plx:passParam>
-									<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Removing">
-										<plx:callObject>
-											<plx:callThis accessor="this" type="property" name="Context"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callNew type="newDelegate" dataTypeName="CommittedCollectionModificationCallback">
-								<plx:passParam>
-									<plx:callInstance type="methodReference" name="On{$ClassName}{@name}Removed">
-										<plx:callObject>
-											<plx:callThis accessor="this" type="property" name="Context"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:passParam>
-					</plx:callNew>
-				</plx:initialize>
-			</xsl:if>
 		</plx:field>
 		<plx:property visibility="public" modifier="override" name="{@name}">
 			<plx:returns>
@@ -416,6 +614,21 @@
 			</plx:get>
 			<xsl:if test="not(@isCollection='true')">
 				<plx:set>
+					<xsl:if test="@mandatory='alethic' and @canBeNull='true'">
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:valueKeyword/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:return/>
+						</plx:branch>
+					</xsl:if>
 					<plx:branch>
 						<plx:condition>
 							<plx:unaryOperator type="booleanNot">
@@ -549,6 +762,7 @@
 						<xsl:call-template name="GetImplementationPropertyChangedMethodUpdateOldOppositeObjectCode">
 							<xsl:with-param name="ClassName" select="$ClassName"/>
 							<xsl:with-param name="OldValue" select="$value"/>
+							<xsl:with-param name="ShouldCheckForNull" select="true()"/>
 						</xsl:call-template>
 					</xsl:if>
 				</plx:function>
@@ -573,22 +787,9 @@
 						<xsl:copy-of select="prop:DataType/child::*"/>
 					</plx:param>
 					<plx:returns dataTypeName=".boolean"/>
-
+					
 					<xsl:if test="@isCustomType='true' or (@isUnique='true' and not(@isCustomType='true'))">
-						<xsl:if test="not(@isCustomType='true')">
-							<plx:pragma type="warningDisable" data="0472"/>
-						</xsl:if>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="identityInequality">
-									<plx:left>
-										<plx:nameRef type="parameter" name="newValue"/>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
+						<xsl:variable name="validationCodeFragment">
 							<xsl:choose>
 								<xsl:when test="@isCustomType='true'">
 									<plx:branch>
@@ -618,7 +819,7 @@
 										</plx:throw>
 									</plx:branch>
 								</xsl:when>
-								<xsl:when test="@isUnique='true' and not(@isCustomType='true')">
+								<xsl:otherwise>
 									<plx:local name="currentInstance" dataTypeName="{$ClassName}">
 										<plx:initialize>
 											<plx:nameRef type="parameter" name="instance"/>
@@ -656,57 +857,91 @@
 											</plx:return>
 										</plx:branch>
 									</plx:branch>
-								</xsl:when>
+								</xsl:otherwise>
 							</xsl:choose>
-						</plx:branch>
-						<xsl:if test="not(@isCustomType='true')">
-							<plx:pragma type="warningRestore" data="0472"/>
-						</xsl:if>
+						</xsl:variable>
+						<xsl:variable name="validationCode" select="exsl:node-set($validationCodeFragment)/child::*"/>
+						
+						<xsl:choose>
+							<!-- If @mandatory='alethic', newValue has already been checked by the caller to ensure that it is not null. -->
+							<xsl:when test="@mandatory='alethic' or @canBeNull='false'">
+								<xsl:copy-of select="$validationCode"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:branch>
+									<plx:condition>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:nameRef type="parameter" name="newValue"/>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:condition>
+									<xsl:copy-of select="$validationCode"/>
+								</plx:branch>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 
-					<xsl:for-each select="$roleSequenceUniquenessConstraints">
+					<xsl:if test="$roleSequenceUniquenessConstraints">
 						<plx:branch>
 							<plx:condition>
-								<plx:unaryOperator type="booleanNot">
-									<plx:callThis accessor="this" type="methodCall" name="On{@name}Changing">
-										<plx:passParam>
-											<plx:nameRef type="parameter" name="instance"/>
-										</plx:passParam>
-										<plx:passParam>
-											<plx:callStatic type="methodCall" name="CreateTuple" dataTypeName="Tuple">
-												<xsl:for-each select="oil:roleSequence/oil:typeRef">
-													<plx:passMemberTypeParam>
-														<xsl:variable name="dataType" select="$Properties[@name=current()/@targetChild]/prop:DataType"/>
-														<xsl:copy-of select="$dataType/@*"/>
-														<xsl:copy-of select="$dataType/child::*"/>
-													</plx:passMemberTypeParam>
-												</xsl:for-each>
-												<xsl:for-each select="oil:roleSequence/oil:typeRef">
-													<plx:passParam>
-														<xsl:choose>
-															<xsl:when test="@targetChild=$propertyName">
-																<plx:nameRef type="parameter" name="newValue"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<plx:callInstance type="property" name="{@targetChild}">
-																	<plx:callObject>
-																		<plx:nameRef type="parameter" name="instance"/>
-																	</plx:callObject>
-																</plx:callInstance>
-															</xsl:otherwise>
-														</xsl:choose>
-													</plx:passParam>
-												</xsl:for-each>
-											</plx:callStatic>
-										</plx:passParam>
-									</plx:callThis>
-								</plx:unaryOperator>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:nameRef type="parameter" name="instance"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
 							</plx:condition>
-							<plx:return>
-								<plx:falseKeyword/>
-							</plx:return>
+							<xsl:for-each select="$roleSequenceUniquenessConstraints">
+								<plx:branch>
+									<plx:condition>
+										<plx:unaryOperator type="booleanNot">
+											<plx:callThis accessor="this" type="methodCall" name="On{@name}Changing">
+												<plx:passParam>
+													<plx:nameRef type="parameter" name="instance"/>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:callStatic type="methodCall" name="CreateTuple" dataTypeName="Tuple">
+														<xsl:for-each select="oil:roleSequence/oil:typeRef">
+															<plx:passMemberTypeParam>
+																<xsl:variable name="dataType" select="$Properties[@name=current()/@targetChild]/prop:DataType"/>
+																<xsl:copy-of select="$dataType/@*"/>
+																<xsl:copy-of select="$dataType/child::*"/>
+															</plx:passMemberTypeParam>
+														</xsl:for-each>
+														<xsl:for-each select="oil:roleSequence/oil:typeRef">
+															<plx:passParam>
+																<xsl:choose>
+																	<xsl:when test="@targetChild=$propertyName">
+																		<plx:nameRef type="parameter" name="newValue"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<plx:callInstance type="property" name="{@targetChild}">
+																			<plx:callObject>
+																				<plx:nameRef type="parameter" name="instance"/>
+																			</plx:callObject>
+																		</plx:callInstance>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</plx:passParam>
+														</xsl:for-each>
+													</plx:callStatic>
+												</plx:passParam>
+											</plx:callThis>
+										</plx:unaryOperator>
+									</plx:condition>
+									<plx:return>
+										<plx:falseKeyword/>
+									</plx:return>
+								</plx:branch>
+							</xsl:for-each>
 						</plx:branch>
-					</xsl:for-each>
+					</xsl:if>
 					
 					<plx:return>
 						<plx:trueKeyword/>
@@ -717,18 +952,24 @@
 					<plx:function visibility="private" overload="true" name="On{$ClassName}{$propertyName}Changed">
 						<plx:param name="instance" dataTypeName="{$ClassName}"/>
 						<plx:param name="oldValue">
-							<xsl:copy-of select="prop:DataType/@*"/>
-							<xsl:copy-of select="prop:DataType/child::*"/>
+							<xsl:choose>
+								<xsl:when test="not(@canBeNull='true')">
+									<xsl:attribute name="dataTypeName">
+										<xsl:value-of select="'Nullable'"/>
+									</xsl:attribute>
+									<plx:passTypeParam>
+										<xsl:copy-of select="prop:DataType/@*"/>
+										<xsl:copy-of select="prop:DataType/child::*"/>
+									</plx:passTypeParam>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="prop:DataType/@*"/>
+									<xsl:copy-of select="prop:DataType/child::*"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</plx:param>
+						
 						<xsl:if test="@isUnique='true' or @isCustomType='true'">
-							<xsl:variable name="oldValueFragment">
-								<plx:nameRef type="parameter" name="oldValue"/>
-							</xsl:variable>
-							<xsl:call-template name="GetImplementationPropertyChangedMethodUpdateOldOppositeObjectCode">
-								<xsl:with-param name="ClassName" select="$ClassName"/>
-								<xsl:with-param name="OldValue" select="exsl:node-set($oldValueFragment)/child::*">
-								</xsl:with-param>
-							</xsl:call-template>
 							<xsl:variable name="newValueFragment">
 								<plx:callInstance type="property" name="{$propertyName}">
 									<plx:callObject>
@@ -742,47 +983,124 @@
 							</xsl:call-template>
 						</xsl:if>
 
-						<xsl:for-each select="$roleSequenceUniquenessConstraints">
+						<xsl:variable name="oldValueNotNullValueFragment">
+							<xsl:choose>
+								<xsl:when test="not(@canBeNull='true')">
+									<plx:callInstance type="property" name="Value">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="oldValue"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nameRef type="parameter" name="oldValue"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:variable name="oldValueNotNullValue" select="exsl:node-set($oldValueNotNullValueFragment)/child::*"/>
 
-							<xsl:variable name="passMemberTypeParamsFragment">
-								<xsl:for-each select="oil:roleSequence/oil:typeRef">
-									<plx:passMemberTypeParam>
-										<xsl:variable name="dataType" select="$Properties[@name=current()/@targetChild]/prop:DataType"/>
-										<xsl:copy-of select="$dataType/@*"/>
-										<xsl:copy-of select="$dataType/child::*"/>
-									</plx:passMemberTypeParam>
+						<xsl:variable name="roleSequenceUniquenessConstraintsDataTypesFragment">
+							<xsl:for-each select="$roleSequenceUniquenessConstraints">
+								<RoleSequenceUniquenessConstraint name="{@name}">
+									<xsl:for-each select="oil:roleSequence/oil:typeRef">
+										<xsl:copy-of select="$Properties[@name=current()/@targetChild]/prop:DataType"/>
+									</xsl:for-each>
+								</RoleSequenceUniquenessConstraint>
+							</xsl:for-each>
+						</xsl:variable>
+						<xsl:variable name="roleSequenceUniquenessConstraintsDataTypes" select="exsl:node-set($roleSequenceUniquenessConstraintsDataTypesFragment)/child::*"/>
+
+						<xsl:for-each select="$roleSequenceUniquenessConstraints">
+							<plx:local name="{@name}OldValueTuple" dataTypeName="Tuple">
+								<xsl:for-each select="$roleSequenceUniquenessConstraintsDataTypes[@name=current()/@name]/prop:DataType">
+									<plx:passTypeParam>
+										<xsl:copy-of select="@*"/>
+										<xsl:copy-of select="child::*"/>
+									</plx:passTypeParam>
 								</xsl:for-each>
-							</xsl:variable>
-							<xsl:variable name="passMemberTypeParams" select="exsl:node-set($passMemberTypeParamsFragment)/child::*"/>
-							
+							</plx:local>
+						</xsl:for-each>
+
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:nameRef type="parameter" name="oldValue"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<xsl:if test="@isUnique='true' or @isCustomType='true'">
+								<xsl:call-template name="GetImplementationPropertyChangedMethodUpdateOldOppositeObjectCode">
+									<xsl:with-param name="ClassName" select="$ClassName"/>
+									<xsl:with-param name="OldValue" select="$oldValueNotNullValue"/>
+								</xsl:call-template>
+							</xsl:if>
+							<xsl:for-each select="$roleSequenceUniquenessConstraints">
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef type="local" name="{@name}OldValueTuple"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic dataTypeName="Tuple" name="CreateTuple">
+											<xsl:for-each select="$roleSequenceUniquenessConstraintsDataTypes[@name=current()/@name]/prop:DataType">
+												<plx:passMemberTypeParam>
+													<xsl:copy-of select="@*"/>
+													<xsl:copy-of select="child::*"/>
+												</plx:passMemberTypeParam>
+											</xsl:for-each>
+											<xsl:for-each select="oil:roleSequence/oil:typeRef">
+												<plx:passParam>
+													<xsl:choose>
+														<xsl:when test="@targetChild=$propertyName">
+															<xsl:copy-of select="$oldValueNotNullValue"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<plx:callInstance type="property" name="{@targetChild}">
+																<plx:callObject>
+																	<plx:nameRef type="parameter" name="instance"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</xsl:otherwise>
+													</xsl:choose>
+												</plx:passParam>
+											</xsl:for-each>
+										</plx:callStatic>
+									</plx:right>
+								</plx:assign>
+							</xsl:for-each>
+						</plx:branch>
+						<plx:fallbackBranch>
+							<xsl:for-each select="$roleSequenceUniquenessConstraints">
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef type="local" name="{@name}OldValueTuple"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:assign>
+							</xsl:for-each>
+						</plx:fallbackBranch>
+
+						<xsl:for-each select="$roleSequenceUniquenessConstraints">
 							<plx:callThis accessor="this" type="methodCall" name="On{@name}Changed">
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="instance"/>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callStatic dataTypeName="Tuple" name="CreateTuple">
-										<xsl:copy-of select="$passMemberTypeParams"/>
-										<xsl:for-each select="oil:roleSequence/oil:typeRef">
-											<plx:passParam>
-												<xsl:choose>
-													<xsl:when test="@targetChild=$propertyName">
-														<plx:nameRef type="parameter" name="oldValue"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<plx:callInstance type="property" name="{@targetChild}">
-															<plx:callObject>
-																<plx:nameRef type="parameter" name="instance"/>
-															</plx:callObject>
-														</plx:callInstance>
-													</xsl:otherwise>
-												</xsl:choose>
-											</plx:passParam>
-										</xsl:for-each>
-									</plx:callStatic>
+									<plx:nameRef type="local" name="{@name}OldValueTuple"/>
 								</plx:passParam>
 								<plx:passParam>
 									<plx:callStatic dataTypeName="Tuple" name="CreateTuple">
-										<xsl:copy-of select="$passMemberTypeParams"/>
+										<xsl:for-each select="$roleSequenceUniquenessConstraintsDataTypes[@name=current()/@name]/prop:DataType">
+											<plx:passMemberTypeParam>
+												<xsl:copy-of select="@*"/>
+												<xsl:copy-of select="child::*"/>
+											</plx:passMemberTypeParam>
+										</xsl:for-each>
 										<xsl:for-each select="oil:roleSequence/oil:typeRef">
 											<plx:passParam>
 												<plx:callInstance type="property" name="{@targetChild}">
@@ -796,6 +1114,7 @@
 								</plx:passParam>
 							</plx:callThis>
 						</xsl:for-each>
+						
 					</plx:function>
 				</xsl:if>
 
@@ -806,20 +1125,8 @@
 	<xsl:template name="GetImplementationPropertyChangedMethodUpdateOldOppositeObjectCode">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="OldValue"/>
-		<xsl:if test="not(@isCustomType='true')">
-			<plx:pragma type="warningDisable" data="0472"/>
-		</xsl:if>
-		<plx:branch>
-			<plx:condition>
-				<plx:binaryOperator type="identityInequality">
-					<plx:left>
-						<xsl:copy-of select="$OldValue"/>
-					</plx:left>
-					<plx:right>
-						<plx:nullKeyword/>
-					</plx:right>
-				</plx:binaryOperator>
-			</plx:condition>
+		<xsl:param name="ShouldCheckForNull" select="false()"/>
+		<xsl:variable name="updateCodeFragment">
 			<xsl:choose>
 				<xsl:when test="@isUnique='true' and @isCustomType='true'">
 					<plx:assign>
@@ -860,28 +1167,33 @@
 					</plx:callInstance>
 				</xsl:when>
 			</xsl:choose>
-		</plx:branch>
-		<xsl:if test="not(@isCustomType='true')">
-			<plx:pragma type="warningRestore" data="0472"/>
-		</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="updateCode" select="exsl:node-set($updateCodeFragment)/child::*"/>
+		<xsl:choose>
+			<xsl:when test="$ShouldCheckForNull and @canBeNull='true'">
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<xsl:copy-of select="$OldValue"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<xsl:copy-of select="$updateCode"/>
+				</plx:branch>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:copy-of select="$updateCode"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="GetImplementationPropertyChangedMethodUpdateNewOppositeObjectCode">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="NewValue"/>
-		<xsl:if test="not(@isCustomType='true')">
-			<plx:pragma type="warningDisable" data="0472"/>
-		</xsl:if>
-		<plx:branch>
-			<plx:condition>
-				<plx:binaryOperator type="identityInequality">
-					<plx:left>
-						<xsl:copy-of select="$NewValue"/>
-					</plx:left>
-					<plx:right>
-						<plx:nullKeyword/>
-					</plx:right>
-				</plx:binaryOperator>
-			</plx:condition>
+		<xsl:variable name="updateCodeFragment">
 			<xsl:choose>
 				<xsl:when test="@isUnique='true' and @isCustomType='true'">
 					<plx:assign>
@@ -925,10 +1237,29 @@
 					</plx:callInstance>
 				</xsl:when>
 			</xsl:choose>
-		</plx:branch>
-		<xsl:if test="not(@isCustomType='true')">
-			<plx:pragma type="warningRestore" data="0472"/>
-		</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="updateCode" select="exsl:node-set($updateCodeFragment)/child::*"/>
+		<xsl:choose>
+			<!-- If @mandatory='alethic', NewValue has already been checked by the caller to ensure that it is not null. -->
+			<xsl:when test="@mandatory='alethic' or @canBeNull='false'">
+				<xsl:copy-of select="$updateCode"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="identityInequality">
+							<plx:left>
+								<xsl:copy-of select="$NewValue"/>
+							</plx:left>
+							<plx:right>
+								<plx:nullKeyword/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<xsl:copy-of select="$updateCode"/>
+				</plx:branch>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="GenerateConstraintEnforcementCollection">
@@ -1015,7 +1346,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}adding"/>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Adding"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="adding"/>
@@ -1023,7 +1354,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}added"/>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Added"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="added"/>
@@ -1031,7 +1362,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}removing"/>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Removing"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="removing"/>
@@ -1039,7 +1370,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}removed"/>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Removed"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="removed"/>

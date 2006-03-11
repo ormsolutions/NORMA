@@ -251,7 +251,7 @@
 		<ddl:columnDefinition name="PersonHasParents">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="VlTyp1_VlTyp1Vl">
+		<ddl:columnDefinition name="VT1DSEWVT1V">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="CPBOBON">
@@ -357,7 +357,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Person_Person_id">
+		<ddl:columnDefinition name="DSWPP">
 			<ddt:exactNumeric type="BIGINT" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
@@ -413,9 +413,9 @@
 	</ddl:alterTableStatement>
 	<ddl:alterTableStatement name="Person" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="ValueType1_FK" />
+			<dep:constraintNameDefinition name="VT1DSEWFK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="VlTyp1_VlTyp1Vl" />
+				<ddl:column name="VT1DSEWVT1V" />
 				<ddl:referencesSpecification name="ValueType1" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<ddl:referenceColumn name="ValueType1Value" />
 				</ddl:referencesSpecification>
@@ -457,9 +457,9 @@
 	</ddl:alterTableStatement>
 	<ddl:alterTableStatement name="ValueType1" schema="SampleModel">
 		<ddl:addTableConstraintDefinition>
-			<dep:constraintNameDefinition name="Person_FK" />
+			<dep:constraintNameDefinition name="DsSmthngWthPrsn_FK" />
 			<ddl:referentialConstraintDefinition>
-				<ddl:column name="Person_Person_id" />
+				<ddl:column name="DSWPP" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
 					<ddl:referenceColumn name="Person_id" />
 				</ddl:referencesSpecification>

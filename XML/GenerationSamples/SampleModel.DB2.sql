@@ -47,7 +47,7 @@ CREATE TABLE SampleModel.Person
 	OwnsCar_vin BIGINT , 
 	Gender_Gender_Code CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LENGTH(LTRIM(RTRIM(Gender_Gender_Code)))) >= 1 AND Gender_Gender_Code IN ('M', 'F')) NOT NULL, 
 	PersonHasParents CHARACTER(1) FOR BIT DATA, 
-	VlTyp1_VlTyp1Vl BIGINT , 
+	VT1DSEWVT1V BIGINT , 
 	CPBOBON BIGINT , 
 	Father_Person_id BIGINT NOT NULL, 
 	Mother_Person_id BIGINT NOT NULL, 
@@ -74,7 +74,7 @@ CREATE TABLE SampleModel.Task
 CREATE TABLE SampleModel.ValueType1
 (
 	ValueType1Value BIGINT NOT NULL, 
-	Person_Person_id BIGINT , 
+	DSWPP BIGINT , 
 	CONSTRAINT VlTyp1Vl_Unq PRIMARY KEY(ValueType1Value)
 );
 
@@ -86,7 +86,7 @@ ALTER TABLE SampleModel.PBCFPOD ADD CONSTRAINT Seller_FK FOREIGN KEY (Seller_Per
 
 ALTER TABLE SampleModel.PersonHasNickName ADD CONSTRAINT Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT ValueType1_FK FOREIGN KEY (VlTyp1_VlTyp1Vl)  REFERENCES SampleModel.ValueType1 (ValueType1Value)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT VT1DSEWFK FOREIGN KEY (VT1DSEWVT1V)  REFERENCES SampleModel.ValueType1 (ValueType1Value)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE SampleModel.Person ADD CONSTRAINT Father_FK FOREIGN KEY (Father_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
@@ -94,7 +94,7 @@ ALTER TABLE SampleModel.Person ADD CONSTRAINT Mother_FK FOREIGN KEY (Mother_Pers
 
 ALTER TABLE SampleModel.Task ADD CONSTRAINT Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT DsSmthngWthPrsn_FK FOREIGN KEY (DSWPP)  REFERENCES SampleModel.Person (Person_id)  ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 COMMIT;
 

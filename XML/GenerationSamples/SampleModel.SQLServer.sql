@@ -49,7 +49,7 @@ CREATE TABLE SampleModel.Person
 	OwnsCar_vin BIGINT , 
 	Gender_Gender_Code NATIONAL CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LEN(LTRIM(RTRIM(Gender_Gender_Code)))) >= 1 AND Gender_Gender_Code IN ('M', 'F')) NOT NULL, 
 	PersonHasParents BOOLEAN, 
-	VlTyp1_VlTyp1Vl BIGINT , 
+	VT1DSEWVT1V BIGINT , 
 	CPBOBON BIGINT , 
 	Father_Person_id BIGINT NOT NULL, 
 	Mother_Person_id BIGINT NOT NULL, 
@@ -76,7 +76,7 @@ CREATE TABLE SampleModel.Task
 CREATE TABLE SampleModel.ValueType1
 (
 	ValueType1Value BIGINT NOT NULL, 
-	Person_Person_id BIGINT , 
+	DSWPP BIGINT , 
 	CONSTRAINT VlTyp1Vl_Unq PRIMARY KEY(ValueType1Value)
 );
 
@@ -88,7 +88,7 @@ ALTER TABLE SampleModel.PBCFPOD ADD CONSTRAINT PBCFPOD_Seller_FK FOREIGN KEY (Se
 
 ALTER TABLE SampleModel.PersonHasNickName ADD CONSTRAINT PersonHasNickName_Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_ValueType1_FK FOREIGN KEY (VlTyp1_VlTyp1Vl)  REFERENCES SampleModel.ValueType1 (ValueType1Value)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_VT1DSEWFK FOREIGN KEY (VT1DSEWVT1V)  REFERENCES SampleModel.ValueType1 (ValueType1Value)  ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_Father_FK FOREIGN KEY (Father_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -96,7 +96,7 @@ ALTER TABLE SampleModel.Person ADD CONSTRAINT Person_Mother_FK FOREIGN KEY (Moth
 
 ALTER TABLE SampleModel.Task ADD CONSTRAINT Task_Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT ValueType1_Person_FK FOREIGN KEY (Person_Person_id)  REFERENCES SampleModel.Person (Person_id)  ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT ValueType1_DsSmthngWthPrsn_FK FOREIGN KEY (DSWPP)  REFERENCES SampleModel.Person (Person_id)  ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 COMMIT WORK;
 

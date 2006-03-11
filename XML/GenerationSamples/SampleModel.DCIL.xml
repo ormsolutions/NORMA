@@ -181,11 +181,11 @@
 		<dcl:column name="PersonHasParents" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
-		<dcl:column isNullable="true" isIdentity="false" name="VlTyp1_VlTyp1Vl">
+		<dcl:column isNullable="true" isIdentity="false" name="VT1DSEWVT1V">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="ValueType1_FK" targetTable="ValueType1">
-			<dcl:columnRef sourceName="VlTyp1_VlTyp1Vl" targetName="ValueType1Value" />
+		<dcl:referenceConstraint name="VT1DSEWFK" targetTable="ValueType1">
+			<dcl:columnRef sourceName="VT1DSEWVT1V" targetName="ValueType1Value" />
 		</dcl:referenceConstraint>
 		<dcl:column name="CPBOBON" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -252,11 +252,11 @@
 		<dcl:uniquenessConstraint name="VlTyp1Vl_Unq" isPrimary="true">
 			<dcl:columnRef name="ValueType1Value" />
 		</dcl:uniquenessConstraint>
-		<dcl:column isNullable="true" isIdentity="false" name="Person_Person_id">
+		<dcl:column isNullable="true" isIdentity="false" name="DSWPP">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>
-		<dcl:referenceConstraint name="Person_FK" targetTable="Person">
-			<dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
+		<dcl:referenceConstraint name="DsSmthngWthPrsn_FK" targetTable="Person">
+			<dcl:columnRef sourceName="DSWPP" targetName="Person_id" />
 		</dcl:referenceConstraint>
 	</dcl:table>
 </dcl:schema>

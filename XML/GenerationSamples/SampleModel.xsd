@@ -166,7 +166,7 @@
 					<xs:element name="FemalePerson" type="oxs:UNDONE" />
 					<xs:element name="ChildPerson" type="oxs:UNDONE" />
 					<xs:element name="Death" type="oxs:UNDONE" />
-					<xs:element name="ValueType1" type="oxs:ValueType1" />
+					<xs:element name="ValueType1DoesSomethingElseWith" type="oxs:ValueType1DoesSomethingElseWith" />
 					<xs:sequence minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>Equality Constraint(Both must exist if one exists)</xs:documentation>
@@ -207,7 +207,7 @@
 		<xs:complexContent>
 			<xs:extension base="oxs:ValueType1">
 				<xs:sequence>
-					<xs:element name="Person" type="oxs:Person" />
+					<xs:element name="DoesSomethingWithPerson" type="oxs:DoesSomethingWithPerson" />
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -318,7 +318,7 @@
 			<xs:selector xpath="oxs:PersonHasNickNameElements/oxs:PersonHasNickName" />
 			<xs:field xpath="oxs:Person/@Person_id" />
 		</xs:keyref>
-		<xs:keyref name="PersonValueType1_REF" refer="ValueType1_KEY">
+		<xs:keyref name="PersonValueType1DoesSomethingElseWith_REF" refer="ValueType1_KEY">
 			<xs:selector xpath="oxs:PersonElements/oxs:Person" />
 			<xs:field xpath="oxs:ValueType1/@ValueType1Value" />
 		</xs:keyref>
@@ -326,7 +326,7 @@
 			<xs:selector xpath="oxs:TaskElements/oxs:Task" />
 			<xs:field xpath="oxs:Person/@Person_id" />
 		</xs:keyref>
-		<xs:keyref name="ValueType1Person_REF" refer="Person_KEY">
+		<xs:keyref name="ValueType1DoesSomethingWithPerson_REF" refer="Person_KEY">
 			<xs:selector xpath="oxs:ValueType1Elements/oxs:ValueType1" />
 			<xs:field xpath="oxs:Person/@Person_id" />
 		</xs:keyref>

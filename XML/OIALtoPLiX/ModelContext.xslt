@@ -29,28 +29,6 @@
 			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
 		</xsl:call-template>
 	</xsl:template>
-	<!--Template applied to ao:Object nodes to kick off GenerateDeserializationContextMethod
-	with the appropriate class name-->
-	<xsl:template match="ao:Object" mode="ForGenerateDeserializationContextMethod">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelDeserializationName"/>
-		<xsl:call-template name="GenerateDeserializationContextMethod">
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
-			<xsl:with-param name="className" select="@name"/>
-		</xsl:call-template>
-	</xsl:template>
-	<!--Template applied to ao:Association nodes to kick off GenerateDeserializationContextMethod
-	with the appropriate class name-->
-	<xsl:template match="ao:Association" mode="ForGenerateDeserializationContextMethod">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelDeserializationName"/>
-		<xsl:call-template name="GenerateDeserializationContextMethod">
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
-			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
-		</xsl:call-template>
-	</xsl:template>
 
 	<xsl:template name="GenerateImplementation">
 		<xsl:param name="ModelContextName"/>
@@ -93,11 +71,6 @@
 				<xsl:with-param name="Model" select="."/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:apply-templates>
-			<xsl:call-template name="GenerateDeserializationFactoryClass">
-				<xsl:with-param name="Model" select="."/>
-				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
-				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
-			</xsl:call-template>
 		</plx:class>
 	</xsl:template>
 

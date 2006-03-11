@@ -19,7 +19,7 @@
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
-	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'private'"/>
+	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'public'"/>
 
 	<xsl:param name="Int32MaxValue" select="number(2147483647)"/>
 
@@ -233,28 +233,41 @@
 			Also process all oil:conceptTypeRef elements that are targetted at us.-->
 
 		<xsl:for-each select="oil:informationType[not(@formatRef=$identityFormatRefNames)]">
-			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="false">
-				<xsl:copy-of select="$InformationTypeFormatMappings[@name=current()/@formatRef]/prop:DataType"/>
+			<xsl:variable name="informationTypeFormatMapping" select="$InformationTypeFormatMappings[@name=current()/@formatRef]"/>
+			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" canBeNull="{not(@mandatory='alethic') or $informationTypeFormatMapping/@canBeNull='true'}" isCollection="false" isCustomType="false">
+				<xsl:choose>
+					<xsl:when test="not(@mandatory='alethic') and $informationTypeFormatMapping/@canBeNull='false'">
+						<prop:DataType dataTypeName="Nullable">
+							<plx:passTypeParam>
+								<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType/@*"/>
+								<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType/child::*"/>
+							</plx:passTypeParam>
+						</prop:DataType>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="$informationTypeFormatMapping/prop:DataType"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</prop:Property>
 		</xsl:for-each>
 		<xsl:for-each select="oil:conceptTypeRef">
-			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="true" oppositeName="{@oppositeName}">
+			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{@oppositeName}">
 				<prop:DataType dataTypeName="{@target}"/>
 			</prop:Property>
 		</xsl:for-each>
 		<xsl:for-each select="oil:conceptType">
-			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="true" isCollection="false" isCustomType="true" oppositeName="{$thisClassName}">
+			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{$thisClassName}">
 				<prop:DataType dataTypeName="{@name}"/>
 			</prop:Property>
 		</xsl:for-each>
 		<xsl:for-each select="parent::oil:conceptType">
-			<prop:Property name="{@name}" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" oppositeName="{$thisClassName}">
+			<prop:Property name="{@name}" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="{$thisClassName}">
 				<prop:DataType dataTypeName="{@name}"/>
 			</prop:Property>
 		</xsl:for-each>
 		<xsl:for-each select="$ConceptTypeRefs[@target=current()/@name]">
 			<xsl:variable name="isCollection" select="not(boolean(oil:singleRoleUniquenessConstraint))"/>
-			<prop:Property name="{@oppositeName}" mandatory="false" isUnique="true" isCollection="{$isCollection}" isCustomType="true" oppositeName="{@name}">
+			<prop:Property name="{@oppositeName}" mandatory="false" isUnique="true" isCollection="{$isCollection}" isCustomType="true" canBeNull="true" oppositeName="{@name}">
 				<xsl:variable name="parentConceptTypeName" select="parent::oil:conceptType/@name"/>
 				<xsl:choose>
 					<xsl:when test="$isCollection">
@@ -271,10 +284,10 @@
 	</xsl:template>
 
 	<xsl:template match="odt:identity" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}" isIdentity="true"/>
+		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true"/>
 	</xsl:template>
 	<xsl:template match="odt:boolean" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}">
+		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<prop:DataType dataTypeName=".boolean"/>
 			<xsl:if test="string-length(@fixed)">
 				<plx:binaryOperator type="identityEquality">
@@ -282,14 +295,14 @@
 						<plx:valueKeyword/>
 					</plx:left>
 					<plx:right>
-						<xsl:element name="{@fixed}Keyword" namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
+						<xsl:element name="plx:{@fixed}Keyword"/>
 					</plx:right>
 				</plx:binaryOperator>
 			</xsl:if>
 		</prop:FormatMapping>
 	</xsl:template>
 	<xsl:template match="odt:decimalNumber" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}">
+		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<xsl:variable name="hasConstraints" select="boolean(child::*)"/>
 			<xsl:choose>
 				<xsl:when test="@fractionDigits=0">
@@ -306,7 +319,7 @@
 		</prop:FormatMapping>
 	</xsl:template>
 	<xsl:template match="odt:floatingPointNumber" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}">
+		<prop:FormatMapping name="{@name}" canBeNull="false">
 			<xsl:choose>
 				<xsl:when test="@precision='single' or @precision&lt;=24">
 					<prop:DataType dataTypeName=".r4"/>
@@ -327,7 +340,7 @@
 		</prop:FormatMapping>
 	</xsl:template>
 	<xsl:template match="odt:string" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}">
+		<prop:FormatMapping name="{@name}" canBeNull="true">
 			<prop:DataType dataTypeName=".string"/>
 			<!-- TODO: Process all child elements -->
 			<xsl:if test="(@minLength and not(@minLength=0)) or @maxLength">
@@ -339,7 +352,7 @@
 		</prop:FormatMapping>
 	</xsl:template>
 	<xsl:template match="odt:binary" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}">
+		<prop:FormatMapping name="{@name}" canBeNull="true">
 			<prop:DataType dataTypeName=".u1" dataTypeIsSimpleArray="true"/>
 			<xsl:if test="(@minLength and not(@minLength=0)) or @maxLength">
 				<xsl:call-template name="GetLengthValidationCode">

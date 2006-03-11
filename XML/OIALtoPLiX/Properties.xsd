@@ -69,6 +69,11 @@
 					<xs:documentation>Note that a Property can have both @isCollection and @isCutomType be true, meaning that it is a collection of custom types.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Can the prop:DataType contained within this prop:Property be null?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 			<xs:attribute name="oppositeName" use="optional" type="xs:token">
 				<xs:annotation>
 					<xs:documentation>The name of the Property that represents the other end of this relationship.</xs:documentation>
@@ -104,6 +109,11 @@
 			<xs:attribute name="name" use="required" type="xs:token">
 				<xs:annotation>
 					<xs:documentation>The name of the oil:informationTypeFormat that this prop:FormatMapping is for.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Can the prop:DataType contained within this prop:FormatMapping be null?</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="isIdentity" use="optional" default="false" type="xs:boolean">
