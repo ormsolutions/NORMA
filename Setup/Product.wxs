@@ -104,20 +104,6 @@
 		<InstallExecuteSequence>
 			<Custom After="InstallFinalize" Action="DevEnvSetup"/>
 		</InstallExecuteSequence>
-		<!--<InstallUISequence>
-			<Show Dialog="ExitDialog" OnExit="success"/>
-		</InstallUISequence>
-
-		<UI>
-			<Dialog Id="ExitDialog" Width="370" Height="270" Title="$(loc.ExitDialogTitle)">
-				<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="$(loc.ExitDialogFinish)">
-					<Publish Event="EndDialog" Value="Return">1</Publish>
-				</Control>
-				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="374" Height="0" />
-				<Control Id="Description" Type="Text" X="135" Y="70" Width="220" Height="20" Transparent="yes" NoPrefix="yes" Text="$(loc.ExitDialogDescription)" />
-				<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="$(loc.ExitDialogTitle)" />
-			</Dialog>
-		</UI>-->
 
 	</Product>
 </Wix>

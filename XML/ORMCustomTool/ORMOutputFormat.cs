@@ -18,11 +18,26 @@ using System;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
+	/// <summary>
+	/// The non-localized, official names of several predefined output formats.
+	/// </summary>
 	public static class ORMOutputFormat
 	{
+		/// <summary>
+		/// ORM - Object-Role Modeling Output Format
+		/// </summary>
 		public const string ORM = "ORM";
+		/// <summary>
+		/// OIAL - ORM Intermediate Abstraction Language Output Format
+		/// </summary>
 		public const string OIAL = "OIAL";
+		/// <summary>
+		/// DCIL - Database Conceptual Intermediate Language Output Format
+		/// </summary>
 		public const string DCIL = "DCIL";
+		/// <summary>
+		/// PLiX - Programming Language in XML Output Format
+		/// </summary>
 		public const string PLiX = "PLiX";
 	}
 }

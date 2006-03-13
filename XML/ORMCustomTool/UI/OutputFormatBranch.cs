@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
-	public sealed partial class ORMGeneratorSelectionControl
+	partial class ORMGeneratorSelectionControl
 	{
 		private sealed partial class MainBranch
 		{

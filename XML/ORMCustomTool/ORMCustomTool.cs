@@ -26,15 +26,23 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using VSLangProj;
 
-using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
-using VSConstants = Microsoft.VisualStudio.VSConstants;
 using Debug = System.Diagnostics.Debug;
+using IServiceProvider = System.IServiceProvider;
 using DebuggerStepThroughAttribute = System.Diagnostics.DebuggerStepThroughAttribute;
+using VSConstants = Microsoft.VisualStudio.VSConstants;
+using ErrorHandler = Microsoft.VisualStudio.ErrorHandler;
+using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
+using IVsTextLines = Microsoft.VisualStudio.TextManager.Interop.IVsTextLines;
+using IVsTextView = Microsoft.VisualStudio.TextManager.Interop.IVsTextView;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
+	/// <summary>
+	/// <see cref="ORMCustomTool"/> coordinates generation activities between various <see cref="IORMGenerator"/>s, and
+	/// interfaces with Visual Studio and other tools.
+	/// </summary>
 	[Guid("977BD01E-F2B4-4341-9C47-459420624A21")]
-	public sealed partial class ORMCustomTool : IVsSingleFileGenerator, IObjectWithSite, IServiceProvider, System.IServiceProvider
+	public sealed partial class ORMCustomTool : IVsSingleFileGenerator, IObjectWithSite, IOleServiceProvider, IServiceProvider
 	{
 		private const string EXTENSION_OIAL = ".OIAL" + EXTENSION_XML;
 		private const string EXTENSION_ORM = ".orm";
@@ -48,24 +56,25 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string ITEMGROUP_CONDITIONSTART = "Exists('";
 		private const string ITEMGROUP_CONDITIONEND = "')";
 
-		private static void ReportError(string message, Exception ex)
-		{
-			Debug.WriteLine(message);
-			Debug.Indent();
-			Debug.WriteLine(ex);
-			Debug.Unindent();
-		}
-
+		/// <summary>
+		/// Instantiates a new instance of <see cref="ORMCustomTool"/>.
+		/// </summary>
 		public ORMCustomTool()
 		{
-			// NOTE: Attempting to use the ServiceProvider will cause it to go into an infinite loop
-			// unless SetSite has been called on it.
-			this._objectWithSite = this._serviceProvider = new ServiceProvider(this);
+			// NOTE: Attempting to use any of the ServiceProviders will cause us to go into an infinite loop
+			// unless SetSite has been called on us.
+			this._objectWithSite = this._serviceProvider = new ServiceProvider(this, true);
 		}
 
 		private readonly ServiceProvider _serviceProvider;
 		private readonly IObjectWithSite _objectWithSite;
+		private IOleServiceProvider _customToolServiceProvider;
+		private IOleServiceProvider _dteServiceProvider;
 
+		/// <summary>
+		/// TODO: Remove this.
+		/// This is here temporarily for UI testing purposes.
+		/// </summary>
 		public static System.ComponentModel.PropertyDescriptor GetPropertyDescriptor()
 		{
 			return new ORMCustomToolPropertyDescriptor();
@@ -81,6 +90,15 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			return this._serviceProvider.GetService(typeof(T)) as T;
 		}
 
+		#region Private Helper Methods
+		private static void ReportError(string message, Exception ex)
+		{
+			Debug.WriteLine(message);
+			Debug.Indent();
+			Debug.WriteLine(ex);
+			Debug.Unindent();
+		}
+
 		private static BuildItemGroup GetBuildItemGroup(Project project, string projectItemName)
 		{
 			foreach (BuildItemGroup buildItemGroup in project.ItemGroups)
@@ -94,6 +112,32 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			return null;
 		}
 
+		private IVsTextView GetTextViewForDocument(string fullPath)
+		{
+			IVsUIHierarchy uiHierarchy;
+			uint itemId;
+			IVsWindowFrame windowFrame;
+			if (VsShellUtilities.IsDocumentOpen(this, fullPath, Guid.Empty, out uiHierarchy, out itemId, out windowFrame))
+			{
+				return VsShellUtilities.GetTextView(windowFrame);
+			}
+			return null;
+		}
+		private static IVsTextLines GetTextLinesForTextView(IVsTextView textView)
+		{
+			if (textView == null)
+			{
+				throw new ArgumentNullException("textView");
+			}
+			IVsTextLines textLines;
+			ErrorHandler.ThrowOnFailure(textView.GetBuffer(out textLines));
+			return textLines;
+		}
+
+		#endregion // Private Helper Methods
+
+		#region ServiceProvider Interface Implementations
+
 		#region IObjectWithSite Members
 
 		void IObjectWithSite.GetSite(ref Guid riid, out IntPtr ppvSite)
@@ -103,24 +147,59 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 		void IObjectWithSite.SetSite(object pUnkSite)
 		{
-			this._objectWithSite.SetSite(pUnkSite);
+			IOleServiceProvider customToolServiceProvider = pUnkSite as IOleServiceProvider;
+			if (customToolServiceProvider != null)
+			{
+				this._customToolServiceProvider = customToolServiceProvider;
+				EnvDTE.ProjectItem projectItem = this.GetService<EnvDTE.ProjectItem>();
+				IOleServiceProvider dteServiceProvider = null;
+				if (projectItem != null && (dteServiceProvider = projectItem.DTE as IOleServiceProvider) != null)
+				{
+					this._dteServiceProvider = dteServiceProvider;
+				}
+			}
 		}		
 
 		#endregion // IObjectWithSite Members
 
-		#region IServiceProvider Members
+		#region IOleServiceProvider Members
 
-		int Microsoft.VisualStudio.OLE.Interop.IServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
+		int IOleServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
 		{
-			return this.GetService<IServiceProvider>().QueryService(ref guidService, ref riid, out ppvObject);
+			IOleServiceProvider customToolServiceProvider = this._customToolServiceProvider;
+			IOleServiceProvider dteServiceProvider = this._dteServiceProvider;
+
+			if (customToolServiceProvider == null)
+			{
+				throw new InvalidOperationException();
+			}
+
+			// First try to service the request via the IOleServiceProvider we were given. If unsuccessful, try via DTE's
+			// IOleServiceProvider implementation (if we have it).
+			int errorCode = this._customToolServiceProvider.QueryService(ref guidService, ref riid, out ppvObject);
+			if (dteServiceProvider == null || (ErrorHandler.Succeeded(errorCode) && ppvObject != IntPtr.Zero))
+			{
+				return errorCode;
+			}
+			else
+			{
+				return this._dteServiceProvider.QueryService(ref guidService, ref riid, out ppvObject);
+			}
 		}
 
-		object System.IServiceProvider.GetService(Type serviceType)
+		#endregion // IOleServiceProvider Members
+
+		#region IServiceProvider Members
+
+		object IServiceProvider.GetService(Type serviceType)
 		{
+			// Pass this on to our ServiceProvider which will pass it back to us via our implementation of IOleServiceProvider
 			return this._serviceProvider.GetService(serviceType);
 		}
 
 		#endregion // IServiceProvider Members
+
+		#endregion // ServiceProvider Interface Implementations
 
 		#region IVsSingleFileGenerator Members
 
@@ -151,6 +230,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			EnvDTE.ProjectItem projectItem = this.GetService<EnvDTE.ProjectItem>();
 			Debug.Assert(projectItem != null);
 			string projectItemName = projectItem.Name;
+
+			// If we weren't passed a default namespace, pick one up from the project properties
+			if (String.IsNullOrEmpty(wszDefaultNamespace))
+			{
+				wszDefaultNamespace = projectItem.ContainingProject.Properties.Item("DefaultNamespace").Value as string;
+			}
 
 			string projectItemExtension = Path.GetExtension(projectItemName);
 			if (!String.Equals(projectItemExtension, EXTENSION_ORM, StringComparison.OrdinalIgnoreCase) && !String.Equals(projectItemExtension, EXTENSION_XML, StringComparison.OrdinalIgnoreCase))
@@ -232,7 +317,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				// and almost everything else will depend on it...
 				MemoryStream oialStream = new MemoryStream();
 				IORMGenerator ormToOialGenerator = ORMCustomTool.ORMGenerators[GENERATOR_ORMTOOIAL];
-				ormToOialGenerator.GenerateOutput(ormToOialItem, oialStream, readonlyOutputFormatStreams);
+				ormToOialGenerator.GenerateOutput(ormToOialItem, oialStream, readonlyOutputFormatStreams, wszDefaultNamespace);
 				// Reset oialStream to the beginning of the stream...
 				oialStream.Seek(0, SeekOrigin.Begin);
 				outputFormatStreams.Add(ormToOialGenerator.ProvidesOutputFormat, new ReadOnlyStream(oialStream));
@@ -273,7 +358,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							MemoryStream outputStream = new MemoryStream();
 							try
 							{
-								ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams);
+								ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
 							}
 							catch (Exception ex)
 							{
@@ -281,14 +366,41 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 								byte[] errorOutput = Encoding.UTF8.GetBytes(String.Concat("Error while executing transform: \"", ormGenerator.OfficialName, "\".", Environment.NewLine, Environment.NewLine, ex.ToString()));
 								outputStream.Write(errorOutput, 0, errorOutput.Length);
 							}
-							outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, outputStream);
-							int outputStreamLength = (int)outputStream.Length;
-							// Write the result out to the appropriate file...
-							using (FileStream fileStream = File.Create(Path.Combine(projectDirectory, buildItem.FinalItemSpec), outputStreamLength, FileOptions.SequentialScan))
-							{
-								fileStream.Write(outputStream.GetBuffer(), 0, outputStreamLength);
+							Stream readonlyOutputStream = new ReadOnlyStream(outputStream);
+							outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, readonlyOutputStream);
 							
+							// Write the result out to the appropriate file...
+							int outputStreamLength = (int)outputStream.Length;
+							string fullItemPath = Path.Combine(projectDirectory, buildItem.FinalItemSpec);
+							IVsTextView textView = this.GetTextViewForDocument(fullItemPath);
+							IVsTextLines textLines;
+							if (textView != null && (textLines = GetTextLinesForTextView(textView)) != null)
+							{
+								object editPointStartObject;
+								ErrorHandler.ThrowOnFailure(textLines.CreateEditPoint(0, 0, out editPointStartObject));
+								EnvDTE.EditPoint editPointStart = editPointStartObject as EnvDTE.EditPoint;
+								Debug.Assert(editPointStart != null);
+								EnvDTE.EditPoint editPointEnd = editPointStart.CreateEditPoint();
+								editPointEnd.EndOfDocument();
+								// Reset outputStream to the beginning of the stream...
+								outputStream.Seek(0, SeekOrigin.Begin);
+								// We're using the readonlyOutputStream here so that the StreamReader can't close the real stream
+								using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, outputStreamLength))
+								{
+									// We're not passing any flags to ReplaceText, because the output of the generators should
+									// be the same whether or not the user has the generated document open
+									editPointStart.ReplaceText(editPointEnd, streamReader.ReadToEnd(), 0);
+								}
+								VsShellUtilities.SaveFileIfDirty(textView);
 							}
+							else
+							{
+								using (FileStream fileStream = File.Create(fullItemPath, outputStreamLength, FileOptions.SequentialScan))
+								{
+									fileStream.Write(outputStream.GetBuffer(), 0, outputStreamLength);
+								}
+							}
+
 							// Reset outputStream to the beginning of the stream...
 							outputStream.Seek(0, SeekOrigin.Begin);
 							ormBuildItems.Remove(buildItem);
@@ -298,7 +410,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						}
 					}
 				}
-
 
 				int oialLength = (int)oialStream.Length;
 				IntPtr outputFileContents = Marshal.AllocCoTaskMem(oialLength);

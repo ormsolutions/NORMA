@@ -44,9 +44,8 @@
 	<xsl:template name="TransformORMtoOIAL">
 		<xsl:param name="SourceModel"/>
 		<xsl:variable name="ModelFragment">
-			<xsl:call-template name="CoRefORMModel">
-				<xsl:with-param name="Model" select="$SourceModel"/>
-			</xsl:call-template>
+			<!-- Make sure the model has been co-referened... -->
+			<xsl:apply-templates select="$SourceModel" mode="CoRefORMModel"/>
 		</xsl:variable>
 		<xsl:variable name="Model" select="exsl:node-set($ModelFragment)/child::*"/>
 

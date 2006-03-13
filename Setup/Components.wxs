@@ -44,12 +44,25 @@
 									</Extension>
 								</ProgId>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKCR" Key="ormfile\shell\open\ddeexec">
-									<Registry Value="Open(&quot;%1&quot;)" Type="string"/>
-									<Registry Key="application" Value="VisualStudio.8.0" Type="string"/>
-									<Registry Key="topic" Value="system" Type="string"/>
+									<Registry Type="string" Value="Open(&quot;%1&quot;)"/>
+									<Registry Key="application" Type="string" Value="VisualStudio.8.0"/>
+									<Registry Key="topic" Type="string" Value="system"/>
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS">
 									<Registry Type="string" Value="[BINDIR]"/>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)">
+									<Registry Type="string" Name="InstallDir" Value="[$(var.DefaultShortProductDir)]"/>
+									<Registry Type="string" Name="ProductVersion" Value="$(var.ProductVersion)"/>
+								</Registry>
+							</Component>
+							
+							<Component Id="NORMAVSPackageRemoveUserFontAndColorsComponent" Guid="EC20B922-0564-4988-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
+								<Registry Root="HKCU" Key="$(var.VSRegRoot)">
+									<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
+									<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
+									<Registry Action="removeKeyOnInstall" Key="FontAndColors\Cache\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
+									<Registry Action="removeKeyOnInstall" Key="FontAndColors\Cache\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
 								</Registry>
 							</Component>
 
@@ -64,6 +77,8 @@
 								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" Name="ORMCstTl.dll" LongName="Neumont.Tools.ORM.ORMCustomTool.dll" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool.dll" AssemblyApplication="Neumont.Tools.ORM.ORMCustomTool.dll" ProcessorArchitecture="msil"/>
 								<File Id="Neumont.Tools.ORM.ORMCustomTool.pdb" Name="ORMCstTl.pdb" LongName="Neumont.Tools.ORM.ORMCustomTool.pdb" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.xml" Name="ORMCstTl.xml" LongName="Neumont.Tools.ORM.ORMCustomTool.xml" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKCR" Key="CLSID\{$(var.ORMCustomToolGuid)}">
 									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool, $(var.ORMCustomToolAssemblyName)"/>
@@ -198,6 +213,10 @@
 							<File Id="ORMDataTypes_Temporal.xsd" Name="ORMDT-T.xsd" LongName="ORMDataTypes-Temporal.xsd" src="..\XML\OIAL\ORMDataTypes-Temporal.xsd"
 								DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
 						</Component>
+						<Component Id="ORMClassModelSchemasComponent" Guid="9C7D3F0F-0EC5-4933-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<File Id="OIALtoPLiX_Properties.xsd" Name="O2P_Prop.xsd" LongName="OIALtoPLiX_Properties.xsd" src="..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+						</Component>
 					</Directory>
 					<Directory Id="ORMCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
 						<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
@@ -229,8 +248,24 @@
 							</Registry>
 						</Component>
 						<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<CreateFolder/>
-							<!-- UNDONE: This is being omitted until it uses OIAL and has stabalized. -->
+							<File Id="OIALtoPLiX.xslt" Name="OIAL2PLX.xsl" LongName="OIALtoPLiX.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX.xslt"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+							<File Id="OIALtoPLiX_Implementation.xslt" Name="OIL2PLXi.xsl" LongName="OIALtoPLiX_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_Implementation.xslt"
+								DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
+							<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Name="O2P_GGSC.xsl" LongName="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
+								DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
+							<File Id="OIALtoPLiX_GenerateTuple.xslt" Name="O2P_GT.xsl" LongName="OIALtoPLiX_GenerateTuple.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt"
+								DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
+							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX">
+								<Registry Type="string" Name="Type" Value="XSLT"/>
+								<Registry Type="string" Name="OfficialName" Value="OIALtoPLiX"/>
+								<Registry Type="string" Name="DisplayName" Value="OIAL to PLiX"/>
+								<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to PLiX."/>
+								<Registry Type="string" Name="FileExtension" Value=".PLiX.xml"/>
+								<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+								<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX"/>
+								<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_Implementation.xslt]"/>
+							</Registry>
 						</Component>
 						<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<File Id="OIALtoXSD.xslt" Name="OIAL2XSD.xsl" LongName="OIALtoXSD.xslt" src="..\XML\OIALtoXSD\OIALtoXSD.xslt"

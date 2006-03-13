@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Build.BuildEngine;
@@ -26,7 +25,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
-	public sealed partial class ORMGeneratorSelectionControl : Form
+	internal sealed partial class ORMGeneratorSelectionControl : Form
 	{
 		// TODO: Remove these once this is nested within ORMCustomTool.
 		private const string ITEMGROUP_CONDITIONSTART = "Exists('";

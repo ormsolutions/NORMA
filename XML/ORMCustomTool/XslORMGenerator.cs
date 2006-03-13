@@ -21,6 +21,7 @@ using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Xml;
+using System.Xml.XPath;
 using System.Xml.Xsl;
 using Microsoft.Build.BuildEngine;
 using Microsoft.Win32;
@@ -35,33 +36,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		{
 			private static readonly XmlResolver XmlResolver = new XmlUrlResolver();
 			private static readonly XmlReaderSettings XmlReaderSettings = new XmlReaderSettings();
-
-			private delegate void SetXmlWriterSettingsBoolean(XmlWriterSettings @this, bool value);
-			private static readonly SetXmlWriterSettingsBoolean SetXmlWriterSettingsReadOnly;
+			private static readonly XPathExpression DocumentElementXPathExpression = XPathExpression.Compile("/child::*");
 
 			static XslORMGenerator()
 			{
 				XmlReaderSettings.CloseInput = false;
 				XmlReaderSettings.IgnoreComments = true;
 				XmlReaderSettings.IgnoreWhitespace = true;
-				XmlReaderSettings.XmlResolver = XmlResolver;
-
-				try
-				{
-					Type xmlWriterSettingsType = typeof(XmlWriterSettings);
-					DynamicMethod dynamicMethod = new DynamicMethod("SetXmlWriterSettingsReadOnly", null, new Type[] { xmlWriterSettingsType, typeof(bool) }, xmlWriterSettingsType, true);
-					ILGenerator ilGenerator = dynamicMethod.GetILGenerator(8);
-					ilGenerator.Emit(OpCodes.Ldarg_0);
-					ilGenerator.Emit(OpCodes.Ldarg_1);
-					ilGenerator.Emit(OpCodes.Stfld, xmlWriterSettingsType.GetField("isReadOnly", BindingFlags.NonPublic | BindingFlags.Instance));
-					ilGenerator.Emit(OpCodes.Ret);
-					SetXmlWriterSettingsReadOnly = (SetXmlWriterSettingsBoolean)dynamicMethod.CreateDelegate(typeof(SetXmlWriterSettingsBoolean));
-				}
-				catch (Exception ex)
-				{
-					// TODO: Localize message.
-					ORMCustomTool.ReportError("WARNING: Could not create XslORMGenerator.SetXmlWriterSettingsReadOnly method:", ex);
-				}
+				XmlReaderSettings.XmlResolver = XslORMGenerator.XmlResolver;
 			}
 
 			public XslORMGenerator(RegistryKey generatorKey)
@@ -77,9 +59,39 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				Debug.Assert(this._officialName != null);
 				this._providesOutputFormat = generatorKey.GetValue("ProvidesOutputFormat", null) as string;
 				Debug.Assert(this._providesOutputFormat != null);
+				this._compilable = Convert.ToBoolean((int)generatorKey.GetValue("Compilable", 0));
+
 				string sourceInputFormat = this._sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
 				Debug.Assert(sourceInputFormat != null);
-				this._requiresInputFormats = new ReadOnlyCollection<string>(new string[] { sourceInputFormat });
+				string[] referenceInputFormats = this._referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", null) as string[];
+				
+				// This is to save us from having to do both null and length checks later on...
+				if (referenceInputFormats != null && referenceInputFormats.Length <= 0)
+				{
+					referenceInputFormats = this._referenceInputFormats = null;
+				}
+
+				List<string> requiresInputFormats;
+				if (referenceInputFormats != null)
+				{
+					if (Array.IndexOf(referenceInputFormats, sourceInputFormat) < 0)
+					{
+						requiresInputFormats = new List<string>(referenceInputFormats.Length + 1);
+						requiresInputFormats.Add(sourceInputFormat);
+						requiresInputFormats.AddRange(referenceInputFormats);
+					}
+					else
+					{
+						requiresInputFormats = new List<string>(referenceInputFormats);
+					}
+				}
+				else
+				{
+					requiresInputFormats = new List<string>(1);
+					requiresInputFormats.Add(sourceInputFormat);
+				}
+				this._requiresInputFormats = new ReadOnlyCollection<string>(requiresInputFormats);
+
 				this._transform = new XslCompiledTransform(false);
 
 				Uri transformUri = XmlResolver.ResolveUri(null, generatorKey.GetValue("TransformUri", null) as string);
@@ -94,22 +106,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			{
 				this._transform.Load(this._transformCanonicalUri, XsltSettings.TrustedXslt, XmlResolver);
 				this._transformLoadedTime = DateTime.UtcNow;
-				if (SetXmlWriterSettingsReadOnly != null)
-				{
-					try
-					{
-						XmlWriterSettings outputSettings = this._transform.OutputSettings;
-						SetXmlWriterSettingsReadOnly(outputSettings, false);
-						outputSettings.CloseOutput = false;
-						outputSettings.IndentChars = "\t";
-						SetXmlWriterSettingsReadOnly(outputSettings, true);
-					}
-					catch (Exception ex)
-					{
-						// TODO: Localize message.
-						ORMCustomTool.ReportError("WARNING: Exception ocurred while trying to change XslCompiledTransform.OutputSettings in XslORMGenerator:", ex);
-					}
-				}
+				XmlWriterSettings outputSettings = this._xmlWriterSettings = this._transform.OutputSettings.Clone();
+				outputSettings.CloseOutput = false;
+				outputSettings.IndentChars = "\t";
 			}
 			private void EnsureTransform()
 			{
@@ -136,6 +135,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			private readonly string _transformCanonicalUri;
 			private readonly string _transformLocalPath;
 			private readonly XslCompiledTransform _transform;
+			private XmlWriterSettings _xmlWriterSettings;
 			private DateTime _transformLoadedTime;
 
 			private readonly string _officialName;
@@ -163,6 +163,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 
 			private readonly string _sourceInputFormat;
+			private readonly string[] _referenceInputFormats;
 			private readonly ReadOnlyCollection<string> _requiresInputFormats;
 			public System.Collections.ObjectModel.ReadOnlyCollection<string> RequiresInputFormats
 			{
@@ -175,30 +176,61 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				return Path.ChangeExtension(sourceFileName, this._fileExtension);
 			}
 
+			private readonly bool _compilable;
 			public BuildItem AddGeneratedFileBuildItem(BuildItemGroup buildItemGroup, string sourceFileName, string outputFileName)
 			{
-				BuildItem buildItem = buildItemGroup.AddNewItem("None", outputFileName);
+				bool compilable = this._compilable;
+				BuildItem buildItem = buildItemGroup.AddNewItem(compilable ? "Compile" : "None", outputFileName);
 				buildItem.SetMetadata(ITEMMETADATA_AUTOGEN, "True");
+				if (compilable)
+				{
+					buildItem.SetMetadata(ITEMMETADATA_DESIGNTIME, "True");
+				}
 				buildItem.SetMetadata(ITEMMETADATA_DEPENDENTUPON, sourceFileName);
 				buildItem.SetMetadata(ITEMMETADATA_ORMGENERATOR, this.OfficialName);
 				return buildItem;
 			}
 
-			public void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams)
+			public void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace)
 			{
 				this.EnsureTransform();
 				Stream inputStream = inputFormatStreams[this._sourceInputFormat];
+				
+				XsltArgumentList argumentList = new XsltArgumentList();
+				argumentList.AddParam("DefaultNamespace", string.Empty, defaultNamespace);
+
+				string[] referenceFormats = this._referenceInputFormats;
+				if (referenceFormats != null)
+				{
+					for (int i = 0; i < referenceFormats.Length; i++)
+					{
+						string referenceFormat = referenceFormats[i];
+						Stream referenceStream = inputFormatStreams[referenceFormat];
+						using (XmlReader referenceReader = XmlReader.Create(referenceStream))
+						{
+							argumentList.AddParam(referenceFormat, string.Empty, new XPathDocument(referenceReader).CreateNavigator().Select(DocumentElementXPathExpression));
+						}
+						referenceStream.Seek(0, SeekOrigin.Begin);
+					}
+				}
+
 				XmlReader inputReader = null;
+				XmlWriter outputWriter = null;
 				try
 				{
 					inputReader = XmlReader.Create(inputStream, XmlReaderSettings);
-					this._transform.Transform(inputReader, null, outputStream);
+					outputWriter = XmlWriter.Create(outputStream, this._xmlWriterSettings);
+					this._transform.Transform(inputReader, argumentList, outputWriter);
 				}
 				finally
 				{
 					if (inputReader != null)
 					{
 						inputReader.Close();
+					}
+					if (outputWriter != null)
+					{
+						outputWriter.Close();
 					}
 					inputStream.Seek(0, SeekOrigin.Begin);
 				}

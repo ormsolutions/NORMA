@@ -5,24 +5,32 @@ SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMTransformsDir=%CommonProgramFiles%\ORM\Transforms
 SET DILTransformsDir=%CommonProgramFiles%\DIL\Transforms
+SET PLiXDir=%VSDir%\Neumont\CodeGeneration\PLiX
 
 :: Install Custom Tool DLL
 DEL /F /Q "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.ORMCustomTool.*" 1>NUL 2>&1
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "%NORMADir%\bin\"
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.pdb" "%NORMADir%\bin\"
+:: For some reason, the next copy is randomly giving errors about half the time. They can be safely ignored, so they've been redirected to NUL.
+XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.xml" "%NORMADir%\bin\" 2>NUL
 CALL:_InstallCustomToolReg
 
-:: Install ORM Transforms
+:: Install and register ORM Transforms
 XCOPY /Y /D /V /Q "%~dp0\..\OIAL\CoRefORM.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_Implementation.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".orm" "ORM" "ORM" "%ORMTransformsDir%\CoRefORM.xslt"
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms an ORM file to OIAL." ".OIAL.xml" "ORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt"
 CALL:_AddXslORMGenerator "OIALtoXSD" "OIAL to XSD" "Transforms an OIAL file to XML Schema." ".xsd" "OIAL" "XSD" "%ORMTransformsDir%\OIALtoXSD.xslt"
 CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to DCIL." ".DCIL.xml" "OIAL" "DCIL" "%ORMTransformsDir%\OIALtoDCIL.xslt"
+CALL:_AddXslORMGenerator "OIALtoPLiX" "OIAL to PLiX" "Transforms an OIAL file to PLiX." ".PLiX.xml" "OIAL" "PLiX" "%ORMTransformsDir%\OIALtoPLiX_Implementation.xslt"
 
-:: Install DIL Transforms
+:: Install and register DIL Transforms
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoSQLStandard.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoPostgreSQL.xslt" "%DILTransformsDir%\"
@@ -37,6 +45,10 @@ CALL:_AddXslORMGenerator "DDILtoPostgreSQL" "DDIL to PostgreSQL" "Transforms DDI
 CALL:_AddXslORMGenerator "DDILtoDB2" "DDIL to DB2" "Transforms DDIL to DB2-dialect SQL." ".DB2.sql" "DDIL" "SQL_DB2" "%DILTransformsDir%\DDILtoDB2.xslt"
 CALL:_AddXslORMGenerator "DDILtoSQLServer" "DDIL to SQL Server" "Transforms DDIL to SQL Server-dialect SQL." ".SQLServer.sql" "DDIL" "SQL_SQLServer" "%DILTransformsDir%\DDILtoSQLServer.xslt"
 CALL:_AddXslORMGenerator "DDILtoOracle" "DDIL to Oracle" "Transforms DDIL to Oracle-dialect SQL." ".Oracle.sql" "DDIL" "SQL_Oracle" "%DILTransformsDir%\DDILtoOracle.xslt"
+
+:: Register PLiX Transforms
+CALL:_AddXslORMGenerator "PLiXtoCSharp" "PLiX to C#" "Transforms PLiX to C#." ".cs" "PLiX" "CSharp" "%PLiXDir%\Formatters\PLiXCS.xslt" "1"
+CALL:_AddXslORMGenerator "PLiXtoVisualBasic" "PLiX to Visual Basic" "Transforms PLiX to Visual Basic." ".vb" "PLiX" "VisualBasic" "%PLiXDir%\Formatters\PLiXVB.xslt" "1"
 
 GOTO:EOF
 
@@ -77,4 +89,5 @@ REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "SourceInputFormat" /d "%~5"
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "ProvidesOutputFormat" /d "%~6"
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "TransformUri" /d "%~7"
+IF NOT "%~8"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Compilable" /t REG_DWORD /d "%~8")
 GOTO:EOF

@@ -23,6 +23,13 @@ using Microsoft.Build.BuildEngine;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
+	/// <summary>
+	/// Implementations of this interface generate a specific output format based on requested input formats.
+	/// </summary>
+	/// <remarks>
+	/// TODO: Document how to register IORMGenerator implementations via the registry.
+	/// If anyone is currently looking for this information, take a look in the "ORMGenerators.cs" file.
+	/// </remarks>
 	public interface IORMGenerator
 	{
 		/// <summary>
@@ -100,15 +107,20 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// </summary>
 		/// <param name="buildItem">The <see cref="BuildItem"/> for which output is to be generated.</param>
 		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
-		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary&lt;String,Stream&gt;"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
+		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary{String,Stream}"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
+		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
 		/// <remarks>
-		/// <para><paramref name="inputFormatStreams"/> is only guarenteed to contain the output <see cref="Streams"/>s for
+		/// <para><paramref name="inputFormatStreams"/> is only guarenteed to contain the output <see cref="Stream"/>s for
 		/// the formats "ORM", "OIAL", and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
 		/// <see cref="IORMGenerator.RequiresInputFormats"/>.</para>
 		/// <para>Implementations of this method are responsible for resetting the <see cref="Stream.Position"/> of any
 		/// <see cref="Stream"/> obtained from <paramref name="inputFormatStreams"/> to the beginning of that <see cref="Stream"/>
-		/// if they directly or indirectly alter that <see cref="Stream.Position"/>. This does not apply to <paramref name="outputStream"/>.</para>
+		/// if they directly or indirectly alter that <see cref="Stream.Position"/>. This does not apply to <paramref name="outputStream"/>.
+		/// See below for an example of how to reset the position of a <see cref="Stream"/> in C#.</para>
+		/// <para><example>Stream oialStream = inputFormatStreams[ORMOutputFormat.OIAL];
+		/// ...
+		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
 		/// </remarks>
-		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams);
+		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace);
 	}
 }

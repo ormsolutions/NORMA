@@ -30,8 +30,8 @@
 	<xsl:param name="CoRefFactIdDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefValueDataTypeIdDecorator" select="'_Data_Type'"/>
-	<xsl:param name="CoRefRoleNamePreposition" select="'As'" />
-	<xsl:variable name="ExistingTrueOrFalseLogicalDataType" select="ormRoot:ORM2/orm:ORMModel/orm:DataTypes/orm:TrueOrFalseLogicalDataType"/>
+	<xsl:param name="CoRefRoleNamePreposition" select="'As'"/>
+	<xsl:variable name="ExistingTrueOrFalseLogicalDataType" select="(ormRoot:ORM2/orm:ORMModel | orm:ORMModel)/orm:DataTypes/orm:TrueOrFalseLogicalDataType"/>
 	<xsl:variable name="CoRefLogicalDataTypeIdDecoratorFragment">
 		<xsl:choose>
 			<xsl:when test="$ExistingTrueOrFalseLogicalDataType">
@@ -78,16 +78,12 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<!-- Set the priority low here for testing purposes. This is meant to be directly included in other xsl files, and
-		 we don't want to interfere with other root matches. -->
-	<xsl:template match="ormRoot:ORM2" priority="-3">
-		<xsl:call-template name="CoRefORMModel">
-			<xsl:with-param name="Model" select="orm:ORMModel"/>
-		</xsl:call-template>
+	<xsl:template match="ormRoot:ORM2 | orm:ORMModel" priority="-3">
+		<xsl:apply-templates select="child::orm:ORMModel | self::orm:ORMModel" mode="CoRefORMModel"/>
 	</xsl:template>
 
-	<xsl:template name="CoRefORMModel">
-		<xsl:param name="Model" select="/ormRoot:ORM2/orm:ORMModel"/>
+	<xsl:template match="orm:ORMModel" mode="CoRefORMModel">
+		<xsl:param name="Model" select="."/>
 		<xsl:variable name="RoleMapFragment">
 			<xsl:apply-templates select="$Model/orm:ExternalConstraints/orm:ImpliedEqualityConstraint" mode="BuildRoleMap"/>
 		</xsl:variable>
@@ -123,7 +119,6 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="ObjectifiedFacts" select="exsl:node-set($ObjectifiedFactsFragment)/child::*"/>
-		<!-- At one point BinarizableFacts were known as MultiRoleUniquenessFactTypes. Enough said. -->
 		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and (orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1] or count(orm:FactRoles/orm:Role)=1)]"/>
 
 		<xsl:apply-templates select="$Model" mode="CoRefORM">

@@ -18,6 +18,7 @@
 		<ComponentGroup Id="MainFeatureComponents">
 			<ComponentRef Id="LicenseFilesComponent"/>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
+			<ComponentRef Id="NORMAVSPackageRemoveUserFontAndColorsComponent"/>
 			<ComponentRef Id="NORMAVSPackageSatelliteComponent_$(var.DefaultLCID)"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSchemasLocalCatalogComponent"/>
@@ -51,6 +52,7 @@
 		</ComponentGroup>
 		<ComponentGroup Id="ClassModelGenerationFeatureComponents">
 			<!-- OIAL-to-PLiX transforms go here. -->
+			<ComponentRef Id="ORMClassModelSchemasComponent"/>
 			<ComponentRef Id="ORMClassModelTransformsComponent"/>
 		</ComponentGroup>
 		<ComponentGroup Id="XmlSchemaGenerationFeatureComponents">

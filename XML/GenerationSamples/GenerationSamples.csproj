@@ -61,5 +61,22 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoOracle</ORMGenerator>
     </None>
+    <None Include="SampleModel.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoPLiX</ORMGenerator>
+    </None>
+    <Compile Include="SampleModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PLiXtoCSharp</ORMGenerator>
+    </Compile>
+    <Compile Include="SampleModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PLiXtoVisualBasic</ORMGenerator>
+    </Compile>
   </ItemGroup>
 </Project>

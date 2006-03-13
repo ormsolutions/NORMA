@@ -1,12 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright © Neumont University. All rights reserved.
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<!-- Contributors: Kevin M. Owen -->
+<!--
+	NOTE:
+	The code for the Tuple classes that this transform generates was based heavily on the Tuple class from
+	ECMA Technical Report TR/89 "Common Language Infrastructure (CLI) - Common Generics" (available from
+	http://www.ecma-international.org/publications/techreports/E-TR-089.htm) and the reference implementation
+	of said technical report (available from http://www.mondrian-script.org/ecma).
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	extension-element-prefixes="exsl">
 
-	<xsl:variable name="SpecifyParamNameForArgumentNullException" select="false()"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	
+	<xsl:param name="SpecifyParamNameForArgumentNullException" select="false()"/>
+
 	<xsl:template name="GetNodeSetOfCount">
 		<xsl:param name="count"/>
 		<PlaceHolder/>
@@ -47,16 +66,16 @@
 			<xsl:with-param name="arityNumber" select="10"/>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateTupleBase">
-		<plx:class visibility="public" modifier="static" partial="true" name="Tuple">
+		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="Tuple Support"/>
 			</plx:leadingInfo>
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Tuple Support"/>
 			</plx:trailingInfo>
-			<plx:function visibility="internal" modifier="static" name="RotateRight">
+			<plx:function visibility="protected" modifier="static" name="RotateRight">
 				<plx:param type="in" name="value" dataTypeName=".i4"/>
 				<plx:param type="in" name="places" dataTypeName=".i4"/>
 				<plx:returns dataTypeName=".i4"/>
@@ -192,33 +211,33 @@
 					</xsl:message>
 				</xsl:when>
 				<xsl:when test="$arityNumber">
-					<xsl:if test="$arityNumber &lt; 2">
-						<xsl:message terminate="yes">
-							<xsl:text>A Tuple cannot have an arity less than two.</xsl:text>
-						</xsl:message>
-					</xsl:if>
 					<xsl:variable name="tempNodeSetsFragment">
 						<xsl:call-template name="GetNodeSetOfCount">
 							<xsl:with-param name="count" select="$arityNumber"/>
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($tempNodeSetsFragment)/child::*">
-						<Item name="Item{position()}" paramName="item{position()}"  dataTypeName="T{position()}"/>
+						<Item name="Item{position()}" localName="item{position()}"  dataTypeName="T{position()}"/>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:for-each select="exsl:node-set($arityNodeSet)/child::*">
-						<Item name="Item{position()}" paramName="item{position()}"  dataTypeName="T{position()}"/>
+						<Item name="Item{position()}" localName="item{position()}"  dataTypeName="T{position()}"/>
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="items" select="exsl:node-set($itemsFragment)/child::*"/>
 		<xsl:variable name="arity" select="count($items)"/>
+		<xsl:if test="$arity &lt; 2">
+			<xsl:message terminate="yes">
+				<xsl:text>A Tuple cannot have an arity less than two.</xsl:text>
+			</xsl:message>
+		</xsl:if>
 
 		<xsl:variable name="paramsFragment">
 			<xsl:for-each select="$items">
-				<plx:param type="in" name="{@paramName}" dataTypeName="{@dataTypeName}"/>
+				<plx:param type="in" name="{@localName}" dataTypeName="{@dataTypeName}"/>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="params" select="exsl:node-set($paramsFragment)/child::*"/>
@@ -237,7 +256,7 @@
 		</xsl:variable>
 		<xsl:variable name="passTypeParams" select="exsl:node-set($passTypeParamsFragment)/child::*"/>
 
-		<plx:class visibility="public" modifier="static" partial="true" name="Tuple">
+		<plx:class visibility="public" modifier="abstract" partial="true" name="Tuple">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$arity}-ary Tuple"/>
 			</plx:leadingInfo>
@@ -266,7 +285,7 @@
 						<xsl:copy-of select="$passTypeParams"/>
 						<xsl:for-each select="$items">
 							<plx:passParam>
-								<plx:nameRef type="parameter" name="{@paramName}"/>
+								<plx:nameRef type="parameter" name="{@localName}"/>
 							</plx:passParam>
 						</xsl:for-each>
 					</plx:callNew>
@@ -278,16 +297,27 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$arity}-ary Tuple"/>
 			</plx:trailingInfo>
-			<xsl:call-template name="GenerateSuppressMessageAttribute">
-				<xsl:with-param name="category" select="'Microsoft.Design'"/>
-				<xsl:with-param name="checkId" select="'CA1005'"/>
-			</xsl:call-template>
+			<xsl:if test="$arity > 2">
+				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="'Microsoft.Design'"/>
+						</plx:string>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="'CA10005'"/>
+						</plx:string>
+					</plx:passParam>
+				</plx:attribute>
+			</xsl:if>
 			<plx:attribute dataTypeName="ImmutableObjectAttribute" dataTypeQualifier="System.ComponentModel">
 				<plx:passParam>
 					<plx:trueKeyword/>
 				</plx:passParam>
 			</plx:attribute>
 			<xsl:copy-of select="$typeParams"/>
+			<plx:derivesFromClass dataTypeName="Tuple"/>
 			<plx:implementsInterface dataTypeName="IEquatable" dataTypeQualifier="System">
 				<plx:passTypeParam dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
@@ -295,16 +325,15 @@
 			</plx:implementsInterface>
 
 			<xsl:for-each select="$items">
-				<plx:field visibility="public" readOnly="true" name="{@name}" dataTypeName="{@dataTypeName}">
-					<xsl:call-template name="GenerateSuppressMessageAttribute">
-						<xsl:with-param name="category" select="'Microsoft.Design'"/>
-						<xsl:with-param name="checkId" select="'CA1051'"/>
-					</xsl:call-template>
-					<xsl:call-template name="GenerateSuppressMessageAttribute">
-						<xsl:with-param name="category" select="'Microsoft.Security'"/>
-						<xsl:with-param name="checkId" select="'CA2104'"/>
-					</xsl:call-template>
-				</plx:field>
+				<plx:field visibility="private" readOnly="true" name="{@localName}" dataTypeName="{@dataTypeName}"/>
+				<plx:property visibility="public" name="{@name}">
+					<plx:returns dataTypeName="{@dataTypeName}"/>
+					<plx:get>
+						<plx:return>
+							<plx:callThis accessor="this" type="field" name="{@localName}"/>
+						</plx:return>
+					</plx:get>
+				</plx:property>
 			</xsl:for-each>
 
 			<plx:function visibility="public" name=".construct">
@@ -316,7 +345,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="identityEquality">
 										<plx:left>
-											<plx:nameRef type="parameter" name="{@paramName}"/>
+											<plx:nameRef type="parameter" name="{@localName}"/>
 										</plx:left>
 										<plx:right>
 											<plx:nullKeyword/>
@@ -327,7 +356,7 @@
 									<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System">
 										<plx:passParam>
 											<plx:string>
-												<xsl:value-of select="@paramName"/>
+												<xsl:value-of select="@localName"/>
 											</plx:string>
 										</plx:passParam>
 									</plx:callNew>
@@ -355,10 +384,10 @@
 				<xsl:for-each select="$items">
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="{@name}"/>
+							<plx:callThis accessor="this" type="field" name="{@localName}"/>
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="{@paramName}"/>
+							<plx:nameRef type="parameter" name="{@localName}"/>
 						</plx:right>
 					</plx:assign>
 				</xsl:for-each>
@@ -429,7 +458,7 @@
 						<plx:left>
 							<plx:callInstance type="methodCall" name="GetHashCode">
 								<plx:callObject>
-									<plx:callThis accessor="this" type="field" name="{$items[1]/@name}"/>
+									<plx:callThis accessor="this" type="field" name="{$items[1]/@localName}"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:left>
@@ -478,7 +507,7 @@
 						</plx:passParam>
 						<xsl:for-each select="$items">
 							<plx:passParam>
-								<plx:callThis accessor="this" type="field" name="{@name}"/>
+								<plx:callThis accessor="this" type="field" name="{@localName}"/>
 							</plx:passParam>
 						</xsl:for-each>
 					</plx:callStatic>
@@ -528,7 +557,7 @@
 					</plx:callStatic>
 				</plx:return>
 			</plx:operatorFunction>
-				
+
 			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
@@ -561,7 +590,7 @@
 		<xsl:param name="codeChoice"/>
 		<xsl:param name="operator"/>
 
-		<xsl:variable name="chosenCode">
+		<xsl:variable name="chosenCodeFragment">
 			<xsl:variable name="currentItem" select="$items[$currentPosition]"/>
 			<xsl:choose>
 				<xsl:when test="$codeChoice='rotateCode'">
@@ -569,7 +598,7 @@
 						<plx:passParam>
 							<plx:callInstance type="methodCall" name="GetHashCode">
 								<plx:callObject>
-									<plx:callThis accessor="this" type="field" name="{$currentItem/@name}"/>
+									<plx:callThis accessor="this" type="field" name="{$currentItem/@localName}"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:passParam>
@@ -581,7 +610,7 @@
 				<xsl:when test="$codeChoice='checkNullCode'">
 					<plx:binaryOperator type="identityEquality">
 						<plx:left>
-							<plx:nameRef type="parameter" name="{$currentItem/@paramName}"/>
+							<plx:nameRef type="parameter" name="{$currentItem/@localName}"/>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
@@ -592,10 +621,10 @@
 					<plx:unaryOperator type="booleanNot">
 						<plx:callInstance type="methodCall" name="Equals">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$currentItem/@name}"/>
+								<plx:callThis accessor="this" type="field" name="{$currentItem/@localName}"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:callInstance type="field" name="{$currentItem/@name}">
+								<plx:callInstance type="field" name="{$currentItem/@localName}">
 									<plx:callObject>
 										<plx:nameRef type="parameter" name="other"/>
 									</plx:callObject>
@@ -611,6 +640,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="chosenCode" select="exsl:node-set($chosenCodeFragment)/child::*"/>
 
 		<xsl:choose>
 			<xsl:when test="not($currentPosition=$countItems)">
