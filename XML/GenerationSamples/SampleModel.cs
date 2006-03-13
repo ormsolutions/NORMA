@@ -1129,17 +1129,17 @@ namespace SampleModel
 		protected PersonDrivesCar()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1169,11 +1169,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1192,11 +1192,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1213,11 +1213,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1236,11 +1236,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1263,11 +1263,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"PersonDrivesCar{0}{{{0}{1}DrivesCar_vin = ""{2}"",{0}{1}DrivenByPerson = {3}{0}}}", Environment.NewLine, "", this.DrivesCar_vin, "TODO: Recursively call ToString for customTypes...");
 		}
@@ -1280,17 +1280,17 @@ namespace SampleModel
 		protected PersonBoughtCarFromPersonOnDate()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[5];
+		private readonly System.Delegate[] Events = new System.Delegate[5];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1320,11 +1320,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1343,11 +1343,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1364,11 +1364,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1387,11 +1387,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1408,11 +1408,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1431,11 +1431,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1452,11 +1452,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1475,11 +1475,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1512,11 +1512,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"PersonBoughtCarFromPersonOnDate{0}{{{0}{1}CarSold_vin = ""{2}"",{0}{1}SaleDate_YMD = ""{3}"",{0}{1}Buyer = {4},{0}{1}Seller = {5}{0}}}", Environment.NewLine, "", this.CarSold_vin, this.SaleDate_YMD, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -1529,17 +1529,17 @@ namespace SampleModel
 		protected Review()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[4];
+		private readonly System.Delegate[] Events = new System.Delegate[4];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1569,11 +1569,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1592,11 +1592,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1613,11 +1613,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1636,11 +1636,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1657,11 +1657,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1680,11 +1680,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1712,11 +1712,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criteria_Name = ""{4}""{0}}}", Environment.NewLine, "", this.Car_vin, this.Rating_Nr_Integer, this.Criteria_Name);
 		}
@@ -1729,17 +1729,17 @@ namespace SampleModel
 		protected PersonHasNickName()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1769,11 +1769,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1792,11 +1792,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1813,11 +1813,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1836,11 +1836,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1863,11 +1863,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"PersonHasNickName{0}{{{0}{1}NickName = ""{2}"",{0}{1}Person = {3}{0}}}", Environment.NewLine, "", this.NickName, "TODO: Recursively call ToString for customTypes...");
 		}
@@ -1880,17 +1880,17 @@ namespace SampleModel
 		protected Person()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[15];
+		private readonly System.Delegate[] Events = new System.Delegate[15];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1920,11 +1920,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1943,11 +1943,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1964,11 +1964,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1987,11 +1987,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2008,11 +2008,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2031,11 +2031,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2052,11 +2052,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2075,11 +2075,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2096,11 +2096,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2119,11 +2119,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2140,11 +2140,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = Delegate.Combine(this.Events[6], value);
+				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
 			}
 			remove
 			{
-				this.Events[6] = Delegate.Remove(this.Events[6], value);
+				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2163,11 +2163,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = Delegate.Combine(this.Events[6], value);
+				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
 			}
 			remove
 			{
-				this.Events[6] = Delegate.Remove(this.Events[6], value);
+				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2184,11 +2184,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = Delegate.Combine(this.Events[7], value);
+				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
 			}
 			remove
 			{
-				this.Events[7] = Delegate.Remove(this.Events[7], value);
+				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2207,11 +2207,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = Delegate.Combine(this.Events[7], value);
+				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
 			}
 			remove
 			{
-				this.Events[7] = Delegate.Remove(this.Events[7], value);
+				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2228,11 +2228,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = Delegate.Combine(this.Events[8], value);
+				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
 			}
 			remove
 			{
-				this.Events[8] = Delegate.Remove(this.Events[8], value);
+				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2251,11 +2251,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = Delegate.Combine(this.Events[8], value);
+				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
 			}
 			remove
 			{
-				this.Events[8] = Delegate.Remove(this.Events[8], value);
+				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2272,11 +2272,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[9] = Delegate.Combine(this.Events[9], value);
+				this.Events[9] = System.Delegate.Combine(this.Events[9], value);
 			}
 			remove
 			{
-				this.Events[9] = Delegate.Remove(this.Events[9], value);
+				this.Events[9] = System.Delegate.Remove(this.Events[9], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2295,11 +2295,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[9] = Delegate.Combine(this.Events[9], value);
+				this.Events[9] = System.Delegate.Combine(this.Events[9], value);
 			}
 			remove
 			{
-				this.Events[9] = Delegate.Remove(this.Events[9], value);
+				this.Events[9] = System.Delegate.Remove(this.Events[9], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2316,11 +2316,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[10] = Delegate.Combine(this.Events[10], value);
+				this.Events[10] = System.Delegate.Combine(this.Events[10], value);
 			}
 			remove
 			{
-				this.Events[10] = Delegate.Remove(this.Events[10], value);
+				this.Events[10] = System.Delegate.Remove(this.Events[10], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2339,11 +2339,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[10] = Delegate.Combine(this.Events[10], value);
+				this.Events[10] = System.Delegate.Combine(this.Events[10], value);
 			}
 			remove
 			{
-				this.Events[10] = Delegate.Remove(this.Events[10], value);
+				this.Events[10] = System.Delegate.Remove(this.Events[10], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2360,11 +2360,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[11] = Delegate.Combine(this.Events[11], value);
+				this.Events[11] = System.Delegate.Combine(this.Events[11], value);
 			}
 			remove
 			{
-				this.Events[11] = Delegate.Remove(this.Events[11], value);
+				this.Events[11] = System.Delegate.Remove(this.Events[11], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2383,11 +2383,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[11] = Delegate.Combine(this.Events[11], value);
+				this.Events[11] = System.Delegate.Combine(this.Events[11], value);
 			}
 			remove
 			{
-				this.Events[11] = Delegate.Remove(this.Events[11], value);
+				this.Events[11] = System.Delegate.Remove(this.Events[11], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2404,11 +2404,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[12] = Delegate.Combine(this.Events[12], value);
+				this.Events[12] = System.Delegate.Combine(this.Events[12], value);
 			}
 			remove
 			{
-				this.Events[12] = Delegate.Remove(this.Events[12], value);
+				this.Events[12] = System.Delegate.Remove(this.Events[12], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2427,11 +2427,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[12] = Delegate.Combine(this.Events[12], value);
+				this.Events[12] = System.Delegate.Combine(this.Events[12], value);
 			}
 			remove
 			{
-				this.Events[12] = Delegate.Remove(this.Events[12], value);
+				this.Events[12] = System.Delegate.Remove(this.Events[12], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2448,11 +2448,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[13] = Delegate.Combine(this.Events[13], value);
+				this.Events[13] = System.Delegate.Combine(this.Events[13], value);
 			}
 			remove
 			{
-				this.Events[13] = Delegate.Remove(this.Events[13], value);
+				this.Events[13] = System.Delegate.Remove(this.Events[13], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2471,11 +2471,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[13] = Delegate.Combine(this.Events[13], value);
+				this.Events[13] = System.Delegate.Combine(this.Events[13], value);
 			}
 			remove
 			{
-				this.Events[13] = Delegate.Remove(this.Events[13], value);
+				this.Events[13] = System.Delegate.Remove(this.Events[13], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2492,11 +2492,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[14] = Delegate.Combine(this.Events[14], value);
+				this.Events[14] = System.Delegate.Combine(this.Events[14], value);
 			}
 			remove
 			{
-				this.Events[14] = Delegate.Remove(this.Events[14], value);
+				this.Events[14] = System.Delegate.Remove(this.Events[14], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2515,11 +2515,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[14] = Delegate.Combine(this.Events[14], value);
+				this.Events[14] = System.Delegate.Combine(this.Events[14], value);
 			}
 			remove
 			{
-				this.Events[14] = Delegate.Remove(this.Events[14], value);
+				this.Events[14] = System.Delegate.Remove(this.Events[14], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2626,11 +2626,11 @@ namespace SampleModel
 		{
 			get;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}SocialSecurityNumber = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}PersonHasParents = ""{10}"",{0}{1}ValueType1DoesSomethingElseWith = {11},{0}{1}MalePerson = {12},{0}{1}FemalePerson = {13},{0}{1}ChildPerson = {14},{0}{1}Death = {15}{0}}}", Environment.NewLine, "", this.FirstName, this.Date_YMD, this.LastName, this.SocialSecurityNumber, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.PersonHasParents, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -2725,17 +2725,17 @@ namespace SampleModel
 		protected MalePerson()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[2];
+		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -2765,11 +2765,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2788,11 +2788,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2814,11 +2814,11 @@ namespace SampleModel
 		{
 			get;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, "MalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -2837,438 +2837,438 @@ namespace SampleModel
 		{
 			get
 			{
-				return ((Person)this).FirstName;
+				return this.Person.FirstName;
 			}
 			set
 			{
-				((Person)this).FirstName = value;
+				this.Person.FirstName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
 		{
 			add
 			{
-				((Person)this).FirstNameChanging += value;
+				this.Person.FirstNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanging -= value;
+				this.Person.FirstNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
 		{
 			add
 			{
-				((Person)this).FirstNameChanged += value;
+				this.Person.FirstNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanged -= value;
+				this.Person.FirstNameChanged -= value;
 			}
 		}
 		public virtual int Date_YMD
 		{
 			get
 			{
-				return ((Person)this).Date_YMD;
+				return this.Person.Date_YMD;
 			}
 			set
 			{
-				((Person)this).Date_YMD = value;
+				this.Person.Date_YMD = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<int>> Date_YMDChanging
 		{
 			add
 			{
-				((Person)this).Date_YMDChanging += value;
+				this.Person.Date_YMDChanging += value;
 			}
 			remove
 			{
-				((Person)this).Date_YMDChanging -= value;
+				this.Person.Date_YMDChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<int>> Date_YMDChanged
 		{
 			add
 			{
-				((Person)this).Date_YMDChanged += value;
+				this.Person.Date_YMDChanged += value;
 			}
 			remove
 			{
-				((Person)this).Date_YMDChanged -= value;
+				this.Person.Date_YMDChanged -= value;
 			}
 		}
 		public virtual string LastName
 		{
 			get
 			{
-				return ((Person)this).LastName;
+				return this.Person.LastName;
 			}
 			set
 			{
-				((Person)this).LastName = value;
+				this.Person.LastName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
 		{
 			add
 			{
-				((Person)this).LastNameChanging += value;
+				this.Person.LastNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanging -= value;
+				this.Person.LastNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
 		{
 			add
 			{
-				((Person)this).LastNameChanged += value;
+				this.Person.LastNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanged -= value;
+				this.Person.LastNameChanged -= value;
 			}
 		}
 		public virtual string SocialSecurityNumber
 		{
 			get
 			{
-				return ((Person)this).SocialSecurityNumber;
+				return this.Person.SocialSecurityNumber;
 			}
 			set
 			{
-				((Person)this).SocialSecurityNumber = value;
+				this.Person.SocialSecurityNumber = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> SocialSecurityNumberChanging
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanging += value;
+				this.Person.SocialSecurityNumberChanging += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanging -= value;
+				this.Person.SocialSecurityNumberChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> SocialSecurityNumberChanged
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanged += value;
+				this.Person.SocialSecurityNumberChanged += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanged -= value;
+				this.Person.SocialSecurityNumberChanged -= value;
 			}
 		}
 		public virtual Nullable<int> HatType_ColorARGB
 		{
 			get
 			{
-				return ((Person)this).HatType_ColorARGB;
+				return this.Person.HatType_ColorARGB;
 			}
 			set
 			{
-				((Person)this).HatType_ColorARGB = value;
+				this.Person.HatType_ColorARGB = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> HatType_ColorARGBChanging
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanging += value;
+				this.Person.HatType_ColorARGBChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanging -= value;
+				this.Person.HatType_ColorARGBChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> HatType_ColorARGBChanged
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanged += value;
+				this.Person.HatType_ColorARGBChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanged -= value;
+				this.Person.HatType_ColorARGBChanged -= value;
 			}
 		}
 		public virtual string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get
 			{
-				return ((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description;
+				return this.Person.HatType_HatTypeStyle_HatTypeStyle_Description;
 			}
 			set
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description = value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_Description = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
 			}
 		}
 		public virtual Nullable<int> OwnsCar_vin
 		{
 			get
 			{
-				return ((Person)this).OwnsCar_vin;
+				return this.Person.OwnsCar_vin;
 			}
 			set
 			{
-				((Person)this).OwnsCar_vin = value;
+				this.Person.OwnsCar_vin = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> OwnsCar_vinChanging
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanging += value;
+				this.Person.OwnsCar_vinChanging += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanging -= value;
+				this.Person.OwnsCar_vinChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> OwnsCar_vinChanged
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanged += value;
+				this.Person.OwnsCar_vinChanged += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanged -= value;
+				this.Person.OwnsCar_vinChanged -= value;
 			}
 		}
 		public virtual string Gender_Gender_Code
 		{
 			get
 			{
-				return ((Person)this).Gender_Gender_Code;
+				return this.Person.Gender_Gender_Code;
 			}
 			set
 			{
-				((Person)this).Gender_Gender_Code = value;
+				this.Person.Gender_Gender_Code = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> Gender_Gender_CodeChanging
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanging += value;
+				this.Person.Gender_Gender_CodeChanging += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanging -= value;
+				this.Person.Gender_Gender_CodeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> Gender_Gender_CodeChanged
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanged += value;
+				this.Person.Gender_Gender_CodeChanged += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanged -= value;
+				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
 		public virtual Nullable<bool> PersonHasParents
 		{
 			get
 			{
-				return ((Person)this).PersonHasParents;
+				return this.Person.PersonHasParents;
 			}
 			set
 			{
-				((Person)this).PersonHasParents = value;
+				this.Person.PersonHasParents = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<bool>>> PersonHasParentsChanging
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanging += value;
+				this.Person.PersonHasParentsChanging += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanging -= value;
+				this.Person.PersonHasParentsChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<bool>>> PersonHasParentsChanged
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanged += value;
+				this.Person.PersonHasParentsChanged += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanged -= value;
+				this.Person.PersonHasParentsChanged -= value;
 			}
 		}
 		public virtual ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingElseWith;
+				return this.Person.ValueType1DoesSomethingElseWith;
 			}
 			set
 			{
-				((Person)this).ValueType1DoesSomethingElseWith = value;
+				this.Person.ValueType1DoesSomethingElseWith = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanging
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging += value;
+				this.Person.ValueType1DoesSomethingElseWithChanging += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanged
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged += value;
+				this.Person.ValueType1DoesSomethingElseWithChanged += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanged -= value;
 			}
 		}
 		public virtual FemalePerson FemalePerson
 		{
 			get
 			{
-				return ((Person)this).FemalePerson;
+				return this.Person.FemalePerson;
 			}
 			set
 			{
-				((Person)this).FemalePerson = value;
+				this.Person.FemalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<FemalePerson>> FemalePersonChanging
 		{
 			add
 			{
-				((Person)this).FemalePersonChanging += value;
+				this.Person.FemalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).FemalePersonChanging -= value;
+				this.Person.FemalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<FemalePerson>> FemalePersonChanged
 		{
 			add
 			{
-				((Person)this).FemalePersonChanged += value;
+				this.Person.FemalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).FemalePersonChanged -= value;
+				this.Person.FemalePersonChanged -= value;
 			}
 		}
 		public virtual Death Death
 		{
 			get
 			{
-				return ((Person)this).Death;
+				return this.Person.Death;
 			}
 			set
 			{
-				((Person)this).Death = value;
+				this.Person.Death = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Death>> DeathChanging
 		{
 			add
 			{
-				((Person)this).DeathChanging += value;
+				this.Person.DeathChanging += value;
 			}
 			remove
 			{
-				((Person)this).DeathChanging -= value;
+				this.Person.DeathChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Death>> DeathChanged
 		{
 			add
 			{
-				((Person)this).DeathChanged += value;
+				this.Person.DeathChanged += value;
 			}
 			remove
 			{
-				((Person)this).DeathChanged -= value;
+				this.Person.DeathChanged -= value;
 			}
 		}
 		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
 		{
 			get
 			{
-				return ((Person)this).PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCarAsDrivenByPerson;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
 			}
 		}
 		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
 		{
 			get
 			{
-				return ((Person)this).PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickNameAsPerson;
 			}
 		}
 		public virtual ICollection<Task> Task
 		{
 			get
 			{
-				return ((Person)this).Task;
+				return this.Person.Task;
 			}
 		}
 		public virtual ICollection<ValueType1> ValueType1DoesSomethingWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingWith;
+				return this.Person.ValueType1DoesSomethingWith;
 			}
 		}
 	}
@@ -3280,17 +3280,17 @@ namespace SampleModel
 		protected FemalePerson()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[2];
+		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -3320,11 +3320,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3343,11 +3343,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3369,11 +3369,11 @@ namespace SampleModel
 		{
 			get;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, "FemalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -3392,438 +3392,438 @@ namespace SampleModel
 		{
 			get
 			{
-				return ((Person)this).FirstName;
+				return this.Person.FirstName;
 			}
 			set
 			{
-				((Person)this).FirstName = value;
+				this.Person.FirstName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
 		{
 			add
 			{
-				((Person)this).FirstNameChanging += value;
+				this.Person.FirstNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanging -= value;
+				this.Person.FirstNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
 		{
 			add
 			{
-				((Person)this).FirstNameChanged += value;
+				this.Person.FirstNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanged -= value;
+				this.Person.FirstNameChanged -= value;
 			}
 		}
 		public virtual int Date_YMD
 		{
 			get
 			{
-				return ((Person)this).Date_YMD;
+				return this.Person.Date_YMD;
 			}
 			set
 			{
-				((Person)this).Date_YMD = value;
+				this.Person.Date_YMD = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<int>> Date_YMDChanging
 		{
 			add
 			{
-				((Person)this).Date_YMDChanging += value;
+				this.Person.Date_YMDChanging += value;
 			}
 			remove
 			{
-				((Person)this).Date_YMDChanging -= value;
+				this.Person.Date_YMDChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<int>> Date_YMDChanged
 		{
 			add
 			{
-				((Person)this).Date_YMDChanged += value;
+				this.Person.Date_YMDChanged += value;
 			}
 			remove
 			{
-				((Person)this).Date_YMDChanged -= value;
+				this.Person.Date_YMDChanged -= value;
 			}
 		}
 		public virtual string LastName
 		{
 			get
 			{
-				return ((Person)this).LastName;
+				return this.Person.LastName;
 			}
 			set
 			{
-				((Person)this).LastName = value;
+				this.Person.LastName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
 		{
 			add
 			{
-				((Person)this).LastNameChanging += value;
+				this.Person.LastNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanging -= value;
+				this.Person.LastNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
 		{
 			add
 			{
-				((Person)this).LastNameChanged += value;
+				this.Person.LastNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanged -= value;
+				this.Person.LastNameChanged -= value;
 			}
 		}
 		public virtual string SocialSecurityNumber
 		{
 			get
 			{
-				return ((Person)this).SocialSecurityNumber;
+				return this.Person.SocialSecurityNumber;
 			}
 			set
 			{
-				((Person)this).SocialSecurityNumber = value;
+				this.Person.SocialSecurityNumber = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> SocialSecurityNumberChanging
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanging += value;
+				this.Person.SocialSecurityNumberChanging += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanging -= value;
+				this.Person.SocialSecurityNumberChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> SocialSecurityNumberChanged
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanged += value;
+				this.Person.SocialSecurityNumberChanged += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanged -= value;
+				this.Person.SocialSecurityNumberChanged -= value;
 			}
 		}
 		public virtual Nullable<int> HatType_ColorARGB
 		{
 			get
 			{
-				return ((Person)this).HatType_ColorARGB;
+				return this.Person.HatType_ColorARGB;
 			}
 			set
 			{
-				((Person)this).HatType_ColorARGB = value;
+				this.Person.HatType_ColorARGB = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> HatType_ColorARGBChanging
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanging += value;
+				this.Person.HatType_ColorARGBChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanging -= value;
+				this.Person.HatType_ColorARGBChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> HatType_ColorARGBChanged
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanged += value;
+				this.Person.HatType_ColorARGBChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanged -= value;
+				this.Person.HatType_ColorARGBChanged -= value;
 			}
 		}
 		public virtual string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get
 			{
-				return ((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description;
+				return this.Person.HatType_HatTypeStyle_HatTypeStyle_Description;
 			}
 			set
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description = value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_Description = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
 			}
 		}
 		public virtual Nullable<int> OwnsCar_vin
 		{
 			get
 			{
-				return ((Person)this).OwnsCar_vin;
+				return this.Person.OwnsCar_vin;
 			}
 			set
 			{
-				((Person)this).OwnsCar_vin = value;
+				this.Person.OwnsCar_vin = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> OwnsCar_vinChanging
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanging += value;
+				this.Person.OwnsCar_vinChanging += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanging -= value;
+				this.Person.OwnsCar_vinChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> OwnsCar_vinChanged
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanged += value;
+				this.Person.OwnsCar_vinChanged += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanged -= value;
+				this.Person.OwnsCar_vinChanged -= value;
 			}
 		}
 		public virtual string Gender_Gender_Code
 		{
 			get
 			{
-				return ((Person)this).Gender_Gender_Code;
+				return this.Person.Gender_Gender_Code;
 			}
 			set
 			{
-				((Person)this).Gender_Gender_Code = value;
+				this.Person.Gender_Gender_Code = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> Gender_Gender_CodeChanging
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanging += value;
+				this.Person.Gender_Gender_CodeChanging += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanging -= value;
+				this.Person.Gender_Gender_CodeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> Gender_Gender_CodeChanged
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanged += value;
+				this.Person.Gender_Gender_CodeChanged += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanged -= value;
+				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
 		public virtual Nullable<bool> PersonHasParents
 		{
 			get
 			{
-				return ((Person)this).PersonHasParents;
+				return this.Person.PersonHasParents;
 			}
 			set
 			{
-				((Person)this).PersonHasParents = value;
+				this.Person.PersonHasParents = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<bool>>> PersonHasParentsChanging
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanging += value;
+				this.Person.PersonHasParentsChanging += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanging -= value;
+				this.Person.PersonHasParentsChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<bool>>> PersonHasParentsChanged
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanged += value;
+				this.Person.PersonHasParentsChanged += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanged -= value;
+				this.Person.PersonHasParentsChanged -= value;
 			}
 		}
 		public virtual ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingElseWith;
+				return this.Person.ValueType1DoesSomethingElseWith;
 			}
 			set
 			{
-				((Person)this).ValueType1DoesSomethingElseWith = value;
+				this.Person.ValueType1DoesSomethingElseWith = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanging
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging += value;
+				this.Person.ValueType1DoesSomethingElseWithChanging += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanged
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged += value;
+				this.Person.ValueType1DoesSomethingElseWithChanged += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanged -= value;
 			}
 		}
 		public virtual MalePerson MalePerson
 		{
 			get
 			{
-				return ((Person)this).MalePerson;
+				return this.Person.MalePerson;
 			}
 			set
 			{
-				((Person)this).MalePerson = value;
+				this.Person.MalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<MalePerson>> MalePersonChanging
 		{
 			add
 			{
-				((Person)this).MalePersonChanging += value;
+				this.Person.MalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).MalePersonChanging -= value;
+				this.Person.MalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<MalePerson>> MalePersonChanged
 		{
 			add
 			{
-				((Person)this).MalePersonChanged += value;
+				this.Person.MalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).MalePersonChanged -= value;
+				this.Person.MalePersonChanged -= value;
 			}
 		}
 		public virtual Death Death
 		{
 			get
 			{
-				return ((Person)this).Death;
+				return this.Person.Death;
 			}
 			set
 			{
-				((Person)this).Death = value;
+				this.Person.Death = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Death>> DeathChanging
 		{
 			add
 			{
-				((Person)this).DeathChanging += value;
+				this.Person.DeathChanging += value;
 			}
 			remove
 			{
-				((Person)this).DeathChanging -= value;
+				this.Person.DeathChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Death>> DeathChanged
 		{
 			add
 			{
-				((Person)this).DeathChanged += value;
+				this.Person.DeathChanged += value;
 			}
 			remove
 			{
-				((Person)this).DeathChanged -= value;
+				this.Person.DeathChanged -= value;
 			}
 		}
 		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
 		{
 			get
 			{
-				return ((Person)this).PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCarAsDrivenByPerson;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
 			}
 		}
 		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
 		{
 			get
 			{
-				return ((Person)this).PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickNameAsPerson;
 			}
 		}
 		public virtual ICollection<Task> Task
 		{
 			get
 			{
-				return ((Person)this).Task;
+				return this.Person.Task;
 			}
 		}
 		public virtual ICollection<ValueType1> ValueType1DoesSomethingWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingWith;
+				return this.Person.ValueType1DoesSomethingWith;
 			}
 		}
 	}
@@ -3835,17 +3835,17 @@ namespace SampleModel
 		protected ChildPerson()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[5];
+		private readonly System.Delegate[] Events = new System.Delegate[5];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -3875,11 +3875,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3898,11 +3898,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3919,11 +3919,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3942,11 +3942,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3963,11 +3963,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3986,11 +3986,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4007,11 +4007,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4030,11 +4030,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4067,11 +4067,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"ChildPerson{0}{{{0}{1}BirthOrder_BirthOrder_Nr = ""{2}"",{0}{1}Father = {3},{0}{1}Mother = {4},{0}{1}Person = {5}{0}}}", Environment.NewLine, "", this.BirthOrder_BirthOrder_Nr, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -4090,471 +4090,471 @@ namespace SampleModel
 		{
 			get
 			{
-				return ((Person)this).FirstName;
+				return this.Person.FirstName;
 			}
 			set
 			{
-				((Person)this).FirstName = value;
+				this.Person.FirstName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
 		{
 			add
 			{
-				((Person)this).FirstNameChanging += value;
+				this.Person.FirstNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanging -= value;
+				this.Person.FirstNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
 		{
 			add
 			{
-				((Person)this).FirstNameChanged += value;
+				this.Person.FirstNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanged -= value;
+				this.Person.FirstNameChanged -= value;
 			}
 		}
 		public virtual int Date_YMD
 		{
 			get
 			{
-				return ((Person)this).Date_YMD;
+				return this.Person.Date_YMD;
 			}
 			set
 			{
-				((Person)this).Date_YMD = value;
+				this.Person.Date_YMD = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<int>> Date_YMDChanging
 		{
 			add
 			{
-				((Person)this).Date_YMDChanging += value;
+				this.Person.Date_YMDChanging += value;
 			}
 			remove
 			{
-				((Person)this).Date_YMDChanging -= value;
+				this.Person.Date_YMDChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<int>> Date_YMDChanged
 		{
 			add
 			{
-				((Person)this).Date_YMDChanged += value;
+				this.Person.Date_YMDChanged += value;
 			}
 			remove
 			{
-				((Person)this).Date_YMDChanged -= value;
+				this.Person.Date_YMDChanged -= value;
 			}
 		}
 		public virtual string LastName
 		{
 			get
 			{
-				return ((Person)this).LastName;
+				return this.Person.LastName;
 			}
 			set
 			{
-				((Person)this).LastName = value;
+				this.Person.LastName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
 		{
 			add
 			{
-				((Person)this).LastNameChanging += value;
+				this.Person.LastNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanging -= value;
+				this.Person.LastNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
 		{
 			add
 			{
-				((Person)this).LastNameChanged += value;
+				this.Person.LastNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanged -= value;
+				this.Person.LastNameChanged -= value;
 			}
 		}
 		public virtual string SocialSecurityNumber
 		{
 			get
 			{
-				return ((Person)this).SocialSecurityNumber;
+				return this.Person.SocialSecurityNumber;
 			}
 			set
 			{
-				((Person)this).SocialSecurityNumber = value;
+				this.Person.SocialSecurityNumber = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> SocialSecurityNumberChanging
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanging += value;
+				this.Person.SocialSecurityNumberChanging += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanging -= value;
+				this.Person.SocialSecurityNumberChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> SocialSecurityNumberChanged
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanged += value;
+				this.Person.SocialSecurityNumberChanged += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanged -= value;
+				this.Person.SocialSecurityNumberChanged -= value;
 			}
 		}
 		public virtual Nullable<int> HatType_ColorARGB
 		{
 			get
 			{
-				return ((Person)this).HatType_ColorARGB;
+				return this.Person.HatType_ColorARGB;
 			}
 			set
 			{
-				((Person)this).HatType_ColorARGB = value;
+				this.Person.HatType_ColorARGB = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> HatType_ColorARGBChanging
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanging += value;
+				this.Person.HatType_ColorARGBChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanging -= value;
+				this.Person.HatType_ColorARGBChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> HatType_ColorARGBChanged
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanged += value;
+				this.Person.HatType_ColorARGBChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanged -= value;
+				this.Person.HatType_ColorARGBChanged -= value;
 			}
 		}
 		public virtual string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get
 			{
-				return ((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description;
+				return this.Person.HatType_HatTypeStyle_HatTypeStyle_Description;
 			}
 			set
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description = value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_Description = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
 			}
 		}
 		public virtual Nullable<int> OwnsCar_vin
 		{
 			get
 			{
-				return ((Person)this).OwnsCar_vin;
+				return this.Person.OwnsCar_vin;
 			}
 			set
 			{
-				((Person)this).OwnsCar_vin = value;
+				this.Person.OwnsCar_vin = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> OwnsCar_vinChanging
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanging += value;
+				this.Person.OwnsCar_vinChanging += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanging -= value;
+				this.Person.OwnsCar_vinChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> OwnsCar_vinChanged
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanged += value;
+				this.Person.OwnsCar_vinChanged += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanged -= value;
+				this.Person.OwnsCar_vinChanged -= value;
 			}
 		}
 		public virtual string Gender_Gender_Code
 		{
 			get
 			{
-				return ((Person)this).Gender_Gender_Code;
+				return this.Person.Gender_Gender_Code;
 			}
 			set
 			{
-				((Person)this).Gender_Gender_Code = value;
+				this.Person.Gender_Gender_Code = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> Gender_Gender_CodeChanging
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanging += value;
+				this.Person.Gender_Gender_CodeChanging += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanging -= value;
+				this.Person.Gender_Gender_CodeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> Gender_Gender_CodeChanged
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanged += value;
+				this.Person.Gender_Gender_CodeChanged += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanged -= value;
+				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
 		public virtual Nullable<bool> PersonHasParents
 		{
 			get
 			{
-				return ((Person)this).PersonHasParents;
+				return this.Person.PersonHasParents;
 			}
 			set
 			{
-				((Person)this).PersonHasParents = value;
+				this.Person.PersonHasParents = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<bool>>> PersonHasParentsChanging
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanging += value;
+				this.Person.PersonHasParentsChanging += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanging -= value;
+				this.Person.PersonHasParentsChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<bool>>> PersonHasParentsChanged
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanged += value;
+				this.Person.PersonHasParentsChanged += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanged -= value;
+				this.Person.PersonHasParentsChanged -= value;
 			}
 		}
 		public virtual ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingElseWith;
+				return this.Person.ValueType1DoesSomethingElseWith;
 			}
 			set
 			{
-				((Person)this).ValueType1DoesSomethingElseWith = value;
+				this.Person.ValueType1DoesSomethingElseWith = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanging
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging += value;
+				this.Person.ValueType1DoesSomethingElseWithChanging += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanged
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged += value;
+				this.Person.ValueType1DoesSomethingElseWithChanged += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanged -= value;
 			}
 		}
 		public virtual MalePerson MalePerson
 		{
 			get
 			{
-				return ((Person)this).MalePerson;
+				return this.Person.MalePerson;
 			}
 			set
 			{
-				((Person)this).MalePerson = value;
+				this.Person.MalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<MalePerson>> MalePersonChanging
 		{
 			add
 			{
-				((Person)this).MalePersonChanging += value;
+				this.Person.MalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).MalePersonChanging -= value;
+				this.Person.MalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<MalePerson>> MalePersonChanged
 		{
 			add
 			{
-				((Person)this).MalePersonChanged += value;
+				this.Person.MalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).MalePersonChanged -= value;
+				this.Person.MalePersonChanged -= value;
 			}
 		}
 		public virtual FemalePerson FemalePerson
 		{
 			get
 			{
-				return ((Person)this).FemalePerson;
+				return this.Person.FemalePerson;
 			}
 			set
 			{
-				((Person)this).FemalePerson = value;
+				this.Person.FemalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<FemalePerson>> FemalePersonChanging
 		{
 			add
 			{
-				((Person)this).FemalePersonChanging += value;
+				this.Person.FemalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).FemalePersonChanging -= value;
+				this.Person.FemalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<FemalePerson>> FemalePersonChanged
 		{
 			add
 			{
-				((Person)this).FemalePersonChanged += value;
+				this.Person.FemalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).FemalePersonChanged -= value;
+				this.Person.FemalePersonChanged -= value;
 			}
 		}
 		public virtual Death Death
 		{
 			get
 			{
-				return ((Person)this).Death;
+				return this.Person.Death;
 			}
 			set
 			{
-				((Person)this).Death = value;
+				this.Person.Death = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Death>> DeathChanging
 		{
 			add
 			{
-				((Person)this).DeathChanging += value;
+				this.Person.DeathChanging += value;
 			}
 			remove
 			{
-				((Person)this).DeathChanging -= value;
+				this.Person.DeathChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Death>> DeathChanged
 		{
 			add
 			{
-				((Person)this).DeathChanged += value;
+				this.Person.DeathChanged += value;
 			}
 			remove
 			{
-				((Person)this).DeathChanged -= value;
+				this.Person.DeathChanged -= value;
 			}
 		}
 		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
 		{
 			get
 			{
-				return ((Person)this).PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCarAsDrivenByPerson;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
 			}
 		}
 		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
 		{
 			get
 			{
-				return ((Person)this).PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickNameAsPerson;
 			}
 		}
 		public virtual ICollection<Task> Task
 		{
 			get
 			{
-				return ((Person)this).Task;
+				return this.Person.Task;
 			}
 		}
 		public virtual ICollection<ValueType1> ValueType1DoesSomethingWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingWith;
+				return this.Person.ValueType1DoesSomethingWith;
 			}
 		}
 	}
@@ -4566,17 +4566,17 @@ namespace SampleModel
 		protected Death()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[6];
+		private readonly System.Delegate[] Events = new System.Delegate[6];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -4606,11 +4606,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4629,11 +4629,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4650,11 +4650,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4673,11 +4673,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4694,11 +4694,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4717,11 +4717,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4738,11 +4738,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4761,11 +4761,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4782,11 +4782,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4805,11 +4805,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4847,11 +4847,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"Death{0}{{{0}{1}Date_YMD = ""{2}"",{0}{1}DeathCause_DeathCause_Type = ""{3}"",{0}{1}NaturalDeath = {4},{0}{1}UnnaturalDeath = {5},{0}{1}Person = {6}{0}}}", Environment.NewLine, "", this.Date_YMD, this.DeathCause_DeathCause_Type, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -4870,438 +4870,438 @@ namespace SampleModel
 		{
 			get
 			{
-				return ((Person)this).FirstName;
+				return this.Person.FirstName;
 			}
 			set
 			{
-				((Person)this).FirstName = value;
+				this.Person.FirstName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
 		{
 			add
 			{
-				((Person)this).FirstNameChanging += value;
+				this.Person.FirstNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanging -= value;
+				this.Person.FirstNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
 		{
 			add
 			{
-				((Person)this).FirstNameChanged += value;
+				this.Person.FirstNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).FirstNameChanged -= value;
+				this.Person.FirstNameChanged -= value;
 			}
 		}
 		public virtual string LastName
 		{
 			get
 			{
-				return ((Person)this).LastName;
+				return this.Person.LastName;
 			}
 			set
 			{
-				((Person)this).LastName = value;
+				this.Person.LastName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
 		{
 			add
 			{
-				((Person)this).LastNameChanging += value;
+				this.Person.LastNameChanging += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanging -= value;
+				this.Person.LastNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
 		{
 			add
 			{
-				((Person)this).LastNameChanged += value;
+				this.Person.LastNameChanged += value;
 			}
 			remove
 			{
-				((Person)this).LastNameChanged -= value;
+				this.Person.LastNameChanged -= value;
 			}
 		}
 		public virtual string SocialSecurityNumber
 		{
 			get
 			{
-				return ((Person)this).SocialSecurityNumber;
+				return this.Person.SocialSecurityNumber;
 			}
 			set
 			{
-				((Person)this).SocialSecurityNumber = value;
+				this.Person.SocialSecurityNumber = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> SocialSecurityNumberChanging
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanging += value;
+				this.Person.SocialSecurityNumberChanging += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanging -= value;
+				this.Person.SocialSecurityNumberChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> SocialSecurityNumberChanged
 		{
 			add
 			{
-				((Person)this).SocialSecurityNumberChanged += value;
+				this.Person.SocialSecurityNumberChanged += value;
 			}
 			remove
 			{
-				((Person)this).SocialSecurityNumberChanged -= value;
+				this.Person.SocialSecurityNumberChanged -= value;
 			}
 		}
 		public virtual Nullable<int> HatType_ColorARGB
 		{
 			get
 			{
-				return ((Person)this).HatType_ColorARGB;
+				return this.Person.HatType_ColorARGB;
 			}
 			set
 			{
-				((Person)this).HatType_ColorARGB = value;
+				this.Person.HatType_ColorARGB = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> HatType_ColorARGBChanging
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanging += value;
+				this.Person.HatType_ColorARGBChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanging -= value;
+				this.Person.HatType_ColorARGBChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> HatType_ColorARGBChanged
 		{
 			add
 			{
-				((Person)this).HatType_ColorARGBChanged += value;
+				this.Person.HatType_ColorARGBChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_ColorARGBChanged -= value;
+				this.Person.HatType_ColorARGBChanged -= value;
 			}
 		}
 		public virtual string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get
 			{
-				return ((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description;
+				return this.Person.HatType_HatTypeStyle_HatTypeStyle_Description;
 			}
 			set
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_Description = value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_Description = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged
 		{
 			add
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
 			}
 			remove
 			{
-				((Person)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
+				this.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
 			}
 		}
 		public virtual Nullable<int> OwnsCar_vin
 		{
 			get
 			{
-				return ((Person)this).OwnsCar_vin;
+				return this.Person.OwnsCar_vin;
 			}
 			set
 			{
-				((Person)this).OwnsCar_vin = value;
+				this.Person.OwnsCar_vin = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> OwnsCar_vinChanging
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanging += value;
+				this.Person.OwnsCar_vinChanging += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanging -= value;
+				this.Person.OwnsCar_vinChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> OwnsCar_vinChanged
 		{
 			add
 			{
-				((Person)this).OwnsCar_vinChanged += value;
+				this.Person.OwnsCar_vinChanged += value;
 			}
 			remove
 			{
-				((Person)this).OwnsCar_vinChanged -= value;
+				this.Person.OwnsCar_vinChanged -= value;
 			}
 		}
 		public virtual string Gender_Gender_Code
 		{
 			get
 			{
-				return ((Person)this).Gender_Gender_Code;
+				return this.Person.Gender_Gender_Code;
 			}
 			set
 			{
-				((Person)this).Gender_Gender_Code = value;
+				this.Person.Gender_Gender_Code = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> Gender_Gender_CodeChanging
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanging += value;
+				this.Person.Gender_Gender_CodeChanging += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanging -= value;
+				this.Person.Gender_Gender_CodeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> Gender_Gender_CodeChanged
 		{
 			add
 			{
-				((Person)this).Gender_Gender_CodeChanged += value;
+				this.Person.Gender_Gender_CodeChanged += value;
 			}
 			remove
 			{
-				((Person)this).Gender_Gender_CodeChanged -= value;
+				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
 		public virtual Nullable<bool> PersonHasParents
 		{
 			get
 			{
-				return ((Person)this).PersonHasParents;
+				return this.Person.PersonHasParents;
 			}
 			set
 			{
-				((Person)this).PersonHasParents = value;
+				this.Person.PersonHasParents = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<bool>>> PersonHasParentsChanging
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanging += value;
+				this.Person.PersonHasParentsChanging += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanging -= value;
+				this.Person.PersonHasParentsChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<bool>>> PersonHasParentsChanged
 		{
 			add
 			{
-				((Person)this).PersonHasParentsChanged += value;
+				this.Person.PersonHasParentsChanged += value;
 			}
 			remove
 			{
-				((Person)this).PersonHasParentsChanged -= value;
+				this.Person.PersonHasParentsChanged -= value;
 			}
 		}
 		public virtual ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingElseWith;
+				return this.Person.ValueType1DoesSomethingElseWith;
 			}
 			set
 			{
-				((Person)this).ValueType1DoesSomethingElseWith = value;
+				this.Person.ValueType1DoesSomethingElseWith = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanging
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging += value;
+				this.Person.ValueType1DoesSomethingElseWithChanging += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanging -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanged
 		{
 			add
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged += value;
+				this.Person.ValueType1DoesSomethingElseWithChanged += value;
 			}
 			remove
 			{
-				((Person)this).ValueType1DoesSomethingElseWithChanged -= value;
+				this.Person.ValueType1DoesSomethingElseWithChanged -= value;
 			}
 		}
 		public virtual MalePerson MalePerson
 		{
 			get
 			{
-				return ((Person)this).MalePerson;
+				return this.Person.MalePerson;
 			}
 			set
 			{
-				((Person)this).MalePerson = value;
+				this.Person.MalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<MalePerson>> MalePersonChanging
 		{
 			add
 			{
-				((Person)this).MalePersonChanging += value;
+				this.Person.MalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).MalePersonChanging -= value;
+				this.Person.MalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<MalePerson>> MalePersonChanged
 		{
 			add
 			{
-				((Person)this).MalePersonChanged += value;
+				this.Person.MalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).MalePersonChanged -= value;
+				this.Person.MalePersonChanged -= value;
 			}
 		}
 		public virtual FemalePerson FemalePerson
 		{
 			get
 			{
-				return ((Person)this).FemalePerson;
+				return this.Person.FemalePerson;
 			}
 			set
 			{
-				((Person)this).FemalePerson = value;
+				this.Person.FemalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<FemalePerson>> FemalePersonChanging
 		{
 			add
 			{
-				((Person)this).FemalePersonChanging += value;
+				this.Person.FemalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).FemalePersonChanging -= value;
+				this.Person.FemalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<FemalePerson>> FemalePersonChanged
 		{
 			add
 			{
-				((Person)this).FemalePersonChanged += value;
+				this.Person.FemalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).FemalePersonChanged -= value;
+				this.Person.FemalePersonChanged -= value;
 			}
 		}
 		public virtual ChildPerson ChildPerson
 		{
 			get
 			{
-				return ((Person)this).ChildPerson;
+				return this.Person.ChildPerson;
 			}
 			set
 			{
-				((Person)this).ChildPerson = value;
+				this.Person.ChildPerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ChildPerson>> ChildPersonChanging
 		{
 			add
 			{
-				((Person)this).ChildPersonChanging += value;
+				this.Person.ChildPersonChanging += value;
 			}
 			remove
 			{
-				((Person)this).ChildPersonChanging -= value;
+				this.Person.ChildPersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ChildPerson>> ChildPersonChanged
 		{
 			add
 			{
-				((Person)this).ChildPersonChanged += value;
+				this.Person.ChildPersonChanged += value;
 			}
 			remove
 			{
-				((Person)this).ChildPersonChanged -= value;
+				this.Person.ChildPersonChanged -= value;
 			}
 		}
 		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
 		{
 			get
 			{
-				return ((Person)this).PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCarAsDrivenByPerson;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
 		{
 			get
 			{
-				return ((Person)this).PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
 			}
 		}
 		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
 		{
 			get
 			{
-				return ((Person)this).PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickNameAsPerson;
 			}
 		}
 		public virtual ICollection<Task> Task
 		{
 			get
 			{
-				return ((Person)this).Task;
+				return this.Person.Task;
 			}
 		}
 		public virtual ICollection<ValueType1> ValueType1DoesSomethingWith
 		{
 			get
 			{
-				return ((Person)this).ValueType1DoesSomethingWith;
+				return this.Person.ValueType1DoesSomethingWith;
 			}
 		}
 		public static explicit operator NaturalDeath(Death Death)
@@ -5343,17 +5343,17 @@ namespace SampleModel
 		protected NaturalDeath()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -5383,11 +5383,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5406,11 +5406,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5427,11 +5427,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5450,11 +5450,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5477,11 +5477,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"NaturalDeath{0}{{{0}{1}NaturalDeathIsFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "", this.NaturalDeathIsFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
 		}
@@ -5511,570 +5511,570 @@ namespace SampleModel
 		{
 			get
 			{
-				return ((Death)this).Date_YMD;
+				return this.Death.Date_YMD;
 			}
 			set
 			{
-				((Death)this).Date_YMD = value;
+				this.Death.Date_YMD = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> Date_YMDChanging
 		{
 			add
 			{
-				((Death)this).Date_YMDChanging += value;
+				this.Death.Date_YMDChanging += value;
 			}
 			remove
 			{
-				((Death)this).Date_YMDChanging -= value;
+				this.Death.Date_YMDChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> Date_YMDChanged
 		{
 			add
 			{
-				((Death)this).Date_YMDChanged += value;
+				this.Death.Date_YMDChanged += value;
 			}
 			remove
 			{
-				((Death)this).Date_YMDChanged -= value;
+				this.Death.Date_YMDChanged -= value;
 			}
 		}
 		public virtual string DeathCause_DeathCause_Type
 		{
 			get
 			{
-				return ((Death)this).DeathCause_DeathCause_Type;
+				return this.Death.DeathCause_DeathCause_Type;
 			}
 			set
 			{
-				((Death)this).DeathCause_DeathCause_Type = value;
+				this.Death.DeathCause_DeathCause_Type = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> DeathCause_DeathCause_TypeChanging
 		{
 			add
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanging += value;
+				this.Death.DeathCause_DeathCause_TypeChanging += value;
 			}
 			remove
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanging -= value;
+				this.Death.DeathCause_DeathCause_TypeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> DeathCause_DeathCause_TypeChanged
 		{
 			add
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanged += value;
+				this.Death.DeathCause_DeathCause_TypeChanged += value;
 			}
 			remove
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanged -= value;
+				this.Death.DeathCause_DeathCause_TypeChanged -= value;
 			}
 		}
 		public virtual UnnaturalDeath UnnaturalDeath
 		{
 			get
 			{
-				return ((Death)this).UnnaturalDeath;
+				return this.Death.UnnaturalDeath;
 			}
 			set
 			{
-				((Death)this).UnnaturalDeath = value;
+				this.Death.UnnaturalDeath = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath>> UnnaturalDeathChanging
 		{
 			add
 			{
-				((Death)this).UnnaturalDeathChanging += value;
+				this.Death.UnnaturalDeathChanging += value;
 			}
 			remove
 			{
-				((Death)this).UnnaturalDeathChanging -= value;
+				this.Death.UnnaturalDeathChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath>> UnnaturalDeathChanged
 		{
 			add
 			{
-				((Death)this).UnnaturalDeathChanged += value;
+				this.Death.UnnaturalDeathChanged += value;
 			}
 			remove
 			{
-				((Death)this).UnnaturalDeathChanged -= value;
+				this.Death.UnnaturalDeathChanged -= value;
 			}
 		}
 		public virtual Person Person
 		{
 			get
 			{
-				return ((Death)this).Person;
+				return this.Death.Person;
 			}
 			set
 			{
-				((Death)this).Person = value;
+				this.Death.Person = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Person>> PersonChanging
 		{
 			add
 			{
-				((Death)this).PersonChanging += value;
+				this.Death.PersonChanging += value;
 			}
 			remove
 			{
-				((Death)this).PersonChanging -= value;
+				this.Death.PersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Person>> PersonChanged
 		{
 			add
 			{
-				((Death)this).PersonChanged += value;
+				this.Death.PersonChanged += value;
 			}
 			remove
 			{
-				((Death)this).PersonChanged -= value;
+				this.Death.PersonChanged -= value;
 			}
 		}
 		public virtual string FirstName
 		{
 			get
 			{
-				return ((Person)(Death)this).FirstName;
+				return this.Death.Person.FirstName;
 			}
 			set
 			{
-				((Person)(Death)this).FirstName = value;
+				this.Death.Person.FirstName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
 		{
 			add
 			{
-				((Person)(Death)this).FirstNameChanging += value;
+				this.Death.Person.FirstNameChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FirstNameChanging -= value;
+				this.Death.Person.FirstNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
 		{
 			add
 			{
-				((Person)(Death)this).FirstNameChanged += value;
+				this.Death.Person.FirstNameChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FirstNameChanged -= value;
+				this.Death.Person.FirstNameChanged -= value;
 			}
 		}
 		public virtual string LastName
 		{
 			get
 			{
-				return ((Person)(Death)this).LastName;
+				return this.Death.Person.LastName;
 			}
 			set
 			{
-				((Person)(Death)this).LastName = value;
+				this.Death.Person.LastName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
 		{
 			add
 			{
-				((Person)(Death)this).LastNameChanging += value;
+				this.Death.Person.LastNameChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).LastNameChanging -= value;
+				this.Death.Person.LastNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
 		{
 			add
 			{
-				((Person)(Death)this).LastNameChanged += value;
+				this.Death.Person.LastNameChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).LastNameChanged -= value;
+				this.Death.Person.LastNameChanged -= value;
 			}
 		}
 		public virtual string SocialSecurityNumber
 		{
 			get
 			{
-				return ((Person)(Death)this).SocialSecurityNumber;
+				return this.Death.Person.SocialSecurityNumber;
 			}
 			set
 			{
-				((Person)(Death)this).SocialSecurityNumber = value;
+				this.Death.Person.SocialSecurityNumber = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> SocialSecurityNumberChanging
 		{
 			add
 			{
-				((Person)(Death)this).SocialSecurityNumberChanging += value;
+				this.Death.Person.SocialSecurityNumberChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).SocialSecurityNumberChanging -= value;
+				this.Death.Person.SocialSecurityNumberChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> SocialSecurityNumberChanged
 		{
 			add
 			{
-				((Person)(Death)this).SocialSecurityNumberChanged += value;
+				this.Death.Person.SocialSecurityNumberChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).SocialSecurityNumberChanged -= value;
+				this.Death.Person.SocialSecurityNumberChanged -= value;
 			}
 		}
 		public virtual Nullable<int> HatType_ColorARGB
 		{
 			get
 			{
-				return ((Person)(Death)this).HatType_ColorARGB;
+				return this.Death.Person.HatType_ColorARGB;
 			}
 			set
 			{
-				((Person)(Death)this).HatType_ColorARGB = value;
+				this.Death.Person.HatType_ColorARGB = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> HatType_ColorARGBChanging
 		{
 			add
 			{
-				((Person)(Death)this).HatType_ColorARGBChanging += value;
+				this.Death.Person.HatType_ColorARGBChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_ColorARGBChanging -= value;
+				this.Death.Person.HatType_ColorARGBChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> HatType_ColorARGBChanged
 		{
 			add
 			{
-				((Person)(Death)this).HatType_ColorARGBChanged += value;
+				this.Death.Person.HatType_ColorARGBChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_ColorARGBChanged -= value;
+				this.Death.Person.HatType_ColorARGBChanged -= value;
 			}
 		}
 		public virtual string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get
 			{
-				return ((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_Description;
+				return this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description;
 			}
 			set
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_Description = value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging
 		{
 			add
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged
 		{
 			add
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
 			}
 		}
 		public virtual Nullable<int> OwnsCar_vin
 		{
 			get
 			{
-				return ((Person)(Death)this).OwnsCar_vin;
+				return this.Death.Person.OwnsCar_vin;
 			}
 			set
 			{
-				((Person)(Death)this).OwnsCar_vin = value;
+				this.Death.Person.OwnsCar_vin = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> OwnsCar_vinChanging
 		{
 			add
 			{
-				((Person)(Death)this).OwnsCar_vinChanging += value;
+				this.Death.Person.OwnsCar_vinChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).OwnsCar_vinChanging -= value;
+				this.Death.Person.OwnsCar_vinChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> OwnsCar_vinChanged
 		{
 			add
 			{
-				((Person)(Death)this).OwnsCar_vinChanged += value;
+				this.Death.Person.OwnsCar_vinChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).OwnsCar_vinChanged -= value;
+				this.Death.Person.OwnsCar_vinChanged -= value;
 			}
 		}
 		public virtual string Gender_Gender_Code
 		{
 			get
 			{
-				return ((Person)(Death)this).Gender_Gender_Code;
+				return this.Death.Person.Gender_Gender_Code;
 			}
 			set
 			{
-				((Person)(Death)this).Gender_Gender_Code = value;
+				this.Death.Person.Gender_Gender_Code = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> Gender_Gender_CodeChanging
 		{
 			add
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanging += value;
+				this.Death.Person.Gender_Gender_CodeChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanging -= value;
+				this.Death.Person.Gender_Gender_CodeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> Gender_Gender_CodeChanged
 		{
 			add
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanged += value;
+				this.Death.Person.Gender_Gender_CodeChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanged -= value;
+				this.Death.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
 		public virtual Nullable<bool> PersonHasParents
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonHasParents;
+				return this.Death.Person.PersonHasParents;
 			}
 			set
 			{
-				((Person)(Death)this).PersonHasParents = value;
+				this.Death.Person.PersonHasParents = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<bool>>> PersonHasParentsChanging
 		{
 			add
 			{
-				((Person)(Death)this).PersonHasParentsChanging += value;
+				this.Death.Person.PersonHasParentsChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).PersonHasParentsChanging -= value;
+				this.Death.Person.PersonHasParentsChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<bool>>> PersonHasParentsChanged
 		{
 			add
 			{
-				((Person)(Death)this).PersonHasParentsChanged += value;
+				this.Death.Person.PersonHasParentsChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).PersonHasParentsChanged -= value;
+				this.Death.Person.PersonHasParentsChanged -= value;
 			}
 		}
 		public virtual ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get
 			{
-				return ((Person)(Death)this).ValueType1DoesSomethingElseWith;
+				return this.Death.Person.ValueType1DoesSomethingElseWith;
 			}
 			set
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWith = value;
+				this.Death.Person.ValueType1DoesSomethingElseWith = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanging
 		{
 			add
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanging += value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanging -= value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanged
 		{
 			add
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanged += value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanged -= value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanged -= value;
 			}
 		}
 		public virtual MalePerson MalePerson
 		{
 			get
 			{
-				return ((Person)(Death)this).MalePerson;
+				return this.Death.Person.MalePerson;
 			}
 			set
 			{
-				((Person)(Death)this).MalePerson = value;
+				this.Death.Person.MalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<MalePerson>> MalePersonChanging
 		{
 			add
 			{
-				((Person)(Death)this).MalePersonChanging += value;
+				this.Death.Person.MalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).MalePersonChanging -= value;
+				this.Death.Person.MalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<MalePerson>> MalePersonChanged
 		{
 			add
 			{
-				((Person)(Death)this).MalePersonChanged += value;
+				this.Death.Person.MalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).MalePersonChanged -= value;
+				this.Death.Person.MalePersonChanged -= value;
 			}
 		}
 		public virtual FemalePerson FemalePerson
 		{
 			get
 			{
-				return ((Person)(Death)this).FemalePerson;
+				return this.Death.Person.FemalePerson;
 			}
 			set
 			{
-				((Person)(Death)this).FemalePerson = value;
+				this.Death.Person.FemalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<FemalePerson>> FemalePersonChanging
 		{
 			add
 			{
-				((Person)(Death)this).FemalePersonChanging += value;
+				this.Death.Person.FemalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FemalePersonChanging -= value;
+				this.Death.Person.FemalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<FemalePerson>> FemalePersonChanged
 		{
 			add
 			{
-				((Person)(Death)this).FemalePersonChanged += value;
+				this.Death.Person.FemalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FemalePersonChanged -= value;
+				this.Death.Person.FemalePersonChanged -= value;
 			}
 		}
 		public virtual ChildPerson ChildPerson
 		{
 			get
 			{
-				return ((Person)(Death)this).ChildPerson;
+				return this.Death.Person.ChildPerson;
 			}
 			set
 			{
-				((Person)(Death)this).ChildPerson = value;
+				this.Death.Person.ChildPerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ChildPerson>> ChildPersonChanging
 		{
 			add
 			{
-				((Person)(Death)this).ChildPersonChanging += value;
+				this.Death.Person.ChildPersonChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ChildPersonChanging -= value;
+				this.Death.Person.ChildPersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ChildPerson>> ChildPersonChanged
 		{
 			add
 			{
-				((Person)(Death)this).ChildPersonChanged += value;
+				this.Death.Person.ChildPersonChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ChildPersonChanged -= value;
+				this.Death.Person.ChildPersonChanged -= value;
 			}
 		}
 		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonDrivesCarAsDrivenByPerson;
+				return this.Death.Person.PersonDrivesCarAsDrivenByPerson;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller;
 			}
 		}
 		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonHasNickNameAsPerson;
+				return this.Death.Person.PersonHasNickNameAsPerson;
 			}
 		}
 		public virtual ICollection<Task> Task
 		{
 			get
 			{
-				return ((Person)(Death)this).Task;
+				return this.Death.Person.Task;
 			}
 		}
 		public virtual ICollection<ValueType1> ValueType1DoesSomethingWith
 		{
 			get
 			{
-				return ((Person)(Death)this).ValueType1DoesSomethingWith;
+				return this.Death.Person.ValueType1DoesSomethingWith;
 			}
 		}
 	}
@@ -6086,17 +6086,17 @@ namespace SampleModel
 		protected UnnaturalDeath()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[4];
+		private readonly System.Delegate[] Events = new System.Delegate[4];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -6126,11 +6126,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6149,11 +6149,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6170,11 +6170,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6193,11 +6193,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6214,11 +6214,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6237,11 +6237,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6269,11 +6269,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}UnnaturalDeathIsViolent = ""{2}"",{0}{1}UnnaturalDeathIsBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "", this.UnnaturalDeathIsViolent, this.UnnaturalDeathIsBloody, "TODO: Recursively call ToString for customTypes...");
 		}
@@ -6303,570 +6303,570 @@ namespace SampleModel
 		{
 			get
 			{
-				return ((Death)this).Date_YMD;
+				return this.Death.Date_YMD;
 			}
 			set
 			{
-				((Death)this).Date_YMD = value;
+				this.Death.Date_YMD = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> Date_YMDChanging
 		{
 			add
 			{
-				((Death)this).Date_YMDChanging += value;
+				this.Death.Date_YMDChanging += value;
 			}
 			remove
 			{
-				((Death)this).Date_YMDChanging -= value;
+				this.Death.Date_YMDChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> Date_YMDChanged
 		{
 			add
 			{
-				((Death)this).Date_YMDChanged += value;
+				this.Death.Date_YMDChanged += value;
 			}
 			remove
 			{
-				((Death)this).Date_YMDChanged -= value;
+				this.Death.Date_YMDChanged -= value;
 			}
 		}
 		public virtual string DeathCause_DeathCause_Type
 		{
 			get
 			{
-				return ((Death)this).DeathCause_DeathCause_Type;
+				return this.Death.DeathCause_DeathCause_Type;
 			}
 			set
 			{
-				((Death)this).DeathCause_DeathCause_Type = value;
+				this.Death.DeathCause_DeathCause_Type = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> DeathCause_DeathCause_TypeChanging
 		{
 			add
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanging += value;
+				this.Death.DeathCause_DeathCause_TypeChanging += value;
 			}
 			remove
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanging -= value;
+				this.Death.DeathCause_DeathCause_TypeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> DeathCause_DeathCause_TypeChanged
 		{
 			add
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanged += value;
+				this.Death.DeathCause_DeathCause_TypeChanged += value;
 			}
 			remove
 			{
-				((Death)this).DeathCause_DeathCause_TypeChanged -= value;
+				this.Death.DeathCause_DeathCause_TypeChanged -= value;
 			}
 		}
 		public virtual NaturalDeath NaturalDeath
 		{
 			get
 			{
-				return ((Death)this).NaturalDeath;
+				return this.Death.NaturalDeath;
 			}
 			set
 			{
-				((Death)this).NaturalDeath = value;
+				this.Death.NaturalDeath = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<NaturalDeath>> NaturalDeathChanging
 		{
 			add
 			{
-				((Death)this).NaturalDeathChanging += value;
+				this.Death.NaturalDeathChanging += value;
 			}
 			remove
 			{
-				((Death)this).NaturalDeathChanging -= value;
+				this.Death.NaturalDeathChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<NaturalDeath>> NaturalDeathChanged
 		{
 			add
 			{
-				((Death)this).NaturalDeathChanged += value;
+				this.Death.NaturalDeathChanged += value;
 			}
 			remove
 			{
-				((Death)this).NaturalDeathChanged -= value;
+				this.Death.NaturalDeathChanged -= value;
 			}
 		}
 		public virtual Person Person
 		{
 			get
 			{
-				return ((Death)this).Person;
+				return this.Death.Person;
 			}
 			set
 			{
-				((Death)this).Person = value;
+				this.Death.Person = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Person>> PersonChanging
 		{
 			add
 			{
-				((Death)this).PersonChanging += value;
+				this.Death.PersonChanging += value;
 			}
 			remove
 			{
-				((Death)this).PersonChanging -= value;
+				this.Death.PersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Person>> PersonChanged
 		{
 			add
 			{
-				((Death)this).PersonChanged += value;
+				this.Death.PersonChanged += value;
 			}
 			remove
 			{
-				((Death)this).PersonChanged -= value;
+				this.Death.PersonChanged -= value;
 			}
 		}
 		public virtual string FirstName
 		{
 			get
 			{
-				return ((Person)(Death)this).FirstName;
+				return this.Death.Person.FirstName;
 			}
 			set
 			{
-				((Person)(Death)this).FirstName = value;
+				this.Death.Person.FirstName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
 		{
 			add
 			{
-				((Person)(Death)this).FirstNameChanging += value;
+				this.Death.Person.FirstNameChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FirstNameChanging -= value;
+				this.Death.Person.FirstNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
 		{
 			add
 			{
-				((Person)(Death)this).FirstNameChanged += value;
+				this.Death.Person.FirstNameChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FirstNameChanged -= value;
+				this.Death.Person.FirstNameChanged -= value;
 			}
 		}
 		public virtual string LastName
 		{
 			get
 			{
-				return ((Person)(Death)this).LastName;
+				return this.Death.Person.LastName;
 			}
 			set
 			{
-				((Person)(Death)this).LastName = value;
+				this.Death.Person.LastName = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
 		{
 			add
 			{
-				((Person)(Death)this).LastNameChanging += value;
+				this.Death.Person.LastNameChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).LastNameChanging -= value;
+				this.Death.Person.LastNameChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
 		{
 			add
 			{
-				((Person)(Death)this).LastNameChanged += value;
+				this.Death.Person.LastNameChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).LastNameChanged -= value;
+				this.Death.Person.LastNameChanged -= value;
 			}
 		}
 		public virtual string SocialSecurityNumber
 		{
 			get
 			{
-				return ((Person)(Death)this).SocialSecurityNumber;
+				return this.Death.Person.SocialSecurityNumber;
 			}
 			set
 			{
-				((Person)(Death)this).SocialSecurityNumber = value;
+				this.Death.Person.SocialSecurityNumber = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> SocialSecurityNumberChanging
 		{
 			add
 			{
-				((Person)(Death)this).SocialSecurityNumberChanging += value;
+				this.Death.Person.SocialSecurityNumberChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).SocialSecurityNumberChanging -= value;
+				this.Death.Person.SocialSecurityNumberChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> SocialSecurityNumberChanged
 		{
 			add
 			{
-				((Person)(Death)this).SocialSecurityNumberChanged += value;
+				this.Death.Person.SocialSecurityNumberChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).SocialSecurityNumberChanged -= value;
+				this.Death.Person.SocialSecurityNumberChanged -= value;
 			}
 		}
 		public virtual Nullable<int> HatType_ColorARGB
 		{
 			get
 			{
-				return ((Person)(Death)this).HatType_ColorARGB;
+				return this.Death.Person.HatType_ColorARGB;
 			}
 			set
 			{
-				((Person)(Death)this).HatType_ColorARGB = value;
+				this.Death.Person.HatType_ColorARGB = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> HatType_ColorARGBChanging
 		{
 			add
 			{
-				((Person)(Death)this).HatType_ColorARGBChanging += value;
+				this.Death.Person.HatType_ColorARGBChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_ColorARGBChanging -= value;
+				this.Death.Person.HatType_ColorARGBChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> HatType_ColorARGBChanged
 		{
 			add
 			{
-				((Person)(Death)this).HatType_ColorARGBChanged += value;
+				this.Death.Person.HatType_ColorARGBChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_ColorARGBChanged -= value;
+				this.Death.Person.HatType_ColorARGBChanged -= value;
 			}
 		}
 		public virtual string HatType_HatTypeStyle_HatTypeStyle_Description
 		{
 			get
 			{
-				return ((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_Description;
+				return this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description;
 			}
 			set
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_Description = value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging
 		{
 			add
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged
 		{
 			add
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
+				this.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged -= value;
 			}
 		}
 		public virtual Nullable<int> OwnsCar_vin
 		{
 			get
 			{
-				return ((Person)(Death)this).OwnsCar_vin;
+				return this.Death.Person.OwnsCar_vin;
 			}
 			set
 			{
-				((Person)(Death)this).OwnsCar_vin = value;
+				this.Death.Person.OwnsCar_vin = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<int>>> OwnsCar_vinChanging
 		{
 			add
 			{
-				((Person)(Death)this).OwnsCar_vinChanging += value;
+				this.Death.Person.OwnsCar_vinChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).OwnsCar_vinChanging -= value;
+				this.Death.Person.OwnsCar_vinChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<int>>> OwnsCar_vinChanged
 		{
 			add
 			{
-				((Person)(Death)this).OwnsCar_vinChanged += value;
+				this.Death.Person.OwnsCar_vinChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).OwnsCar_vinChanged -= value;
+				this.Death.Person.OwnsCar_vinChanged -= value;
 			}
 		}
 		public virtual string Gender_Gender_Code
 		{
 			get
 			{
-				return ((Person)(Death)this).Gender_Gender_Code;
+				return this.Death.Person.Gender_Gender_Code;
 			}
 			set
 			{
-				((Person)(Death)this).Gender_Gender_Code = value;
+				this.Death.Person.Gender_Gender_Code = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<string>> Gender_Gender_CodeChanging
 		{
 			add
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanging += value;
+				this.Death.Person.Gender_Gender_CodeChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanging -= value;
+				this.Death.Person.Gender_Gender_CodeChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<string>> Gender_Gender_CodeChanged
 		{
 			add
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanged += value;
+				this.Death.Person.Gender_Gender_CodeChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).Gender_Gender_CodeChanged -= value;
+				this.Death.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
 		public virtual Nullable<bool> PersonHasParents
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonHasParents;
+				return this.Death.Person.PersonHasParents;
 			}
 			set
 			{
-				((Person)(Death)this).PersonHasParents = value;
+				this.Death.Person.PersonHasParents = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Nullable<bool>>> PersonHasParentsChanging
 		{
 			add
 			{
-				((Person)(Death)this).PersonHasParentsChanging += value;
+				this.Death.Person.PersonHasParentsChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).PersonHasParentsChanging -= value;
+				this.Death.Person.PersonHasParentsChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<Nullable<bool>>> PersonHasParentsChanged
 		{
 			add
 			{
-				((Person)(Death)this).PersonHasParentsChanged += value;
+				this.Death.Person.PersonHasParentsChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).PersonHasParentsChanged -= value;
+				this.Death.Person.PersonHasParentsChanged -= value;
 			}
 		}
 		public virtual ValueType1 ValueType1DoesSomethingElseWith
 		{
 			get
 			{
-				return ((Person)(Death)this).ValueType1DoesSomethingElseWith;
+				return this.Death.Person.ValueType1DoesSomethingElseWith;
 			}
 			set
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWith = value;
+				this.Death.Person.ValueType1DoesSomethingElseWith = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanging
 		{
 			add
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanging += value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanging -= value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ValueType1>> ValueType1DoesSomethingElseWithChanged
 		{
 			add
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanged += value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ValueType1DoesSomethingElseWithChanged -= value;
+				this.Death.Person.ValueType1DoesSomethingElseWithChanged -= value;
 			}
 		}
 		public virtual MalePerson MalePerson
 		{
 			get
 			{
-				return ((Person)(Death)this).MalePerson;
+				return this.Death.Person.MalePerson;
 			}
 			set
 			{
-				((Person)(Death)this).MalePerson = value;
+				this.Death.Person.MalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<MalePerson>> MalePersonChanging
 		{
 			add
 			{
-				((Person)(Death)this).MalePersonChanging += value;
+				this.Death.Person.MalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).MalePersonChanging -= value;
+				this.Death.Person.MalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<MalePerson>> MalePersonChanged
 		{
 			add
 			{
-				((Person)(Death)this).MalePersonChanged += value;
+				this.Death.Person.MalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).MalePersonChanged -= value;
+				this.Death.Person.MalePersonChanged -= value;
 			}
 		}
 		public virtual FemalePerson FemalePerson
 		{
 			get
 			{
-				return ((Person)(Death)this).FemalePerson;
+				return this.Death.Person.FemalePerson;
 			}
 			set
 			{
-				((Person)(Death)this).FemalePerson = value;
+				this.Death.Person.FemalePerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<FemalePerson>> FemalePersonChanging
 		{
 			add
 			{
-				((Person)(Death)this).FemalePersonChanging += value;
+				this.Death.Person.FemalePersonChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FemalePersonChanging -= value;
+				this.Death.Person.FemalePersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<FemalePerson>> FemalePersonChanged
 		{
 			add
 			{
-				((Person)(Death)this).FemalePersonChanged += value;
+				this.Death.Person.FemalePersonChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).FemalePersonChanged -= value;
+				this.Death.Person.FemalePersonChanged -= value;
 			}
 		}
 		public virtual ChildPerson ChildPerson
 		{
 			get
 			{
-				return ((Person)(Death)this).ChildPerson;
+				return this.Death.Person.ChildPerson;
 			}
 			set
 			{
-				((Person)(Death)this).ChildPerson = value;
+				this.Death.Person.ChildPerson = value;
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<ChildPerson>> ChildPersonChanging
 		{
 			add
 			{
-				((Person)(Death)this).ChildPersonChanging += value;
+				this.Death.Person.ChildPersonChanging += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ChildPersonChanging -= value;
+				this.Death.Person.ChildPersonChanging -= value;
 			}
 		}
 		public event EventHandler<PropertyChangedEventArgs<ChildPerson>> ChildPersonChanged
 		{
 			add
 			{
-				((Person)(Death)this).ChildPersonChanged += value;
+				this.Death.Person.ChildPersonChanged += value;
 			}
 			remove
 			{
-				((Person)(Death)this).ChildPersonChanged -= value;
+				this.Death.Person.ChildPersonChanged -= value;
 			}
 		}
 		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonDrivesCarAsDrivenByPerson;
+				return this.Death.Person.PersonDrivesCarAsDrivenByPerson;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
 			}
 		}
 		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller;
 			}
 		}
 		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
 		{
 			get
 			{
-				return ((Person)(Death)this).PersonHasNickNameAsPerson;
+				return this.Death.Person.PersonHasNickNameAsPerson;
 			}
 		}
 		public virtual ICollection<Task> Task
 		{
 			get
 			{
-				return ((Person)(Death)this).Task;
+				return this.Death.Person.Task;
 			}
 		}
 		public virtual ICollection<ValueType1> ValueType1DoesSomethingWith
 		{
 			get
 			{
-				return ((Person)(Death)this).ValueType1DoesSomethingWith;
+				return this.Death.Person.ValueType1DoesSomethingWith;
 			}
 		}
 	}
@@ -6878,17 +6878,17 @@ namespace SampleModel
 		protected Task()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[2];
+		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -6918,11 +6918,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6941,11 +6941,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6963,11 +6963,11 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, "Task{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "", "TODO: Recursively call ToString for customTypes...");
 		}
@@ -6980,17 +6980,17 @@ namespace SampleModel
 		protected ValueType1()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -7020,11 +7020,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7043,11 +7043,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7064,11 +7064,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7087,11 +7087,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7118,11 +7118,11 @@ namespace SampleModel
 		{
 			get;
 		}
-		public override sealed string ToString()
+		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(IFormatProvider provider)
+		public virtual string ToString(IFormatProvider provider)
 		{
 			return string.Format(provider, @"ValueType1{0}{{{0}{1}ValueType1Value = ""{2}"",{0}{1}DoesSomethingWithPerson = {3}{0}}}", Environment.NewLine, "", this.ValueType1Value, "TODO: Recursively call ToString for customTypes...");
 		}

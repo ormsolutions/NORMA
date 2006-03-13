@@ -518,9 +518,11 @@
 			<xsl:copy-of select="$GeneratedCodeAttribute"/>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged"/>
 			<plx:function visibility="protected" name=".construct"/>
-			<plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate">
+			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+			<plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 				<plx:initialize>
-					<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate">
+					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+					<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 						<plx:passParam>
 							<plx:value type="i4" data="{count($eventProperties)+1}"/>
 						</plx:passParam>
@@ -933,7 +935,8 @@
 				</plx:callInstance>
 			</plx:left>
 			<plx:right>
-				<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate">
+				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+				<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate" dataTypeQualifier="System">
 					<plx:passParam>
 						<plx:callInstance type="arrayIndexer" name=".implied">
 							<plx:callObject>

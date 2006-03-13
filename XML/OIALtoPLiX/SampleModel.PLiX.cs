@@ -1129,17 +1129,17 @@ namespace SampleModel
 		protected PersonDrivesCar()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1169,11 +1169,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1192,11 +1192,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1213,11 +1213,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1236,11 +1236,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1280,17 +1280,17 @@ namespace SampleModel
 		protected PersonBoughtCarFromPersonOnDate()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[5];
+		private readonly System.Delegate[] Events = new System.Delegate[5];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1320,11 +1320,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1343,11 +1343,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1364,11 +1364,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1387,11 +1387,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1408,11 +1408,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1431,11 +1431,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1452,11 +1452,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1475,11 +1475,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1529,17 +1529,17 @@ namespace SampleModel
 		protected Review()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[4];
+		private readonly System.Delegate[] Events = new System.Delegate[4];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1569,11 +1569,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1592,11 +1592,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1613,11 +1613,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1636,11 +1636,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1657,11 +1657,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1680,11 +1680,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1729,17 +1729,17 @@ namespace SampleModel
 		protected PersonHasNickName()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1769,11 +1769,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1792,11 +1792,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1813,11 +1813,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1836,11 +1836,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1880,17 +1880,17 @@ namespace SampleModel
 		protected Person()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[15];
+		private readonly System.Delegate[] Events = new System.Delegate[15];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -1920,11 +1920,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1943,11 +1943,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1964,11 +1964,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -1987,11 +1987,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2008,11 +2008,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2031,11 +2031,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2052,11 +2052,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2075,11 +2075,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2096,11 +2096,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2119,11 +2119,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2140,11 +2140,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = Delegate.Combine(this.Events[6], value);
+				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
 			}
 			remove
 			{
-				this.Events[6] = Delegate.Remove(this.Events[6], value);
+				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2163,11 +2163,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[6] = Delegate.Combine(this.Events[6], value);
+				this.Events[6] = System.Delegate.Combine(this.Events[6], value);
 			}
 			remove
 			{
-				this.Events[6] = Delegate.Remove(this.Events[6], value);
+				this.Events[6] = System.Delegate.Remove(this.Events[6], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2184,11 +2184,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = Delegate.Combine(this.Events[7], value);
+				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
 			}
 			remove
 			{
-				this.Events[7] = Delegate.Remove(this.Events[7], value);
+				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2207,11 +2207,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[7] = Delegate.Combine(this.Events[7], value);
+				this.Events[7] = System.Delegate.Combine(this.Events[7], value);
 			}
 			remove
 			{
-				this.Events[7] = Delegate.Remove(this.Events[7], value);
+				this.Events[7] = System.Delegate.Remove(this.Events[7], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2228,11 +2228,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = Delegate.Combine(this.Events[8], value);
+				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
 			}
 			remove
 			{
-				this.Events[8] = Delegate.Remove(this.Events[8], value);
+				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2251,11 +2251,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[8] = Delegate.Combine(this.Events[8], value);
+				this.Events[8] = System.Delegate.Combine(this.Events[8], value);
 			}
 			remove
 			{
-				this.Events[8] = Delegate.Remove(this.Events[8], value);
+				this.Events[8] = System.Delegate.Remove(this.Events[8], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2272,11 +2272,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[9] = Delegate.Combine(this.Events[9], value);
+				this.Events[9] = System.Delegate.Combine(this.Events[9], value);
 			}
 			remove
 			{
-				this.Events[9] = Delegate.Remove(this.Events[9], value);
+				this.Events[9] = System.Delegate.Remove(this.Events[9], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2295,11 +2295,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[9] = Delegate.Combine(this.Events[9], value);
+				this.Events[9] = System.Delegate.Combine(this.Events[9], value);
 			}
 			remove
 			{
-				this.Events[9] = Delegate.Remove(this.Events[9], value);
+				this.Events[9] = System.Delegate.Remove(this.Events[9], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2316,11 +2316,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[10] = Delegate.Combine(this.Events[10], value);
+				this.Events[10] = System.Delegate.Combine(this.Events[10], value);
 			}
 			remove
 			{
-				this.Events[10] = Delegate.Remove(this.Events[10], value);
+				this.Events[10] = System.Delegate.Remove(this.Events[10], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2339,11 +2339,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[10] = Delegate.Combine(this.Events[10], value);
+				this.Events[10] = System.Delegate.Combine(this.Events[10], value);
 			}
 			remove
 			{
-				this.Events[10] = Delegate.Remove(this.Events[10], value);
+				this.Events[10] = System.Delegate.Remove(this.Events[10], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2360,11 +2360,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[11] = Delegate.Combine(this.Events[11], value);
+				this.Events[11] = System.Delegate.Combine(this.Events[11], value);
 			}
 			remove
 			{
-				this.Events[11] = Delegate.Remove(this.Events[11], value);
+				this.Events[11] = System.Delegate.Remove(this.Events[11], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2383,11 +2383,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[11] = Delegate.Combine(this.Events[11], value);
+				this.Events[11] = System.Delegate.Combine(this.Events[11], value);
 			}
 			remove
 			{
-				this.Events[11] = Delegate.Remove(this.Events[11], value);
+				this.Events[11] = System.Delegate.Remove(this.Events[11], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2404,11 +2404,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[12] = Delegate.Combine(this.Events[12], value);
+				this.Events[12] = System.Delegate.Combine(this.Events[12], value);
 			}
 			remove
 			{
-				this.Events[12] = Delegate.Remove(this.Events[12], value);
+				this.Events[12] = System.Delegate.Remove(this.Events[12], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2427,11 +2427,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[12] = Delegate.Combine(this.Events[12], value);
+				this.Events[12] = System.Delegate.Combine(this.Events[12], value);
 			}
 			remove
 			{
-				this.Events[12] = Delegate.Remove(this.Events[12], value);
+				this.Events[12] = System.Delegate.Remove(this.Events[12], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2448,11 +2448,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[13] = Delegate.Combine(this.Events[13], value);
+				this.Events[13] = System.Delegate.Combine(this.Events[13], value);
 			}
 			remove
 			{
-				this.Events[13] = Delegate.Remove(this.Events[13], value);
+				this.Events[13] = System.Delegate.Remove(this.Events[13], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2471,11 +2471,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[13] = Delegate.Combine(this.Events[13], value);
+				this.Events[13] = System.Delegate.Combine(this.Events[13], value);
 			}
 			remove
 			{
-				this.Events[13] = Delegate.Remove(this.Events[13], value);
+				this.Events[13] = System.Delegate.Remove(this.Events[13], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2492,11 +2492,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[14] = Delegate.Combine(this.Events[14], value);
+				this.Events[14] = System.Delegate.Combine(this.Events[14], value);
 			}
 			remove
 			{
-				this.Events[14] = Delegate.Remove(this.Events[14], value);
+				this.Events[14] = System.Delegate.Remove(this.Events[14], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2515,11 +2515,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[14] = Delegate.Combine(this.Events[14], value);
+				this.Events[14] = System.Delegate.Combine(this.Events[14], value);
 			}
 			remove
 			{
-				this.Events[14] = Delegate.Remove(this.Events[14], value);
+				this.Events[14] = System.Delegate.Remove(this.Events[14], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2725,17 +2725,17 @@ namespace SampleModel
 		protected MalePerson()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[2];
+		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -2765,11 +2765,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -2788,11 +2788,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3280,17 +3280,17 @@ namespace SampleModel
 		protected FemalePerson()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[2];
+		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -3320,11 +3320,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3343,11 +3343,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3835,17 +3835,17 @@ namespace SampleModel
 		protected ChildPerson()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[5];
+		private readonly System.Delegate[] Events = new System.Delegate[5];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -3875,11 +3875,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3898,11 +3898,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3919,11 +3919,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3942,11 +3942,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3963,11 +3963,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -3986,11 +3986,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4007,11 +4007,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4030,11 +4030,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4566,17 +4566,17 @@ namespace SampleModel
 		protected Death()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[6];
+		private readonly System.Delegate[] Events = new System.Delegate[6];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -4606,11 +4606,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4629,11 +4629,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4650,11 +4650,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4673,11 +4673,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4694,11 +4694,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4717,11 +4717,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4738,11 +4738,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4761,11 +4761,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[4] = Delegate.Combine(this.Events[4], value);
+				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
 			}
 			remove
 			{
-				this.Events[4] = Delegate.Remove(this.Events[4], value);
+				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4782,11 +4782,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -4805,11 +4805,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[5] = Delegate.Combine(this.Events[5], value);
+				this.Events[5] = System.Delegate.Combine(this.Events[5], value);
 			}
 			remove
 			{
-				this.Events[5] = Delegate.Remove(this.Events[5], value);
+				this.Events[5] = System.Delegate.Remove(this.Events[5], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5343,17 +5343,17 @@ namespace SampleModel
 		protected NaturalDeath()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -5383,11 +5383,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5406,11 +5406,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5427,11 +5427,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -5450,11 +5450,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6086,17 +6086,17 @@ namespace SampleModel
 		protected UnnaturalDeath()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[4];
+		private readonly System.Delegate[] Events = new System.Delegate[4];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -6126,11 +6126,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6149,11 +6149,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6170,11 +6170,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6193,11 +6193,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6214,11 +6214,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6237,11 +6237,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[3] = Delegate.Combine(this.Events[3], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[3] = Delegate.Remove(this.Events[3], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6878,17 +6878,17 @@ namespace SampleModel
 		protected Task()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[2];
+		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -6918,11 +6918,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6941,11 +6941,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -6980,17 +6980,17 @@ namespace SampleModel
 		protected ValueType1()
 		{
 		}
-		private readonly Delegate[] Events = new Delegate[3];
+		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
 		private event PropertyChangedEventHandler PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = Delegate.Combine(this.Events[0], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[0] = Delegate.Remove(this.Events[0], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -7020,11 +7020,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7043,11 +7043,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[1] = Delegate.Combine(this.Events[1], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[1] = Delegate.Remove(this.Events[1], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7064,11 +7064,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
@@ -7087,11 +7087,11 @@ namespace SampleModel
 		{
 			add
 			{
-				this.Events[2] = Delegate.Combine(this.Events[2], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[2] = Delegate.Remove(this.Events[2], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]

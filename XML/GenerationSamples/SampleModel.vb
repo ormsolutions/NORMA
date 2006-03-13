@@ -896,15 +896,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(3) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(3) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -916,10 +916,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event DrivesCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -934,10 +934,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DrivesCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -950,10 +950,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event DrivenByPersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -968,10 +968,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DrivenByPersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -984,10 +984,10 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride Property DrivesCar_vin() As Integer
 		Public MustOverride Property DrivenByPerson() As Person
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "PersonDrivesCar{0}{{{0}{1}DrivesCar_vin = ""{2}"",{0}{1}DrivenByPerson = {3}{0}}}", Environment.NewLine, "", Me.DrivesCar_vin, "TODO: Recursively call ToString for customTypes...")
 		End Function
 	End Class
@@ -998,15 +998,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(5) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(5) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -1018,10 +1018,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event CarSold_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1036,10 +1036,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event CarSold_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1052,10 +1052,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event SaleDate_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1070,10 +1070,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event SaleDate_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1086,10 +1086,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event BuyerChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1104,10 +1104,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event BuyerChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1120,10 +1120,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event SellerChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1138,10 +1138,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event SellerChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1156,10 +1156,10 @@ Namespace SampleModel
 		Public MustOverride Property SaleDate_YMD() As Integer
 		Public MustOverride Property Buyer() As Person
 		Public MustOverride Property Seller() As Person
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "PersonBoughtCarFromPersonOnDate{0}{{{0}{1}CarSold_vin = ""{2}"",{0}{1}SaleDate_YMD = ""{3}"",{0}{1}Buyer = {4},{0}{1}Seller = {5}{0}}}", Environment.NewLine, "", Me.CarSold_vin, Me.SaleDate_YMD, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...")
 		End Function
 	End Class
@@ -1170,15 +1170,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(4) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(4) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -1190,10 +1190,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event Car_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1208,10 +1208,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event Car_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1224,10 +1224,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event Rating_Nr_IntegerChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1242,10 +1242,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event Rating_Nr_IntegerChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1258,10 +1258,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event Criteria_NameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1276,10 +1276,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event Criteria_NameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1293,10 +1293,10 @@ Namespace SampleModel
 		Public MustOverride Property Car_vin() As Integer
 		Public MustOverride Property Rating_Nr_Integer() As Integer
 		Public MustOverride Property Criteria_Name() As String
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criteria_Name = ""{4}""{0}}}", Environment.NewLine, "", Me.Car_vin, Me.Rating_Nr_Integer, Me.Criteria_Name)
 		End Function
 	End Class
@@ -1307,15 +1307,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(3) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(3) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -1327,10 +1327,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event NickNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1345,10 +1345,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event NickNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1361,10 +1361,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1379,10 +1379,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1395,10 +1395,10 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride Property NickName() As String
 		Public MustOverride Property Person() As Person
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "PersonHasNickName{0}{{{0}{1}NickName = ""{2}"",{0}{1}Person = {3}{0}}}", Environment.NewLine, "", Me.NickName, "TODO: Recursively call ToString for customTypes...")
 		End Function
 	End Class
@@ -1409,15 +1409,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(15) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(15) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -1429,10 +1429,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1447,10 +1447,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1463,10 +1463,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1481,10 +1481,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1497,10 +1497,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1515,10 +1515,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1531,10 +1531,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1549,10 +1549,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1565,10 +1565,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Combine(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Combine(Me.Events(5), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Remove(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Remove(Me.Events(5), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1583,10 +1583,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Combine(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Combine(Me.Events(5), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Remove(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Remove(Me.Events(5), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1599,10 +1599,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(6) = Delegate.Combine(Me.Events(6), Value)
+				Me.Events(6) = System.Delegate.Combine(Me.Events(6), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(6) = Delegate.Remove(Me.Events(6), Value)
+				Me.Events(6) = System.Delegate.Remove(Me.Events(6), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1617,10 +1617,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(6) = Delegate.Combine(Me.Events(6), Value)
+				Me.Events(6) = System.Delegate.Combine(Me.Events(6), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(6) = Delegate.Remove(Me.Events(6), Value)
+				Me.Events(6) = System.Delegate.Remove(Me.Events(6), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1633,10 +1633,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(7) = Delegate.Combine(Me.Events(7), Value)
+				Me.Events(7) = System.Delegate.Combine(Me.Events(7), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(7) = Delegate.Remove(Me.Events(7), Value)
+				Me.Events(7) = System.Delegate.Remove(Me.Events(7), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1651,10 +1651,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(7) = Delegate.Combine(Me.Events(7), Value)
+				Me.Events(7) = System.Delegate.Combine(Me.Events(7), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(7) = Delegate.Remove(Me.Events(7), Value)
+				Me.Events(7) = System.Delegate.Remove(Me.Events(7), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1667,10 +1667,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(8) = Delegate.Combine(Me.Events(8), Value)
+				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(8) = Delegate.Remove(Me.Events(8), Value)
+				Me.Events(8) = System.Delegate.Remove(Me.Events(8), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1685,10 +1685,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(8) = Delegate.Combine(Me.Events(8), Value)
+				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(8) = Delegate.Remove(Me.Events(8), Value)
+				Me.Events(8) = System.Delegate.Remove(Me.Events(8), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1701,10 +1701,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(9) = Delegate.Combine(Me.Events(9), Value)
+				Me.Events(9) = System.Delegate.Combine(Me.Events(9), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(9) = Delegate.Remove(Me.Events(9), Value)
+				Me.Events(9) = System.Delegate.Remove(Me.Events(9), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1719,10 +1719,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(9) = Delegate.Combine(Me.Events(9), Value)
+				Me.Events(9) = System.Delegate.Combine(Me.Events(9), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(9) = Delegate.Remove(Me.Events(9), Value)
+				Me.Events(9) = System.Delegate.Remove(Me.Events(9), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1735,10 +1735,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(10) = Delegate.Combine(Me.Events(10), Value)
+				Me.Events(10) = System.Delegate.Combine(Me.Events(10), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(10) = Delegate.Remove(Me.Events(10), Value)
+				Me.Events(10) = System.Delegate.Remove(Me.Events(10), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1753,10 +1753,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(10) = Delegate.Combine(Me.Events(10), Value)
+				Me.Events(10) = System.Delegate.Combine(Me.Events(10), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(10) = Delegate.Remove(Me.Events(10), Value)
+				Me.Events(10) = System.Delegate.Remove(Me.Events(10), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1769,10 +1769,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event MalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(11) = Delegate.Combine(Me.Events(11), Value)
+				Me.Events(11) = System.Delegate.Combine(Me.Events(11), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(11) = Delegate.Remove(Me.Events(11), Value)
+				Me.Events(11) = System.Delegate.Remove(Me.Events(11), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1787,10 +1787,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event MalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(11) = Delegate.Combine(Me.Events(11), Value)
+				Me.Events(11) = System.Delegate.Combine(Me.Events(11), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(11) = Delegate.Remove(Me.Events(11), Value)
+				Me.Events(11) = System.Delegate.Remove(Me.Events(11), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1803,10 +1803,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event FemalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(12) = Delegate.Combine(Me.Events(12), Value)
+				Me.Events(12) = System.Delegate.Combine(Me.Events(12), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(12) = Delegate.Remove(Me.Events(12), Value)
+				Me.Events(12) = System.Delegate.Remove(Me.Events(12), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1821,10 +1821,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event FemalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(12) = Delegate.Combine(Me.Events(12), Value)
+				Me.Events(12) = System.Delegate.Combine(Me.Events(12), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(12) = Delegate.Remove(Me.Events(12), Value)
+				Me.Events(12) = System.Delegate.Remove(Me.Events(12), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1837,10 +1837,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event ChildPersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(13) = Delegate.Combine(Me.Events(13), Value)
+				Me.Events(13) = System.Delegate.Combine(Me.Events(13), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(13) = Delegate.Remove(Me.Events(13), Value)
+				Me.Events(13) = System.Delegate.Remove(Me.Events(13), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1855,10 +1855,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event ChildPersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(13) = Delegate.Combine(Me.Events(13), Value)
+				Me.Events(13) = System.Delegate.Combine(Me.Events(13), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(13) = Delegate.Remove(Me.Events(13), Value)
+				Me.Events(13) = System.Delegate.Remove(Me.Events(13), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1871,10 +1871,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event DeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(14) = Delegate.Combine(Me.Events(14), Value)
+				Me.Events(14) = System.Delegate.Combine(Me.Events(14), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(14) = Delegate.Remove(Me.Events(14), Value)
+				Me.Events(14) = System.Delegate.Remove(Me.Events(14), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1889,10 +1889,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(14) = Delegate.Combine(Me.Events(14), Value)
+				Me.Events(14) = System.Delegate.Combine(Me.Events(14), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(14) = Delegate.Remove(Me.Events(14), Value)
+				Me.Events(14) = System.Delegate.Remove(Me.Events(14), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -1923,13 +1923,13 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 		Public MustOverride ReadOnly Property Task() As ICollection(Of Task)
 		Public MustOverride ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}SocialSecurityNumber = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}PersonHasParents = ""{10}"",{0}{1}ValueType1DoesSomethingElseWith = {11},{0}{1}MalePerson = {12},{0}{1}FemalePerson = {13},{0}{1}ChildPerson = {14},{0}{1}Death = {15}{0}}}", Environment.NewLine, "", Me.FirstName, Me.Date_YMD, Me.LastName, Me.SocialSecurityNumber, Me.HatType_ColorARGB, Me.HatType_HatTypeStyle_HatTypeStyle_Description, Me.OwnsCar_vin, Me.Gender_Gender_Code, Me.PersonHasParents, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Narrowing CType(ByVal Person As Person) As MalePerson
+		Public Shared Narrowing Operator CType(ByVal Person As Person) As MalePerson
 			If Person Is Nothing Then
 				Return Nothing
 			ElseIf Person.MalePerson Is Nothing Then
@@ -1938,7 +1938,7 @@ Namespace SampleModel
 				Return Person.MalePerson
 			End If
 		End Operator
-		Public Shared Narrowing CType(ByVal Person As Person) As FemalePerson
+		Public Shared Narrowing Operator CType(ByVal Person As Person) As FemalePerson
 			If Person Is Nothing Then
 				Return Nothing
 			ElseIf Person.FemalePerson Is Nothing Then
@@ -1947,7 +1947,7 @@ Namespace SampleModel
 				Return Person.FemalePerson
 			End If
 		End Operator
-		Public Shared Narrowing CType(ByVal Person As Person) As ChildPerson
+		Public Shared Narrowing Operator CType(ByVal Person As Person) As ChildPerson
 			If Person Is Nothing Then
 				Return Nothing
 			ElseIf Person.ChildPerson Is Nothing Then
@@ -1956,7 +1956,7 @@ Namespace SampleModel
 				Return Person.ChildPerson
 			End If
 		End Operator
-		Public Shared Narrowing CType(ByVal Person As Person) As Death
+		Public Shared Narrowing Operator CType(ByVal Person As Person) As Death
 			If Person Is Nothing Then
 				Return Nothing
 			ElseIf Person.Death Is Nothing Then
@@ -1965,14 +1965,14 @@ Namespace SampleModel
 				Return Person.Death
 			End If
 		End Operator
-		Public Shared Narrowing CType(ByVal Person As Person) As NaturalDeath
+		Public Shared Narrowing Operator CType(ByVal Person As Person) As NaturalDeath
 			If Person Is Nothing Then
 				Return Nothing
 			Else
 				Return CType(CType(Person, Death), NaturalDeath)
 			End If
 		End Operator
-		Public Shared Narrowing CType(ByVal Person As Person) As UnnaturalDeath
+		Public Shared Narrowing Operator CType(ByVal Person As Person) As UnnaturalDeath
 			If Person Is Nothing Then
 				Return Nothing
 			Else
@@ -1987,15 +1987,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(2) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(2) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -2007,10 +2007,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2025,10 +2025,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2041,13 +2041,13 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride Property Person() As Person
 		Public MustOverride ReadOnly Property ChildPerson() As ICollection(Of ChildPerson)
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "MalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "", "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Widening CType(ByVal MalePerson As MalePerson) As Person
+		Public Shared Widening Operator CType(ByVal MalePerson As MalePerson) As Person
 			If MalePerson Is Nothing Then
 				Return Nothing
 			Else
@@ -2056,320 +2056,320 @@ Namespace SampleModel
 		End Operator
 		Public Overridable Property FirstName() As String
 			Get
-				Return (CType(Me, Person)).FirstName
+				Return Me.Person.FirstName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).FirstName = Value
+				Me.Person.FirstName = Value
 			End Set
 		End Property
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanging, Value
+				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanging, Value
+				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanged, Value
+				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanged, Value
+				RemoveHandler Me.Person.FirstNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Date_YMD() As Integer
 			Get
-				Return (CType(Me, Person)).Date_YMD
+				Return Me.Person.Date_YMD
 			End Get
 			Set(ByVal Value As Integer)
-				(CType(Me, Person)).Date_YMD = Value
+				Me.Person.Date_YMD = Value
 			End Set
 		End Property
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Date_YMDChanging, Value
+				AddHandler Me.Person.Date_YMDChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Date_YMDChanging, Value
+				RemoveHandler Me.Person.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Date_YMDChanged, Value
+				AddHandler Me.Person.Date_YMDChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Date_YMDChanged, Value
+				RemoveHandler Me.Person.Date_YMDChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property LastName() As String
 			Get
-				Return (CType(Me, Person)).LastName
+				Return Me.Person.LastName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).LastName = Value
+				Me.Person.LastName = Value
 			End Set
 		End Property
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanging, Value
+				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanging, Value
+				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanged, Value
+				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanged, Value
+				RemoveHandler Me.Person.LastNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property SocialSecurityNumber() As String
 			Get
-				Return (CType(Me, Person)).SocialSecurityNumber
+				Return Me.Person.SocialSecurityNumber
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).SocialSecurityNumber = Value
+				Me.Person.SocialSecurityNumber = Value
 			End Set
 		End Property
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				AddHandler Me.Person.SocialSecurityNumberChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				AddHandler Me.Person.SocialSecurityNumberChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_ColorARGB() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).HatType_ColorARGB
+				Return Me.Person.HatType_ColorARGB
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).HatType_ColorARGB = Value
+				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_HatTypeStyle_HatTypeStyle_Description() As String
 			Get
-				Return (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description
+				Return Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description = Value
+				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OwnsCar_vin() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).OwnsCar_vin
+				Return Me.Person.OwnsCar_vin
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).OwnsCar_vin = Value
+				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Gender_Gender_Code() As String
 			Get
-				Return (CType(Me, Person)).Gender_Gender_Code
+				Return Me.Person.Gender_Gender_Code
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).Gender_Gender_Code = Value
+				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
 			Get
-				Return (CType(Me, Person)).PersonHasParents
+				Return Me.Person.PersonHasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				(CType(Me, Person)).PersonHasParents = Value
+				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.PersonHasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ValueType1DoesSomethingElseWith() As ValueType1
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingElseWith
+				Return Me.Person.ValueType1DoesSomethingElseWith
 			End Get
 			Set(ByVal Value As ValueType1)
-				(CType(Me, Person)).ValueType1DoesSomethingElseWith = Value
+				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FemalePerson() As FemalePerson
 			Get
-				Return (CType(Me, Person)).FemalePerson
+				Return Me.Person.FemalePerson
 			End Get
 			Set(ByVal Value As FemalePerson)
-				(CType(Me, Person)).FemalePerson = Value
+				Me.Person.FemalePerson = Value
 			End Set
 		End Property
 		Public Custom Event FemalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FemalePersonChanging, Value
+				AddHandler Me.Person.FemalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FemalePersonChanging, Value
+				RemoveHandler Me.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FemalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FemalePersonChanged, Value
+				AddHandler Me.Person.FemalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FemalePersonChanged, Value
+				RemoveHandler Me.Person.FemalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Death() As Death
 			Get
-				Return (CType(Me, Person)).Death
+				Return Me.Person.Death
 			End Get
 			Set(ByVal Value As Death)
-				(CType(Me, Person)).Death = Value
+				Me.Person.Death = Value
 			End Set
 		End Property
 		Public Custom Event DeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).DeathChanging, Value
+				AddHandler Me.Person.DeathChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).DeathChanging, Value
+				RemoveHandler Me.Person.DeathChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event DeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).DeathChanged, Value
+				AddHandler Me.Person.DeathChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).DeathChanged, Value
+				RemoveHandler Me.Person.DeathChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
 			Get
-				Return (CType(Me, Person)).PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCarAsDrivenByPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 			Get
-				Return (CType(Me, Person)).PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickNameAsPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
 			Get
-				Return (CType(Me, Person)).Task
+				Return Me.Person.Task
 			End Get
 		End Property
 		Public Overridable ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingWith
+				Return Me.Person.ValueType1DoesSomethingWith
 			End Get
 		End Property
 	End Class
@@ -2380,15 +2380,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(2) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(2) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -2400,10 +2400,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2418,10 +2418,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2434,13 +2434,13 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride Property Person() As Person
 		Public MustOverride ReadOnly Property ChildPerson() As ICollection(Of ChildPerson)
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "FemalePerson{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "", "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Widening CType(ByVal FemalePerson As FemalePerson) As Person
+		Public Shared Widening Operator CType(ByVal FemalePerson As FemalePerson) As Person
 			If FemalePerson Is Nothing Then
 				Return Nothing
 			Else
@@ -2449,320 +2449,320 @@ Namespace SampleModel
 		End Operator
 		Public Overridable Property FirstName() As String
 			Get
-				Return (CType(Me, Person)).FirstName
+				Return Me.Person.FirstName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).FirstName = Value
+				Me.Person.FirstName = Value
 			End Set
 		End Property
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanging, Value
+				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanging, Value
+				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanged, Value
+				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanged, Value
+				RemoveHandler Me.Person.FirstNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Date_YMD() As Integer
 			Get
-				Return (CType(Me, Person)).Date_YMD
+				Return Me.Person.Date_YMD
 			End Get
 			Set(ByVal Value As Integer)
-				(CType(Me, Person)).Date_YMD = Value
+				Me.Person.Date_YMD = Value
 			End Set
 		End Property
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Date_YMDChanging, Value
+				AddHandler Me.Person.Date_YMDChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Date_YMDChanging, Value
+				RemoveHandler Me.Person.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Date_YMDChanged, Value
+				AddHandler Me.Person.Date_YMDChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Date_YMDChanged, Value
+				RemoveHandler Me.Person.Date_YMDChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property LastName() As String
 			Get
-				Return (CType(Me, Person)).LastName
+				Return Me.Person.LastName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).LastName = Value
+				Me.Person.LastName = Value
 			End Set
 		End Property
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanging, Value
+				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanging, Value
+				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanged, Value
+				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanged, Value
+				RemoveHandler Me.Person.LastNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property SocialSecurityNumber() As String
 			Get
-				Return (CType(Me, Person)).SocialSecurityNumber
+				Return Me.Person.SocialSecurityNumber
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).SocialSecurityNumber = Value
+				Me.Person.SocialSecurityNumber = Value
 			End Set
 		End Property
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				AddHandler Me.Person.SocialSecurityNumberChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				AddHandler Me.Person.SocialSecurityNumberChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_ColorARGB() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).HatType_ColorARGB
+				Return Me.Person.HatType_ColorARGB
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).HatType_ColorARGB = Value
+				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_HatTypeStyle_HatTypeStyle_Description() As String
 			Get
-				Return (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description
+				Return Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description = Value
+				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OwnsCar_vin() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).OwnsCar_vin
+				Return Me.Person.OwnsCar_vin
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).OwnsCar_vin = Value
+				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Gender_Gender_Code() As String
 			Get
-				Return (CType(Me, Person)).Gender_Gender_Code
+				Return Me.Person.Gender_Gender_Code
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).Gender_Gender_Code = Value
+				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
 			Get
-				Return (CType(Me, Person)).PersonHasParents
+				Return Me.Person.PersonHasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				(CType(Me, Person)).PersonHasParents = Value
+				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.PersonHasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ValueType1DoesSomethingElseWith() As ValueType1
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingElseWith
+				Return Me.Person.ValueType1DoesSomethingElseWith
 			End Get
 			Set(ByVal Value As ValueType1)
-				(CType(Me, Person)).ValueType1DoesSomethingElseWith = Value
+				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property MalePerson() As MalePerson
 			Get
-				Return (CType(Me, Person)).MalePerson
+				Return Me.Person.MalePerson
 			End Get
 			Set(ByVal Value As MalePerson)
-				(CType(Me, Person)).MalePerson = Value
+				Me.Person.MalePerson = Value
 			End Set
 		End Property
 		Public Custom Event MalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).MalePersonChanging, Value
+				AddHandler Me.Person.MalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).MalePersonChanging, Value
+				RemoveHandler Me.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event MalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).MalePersonChanged, Value
+				AddHandler Me.Person.MalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).MalePersonChanged, Value
+				RemoveHandler Me.Person.MalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Death() As Death
 			Get
-				Return (CType(Me, Person)).Death
+				Return Me.Person.Death
 			End Get
 			Set(ByVal Value As Death)
-				(CType(Me, Person)).Death = Value
+				Me.Person.Death = Value
 			End Set
 		End Property
 		Public Custom Event DeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).DeathChanging, Value
+				AddHandler Me.Person.DeathChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).DeathChanging, Value
+				RemoveHandler Me.Person.DeathChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event DeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).DeathChanged, Value
+				AddHandler Me.Person.DeathChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).DeathChanged, Value
+				RemoveHandler Me.Person.DeathChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
 			Get
-				Return (CType(Me, Person)).PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCarAsDrivenByPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 			Get
-				Return (CType(Me, Person)).PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickNameAsPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
 			Get
-				Return (CType(Me, Person)).Task
+				Return Me.Person.Task
 			End Get
 		End Property
 		Public Overridable ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingWith
+				Return Me.Person.ValueType1DoesSomethingWith
 			End Get
 		End Property
 	End Class
@@ -2773,15 +2773,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(5) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(5) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -2793,10 +2793,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event BirthOrder_BirthOrder_NrChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2811,10 +2811,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event BirthOrder_BirthOrder_NrChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2827,10 +2827,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event FatherChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2845,10 +2845,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event FatherChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2861,10 +2861,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event MotherChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2879,10 +2879,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event MotherChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2895,10 +2895,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2913,10 +2913,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -2931,13 +2931,13 @@ Namespace SampleModel
 		Public MustOverride Property Father() As MalePerson
 		Public MustOverride Property Mother() As FemalePerson
 		Public MustOverride Property Person() As Person
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "ChildPerson{0}{{{0}{1}BirthOrder_BirthOrder_Nr = ""{2}"",{0}{1}Father = {3},{0}{1}Mother = {4},{0}{1}Person = {5}{0}}}", Environment.NewLine, "", Me.BirthOrder_BirthOrder_Nr, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Widening CType(ByVal ChildPerson As ChildPerson) As Person
+		Public Shared Widening Operator CType(ByVal ChildPerson As ChildPerson) As Person
 			If ChildPerson Is Nothing Then
 				Return Nothing
 			Else
@@ -2946,344 +2946,344 @@ Namespace SampleModel
 		End Operator
 		Public Overridable Property FirstName() As String
 			Get
-				Return (CType(Me, Person)).FirstName
+				Return Me.Person.FirstName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).FirstName = Value
+				Me.Person.FirstName = Value
 			End Set
 		End Property
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanging, Value
+				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanging, Value
+				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanged, Value
+				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanged, Value
+				RemoveHandler Me.Person.FirstNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Date_YMD() As Integer
 			Get
-				Return (CType(Me, Person)).Date_YMD
+				Return Me.Person.Date_YMD
 			End Get
 			Set(ByVal Value As Integer)
-				(CType(Me, Person)).Date_YMD = Value
+				Me.Person.Date_YMD = Value
 			End Set
 		End Property
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Date_YMDChanging, Value
+				AddHandler Me.Person.Date_YMDChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Date_YMDChanging, Value
+				RemoveHandler Me.Person.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Date_YMDChanged, Value
+				AddHandler Me.Person.Date_YMDChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Date_YMDChanged, Value
+				RemoveHandler Me.Person.Date_YMDChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property LastName() As String
 			Get
-				Return (CType(Me, Person)).LastName
+				Return Me.Person.LastName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).LastName = Value
+				Me.Person.LastName = Value
 			End Set
 		End Property
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanging, Value
+				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanging, Value
+				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanged, Value
+				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanged, Value
+				RemoveHandler Me.Person.LastNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property SocialSecurityNumber() As String
 			Get
-				Return (CType(Me, Person)).SocialSecurityNumber
+				Return Me.Person.SocialSecurityNumber
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).SocialSecurityNumber = Value
+				Me.Person.SocialSecurityNumber = Value
 			End Set
 		End Property
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				AddHandler Me.Person.SocialSecurityNumberChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				AddHandler Me.Person.SocialSecurityNumberChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_ColorARGB() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).HatType_ColorARGB
+				Return Me.Person.HatType_ColorARGB
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).HatType_ColorARGB = Value
+				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_HatTypeStyle_HatTypeStyle_Description() As String
 			Get
-				Return (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description
+				Return Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description = Value
+				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OwnsCar_vin() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).OwnsCar_vin
+				Return Me.Person.OwnsCar_vin
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).OwnsCar_vin = Value
+				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Gender_Gender_Code() As String
 			Get
-				Return (CType(Me, Person)).Gender_Gender_Code
+				Return Me.Person.Gender_Gender_Code
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).Gender_Gender_Code = Value
+				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
 			Get
-				Return (CType(Me, Person)).PersonHasParents
+				Return Me.Person.PersonHasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				(CType(Me, Person)).PersonHasParents = Value
+				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.PersonHasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ValueType1DoesSomethingElseWith() As ValueType1
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingElseWith
+				Return Me.Person.ValueType1DoesSomethingElseWith
 			End Get
 			Set(ByVal Value As ValueType1)
-				(CType(Me, Person)).ValueType1DoesSomethingElseWith = Value
+				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property MalePerson() As MalePerson
 			Get
-				Return (CType(Me, Person)).MalePerson
+				Return Me.Person.MalePerson
 			End Get
 			Set(ByVal Value As MalePerson)
-				(CType(Me, Person)).MalePerson = Value
+				Me.Person.MalePerson = Value
 			End Set
 		End Property
 		Public Custom Event MalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).MalePersonChanging, Value
+				AddHandler Me.Person.MalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).MalePersonChanging, Value
+				RemoveHandler Me.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event MalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).MalePersonChanged, Value
+				AddHandler Me.Person.MalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).MalePersonChanged, Value
+				RemoveHandler Me.Person.MalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FemalePerson() As FemalePerson
 			Get
-				Return (CType(Me, Person)).FemalePerson
+				Return Me.Person.FemalePerson
 			End Get
 			Set(ByVal Value As FemalePerson)
-				(CType(Me, Person)).FemalePerson = Value
+				Me.Person.FemalePerson = Value
 			End Set
 		End Property
 		Public Custom Event FemalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FemalePersonChanging, Value
+				AddHandler Me.Person.FemalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FemalePersonChanging, Value
+				RemoveHandler Me.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FemalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FemalePersonChanged, Value
+				AddHandler Me.Person.FemalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FemalePersonChanged, Value
+				RemoveHandler Me.Person.FemalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Death() As Death
 			Get
-				Return (CType(Me, Person)).Death
+				Return Me.Person.Death
 			End Get
 			Set(ByVal Value As Death)
-				(CType(Me, Person)).Death = Value
+				Me.Person.Death = Value
 			End Set
 		End Property
 		Public Custom Event DeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).DeathChanging, Value
+				AddHandler Me.Person.DeathChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).DeathChanging, Value
+				RemoveHandler Me.Person.DeathChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event DeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).DeathChanged, Value
+				AddHandler Me.Person.DeathChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).DeathChanged, Value
+				RemoveHandler Me.Person.DeathChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
 			Get
-				Return (CType(Me, Person)).PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCarAsDrivenByPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 			Get
-				Return (CType(Me, Person)).PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickNameAsPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
 			Get
-				Return (CType(Me, Person)).Task
+				Return Me.Person.Task
 			End Get
 		End Property
 		Public Overridable ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingWith
+				Return Me.Person.ValueType1DoesSomethingWith
 			End Get
 		End Property
 	End Class
@@ -3294,15 +3294,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(6) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(6) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -3314,10 +3314,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3332,10 +3332,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3348,10 +3348,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3366,10 +3366,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3382,10 +3382,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event NaturalDeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3400,10 +3400,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event NaturalDeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3416,10 +3416,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event UnnaturalDeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3434,10 +3434,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event UnnaturalDeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Combine(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(4) = Delegate.Remove(Me.Events(4), Value)
+				Me.Events(4) = System.Delegate.Remove(Me.Events(4), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3450,10 +3450,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Combine(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Combine(Me.Events(5), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Remove(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Remove(Me.Events(5), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3468,10 +3468,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Combine(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Combine(Me.Events(5), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(5) = Delegate.Remove(Me.Events(5), Value)
+				Me.Events(5) = System.Delegate.Remove(Me.Events(5), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3487,13 +3487,13 @@ Namespace SampleModel
 		Public MustOverride Property NaturalDeath() As NaturalDeath
 		Public MustOverride Property UnnaturalDeath() As UnnaturalDeath
 		Public MustOverride Property Person() As Person
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "Death{0}{{{0}{1}Date_YMD = ""{2}"",{0}{1}DeathCause_DeathCause_Type = ""{3}"",{0}{1}NaturalDeath = {4},{0}{1}UnnaturalDeath = {5},{0}{1}Person = {6}{0}}}", Environment.NewLine, "", Me.Date_YMD, Me.DeathCause_DeathCause_Type, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Widening CType(ByVal Death As Death) As Person
+		Public Shared Widening Operator CType(ByVal Death As Death) As Person
 			If Death Is Nothing Then
 				Return Nothing
 			Else
@@ -3502,323 +3502,323 @@ Namespace SampleModel
 		End Operator
 		Public Overridable Property FirstName() As String
 			Get
-				Return (CType(Me, Person)).FirstName
+				Return Me.Person.FirstName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).FirstName = Value
+				Me.Person.FirstName = Value
 			End Set
 		End Property
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanging, Value
+				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanging, Value
+				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FirstNameChanged, Value
+				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FirstNameChanged, Value
+				RemoveHandler Me.Person.FirstNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property LastName() As String
 			Get
-				Return (CType(Me, Person)).LastName
+				Return Me.Person.LastName
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).LastName = Value
+				Me.Person.LastName = Value
 			End Set
 		End Property
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanging, Value
+				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanging, Value
+				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).LastNameChanged, Value
+				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).LastNameChanged, Value
+				RemoveHandler Me.Person.LastNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property SocialSecurityNumber() As String
 			Get
-				Return (CType(Me, Person)).SocialSecurityNumber
+				Return Me.Person.SocialSecurityNumber
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).SocialSecurityNumber = Value
+				Me.Person.SocialSecurityNumber = Value
 			End Set
 		End Property
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				AddHandler Me.Person.SocialSecurityNumberChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanging, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				AddHandler Me.Person.SocialSecurityNumberChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).SocialSecurityNumberChanged, Value
+				RemoveHandler Me.Person.SocialSecurityNumberChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_ColorARGB() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).HatType_ColorARGB
+				Return Me.Person.HatType_ColorARGB
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).HatType_ColorARGB = Value
+				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanging, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_ColorARGBChanged, Value
+				RemoveHandler Me.Person.HatType_ColorARGBChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_HatTypeStyle_HatTypeStyle_Description() As String
 			Get
-				Return (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description
+				Return Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_Description = Value
+				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OwnsCar_vin() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Person)).OwnsCar_vin
+				Return Me.Person.OwnsCar_vin
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Person)).OwnsCar_vin = Value
+				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanging, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).OwnsCar_vinChanged, Value
+				RemoveHandler Me.Person.OwnsCar_vinChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Gender_Gender_Code() As String
 			Get
-				Return (CType(Me, Person)).Gender_Gender_Code
+				Return Me.Person.Gender_Gender_Code
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Person)).Gender_Gender_Code = Value
+				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanging, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).Gender_Gender_CodeChanged, Value
+				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
 			Get
-				Return (CType(Me, Person)).PersonHasParents
+				Return Me.Person.PersonHasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				(CType(Me, Person)).PersonHasParents = Value
+				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.PersonHasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ValueType1DoesSomethingElseWith() As ValueType1
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingElseWith
+				Return Me.Person.ValueType1DoesSomethingElseWith
 			End Get
 			Set(ByVal Value As ValueType1)
-				(CType(Me, Person)).ValueType1DoesSomethingElseWith = Value
+				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanging, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ValueType1DoesSomethingElseWithChanged, Value
+				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property MalePerson() As MalePerson
 			Get
-				Return (CType(Me, Person)).MalePerson
+				Return Me.Person.MalePerson
 			End Get
 			Set(ByVal Value As MalePerson)
-				(CType(Me, Person)).MalePerson = Value
+				Me.Person.MalePerson = Value
 			End Set
 		End Property
 		Public Custom Event MalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).MalePersonChanging, Value
+				AddHandler Me.Person.MalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).MalePersonChanging, Value
+				RemoveHandler Me.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event MalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).MalePersonChanged, Value
+				AddHandler Me.Person.MalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).MalePersonChanged, Value
+				RemoveHandler Me.Person.MalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FemalePerson() As FemalePerson
 			Get
-				Return (CType(Me, Person)).FemalePerson
+				Return Me.Person.FemalePerson
 			End Get
 			Set(ByVal Value As FemalePerson)
-				(CType(Me, Person)).FemalePerson = Value
+				Me.Person.FemalePerson = Value
 			End Set
 		End Property
 		Public Custom Event FemalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FemalePersonChanging, Value
+				AddHandler Me.Person.FemalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FemalePersonChanging, Value
+				RemoveHandler Me.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FemalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).FemalePersonChanged, Value
+				AddHandler Me.Person.FemalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).FemalePersonChanged, Value
+				RemoveHandler Me.Person.FemalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ChildPerson() As ChildPerson
 			Get
-				Return (CType(Me, Person)).ChildPerson
+				Return Me.Person.ChildPerson
 			End Get
 			Set(ByVal Value As ChildPerson)
-				(CType(Me, Person)).ChildPerson = Value
+				Me.Person.ChildPerson = Value
 			End Set
 		End Property
 		Public Custom Event ChildPersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ChildPersonChanging, Value
+				AddHandler Me.Person.ChildPersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ChildPersonChanging, Value
+				RemoveHandler Me.Person.ChildPersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ChildPersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Person)).ChildPersonChanged, Value
+				AddHandler Me.Person.ChildPersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Person)).ChildPersonChanged, Value
+				RemoveHandler Me.Person.ChildPersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
 			Get
-				Return (CType(Me, Person)).PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCarAsDrivenByPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(Me, Person)).PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 			Get
-				Return (CType(Me, Person)).PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickNameAsPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
 			Get
-				Return (CType(Me, Person)).Task
+				Return Me.Person.Task
 			End Get
 		End Property
 		Public Overridable ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
 			Get
-				Return (CType(Me, Person)).ValueType1DoesSomethingWith
+				Return Me.Person.ValueType1DoesSomethingWith
 			End Get
 		End Property
-		Public Shared Narrowing CType(ByVal Death As Death) As NaturalDeath
+		Public Shared Narrowing Operator CType(ByVal Death As Death) As NaturalDeath
 			If Death Is Nothing Then
 				Return Nothing
 			ElseIf Death.NaturalDeath Is Nothing Then
@@ -3827,7 +3827,7 @@ Namespace SampleModel
 				Return Death.NaturalDeath
 			End If
 		End Operator
-		Public Shared Narrowing CType(ByVal Death As Death) As UnnaturalDeath
+		Public Shared Narrowing Operator CType(ByVal Death As Death) As UnnaturalDeath
 			If Death Is Nothing Then
 				Return Nothing
 			ElseIf Death.UnnaturalDeath Is Nothing Then
@@ -3844,15 +3844,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(3) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(3) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -3864,10 +3864,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event NaturalDeathIsFromProstateCancerChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3882,10 +3882,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event NaturalDeathIsFromProstateCancerChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3898,10 +3898,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event DeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3916,10 +3916,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -3932,20 +3932,20 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride Property NaturalDeathIsFromProstateCancer() As Nullable(Of Boolean)
 		Public MustOverride Property Death() As Death
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "NaturalDeath{0}{{{0}{1}NaturalDeathIsFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "", Me.NaturalDeathIsFromProstateCancer, "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Widening CType(ByVal NaturalDeath As NaturalDeath) As Death
+		Public Shared Widening Operator CType(ByVal NaturalDeath As NaturalDeath) As Death
 			If NaturalDeath Is Nothing Then
 				Return Nothing
 			Else
 				Return NaturalDeath.Death
 			End If
 		End Operator
-		Public Shared Widening CType(ByVal NaturalDeath As NaturalDeath) As Person
+		Public Shared Widening Operator CType(ByVal NaturalDeath As NaturalDeath) As Person
 			If NaturalDeath Is Nothing Then
 				Return Nothing
 			Else
@@ -3954,416 +3954,416 @@ Namespace SampleModel
 		End Operator
 		Public Overridable Property Date_YMD() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Death)).Date_YMD
+				Return Me.Death.Date_YMD
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Death)).Date_YMD = Value
+				Me.Death.Date_YMD = Value
 			End Set
 		End Property
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).Date_YMDChanging, Value
+				AddHandler Me.Death.Date_YMDChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).Date_YMDChanging, Value
+				RemoveHandler Me.Death.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).Date_YMDChanged, Value
+				AddHandler Me.Death.Date_YMDChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).Date_YMDChanged, Value
+				RemoveHandler Me.Death.Date_YMDChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property DeathCause_DeathCause_Type() As String
 			Get
-				Return (CType(Me, Death)).DeathCause_DeathCause_Type
+				Return Me.Death.DeathCause_DeathCause_Type
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Death)).DeathCause_DeathCause_Type = Value
+				Me.Death.DeathCause_DeathCause_Type = Value
 			End Set
 		End Property
 		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanging, Value
+				AddHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanging, Value
+				RemoveHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanged, Value
+				AddHandler Me.Death.DeathCause_DeathCause_TypeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanged, Value
+				RemoveHandler Me.Death.DeathCause_DeathCause_TypeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property UnnaturalDeath() As UnnaturalDeath
 			Get
-				Return (CType(Me, Death)).UnnaturalDeath
+				Return Me.Death.UnnaturalDeath
 			End Get
 			Set(ByVal Value As UnnaturalDeath)
-				(CType(Me, Death)).UnnaturalDeath = Value
+				Me.Death.UnnaturalDeath = Value
 			End Set
 		End Property
 		Public Custom Event UnnaturalDeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).UnnaturalDeathChanging, Value
+				AddHandler Me.Death.UnnaturalDeathChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).UnnaturalDeathChanging, Value
+				RemoveHandler Me.Death.UnnaturalDeathChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event UnnaturalDeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).UnnaturalDeathChanged, Value
+				AddHandler Me.Death.UnnaturalDeathChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).UnnaturalDeathChanged, Value
+				RemoveHandler Me.Death.UnnaturalDeathChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Person() As Person
 			Get
-				Return (CType(Me, Death)).Person
+				Return Me.Death.Person
 			End Get
 			Set(ByVal Value As Person)
-				(CType(Me, Death)).Person = Value
+				Me.Death.Person = Value
 			End Set
 		End Property
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).PersonChanging, Value
+				AddHandler Me.Death.PersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).PersonChanging, Value
+				RemoveHandler Me.Death.PersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).PersonChanged, Value
+				AddHandler Me.Death.PersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).PersonChanged, Value
+				RemoveHandler Me.Death.PersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FirstName() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).FirstName
+				Return Me.Death.Person.FirstName
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).FirstName = Value
+				Me.Death.Person.FirstName = Value
 			End Set
 		End Property
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FirstNameChanging, Value
+				AddHandler Me.Death.Person.FirstNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FirstNameChanging, Value
+				RemoveHandler Me.Death.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FirstNameChanged, Value
+				AddHandler Me.Death.Person.FirstNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FirstNameChanged, Value
+				RemoveHandler Me.Death.Person.FirstNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property LastName() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).LastName
+				Return Me.Death.Person.LastName
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).LastName = Value
+				Me.Death.Person.LastName = Value
 			End Set
 		End Property
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).LastNameChanging, Value
+				AddHandler Me.Death.Person.LastNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).LastNameChanging, Value
+				RemoveHandler Me.Death.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).LastNameChanged, Value
+				AddHandler Me.Death.Person.LastNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).LastNameChanged, Value
+				RemoveHandler Me.Death.Person.LastNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property SocialSecurityNumber() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).SocialSecurityNumber
+				Return Me.Death.Person.SocialSecurityNumber
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).SocialSecurityNumber = Value
+				Me.Death.Person.SocialSecurityNumber = Value
 			End Set
 		End Property
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanging, Value
+				AddHandler Me.Death.Person.SocialSecurityNumberChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanging, Value
+				RemoveHandler Me.Death.Person.SocialSecurityNumberChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanged, Value
+				AddHandler Me.Death.Person.SocialSecurityNumberChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanged, Value
+				RemoveHandler Me.Death.Person.SocialSecurityNumberChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_ColorARGB() As Nullable(Of Integer)
 			Get
-				Return (CType(CType(Me, Death), Person)).HatType_ColorARGB
+				Return Me.Death.Person.HatType_ColorARGB
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(CType(Me, Death), Person)).HatType_ColorARGB = Value
+				Me.Death.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanging, Value
+				AddHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanging, Value
+				RemoveHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanged, Value
+				AddHandler Me.Death.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanged, Value
+				RemoveHandler Me.Death.Person.HatType_ColorARGBChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_HatTypeStyle_HatTypeStyle_Description() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_Description
+				Return Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_Description = Value
+				Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				RemoveHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				RemoveHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OwnsCar_vin() As Nullable(Of Integer)
 			Get
-				Return (CType(CType(Me, Death), Person)).OwnsCar_vin
+				Return Me.Death.Person.OwnsCar_vin
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(CType(Me, Death), Person)).OwnsCar_vin = Value
+				Me.Death.Person.OwnsCar_vin = Value
 			End Set
 		End Property
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanging, Value
+				AddHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanging, Value
+				RemoveHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanged, Value
+				AddHandler Me.Death.Person.OwnsCar_vinChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanged, Value
+				RemoveHandler Me.Death.Person.OwnsCar_vinChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Gender_Gender_Code() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).Gender_Gender_Code
+				Return Me.Death.Person.Gender_Gender_Code
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).Gender_Gender_Code = Value
+				Me.Death.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanging, Value
+				AddHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanging, Value
+				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanged, Value
+				AddHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanged, Value
+				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonHasParents
+				Return Me.Death.Person.PersonHasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				(CType(CType(Me, Death), Person)).PersonHasParents = Value
+				Me.Death.Person.PersonHasParents = Value
 			End Set
 		End Property
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanging, Value
+				AddHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanging, Value
+				RemoveHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanged, Value
+				AddHandler Me.Death.Person.PersonHasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanged, Value
+				RemoveHandler Me.Death.Person.PersonHasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ValueType1DoesSomethingElseWith() As ValueType1
 			Get
-				Return (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWith
+				Return Me.Death.Person.ValueType1DoesSomethingElseWith
 			End Get
 			Set(ByVal Value As ValueType1)
-				(CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWith = Value
+				Me.Death.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanging, Value
+				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanging, Value
+				RemoveHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanged, Value
+				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanged, Value
+				RemoveHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property MalePerson() As MalePerson
 			Get
-				Return (CType(CType(Me, Death), Person)).MalePerson
+				Return Me.Death.Person.MalePerson
 			End Get
 			Set(ByVal Value As MalePerson)
-				(CType(CType(Me, Death), Person)).MalePerson = Value
+				Me.Death.Person.MalePerson = Value
 			End Set
 		End Property
 		Public Custom Event MalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).MalePersonChanging, Value
+				AddHandler Me.Death.Person.MalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).MalePersonChanging, Value
+				RemoveHandler Me.Death.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event MalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).MalePersonChanged, Value
+				AddHandler Me.Death.Person.MalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).MalePersonChanged, Value
+				RemoveHandler Me.Death.Person.MalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FemalePerson() As FemalePerson
 			Get
-				Return (CType(CType(Me, Death), Person)).FemalePerson
+				Return Me.Death.Person.FemalePerson
 			End Get
 			Set(ByVal Value As FemalePerson)
-				(CType(CType(Me, Death), Person)).FemalePerson = Value
+				Me.Death.Person.FemalePerson = Value
 			End Set
 		End Property
 		Public Custom Event FemalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FemalePersonChanging, Value
+				AddHandler Me.Death.Person.FemalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FemalePersonChanging, Value
+				RemoveHandler Me.Death.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FemalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FemalePersonChanged, Value
+				AddHandler Me.Death.Person.FemalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FemalePersonChanged, Value
+				RemoveHandler Me.Death.Person.FemalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ChildPerson() As ChildPerson
 			Get
-				Return (CType(CType(Me, Death), Person)).ChildPerson
+				Return Me.Death.Person.ChildPerson
 			End Get
 			Set(ByVal Value As ChildPerson)
-				(CType(CType(Me, Death), Person)).ChildPerson = Value
+				Me.Death.Person.ChildPerson = Value
 			End Set
 		End Property
 		Public Custom Event ChildPersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ChildPersonChanging, Value
+				AddHandler Me.Death.Person.ChildPersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ChildPersonChanging, Value
+				RemoveHandler Me.Death.Person.ChildPersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ChildPersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ChildPersonChanged, Value
+				AddHandler Me.Death.Person.ChildPersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ChildPersonChanged, Value
+				RemoveHandler Me.Death.Person.ChildPersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonDrivesCarAsDrivenByPerson
+				Return Me.Death.Person.PersonDrivesCarAsDrivenByPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonHasNickNameAsPerson
+				Return Me.Death.Person.PersonHasNickNameAsPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
 			Get
-				Return (CType(CType(Me, Death), Person)).Task
+				Return Me.Death.Person.Task
 			End Get
 		End Property
 		Public Overridable ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
 			Get
-				Return (CType(CType(Me, Death), Person)).ValueType1DoesSomethingWith
+				Return Me.Death.Person.ValueType1DoesSomethingWith
 			End Get
 		End Property
 	End Class
@@ -4374,15 +4374,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(4) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(4) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -4394,10 +4394,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event UnnaturalDeathIsViolentChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4412,10 +4412,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event UnnaturalDeathIsViolentChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4428,10 +4428,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event UnnaturalDeathIsBloodyChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4446,10 +4446,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event UnnaturalDeathIsBloodyChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4462,10 +4462,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event DeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4480,10 +4480,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Combine(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(3) = Delegate.Remove(Me.Events(3), Value)
+				Me.Events(3) = System.Delegate.Remove(Me.Events(3), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4497,20 +4497,20 @@ Namespace SampleModel
 		Public MustOverride Property UnnaturalDeathIsViolent() As Nullable(Of Boolean)
 		Public MustOverride Property UnnaturalDeathIsBloody() As Nullable(Of Boolean)
 		Public MustOverride Property Death() As Death
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "UnnaturalDeath{0}{{{0}{1}UnnaturalDeathIsViolent = ""{2}"",{0}{1}UnnaturalDeathIsBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "", Me.UnnaturalDeathIsViolent, Me.UnnaturalDeathIsBloody, "TODO: Recursively call ToString for customTypes...")
 		End Function
-		Public Shared Widening CType(ByVal UnnaturalDeath As UnnaturalDeath) As Death
+		Public Shared Widening Operator CType(ByVal UnnaturalDeath As UnnaturalDeath) As Death
 			If UnnaturalDeath Is Nothing Then
 				Return Nothing
 			Else
 				Return UnnaturalDeath.Death
 			End If
 		End Operator
-		Public Shared Widening CType(ByVal UnnaturalDeath As UnnaturalDeath) As Person
+		Public Shared Widening Operator CType(ByVal UnnaturalDeath As UnnaturalDeath) As Person
 			If UnnaturalDeath Is Nothing Then
 				Return Nothing
 			Else
@@ -4519,416 +4519,416 @@ Namespace SampleModel
 		End Operator
 		Public Overridable Property Date_YMD() As Nullable(Of Integer)
 			Get
-				Return (CType(Me, Death)).Date_YMD
+				Return Me.Death.Date_YMD
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(Me, Death)).Date_YMD = Value
+				Me.Death.Date_YMD = Value
 			End Set
 		End Property
 		Public Custom Event Date_YMDChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).Date_YMDChanging, Value
+				AddHandler Me.Death.Date_YMDChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).Date_YMDChanging, Value
+				RemoveHandler Me.Death.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Date_YMDChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).Date_YMDChanged, Value
+				AddHandler Me.Death.Date_YMDChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).Date_YMDChanged, Value
+				RemoveHandler Me.Death.Date_YMDChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property DeathCause_DeathCause_Type() As String
 			Get
-				Return (CType(Me, Death)).DeathCause_DeathCause_Type
+				Return Me.Death.DeathCause_DeathCause_Type
 			End Get
 			Set(ByVal Value As String)
-				(CType(Me, Death)).DeathCause_DeathCause_Type = Value
+				Me.Death.DeathCause_DeathCause_Type = Value
 			End Set
 		End Property
 		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanging, Value
+				AddHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanging, Value
+				RemoveHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanged, Value
+				AddHandler Me.Death.DeathCause_DeathCause_TypeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).DeathCause_DeathCause_TypeChanged, Value
+				RemoveHandler Me.Death.DeathCause_DeathCause_TypeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property NaturalDeath() As NaturalDeath
 			Get
-				Return (CType(Me, Death)).NaturalDeath
+				Return Me.Death.NaturalDeath
 			End Get
 			Set(ByVal Value As NaturalDeath)
-				(CType(Me, Death)).NaturalDeath = Value
+				Me.Death.NaturalDeath = Value
 			End Set
 		End Property
 		Public Custom Event NaturalDeathChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).NaturalDeathChanging, Value
+				AddHandler Me.Death.NaturalDeathChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).NaturalDeathChanging, Value
+				RemoveHandler Me.Death.NaturalDeathChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event NaturalDeathChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).NaturalDeathChanged, Value
+				AddHandler Me.Death.NaturalDeathChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).NaturalDeathChanged, Value
+				RemoveHandler Me.Death.NaturalDeathChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Person() As Person
 			Get
-				Return (CType(Me, Death)).Person
+				Return Me.Death.Person
 			End Get
 			Set(ByVal Value As Person)
-				(CType(Me, Death)).Person = Value
+				Me.Death.Person = Value
 			End Set
 		End Property
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).PersonChanging, Value
+				AddHandler Me.Death.PersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).PersonChanging, Value
+				RemoveHandler Me.Death.PersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(Me, Death)).PersonChanged, Value
+				AddHandler Me.Death.PersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(Me, Death)).PersonChanged, Value
+				RemoveHandler Me.Death.PersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FirstName() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).FirstName
+				Return Me.Death.Person.FirstName
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).FirstName = Value
+				Me.Death.Person.FirstName = Value
 			End Set
 		End Property
 		Public Custom Event FirstNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FirstNameChanging, Value
+				AddHandler Me.Death.Person.FirstNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FirstNameChanging, Value
+				RemoveHandler Me.Death.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FirstNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FirstNameChanged, Value
+				AddHandler Me.Death.Person.FirstNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FirstNameChanged, Value
+				RemoveHandler Me.Death.Person.FirstNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property LastName() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).LastName
+				Return Me.Death.Person.LastName
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).LastName = Value
+				Me.Death.Person.LastName = Value
 			End Set
 		End Property
 		Public Custom Event LastNameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).LastNameChanging, Value
+				AddHandler Me.Death.Person.LastNameChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).LastNameChanging, Value
+				RemoveHandler Me.Death.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event LastNameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).LastNameChanged, Value
+				AddHandler Me.Death.Person.LastNameChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).LastNameChanged, Value
+				RemoveHandler Me.Death.Person.LastNameChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property SocialSecurityNumber() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).SocialSecurityNumber
+				Return Me.Death.Person.SocialSecurityNumber
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).SocialSecurityNumber = Value
+				Me.Death.Person.SocialSecurityNumber = Value
 			End Set
 		End Property
 		Public Custom Event SocialSecurityNumberChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanging, Value
+				AddHandler Me.Death.Person.SocialSecurityNumberChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanging, Value
+				RemoveHandler Me.Death.Person.SocialSecurityNumberChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event SocialSecurityNumberChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanged, Value
+				AddHandler Me.Death.Person.SocialSecurityNumberChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).SocialSecurityNumberChanged, Value
+				RemoveHandler Me.Death.Person.SocialSecurityNumberChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_ColorARGB() As Nullable(Of Integer)
 			Get
-				Return (CType(CType(Me, Death), Person)).HatType_ColorARGB
+				Return Me.Death.Person.HatType_ColorARGB
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(CType(Me, Death), Person)).HatType_ColorARGB = Value
+				Me.Death.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
 		Public Custom Event HatType_ColorARGBChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanging, Value
+				AddHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanging, Value
+				RemoveHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_ColorARGBChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanged, Value
+				AddHandler Me.Death.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_ColorARGBChanged, Value
+				RemoveHandler Me.Death.Person.HatType_ColorARGBChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property HatType_HatTypeStyle_HatTypeStyle_Description() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_Description
+				Return Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_Description = Value
+				Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
+				RemoveHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
+				RemoveHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OwnsCar_vin() As Nullable(Of Integer)
 			Get
-				Return (CType(CType(Me, Death), Person)).OwnsCar_vin
+				Return Me.Death.Person.OwnsCar_vin
 			End Get
 			Set(ByVal Value As Nullable(Of Integer))
-				(CType(CType(Me, Death), Person)).OwnsCar_vin = Value
+				Me.Death.Person.OwnsCar_vin = Value
 			End Set
 		End Property
 		Public Custom Event OwnsCar_vinChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanging, Value
+				AddHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanging, Value
+				RemoveHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event OwnsCar_vinChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanged, Value
+				AddHandler Me.Death.Person.OwnsCar_vinChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).OwnsCar_vinChanged, Value
+				RemoveHandler Me.Death.Person.OwnsCar_vinChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property Gender_Gender_Code() As String
 			Get
-				Return (CType(CType(Me, Death), Person)).Gender_Gender_Code
+				Return Me.Death.Person.Gender_Gender_Code
 			End Get
 			Set(ByVal Value As String)
-				(CType(CType(Me, Death), Person)).Gender_Gender_Code = Value
+				Me.Death.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
 		Public Custom Event Gender_Gender_CodeChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanging, Value
+				AddHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanging, Value
+				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event Gender_Gender_CodeChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanged, Value
+				AddHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).Gender_Gender_CodeChanged, Value
+				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonHasParents
+				Return Me.Death.Person.PersonHasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				(CType(CType(Me, Death), Person)).PersonHasParents = Value
+				Me.Death.Person.PersonHasParents = Value
 			End Set
 		End Property
 		Public Custom Event PersonHasParentsChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanging, Value
+				AddHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanging, Value
+				RemoveHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event PersonHasParentsChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanged, Value
+				AddHandler Me.Death.Person.PersonHasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).PersonHasParentsChanged, Value
+				RemoveHandler Me.Death.Person.PersonHasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ValueType1DoesSomethingElseWith() As ValueType1
 			Get
-				Return (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWith
+				Return Me.Death.Person.ValueType1DoesSomethingElseWith
 			End Get
 			Set(ByVal Value As ValueType1)
-				(CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWith = Value
+				Me.Death.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
 		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanging, Value
+				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanging, Value
+				RemoveHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanged, Value
+				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ValueType1DoesSomethingElseWithChanged, Value
+				RemoveHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property MalePerson() As MalePerson
 			Get
-				Return (CType(CType(Me, Death), Person)).MalePerson
+				Return Me.Death.Person.MalePerson
 			End Get
 			Set(ByVal Value As MalePerson)
-				(CType(CType(Me, Death), Person)).MalePerson = Value
+				Me.Death.Person.MalePerson = Value
 			End Set
 		End Property
 		Public Custom Event MalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).MalePersonChanging, Value
+				AddHandler Me.Death.Person.MalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).MalePersonChanging, Value
+				RemoveHandler Me.Death.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event MalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).MalePersonChanged, Value
+				AddHandler Me.Death.Person.MalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).MalePersonChanged, Value
+				RemoveHandler Me.Death.Person.MalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property FemalePerson() As FemalePerson
 			Get
-				Return (CType(CType(Me, Death), Person)).FemalePerson
+				Return Me.Death.Person.FemalePerson
 			End Get
 			Set(ByVal Value As FemalePerson)
-				(CType(CType(Me, Death), Person)).FemalePerson = Value
+				Me.Death.Person.FemalePerson = Value
 			End Set
 		End Property
 		Public Custom Event FemalePersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FemalePersonChanging, Value
+				AddHandler Me.Death.Person.FemalePersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FemalePersonChanging, Value
+				RemoveHandler Me.Death.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event FemalePersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).FemalePersonChanged, Value
+				AddHandler Me.Death.Person.FemalePersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).FemalePersonChanged, Value
+				RemoveHandler Me.Death.Person.FemalePersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property ChildPerson() As ChildPerson
 			Get
-				Return (CType(CType(Me, Death), Person)).ChildPerson
+				Return Me.Death.Person.ChildPerson
 			End Get
 			Set(ByVal Value As ChildPerson)
-				(CType(CType(Me, Death), Person)).ChildPerson = Value
+				Me.Death.Person.ChildPerson = Value
 			End Set
 		End Property
 		Public Custom Event ChildPersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ChildPersonChanging, Value
+				AddHandler Me.Death.Person.ChildPersonChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ChildPersonChanging, Value
+				RemoveHandler Me.Death.Person.ChildPersonChanging, Value
 			End RemoveHandler
 		End Event
 		Public Custom Event ChildPersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler (CType(CType(Me, Death), Person)).ChildPersonChanged, Value
+				AddHandler Me.Death.Person.ChildPersonChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler (CType(CType(Me, Death), Person)).ChildPersonChanged, Value
+				RemoveHandler Me.Death.Person.ChildPersonChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonDrivesCarAsDrivenByPerson
+				Return Me.Death.Person.PersonDrivesCarAsDrivenByPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller
 			End Get
 		End Property
 		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
 			Get
-				Return (CType(CType(Me, Death), Person)).PersonHasNickNameAsPerson
+				Return Me.Death.Person.PersonHasNickNameAsPerson
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
 			Get
-				Return (CType(CType(Me, Death), Person)).Task
+				Return Me.Death.Person.Task
 			End Get
 		End Property
 		Public Overridable ReadOnly Property ValueType1DoesSomethingWith() As ICollection(Of ValueType1)
 			Get
-				Return (CType(CType(Me, Death), Person)).ValueType1DoesSomethingWith
+				Return Me.Death.Person.ValueType1DoesSomethingWith
 			End Get
 		End Property
 	End Class
@@ -4939,15 +4939,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(2) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(2) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -4959,10 +4959,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event PersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4977,10 +4977,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event PersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -4992,10 +4992,10 @@ Namespace SampleModel
 			End If
 		End Sub
 		Public MustOverride Property Person() As Person
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "Task{0}{{{0}{1}Person = {2}{0}}}", Environment.NewLine, "", "TODO: Recursively call ToString for customTypes...")
 		End Function
 	End Class
@@ -5006,15 +5006,15 @@ Namespace SampleModel
 		Implements INotifyPropertyChanged
 		Protected Sub New()
 		End Sub
-		Private ReadOnly Events As Delegate() = New Delegate(3) {}
+		Private ReadOnly Events As System.Delegate() = New System.Delegate(3) {}
 		<SuppressMessageAttribute("Microsoft.Design", "CA1033")> _
 		Private Custom Event PropertyChanged As PropertyChangedEventHandler Implements _
 			INotifyPropertyChanged.PropertyChanged
 			AddHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Combine(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As PropertyChangedEventHandler)
-				Me.Events(0) = Delegate.Remove(Me.Events(0), Value)
+				Me.Events(0) = System.Delegate.Remove(Me.Events(0), Value)
 			End RemoveHandler
 		End Event
 		Private Sub RaisePropertyChangedEvent(ByVal propertyName As String)
@@ -5026,10 +5026,10 @@ Namespace SampleModel
 		Public MustOverride ReadOnly Property Context() As SampleModelContext
 		Public Custom Event ValueType1ValueChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -5044,10 +5044,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event ValueType1ValueChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Combine(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(1) = Delegate.Remove(Me.Events(1), Value)
+				Me.Events(1) = System.Delegate.Remove(Me.Events(1), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -5060,10 +5060,10 @@ Namespace SampleModel
 		End Sub
 		Public Custom Event DoesSomethingWithPersonChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -5078,10 +5078,10 @@ Namespace SampleModel
 		End Function
 		Public Custom Event DoesSomethingWithPersonChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Combine(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				Me.Events(2) = Delegate.Remove(Me.Events(2), Value)
+				Me.Events(2) = System.Delegate.Remove(Me.Events(2), Value)
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
@@ -5095,10 +5095,10 @@ Namespace SampleModel
 		Public MustOverride Property ValueType1Value() As Integer
 		Public MustOverride Property DoesSomethingWithPerson() As Person
 		Public MustOverride ReadOnly Property DoesSomethingElseWithPerson() As ICollection(Of Person)
-		Public Overloads Overrides NotOverridable Function ToString() As String
+		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
-		Public Overloads Function ToString(ByVal provider As IFormatProvider) As String
+		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
 			Return String.Format(provider, "ValueType1{0}{{{0}{1}ValueType1Value = ""{2}"",{0}{1}DoesSomethingWithPerson = {3}{0}}}", Environment.NewLine, "", Me.ValueType1Value, "TODO: Recursively call ToString for customTypes...")
 		End Function
 	End Class
