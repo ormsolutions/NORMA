@@ -269,6 +269,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Rule to update error text on owner name change
+		#region Has Errors Static Function
+		/// <summary>
+		/// Checks to see if the Model Element contains errors
+		/// </summary>
+		public static bool HasErrors(ModelElement modelElement)
+		{
+			bool hasError = false;
+			IModelErrorOwner errorOwner = modelElement as IModelErrorOwner;
+			if (errorOwner != null)
+			{
+				using (IEnumerator<ModelError> enumerator = errorOwner.ErrorCollection.GetEnumerator())
+				{
+					hasError = enumerator.MoveNext();
+				}
+			}
+			return hasError;
+		}
+		#endregion //Has Errors Static Function
 	}
 	#endregion // ModelError class
 } 

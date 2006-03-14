@@ -66,6 +66,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">StyleSet</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			base.InitializeResources(classStyleSet);
 			PenSettings penSettings = new PenSettings();
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			Color constraintColor = colorService.GetForeColor(ORMDesignerColor.Constraint);
@@ -75,7 +76,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = constraintColor;
 			classStyleSet.AddBrush(ExternalConstraintBrush, DiagramBrushes.ShapeBackground, brushSettings);
-
 			penSettings.Color = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ShapeOutline, penSettings);
 		}

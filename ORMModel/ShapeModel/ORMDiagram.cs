@@ -645,6 +645,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The brush used to draw a link as active. Generally corresponds to the role picker color.
 		/// </summary>
 		public static readonly StyleSetResourceId ActiveBackgroundResource = new StyleSetResourceId("Neumont", "ActiveBackgroundResource");
+		/// <summary>
+		/// The brush used to draw the background for an item with errors.
+		/// </summary>
+		public static readonly StyleSetResourceId ErrorBackgroundResource = new StyleSetResourceId("Neumont", "ErrorBackgroundResource");
+		/// <summary>
+		/// The brush used to draw the background for an item with errors when the shape is highlighted.
+		/// </summary>
+		public static readonly StyleSetResourceId HighlightedErrorBackgroundResource = new StyleSetResourceId("Neumont", "HighlightedErrorBackgroundResource");
 
 		/// <summary>
 		/// Standard override to populate the style set for the shape type

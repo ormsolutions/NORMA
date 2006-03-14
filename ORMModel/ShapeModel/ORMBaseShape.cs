@@ -21,6 +21,7 @@ using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMBaseShape
@@ -103,6 +104,57 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override bool HasShadow
 		{
 			get { return false; }
+		}
+		/// <summary>
+		/// Add error brushes to the styleSet
+		/// </summary>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			base.InitializeResources(classStyleSet);
+
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
+			BrushSettings brushSettings = new BrushSettings();
+			//UNDONE: This color isn't permanent. probably want a better color for the errors.
+			brushSettings.ForeColor = Color.FromArgb(60, colorService.GetForeColor(ORMDesignerColor.ConstraintError));
+			brushSettings.HatchStyle = HatchStyle.LightDownwardDiagonal;
+			brushSettings.BrushType = typeof(HatchBrush);
+			classStyleSet.AddBrush(ORMDiagram.ErrorBackgroundResource, DiagramBrushes.DiagramBackground, brushSettings);
+			brushSettings.ForeColor = ORMDiagram.ModifyLuminosity(brushSettings.ForeColor);
+			brushSettings.BackColor = ORMDiagram.ModifyLuminosity(((SolidBrush)classStyleSet.GetBrush(DiagramBrushes.DiagramBackground)).Color);
+			classStyleSet.AddBrush(ORMDiagram.HighlightedErrorBackgroundResource, DiagramBrushes.DiagramBackground, brushSettings);
+		}
+		/// <summary>
+		/// Use a different background brush if we have errors
+		/// </summary>
+		public override StyleSetResourceId BackgroundBrushId
+		{
+			get
+			{
+				if (ModelError.HasErrors(ModelElement))
+				{
+					ORMDiagram diagram;
+					DiagramView view;
+					DiagramClientView clientView;
+					HighlightedShapesCollection highlightedShapes;
+					if (null != (diagram = Diagram as ORMDiagram) &&
+						null != (view = diagram.ActiveDiagramView) &&
+						null != (clientView = view.DiagramClientView) &&
+						null != (highlightedShapes = clientView.HighlightedShapes) &&
+						highlightedShapes.Count != 0 &&
+						highlightedShapes.Contains(new DiagramItem(this)))
+					{
+						return ORMDiagram.HighlightedErrorBackgroundResource;
+					}
+					else
+					{
+						return ORMDiagram.ErrorBackgroundResource;
+					}
+				}
+				else
+				{
+					return DiagramBrushes.DiagramBackground;
+				}
+			}
 		}
 		/// <summary>
 		/// Size the object appropriately
