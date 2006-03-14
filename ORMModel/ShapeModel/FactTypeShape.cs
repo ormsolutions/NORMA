@@ -2544,12 +2544,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 					contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
 					contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
 				}
-				Size = contentSize;
-				UpdateRolesPosition();
+				if (!UpdateRolesPosition(contentSize))
+				{
+					Size = contentSize;
+				}
 			}
 		}
-		private void UpdateRolesPosition()
+		/// <summary>
+		/// Update the cached center position of the role box
+		/// </summary>
+		/// <param name="newSize">The new size of the fact, or SizeD.Empty. Allows a move/size with
+		/// a single action, resulting in a single transaction log entry for AbsoluteBounds attribute</param>
+		/// <returns>true if the bounds were changed</returns>
+		private bool UpdateRolesPosition(SizeD newSize)
 		{
+			bool retVal = false;
 			double oldRolesPosition = RolesPosition;
 			double newRolesPosition = myRolesShapeField.GetBounds(this).Center.Y;
 			if (!VGConstants.FuzzEqual(oldRolesPosition, newRolesPosition, VGConstants.FuzzDistance))
@@ -2559,9 +2568,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					PointD newLocation = Location;
 					newLocation.Offset(0, oldRolesPosition - newRolesPosition);
-					Location = newLocation;
+					if (newSize.IsEmpty)
+					{
+						Location = newLocation;
+					}
+					else
+					{
+						AbsoluteBounds = new RectangleD(newLocation, newSize);
+					}
+					retVal = true;
 				}
 			}
+			return retVal;
 		}
 		/// <summary>
 		/// Called during a transaction when a new constraint
@@ -4200,7 +4218,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											}
 											if (!resized)
 											{
-												factShape.UpdateRolesPosition();
+												factShape.UpdateRolesPosition(SizeD.Empty);
 											}
 										}
 									}
