@@ -18,12 +18,12 @@ using System.Collections.Generic;
 // \**************************************************************************/
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region VerbalizationTextSnippetType enum
+	#region CoreVerbalizationTextSnippetType enum
 	/// <summary>
 	/// An enum with one value for each recognized snippet
 	/// </summary>
 	[CLSCompliant(true)]
-	public enum VerbalizationTextSnippetType
+	public enum CoreVerbalizationTextSnippetType
 	{
 		/// <summary>
 		/// The 'AtMostOneQuantifier' format string snippet. Contains 1 replacement field.
@@ -402,7 +402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		VerbalizerDocumentFooter,
 		/// <summary>
-		/// The 'VerbalizerDocumentHeader' format string snippet. Contains 12 replacement fields.
+		/// The 'VerbalizerDocumentHeader' format string snippet. Contains 16 replacement fields.
 		/// </summary>
 		VerbalizerDocumentHeader,
 		/// <summary>
@@ -430,72 +430,144 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		VerbalizerOpenVerbalization,
 	}
-	#endregion // VerbalizationTextSnippetType enum
-	#region VerbalizationSet structure
+	#endregion // CoreVerbalizationTextSnippetType enum
+	#region IVerbalizationSets interface
 	/// <summary>
-	/// A structure holding an array of strings. Strings are retrieved with values from VerbalizationTextSnippetType.
+	/// A base class for the generic VerbalizationSets class.
 	/// </summary>
-	public struct VerbalizationSet
+	public interface IVerbalizationSets
 	{
-		private string[] mySnippets;
-		/// <summary>
-		/// VerbalizationSet constructor.
-		/// </summary>
-		/// <param name="snippets">
-		/// An array of strings with one string for each value in the VerbalizationTextSnippetType enum.
-		/// </param>
-		public VerbalizationSet(string[] snippets)
-		{
-			this.mySnippets = snippets;
-		}
-		/// <summary>
-		/// Retrieve a snippet value
-		/// </summary>
-		/// <param name="snippetType">
-		/// A value from the VerbalizationTextSnippetType enum representing the snippet string to retrieve.
-		/// </param>
-		/// <returns>
-		/// Snippet string
-		/// </returns>
-		public string GetSnippet(VerbalizationTextSnippetType snippetType)
-		{
-			return this.mySnippets[(int)snippetType];
-		}
 	}
-	#endregion // VerbalizationSet structure
-	#region VerbalizationSets class
+	#endregion // IVerbalizationSets interface
+	#region Generic VerbalizationSets class
 	/// <summary>
-	/// A class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.
+	/// A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.
 	/// </summary>
-	[CLSCompliant(true)]
-	public class VerbalizationSets
+	/// <typeparam name="EnumType">
+	/// The enumeration type of snippet set
+	/// </typeparam>
+	public abstract class VerbalizationSets<EnumType> : IVerbalizationSets
+		where EnumType : struct
 	{
+		#region VerbalizationSet class
 		/// <summary>
-		/// The default verbalization snippet set. Contains english HTML snippets.
+		/// An abstract class holding an array of strings. Strings are retrieved with values from CoreVerbalizationTextSnippetType.
 		/// </summary>
-		public static readonly VerbalizationSets Default = VerbalizationSets.CreateDefaultVerbalizationSets();
-		private VerbalizationSet[] mySets;
-		private VerbalizationSets()
+		protected abstract class VerbalizationSet
 		{
+			/// <summary>
+			/// Retrieve a snippet value
+			/// </summary>
+			/// <param name="snippetType">
+			/// A value from the CoreVerbalizationTextSnippetType enum representing the snippet string to retrieve.
+			/// </param>
+			/// <param name="owner">
+			/// The VerbalizationSets object that is the owner of the snippet sets.
+			/// </param>
+			/// <returns>
+			/// Snippet string
+			/// </returns>
+			public abstract string GetSnippet(EnumType snippetType, VerbalizationSets<EnumType> owner);
 		}
+		#endregion // VerbalizationSet class
+		#region ArrayVerbalizationSet class
+		/// <summary>
+		/// A class holding an array of strings. Strings are retrieved with values from CoreVerbalizationTextSnippetType.
+		/// </summary>
+		protected class ArrayVerbalizationSet : VerbalizationSet
+		{
+			private string[] mySnippets;
+			/// <summary>
+			/// VerbalizationSet constructor.
+			/// </summary>
+			/// <param name="snippets">
+			/// An array of strings with one string for each value in the CoreVerbalizationTextSnippetType enum.
+			/// </param>
+			public ArrayVerbalizationSet(string[] snippets)
+			{
+				this.mySnippets = snippets;
+			}
+			/// <summary>
+			/// Retrieve a snippet value
+			/// </summary>
+			/// <param name="snippetType">
+			/// A value from the CoreVerbalizationTextSnippetType enum representing the snippet string to retrieve.
+			/// </param>
+			/// <param name="owner">
+			/// The VerbalizationSets object that is the owner of the snippet sets.
+			/// </param>
+			/// <returns>
+			/// Snippet string
+			/// </returns>
+			public override string GetSnippet(EnumType snippetType, VerbalizationSets<EnumType> owner)
+			{
+				return this.mySnippets[owner.ValueToIndex(snippetType)];
+			}
+		}
+		#endregion // ArrayVerbalizationSet class
+		#region DictionaryVerbalizationSet class
+		/// <summary>
+		/// A class holding dictionary items that refer to values from the enumeration of CoreVerbalizationTextSnippetType.
+		/// </summary>
+		protected class DictionaryVerbalizationSet : VerbalizationSet
+		{
+			private Dictionary<EnumType, string> mySnippets;
+			/// <summary>
+			/// Retrieves all of the IDictionary snippets in the snippet set
+			/// </summary>
+			public IDictionary<EnumType, string> Dictionary
+			{
+				get
+				{
+					return mySnippets;
+				}
+			}
+			/// <summary>
+			/// VerbalizationSet constructor.
+			/// </summary>
+			public DictionaryVerbalizationSet()
+			{
+				this.mySnippets = new Dictionary<EnumType, string>();
+			}
+			/// <summary>
+			/// Retrieve a snippet value
+			/// </summary>
+			/// <param name="snippetType">
+			/// A value from the CoreVerbalizationTextSnippetType enum representing the snippet string to retrieve.
+			/// </param>
+			/// <param name="owner">
+			/// The VerbalizationSets object that is the owner of the snippet sets.
+			/// </param>
+			/// <returns>
+			/// Snippet string
+			/// </returns>
+			public override string GetSnippet(EnumType snippetType, VerbalizationSets<EnumType> owner)
+			{
+				string retVal = null;
+				this.mySnippets.TryGetValue(snippetType, out retVal);
+				return retVal;
+			}
+		}
+		#endregion // DictionaryVerbalizationSet class
+		private VerbalizationSet[] mySets;
 		/// <summary>
 		/// Retrieve a snippet for the specified type with default criteria.
 		/// </summary>
 		/// <param name="snippetType">
-		/// A value from the VerbalizationTextSnippetType enum representing the snippet string to retrieve.
+		/// A value from the CoreVerbalizationTextSnippetType enum representing the snippet string to retrieve.
 		/// </param>
 		/// <returns>
 		/// Snippet string
 		/// </returns>
-		public string GetSnippet(VerbalizationTextSnippetType snippetType)
+		public string GetSnippet(EnumType snippetType)
 		{
-			return this.mySets[0].GetSnippet(snippetType);
+			return this.GetSnippet(snippetType, false, false);
 		}
 		/// <summary>
 		/// Retrieve a snippet for the specified type and criteria.
 		/// </summary>
 		/// <param name="snippetType">
-		/// A value from the VerbalizationTextSnippetType enum representing the snippet string to retrieve.
+		/// A value from the CoreVerbalizationTextSnippetType enum representing the snippet string to retrieve.
 		/// </param>
 		/// <param name="isDeontic">
 		/// Set to true to retrieve the snippet for a deontic verbalization, false for alethic.
@@ -506,7 +578,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// Snippet string
 		/// </returns>
-		public string GetSnippet(VerbalizationTextSnippetType snippetType, bool isDeontic, bool isNegative)
+		public string GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative)
+		{
+			VerbalizationSet set = this.mySets[VerbalizationSets<EnumType>.GetSetIndex(isDeontic, isNegative)];
+			if (set != null)
+			{
+				return set.GetSnippet(snippetType, this);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		/// <summary>
+		/// Get the snippet index of the deontic/negative VerbalizationSet
+		/// </summary>
+		/// <param name="isDeontic">
+		/// Set to true to retrieve the snippet for a deontic verbalization, false for alethic.
+		/// </param>
+		/// <param name="isNegative">
+		/// Set to true to retrieve the snippet for a negative reading, false for positive.
+		/// </param>
+		/// <returns>
+		/// 0-based index
+		/// </returns>
+		protected static int GetSetIndex(bool isDeontic, bool isNegative)
 		{
 			int setIndex = 0;
 			if (isDeontic)
@@ -517,511 +613,573 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				setIndex = setIndex + 2;
 			}
-			return this.mySets[setIndex].GetSnippet(snippetType);
+			return setIndex;
 		}
-		private static VerbalizationSets CreateDefaultVerbalizationSets()
+		/// <summary>
+		/// Method to populate verbalization sets of an abstract VerbalizationSets object.
+		/// </summary>
+		/// <param name="sets">
+		/// The empty verbalization sets to be populated
+		/// </param>
+		protected abstract void PopulateVerbalizationSets(VerbalizationSet[] sets);
+		/// <summary>
+		/// Method to convert enum value to integer index value
+		/// </summary>
+		/// <param name="enumValue">
+		/// The enum value to be converted
+		/// </param>
+		/// <returns>
+		/// integer value of enum type
+		/// </returns>
+		protected abstract int ValueToIndex(EnumType enumValue);
+		/// <summary>
+		/// Creates an instance of the VerbalizationSets class calling the PopulateVerbalizationSets method.
+		/// </summary>
+		/// <typeparam name="DerivedType">
+		/// Name of class to instantiate that derives from VerbalizationSets.
+		/// </typeparam>
+		/// <returns>
+		/// Returns a generic {$VerbalizationSets} object with snippet sets
+		/// </returns>
+		public static VerbalizationSets<EnumType> Create<DerivedType>()
+			where DerivedType : VerbalizationSets<EnumType>, new()
 		{
-			VerbalizationSets retVal = new VerbalizationSets();
-			retVal.mySets = new VerbalizationSet[]{
-				new VerbalizationSet(new string[]{
-					@"<span class=""quantifier"">at most one</span> {0}",
-					@"<span class=""listSeparator"">.</span>",
-					@"{0} <span class=""quantifier"">combination</span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					"; ",
-					"",
-					"; ",
-					"; ",
-					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
-					@"<span class=""quantifier"">that</span> {0}",
-					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
-					@"{0} <span class=""quantifier"">is an entity type</span>",
-					@"<span class=""quantifier"">some</span> {0}",
-					@"<span class=""quantifier"">for each</span> {0}, {1}",
-					@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-					@"<span class=""quantifier"">the same</span> {0}",
-					@"<span class=""quantifier"">that</span> {0}",
-					"{0}",
-					"</span>",
-					@"<span class=""listSeparator"">; </span>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator"">; </span>",
-					@"<span class=""listSeparator"">; </span>",
-					"</span>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
-					@"<span class=""objectType"">{0}</span> in {1}",
-					@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"at least <span class=""objectType"">{0}</span>",
-					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span>",
-					@"at most <span class=""objectType"">{1}</span>",
-					@"below <span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">it is necessary that</span> {0}",
-					@"<span class=""quantifier"">it is possible that</span> {0}",
-					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
-					@"{0}(<span class=""objectType"">{1}</span>)",
-					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-					@"<span class=""quantifier"">Notes:</span> {0}",
-					@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-					@"<span class=""objectType"">{0}</span>",
-					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
-					@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
-					@"<span class=""quantifier"">at most one</span> {0}",
-					@"{0}.<span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">who</span> {0}",
-					@"<span class=""quantifier"">Portable data type:</span> {0}",
-					@"<span class=""quantifier"">Reference Mode:</span> {0}",
-					@"<span class=""quantifier"">Reference Scheme:</span> {0}",
-					"{0}",
-					"",
-					@"<span class=""listSeparator"">, and </span>",
-					"",
-					@"<span class=""listSeparator""> and </span>",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}",
-					@"{0} <span class=""quantifier"">is a value type</span>",
-					"</span>",
-					"</p>",
-					"</span>",
-					"</body></html>",
-					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
-	<head>
-		<title>ORM2 Verbalization</title>
-		<style>
-			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
-			.objectType {{ color: {4}; {5} }}
-			.objectTypeMissing {{ color: {4}; {5} }}
-			.referenceMode {{ color: #840084; font-weight: bold;}}
-			.predicateText {{ color: #0000ff; }}
-			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
-			.verbalization {{ }}
-			.indent {{ left: 20px; position: relative; }}
-			.smallIndent {{ left: 8px; position: relative;}}
-			.listSeparator {{ color: windowtext; font-weight: 200;}}
-			.logicalOperator {{ color: {6}; {7}}}
-			.notAvailable {{ font-style: italic; }}
-		</style>
-	</head>
-	<body>",
-					"font-weight: bold;",
-					"font-weight: normal;",
-					@"<span class=""indent"">",
-					"<br/>\n",
-					@"<span class=""error"">",
-					@"<p class=""verbalization"">"}),
-				new VerbalizationSet(new string[]{
-					@"<span class=""quantifier"">at most one</span> {0}",
-					@"<span class=""listSeparator"">.</span>",
-					@"{0} <span class=""quantifier"">combination</span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					"; ",
-					"",
-					"; ",
-					"; ",
-					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
-					@"<span class=""quantifier"">that</span> {0}",
-					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
-					@"{0} <span class=""quantifier"">is an entity type</span>",
-					@"<span class=""quantifier"">some</span> {0}",
-					@"<span class=""quantifier"">for each</span> {0}, {1}",
-					@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-					@"<span class=""quantifier"">the same</span> {0}",
-					@"<span class=""quantifier"">that</span> {0}",
-					@"<span class=""quantifier"">it is obligatory that</span> {0}",
-					"</span>",
-					@"<span class=""listSeparator"">; </span>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator"">; </span>",
-					@"<span class=""listSeparator"">; </span>",
-					"</span>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
-					@"<span class=""objectType"">{0}</span> in {1}",
-					@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"at least <span class=""objectType"">{0}</span>",
-					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span>",
-					@"at most <span class=""objectType"">{1}</span>",
-					@"below <span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">it is obligatory that</span> {0}",
-					@"<span class=""quantifier"">it is permitted that</span> {0}",
-					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
-					@"{0}(<span class=""objectType"">{1}</span>)",
-					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-					@"<span class=""quantifier"">Notes:</span> {0}",
-					@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-					@"<span class=""objectType"">{0}</span>",
-					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
-					@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
-					@"<span class=""quantifier"">at most one</span> {0}",
-					@"{0}.<span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">who</span> {0}",
-					@"<span class=""quantifier"">Portable data type:</span> {0}",
-					@"<span class=""quantifier"">Reference Mode:</span> {0}",
-					@"<span class=""quantifier"">Reference Scheme:</span> {0}",
-					"{0}",
-					"",
-					@"<span class=""listSeparator"">, and </span>",
-					"",
-					@"<span class=""listSeparator""> and </span>",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}",
-					@"{0} <span class=""quantifier"">is a value type</span>",
-					"</span>",
-					"</p>",
-					"</span>",
-					"</body></html>",
-					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
-	<head>
-		<title>ORM2 Verbalization</title>
-		<style>
-			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
-			.objectType {{ color: {4}; {5} }}
-			.objectTypeMissing {{ color: {4}; {5} }}
-			.referenceMode {{ color: #840084; font-weight: bold;}}
-			.predicateText {{ color: #0000ff; }}
-			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
-			.verbalization {{ }}
-			.indent {{ left: 20px; position: relative; }}
-			.smallIndent {{ left: 8px; position: relative;}}
-			.listSeparator {{ color: windowtext; font-weight: 200;}}
-			.logicalOperator {{ color: {6}; {7}}}
-			.notAvailable {{ font-style: italic; }}
-		</style>
-	</head>
-	<body>",
-					"font-weight: bold;",
-					"font-weight: normal;",
-					@"<span class=""indent"">",
-					"<br/>\n",
-					@"<span class=""error"">",
-					@"<p class=""verbalization"">"}),
-				new VerbalizationSet(new string[]{
-					@"<span class=""quantifier"">at most one</span> {0}",
-					@"<span class=""listSeparator"">.</span>",
-					@"{0} <span class=""quantifier"">combination</span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					"; ",
-					"",
-					"; ",
-					"; ",
-					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
-					@"<span class=""quantifier"">that</span> {0}",
-					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
-					@"{0} <span class=""quantifier"">is an entity type</span>",
-					@"<span class=""quantifier"">some</span> {0}",
-					@"<span class=""quantifier"">for each</span> {0}, {1}",
-					@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-					@"<span class=""quantifier"">the same</span> {0}",
-					@"<span class=""quantifier"">that</span> {0}",
-					"{0}",
-					"</span>",
-					@"<span class=""listSeparator"">; </span>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator"">; </span>",
-					@"<span class=""listSeparator"">; </span>",
-					"</span>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
-					@"<span class=""objectType"">{0}</span> in {1}",
-					@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"at least <span class=""objectType"">{0}</span>",
-					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span>",
-					@"at most <span class=""objectType"">{1}</span>",
-					@"below <span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">it is necessary that</span> {0}",
-					@"<span class=""quantifier"">it is impossible that</span> {0}",
-					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
-					@"{0}(<span class=""objectType"">{1}</span>)",
-					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-					@"<span class=""quantifier"">Notes:</span> {0}",
-					@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-					@"<span class=""objectType"">{0}</span>",
-					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
-					@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
-					@"<span class=""quantifier"">more than one</span> {0}",
-					@"{0}.<span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">who</span> {0}",
-					@"<span class=""quantifier"">Portable data type:</span> {0}",
-					@"<span class=""quantifier"">Reference Mode:</span> {0}",
-					@"<span class=""quantifier"">Reference Scheme:</span> {0}",
-					"{0}",
-					"",
-					@"<span class=""listSeparator"">, and </span>",
-					"",
-					@"<span class=""listSeparator""> and </span>",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}",
-					@"{0} <span class=""quantifier"">is a value type</span>",
-					"</span>",
-					"</p>",
-					"</span>",
-					"</body></html>",
-					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
-	<head>
-		<title>ORM2 Verbalization</title>
-		<style>
-			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
-			.objectType {{ color: {4}; {5} }}
-			.objectTypeMissing {{ color: {4}; {5} }}
-			.referenceMode {{ color: #840084; font-weight: bold;}}
-			.predicateText {{ color: #0000ff; }}
-			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
-			.verbalization {{ }}
-			.indent {{ left: 20px; position: relative; }}
-			.smallIndent {{ left: 8px; position: relative;}}
-			.listSeparator {{ color: windowtext; font-weight: 200;}}
-			.logicalOperator {{ color: {6}; {7}}}
-			.notAvailable {{ font-style: italic; }}
-		</style>
-	</head>
-	<body>",
-					"font-weight: bold;",
-					"font-weight: normal;",
-					@"<span class=""indent"">",
-					"<br/>\n",
-					@"<span class=""error"">",
-					@"<p class=""verbalization"">"}),
-				new VerbalizationSet(new string[]{
-					@"<span class=""quantifier"">at most one</span> {0}",
-					@"<span class=""listSeparator"">.</span>",
-					@"{0} <span class=""quantifier"">combination</span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""listSeparator"">, </span>",
-					"",
-					"; ",
-					"",
-					"; ",
-					"; ",
-					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
-					@"<span class=""quantifier"">that</span> {0}",
-					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
-					@"{0} <span class=""quantifier"">is an entity type</span>",
-					@"<span class=""quantifier"">some</span> {0}",
-					@"<span class=""quantifier"">for each</span> {0}, {1}",
-					@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-					@"<span class=""quantifier"">the same</span> {0}",
-					@"<span class=""quantifier"">that</span> {0}",
-					@"<span class=""quantifier"">it is obligatory that</span> {0}",
-					"</span>",
-					@"<span class=""listSeparator"">; </span>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator"">; </span>",
-					@"<span class=""listSeparator"">; </span>",
-					"</span>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<br/><span class=""smallIndent"">",
-					@"<span class=""listSeparator""> and </span><br/>",
-					@"<span class=""listSeparator""> and </span><br/>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					@"<br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""smallIndent"">",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<br/><span class=""logicalOperator"">or </span>",
-					@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
-					@"<span class=""objectType"">{0}</span> in {1}",
-					@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
-					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"at least <span class=""objectType"">{0}</span>",
-					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
-					@"above <span class=""objectType"">{0}</span>",
-					@"at most <span class=""objectType"">{1}</span>",
-					@"below <span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">it is obligatory that</span> {0}",
-					@"<span class=""quantifier"">it is forbidden that</span> {0}",
-					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
-					@"{0}(<span class=""objectType"">{1}</span>)",
-					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
-					@"<span class=""quantifier"">Notes:</span> {0}",
-					@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
-					@"<span class=""objectType"">{0}</span>",
-					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
-					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
-					@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
-					@"<span class=""quantifier"">more than one</span> {0}",
-					@"{0}.<span class=""objectType"">{1}</span>",
-					@"<span class=""quantifier"">who</span> {0}",
-					@"<span class=""quantifier"">Portable data type:</span> {0}",
-					@"<span class=""quantifier"">Reference Mode:</span> {0}",
-					@"<span class=""quantifier"">Reference Scheme:</span> {0}",
-					"{0}",
-					"",
-					@"<span class=""listSeparator"">, and </span>",
-					"",
-					@"<span class=""listSeparator""> and </span>",
-					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
-					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}",
-					@"{0} <span class=""quantifier"">is a value type</span>",
-					"</span>",
-					"</p>",
-					"</span>",
-					"</body></html>",
-					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
-	<head>
-		<title>ORM2 Verbalization</title>
-		<style>
-			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
-			.objectType {{ color: {4}; {5} }}
-			.objectTypeMissing {{ color: {4}; {5} }}
-			.referenceMode {{ color: #840084; font-weight: bold;}}
-			.predicateText {{ color: #0000ff; }}
-			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
-			.verbalization {{ }}
-			.indent {{ left: 20px; position: relative; }}
-			.smallIndent {{ left: 8px; position: relative;}}
-			.listSeparator {{ color: windowtext; font-weight: 200;}}
-			.logicalOperator {{ color: {6}; {7}}}
-			.notAvailable {{ font-style: italic; }}
-		</style>
-	</head>
-	<body>",
-					"font-weight: bold;",
-					"font-weight: normal;",
-					@"<span class=""indent"">",
-					"<br/>\n",
-					@"<span class=""error"">",
-					@"<p class=""verbalization"">"})};
+			VerbalizationSets<EnumType> retVal = new DerivedType();
+			VerbalizationSet[] newSets = new VerbalizationSet[4];
+			retVal.PopulateVerbalizationSets(newSets);
+			retVal.mySets = newSets;
 			return retVal;
 		}
 	}
-	#endregion // VerbalizationSets class
+	#endregion // Generic VerbalizationSets class
+	#region CoreVerbalizationSets class
+	/// <summary>
+	/// A class derving from VerbalizationSets.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class CoreVerbalizationSets : VerbalizationSets<CoreVerbalizationTextSnippetType>
+	{
+		/// <summary>
+		/// The default verbalization snippet set. Contains english HTML snippets.
+		/// </summary>
+		public static readonly CoreVerbalizationSets Default = (CoreVerbalizationSets)VerbalizationSets<CoreVerbalizationTextSnippetType>.Create<CoreVerbalizationSets>();
+		/// <summary>
+		/// Populates the snippet sets of the CoreVerbalizationSets object.
+		/// </summary>
+		/// <param name="sets">
+		/// The sets to be populated.
+		/// </param>
+		protected override void PopulateVerbalizationSets(VerbalizationSet[] sets)
+		{
+			sets[0] = new ArrayVerbalizationSet(new string[]{
+				@"<span class=""quantifier"">at most one</span> {0}",
+				@"<span class=""listSeparator"">.</span>",
+				@"{0} <span class=""quantifier"">combination</span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				"; ",
+				"",
+				"; ",
+				"; ",
+				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
+				@"{0} <span class=""quantifier"">is an entity type</span>",
+				@"<span class=""quantifier"">some</span> {0}",
+				@"<span class=""quantifier"">for each</span> {0}, {1}",
+				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">the same</span> {0}",
+				@"<span class=""quantifier"">that</span> {0}",
+				"{0}",
+				"</span>",
+				@"<span class=""listSeparator"">; </span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">; </span>",
+				@"<span class=""listSeparator"">; </span>",
+				"</span>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""objectType"">{0}</span> in {1}",
+				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
+				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"at least <span class=""objectType"">{0}</span>",
+				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span>",
+				@"at most <span class=""objectType"">{1}</span>",
+				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">it is necessary that</span> {0}",
+				@"<span class=""quantifier"">it is possible that</span> {0}",
+				@"<span class=""quantifier"">more than one</span> {0}",
+				@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
+				@"{0}(<span class=""objectType"">{1}</span>)",
+				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
+				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
+				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""objectType"">{0}</span>",
+				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
+				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
+				@"<span class=""quantifier"">at most one</span> {0}",
+				@"{0}.<span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				"{0}",
+				"",
+				@"<span class=""listSeparator"">, and </span>",
+				"",
+				@"<span class=""listSeparator""> and </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"{0} <span class=""quantifier"">is a value type</span>",
+				"</span>",
+				"</p>",
+				"</span>",
+				"</body></html>",
+				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: {10}; {11} }}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+			.note {{ color: {8}; font-style: italic; {9} }}
+			.notAvailable {{ font-style: italic; }}
+		</style>
+	</head>
+	<body>",
+				"font-weight: bold;",
+				"font-weight: normal;",
+				@"<span class=""indent"">",
+				"<br/>\n",
+				@"<span class=""error"">",
+				@"<p class=""verbalization"">"});
+			sets[1] = new ArrayVerbalizationSet(new string[]{
+				@"<span class=""quantifier"">at most one</span> {0}",
+				@"<span class=""listSeparator"">.</span>",
+				@"{0} <span class=""quantifier"">combination</span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				"; ",
+				"",
+				"; ",
+				"; ",
+				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
+				@"{0} <span class=""quantifier"">is an entity type</span>",
+				@"<span class=""quantifier"">some</span> {0}",
+				@"<span class=""quantifier"">for each</span> {0}, {1}",
+				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">the same</span> {0}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">it is obligatory that</span> {0}",
+				"</span>",
+				@"<span class=""listSeparator"">; </span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">; </span>",
+				@"<span class=""listSeparator"">; </span>",
+				"</span>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""objectType"">{0}</span> in {1}",
+				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
+				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"at least <span class=""objectType"">{0}</span>",
+				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span>",
+				@"at most <span class=""objectType"">{1}</span>",
+				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">it is obligatory that</span> {0}",
+				@"<span class=""quantifier"">it is permitted that</span> {0}",
+				@"<span class=""quantifier"">more than one</span> {0}",
+				@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
+				@"{0}(<span class=""objectType"">{1}</span>)",
+				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
+				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
+				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""objectType"">{0}</span>",
+				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
+				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
+				@"<span class=""quantifier"">at most one</span> {0}",
+				@"{0}.<span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				"{0}",
+				"",
+				@"<span class=""listSeparator"">, and </span>",
+				"",
+				@"<span class=""listSeparator""> and </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"{0} <span class=""quantifier"">is a value type</span>",
+				"</span>",
+				"</p>",
+				"</span>",
+				"</body></html>",
+				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: {10}; {11} }}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+			.note {{ color: {8}; font-style: italic; {9} }}
+			.notAvailable {{ font-style: italic; }}
+		</style>
+	</head>
+	<body>",
+				"font-weight: bold;",
+				"font-weight: normal;",
+				@"<span class=""indent"">",
+				"<br/>\n",
+				@"<span class=""error"">",
+				@"<p class=""verbalization"">"});
+			sets[2] = new ArrayVerbalizationSet(new string[]{
+				@"<span class=""quantifier"">at most one</span> {0}",
+				@"<span class=""listSeparator"">.</span>",
+				@"{0} <span class=""quantifier"">combination</span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				"; ",
+				"",
+				"; ",
+				"; ",
+				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
+				@"{0} <span class=""quantifier"">is an entity type</span>",
+				@"<span class=""quantifier"">some</span> {0}",
+				@"<span class=""quantifier"">for each</span> {0}, {1}",
+				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">the same</span> {0}",
+				@"<span class=""quantifier"">that</span> {0}",
+				"{0}",
+				"</span>",
+				@"<span class=""listSeparator"">; </span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">; </span>",
+				@"<span class=""listSeparator"">; </span>",
+				"</span>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""objectType"">{0}</span> in {1}",
+				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
+				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"at least <span class=""objectType"">{0}</span>",
+				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span>",
+				@"at most <span class=""objectType"">{1}</span>",
+				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">it is necessary that</span> {0}",
+				@"<span class=""quantifier"">it is impossible that</span> {0}",
+				@"<span class=""quantifier"">more than one</span> {0}",
+				@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
+				@"{0}(<span class=""objectType"">{1}</span>)",
+				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
+				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
+				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""objectType"">{0}</span>",
+				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
+				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
+				@"<span class=""quantifier"">more than one</span> {0}",
+				@"{0}.<span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				"{0}",
+				"",
+				@"<span class=""listSeparator"">, and </span>",
+				"",
+				@"<span class=""listSeparator""> and </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"{0} <span class=""quantifier"">is a value type</span>",
+				"</span>",
+				"</p>",
+				"</span>",
+				"</body></html>",
+				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: {10}; {11} }}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+			.note {{ color: {8}; font-style: italic; {9} }}
+			.notAvailable {{ font-style: italic; }}
+		</style>
+	</head>
+	<body>",
+				"font-weight: bold;",
+				"font-weight: normal;",
+				@"<span class=""indent"">",
+				"<br/>\n",
+				@"<span class=""error"">",
+				@"<p class=""verbalization"">"});
+			sets[3] = new ArrayVerbalizationSet(new string[]{
+				@"<span class=""quantifier"">at most one</span> {0}",
+				@"<span class=""listSeparator"">.</span>",
+				@"{0} <span class=""quantifier"">combination</span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
+				"",
+				"; ",
+				"",
+				"; ",
+				"; ",
+				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
+				@"{0} <span class=""quantifier"">is an entity type</span>",
+				@"<span class=""quantifier"">some</span> {0}",
+				@"<span class=""quantifier"">for each</span> {0}, {1}",
+				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
+				@"<span class=""quantifier"">the same</span> {0}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">it is obligatory that</span> {0}",
+				"</span>",
+				@"<span class=""listSeparator"">; </span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">; </span>",
+				@"<span class=""listSeparator"">; </span>",
+				"</span>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator""> and </span><br/>",
+				@"<span class=""listSeparator""> and </span><br/>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				@"<br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""smallIndent"">",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"<br/><span class=""logicalOperator"">or </span>",
+				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
+				@"<span class=""objectType"">{0}</span> in {1}",
+				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
+				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"at least <span class=""objectType"">{0}</span>",
+				@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+				@"above <span class=""objectType"">{0}</span>",
+				@"at most <span class=""objectType"">{1}</span>",
+				@"below <span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">it is obligatory that</span> {0}",
+				@"<span class=""quantifier"">it is forbidden that</span> {0}",
+				@"<span class=""quantifier"">more than one</span> {0}",
+				@"<span class=""quantifier"">the possible values of <span class=""objectType"">{0}</span> are {1}</span>",
+				@"{0}(<span class=""objectType"">{1}</span>)",
+				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
+				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
+				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
+				@"<span class=""objectType"">{0}</span>",
+				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
+				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
+				@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
+				@"<span class=""quantifier"">more than one</span> {0}",
+				@"{0}.<span class=""objectType"">{1}</span>",
+				@"<span class=""quantifier"">who</span> {0}",
+				@"<span class=""quantifier"">Portable data type:</span> {0}",
+				@"<span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span>",
+				@"<span class=""quantifier"">Reference Scheme:</span> {0}",
+				"{0}",
+				"",
+				@"<span class=""listSeparator"">, and </span>",
+				"",
+				@"<span class=""listSeparator""> and </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+				"</span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				"<span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"{0} <span class=""quantifier"">is a value type</span>",
+				"</span>",
+				"</p>",
+				"</span>",
+				"</body></html>",
+				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: {10}; {11} }}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+			.note {{ color: {8}; font-style: italic; {9} }}
+			.notAvailable {{ font-style: italic; }}
+		</style>
+	</head>
+	<body>",
+				"font-weight: bold;",
+				"font-weight: normal;",
+				@"<span class=""indent"">",
+				"<br/>\n",
+				@"<span class=""error"">",
+				@"<p class=""verbalization"">"});
+		}
+		/// <summary>
+		/// Converts enum value of CoreVerbalizationTextSnippetType to an integer index value.
+		/// </summary>
+		protected override int ValueToIndex(CoreVerbalizationTextSnippetType enumValue)
+		{
+			return (int)enumValue;
+		}
+	}
+	#endregion // CoreVerbalizationSets class
 	#region FactType verbalization
 	public partial class FactType : IVerbalize
 	{
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -1045,6 +1203,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			RoleMoveableCollection factRoles = this.RoleCollection;
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = this.ReadingOrderCollection;
@@ -1057,22 +1216,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 				}
 				else
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
 			beginVerbalization(VerbalizationContent.Normal);
 			reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-			FactType.WriteVerbalizerSentence(writer, FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			FactType.WriteVerbalizerSentence(writer, FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // FactType verbalization
@@ -1082,7 +1241,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -1106,25 +1265,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			StringBuilder sbTemp = null;
 			const bool isDeontic = false;
-			VerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
+			CoreVerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
 			if (!(this.IsValueType))
 			{
-				variableSnippetSnippetType1 = VerbalizationTextSnippetType.EntityTypeVerbalization;
+				variableSnippetSnippetType1 = CoreVerbalizationTextSnippetType.EntityTypeVerbalization;
 			}
 			else
 			{
-				variableSnippetSnippetType1 = VerbalizationTextSnippetType.ValueTypeVerbalization;
+				variableSnippetSnippetType1 = CoreVerbalizationTextSnippetType.ValueTypeVerbalization;
 			}
 			beginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
 			string variableSnippet1Replace1;
-			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
+			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
 			string variableSnippet1Replace1Replace1;
 			variableSnippet1Replace1Replace1 = this.Name;
 			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1);
-			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			if (this.NestedFactType != null)
 			{
 				RoleMoveableCollection factRoles = null;
@@ -1142,30 +1302,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 					}
 					else
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 					}
 					basicRoleReplacements[i] = basicReplacement;
 				}
 				writer.WriteLine();
-				string snippetFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ObjectifiesFactTypeVerbalization, isDeontic, isNegative);
+				string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectifiesFactTypeVerbalization, isDeontic, isNegative);
 				string snippet2Replace1;
-				string snippet2ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
+				string snippet2ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet2Replace1Replace1;
 				snippet2Replace1Replace1 = this.Name;
 				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1);
 				string snippet2Replace2;
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				snippet2Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.PreferredIdentifier != null)
 			{
 				writer.WriteLine();
-				string snippetFormat3 = snippets.GetSnippet(VerbalizationTextSnippetType.ReferenceSchemeVerbalization, isDeontic, isNegative);
+				string snippetFormat3 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ReferenceSchemeVerbalization, isDeontic, isNegative);
 				string snippet3Replace1;
 				if (sbTemp == null)
 				{
@@ -1192,33 +1352,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement;
 						if (rolePlayer != null)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 						}
 						basicRoleReplacements[i] = basicReplacement;
 					}
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.CompoundListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.CompoundListOpen;
 					}
 					else if (RoleIter1 == (constraintRoleArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.CompoundListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompoundListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.CompoundListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompoundListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.CompoundListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompoundListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet3Replace1 = null;
@@ -1227,44 +1387,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 					sbTemp.Append(snippet3Replace1);
 					if (RoleIter1 == (constraintRoleArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompoundListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.CompoundListClose, isDeontic, isNegative));
 					}
 				}
 				snippet3Replace1 = sbTemp.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat3, snippet3Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat3, snippet3Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.HasReferenceMode)
 			{
 				writer.WriteLine();
-				string snippetFormat4 = snippets.GetSnippet(VerbalizationTextSnippetType.ReferenceModeVerbalization, isDeontic, isNegative);
+				string snippetFormat4 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ReferenceModeVerbalization, isDeontic, isNegative);
 				string snippet4Replace1;
 				snippet4Replace1 = this.ReferenceModeString;
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat4, snippet4Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat4, snippet4Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.IsIndependent)
 			{
 				writer.WriteLine();
-				string snippetFormat5 = snippets.GetSnippet(VerbalizationTextSnippetType.IndependentVerbalization, isDeontic, isNegative);
+				string snippetFormat5 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.IndependentVerbalization, isDeontic, isNegative);
 				string snippet5Replace1;
-				string snippet5ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
+				string snippet5ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet5Replace1Replace1;
 				snippet5Replace1Replace1 = this.Name;
 				snippet5Replace1 = string.Format(writer.FormatProvider, snippet5ReplaceFormat1, snippet5Replace1Replace1);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat5, snippet5Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat5, snippet5Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.DataType != null)
 			{
 				writer.WriteLine();
-				string snippetFormat6 = snippets.GetSnippet(VerbalizationTextSnippetType.PortableDataTypeVerbalization, isDeontic, isNegative);
+				string snippetFormat6 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.PortableDataTypeVerbalization, isDeontic, isNegative);
 				string snippet6Replace1;
 				snippet6Replace1 = this.DataType.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat6, snippet6Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat6, snippet6Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // ObjectType verbalization
@@ -1274,7 +1434,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -1298,17 +1458,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			const bool isDeontic = false;
 			beginVerbalization(VerbalizationContent.Normal);
-			string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.NotesVerbalization, isDeontic, isNegative);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.NotesVerbalization, isDeontic, isNegative);
 			string snippet1Replace1;
 			snippet1Replace1 = this.Text;
-			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // Note verbalization
@@ -1318,7 +1479,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -1342,6 +1503,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
@@ -1384,16 +1546,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (useSubscript)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
 					}
 					else
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 					}
 				}
 				else
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
@@ -1402,11 +1564,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if ((factArity == 1) && !(isNegative))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
 				string snippet1Replace1Replace1;
-				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
+				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -1418,31 +1580,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 					}
 					else if (RoleIter1 == (includedArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					if (RoleIter1 == (includedArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
@@ -1451,16 +1613,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (factArity == 1)
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
 				string snippet1Replace1Replace1;
-				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative);
+				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -1472,31 +1634,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 					}
 					else if (RoleIter1 == (includedArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					if (RoleIter1 == (includedArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
@@ -1505,12 +1667,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if ((factArity == includedArity) && !(isNegative))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
 				if (sbTemp == null)
 				{
@@ -1523,25 +1685,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int RoleIter1 = 0; RoleIter1 < factArity; ++RoleIter1)
 				{
 					Role primaryRole = factRoles[RoleIter1];
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalAndListOpen;
 					}
 					else if (RoleIter1 == (factArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalAndListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalAndListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalAndListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1 = null;
@@ -1554,11 +1716,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 						if (primaryRole == currentRole)
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						else
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						if (roleReplacement == null)
 						{
@@ -1570,19 +1732,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 					sbTemp.Append(snippet1Replace1);
 					if (RoleIter1 == (factArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalAndListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1 = sbTemp.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				writer.WriteLine();
-				string snippetFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet2Replace1;
-				string snippet2ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
+				string snippet2ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
 				string snippet2Replace1Replace1;
-				string snippet2Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.CombinationIdentifier, isDeontic, isNegative);
+				string snippet2Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.CombinationIdentifier, isDeontic, isNegative);
 				string snippet2Replace1Replace1Replace1;
-				string snippet2Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
+				string snippet2Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
 				string snippet2Replace1Replace1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -1594,31 +1756,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListOpen;
 					}
 					else if (RoleIter1 == (includedArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					if (RoleIter1 == (includedArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet2Replace1Replace1Replace1Replace1 = sbTemp.ToString();
@@ -1628,18 +1790,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				snippet2Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1, snippet2Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (factArity == includedArity)
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
 				string snippet1Replace1Replace1;
-				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.CombinationIdentifier, isDeontic, isNegative);
+				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.CombinationIdentifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1Replace1;
-				string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative);
+				string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -1651,31 +1813,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListOpen;
 					}
 					else if (RoleIter1 == (includedArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					if (RoleIter1 == (includedArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1Replace1Replace1Replace1 = sbTemp.ToString();
@@ -1685,7 +1847,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if ((factArity == 2) && !(isNegative))
 			{
@@ -1693,7 +1855,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (reading != null)
 				{
 					beginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1;
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -1703,11 +1865,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 						if (includedRoles.Contains(currentRole))
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						else
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						if (roleReplacement == null)
 						{
@@ -1716,7 +1878,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
 					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
@@ -1724,9 +1886,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (reading != null)
 					{
 						beginVerbalization(VerbalizationContent.Normal);
-						string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace1;
-						string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
+						string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 						string snippet1Replace1Replace1;
 						if (sbTemp == null)
 						{
@@ -1738,31 +1900,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (RoleIter1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 							}
 							else if (RoleIter1 == (includedArity - 1))
 							{
 								if (RoleIter1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 							if (RoleIter1 == (includedArity - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
@@ -1776,11 +1938,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							if (roleReplacement == null)
 							{
@@ -1790,13 +1952,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 				}
 				if (this.IsPreferred)
 				{
 					writer.WriteLine();
-					string snippetFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
+					string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
 					string snippet2Replace1;
 					if (sbTemp == null)
 					{
@@ -1828,13 +1990,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 					snippet2Replace2 = sbTemp.ToString();
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else if (factArity == 2)
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 				string snippet1Replace1;
 				if (sbTemp == null)
 				{
@@ -1846,36 +2008,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListOpen;
 					}
 					else if (RoleIter1 == (includedArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					if (RoleIter1 == (includedArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1 = sbTemp.ToString();
 				string snippet1Replace2;
-				string snippet1ReplaceFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace2Replace1;
 				reading = FactType.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, factRoles, true);
 				int snippet1Replace2ReplaceFactRoleIter1 = 0;
@@ -1886,11 +2048,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
 					if (includedRoles.Contains(currentRole))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 					}
 					else if (!(includedRoles.Contains(currentRole)))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
 					}
 					if (roleReplacement == null)
 					{
@@ -1900,12 +2062,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				snippet1Replace2Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (isNegative)
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				int snippet1ReplaceFactRoleIter1 = 0;
@@ -1916,11 +2078,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 					if (includedRoles.Contains(currentRole))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
 					}
 					else
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
 					}
 					if (roleReplacement == null)
 					{
@@ -1929,14 +2091,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 				}
 				snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -1948,31 +2110,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 					}
 					else if (RoleIter1 == (includedArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					if (RoleIter1 == (includedArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1Replace1 = sbTemp.ToString();
@@ -1986,11 +2148,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 					if (includedRoles.Contains(currentRole))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 					}
 					else if (!(includedRoles.Contains(currentRole)))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
 					}
 					if (roleReplacement == null)
 					{
@@ -2000,13 +2162,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // InternalUniquenessConstraint verbalization
@@ -2016,7 +2178,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -2040,6 +2202,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
@@ -2082,16 +2245,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (useSubscript)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
 					}
 					else
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 					}
 				}
 				else
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
@@ -2100,14 +2263,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (factArity == 1)
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1;
 				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				snippet1Replace1Replace1 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (factArity == 2)
 			{
@@ -2115,7 +2278,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (reading != null)
 				{
 					beginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1;
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -2125,11 +2288,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 						if (includedRoles.Contains(currentRole))
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						else
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						if (roleReplacement == null)
 						{
@@ -2138,7 +2301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
 					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
@@ -2146,9 +2309,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (reading != null)
 					{
 						beginVerbalization(VerbalizationContent.Normal);
-						string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace1;
-						string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
+						string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 						string snippet1Replace1Replace1;
 						if (sbTemp == null)
 						{
@@ -2160,31 +2323,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (RoleIter1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 							}
 							else if (RoleIter1 == (includedArity - 1))
 							{
 								if (RoleIter1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 							if (RoleIter1 == (includedArity - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
@@ -2198,11 +2361,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							if (roleReplacement == null)
 							{
@@ -2212,7 +2375,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 				}
 			}
@@ -2222,7 +2385,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (reading != null)
 				{
 					beginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 					string snippet1Replace1;
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
@@ -2232,11 +2395,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 						if (includedRoles.Contains(currentRole))
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						else
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						if (roleReplacement == null)
 						{
@@ -2245,7 +2408,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
 					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
@@ -2253,9 +2416,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (reading != null)
 					{
 						beginVerbalization(VerbalizationContent.Normal);
-						string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
 						string snippet1Replace1;
-						string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
+						string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
 						string snippet1Replace1Replace1;
 						if (sbTemp == null)
 						{
@@ -2267,31 +2430,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (RoleIter1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 							}
 							else if (RoleIter1 == (includedArity - 1))
 							{
 								if (RoleIter1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 							if (RoleIter1 == (includedArity - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
@@ -2305,11 +2468,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							if (roleReplacement == null)
 							{
@@ -2319,15 +2482,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
 				}
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // SimpleMandatoryConstraint verbalization
@@ -2337,7 +2500,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -2361,6 +2524,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
@@ -2425,16 +2589,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (useSubscript)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 						}
 					}
 					else
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 					}
 					basicRoleReplacements[i] = basicReplacement;
 				}
@@ -2447,9 +2611,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (isNegative && (maxFactArity <= 1))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.NegativeReadingForUnaryOnlyDisjunctiveMandatory, isDeontic, isNegative);
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.NegativeReadingForUnaryOnlyDisjunctiveMandatory, isDeontic, isNegative);
 				string snippet1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -2468,11 +2632,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					int currentFactIndex = allFacts.IndexOf(parentFact);
 					string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-					VerbalizationTextSnippetType listSnippet;
-					listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+					CoreVerbalizationTextSnippetType listSnippet;
+					listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[RoleIter1])]);
-					sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+					sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 				}
 				snippet1Replace1Replace1 = sbTemp.ToString();
 				string snippet1Replace1Replace2;
@@ -2493,25 +2657,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					int currentFactIndex = allFacts.IndexOf(parentFact);
 					string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter2 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.IndentedCompoundListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.IndentedCompoundListOpen;
 					}
 					else if (RoleIter2 == (constraintRoleArity - 1))
 					{
 						if (RoleIter2 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.IndentedCompoundListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.IndentedCompoundListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.IndentedCompoundListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.IndentedCompoundListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.IndentedCompoundListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.IndentedCompoundListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1Replace2 = null;
@@ -2520,12 +2684,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					sbTemp.Append(snippet1Replace1Replace2);
 					if (RoleIter2 == (constraintRoleArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedCompoundListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.IndentedCompoundListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1Replace2 = sbTemp.ToString();
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (!(isNegative) && (maxFactArity <= 1))
 			{
@@ -2548,25 +2712,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 					allReadingOrders = parentFact.ReadingOrderCollection;
 					int currentFactIndex = allFacts.IndexOf(parentFact);
 					string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-					VerbalizationTextSnippetType listSnippet;
+					CoreVerbalizationTextSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
+						listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 					}
 					else if (RoleIter1 == (constraintRoleArity - 1))
 					{
 						if (RoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					string factText1 = null;
@@ -2579,7 +2743,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string basicReplacement = basicRoleReplacements[factTextFactRoleIter1];
 						if ((primaryRole == currentRole) && factTextIsFirstPass1)
 						{
-							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
 						else if (primaryRole == currentRole)
 						{
@@ -2595,11 +2759,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					sbTemp.Append(factText1);
 					if (RoleIter1 == (constraintRoleArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 					}
 					factTextIsFirstPass1 = false;
 				}
-				FactType.WriteVerbalizerSentence(writer, sbTemp.ToString(), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				FactType.WriteVerbalizerSentence(writer, sbTemp.ToString(), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (!(isNegative))
 			{
@@ -2672,25 +2836,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						if (factArity >= 2)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (listCompositeIterator1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 							}
 							else if (listCompositeIterator1 == (listCompositeCount1 - 1))
 							{
 								if (listCompositeIterator1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							list1Item1 = null;
@@ -2703,7 +2867,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter1];
 								if ((primaryRole == currentRole) && list1ItemIsFirstPass1)
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 								}
 								else if (primaryRole == currentRole)
 								{
@@ -2711,7 +2875,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								else
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								}
 								if (roleReplacement == null)
 								{
@@ -2723,7 +2887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(list1Item1);
 							if (RoleIter1 == (listCompositeCount1 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							listCompositeIterator1 = listCompositeIterator1 + 1;
 							list1ItemIsFirstPass1 = false;
@@ -2741,25 +2905,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						if (factArity == 1)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (listCompositeIterator1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 							}
 							else if (listCompositeIterator1 == (listCompositeCount1 - 1))
 							{
 								if (listCompositeIterator1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							list1Item2 = null;
@@ -2781,17 +2945,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(list1Item2);
 							if (RoleIter2 == (listCompositeCount1 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							listCompositeIterator1 = listCompositeIterator1 + 1;
 						}
 					}
-					FactType.WriteVerbalizerSentence(writer, sbTemp.ToString(), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, sbTemp.ToString(), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
 					beginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
 					string snippet1Replace1;
 					if (sbTemp == null)
 					{
@@ -2810,11 +2974,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-						VerbalizationTextSnippetType listSnippet;
-						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+						CoreVerbalizationTextSnippetType listSnippet;
+						listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[RoleIter1])]);
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 					snippet1Replace1 = sbTemp.ToString();
 					string snippet1Replace2;
@@ -2865,25 +3029,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						if (factArity >= 2)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (snippet1ReplaceCompositeIterator2 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListOpen;
 							}
 							else if (snippet1ReplaceCompositeIterator2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
 								if (snippet1ReplaceCompositeIterator2 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2Item1 = null;
@@ -2896,11 +3060,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ItemFactRoleIter1];
 								if (currentRole == primaryRole)
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
 								else if (currentRole != primaryRole)
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
 								}
 								if (roleReplacement == null)
 								{
@@ -2912,7 +3076,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(snippet1Replace2Item1);
 							if (RoleIter1 == (snippet1ReplaceCompositeCount2 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							snippet1ReplaceCompositeIterator2 = snippet1ReplaceCompositeIterator2 + 1;
 						}
@@ -2929,25 +3093,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						if (factArity == 1)
 						{
-							VerbalizationTextSnippetType listSnippet;
+							CoreVerbalizationTextSnippetType listSnippet;
 							if (snippet1ReplaceCompositeIterator2 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListOpen;
+								listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListOpen;
 							}
 							else if (snippet1ReplaceCompositeIterator2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
 								if (snippet1ReplaceCompositeIterator2 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListPairSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListFinalSeparator;
+									listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.IndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2Item2 = null;
@@ -2958,7 +3122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								Role currentRole = factRoles[snippet1Replace2ItemFactRoleIter2];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ItemFactRoleIter2];
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
 									roleReplacement = basicReplacement;
@@ -2969,20 +3133,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(snippet1Replace2Item2);
 							if (RoleIter2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							snippet1ReplaceCompositeIterator2 = snippet1ReplaceCompositeIterator2 + 1;
 						}
 					}
 					snippet1Replace2 = sbTemp.ToString();
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // DisjunctiveMandatoryConstraint verbalization
@@ -2992,7 +3156,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -3016,6 +3180,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
@@ -3080,16 +3245,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (useSubscript)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 						}
 					}
 					else
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 					}
 					basicRoleReplacements[i] = basicReplacement;
 				}
@@ -3122,7 +3287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!(missingReading1))
 				{
 					beginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 					string snippet1Replace1;
 					if (sbTemp == null)
 					{
@@ -3141,31 +3306,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-						VerbalizationTextSnippetType listSnippet;
+						CoreVerbalizationTextSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 						}
 						else if (RoleIter1 == (constraintRoleArity - 1))
 						{
 							if (RoleIter1 == 1)
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 							}
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[RoleIter1])]);
 						if (RoleIter1 == (constraintRoleArity - 1))
 						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 						}
 					}
 					snippet1Replace1 = sbTemp.ToString();
@@ -3188,25 +3353,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-						VerbalizationTextSnippetType listSnippet;
+						CoreVerbalizationTextSnippetType listSnippet;
 						if (RoleIter2 == 0)
 						{
-							listSnippet = VerbalizationTextSnippetType.IndentedListOpen;
+							listSnippet = CoreVerbalizationTextSnippetType.IndentedListOpen;
 						}
 						else if (RoleIter2 == (constraintRoleArity - 1))
 						{
 							if (RoleIter2 == 1)
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedListPairSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.IndentedListPairSeparator;
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedListFinalSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.IndentedListFinalSeparator;
 							}
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.IndentedListSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.IndentedListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace2 = null;
@@ -3219,7 +3384,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter2];
 							if ((currentRole != primaryRole) && snippet1ReplaceIsFirstPass2)
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.AtMostOneQuantifier, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.AtMostOneQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							else if (currentRole != primaryRole)
 							{
@@ -3227,7 +3392,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							if (roleReplacement == null)
 							{
@@ -3239,12 +3404,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Append(snippet1Replace2);
 						if (RoleIter2 == (constraintRoleArity - 1))
 						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListClose, isDeontic, isNegative));
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.IndentedListClose, isDeontic, isNegative));
 						}
 						snippet1ReplaceIsFirstPass2 = false;
 					}
 					snippet1Replace2 = sbTemp.ToString();
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else if (isNegative && ((minFactArity >= 2) && (maxFactArity <= 2)))
@@ -3270,7 +3435,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!(missingReading1))
 				{
 					beginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 					string snippet1Replace1;
 					if (sbTemp == null)
 					{
@@ -3290,25 +3455,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 						allReadingOrders = parentFact.ReadingOrderCollection;
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-						VerbalizationTextSnippetType listSnippet;
+						CoreVerbalizationTextSnippetType listSnippet;
 						if (RoleIter1 == 0)
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListOpen;
 						}
 						else if (RoleIter1 == (constraintRoleArity - 1))
 						{
 							if (RoleIter1 == 1)
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListPairSeparator;
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+								listSnippet = CoreVerbalizationTextSnippetType.SimpleListFinalSeparator;
 							}
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+							listSnippet = CoreVerbalizationTextSnippetType.SimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace1 = null;
@@ -3321,7 +3486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 							if ((currentRole != primaryRole) && snippet1ReplaceIsFirstPass1)
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							else if (currentRole != primaryRole)
 							{
@@ -3329,7 +3494,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							if (roleReplacement == null)
 							{
@@ -3341,19 +3506,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Append(snippet1Replace1);
 						if (RoleIter1 == (constraintRoleArity - 1))
 						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 						}
 						snippet1ReplaceIsFirstPass1 = false;
 					}
 					snippet1Replace1 = sbTemp.ToString();
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // ExternalUniquenessConstraint verbalization
@@ -3363,7 +3528,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -3387,6 +3552,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			Role valueRole = this.Role;
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
@@ -3431,16 +3597,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (useSubscript)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
 					}
 					else
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
 					}
 				}
 				else
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
@@ -3448,14 +3614,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Reading reading;
 			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
 			bool isSingleValue = (ranges.Count == 1) && (ranges[0].MinValue == ranges[0].MaxValue);
-			VerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
+			CoreVerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
 			if (isSingleValue)
 			{
-				variableSnippetSnippetType1 = VerbalizationTextSnippetType.SingleValueValueConstraint;
+				variableSnippetSnippetType1 = CoreVerbalizationTextSnippetType.SingleValueValueConstraint;
 			}
 			else
 			{
-				variableSnippetSnippetType1 = VerbalizationTextSnippetType.MultiValueValueConstraint;
+				variableSnippetSnippetType1 = CoreVerbalizationTextSnippetType.MultiValueValueConstraint;
 			}
 			beginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
@@ -3474,13 +3640,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					Role primaryRole = includedRoles[RoleIter1];
 					variableSnippet1Replace1 = null;
-					string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.PeriodDelimiter, isDeontic, isNegative);
+					string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.PeriodDelimiter, isDeontic, isNegative);
 					string variableSnippet1Replace1Replace1;
 					variableSnippet1Replace1Replace1 = @"<span style=""font:smaller"">undone</span>";
 					string variableSnippet1Replace1Replace2;
 					if ((primaryRole.RolePlayer != null) && (0 != primaryRole.RolePlayer.ReferenceModeString.Length))
 					{
-						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.NameWithRefMode, isDeontic, isNegative);
+						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.NameWithRefMode, isDeontic, isNegative);
 						string variableSnippet1Replace1Replace2Replace1;
 						variableSnippet1Replace1Replace2Replace1 = valueRole.Name;
 						string variableSnippet1Replace1Replace2Replace2;
@@ -3489,7 +3655,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.SelfReference, isDeontic, isNegative);
+						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.SelfReference, isDeontic, isNegative);
 						string variableSnippet1Replace1Replace2Replace1;
 						variableSnippet1Replace1Replace2Replace1 = valueRole.Name;
 						variableSnippet1Replace1Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace1ReplaceFormat2, variableSnippet1Replace1Replace2Replace1);
@@ -3501,7 +3667,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.InSeparator, isDeontic, isNegative);
+				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.InSeparator, isDeontic, isNegative);
 				string variableSnippet1Replace1Replace1;
 				if (sbTemp == null)
 				{
@@ -3537,64 +3703,64 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string maxValue = ranges[i].MaxValue;
 				RangeInclusion minInclusion = ranges[i].MinInclusion;
 				RangeInclusion maxInclusion = ranges[i].MaxInclusion;
-				VerbalizationTextSnippetType listSnippet;
+				CoreVerbalizationTextSnippetType listSnippet;
 				if (i == 0)
 				{
-					listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+					listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListOpen;
 				}
 				else if (i == (rangeCount - 1))
 				{
 					if (i == 1)
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
 					}
 				}
 				else
 				{
-					listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+					listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListSeparator;
 				}
 				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 				variableSnippet1Replace2 = null;
-				VerbalizationTextSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+				CoreVerbalizationTextSnippetType variableSnippet1ReplaceSnippetType2 = 0;
 				if (minValue == maxValue)
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.SelfReference;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.SelfReference;
 				}
 				else if ((minInclusion != RangeInclusion.Open) && (maxValue.Length == 0))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxUnbounded;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinClosedMaxUnbounded;
 				}
 				else if ((minInclusion == RangeInclusion.Open) && (maxValue.Length == 0))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxUnbounded;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinOpenMaxUnbounded;
 				}
 				else if ((minValue.Length == 0) && (maxInclusion != RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxClosed;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinUnboundedMaxClosed;
 				}
 				else if ((minValue.Length == 0) && (maxInclusion == RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxOpen;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinUnboundedMaxOpen;
 				}
 				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxClosed;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinClosedMaxClosed;
 				}
 				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxOpen;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinClosedMaxOpen;
 				}
 				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxClosed;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinOpenMaxClosed;
 				}
 				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxOpen;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinOpenMaxOpen;
 				}
 				string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
 				string variableSnippet1Replace2Replace1;
@@ -3605,16 +3771,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				sbTemp.Append(variableSnippet1Replace2);
 				if (i == (rangeCount - 1))
 				{
-					sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+					sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 				}
 			}
 			variableSnippet1Replace2 = sbTemp.ToString();
-			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // RoleValueConstraint verbalization
@@ -3624,7 +3790,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -3648,23 +3814,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			const bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
 			bool isSingleValue = (ranges.Count == 1) && (ranges[0].MinValue == ranges[0].MaxValue);
-			VerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
+			CoreVerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
 			if (isSingleValue)
 			{
-				variableSnippetSnippetType1 = VerbalizationTextSnippetType.SingleValueValueConstraint;
+				variableSnippetSnippetType1 = CoreVerbalizationTextSnippetType.SingleValueValueConstraint;
 			}
 			else
 			{
-				variableSnippetSnippetType1 = VerbalizationTextSnippetType.MultiValueValueConstraint;
+				variableSnippetSnippetType1 = CoreVerbalizationTextSnippetType.MultiValueValueConstraint;
 			}
 			beginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
 			string variableSnippet1Replace1;
-			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
+			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
 			string variableSnippet1Replace1Replace1;
 			variableSnippet1Replace1Replace1 = this.ValueType.Name;
 			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1);
@@ -3684,64 +3851,64 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string maxValue = ranges[i].MaxValue;
 				RangeInclusion minInclusion = ranges[i].MinInclusion;
 				RangeInclusion maxInclusion = ranges[i].MaxInclusion;
-				VerbalizationTextSnippetType listSnippet;
+				CoreVerbalizationTextSnippetType listSnippet;
 				if (i == 0)
 				{
-					listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+					listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListOpen;
 				}
 				else if (i == (rangeCount - 1))
 				{
 					if (i == 1)
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+						listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
 					}
 				}
 				else
 				{
-					listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+					listSnippet = CoreVerbalizationTextSnippetType.CompactSimpleListSeparator;
 				}
 				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 				variableSnippet1Replace2 = null;
-				VerbalizationTextSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+				CoreVerbalizationTextSnippetType variableSnippet1ReplaceSnippetType2 = 0;
 				if (minValue == maxValue)
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.SelfReference;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.SelfReference;
 				}
 				else if ((minInclusion != RangeInclusion.Open) && (maxValue.Length == 0))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxUnbounded;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinClosedMaxUnbounded;
 				}
 				else if ((minInclusion == RangeInclusion.Open) && (maxValue.Length == 0))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxUnbounded;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinOpenMaxUnbounded;
 				}
 				else if ((minValue.Length == 0) && (maxInclusion != RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxClosed;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinUnboundedMaxClosed;
 				}
 				else if ((minValue.Length == 0) && (maxInclusion == RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxOpen;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinUnboundedMaxOpen;
 				}
 				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxClosed;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinClosedMaxClosed;
 				}
 				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxOpen;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinClosedMaxOpen;
 				}
 				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxClosed;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinOpenMaxClosed;
 				}
 				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
 				{
-					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxOpen;
+					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationTextSnippetType.MinOpenMaxOpen;
 				}
 				string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
 				string variableSnippet1Replace2Replace1;
@@ -3752,16 +3919,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				sbTemp.Append(variableSnippet1Replace2);
 				if (i == (rangeCount - 1))
 				{
-					sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+					sbTemp.Append(snippets.GetSnippet(CoreVerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 				}
 			}
 			variableSnippet1Replace2 = sbTemp.ToString();
-			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // ValueTypeValueConstraint verbalization

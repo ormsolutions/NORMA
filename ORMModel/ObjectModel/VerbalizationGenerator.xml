@@ -18,12 +18,12 @@
 			<Snippets>
 				<Snippet type="IndependentVerbalization"><![CDATA[{0} <span class="quantifier">is independent (it may have instances that play no other roles)</span>]]></Snippet>
 				<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="quantifier">Portable data type:</span> {0}]]></Snippet>
-				<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="quantifier">Reference Mode:</span> {0}]]></Snippet>
+				<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span>]]></Snippet>
 				<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="quantifier">Reference Scheme:</span> {0}]]></Snippet>
 				<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[{0} <span class="quantifier">objectifies</span> "{1}"]]></Snippet>
 				<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
 				<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
-				<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> {0}]]></Snippet>
+				<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
 				<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}]]></Snippet>
 
 				<!-- All object type names are wrapped with this style automatically.
@@ -149,7 +149,7 @@
 			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
 			.objectType {{ color: {4}; {5} }}
 			.objectTypeMissing {{ color: {4}; {5} }}
-			.referenceMode {{ color: #840084; font-weight: bold;}}
+			.referenceMode {{ color: {10}; {11} }}
 			.predicateText {{ color: #0000ff; }}
 			.quantifier {{ color: {6}; {7} }}
 			.error {{ color: red; }}
@@ -158,6 +158,7 @@
 			.smallIndent {{ left: 8px; position: relative;}}
 			.listSeparator {{ color: windowtext; font-weight: 200;}}
 			.logicalOperator {{ color: {6}; {7}}}
+			.note {{ color: {8}; font-style: italic; {9} }}
 			.notAvailable {{ font-style: italic; }}
 		</style>
 	</head>

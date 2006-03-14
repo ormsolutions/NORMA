@@ -63,11 +63,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Verbalize in the requested form
 		/// </summary>
 		/// <param name="writer">The output text writer</param>
-		/// <param name="snippets">The VerbalizationSets object to use</param>
+		/// <param name="snippetsDictionary">The IVerbalizationSets to use</param>
 		/// <param name="beginVerbalization">A callback function to notify when verbalization is starting</param>
 		/// <param name="isNegative">true for a negative reading</param>
 		/// <returns>true to continue with child verbalization, otherwise false</returns>
-		bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative);
+		bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative);
 	}
 	/// <summary>
 	/// Interface to redirect verbalization. Called for top-level selected objects only

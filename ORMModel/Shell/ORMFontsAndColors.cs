@@ -82,12 +82,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		VerbalizerFormalItem,
 		/// <summary>
+		/// Used for setting color of notes in a verbalization
+		/// </summary>
+		VerbalizerNotesItem,
+		/// <summary>
+		/// Used for picking color of reference mode verbalization
+		/// </summary>
+		VerbalizerRefMode,
+		/// <summary>
 		/// Used for picking different category ranges out of a single enum
 		/// </summary>
-		LastVerbalizerColor = VerbalizerFormalItem,
+		LastVerbalizerColor = VerbalizerRefMode,
 		// Items here must be in the same order as myDefaultColorSettings
 		// defined in the ORMDesignerFontsAndColors class. Also need to
 		// update NameFromItemIndex implementations when adding/removing items here.
+		
 	}
 	#endregion // ORMDesignerColor Enum
 	#region ORMDesignerColorCategory Enum
@@ -224,6 +233,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// The unlocalized name for formal items in the verbalizer
 		/// </summary>
 		public const string VerbalizerFormalItemColorName = "ORM Verbalizer (Formal Item)";
+		/// <summary>
+		/// The unlocalized name for notes in the verbalizer
+		/// </summary>
+		public const string VerbalizerNotesItemColorName = "ORM Verbalizer (Notes)";
+		/// <summary>
+		/// The unlocalized name for reference mode in the verbalizer
+		/// </summary>
+		public const string VerbalizerRefModeColorName = "ORM Verbalizer (Reference Mode)";
 		#endregion // Constant definitions
 		#region Default Settings
 		/// <summary>
@@ -321,6 +338,20 @@ namespace Neumont.Tools.ORM.Shell
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
 			true)
+			,new DefaultColorSetting(
+			VerbalizerNotesItemColorName,
+			ResourceStrings.FontsAndColorsVerbalizerNotesItemColorId,
+			(uint)COLORINDEX.CI_DARKGRAY | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
+			false)
+			,new DefaultColorSetting(
+			VerbalizerRefModeColorName,
+			ResourceStrings.FontsAndColorsVerbalizerRefModeColorId,
+			(uint)COLORINDEX.CI_BROWN | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
+			false)
 		};
 		#endregion // Default Settings
 		#region Constructor
@@ -1241,6 +1272,12 @@ namespace Neumont.Tools.ORM.Shell
 						break;
 					case ORMDesignerColor.VerbalizerFormalItem:
 						retVal = VerbalizerFormalItemColorName;
+						break;
+					case ORMDesignerColor.VerbalizerNotesItem:
+						retVal = VerbalizerNotesItemColorName;
+						break;
+					case ORMDesignerColor.VerbalizerRefMode:
+						retVal = VerbalizerRefModeColorName;
 						break;
 					default:
 						Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.

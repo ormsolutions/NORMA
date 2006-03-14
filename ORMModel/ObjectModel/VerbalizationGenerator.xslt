@@ -5,6 +5,7 @@
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:exsl="http://exslt.org/common"
 	extension-element-prefixes="exsl">
+	
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:preserve-space elements="ve:Snippet"/>
@@ -12,9 +13,12 @@
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 
 	<!-- Names of the different classes we generate -->
-	<xsl:param name="VerbalizationTextSnippetType" select="'VerbalizationTextSnippetType'"/>
+	<xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationTextSnippetType'"/>
 	<xsl:param name="VerbalizationSet" select="'VerbalizationSet'"/>
 	<xsl:param name="VerbalizationSets" select="'VerbalizationSets'"/>
+	<xsl:param name="CoreVerbalizationSets" select="'CoreVerbalizationSets'"/>
+	<xsl:param name="ArrayVerbalizationSet" select="'ArrayVerbalizationSet'"/>
+	<xsl:param name="DictionaryVerbalizationSet" select="'DictionaryVerbalizationSet'"/>
 
 	<!-- Parts of variable names used in generated code. These
 		 names are decorated with position numbers and allow multiple
@@ -93,7 +97,10 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:param name="writer" dataTypeName="TextWriter"/>
-				<plx:param name="snippets" dataTypeName="{$VerbalizationSets}"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -102,6 +109,7 @@
 					 Leverage the code snippets we use for constraints by setting the right
 					 variable names and calling the constraint verbalization templates -->
 				<xsl:call-template name="CheckErrorConditions"/>
+				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
 					<plx:initialize>
 						<plx:falseKeyword/>
@@ -115,6 +123,24 @@
 				</plx:return>
 			</plx:function>
 		</plx:class>
+	</xsl:template>
+	<xsl:template name="DeclareSnippetsLocal">
+		<plx:local name="snippets" dataTypeName="{$VerbalizationSets}">
+			<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
+			<plx:initialize>
+				<plx:cast dataTypeName="{$VerbalizationSets}">
+					<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
+					<plx:callInstance type="indexerCall" name=".implied">
+						<plx:callObject>
+							<plx:nameRef name="snippetsDictionary" type="parameter"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:typeOf dataTypeName="{$VerbalizationTextSnippetType}"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:cast>
+			</plx:initialize>
+		</plx:local>
 	</xsl:template>
 	<xsl:template match="ve:FactType" mode="GenerateClasses">
 		<plx:class name="FactType" visibility="public" partial="true">
@@ -133,7 +159,10 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:param name="writer" dataTypeName="TextWriter"/>
-				<plx:param name="snippets" dataTypeName="{$VerbalizationSets}"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -142,6 +171,7 @@
 					 Leverage the code snippets we use for constraints by setting the right
 					 variable names and calling the constraint verbalization templates -->
 				<xsl:call-template name="CheckErrorConditions"/>
+				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
 					<plx:initialize>
 						<plx:callThis name="RoleCollection" type="property"/>
@@ -198,7 +228,10 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:param name="writer" dataTypeName="TextWriter"/>
-				<plx:param name="snippets" dataTypeName="{$VerbalizationSets}"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -206,6 +239,7 @@
 				<!-- Don't proceed with verbalization if errors are present -->
 				<xsl:call-template name="CheckErrorConditions"/>
 
+				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<plx:local name="sbTemp" dataTypeName="StringBuilder">
 					<plx:initialize>
 						<plx:nullKeyword/>
@@ -247,7 +281,10 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:param name="writer" dataTypeName="TextWriter"/>
-				<plx:param name="snippets" dataTypeName="{$VerbalizationSets}"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
+				</plx:param>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -255,6 +292,7 @@
 				<!-- Don't proceed with verbalization if errors are present -->
 				<xsl:call-template name="CheckErrorConditions"/>
 
+				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<xsl:variable name="subscriptConditionsFragment">
 					<!-- UNDONE: Better subscript handling. The conditional processing needs
 						 to be moved inside each pattern, but we need to prepare for the situation
@@ -1723,7 +1761,7 @@
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="$condition">
-						<plx:local name="{$SnippetTypeVariable}" dataTypeName="VerbalizationTextSnippetType">
+						<plx:local name="{$SnippetTypeVariable}" dataTypeName="{$VerbalizationTextSnippetType}">
 							<plx:initialize>
 								<plx:value data="0" type="i4"/>
 							</plx:initialize>
@@ -4244,7 +4282,7 @@
 													<xsl:text>allConstraintRoles</xsl:text>
 												</xsl:when>
 												<xsl:when test="$contextMatch='excluded'">
-													<xsl:text>factRoles</xsl:text>
+													<xsl:text>factRoles</xsl:text>	
 												</xsl:when>
 											</xsl:choose>
 										</xsl:attribute>
@@ -4358,7 +4396,7 @@
 		<xsl:param name="VariableName"/>
 		<plx:callInstance name="GetSnippet">
 			<plx:callObject>
-				<plx:nameRef name="snippets" type="parameter"/>
+				<plx:nameRef name="snippets"/>
 			</plx:callObject>
 			<plx:passParam>
 				<xsl:choose>
