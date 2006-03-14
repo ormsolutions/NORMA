@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object-Role Modeling Architect for Visual Studio
+	Neumont Object Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -18,7 +18,7 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:xsOut="OutputSchema"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	extension-element-prefixes="exsl"
 	exclude-result-prefixes="oil odt">
 	<xsl:namespace-alias stylesheet-prefix="xsOut" result-prefix="xs"/>
@@ -61,22 +61,45 @@
 				<xsl:value-of select="@name"/>
 			</xsl:attribute>
 			<xsl:attribute name="version">1.0</xsl:attribute>
-			<xsl:comment>SimpleType DEFINITIONS FOR EACH ORM ValueType WITH A VALUE/RANGE/LENGTH CONSTRAINT</xsl:comment>
-			<xsl:variable name="informationTypeFormatMappingsFragment">
+			<xsl:comment>Each ORM ValueType with a value/range/length constraint</xsl:comment>
+			<xsl:variable name="InformationTypeFormatMappingsFragment">
 				<xsl:apply-templates select="oil:informationTypeFormats/child::*" mode="GenerateMapping"/>
 			</xsl:variable>
-			<xsl:variable name="informationTypeFormatMappings" select="exsl:node-set($informationTypeFormatMappingsFragment)/child::*"/>
-			<xsl:apply-templates select="oil:informationTypeFormats/child::*[@name=$informationTypeFormatMappings[starts-with(@target,'oxs')]/@name]" mode="GenerateSimpleType"/>
-			<xsl:comment>ComplexType DEFINITIONS FOR EACH ORM EntityType AND ITS PREFERRED ID</xsl:comment>
-			<xsl:call-template name="GenerateEntityComplexTypes">
-				<xsl:with-param name="informationTypeFormatMappings" select="$informationTypeFormatMappings"/>
+			<xsl:variable name="InformationTypeFormatMappings" select="msxsl:node-set($InformationTypeFormatMappingsFragment)/child::*"/>
+			<xsl:variable name="ConceptTypes" select="//oil:conceptType"/>
+			<xsl:apply-templates select="oil:informationTypeFormats/child::*[@name=$InformationTypeFormatMappings[starts-with(@target,'oxs')]/@name]" mode="GenerateSimpleType"/>
+			<xsl:comment>Each ORM EntityType and it's Preferred Id or top level ValueType</xsl:comment>
+			<xsl:call-template name="GenerateEntityIdentifierComplexTypes">
+				<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+				<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
 			</xsl:call-template>
-			<xsl:comment>ComplexType DEFINITIONS FOR EACH MAJOR OBJECT TYPE ORM GROUPING</xsl:comment>
-			<xsl:apply-templates select="oil:conceptType">
-				<xsl:with-param name="informationTypeFormatMappings" select="$informationTypeFormatMappings"/>
+			<xsl:comment>Each ORM Major Object Type grouping</xsl:comment>
+			<xsl:apply-templates select="oil:conceptType" mode="GenerateMajorEntityElements">
+				<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+				<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
 			</xsl:apply-templates>
-			<xsl:comment>Element DEFINITIONS OF EACH MAJOR OBJECT TYPE IN THE '<xsl:value-of select="@name"/>' SCHEMA</xsl:comment>
-			<xsl:call-template name="GenerateDefinition"/>
+			<xsl:comment>Each ORM Major Object Type in the '<xsl:value-of select="@name"/>' schema</xsl:comment>
+			<xsOut:element name="{@name}">
+				<xsOut:complexType>
+					<xsOut:all>
+						<xsl:for-each select="oil:conceptType">
+							<xsOut:element name="{@name}Elements">
+								<xsOut:complexType>
+									<xsOut:choice minOccurs="0" maxOccurs="unbounded">
+										<xsOut:element name="{@name}" type="oxs:{@name}_FACTS" />
+									</xsOut:choice>
+								</xsOut:complexType>
+							</xsOut:element>
+						</xsl:for-each>
+					</xsOut:all>
+				</xsOut:complexType>
+				<xsl:comment>Key Constraints</xsl:comment>
+				<xsl:call-template name="GenerateKeyConstraints"/>
+				<xsl:comment>Uniqueness Constraints</xsl:comment>
+				<xsl:call-template name="GenerateUniquenessConstraints"/>
+				<xsl:comment>KeyRefs between Major Object Type groupings</xsl:comment>
+				<xsl:call-template name="GenerateKeyRefs"/>
+			</xsOut:element>
 		</xsOut:schema>
 	</xsl:template>
 
@@ -247,38 +270,104 @@
 			</xsl:if>
 		</xsOut:restriction>
 	</xsl:template>
-	<!--<xsl:template match="" mode="GenerateSimpleTypeRestriction">
-	FALLBACK
-	</xsl:template>-->
-
-	<xsl:template name="GenerateEntityComplexTypes">
-		<xsl:param name="informationTypeFormatMappings"/>
-		<xsl:for-each select="//oil:conceptType">
-			<xsl:variable name="preferredIdentifier" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']"/>
-			<xsOut:complexType name="{@name}">
-				<xsOut:attribute name="{$preferredIdentifier/@name}" type="{$informationTypeFormatMappings[@name=$preferredIdentifier/@formatRef]/@target}" use="required"/>
-			</xsOut:complexType>
-		</xsl:for-each>
+	<xsl:template match="*" mode="GenerateSimpleTypeRestriction">
+		<xsl:text>WARNING: Unrecognized information type...</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="oil:conceptType">
-		<xsl:param name="informationTypeFormatMappings"/>
+	<xsl:template name="GenerateEntityIdentifierComplexTypes">
+		<xsl:param name="ConceptTypes"/>
+		<xsl:param name="InformationTypeFormatMappings"/>
+		<xsl:for-each select="$ConceptTypes">
+			<xsl:call-template name="GetIdentifierAttributesForConceptType">
+				<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+				<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
+				<xsl:with-param name="ConceptTypeTarget" select="."/>
+			</xsl:call-template>
+		</xsl:for-each>
+	</xsl:template>
+	
+	<xsl:template name="GetIdentifierAttributesForConceptType">
+		<xsl:param name="ConceptTypes"/>
+		<xsl:param name="InformationTypeFormatMappings"/>
+		<xsl:param name="ConceptTypeTarget"/>
+		<xsl:param name="IsForReference" select="false()"/>
+		<xsl:variable name="nestedIdentifiersFragment">
+			<xsl:for-each select="$ConceptTypeTarget/oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef">
+				<xsl:variable name="target" select="../../../child::*[@name=current()/@targetChild]"/>
+				<xsl:choose>
+					<xsl:when test="$target/self::oil:conceptTypeRef">
+						<xsl:call-template name="GetIdentifierAttributesForConceptType">
+							<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+							<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
+							<xsl:with-param name="ConceptTypeTarget" select="$ConceptTypes[@name=$target/@target]"/>
+							<xsl:with-param name="IsForReference" select="true()"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:when test="$target/self::oil:informationType">
+						<xsOut:attribute name="{$target/@name}" use="required" type="{$InformationTypeFormatMappings[@name=$target/@formatRef]/@target}"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">
+							<xsl:text>SANITY CHECK: An oil:conceptType should never be compositely identified by another oil:conceptType nested within it.</xsl:text>
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+			<!-- Is that supposed to be oil:informationType on the next line? Can an oil:singleRoleUniquenessConstraint occur inside an oil:conceptTypeRef? -->
+			<xsl:for-each select="$ConceptTypeTarget/oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']">
+				<xsOut:attribute name="{@name}" use="required" type="{$InformationTypeFormatMappings[@name=current()/@formatRef]/@target}"/>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="nestedIdentifiers" select="msxsl:node-set($nestedIdentifiersFragment)"/>
+		<xsl:choose>
+			<xsl:when test="not($IsForReference) and $nestedIdentifiers">
+				<xsOut:complexType name="{$ConceptTypeTarget/@name}Identifier">
+					<xsl:copy-of select="$nestedIdentifiers"/>
+				</xsOut:complexType>
+			</xsl:when>
+			<xsl:when test="$IsForReference">
+				<xsl:choose>
+					<xsl:when test="$nestedIdentifiers">
+						<xsl:copy-of select="$nestedIdentifiers"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:variable name="parentConceptType" select="$ConceptTypeTarget/parent::oil:conceptType"/>
+						<xsl:if test="not($parentConceptType)">
+							<xsl:message terminate="yes">
+								<xsl:text>SANITY CHECK: oil:conceptTypes must be identified by a preferred uniqueness constraint or by being nested within another oil:ConceptType.</xsl:text>
+							</xsl:message>
+						</xsl:if>
+						<xsl:call-template name="GetIdentifierAttributesForConceptType">
+							<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+							<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
+							<xsl:with-param name="ConceptTypeTarget" select="$parentConceptType"/>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="oil:conceptType" mode="GenerateMajorEntityElements">
+		<xsl:param name="ConceptTypes"/>
+		<xsl:param name="InformationTypeFormatMappings"/>
 		<!--<xsl:variable name="preferredIdentifier" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']/@name"/>-->
 		<!--Complex type definitions for each major Object Type-->
-		<xsOut:complexType name="{@name}_FACTS">
+		<xsOut:complexType name="{@name}Facts">
 			<xsOut:complexContent>
-				<xsOut:extension base="oxs:{@name}">
+				<xsOut:extension base="oxs:{@name}Identifier">
 					<xsOut:sequence>
 						<xsl:for-each select="oil:conceptType">
-							<xs:element name="{@name}" type="oxs:UNDONE">
+							<!--  -->
+							<xs:element name="{@name}" type="oxs:{@name}Identifier">
 							</xs:element>
 						</xsl:for-each>
 						<xsl:for-each select="oil:conceptTypeRef">
-							<xsOut:element name="{@name}" type="oxs:{@name}"/>
+							<xsOut:element name="{@name}" type="oxs:{@target}Identifier"/>
 						</xsl:for-each>
 						<!--<xsl:for-each select="oil:informationType">
 							<xsl:if test="@mandatory !='alethic'">
-								<xs:element name="{@name}" type="{$informationTypeFormatMappings[@name=current()/@formatRef]/@target}"/>
+								<xs:element name="{@name}" type="{$InformationTypeFormatMappings[@name=current()/@formatRef]/@target}"/>
 							</xsl:if>
 						</xsl:for-each>-->
 						<xsl:apply-templates select="oil:equalityConstraint"/>
@@ -295,7 +384,8 @@
 							<xsl:when test="oil:singleRoleUniquenessConstraint/@isPreferred='true'">
 							</xsl:when>
 							<xsl:otherwise>
-								<xsOut:attribute name="{@formatRef}" type="{$informationTypeFormatMappings[@name=current()/@formatRef]/@target}">
+								
+								<xsOut:attribute name="{@formatRef}" type="{$InformationTypeFormatMappings[@name=current()/@formatRef]/@target}">
 									<xsl:attribute name="use">
 										<xsl:choose>
 											<xsl:when test="@mandatory = 'alethic'">
@@ -328,11 +418,10 @@
 			</xsl:for-each>
 		</xsOut:choice>
 	</xsl:template>
-
 	<xsl:template match="oil:equalityConstraint">
 		<xsOut:sequence minOccurs="0">
 			<xsOut:annotation>
-				<xsOut:documentation>Equality Constraint(Both must exist if one exists)</xsOut:documentation>
+				<xsOut:documentation>Equality Constraint(All must exist if one exists)</xsOut:documentation>
 			</xsOut:annotation>
 			<xsl:for-each select="oil:roleSequence">
 				<xsl:variable name="elementName" select="oil:typeRef/@informationTypeTarget"/>
@@ -342,7 +431,6 @@
 			</xsl:for-each>
 		</xsOut:sequence>
 	</xsl:template>
-
 	<xsl:template match="oil:roleSequenceFrequencyConstraint">
 	</xsl:template>
 	<xsl:template match="oil:exclusionConstraint">
@@ -358,7 +446,6 @@
 			</xsl:for-each>
 		</xsOut:choice>
 	</xsl:template>
-
 	<xsl:template match="oil:valueConstraint">
 		<xsl:variable name="rangeCount" select="count(oil:range)"/>
 		<xsl:variable name="valueCount" select="count(oil:value)"/>
@@ -527,32 +614,9 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template name="GenerateDefinition">
-		<xsOut:element name="{@name}">
-			<xsOut:complexType>
-				<xsOut:all>
-					<xsl:for-each select="oil:conceptType">
-						<xsOut:element name="{@name}Elements">
-							<xsOut:complexType>
-								<xsOut:choice minOccurs="0" maxOccurs="unbounded">
-									<xsOut:element name="{@name}" type="oxs:{@name}_FACTS" />
-								</xsOut:choice>
-							</xsOut:complexType>
-						</xsOut:element>
-					</xsl:for-each>
-				</xsOut:all>
-			</xsOut:complexType>
-			<xsl:comment>KEY CONSTRAINTS</xsl:comment>
-			<xsl:call-template name="GenerateKeyConstraints"/>
-			<xsl:comment>UNIQUENESS CONSTRAINTS</xsl:comment>
-			<xsl:call-template name="GenerateUniquenessConstraints"/>
-			<xsl:comment>KEYREFS BETWEEN MAJOR OBJECT TYPE GROUPINGS</xsl:comment>
-			<xsl:call-template name="GenerateKeyRefs"/>
-		</xsOut:element>
-	</xsl:template>
 	<xsl:template name="GenerateKeyConstraints">
 		<xsl:for-each select="oil:conceptType">
-			<xsOut:key name="{@name}_KEY">
+			<xsOut:key name="{@name}Key">
 				<xsOut:selector xpath="oxs:{@name}Elements/oxs:{@name}"/>
 				<!-- complicated stuff to find the specified paths -->
 				<xsl:variable name="fieldPath">
@@ -571,7 +635,7 @@
 			<xsl:variable name="MyParentsName" select="../../@name"/>
 			<!--Only does one to one relationships-->
 			<xsl:if test="@isPreferred!='true'">
-				<xsOut:unique name="{$MyName}_UNIQUE">
+				<xsOut:unique name="{$MyName}Unique">
 					<xsOut:selector xpath="oxs:{/oil:model/@name}/oxs:{$MyParentsName}"/>
 					<xsOut:field xpath="oxs:{$MyName}"/>
 				</xsOut:unique>
@@ -582,7 +646,7 @@
 		<xsl:for-each select="oil:conceptType">
 			<xsl:for-each select="oil:conceptTypeRef">
 				<xsl:variable name="parentName" select="../@name"/>
-				<xsOut:keyref name="{$parentName}{@name}_REF" refer="{@target}_KEY">
+				<xsOut:keyref name="{$parentName}{@name}Ref" refer="{@target}Key">
 					<xs:selector xpath="oxs:{$parentName}Elements/oxs:{$parentName}"/>
 					<xsl:variable name="identifyer" select="../../oil:conceptType[@name=current()/@target]/oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']/@name"/>
 					<xs:field xpath="oxs:{@target}/@{$identifyer}"/>
