@@ -22,8 +22,8 @@ CREATE TABLE Review
 (
 	Car_vin NUMBER(38) NOT NULL, 
 	Rating_Nr_Integer NUMBER(38) CONSTRAINT Integer_Chk CHECK (Rating_Nr_Integer BETWEEN 1 AND 7) NOT NULL, 
-	Criteria_Name CHARACTER VARYING(64) NOT NULL, 
-	CONSTRAINT IUC26 PRIMARY KEY(Car_vin, Criteria_Name)
+	Criterion_Name CHARACTER VARYING(64) NOT NULL, 
+	CONSTRAINT IUC26 PRIMARY KEY(Car_vin, Criterion_Name)
 );
 
 CREATE TABLE PersonHasNickName

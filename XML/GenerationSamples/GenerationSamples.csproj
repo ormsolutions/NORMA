@@ -13,6 +13,10 @@
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>SampleModel.OIAL.xml</LastGenOutput>
     </None>
+    <None Include="PersonCountryDemo.orm">
+      <Generator>ORMCustomTool</Generator>
+      <LastGenOutput>PersonCountryDemo.OIAL.xml</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup Condition="Exists('SampleModel.orm')">
     <None Include="SampleModel.OIAL.xml">
@@ -76,6 +80,71 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PLiXtoVisualBasic</ORMGenerator>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
+    <None Include="PersonCountryDemo.OIAL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>ORMtoOIAL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.xsd">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoXSD</ORMGenerator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PersonCountryDemo.DCIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DDIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DCILtoDDIL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.SQLStandard.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.PostgreSQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.DB2.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoDB2</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.SQLServer.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLServer</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.Oracle.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DDILtoOracle</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.PLiX.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoPLiX</ORMGenerator>
+    </None>
+    <Compile Include="PersonCountryDemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>PLiXtoCSharp</ORMGenerator>
+    </Compile>
+    <Compile Include="PersonCountryDemo.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>PLiXtoVisualBasic</ORMGenerator>
     </Compile>
   </ItemGroup>

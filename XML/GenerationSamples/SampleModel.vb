@@ -1256,7 +1256,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Rating_Nr_Integer")
 			End If
 		End Sub
-		Public Custom Event Criteria_NameChanging As EventHandler
+		Public Custom Event Criterion_NameChanging As EventHandler
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1265,16 +1265,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
-		Protected Function RaiseCriteria_NameChangingEvent(ByVal newValue As String) As Boolean
+		Protected Function RaiseCriterion_NameChangingEvent(ByVal newValue As String) As Boolean
 			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Criteria_Name, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Criterion_Name, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event Criteria_NameChanged As EventHandler
+		Public Custom Event Criterion_NameChanged As EventHandler
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1283,21 +1283,21 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
-		Protected Sub RaiseCriteria_NameChangedEvent(ByVal oldValue As String)
+		Protected Sub RaiseCriterion_NameChangedEvent(ByVal oldValue As String)
 			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Criteria_Name), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
-				Me.RaisePropertyChangedEvent("Criteria_Name")
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Criterion_Name), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				Me.RaisePropertyChangedEvent("Criterion_Name")
 			End If
 		End Sub
 		Public MustOverride Property Car_vin() As Integer
 		Public MustOverride Property Rating_Nr_Integer() As Integer
-		Public MustOverride Property Criteria_Name() As String
+		Public MustOverride Property Criterion_Name() As String
 		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
 		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
-			Return String.Format(provider, "Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criteria_Name = ""{4}""{0}}}", Environment.NewLine, "", Me.Car_vin, Me.Rating_Nr_Integer, Me.Criteria_Name)
+			Return String.Format(provider, "Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criterion_Name = ""{4}""{0}}}", Environment.NewLine, "", Me.Car_vin, Me.Rating_Nr_Integer, Me.Criterion_Name)
 		End Function
 	End Class
 	#End Region
@@ -5111,7 +5111,7 @@ Namespace SampleModel
 		Function GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint23(ByVal Buyer As Person, ByVal CarSold_vin As Integer, ByVal Seller As Person) As PersonBoughtCarFromPersonOnDate
 		Function GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint24(ByVal SaleDate_YMD As Integer, ByVal Seller As Person, ByVal CarSold_vin As Integer) As PersonBoughtCarFromPersonOnDate
 		Function GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint25(ByVal CarSold_vin As Integer, ByVal SaleDate_YMD As Integer, ByVal Buyer As Person) As PersonBoughtCarFromPersonOnDate
-		Function GetReviewByInternalUniquenessConstraint26(ByVal Car_vin As Integer, ByVal Criteria_Name As String) As Review
+		Function GetReviewByInternalUniquenessConstraint26(ByVal Car_vin As Integer, ByVal Criterion_Name As String) As Review
 		Function GetPersonHasNickNameByInternalUniquenessConstraint33(ByVal NickName As String, ByVal Person As Person) As PersonHasNickName
 		Function GetChildPersonByExternalUniquenessConstraint3(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson) As ChildPerson
 		Function GetPersonByExternalUniquenessConstraint1(ByVal FirstName As String, ByVal Date_YMD As Integer) As Person
@@ -5123,7 +5123,7 @@ Namespace SampleModel
 		ReadOnly Property PersonDrivesCarCollection() As ReadOnlyCollection(Of PersonDrivesCar)
 		Function CreatePersonBoughtCarFromPersonOnDate(ByVal CarSold_vin As Integer, ByVal SaleDate_YMD As Integer, ByVal Buyer As Person, ByVal Seller As Person) As PersonBoughtCarFromPersonOnDate
 		ReadOnly Property PersonBoughtCarFromPersonOnDateCollection() As ReadOnlyCollection(Of PersonBoughtCarFromPersonOnDate)
-		Function CreateReview(ByVal Car_vin As Integer, ByVal Rating_Nr_Integer As Integer, ByVal Criteria_Name As String) As Review
+		Function CreateReview(ByVal Car_vin As Integer, ByVal Rating_Nr_Integer As Integer, ByVal Criterion_Name As String) As Review
 		ReadOnly Property ReviewCollection() As ReadOnlyCollection(Of Review)
 		Function CreatePersonHasNickName(ByVal NickName As String, ByVal Person As Person) As PersonHasNickName
 		ReadOnly Property PersonHasNickNameCollection() As ReadOnlyCollection(Of PersonHasNickName)
@@ -5386,9 +5386,9 @@ Namespace SampleModel
 			End If
 		End Sub
 		Private ReadOnly myInternalUniquenessConstraint26Dictionary As Dictionary(Of Tuple(Of Integer, String), Review) = New Dictionary(Of Tuple(Of Integer, String), Review)()
-		Public Function GetReviewByInternalUniquenessConstraint26(ByVal Car_vin As Integer, ByVal Criteria_Name As String) As Review Implements _
+		Public Function GetReviewByInternalUniquenessConstraint26(ByVal Car_vin As Integer, ByVal Criterion_Name As String) As Review Implements _
 			ISampleModelContext.GetReviewByInternalUniquenessConstraint26
-			Return Me.myInternalUniquenessConstraint26Dictionary(Tuple.CreateTuple(Of Integer, String)(Car_vin, Criteria_Name))
+			Return Me.myInternalUniquenessConstraint26Dictionary(Tuple.CreateTuple(Of Integer, String)(Car_vin, Criterion_Name))
 		End Function
 		Private Function OnInternalUniquenessConstraint26Changing(ByVal instance As Review, ByVal newValue As Tuple(Of Integer, String)) As Boolean
 			If newValue IsNot Nothing Then
@@ -5873,7 +5873,7 @@ Namespace SampleModel
 		#End Region
 		Private Function OnReviewCar_vinChanging(ByVal instance As Review, ByVal newValue As Integer) As Boolean
 			If instance IsNot Nothing Then
-				If Not (Me.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple(Of Integer, String)(newValue, instance.Criteria_Name))) Then
+				If Not (Me.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple(Of Integer, String)(newValue, instance.Criterion_Name))) Then
 					Return False
 				End If
 			End If
@@ -5882,16 +5882,16 @@ Namespace SampleModel
 		Private Overloads Sub OnReviewCar_vinChanged(ByVal instance As Review, ByVal oldValue As Nullable(Of Integer))
 			Dim InternalUniquenessConstraint26OldValueTuple As Tuple(Of Integer, String)
 			If oldValue IsNot Nothing Then
-				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple(Of Integer, String)(oldValue.Value, instance.Criteria_Name)
+				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple(Of Integer, String)(oldValue.Value, instance.Criterion_Name)
 			Else
 				InternalUniquenessConstraint26OldValueTuple = Nothing
 			End If
-			Me.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple(Of Integer, String)(instance.Car_vin, instance.Criteria_Name))
+			Me.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple(Of Integer, String)(instance.Car_vin, instance.Criterion_Name))
 		End Sub
 		Private Function OnReviewRating_Nr_IntegerChanging(ByVal instance As Review, ByVal newValue As Integer) As Boolean
 			Return True
 		End Function
-		Private Function OnReviewCriteria_NameChanging(ByVal instance As Review, ByVal newValue As String) As Boolean
+		Private Function OnReviewCriterion_NameChanging(ByVal instance As Review, ByVal newValue As String) As Boolean
 			If instance IsNot Nothing Then
 				If Not (Me.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple(Of Integer, String)(instance.Car_vin, newValue))) Then
 					Return False
@@ -5899,16 +5899,16 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Private Overloads Sub OnReviewCriteria_NameChanged(ByVal instance As Review, ByVal oldValue As String)
+		Private Overloads Sub OnReviewCriterion_NameChanged(ByVal instance As Review, ByVal oldValue As String)
 			Dim InternalUniquenessConstraint26OldValueTuple As Tuple(Of Integer, String)
 			If oldValue IsNot Nothing Then
 				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple(Of Integer, String)(instance.Car_vin, oldValue)
 			Else
 				InternalUniquenessConstraint26OldValueTuple = Nothing
 			End If
-			Me.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple(Of Integer, String)(instance.Car_vin, instance.Criteria_Name))
+			Me.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple(Of Integer, String)(instance.Car_vin, instance.Criterion_Name))
 		End Sub
-		Public Function CreateReview(ByVal Car_vin As Integer, ByVal Rating_Nr_Integer As Integer, ByVal Criteria_Name As String) As Review
+		Public Function CreateReview(ByVal Car_vin As Integer, ByVal Rating_Nr_Integer As Integer, ByVal Criterion_Name As String) As Review
 			If Not (Me.IsDeserializing) Then
 				If Not (Me.OnReviewCar_vinChanging(Nothing, Car_vin)) Then
 					Throw New ArgumentException("Argument failed constraint enforcement.", "Car_vin")
@@ -5916,11 +5916,11 @@ Namespace SampleModel
 				If Not (Me.OnReviewRating_Nr_IntegerChanging(Nothing, Rating_Nr_Integer)) Then
 					Throw New ArgumentException("Argument failed constraint enforcement.", "Rating_Nr_Integer")
 				End If
-				If Not (Me.OnReviewCriteria_NameChanging(Nothing, Criteria_Name)) Then
-					Throw New ArgumentException("Argument failed constraint enforcement.", "Criteria_Name")
+				If Not (Me.OnReviewCriterion_NameChanging(Nothing, Criterion_Name)) Then
+					Throw New ArgumentException("Argument failed constraint enforcement.", "Criterion_Name")
 				End If
 			End If
-			Return New ReviewCore(Me, Car_vin, Rating_Nr_Integer, Criteria_Name)
+			Return New ReviewCore(Me, Car_vin, Rating_Nr_Integer, Criterion_Name)
 		End Function
 		Private ReadOnly myReviewList As List(Of Review)
 		Private ReadOnly myReviewReadOnlyCollection As ReadOnlyCollection(Of Review)
@@ -5933,13 +5933,13 @@ Namespace SampleModel
 		#Region "ReviewCore"
 		Private NotInheritable Class ReviewCore
 			Inherits Review
-			Public Sub New(ByVal context As SampleModelContext, ByVal Car_vin As Integer, ByVal Rating_Nr_Integer As Integer, ByVal Criteria_Name As String)
+			Public Sub New(ByVal context As SampleModelContext, ByVal Car_vin As Integer, ByVal Rating_Nr_Integer As Integer, ByVal Criterion_Name As String)
 				Me.myContext = context
 				Me.myCar_vin = Car_vin
 				context.OnReviewCar_vinChanged(Me, Nothing)
 				Me.myRating_Nr_Integer = Rating_Nr_Integer
-				Me.myCriteria_Name = Criteria_Name
-				context.OnReviewCriteria_NameChanged(Me, Nothing)
+				Me.myCriterion_Name = Criterion_Name
+				context.OnReviewCriterion_NameChanged(Me, Nothing)
 				context.myReviewList.Add(Me)
 			End Sub
 			Private ReadOnly myContext As SampleModelContext
@@ -5983,22 +5983,22 @@ Namespace SampleModel
 					End If
 				End Set
 			End Property
-			Private myCriteria_Name As String
-			Public Overrides Property Criteria_Name() As String
+			Private myCriterion_Name As String
+			Public Overrides Property Criterion_Name() As String
 				Get
-					Return Me.myCriteria_Name
+					Return Me.myCriterion_Name
 				End Get
 				Set(ByVal Value As String)
 					If Value Is Nothing Then
 						Return
 					End If
-					If Not (Object.Equals(Me.Criteria_Name, Value)) Then
-						If Me.Context.OnReviewCriteria_NameChanging(Me, Value) Then
-							If MyBase.RaiseCriteria_NameChangingEvent(Value) Then
-								Dim oldValue As String = Me.Criteria_Name
-								Me.myCriteria_Name = Value
-								Me.Context.OnReviewCriteria_NameChanged(Me, oldValue)
-								MyBase.RaiseCriteria_NameChangedEvent(oldValue)
+					If Not (Object.Equals(Me.Criterion_Name, Value)) Then
+						If Me.Context.OnReviewCriterion_NameChanging(Me, Value) Then
+							If MyBase.RaiseCriterion_NameChangingEvent(Value) Then
+								Dim oldValue As String = Me.Criterion_Name
+								Me.myCriterion_Name = Value
+								Me.Context.OnReviewCriterion_NameChanged(Me, oldValue)
+								MyBase.RaiseCriterion_NameChangedEvent(oldValue)
 							End If
 						End If
 					End If

@@ -118,12 +118,12 @@
 		<dcl:column name="Rating_Nr_Integer" isNullable="false" isIdentity="false">
 			<dcl:domainDataTypeRef name="&quot;Integer&quot;" />
 		</dcl:column>
-		<dcl:column name="Criteria_Name" isNullable="false" isIdentity="false">
+		<dcl:column name="Criterion_Name" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="IUC26" isPrimary="true">
 			<dcl:columnRef name="Car_vin" />
-			<dcl:columnRef name="Criteria_Name" />
+			<dcl:columnRef name="Criterion_Name" />
 		</dcl:uniquenessConstraint>
 	</dcl:table>
 	<dcl:table name="PersonHasNickName">

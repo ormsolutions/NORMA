@@ -10176,7 +10176,7 @@
           </plx:callThis>
         </plx:branch>
       </plx:function>
-      <plx:event visibility="public" name="Criteria_NameChanging">
+      <plx:event visibility="public" name="Criterion_NameChanging">
         <plx:explicitDelegateType dataTypeName="EventHandler" />
         <plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
           <plx:passTypeParam dataTypeName=".string" />
@@ -10244,7 +10244,7 @@
           </plx:assign>
         </plx:onRemove>
       </plx:event>
-      <plx:function visibility="protected" name="RaiseCriteria_NameChangingEvent">
+      <plx:function visibility="protected" name="RaiseCriterion_NameChangingEvent">
         <plx:attribute dataTypeName="SuppressMessageAttribute">
           <plx:passParam>
             <plx:string>Microsoft.Design</plx:string>
@@ -10292,7 +10292,7 @@
               <plx:callNew dataTypeName="PropertyChangingEventArgs">
                 <plx:passTypeParam dataTypeName=".string" />
                 <plx:passParam>
-                  <plx:callThis type="property" name="Criteria_Name" />
+                  <plx:callThis type="property" name="Criterion_Name" />
                 </plx:passParam>
                 <plx:passParam>
                   <plx:nameRef type="parameter" name="newValue" />
@@ -10325,7 +10325,7 @@
           <plx:trueKeyword />
         </plx:return>
       </plx:function>
-      <plx:event visibility="public" name="Criteria_NameChanged">
+      <plx:event visibility="public" name="Criterion_NameChanged">
         <plx:explicitDelegateType dataTypeName="EventHandler" />
         <plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
           <plx:passTypeParam dataTypeName=".string" />
@@ -10393,7 +10393,7 @@
           </plx:assign>
         </plx:onRemove>
       </plx:event>
-      <plx:function visibility="protected" name="RaiseCriteria_NameChangedEvent">
+      <plx:function visibility="protected" name="RaiseCriterion_NameChangedEvent">
         <plx:attribute dataTypeName="SuppressMessageAttribute">
           <plx:passParam>
             <plx:string>Microsoft.Design</plx:string>
@@ -10448,7 +10448,7 @@
                   <plx:nameRef type="parameter" name="oldValue" />
                 </plx:passParam>
                 <plx:passParam>
-                  <plx:callThis type="property" name="Criteria_Name" />
+                  <plx:callThis type="property" name="Criterion_Name" />
                 </plx:passParam>
               </plx:callNew>
             </plx:passParam>
@@ -10469,7 +10469,7 @@
           </plx:callInstance>
           <plx:callThis name="RaisePropertyChangedEvent">
             <plx:passParam>
-              <plx:string>Criteria_Name</plx:string>
+              <plx:string>Criterion_Name</plx:string>
             </plx:passParam>
           </plx:callThis>
         </plx:branch>
@@ -10484,7 +10484,7 @@
         <plx:get />
         <plx:set />
       </plx:property>
-      <plx:property visibility="public" modifier="abstract" name="Criteria_Name">
+      <plx:property visibility="public" modifier="abstract" name="Criterion_Name">
         <plx:returns dataTypeName=".string" />
         <plx:get />
         <plx:set />
@@ -10508,7 +10508,7 @@
               <plx:nameRef type="parameter" name="provider" />
             </plx:passParam>
             <plx:passParam>
-              <plx:string>Review{0}{{{0}{1}Car_vin = "{2}",{0}{1}Rating_Nr_Integer = "{3}",{0}{1}Criteria_Name = "{4}"{0}}}</plx:string>
+              <plx:string>Review{0}{{{0}{1}Car_vin = "{2}",{0}{1}Rating_Nr_Integer = "{3}",{0}{1}Criterion_Name = "{4}"{0}}}</plx:string>
             </plx:passParam>
             <plx:passParam>
               <plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
@@ -10523,7 +10523,7 @@
               <plx:callThis accessor="this" type="property" name="Rating_Nr_Integer" />
             </plx:passParam>
             <plx:passParam>
-              <plx:callThis accessor="this" type="property" name="Criteria_Name" />
+              <plx:callThis accessor="this" type="property" name="Criterion_Name" />
             </plx:passParam>
           </plx:callStatic>
         </plx:return>
@@ -34955,7 +34955,7 @@
       </plx:function>
       <plx:function visibility="public" modifier="abstract" name="GetReviewByInternalUniquenessConstraint26">
         <plx:param name="Car_vin" dataTypeName=".i4" />
-        <plx:param name="Criteria_Name" dataTypeName=".string" />
+        <plx:param name="Criterion_Name" dataTypeName=".string" />
         <plx:returns dataTypeName="Review" />
       </plx:function>
       <plx:function visibility="public" modifier="abstract" name="GetPersonHasNickNameByInternalUniquenessConstraint33">
@@ -35020,7 +35020,7 @@
       <plx:function visibility="public" modifier="abstract" name="CreateReview">
         <plx:param name="Car_vin" dataTypeName=".i4" />
         <plx:param name="Rating_Nr_Integer" dataTypeName=".i4" />
-        <plx:param name="Criteria_Name" dataTypeName=".string" />
+        <plx:param name="Criterion_Name" dataTypeName=".string" />
         <plx:returns dataTypeName="Review" />
       </plx:function>
       <plx:property visibility="public" modifier="abstract" name="ReviewCollection">
@@ -36623,7 +36623,7 @@
       <plx:function visibility="public" name="GetReviewByInternalUniquenessConstraint26">
         <plx:interfaceMember memberName="GetReviewByInternalUniquenessConstraint26" dataTypeName="ISampleModelContext" />
         <plx:param name="Car_vin" dataTypeName=".i4" />
-        <plx:param name="Criteria_Name" dataTypeName=".string" />
+        <plx:param name="Criterion_Name" dataTypeName=".string" />
         <plx:returns dataTypeName="Review" />
         <plx:return>
           <plx:callInstance type="indexerCall" name=".implied">
@@ -36638,7 +36638,7 @@
                   <plx:nameRef type="parameter" name="Car_vin" />
                 </plx:passParam>
                 <plx:passParam>
-                  <plx:nameRef type="parameter" name="Criteria_Name" />
+                  <plx:nameRef type="parameter" name="Criterion_Name" />
                 </plx:passParam>
               </plx:callStatic>
             </plx:passParam>
@@ -40104,7 +40104,7 @@
                         <plx:nameRef type="parameter" name="newValue" />
                       </plx:passParam>
                       <plx:passParam>
-                        <plx:callInstance type="property" name="Criteria_Name">
+                        <plx:callInstance type="property" name="Criterion_Name">
                           <plx:callObject>
                             <plx:nameRef type="parameter" name="instance" />
                           </plx:callObject>
@@ -40160,7 +40160,7 @@
                   </plx:callInstance>
                 </plx:passParam>
                 <plx:passParam>
-                  <plx:callInstance type="property" name="Criteria_Name">
+                  <plx:callInstance type="property" name="Criterion_Name">
                     <plx:callObject>
                       <plx:nameRef type="parameter" name="instance" />
                     </plx:callObject>
@@ -40199,7 +40199,7 @@
                 </plx:callInstance>
               </plx:passParam>
               <plx:passParam>
-                <plx:callInstance type="property" name="Criteria_Name">
+                <plx:callInstance type="property" name="Criterion_Name">
                   <plx:callObject>
                     <plx:nameRef type="parameter" name="instance" />
                   </plx:callObject>
@@ -40217,7 +40217,7 @@
           <plx:trueKeyword />
         </plx:return>
       </plx:function>
-      <plx:function visibility="private" name="OnReviewCriteria_NameChanging">
+      <plx:function visibility="private" name="OnReviewCriterion_NameChanging">
         <plx:param name="instance" dataTypeName="Review" />
         <plx:param name="newValue" dataTypeName=".string" />
         <plx:returns dataTypeName=".boolean" />
@@ -40267,7 +40267,7 @@
           <plx:trueKeyword />
         </plx:return>
       </plx:function>
-      <plx:function visibility="private" overload="true" name="OnReviewCriteria_NameChanged">
+      <plx:function visibility="private" overload="true" name="OnReviewCriterion_NameChanged">
         <plx:param name="instance" dataTypeName="Review" />
         <plx:param name="oldValue" dataTypeName=".string" />
         <plx:local name="InternalUniquenessConstraint26OldValueTuple" dataTypeName="Tuple">
@@ -40336,7 +40336,7 @@
                 </plx:callInstance>
               </plx:passParam>
               <plx:passParam>
-                <plx:callInstance type="property" name="Criteria_Name">
+                <plx:callInstance type="property" name="Criterion_Name">
                   <plx:callObject>
                     <plx:nameRef type="parameter" name="instance" />
                   </plx:callObject>
@@ -40349,7 +40349,7 @@
       <plx:function visibility="public" name="CreateReview">
         <plx:param name="Car_vin" dataTypeName=".i4" />
         <plx:param name="Rating_Nr_Integer" dataTypeName=".i4" />
-        <plx:param name="Criteria_Name" dataTypeName=".string" />
+        <plx:param name="Criterion_Name" dataTypeName=".string" />
         <plx:returns dataTypeName="Review" />
         <plx:branch>
           <plx:condition>
@@ -40408,12 +40408,12 @@
           <plx:branch>
             <plx:condition>
               <plx:unaryOperator type="booleanNot">
-                <plx:callThis accessor="this" type="methodCall" name="OnReviewCriteria_NameChanging">
+                <plx:callThis accessor="this" type="methodCall" name="OnReviewCriterion_NameChanging">
                   <plx:passParam>
                     <plx:nullKeyword />
                   </plx:passParam>
                   <plx:passParam>
-                    <plx:nameRef type="parameter" name="Criteria_Name" />
+                    <plx:nameRef type="parameter" name="Criterion_Name" />
                   </plx:passParam>
                 </plx:callThis>
               </plx:unaryOperator>
@@ -40424,7 +40424,7 @@
                   <plx:string>Argument failed constraint enforcement.</plx:string>
                 </plx:passParam>
                 <plx:passParam>
-                  <plx:string>Criteria_Name</plx:string>
+                  <plx:string>Criterion_Name</plx:string>
                 </plx:passParam>
               </plx:callNew>
             </plx:throw>
@@ -40442,7 +40442,7 @@
               <plx:nameRef type="parameter" name="Rating_Nr_Integer" />
             </plx:passParam>
             <plx:passParam>
-              <plx:nameRef type="parameter" name="Criteria_Name" />
+              <plx:nameRef type="parameter" name="Criterion_Name" />
             </plx:passParam>
           </plx:callNew>
         </plx:return>
@@ -40476,7 +40476,7 @@
           <plx:param name="context" dataTypeName="SampleModelContext" />
           <plx:param name="Car_vin" dataTypeName=".i4" />
           <plx:param name="Rating_Nr_Integer" dataTypeName=".i4" />
-          <plx:param name="Criteria_Name" dataTypeName=".string" />
+          <plx:param name="Criterion_Name" dataTypeName=".string" />
           <plx:assign>
             <plx:left>
               <plx:callThis accessor="this" type="field" name="myContext" />
@@ -40514,13 +40514,13 @@
           </plx:assign>
           <plx:assign>
             <plx:left>
-              <plx:callThis accessor="this" type="field" name="myCriteria_Name" />
+              <plx:callThis accessor="this" type="field" name="myCriterion_Name" />
             </plx:left>
             <plx:right>
-              <plx:nameRef type="parameter" name="Criteria_Name" />
+              <plx:nameRef type="parameter" name="Criterion_Name" />
             </plx:right>
           </plx:assign>
-          <plx:callInstance type="methodCall" name="OnReviewCriteria_NameChanged">
+          <plx:callInstance type="methodCall" name="OnReviewCriterion_NameChanged">
             <plx:callObject>
               <plx:nameRef type="parameter" name="context" />
             </plx:callObject>
@@ -40698,12 +40698,12 @@
             </plx:branch>
           </plx:set>
         </plx:property>
-        <plx:field visibility="private" readOnly="false" name="myCriteria_Name" dataTypeName=".string" />
-        <plx:property visibility="public" modifier="override" name="Criteria_Name">
+        <plx:field visibility="private" readOnly="false" name="myCriterion_Name" dataTypeName=".string" />
+        <plx:property visibility="public" modifier="override" name="Criterion_Name">
           <plx:returns dataTypeName=".string" />
           <plx:get>
             <plx:return>
-              <plx:callThis accessor="this" type="field" name="myCriteria_Name" />
+              <plx:callThis accessor="this" type="field" name="myCriterion_Name" />
             </plx:return>
           </plx:get>
           <plx:set>
@@ -40725,7 +40725,7 @@
                 <plx:unaryOperator type="booleanNot">
                   <plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
                     <plx:passParam>
-                      <plx:callThis accessor="this" type="property" name="Criteria_Name" />
+                      <plx:callThis accessor="this" type="property" name="Criterion_Name" />
                     </plx:passParam>
                     <plx:passParam>
                       <plx:valueKeyword />
@@ -40735,7 +40735,7 @@
               </plx:condition>
               <plx:branch>
                 <plx:condition>
-                  <plx:callInstance type="methodCall" name="OnReviewCriteria_NameChanging">
+                  <plx:callInstance type="methodCall" name="OnReviewCriterion_NameChanging">
                     <plx:callObject>
                       <plx:callThis accessor="this" type="property" name="Context" />
                     </plx:callObject>
@@ -40749,7 +40749,7 @@
                 </plx:condition>
                 <plx:branch>
                   <plx:condition>
-                    <plx:callThis accessor="base" type="methodCall" name="RaiseCriteria_NameChangingEvent">
+                    <plx:callThis accessor="base" type="methodCall" name="RaiseCriterion_NameChangingEvent">
                       <plx:passParam>
                         <plx:valueKeyword />
                       </plx:passParam>
@@ -40757,18 +40757,18 @@
                   </plx:condition>
                   <plx:local name="oldValue" dataTypeName=".string">
                     <plx:initialize>
-                      <plx:callThis accessor="this" type="property" name="Criteria_Name" />
+                      <plx:callThis accessor="this" type="property" name="Criterion_Name" />
                     </plx:initialize>
                   </plx:local>
                   <plx:assign>
                     <plx:left>
-                      <plx:callThis accessor="this" type="field" name="myCriteria_Name" />
+                      <plx:callThis accessor="this" type="field" name="myCriterion_Name" />
                     </plx:left>
                     <plx:right>
                       <plx:valueKeyword />
                     </plx:right>
                   </plx:assign>
-                  <plx:callInstance name="OnReviewCriteria_NameChanged">
+                  <plx:callInstance name="OnReviewCriterion_NameChanged">
                     <plx:callObject>
                       <plx:callThis accessor="this" type="property" name="Context" />
                     </plx:callObject>
@@ -40779,7 +40779,7 @@
                       <plx:nameRef type="local" name="oldValue" />
                     </plx:passParam>
                   </plx:callInstance>
-                  <plx:callThis accessor="base" type="methodCall" name="RaiseCriteria_NameChangedEvent">
+                  <plx:callThis accessor="base" type="methodCall" name="RaiseCriterion_NameChangedEvent">
                     <plx:passParam>
                       <plx:nameRef type="local" name="oldValue" />
                     </plx:passParam>

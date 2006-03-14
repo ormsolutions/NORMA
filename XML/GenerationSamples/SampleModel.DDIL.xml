@@ -162,7 +162,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="Criteria_Name">
+		<ddl:columnDefinition name="Criterion_Name">
 			<ddt:characterString type="CHARACTER VARYING" length="64" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
@@ -172,7 +172,7 @@
 			<dep:constraintNameDefinition name="IUC26" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Car_vin" />
-				<ddl:column name="Criteria_Name" />
+				<ddl:column name="Criterion_Name" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>

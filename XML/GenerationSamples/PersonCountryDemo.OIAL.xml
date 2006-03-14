@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<oil:model name="PersonCountryDemo" sourceRef="_BDFAF3F3-6FE2-4184-B30B-EF969F7C9578" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:odt="http://schemas.orm.net/ORMDataTypes">
+	<oil:informationTypeFormats>
+		<!--These may change in the future once they are integrated into the core ORM model file.-->
+		<odt:identity name="Person_id" />
+		<odt:string name="Title" maxLength="4">
+			<odt:enumeration value="Dr" />
+			<odt:enumeration value="Prof" />
+			<odt:enumeration value="Mr" />
+			<odt:enumeration value="Mrs" />
+			<odt:enumeration value="Miss" />
+			<odt:enumeration value="Ms" />
+		</odt:string>
+		<odt:string name="FirstName" maxLength="30" />
+		<odt:string name="LastName" maxLength="30" />
+		<odt:string name="Country_name" maxLength="20" />
+		<odt:string name="Region_code" maxLength="8" minLength="8" />
+	</oil:informationTypeFormats>
+	<oil:conceptType name="Person" sourceRef="_08FCB217-4D5A-4D6E-BB08-033359BFEF51">
+		<oil:informationType name="Person_id" formatRef="Person_id" mandatory="alethic" sourceRef="_C9C8AA4D-9160-41E4-B050-4FE4271B2F56" sourceRoleRef="_D6CB6642-E6C6-42D3-838E-1E81413CE968">
+			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint1" sourceRef="_ACBCF0FD-1072-4C0F-A1D3-12E53B16F4A9" modality="alethic" isPreferred="true" />
+		</oil:informationType>
+		<oil:conceptTypeRef name="Country" target="Country" oppositeName="Person" mandatory="false" sourceRoleRef="_96C2FA33-F911-422A-B9DA-399741C8769A" />
+		<oil:informationType name="LastName" formatRef="LastName" mandatory="alethic" sourceRef="_9696890E-CAB2-40E6-AF81-BFD75014755C" sourceRoleRef="_DF01EC20-FD1D-4DEF-BEDF-A1A65EF966D6" />
+		<oil:informationType name="FirstName" formatRef="FirstName" mandatory="alethic" sourceRef="_E401E3A9-94DE-49BE-A6BB-378A3F16CDFF" sourceRoleRef="_63C0EF52-DF3E-4984-A888-43512487555B" />
+		<oil:informationType name="Title" formatRef="Title" mandatory="false" sourceRef="_9609012A-400F-44E9-B7DB-CAAF2D68D432" sourceRoleRef="_955014A5-DADF-4D4F-9E5B-6B82F6537E6C" />
+	</oil:conceptType>
+	<oil:conceptType name="Country" sourceRef="_F074FCA1-6C15-4349-BC79-62CF67C98BC7">
+		<oil:informationType name="Country_name" formatRef="Country_name" mandatory="alethic" sourceRef="_17006172-BF0E-40E5-B6A8-2992A1408C7E" sourceRoleRef="_FF8BF199-9A80-4EE8-B7E6-82C5879ECFC3">
+			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint3" sourceRef="_ABA06640-F54F-47F9-B0E2-6FDB32F54EEB" modality="alethic" isPreferred="true" />
+		</oil:informationType>
+		<oil:informationType name="Region_Region_code" formatRef="Region_code" mandatory="false" sourceRef="_457DD380-01ED-47E2-8C6A-3333228F3F3F" sourceRoleRef="_21E2D607-1A05-4562-9316-823C47A1207D" />
+	</oil:conceptType>
+</oil:model>

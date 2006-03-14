@@ -119,7 +119,7 @@
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_F7D0D7B5-1E07-4524-A21A-7B58E7CAE316" />
 			</orm:EntityType>
-			<orm:EntityType id="_C93BB2C9-7F70-49DE-8295-07997960D5F3" Name="Criteria" IsExternal="false" IsIndependent="false" _ReferenceMode="Name">
+			<orm:EntityType id="_C93BB2C9-7F70-49DE-8295-07997960D5F3" Name="Criterion" IsExternal="false" IsIndependent="false" _ReferenceMode="Name">
 				<orm:PlayedRoles>
 					<orm:Role ref="_1AE48A9B-5F7B-4AFF-81B6-595607EBB940" />
 					<orm:Role ref="_B8FCF342-1134-4FE2-8B10-5DF944662B07" />
@@ -2382,7 +2382,7 @@
 			<ormDiagram:ObjectTypeShape id="_7E293592-458B-42D3-A183-EE2A404A3AAF" IsExpanded="true" AbsoluteBounds="6.25, 5.7875000000000005, 0.60409276723861693, 0.2495030266046524" ExpandRefMode="true">
 				<ormDiagram:Subject ref="_65DBE376-74EA-40A8-8753-8A8CA24259C8" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:ObjectTypeShape id="_ABB92C10-7211-436A-9C3B-10456E146686" IsExpanded="true" AbsoluteBounds="7.7250000000000005, 5.275, 0.65540977358818053, 0.37900605320930481" ExpandRefMode="false">
+			<ormDiagram:ObjectTypeShape id="_ABB92C10-7211-436A-9C3B-10456E146686" IsExpanded="true" AbsoluteBounds="7.7250000000000005, 5.275, 0.71356271743774413, 0.37900605320930481" ExpandRefMode="false">
 				<ormDiagram:Subject ref="_C93BB2C9-7F70-49DE-8295-07997960D5F3" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape id="_F2A009DF-EAEC-43C3-AAC1-93014C89C0A9" IsExpanded="true" AbsoluteBounds="6.5375000000000005, 6.2375000000000007, 0.33388888899236918, 0.19388888899236917" ConstraintDisplayPosition="Top">

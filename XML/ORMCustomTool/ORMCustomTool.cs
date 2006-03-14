@@ -55,6 +55,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string ITEMMETADATA_DESIGNTIME = "DesignTime";
 		private const string ITEMGROUP_CONDITIONSTART = "Exists('";
 		private const string ITEMGROUP_CONDITIONEND = "')";
+		private const string DEBUG_ERROR_CATEGORY = "ORMCustomTool";
 
 		/// <summary>
 		/// Instantiates a new instance of <see cref="ORMCustomTool"/>.
@@ -93,7 +94,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		#region Private Helper Methods
 		private static void ReportError(string message, Exception ex)
 		{
-			Debug.WriteLine(message);
+			ReportError(message, DEBUG_ERROR_CATEGORY, ex);
+		}
+		private static void ReportError(string message, string category, Exception ex)
+		{
+			Debug.WriteLine(message, category);
 			Debug.Indent();
 			Debug.WriteLine(ex);
 			Debug.Unindent();
@@ -332,81 +337,128 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				// the format required by one of the BuildItems that do exist.
 				for (int i = 0; ormBuildItems.Count > 0 && i < 100; i++)
 				{
-				START_INNER_LOOP:
+				LABEL_START_INNER_LOOP:
 					// TODO: This would perform *much* better if we did real dependency analysis and scheduling for RequiresInputFormats
 					for (int j = 0; j < ormBuildItems.Count; j++)
 					{
 						BuildItem buildItem = ormBuildItems[j];
-						IORMGenerator ormGenerator = ORMCustomTool.ORMGenerators[buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR)];
-						ReadOnlyCollection<string> requiresInputFormats = ormGenerator.RequiresInputFormats;
-						bool missingInputFormat = false;
-						foreach (string inputFormat in requiresInputFormats)
+						IORMGenerator ormGenerator;
+						if (!ORMCustomTool.ORMGenerators.TryGetValue(buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR), out ormGenerator))
 						{
-							if (!outputFormatStreams.ContainsKey(inputFormat))
-							{
-								missingInputFormat = true;
-								break;
-							}
-						}
-						if (missingInputFormat)
-						{
-							// Go on to the next generator, we'll (probably) come back to this one
-							continue;
-						}
-						else
-						{
-							MemoryStream outputStream = new MemoryStream();
-							try
-							{
-								ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
-							}
-							catch (Exception ex)
-							{
-								// TODO: Localize error message.
-								byte[] errorOutput = Encoding.UTF8.GetBytes(String.Concat("Error while executing transform: \"", ormGenerator.OfficialName, "\".", Environment.NewLine, Environment.NewLine, ex.ToString()));
-								outputStream.Write(errorOutput, 0, errorOutput.Length);
-							}
-							Stream readonlyOutputStream = new ReadOnlyStream(outputStream);
-							outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, readonlyOutputStream);
-							
-							// Write the result out to the appropriate file...
-							int outputStreamLength = (int)outputStream.Length;
-							string fullItemPath = Path.Combine(projectDirectory, buildItem.FinalItemSpec);
-							IVsTextView textView = this.GetTextViewForDocument(fullItemPath);
-							IVsTextLines textLines;
-							if (textView != null && (textLines = GetTextLinesForTextView(textView)) != null)
-							{
-								object editPointStartObject;
-								ErrorHandler.ThrowOnFailure(textLines.CreateEditPoint(0, 0, out editPointStartObject));
-								EnvDTE.EditPoint editPointStart = editPointStartObject as EnvDTE.EditPoint;
-								Debug.Assert(editPointStart != null);
-								EnvDTE.EditPoint editPointEnd = editPointStart.CreateEditPoint();
-								editPointEnd.EndOfDocument();
-								// Reset outputStream to the beginning of the stream...
-								outputStream.Seek(0, SeekOrigin.Begin);
-								// We're using the readonlyOutputStream here so that the StreamReader can't close the real stream
-								using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, outputStreamLength))
-								{
-									// We're not passing any flags to ReplaceText, because the output of the generators should
-									// be the same whether or not the user has the generated document open
-									editPointStart.ReplaceText(editPointEnd, streamReader.ReadToEnd(), 0);
-								}
-								VsShellUtilities.SaveFileIfDirty(textView);
-							}
-							else
-							{
-								using (FileStream fileStream = File.Create(fullItemPath, outputStreamLength, FileOptions.SequentialScan))
-								{
-									fileStream.Write(outputStream.GetBuffer(), 0, outputStreamLength);
-								}
-							}
-
-							// Reset outputStream to the beginning of the stream...
-							outputStream.Seek(0, SeekOrigin.Begin);
+							// TODO: Localize error message.
+							pGenerateProgress.GeneratorError(1, 0, String.Concat("Skipping generation of \"", buildItem.FinalItemSpec, "\" because IORMGenerator \"", buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR), "\" could not be found."),uint.MaxValue, uint.MaxValue);
 							ormBuildItems.Remove(buildItem);
 							pGenerateProgress.Progress(++progressCurrent, progressTotal);
 							// Because we removed buildItem, we need to restart the loop...
-							goto START_INNER_LOOP;
+							goto LABEL_START_INNER_LOOP;
+						}
+						try
+						{
+							ReadOnlyCollection<string> requiresInputFormats = ormGenerator.RequiresInputFormats;
+							bool missingInputFormat = false;
+							foreach (string inputFormat in requiresInputFormats)
+							{
+								if (!outputFormatStreams.ContainsKey(inputFormat))
+								{
+									missingInputFormat = true;
+									break;
+								}
+							}
+							if (missingInputFormat)
+							{
+								// Go on to the next generator, we'll (probably) come back to this one
+								continue;
+							}
+							else
+							{
+								MemoryStream outputStream = new MemoryStream();
+								try
+								{
+									ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
+								}
+								catch (Exception ex)
+								{
+									// TODO: Localize error messages.
+									pGenerateProgress.GeneratorError(1, 0, String.Concat("Error occurred while executing transform \"", ormGenerator.OfficialName, "\". See \"", buildItem.FinalItemSpec, "\" for more information."), uint.MaxValue, uint.MaxValue);
+									byte[] errorOutput = Encoding.UTF8.GetBytes(String.Concat("Error while executing transform: \"", ormGenerator.OfficialName, "\".", Environment.NewLine, Environment.NewLine, ex.ToString()));
+									outputStream.Write(errorOutput, 0, errorOutput.Length);
+								}
+								Stream readonlyOutputStream = new ReadOnlyStream(outputStream);
+								outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, readonlyOutputStream);
+
+								// Write the result out to the appropriate file...
+								int outputStreamLength = (int)outputStream.Length;
+								string fullItemPath = Path.Combine(projectDirectory, buildItem.FinalItemSpec);
+								IVsTextView textView = this.GetTextViewForDocument(fullItemPath);
+								IVsTextLines textLines;
+								if (textView != null && (textLines = GetTextLinesForTextView(textView)) != null)
+								{
+									object editPointStartObject;
+									ErrorHandler.ThrowOnFailure(textLines.CreateEditPoint(0, 0, out editPointStartObject));
+									EnvDTE.EditPoint editPointStart = editPointStartObject as EnvDTE.EditPoint;
+									Debug.Assert(editPointStart != null);
+									EnvDTE.EditPoint editPointEnd = editPointStart.CreateEditPoint();
+									editPointEnd.EndOfDocument();
+									// Reset outputStream to the beginning of the stream...
+									outputStream.Seek(0, SeekOrigin.Begin);
+									// We're using the readonlyOutputStream here so that the StreamReader can't close the real stream
+									using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, outputStreamLength))
+									{
+										// We're not passing any flags to ReplaceText, because the output of the generators should
+										// be the same whether or not the user has the generated document open
+										editPointStart.ReplaceText(editPointEnd, streamReader.ReadToEnd(), 0);
+									}
+									VsShellUtilities.SaveFileIfDirty(textView);
+								}
+								else
+								{
+									bool retriedOpenFileStream = false;
+								LABEL_OPEN_FILESTREAM:
+									FileStream fileStream = null;
+									try
+									{
+										fileStream = File.Create(fullItemPath, outputStreamLength, FileOptions.SequentialScan);
+										fileStream.Write(outputStream.GetBuffer(), 0, outputStreamLength);
+									}
+									catch (IOException)
+									{
+										// Something seems to keep the files locked occasionally (especially the larger ones), so
+										// retry once after a brief wait if we get an IOException the first time we try to to open it.
+										if (!retriedOpenFileStream)
+										{
+											retriedOpenFileStream = true;
+											System.Threading.Thread.Sleep(150);
+											goto LABEL_OPEN_FILESTREAM;
+										}
+										throw;
+									}
+									finally
+									{
+										if (fileStream != null)
+										{
+											fileStream.Close();
+										}
+									}
+								}
+
+								// Reset outputStream to the beginning of the stream...
+								outputStream.Seek(0, SeekOrigin.Begin);
+								ormBuildItems.Remove(buildItem);
+								pGenerateProgress.Progress(++progressCurrent, progressTotal);
+								// Because we removed buildItem, we need to restart the loop...
+								goto LABEL_START_INNER_LOOP;
+							}
+						}
+						catch (Exception ex)
+						{
+							// TODO: Localize error message.
+							string errorMessage = String.Concat("Error occurred during generation of \"", buildItem.FinalItemSpec, "\" (via IORMGenerator \"", ormGenerator.OfficialName, "\"):", Environment.NewLine, Environment.NewLine, ex.ToString());
+							Debug.WriteLine(errorMessage, DEBUG_ERROR_CATEGORY);
+							pGenerateProgress.GeneratorError(1, 0, errorMessage, uint.MaxValue, uint.MaxValue);
+							ormBuildItems.Remove(buildItem);
+							pGenerateProgress.Progress(++progressCurrent, progressTotal);
+							// Because we removed buildItem, we need to restart the loop...
+							goto LABEL_START_INNER_LOOP;
 						}
 					}
 				}

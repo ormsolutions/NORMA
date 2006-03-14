@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dcl:schema name="PersonCountryDemo" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP">
+	<dcl:domainDataType name="Title">
+		<dcl:predefinedDataType name="CHARACTER VARYING" precision="4" />
+		<dcl:checkConstraint name="Title_Chk">
+			<dep:inPredicate type="IN">
+				<dep:valueKeyword />
+				<ddt:characterStringLiteral value="Dr" />
+				<ddt:characterStringLiteral value="Prof" />
+				<ddt:characterStringLiteral value="Mr" />
+				<ddt:characterStringLiteral value="Mrs" />
+				<ddt:characterStringLiteral value="Miss" />
+				<ddt:characterStringLiteral value="Ms" />
+			</dep:inPredicate>
+		</dcl:checkConstraint>
+	</dcl:domainDataType>
+	<dcl:domainDataType name="Region_code">
+		<dcl:predefinedDataType name="CHARACTER" precision="8" />
+		<dcl:checkConstraint name="Region_code_Chk">
+			<dep:comparisonPredicate operator="greaterThanOrEquals">
+				<dep:parenthesizedValueExpression>
+					<dep:charLengthExpression>
+						<dep:trimFunction specification="BOTH">
+							<dep:trimSource>
+								<dep:valueKeyword />
+							</dep:trimSource>
+						</dep:trimFunction>
+					</dep:charLengthExpression>
+				</dep:parenthesizedValueExpression>
+				<ddt:exactNumericLiteral value="8" />
+			</dep:comparisonPredicate>
+		</dcl:checkConstraint>
+	</dcl:domainDataType>
+	<dcl:table name="Person">
+		<dcl:column name="Person_id" isNullable="false" isIdentity="true">
+			<dcl:predefinedDataType name="BIGINT" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="IUC1" isPrimary="true">
+			<dcl:columnRef name="Person_id" />
+		</dcl:uniquenessConstraint>
+		<dcl:column name="LastName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+		</dcl:column>
+		<dcl:column name="FirstName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="30" />
+		</dcl:column>
+		<dcl:column name="Title" isNullable="true" isIdentity="false">
+			<dcl:domainDataTypeRef name="Title" />
+		</dcl:column>
+		<dcl:column isNullable="true" isIdentity="false" name="Cntry_Cntry_nm">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+		</dcl:column>
+		<dcl:referenceConstraint name="Country_FK" targetTable="Country">
+			<dcl:columnRef sourceName="Cntry_Cntry_nm" targetName="Country_name" />
+		</dcl:referenceConstraint>
+	</dcl:table>
+	<dcl:table name="Country">
+		<dcl:column name="Country_name" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" precision="20" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="IUC3" isPrimary="true">
+			<dcl:columnRef name="Country_name" />
+		</dcl:uniquenessConstraint>
+		<dcl:column name="Region_Region_code" isNullable="true" isIdentity="false">
+			<dcl:domainDataTypeRef name="Region_code" />
+		</dcl:column>
+	</dcl:table>
+</dcl:schema>

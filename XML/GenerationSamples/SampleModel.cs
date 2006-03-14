@@ -1653,7 +1653,7 @@ namespace SampleModel
 				this.RaisePropertyChangedEvent("Rating_Nr_Integer");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<string>> Criteria_NameChanging
+		public event EventHandler<PropertyChangingEventArgs<string>> Criterion_NameChanging
 		{
 			add
 			{
@@ -1665,18 +1665,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
-		protected bool RaiseCriteria_NameChangingEvent(string newValue)
+		protected bool RaiseCriterion_NameChangingEvent(string newValue)
 		{
 			EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<string>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Criteria_Name, newValue);
+				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Criterion_Name, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<string>> Criteria_NameChanged
+		public event EventHandler<PropertyChangedEventArgs<string>> Criterion_NameChanged
 		{
 			add
 			{
@@ -1688,13 +1688,13 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
-		protected void RaiseCriteria_NameChangedEvent(string oldValue)
+		protected void RaiseCriterion_NameChangedEvent(string oldValue)
 		{
 			EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<string>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Criteria_Name), new System.AsyncCallback(eventHandler.EndInvoke), null);
-				this.RaisePropertyChangedEvent("Criteria_Name");
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Criterion_Name), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				this.RaisePropertyChangedEvent("Criterion_Name");
 			}
 		}
 		public abstract int Car_vin
@@ -1707,7 +1707,7 @@ namespace SampleModel
 			get;
 			set;
 		}
-		public abstract string Criteria_Name
+		public abstract string Criterion_Name
 		{
 			get;
 			set;
@@ -1718,7 +1718,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criteria_Name = ""{4}""{0}}}", Environment.NewLine, "", this.Car_vin, this.Rating_Nr_Integer, this.Criteria_Name);
+			return string.Format(provider, @"Review{0}{{{0}{1}Car_vin = ""{2}"",{0}{1}Rating_Nr_Integer = ""{3}"",{0}{1}Criterion_Name = ""{4}""{0}}}", Environment.NewLine, "", this.Car_vin, this.Rating_Nr_Integer, this.Criterion_Name);
 		}
 	}
 	#endregion // Review
@@ -7140,7 +7140,7 @@ namespace SampleModel
 		PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint23(Person Buyer, int CarSold_vin, Person Seller);
 		PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint24(int SaleDate_YMD, Person Seller, int CarSold_vin);
 		PersonBoughtCarFromPersonOnDate GetPersonBoughtCarFromPersonOnDateByInternalUniquenessConstraint25(int CarSold_vin, int SaleDate_YMD, Person Buyer);
-		Review GetReviewByInternalUniquenessConstraint26(int Car_vin, string Criteria_Name);
+		Review GetReviewByInternalUniquenessConstraint26(int Car_vin, string Criterion_Name);
 		PersonHasNickName GetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person);
 		ChildPerson GetChildPersonByExternalUniquenessConstraint3(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother);
 		Person GetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD);
@@ -7158,7 +7158,7 @@ namespace SampleModel
 		{
 			get;
 		}
-		Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criteria_Name);
+		Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criterion_Name);
 		ReadOnlyCollection<Review> ReviewCollection
 		{
 			get;
@@ -7501,9 +7501,9 @@ namespace SampleModel
 			}
 		}
 		private readonly Dictionary<Tuple<int, string>, Review> myInternalUniquenessConstraint26Dictionary = new Dictionary<Tuple<int, string>, Review>();
-		public Review GetReviewByInternalUniquenessConstraint26(int Car_vin, string Criteria_Name)
+		public Review GetReviewByInternalUniquenessConstraint26(int Car_vin, string Criterion_Name)
 		{
-			return this.myInternalUniquenessConstraint26Dictionary[Tuple.CreateTuple<int, string>(Car_vin, Criteria_Name)];
+			return this.myInternalUniquenessConstraint26Dictionary[Tuple.CreateTuple<int, string>(Car_vin, Criterion_Name)];
 		}
 		private bool OnInternalUniquenessConstraint26Changing(Review instance, Tuple<int, string> newValue)
 		{
@@ -8127,7 +8127,7 @@ namespace SampleModel
 		{
 			if (instance != null)
 			{
-				if (!(this.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple<int, string>(newValue, instance.Criteria_Name))))
+				if (!(this.OnInternalUniquenessConstraint26Changing(instance, Tuple.CreateTuple<int, string>(newValue, instance.Criterion_Name))))
 				{
 					return false;
 				}
@@ -8139,19 +8139,19 @@ namespace SampleModel
 			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
 			if (oldValue != null)
 			{
-				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(oldValue.Value, instance.Criteria_Name);
+				InternalUniquenessConstraint26OldValueTuple = Tuple.CreateTuple<int, string>(oldValue.Value, instance.Criterion_Name);
 			}
 			else
 			{
 				InternalUniquenessConstraint26OldValueTuple = null;
 			}
-			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criteria_Name));
+			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criterion_Name));
 		}
 		private bool OnReviewRating_Nr_IntegerChanging(Review instance, int newValue)
 		{
 			return true;
 		}
-		private bool OnReviewCriteria_NameChanging(Review instance, string newValue)
+		private bool OnReviewCriterion_NameChanging(Review instance, string newValue)
 		{
 			if (instance != null)
 			{
@@ -8162,7 +8162,7 @@ namespace SampleModel
 			}
 			return true;
 		}
-		private void OnReviewCriteria_NameChanged(Review instance, string oldValue)
+		private void OnReviewCriterion_NameChanged(Review instance, string oldValue)
 		{
 			Tuple<int, string> InternalUniquenessConstraint26OldValueTuple;
 			if (oldValue != null)
@@ -8173,9 +8173,9 @@ namespace SampleModel
 			{
 				InternalUniquenessConstraint26OldValueTuple = null;
 			}
-			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criteria_Name));
+			this.OnInternalUniquenessConstraint26Changed(instance, InternalUniquenessConstraint26OldValueTuple, Tuple.CreateTuple<int, string>(instance.Car_vin, instance.Criterion_Name));
 		}
-		public Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criteria_Name)
+		public Review CreateReview(int Car_vin, int Rating_Nr_Integer, string Criterion_Name)
 		{
 			if (!(this.IsDeserializing))
 			{
@@ -8187,12 +8187,12 @@ namespace SampleModel
 				{
 					throw new ArgumentException("Argument failed constraint enforcement.", "Rating_Nr_Integer");
 				}
-				if (!(this.OnReviewCriteria_NameChanging(null, Criteria_Name)))
+				if (!(this.OnReviewCriterion_NameChanging(null, Criterion_Name)))
 				{
-					throw new ArgumentException("Argument failed constraint enforcement.", "Criteria_Name");
+					throw new ArgumentException("Argument failed constraint enforcement.", "Criterion_Name");
 				}
 			}
-			return new ReviewCore(this, Car_vin, Rating_Nr_Integer, Criteria_Name);
+			return new ReviewCore(this, Car_vin, Rating_Nr_Integer, Criterion_Name);
 		}
 		private readonly List<Review> myReviewList;
 		private readonly ReadOnlyCollection<Review> myReviewReadOnlyCollection;
@@ -8206,14 +8206,14 @@ namespace SampleModel
 		#region ReviewCore
 		private sealed class ReviewCore : Review
 		{
-			public ReviewCore(SampleModelContext context, int Car_vin, int Rating_Nr_Integer, string Criteria_Name)
+			public ReviewCore(SampleModelContext context, int Car_vin, int Rating_Nr_Integer, string Criterion_Name)
 			{
 				this.myContext = context;
 				this.myCar_vin = Car_vin;
 				context.OnReviewCar_vinChanged(this, null);
 				this.myRating_Nr_Integer = Rating_Nr_Integer;
-				this.myCriteria_Name = Criteria_Name;
-				context.OnReviewCriteria_NameChanged(this, null);
+				this.myCriterion_Name = Criterion_Name;
+				context.OnReviewCriterion_NameChanged(this, null);
 				context.myReviewList.Add(this);
 			}
 			private readonly SampleModelContext myContext;
@@ -8271,12 +8271,12 @@ namespace SampleModel
 					}
 				}
 			}
-			private string myCriteria_Name;
-			public override string Criteria_Name
+			private string myCriterion_Name;
+			public override string Criterion_Name
 			{
 				get
 				{
-					return this.myCriteria_Name;
+					return this.myCriterion_Name;
 				}
 				set
 				{
@@ -8284,16 +8284,16 @@ namespace SampleModel
 					{
 						return;
 					}
-					if (!(object.Equals(this.Criteria_Name, value)))
+					if (!(object.Equals(this.Criterion_Name, value)))
 					{
-						if (this.Context.OnReviewCriteria_NameChanging(this, value))
+						if (this.Context.OnReviewCriterion_NameChanging(this, value))
 						{
-							if (base.RaiseCriteria_NameChangingEvent(value))
+							if (base.RaiseCriterion_NameChangingEvent(value))
 							{
-								string oldValue = this.Criteria_Name;
-								this.myCriteria_Name = value;
-								this.Context.OnReviewCriteria_NameChanged(this, oldValue);
-								base.RaiseCriteria_NameChangedEvent(oldValue);
+								string oldValue = this.Criterion_Name;
+								this.myCriterion_Name = value;
+								this.Context.OnReviewCriterion_NameChanged(this, oldValue);
+								base.RaiseCriterion_NameChangedEvent(oldValue);
 							}
 						}
 					}

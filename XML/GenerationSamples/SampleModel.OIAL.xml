@@ -81,11 +81,11 @@
 	<oil:conceptType name="Review" sourceRef="_780A6DD3-CD65-4533-8870-7DE873EBAEF5">
 		<oil:informationType name="Car_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_0BC3478C-9D88-4C4B-9754-BB62DCC7F189_opposite" />
 		<oil:informationType name="Rating_Nr_Integer" formatRef="Integer" mandatory="alethic" sourceRef="_5F04E9A2-F8EC-40EA-B7F7-D99D0AAD276B" sourceRoleRef="_15617B90-1712-4B85-9506-2007DE9EEEC0_opposite" />
-		<oil:informationType name="Criteria_Name" formatRef="Name" mandatory="alethic" sourceRef="_C154C7F4-A3B9-443E-9FF5-140C9F8FC56F" sourceRoleRef="_B8FCF342-1134-4FE2-8B10-5DF944662B07_opposite" />
+		<oil:informationType name="Criterion_Name" formatRef="Name" mandatory="alethic" sourceRef="_C154C7F4-A3B9-443E-9FF5-140C9F8FC56F" sourceRoleRef="_B8FCF342-1134-4FE2-8B10-5DF944662B07_opposite" />
 		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint26" modality="alethic" sourceRef="_968E48B2-10EA-4344-8C2F-8F7BB712F87E" isPreferred="true">
 			<oil:roleSequence>
 				<oil:typeRef targetConceptType="Review" targetChild="Car_vin" />
-				<oil:typeRef targetConceptType="Review" targetChild="Criteria_Name" />
+				<oil:typeRef targetConceptType="Review" targetChild="Criterion_Name" />
 			</oil:roleSequence>
 		</oil:roleSequenceUniquenessConstraint>
 	</oil:conceptType>
