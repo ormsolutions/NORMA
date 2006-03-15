@@ -370,7 +370,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				if (!fact.IsRemoved)
 				{
-					foreach (PresentationElement pel in fact.AssociatedPresentationElements)
+					foreach (PresentationElement pel in fact.PresentationRolePlayers)
 					{
 						SubtypeLink linkShape;
 						if (null != (linkShape = pel as SubtypeLink))

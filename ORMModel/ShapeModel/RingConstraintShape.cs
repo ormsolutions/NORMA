@@ -349,9 +349,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					RingConstraint ringConstraint = (RingConstraint)e.ModelElement;
 					if (!ringConstraint.IsRemoved)
 					{
-						foreach (object obj in ringConstraint.AssociatedPresentationElements)
+						foreach (PresentationElement pel in ringConstraint.PresentationRolePlayers)
 						{
-							RingConstraintShape ringConstraintShape = obj as RingConstraintShape;
+							RingConstraintShape ringConstraintShape = pel as RingConstraintShape;
 							if (ringConstraintShape != null)
 							{
 								foreach (LinkConnectsToNode connection in ringConstraintShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))

@@ -49,6 +49,7 @@
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleChange"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleAdded"/>
+		<arg:Rule class="ORMShapeModel.RelativeParentShapeRemoved"/>
 		<arg:Rule class="ORMShapeModel.RoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintRemoved"/>

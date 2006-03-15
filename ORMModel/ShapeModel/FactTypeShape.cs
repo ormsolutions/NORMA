@@ -3908,9 +3908,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				// Part1: Make sure the fact shape is visible on any diagram where the
 				// corresponding nestingType is displayed
-				foreach (object obj in nestingType.AssociatedPresentationElements)
+				foreach (PresentationElement pel in nestingType.PresentationRolePlayers)
 				{
-					ObjectTypeShape objectShape = obj as ObjectTypeShape;
+					ObjectTypeShape objectShape = pel as ObjectTypeShape;
 					if (objectShape != null)
 					{
 						ORMDiagram currentDiagram = objectShape.Diagram as ORMDiagram;
@@ -3995,9 +3995,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				// Part4: Resize the fact type wherever it is displayed and add the
 				// labels for the fact type display.
-				foreach (object obj in nestedFactType.AssociatedPresentationElements)
+				foreach (PresentationElement pel in nestedFactType.PresentationRolePlayers)
 				{
-					FactTypeShape shape = obj as FactTypeShape;
+					FactTypeShape shape = pel as FactTypeShape;
 					if (shape != null)
 					{
 						shape.AutoResize();
@@ -4015,81 +4015,142 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactType nestedFactType = link.NestedFactType;
 				ObjectType nestingType = link.NestingType;
 
-				// Part1: Remove any existing presentation elements for the object type.
-				// This removes all of the ObjectifiedTypeNameShape objects
-				nestingType.PresentationRolePlayers.Clear();
+				bool nestingTypeRemoved = nestingType.IsRemoved;
+				bool nestedFactTypeRemoved = nestedFactType.IsRemoved;
 
-				// Part2: Resize the fact type wherever it is displayed, and make sure
-				// the object type is made visible in the same location.
-				foreach (object obj in nestedFactType.AssociatedPresentationElements)
+				if (nestingTypeRemoved && nestedFactTypeRemoved)
 				{
-					FactTypeShape factShape = obj as FactTypeShape;
-					if (factShape != null)
-					{
-						factShape.AutoResize();
-						ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
-						NodeShape objectShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
-						if (objectShape == null)
-						{
-							Diagram.FixUpDiagram(nestingType.Model, nestingType);
-							objectShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
-						}
-						if (objectShape != null)
-						{
-							PointD location = factShape.Location;
-							location.Offset(0.0, 2 * factShape.Size.Height);
-							objectShape.Location = location;
-						}
-					}
+					return;
 				}
 
-				// Part3: Move any links from the fact type to the object type
-				foreach (ObjectTypePlaysRole modelLink in nestingType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid))
+				// Part1: Remove any existing presentation elements for the object type.
+				// This removes all of the ObjectifiedTypeNameShape objects
+				if (!nestingTypeRemoved)
 				{
-					Role playedRole = modelLink.PlayedRoleCollection;
-					SubtypeFact subType = playedRole.FactType as SubtypeFact;
-					if (subType != null)
+					if (nestedFactTypeRemoved)
 					{
-						foreach (object obj in subType.PresentationRolePlayers)
+						// If we're just removing the fact, then we need to readd the normal object shape
+						Store store = nestingType.Store;
+						IList pels = nestingType.PresentationRolePlayers;
+						int pelCount = pels.Count;
+						for (int i = pelCount - 1; i >= 0; --i)
 						{
-							SubtypeLink subtypeLink = obj as SubtypeLink;
-							if (subtypeLink != null)
+							ObjectifiedFactTypeNameShape oldShape;
+							ORMDiagram shapeDiagram;
+							if (null != (oldShape = pels[i] as ObjectifiedFactTypeNameShape) &&
+								!oldShape.IsRemoved &&
+								null != (shapeDiagram = oldShape.Diagram as ORMDiagram))
 							{
-								ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-								NodeShape objShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
-								if (objShape != null)
-								{
-									if (object.ReferenceEquals(playedRole, subType.SupertypeRole))
-									{
-										subtypeLink.ToShape = objShape;
-									}
-									else
-									{
-										Debug.Assert(object.ReferenceEquals(playedRole, subType.SubtypeRole));
-										subtypeLink.FromShape = objShape;
-									}
-								}
-								else
-								{
-									// Backup. Should only happen if the FixupDiagram call in part 1
-									// did not add the fact type.
-									subtypeLink.Remove();
-								}
+								ObjectTypeShape newShape = ObjectTypeShape.CreateObjectTypeShape(store);
+								shapeDiagram.NestedChildShapes.Add(newShape);
+								newShape.AbsoluteBounds = oldShape.AbsoluteBoundingBox;
+								oldShape.Remove();
+								newShape.Associate(nestingType);
+								newShape.AutoResize();
 							}
 						}
 					}
 					else
 					{
-						foreach (RolePlayerLink rolePlayer in modelLink.PresentationRolePlayers)
+						nestingType.PresentationRolePlayers.Clear();
+					}
+				}
+
+				// Part2: Resize the fact type wherever it is displayed, and make sure
+				// the object type is made visible in the same location.
+				ORMModel nestingTypeModel = nestingTypeRemoved ? null : nestingType.Model;
+				if (!nestedFactTypeRemoved)
+				{
+					foreach (PresentationElement pel in nestedFactType.PresentationRolePlayers)
+					{
+						FactTypeShape factShape = pel as FactTypeShape;
+						if (factShape != null)
 						{
-							NodeShape objShape = (rolePlayer.Diagram as ORMDiagram).FindShapeForElement(nestingType) as NodeShape;
-							if (objShape != null)
+							factShape.AutoResize();
+							if (!nestingTypeRemoved)
 							{
-								rolePlayer.ToShape = objShape;
+								ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
+								NodeShape objectShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+								if (objectShape == null)
+								{
+									Diagram.FixUpDiagram(nestingTypeModel, nestingType);
+									objectShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+								}
+								if (objectShape != null)
+								{
+									PointD location = factShape.Location;
+									location.Offset(0.0, 2 * factShape.Size.Height);
+									objectShape.Location = location;
+								}
+							}
+						}
+					}
+				}
+
+				// Part3: Move any links from the fact type to the object type
+				if (!nestingTypeRemoved)
+				{
+					foreach (ObjectTypePlaysRole modelLink in nestingType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid))
+					{
+						Role playedRole = modelLink.PlayedRoleCollection;
+						SubtypeFact subType = playedRole.FactType as SubtypeFact;
+						if (subType != null)
+						{
+							if (nestedFactTypeRemoved)
+							{
+								Diagram.FixUpDiagram(nestingTypeModel, subType);
 							}
 							else
 							{
-								rolePlayer.Remove();
+								foreach (object obj in subType.PresentationRolePlayers)
+								{
+									SubtypeLink subtypeLink = obj as SubtypeLink;
+									if (subtypeLink != null)
+									{
+										ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
+										NodeShape objShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+										if (objShape != null)
+										{
+											if (object.ReferenceEquals(playedRole, subType.SupertypeRole))
+											{
+												subtypeLink.ToShape = objShape;
+											}
+											else
+											{
+												Debug.Assert(object.ReferenceEquals(playedRole, subType.SubtypeRole));
+												subtypeLink.FromShape = objShape;
+											}
+										}
+										else
+										{
+											// Backup. Should only happen if the FixupDiagram call in part 1
+											// did not add the fact type.
+											subtypeLink.Remove();
+										}
+									}
+								}
+							}
+						}
+						else
+						{
+							if (nestedFactTypeRemoved)
+							{
+								Diagram.FixUpDiagram(nestingTypeModel, modelLink);
+							}
+							else
+							{
+								foreach (RolePlayerLink rolePlayer in modelLink.PresentationRolePlayers)
+								{
+									NodeShape objShape = (rolePlayer.Diagram as ORMDiagram).FindShapeForElement(nestingType) as NodeShape;
+									if (objShape != null)
+									{
+										rolePlayer.ToShape = objShape;
+									}
+									else
+									{
+										rolePlayer.Remove();
+									}
+								}
 							}
 						}
 					}

@@ -555,9 +555,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void UpdateObjectTypeDisplay(ObjectType objectType)
 		{
-			foreach (object obj in objectType.AssociatedPresentationElements)
+			foreach (PresentationElement pel in objectType.PresentationRolePlayers)
 			{
-				ShapeElement shape = obj as ShapeElement;
+				ShapeElement shape = pel as ShapeElement;
 				if (shape != null)
 				{
 					shape.Invalidate();

@@ -453,7 +453,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						readingOrder = newReadingOrders[0];
 					}
 				}
-				foreach (PresentationElement pel in factType.AssociatedPresentationElements)
+				foreach (PresentationElement pel in factType.PresentationRolePlayers)
 				{
 					FactTypeShape factShape = pel as FactTypeShape;
 					if (factShape != null)

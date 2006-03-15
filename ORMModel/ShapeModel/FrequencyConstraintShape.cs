@@ -162,9 +162,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						// Resize the frequency constraint wherever it is displayed, and make sure
 						// the object type is made visible in the same location.
-						foreach (object obj in fc.AssociatedPresentationElements)
+						foreach (PresentationElement pel in fc.PresentationRolePlayers)
 						{
-							ExternalConstraintShape externalConstraintShape = obj as ExternalConstraintShape;
+							ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
 							if (externalConstraintShape != null)
 							{
 								externalConstraintShape.AutoResize();

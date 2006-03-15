@@ -583,43 +583,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnStatusErrorList(object sender, EventArgs e)
 			{
-				ORMDesignerDocView docView = CurrentORMView;
-				ORMDesignerDocView.OnStatusCommand(sender, docView, ORMDesignerCommands.ErrorList);
-				OleMenuCommand cmd = sender as OleMenuCommand;
-				if (cmd.Visible)
-				{
-					string errorText = null;
-					int matchErrorIndex = cmd.MatchedCommandId;
-					if (docView.SelectionCount > 0)
-					{
-						IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(docView.SelectedElements[0], false) as IModelErrorOwner;
-						if (errorOwner != null)
-						{
-							int count = 0;
-							foreach (ModelError error in errorOwner.ErrorCollection)
-							{
-								if (count == matchErrorIndex)
-								{
-									errorText = error.Name;
-									break;
-								}
-								++count;
-							}
-						}
-					}
-					if (errorText != null)
-					{
-						cmd.Enabled = true;
-						cmd.Visible = true;
-						cmd.Supported = true;
-						cmd.Text = errorText;
-					}
-					else
-					{
-						cmd.Supported = false;
-					}
-				}
-				cmd.MatchedCommandId = 0;
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ErrorList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
 			}
 			/// <summary>
 			/// Menu handler
@@ -627,42 +592,10 @@ namespace Neumont.Tools.ORM.Shell
 			protected void OnMenuErrorList(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
-				OleMenuCommand cmd = sender as OleMenuCommand;
-				string errorText = cmd.Text;
-				if (cmd.Visible)
-				{
-					if (docView.SelectionCount > 0)
-					{
-						IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(docView.SelectedElements[0], false) as IModelErrorOwner;
-						if (errorOwner != null)
-						{
-							foreach (ModelError error in errorOwner.ErrorCollection)
-							{
-								if (errorText == error.Name)
-								{
-									IORMToolTaskItem task;
-									IORMToolServices services;
-									IORMToolTaskProvider provider;
-									if (null != (task = error.TaskData as IORMToolTaskItem) &&
-										null != (services = error.Store as IORMToolServices) &&
-										null != (provider = services.TaskProvider))
-									{
-										provider.NavigateTo(task);
-									}
-									break;
-								}
-							}
-						}
-					}
-				}
-				//if(docView.SelectionCount > 0)
-				//{
-				//    (docView.SelectedElements[0] as IModelErrorOwner).ErrorCollection[0];
-				//}
 				if (docView != null)
 				{
 					// Defer to the doc view
-					//docView.OnMenuErrorList();
+					docView.OnMenuErrorList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			#region External Constraint editing menu options

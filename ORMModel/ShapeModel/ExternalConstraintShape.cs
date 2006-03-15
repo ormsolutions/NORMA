@@ -607,7 +607,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.SourceElement as MultiColumnExternalConstraint))
 			{
-				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
+				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
 					if (null != (ecs = pel as ExternalConstraintShape))
 					{
@@ -626,7 +626,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.ModelElement as MultiColumnExternalConstraint))
 			{
-				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
+				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
 					if (null != (ecs = pel as ExternalConstraintShape))
 					{
@@ -645,7 +645,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.ModelElement as SingleColumnExternalConstraint))
 			{
-				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
+				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
 					if (null != (ecs = pel as ExternalConstraintShape))
 					{

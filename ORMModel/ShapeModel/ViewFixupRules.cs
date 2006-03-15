@@ -891,11 +891,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ParentShapeContainsNestedChildShapes linkNested;
 				if (linkRelative != null)
 				{
-					linkRelative.RelativeChildShapes.Remove();
+					ShapeElement relativeShape = linkRelative.RelativeChildShapes;
+					// Don't remove an ObjectifiedFactTypeNameShape in line. We need
+					// it to reposition an ObjectTypeShape if the objectedified fact is
+					// deleted.
+					if (!(relativeShape is ObjectifiedFactTypeNameShape))
+					{
+						relativeShape.Remove();
+					}
                 }
 				else if ((linkNested = e.ModelElement as ParentShapeContainsNestedChildShapes) != null)
 				{
 					linkNested.NestedChildShapes.Remove();
+				}
+			}
+		}
+		[RuleOn(typeof(ParentShapeHasRelativeChildShapes), FireTime=TimeToFire.LocalCommit, Priority=int.MaxValue)]
+		private class RelativeParentShapeRemoved : RemoveRule
+		{
+			/// <summary>
+			/// Backup deletion of an ObjectifiedFactTypeNameShape, skipped during inline rule
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ParentShapeHasRelativeChildShapes link = e.ModelElement as ParentShapeHasRelativeChildShapes;
+				ShapeElement childShape = link.RelativeChildShapes;
+				if (!childShape.IsRemoved)
+				{
+					childShape.Remove();
 				}
 			}
 		}

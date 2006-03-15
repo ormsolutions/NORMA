@@ -78,8 +78,8 @@ REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
 REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
 REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /RootSuffix Exp /dde \"%1\"" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%1\")" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /RootSuffix Exp /dde \"%%1\"" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.8.0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
 

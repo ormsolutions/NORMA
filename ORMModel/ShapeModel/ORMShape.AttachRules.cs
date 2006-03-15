@@ -64,6 +64,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(RoleAdded),
 				typeof(RoleChange),
 				typeof(ObjectTypePlaysRoleAdded),
+				typeof(RelativeParentShapeRemoved),
 				typeof(RoleRemoved),
 				typeof(RoleValueConstraintAdded),
 				typeof(RoleValueConstraintRemoved),

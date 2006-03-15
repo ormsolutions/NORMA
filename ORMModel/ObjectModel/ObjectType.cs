@@ -203,11 +203,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (!IsValueType && HasReferenceMode)
 				{
-					ArrayList pels = this.AssociatedPresentationElements;
-					foreach (object obj in pels)
+					foreach (PresentationElement pel in PresentationRolePlayers)
 					{
 						ShapeModel.ObjectTypeShape objectShape;
-						if (null != (objectShape = obj as ShapeModel.ObjectTypeShape))
+						if (null != (objectShape = pel as ShapeModel.ObjectTypeShape))
 						{
 							return !objectShape.ExpandRefMode;
 						}

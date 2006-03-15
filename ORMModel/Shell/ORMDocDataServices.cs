@@ -308,7 +308,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (selectElement != null)
 					{
 						bool continueNow = false;
-						foreach (PresentationElement pel in selectElement.AssociatedPresentationElements)
+						foreach (PresentationElement pel in selectElement.PresentationRolePlayers)
 						{
 							ShapeElement shape = pel as ShapeElement;
 							if (shape != null)

@@ -393,24 +393,36 @@ namespace Neumont.Tools.ORM.Shell
 						ormDiagram.StickyObject = null;
 					}
 
+					// Running filters to ensure that tolerated commands don't indicate
+					// a multi-select state when none is there.
+					ORMDesignerCommands seenVisible = 0;
+					ORMDesignerCommands seenVisibleOnce = 0;
+					ORMDesignerCommands seenEnabled = 0;
+					ORMDesignerCommands seenEnabledOnce = 0;
+					ORMDesignerCommands seenTolerated = 0;
+
 					ORMDesignerCommands currentVisible;
 					ORMDesignerCommands currentEnabled;
 					ORMDesignerCommands currentCheckable;
 					ORMDesignerCommands currentChecked;
+					ORMDesignerCommands currentTolerated;
 					visibleCommands = enabledCommands = checkableCommands = checkedCommands = EnabledSimpleMultiSelectCommandFilter;
 					Type firstType = null;
 					bool isComplex = false;
+					NodeShape primaryShape = PrimarySelectedShape;
 					foreach (ModelElement melIter in GetSelectedComponents())
 					{
+						bool isPrimarySelection = false;
 						ModelElement mel = melIter;
 						PresentationElement pel = mel as PresentationElement;
 						if (pel != null)
 						{
+							isPrimarySelection = primaryShape != null && object.ReferenceEquals(primaryShape, pel);
 							mel = pel.ModelElement;
 						}
 						if (mel != null)
 						{
-							SetCommandStatus(mel, pel, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked);
+							SetCommandStatus(mel, pel, isPrimarySelection, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked, out currentTolerated);
 							Debug.Assert(0 == (currentEnabled & ~currentVisible)); // Everthing enabled should be visible
 							Debug.Assert(0 == (currentChecked & ~currentCheckable)); // Everything checked should be checkable
 
@@ -443,16 +455,38 @@ namespace Neumont.Tools.ORM.Shell
 									checkableCommands &= EnabledComplexMultiSelectCommandFilter;
 								}
 							}
-							enabledCommands &= currentEnabled;
-							visibleCommands &= currentVisible;
-							checkableCommands &= currentCheckable;
-							checkedCommands &= currentChecked;
+							// Don't turn off tolerated commands, but don't turn them on either.
+							enabledCommands &= currentEnabled | (enabledCommands & currentTolerated);
+							visibleCommands &= currentVisible | (visibleCommands & currentTolerated);
+							checkableCommands &= currentCheckable | (checkableCommands & currentTolerated);
+							checkedCommands &= currentChecked | (checkedCommands & currentTolerated);
 							if (enabledCommands == 0 && visibleCommands == 0)
 							{
 								break;
 							}
+
+							// With tolerated commands, it is possible that a multi-select command will have
+							// a single selection plus other elements that tolerate it. These commands need
+							// to be filtered out.
+							seenTolerated |= currentTolerated;
+							ORMDesignerCommands newCommands = currentEnabled & ~seenEnabled;
+							ORMDesignerCommands oldCommands = currentEnabled & seenEnabled;
+							seenEnabledOnce |= newCommands;
+							seenEnabledOnce &= ~oldCommands;
+							seenEnabled |= newCommands;
+
+							// Repeat for visible
+							newCommands = currentVisible & ~seenVisible;
+							oldCommands = currentVisible & seenVisible;
+							seenVisibleOnce |= newCommands;
+							seenVisibleOnce &= ~oldCommands;
+							seenVisible |= newCommands;
 						}
 					}
+					enabledCommands &= ~(seenTolerated & ~seenEnabled);
+					enabledCommands &= ~(seenEnabledOnce & DisabledSingleSelectCommandFilter);
+					visibleCommands &= ~(seenTolerated & ~seenVisible);
+					visibleCommands &= ~(seenVisibleOnce & DisabledSingleSelectCommandFilter);
 				}
 				else
 				{
@@ -488,7 +522,8 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (mel != null)
 						{
-							SetCommandStatus(mel, pel, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands);
+							ORMDesignerCommands toleratedCommandsDummy;
+							SetCommandStatus(mel, pel, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommandsDummy);
 							Debug.Assert(0 == (enabledCommands & ~visibleCommands)); // Everthing enabled should be visible
 							Debug.Assert(0 == (checkedCommands & ~checkableCommands)); // Everything checked should be checkable
 							visibleCommands &= ~DisabledSingleSelectCommandFilter;
@@ -507,25 +542,29 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="element">A single model element. Should be a backing object, not a presentation element.</param>
 		/// <param name="presentationElement">The selected presentation element representing the element. Can be null.</param>
+		/// <param name="primarySelection">true if the presentation element is the primary selection</param>
 		/// <param name="visibleCommands">(output) The set of visible commands</param>
 		/// <param name="enabledCommands">(output) The set of enabled commands</param>
 		/// <param name="checkableCommands">(output) The set of commands that are checked in some circumstances</param>
 		/// <param name="checkedCommands">(output) The set of checked commands</param>
-		public virtual void SetCommandStatus(ModelElement element, PresentationElement presentationElement, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands)
+		/// <param name="toleratedCommands">(output) The set of commands allowed on other multi-selected elements that should not be turned off because this is included in the selection.</param>
+		public virtual void SetCommandStatus(ModelElement element, PresentationElement presentationElement, bool primarySelection, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands, out ORMDesignerCommands toleratedCommands)
 		{
 			enabledCommands = ORMDesignerCommands.None;
 			visibleCommands = ORMDesignerCommands.None;
 			checkableCommands = ORMDesignerCommands.None;
 			checkedCommands = ORMDesignerCommands.None;
+			toleratedCommands = ORMDesignerCommands.None;
 			Role role;
 			ObjectType objectType;
+			NodeShape nodeShape;
 			if (element is FactType)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.AutoLayout;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
 				if (presentationElement is FactTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
-					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
 				}
 			}
 			else if (null != (objectType = element as ObjectType))
@@ -533,22 +572,49 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
 				if (presentationElement is ObjectTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
-					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
+					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
+				}
+				else if (presentationElement is ObjectifiedFactTypeNameShape)
+				{
+					// Treat deletion of ObjectifiedFactTypeNameShape is the same as deleting the associated FactShape
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
+					toleratedCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+					if (!primarySelection)
+					{
+						toleratedCommands |= ORMDesignerCommands.AlignShapes;
+					}
 				}
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint | ORMDesignerCommands.AutoLayout;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
 				if (presentationElement is ExternalConstraintShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
-					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
 				}
 			}
 			else if (element is InternalConstraint)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
+				if (presentationElement != null)
+				{
+					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+				}
+			}
+			else if (element is ValueConstraint)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
+				if (presentationElement != null)
+				{
+					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+				}
+				if (!primarySelection)
+				{
+					toleratedCommands |= ORMDesignerCommands.AlignShapes;
+				}
 			}
 			else if (element is ORMModel)
 			{
@@ -559,6 +625,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
+				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
 				if (role.IsMandatory)
 				{
 					checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
@@ -635,9 +702,23 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
+			else if ((null != (nodeShape = presentationElement as NodeShape)) &&
+					!(nodeShape.ParentShape is Diagram))
+			{
+				toleratedCommands |=
+					ORMDesignerCommands.AutoLayout |
+					ORMDesignerCommands.Delete |
+					ORMDesignerCommands.DeleteAny |
+					ORMDesignerCommands.DeleteShape |
+					ORMDesignerCommands.DeleteAnyShape;
+				if (!primarySelection)
+				{
+					toleratedCommands |= ORMDesignerCommands.AlignShapes;
+				}
+			}
 			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage | ORMDesignerCommands.ErrorList;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -722,6 +803,39 @@ namespace Neumont.Tools.ORM.Shell
 								((OleMenuCommand)sender).Text = (fact.RoleCollection.Count == 2) ? ResourceStrings.CommandSwapRoleOrderText : null;
 							}
 						}
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.ErrorList && command.Enabled)
+				{
+					OleMenuCommand cmd = sender as OleMenuCommand;
+					string errorText = null;
+					int errorIndex = cmd.MatchedCommandId;
+					foreach (ModelElement mel in docView.GetSelectedComponents())
+					{
+						IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
+						if (errorOwner != null)
+						{
+							foreach (ModelError error in errorOwner.ErrorCollection)
+							{
+								if (errorIndex == 0)
+								{
+									errorText = error.Name;
+									break;
+								}
+								--errorIndex;
+							}
+						}
+					}
+					if (errorText != null)
+					{
+						cmd.Enabled = true;
+						cmd.Visible = true;
+						cmd.Supported = true;
+						cmd.Text = errorText;
+					}
+					else
+					{
+						cmd.Supported = false;
 					}
 				}
 				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness && command.Enabled)
@@ -951,7 +1065,7 @@ namespace Neumont.Tools.ORM.Shell
 							mel = pel.ModelElement;
 
 							// Remove the actual object in the model
-							if (mel != null && !mel.IsRemoved)
+							if (mel != null && !mel.IsRemoved && !(mel is ReadingOrder)) // Reading orders tolerate delete, but are not deleted directly
 							{
 								// Check if the object shape was in expanded mode
 								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
@@ -1088,8 +1202,24 @@ namespace Neumont.Tools.ORM.Shell
 					foreach (ModelElement mel in GetSelectedComponents())
 					{
 						PresentationElement pel = mel as ShapeElement;
-						if (pel != null)
+						// ReadingShape and ValueConstraintShape tolerate deletion, but the
+						// shapes cannot be deleted individually
+						if (pel != null && !pel.IsRemoved)
 						{
+							ObjectifiedFactTypeNameShape objectifiedObjectShape;
+							if (pel is ReadingShape || pel is ValueConstraintShape)
+							{
+								pel = null;
+							}
+							else if (null != (objectifiedObjectShape = pel as ObjectifiedFactTypeNameShape))
+							{
+								// The two parts of an objectification should always appear together
+								pel = objectifiedObjectShape.ParentShape;
+							}
+							if (pel == null)
+							{
+								continue;
+							}
 							ModelElement backingMel = null;
 							if (testMelDeletion)
 							{
@@ -1201,6 +1331,26 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
+		/// Get the shape to use as the primary selection
+		/// </summary>
+		private NodeShape PrimarySelectedShape
+		{
+			get
+			{
+				NodeShape retVal = null;
+				DiagramItem primaryItem = CurrentDesigner.Selection.PrimaryItem;
+				if (primaryItem != null)
+				{
+					retVal = primaryItem.Shape as NodeShape;
+				}
+				if (retVal == null)
+				{
+					retVal = PrimarySelection as NodeShape;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
 		/// Execute the Align menu commands
 		/// </summary>
 		/// <param name="commandId">Standard command id. Expecting one of AlignBottom,
@@ -1210,16 +1360,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ICollection components;
 			int selectionCount;
-			DiagramItem primaryItem = CurrentDesigner.Selection.PrimaryItem;
-			NodeShape matchShape = null;
-			if (primaryItem != null)
-			{
-				matchShape = primaryItem.Shape as NodeShape;
-			}
-			if (matchShape == null)
-			{
-				matchShape = PrimarySelection as NodeShape;
-			}
+			NodeShape matchShape = PrimarySelectedShape;
 			if (null != matchShape &&
 				null != (components = GetSelectedComponents()) &&
 				(selectionCount = components.Count) > 1)
@@ -1262,7 +1403,8 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						NodeShape shape = component as NodeShape;
 						if (shape != null &&
-							!object.ReferenceEquals(shape, matchShape))
+							!object.ReferenceEquals(shape, matchShape) &&
+							shape.ParentShape is Diagram)
 						{
 							RectangleD bounds = shape.AbsoluteBoundingBox;
 							PointD newLocation = bounds.Location;
@@ -1452,10 +1594,35 @@ namespace Neumont.Tools.ORM.Shell
         /// <summary>
         /// Expand the context menu to display local errors
         /// </summary>
-        protected virtual void OnMenuErrorList()
+		/// <param name="errorIndex">Index of the error in the error collection</param>
+        protected virtual void OnMenuErrorList(int errorIndex)
         {
-           
-        }
+			foreach (ModelElement mel in GetSelectedComponents())
+			{
+				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
+				if (errorOwner != null)
+				{
+					foreach (ModelError error in errorOwner.ErrorCollection)
+					{
+						if (errorIndex == 0)
+						{
+							IORMToolTaskItem task;
+							IORMToolServices services;
+							IORMToolTaskProvider provider;
+							if (null != (task = error.TaskData as IORMToolTaskItem) &&
+								null != (services = error.Store as IORMToolServices) &&
+								null != (provider = services.TaskProvider))
+							{
+								provider.NavigateTo(task);
+							}
+							break;
+						}
+						--errorIndex;
+					}
+					break;
+				}
+			}
+		}
 		#region OnMenuCopyImage
 #if CUSTOM_COPY_IMAGE
 		#region NativeMethods

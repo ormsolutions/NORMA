@@ -165,6 +165,7 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerCommands enabledCommands = ORMDesignerCommands.None;
 			ORMDesignerCommands checkedCommands = ORMDesignerCommands.None;
 			ORMDesignerCommands checkableCommands = ORMDesignerCommands.None;
+			ORMDesignerCommands toleratedCommands = ORMDesignerCommands.None;
 			IMonitorSelectionService monitorService = this.MonitorSelectionService;
 			if (monitorService != null)
 			{
@@ -177,7 +178,7 @@ namespace Neumont.Tools.ORM.Shell
 						ModelElement selectedType = EditorUtility.ResolveContextInstance(selectedNode, false) as ModelElement;
 						if (selectedType != null)
 						{
-							currentDoc.SetCommandStatus(selectedType, null, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands);
+							currentDoc.SetCommandStatus(selectedType, null, true, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands, out toleratedCommands);
 						}
 					}
 				}
