@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Horizontal Table Layout</title><style type="text/css">
+					.table { white-space:nowrap; }
+					.indent { left: 20px; position: relative; }
+				</style></head><body><p class="table"><b>PersonDrivesCar</b> (DrivesCar_vin, DrvnByPrsn_Prsn_d)<br /><span class="indent">Primary Key: DrivesCar_vin, DrvnByPrsn_Prsn_d<br /><span class="indent">used by FKeys: 
+									None
+								</span><br />Foriegn Keys: <br /><span class="indent">DrivenByPerson_FK (DrvnByPrsn_Prsn_d--&gt;Person.Person_id)<br /></span></span></p><p class="table"><b>PBCFPOD</b> (CarSold_vin, Buyer_Person_id, Seller_Person_id, SaleDate_YMD)<br /><span class="indent">Primary Key: CarSold_vin, Buyer_Person_id, Seller_Person_id<br /><span class="indent">used by FKeys: 
+									None
+								</span><br />Foriegn Keys: <br /><span class="indent">Buyer_FK (Buyer_Person_id--&gt;Person.Person_id)<br /></span><span class="indent">Seller_FK (Seller_Person_id--&gt;Person.Person_id)<br /></span></span></p><p class="table"><b>Review</b> (Car_vin, Criterion_Name, Rating_Nr_Integer)<br /><span class="indent">Primary Key: Car_vin, Criterion_Name<br /><span class="indent">used by FKeys: 
+									None
+								</span><br />Foriegn Keys: 
+							None
+						<br /></span></p><p class="table"><b>PersonHasNickName</b> (NickName, Person_Person_id)<br /><span class="indent">Primary Key: NickName, Person_Person_id<br /><span class="indent">used by FKeys: 
+									None
+								</span><br />Foriegn Keys: <br /><span class="indent">Person_FK (Person_Person_id--&gt;Person.Person_id)<br /></span></span></p><p class="table"><b>Person</b> (Person_id, Father_Person_id, Mother_Person_id, CPBOBON, FirstName, Date_YMD, LastName, Gender_Gender_Code, SclScrtyNmbr, HatType_ColorARGB, HTHTSHTSD, OwnsCar_vin, PersonHasParents, VT1DSEWVT1V, Death_Date_YMD, DDCDCT, DNDNDIFPC, DUDUDIV, DUDUDIB)<br /><span class="indent">Primary Key: Person_id, Father_Person_id, Mother_Person_id, CPBOBON<br /><span class="indent">used by FKeys: PersonDrivesCar.DrivenByPerson_FK, PBCFPOD.Buyer_FK, PBCFPOD.Seller_FK, PersonHasNickName.Person_FK, Person.Father_FK, Person.Mother_FK, Task.Person_FK, ValueType1.DsSmthngWthPrsn_FK</span><br />Foriegn Keys: <br /><span class="indent">VT1DSEWFK (VT1DSEWVT1V--&gt;ValueType1.ValueType1Value)<br /></span><span class="indent">Father_FK (Father_Person_id--&gt;Person.Person_id)<br /></span><span class="indent">Mother_FK (Mother_Person_id--&gt;Person.Person_id)<br /></span></span></p><p class="table"><b>Task</b> (Task_id, Person_Person_id)<br /><span class="indent">Primary Key: Task_id<br /><span class="indent">used by FKeys: 
+									None
+								</span><br />Foriegn Keys: <br /><span class="indent">Person_FK (Person_Person_id--&gt;Person.Person_id)<br /></span></span></p><p class="table"><b>ValueType1</b> (ValueType1Value, DSWPP)<br /><span class="indent">Primary Key: ValueType1Value<br /><span class="indent">used by FKeys: Person.VT1DSEWFK</span><br />Foriegn Keys: <br /><span class="indent">DsSmthngWthPrsn_FK (DSWPP--&gt;Person.Person_id)<br /></span></span></p></body></html>

@@ -35,6 +35,16 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoDCIL</ORMGenerator>
     </None>
+    <None Include="SampleModel.TV.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DCILtoTV</ORMGenerator>
+    </None>
+    <None Include="SampleModel.html">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>TVtoHTML</ORMGenerator>
+    </None>	  
     <None Include="SampleModel.DDIL.xml">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
@@ -99,6 +109,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoDCIL</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.TV.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>DCILtoTV</ORMGenerator>
+    </None>
+    <None Include="PersonCountryDemo.html">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>TVtoHTML</ORMGenerator>
     </None>
     <None Include="PersonCountryDemo.DDIL.xml">
       <AutoGen>True</AutoGen>

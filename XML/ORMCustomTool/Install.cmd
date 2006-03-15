@@ -45,6 +45,10 @@ CALL:_AddXslORMGenerator "DDILtoPostgreSQL" "DDIL to PostgreSQL" "Transforms DDI
 CALL:_AddXslORMGenerator "DDILtoDB2" "DDIL to DB2" "Transforms DDIL to DB2-dialect SQL." ".DB2.sql" "DDIL" "SQL_DB2" "%DILTransformsDir%\DDILtoDB2.xslt"
 CALL:_AddXslORMGenerator "DDILtoSQLServer" "DDIL to SQL Server" "Transforms DDIL to SQL Server-dialect SQL." ".SQLServer.sql" "DDIL" "SQL_SQLServer" "%DILTransformsDir%\DDILtoSQLServer.xslt"
 CALL:_AddXslORMGenerator "DDILtoOracle" "DDIL to Oracle" "Transforms DDIL to Oracle-dialect SQL." ".Oracle.sql" "DDIL" "SQL_Oracle" "%DILTransformsDir%\DDILtoOracle.xslt"
+XCOPY /Y /D /V /Q "%~dp0\..\DCILtoHTML\DCILtoTV.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\DCILtoHTML\TVtoHTML.xslt" "%DILTransformsDir%\"
+CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to TableView." ".TV.xml" "DCIL" "TV" "%DILTransformsDir%\DCILtoTV.xslt"
+CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".html" "TV" "HTML" "%DILTransformsDir%\TVtoHTML.xslt"
 
 :: Register PLiX Transforms
 CALL:_AddXslORMGenerator "PLiXtoCSharp" "PLiX to C#" "Transforms PLiX to C#." ".cs" "PLiX" "CSharp" "%PLiXDir%\Formatters\PLiXCS.xslt" "1"

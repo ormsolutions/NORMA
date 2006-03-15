@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Horizontal Table Layout</title>
+		<style type="text/css">
+					.table { white-space:nowrap; }
+					.indent { left: 20px; position: relative; }
+				</style>
+	</head>
+	<body>
+		<p class="table">
+			<b>Person</b> (Person_id, LastName, FirstName, Title, Cntry_Cntry_nm)<br /><span class="indent">Primary Key: Person_id<br /><span class="indent">used by FKeys: 
+									None
+								</span><br />Foriegn Keys: <br /><span class="indent">Country_FK (Cntry_Cntry_nm--&gt;Country.Country_name)<br /></span></span></p>
+		<p class="table">
+			<b>Country</b> (Country_name, Region_Region_code)<br /><span class="indent">Primary Key: Country_name<br /><span class="indent">used by FKeys: Person.Country_FK</span><br />Foriegn Keys: 
+							None
+						<br /></span></p>
+	</body>
+</html>
