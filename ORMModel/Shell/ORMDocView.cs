@@ -610,10 +610,10 @@ namespace Neumont.Tools.ORM.Shell
 				if (presentationElement != null)
 				{
 					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
-				}
-				if (!primarySelection)
-				{
-					toleratedCommands |= ORMDesignerCommands.AlignShapes;
+					if (!primarySelection)
+					{
+						toleratedCommands |= ORMDesignerCommands.AlignShapes;
+					}
 				}
 			}
 			else if (element is ORMModel)
@@ -707,6 +707,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				toleratedCommands |=
 					ORMDesignerCommands.AutoLayout |
+					ORMDesignerCommands.CopyImage |
 					ORMDesignerCommands.Delete |
 					ORMDesignerCommands.DeleteAny |
 					ORMDesignerCommands.DeleteShape |
@@ -1202,6 +1203,7 @@ namespace Neumont.Tools.ORM.Shell
 					foreach (ModelElement mel in GetSelectedComponents())
 					{
 						PresentationElement pel = mel as ShapeElement;
+						ObjectType backingObjectifiedType = null;
 						// ReadingShape and ValueConstraintShape tolerate deletion, but the
 						// shapes cannot be deleted individually
 						if (pel != null && !pel.IsRemoved)
@@ -1209,21 +1211,27 @@ namespace Neumont.Tools.ORM.Shell
 							ObjectifiedFactTypeNameShape objectifiedObjectShape;
 							if (pel is ReadingShape || pel is ValueConstraintShape)
 							{
-								pel = null;
+								continue;
 							}
 							else if (null != (objectifiedObjectShape = pel as ObjectifiedFactTypeNameShape))
 							{
-								// The two parts of an objectification should always appear together
+								// The two parts of an objectification should always appear together,
+								// pretend we're removing the fact shape
 								pel = objectifiedObjectShape.ParentShape;
-							}
-							if (pel == null)
-							{
-								continue;
+								if (pel == null)
+								{
+									continue;
+								}
 							}
 							ModelElement backingMel = null;
 							if (testMelDeletion)
 							{
 								backingMel = pel.ModelElement;
+								FactType fact = backingMel as FactType;
+								if (fact != null)
+								{
+									backingObjectifiedType = fact.NestingType;
+								}
 							}
 							pel.Remove();
 							if (backingMel != null && !backingMel.IsRemoved && backingMel.PresentationRolePlayers.Count == 0)
@@ -1246,6 +1254,12 @@ namespace Neumont.Tools.ORM.Shell
 									}
 								}
 								backingMel.Remove();
+								if (backingObjectifiedType != null && !backingObjectifiedType.IsRemoved && backingObjectifiedType.PresentationRolePlayers.Count <= 1)
+								{
+									// Remove the corresponding backing objectified type. Removing the facttype shape pel
+									// added a new shape for the object, so we expect 1 presentation role player here.
+									backingObjectifiedType.Remove();
+								}
 							}
 						}
 					}
