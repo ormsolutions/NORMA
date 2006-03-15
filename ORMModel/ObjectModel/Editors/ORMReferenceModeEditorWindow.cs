@@ -76,7 +76,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
 		/// </summary>
 		protected override int BitmapIndex
 		{

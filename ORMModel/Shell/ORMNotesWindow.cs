@@ -383,6 +383,26 @@ namespace Neumont.Tools.ORM.Shell
 				return ResourceStrings.ModelNotesWindowTitle;
 			}
 		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return 125;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return 5;
+			}
+		}
 		#endregion // ORMToolWindow Implementation
 	}
 }

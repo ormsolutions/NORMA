@@ -120,7 +120,7 @@ namespace Neumont.Tools.ORM.Shell
 			UpdateVerbalization();
 		}
 		#endregion // Selection monitor event handlers and helpers
-		#region Overrides
+		#region ToolWindow Overrides
 		/// <summary>
 		/// See <see cref="ToolWindow.BitmapResource"/>.
 		/// </summary>
@@ -132,7 +132,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
 		/// </summary>
 		protected override int BitmapIndex
 		{
@@ -185,7 +185,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		#endregion // Overrides
+		#endregion // ToolWindow Overrides
 		#region Verbalization Implementation
 		/// <summary>
 		/// Get the 8 document header replacement fields from the current font and color settings

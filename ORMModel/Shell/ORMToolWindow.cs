@@ -125,6 +125,20 @@ namespace Neumont.Tools.ORM.Shell
 		/// Gets the string that should be displayed in the title bar of the tool window.
 		/// </summary>
 		public abstract override string WindowTitle { get; }
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		/// <remarks>
+		/// Force subclasses to implement <see cref="ToolWindow.BitmapResource"/>.
+		/// </remarks>
+		protected abstract override int BitmapResource { get; }
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapIndex"/>.
+		/// </summary>
+		/// <remarks>
+		/// Force subclasses to implement <see cref="ToolWindow.BitmapIndex"/>.
+		/// </remarks>
+		protected abstract override int BitmapIndex { get; }
 		#endregion // Abstract Methods and Properties
 
 		#region ISelectionContainer overrides

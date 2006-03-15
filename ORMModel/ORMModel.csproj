@@ -291,10 +291,6 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SerializationExtensions.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Shell\ExtensionManager.resx">
-      <DependentUpon>ExtensionManager.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Shell\ORMDesignerSettings.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
