@@ -72,7 +72,7 @@
 						</column>
 					</xsl:for-each>
 					<xsl:for-each select="dcl:uniquenessConstraint">
-						<xsl:sort select="@isPrimary" order="descending"/>
+						<!--<xsl:sort select="@isPrimary" order="descending"/>  sort removed to preserve origional generated column order-->
 						<uniquenessConstraint>
 							<xsl:copy-of select="@name"/>
 							<xsl:copy-of select="@isPrimary"/>
@@ -89,7 +89,8 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<!--Reordering the information from the previous variable to place the columns in a more readable order-->
-		<xsl:variable name="sortedTables">
+		<!--Removed to preserve origional column order-->
+		<!--<xsl:variable name="sortedTables">
 			<xsl:for-each select="msxsl:node-set($tables)/table">
 				<table>
 					<xsl:copy-of select="@*"/>
@@ -103,10 +104,10 @@
 					<xsl:copy-of select="uniquenessConstraint"/>
 				</table>	
 			</xsl:for-each>
-		</xsl:variable>
+		</xsl:variable>-->
 		<TView>
 			<tables>
-				<xsl:copy-of select="$sortedTables"/>
+				<xsl:copy-of select="$tables"/>
 			</tables>
 			<FKeys>
 				<xsl:copy-of select="$FKeys2"/>

@@ -11,9 +11,9 @@
 		</table>
 		<table name="PBCFPOD">
 			<column name="CarSold_vin" isPrimaryKey="true" isOptional="false" />
+			<column name="SaleDate_YMD" isPrimaryKey="false" isOptional="false" />
 			<column name="Buyer_Person_id" isPrimaryKey="true" isOptional="false" />
 			<column name="Seller_Person_id" isPrimaryKey="true" isOptional="false" />
-			<column name="SaleDate_YMD" isPrimaryKey="false" isOptional="false" />
 			<uniquenessConstraint name="IUC23" isPrimary="true">
 				<column name="Buyer_Person_id" />
 				<column name="CarSold_vin" />
@@ -32,8 +32,8 @@
 		</table>
 		<table name="Review">
 			<column name="Car_vin" isPrimaryKey="true" isOptional="false" />
-			<column name="Criterion_Name" isPrimaryKey="true" isOptional="false" />
 			<column name="Rating_Nr_Integer" isPrimaryKey="false" isOptional="false" />
+			<column name="Criterion_Name" isPrimaryKey="true" isOptional="false" />
 			<uniquenessConstraint name="IUC26" isPrimary="true">
 				<column name="Car_vin" />
 				<column name="Criterion_Name" />
@@ -48,20 +48,20 @@
 			</uniquenessConstraint>
 		</table>
 		<table name="Person">
-			<column name="Person_id" isPrimaryKey="true" isOptional="false" />
-			<column name="Father_Person_id" isPrimaryKey="true" isOptional="false" />
-			<column name="Mother_Person_id" isPrimaryKey="true" isOptional="false" />
-			<column name="CPBOBON" isPrimaryKey="true" isOptional="true" />
 			<column name="FirstName" isPrimaryKey="false" isOptional="false" />
+			<column name="Person_id" isPrimaryKey="true" isOptional="false" />
 			<column name="Date_YMD" isPrimaryKey="false" isOptional="false" />
 			<column name="LastName" isPrimaryKey="false" isOptional="false" />
-			<column name="Gender_Gender_Code" isPrimaryKey="false" isOptional="false" />
 			<column name="SclScrtyNmbr" isPrimaryKey="false" isOptional="true" />
 			<column name="HatType_ColorARGB" isPrimaryKey="false" isOptional="true" />
 			<column name="HTHTSHTSD" isPrimaryKey="false" isOptional="true" />
 			<column name="OwnsCar_vin" isPrimaryKey="false" isOptional="true" />
+			<column name="Gender_Gender_Code" isPrimaryKey="false" isOptional="false" />
 			<column name="PersonHasParents" isPrimaryKey="false" isOptional="true" />
 			<column name="VT1DSEWVT1V" isPrimaryKey="false" isOptional="true" />
+			<column name="CPBOBON" isPrimaryKey="true" isOptional="true" />
+			<column name="Father_Person_id" isPrimaryKey="true" isOptional="false" />
+			<column name="Mother_Person_id" isPrimaryKey="true" isOptional="false" />
 			<column name="Death_Date_YMD" isPrimaryKey="false" isOptional="true" />
 			<column name="DDCDCT" isPrimaryKey="false" isOptional="true" />
 			<column name="DNDNDIFPC" isPrimaryKey="false" isOptional="true" />
@@ -70,16 +70,16 @@
 			<uniquenessConstraint name="IUC2" isPrimary="true">
 				<column name="Person_id" />
 			</uniquenessConstraint>
-			<uniquenessConstraint name="CPEUC3" isPrimary="true">
-				<column name="Father_Person_id" />
-				<column name="CPBOBON" />
-				<column name="Mother_Person_id" />
-			</uniquenessConstraint>
 			<uniquenessConstraint name="IUC9" isPrimary="false">
 				<column name="SclScrtyNmbr" />
 			</uniquenessConstraint>
 			<uniquenessConstraint name="IUC22" isPrimary="false">
 				<column name="OwnsCar_vin" />
+			</uniquenessConstraint>
+			<uniquenessConstraint name="CPEUC3" isPrimary="true">
+				<column name="Father_Person_id" />
+				<column name="CPBOBON" />
+				<column name="Mother_Person_id" />
 			</uniquenessConstraint>
 			<uniquenessConstraint name="EUC1" isPrimary="false">
 				<column name="FirstName" />

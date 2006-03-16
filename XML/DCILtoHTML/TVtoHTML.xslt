@@ -28,7 +28,17 @@
 						<xsl:text> (</xsl:text>
 						<xsl:for-each select="column">
 							<xsl:call-template name="seperator"/>
-							<xsl:value-of select="@name"/>
+							<xsl:choose>
+								<xsl:when test="@isOptional = 'true'">
+									<xsl:call-template name="optional"/>
+								</xsl:when>
+								<xsl:when test="../uniquenessConstraint/column/@name = current()/@name">
+									<xsl:call-template name="unique"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@name"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:for-each>
 						<xsl:text>)</xsl:text>
 						<br/>
@@ -83,5 +93,34 @@
 		<xsl:if test="position() != '1'">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
+	</xsl:template>
+	<xsl:template name="unique">
+		<u>
+			<xsl:choose>
+				<xsl:when test="@isPrimaryKey = 'true'">
+					<xsl:call-template name="primaryKey"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</u>
+	</xsl:template>
+	<xsl:template name="primaryKey">
+		<b>
+			<xsl:value-of select="@name"/>
+		</b>
+	</xsl:template>
+	<xsl:template name="optional">
+		<xsl:text>[</xsl:text>
+		<xsl:choose>
+			<xsl:when test="../uniquenessConstraint/column/@name = current()/@name">
+				<xsl:call-template name="unique"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@name"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>]</xsl:text>
 	</xsl:template>
 </xsl:stylesheet> 
