@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomExtensionElement.cs" />
+    <Compile Include="CustomExtensionError.cs" />
     <Compile Include="ExtensionDomainModel.dsldm.cs">
       <DependentUpon>ExtensionDomainModel.dsldm.dsldmt</DependentUpon>
       <AutoGen>True</AutoGen>

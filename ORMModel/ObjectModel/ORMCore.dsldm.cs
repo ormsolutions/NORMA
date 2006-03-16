@@ -240,6 +240,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid);
@@ -646,6 +648,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElementElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElementElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionModelError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactTypeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint),
@@ -868,6 +875,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement), "ExtendedElement", Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement), "ExtensionCollection", Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement), "ExtendedElement", Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError), "ExtensionModelErrorCollection", Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError), "ExtendedElement", Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError), "ExtensionModelErrorCollection", Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError), "ExtendedElement", Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType), "ImpliedFactTypeCollection", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType), "ImpliedByObjectification", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedByObjectificationMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint), "ImpliedEqualityConstraint", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid),
@@ -940,6 +951,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public Microsoft.VisualStudio.Modeling.ModelElementMoveableCollection ExtensionCollection
 		{
 			get { return new Microsoft.VisualStudio.Modeling.ModelElementMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ExtensionModelErrorCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ModelErrorMoveableCollection ExtensionModelErrorCollection
+		{
+			get { return new Neumont.Tools.ORM.ObjectModel.ModelErrorMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -18318,15 +18338,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return new Neumont.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ModelHasFactType.ModelMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid); }
 		}
 		#endregion
-		#region ErrorCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ModelErrorMoveableCollection ErrorCollection
-		{
-			get { return new Neumont.Tools.ORM.ObjectModel.ModelErrorMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ModelHasError.ModelMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid); }
-		}
-		#endregion
 		#region ReferenceModeKindCollection's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -19310,6 +19321,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public Microsoft.VisualStudio.Modeling.ModelElementMoveableCollection ExtensionCollection
 		{
 			get { return new Microsoft.VisualStudio.Modeling.ModelElementMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ExtensionModelErrorCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ModelErrorMoveableCollection ExtensionModelErrorCollection
+		{
+			get { return new Neumont.Tools.ORM.ObjectModel.ModelErrorMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -28517,6 +28537,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorCollection")]
 		public  Neumont.Tools.ORM.ObjectModel.ModelError ErrorCollection
@@ -34180,6 +34201,358 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new ORMModelElementHasExtensionElementElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionModelError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionModelError")]
+	public abstract partial class ORMExtendableElementHasExtensionModelError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region ORMExtendableElementHasExtensionModelError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "b06c6e97-c334-49e2-812a-352b5efe49bc";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionModelError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ORMExtendableElementHasExtensionModelError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ORMExtendableElementHasExtensionModelError.MetaClassGuid;
+		#endregion
+
+	}
+	#region ORMExtendableElementHasExtensionModelError's Generated Constructor Code
+	public abstract partial class ORMExtendableElementHasExtensionModelError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ORMExtendableElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError")]
+	public  partial class ORMNamedElementHasExtensionModelError : Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionModelError
+	{
+		#region ORMNamedElementHasExtensionModelError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "0004ccc3-0998-432e-9403-afcc981a7adb";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ORMNamedElementHasExtensionModelError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ORMNamedElementHasExtensionModelError.MetaClassGuid;
+		#endregion
+
+		#region ExtensionModelErrorCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ExtensionModelErrorCollectionMetaRoleGuidString = "7b7d344e-0676-4397-a15e-dfe7c66edc9c";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ExtensionModelErrorCollectionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollection")]
+		public  Neumont.Tools.ORM.ObjectModel.ModelError ExtensionModelErrorCollection
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ModelError)this.GetRolePlayer(ExtensionModelErrorCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ExtensionModelErrorCollectionMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ExtendedElement's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ExtendedElementMetaRoleGuidString = "1d7b4e73-9873-4021-8c88-bb7e74b7b9f6";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ExtendedElementMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError.ExtendedElement")]
+		public  Neumont.Tools.ORM.ObjectModel.ORMNamedElement ExtendedElement
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ORMNamedElement)this.GetRolePlayer(ExtendedElementMetaRoleGuid); }
+			set { this.SetRolePlayer(ExtendedElementMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ORMNamedElementHasExtensionModelError's Generated Constructor Code
+	public  partial class ORMNamedElementHasExtensionModelError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMNamedElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMNamedElementHasExtensionModelError CreateORMNamedElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateORMNamedElementHasExtensionModelError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMNamedElementHasExtensionModelError CreateAndInitializeORMNamedElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeORMNamedElementHasExtensionModelError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMNamedElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMNamedElementHasExtensionModelError CreateORMNamedElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ORMNamedElementHasExtensionModelError)partition.ElementFactory.CreateElementLink(typeof(ORMNamedElementHasExtensionModelError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMNamedElementHasExtensionModelError CreateAndInitializeORMNamedElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ORMNamedElementHasExtensionModelError)partition.ElementFactory.CreateElementLink(typeof(ORMNamedElementHasExtensionModelError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ORMNamedElementHasExtensionModelError
+	/// <summary>
+	/// ORMNamedElementHasExtensionModelError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError))]
+	public sealed class ORMNamedElementHasExtensionModelErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMNamedElementHasExtensionModelErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionModelError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ORMNamedElementHasExtensionModelErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ORMNamedElementHasExtensionModelErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError")]
+	public  partial class ORMModelElementHasExtensionModelError : Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionModelError
+	{
+		#region ORMModelElementHasExtensionModelError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "c3ed4bff-c606-49d5-bf41-cd5c1bff17b8";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ORMModelElementHasExtensionModelError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ORMModelElementHasExtensionModelError.MetaClassGuid;
+		#endregion
+
+		#region ExtensionModelErrorCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ExtensionModelErrorCollectionMetaRoleGuidString = "ed7ce168-e200-4f9b-9176-85a195ff386d";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ExtensionModelErrorCollectionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtensionModelErrorCollection")]
+		public  Neumont.Tools.ORM.ObjectModel.ModelError ExtensionModelErrorCollection
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ModelError)this.GetRolePlayer(ExtensionModelErrorCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ExtensionModelErrorCollectionMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ExtendedElement's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ExtendedElementMetaRoleGuidString = "08e186c3-ce0d-4591-a514-6131f86866a9";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ExtendedElementMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.ExtendedElement")]
+		public  Neumont.Tools.ORM.ObjectModel.ORMModelElement ExtendedElement
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ORMModelElement)this.GetRolePlayer(ExtendedElementMetaRoleGuid); }
+			set { this.SetRolePlayer(ExtendedElementMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ORMModelElementHasExtensionModelError's Generated Constructor Code
+	public  partial class ORMModelElementHasExtensionModelError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMModelElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModelElementHasExtensionModelError CreateORMModelElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateORMModelElementHasExtensionModelError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModelElementHasExtensionModelError CreateAndInitializeORMModelElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeORMModelElementHasExtensionModelError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMModelElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModelElementHasExtensionModelError CreateORMModelElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ORMModelElementHasExtensionModelError)partition.ElementFactory.CreateElementLink(typeof(ORMModelElementHasExtensionModelError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModelElementHasExtensionModelError CreateAndInitializeORMModelElementHasExtensionModelError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ORMModelElementHasExtensionModelError)partition.ElementFactory.CreateElementLink(typeof(ORMModelElementHasExtensionModelError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ORMModelElementHasExtensionModelError
+	/// <summary>
+	/// ORMModelElementHasExtensionModelError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError))]
+	public sealed class ORMModelElementHasExtensionModelErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMModelElementHasExtensionModelErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ORMModelElementHasExtensionModelErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ORMModelElementHasExtensionModelErrorElementFactoryCreator();
 			}
 		}
 	}

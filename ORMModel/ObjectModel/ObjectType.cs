@@ -1808,7 +1808,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the errors associated with the object.
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -1859,6 +1859,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return compatibleSupertypes;
 				}
+
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -1871,7 +1877,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateDataTypeNotSpecifiedError(notifyAdded);
@@ -1887,7 +1893,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateDataTypeNoteSpecifiedError);
 			ORMMetaModel.DelayValidateElement(this, DelayValidateEntityTypeRequiresReferenceSchemeError);

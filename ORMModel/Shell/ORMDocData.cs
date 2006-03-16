@@ -48,7 +48,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			None = 0,
 			AddedPostLoadEvents = 1,
-			SaveDisabled = 2,
+			AddedPreLoadEvents = 2,
+			SaveDisabled = 4,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -181,13 +182,21 @@ namespace Neumont.Tools.ORM.Shell
 					myExtensionSubStores = documentExtensions;
 					stream.Position = 0;
 
-					foreach (DocView view in DocViews)
+					if (isReload)
 					{
-						TabbedDiagramDocView tabbedView = view as TabbedDiagramDocView;
-						if (tabbedView != null)
+						foreach (DocView view in DocViews)
 						{
-							tabbedView.Diagrams.Clear();
+							TabbedDiagramDocView tabbedView = view as TabbedDiagramDocView;
+							if (tabbedView != null)
+							{
+								tabbedView.Diagrams.Clear();
+							}
 						}
+						// Remove items from the ErrorList (TaskList) when isReload is true.
+						// The Tasks in the ErrorList (TaskList) are not removed when isReload is true.
+						// So, we have duplicates when a file is reloaded
+						// (after a custom extension is removed or added)!
+						this.TaskProvider.RemoveAllTasks();
 					}
 					retVal = base.LoadDocData(fileName, isReload);
 				}
@@ -199,8 +208,8 @@ namespace Neumont.Tools.ORM.Shell
 			if (dontSave)
 			{
 				SetFlag(PrivateFlags.SaveDisabled, true);
-				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable) ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-				docTable.ModifyDocumentFlags(Cookie, (uint) _VSRDTFLAGS.RDT_DontSave, 1);
+				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
 			}
 			// MSBUG: We're calling OnDocumentLoaded beause they don't...
 			base.OnDocumentLoaded(EventArgs.Empty);
@@ -315,16 +324,38 @@ namespace Neumont.Tools.ORM.Shell
 			get { return this.ProjectScope; }
 		}
 		/// <summary>
+		/// Defer event handling to the loaded models
+		/// </summary>
+		protected override void AddPreLoadModelingEventHandlers()
+		{
+			base.AddPreLoadModelingEventHandlers();
+			foreach (object subStore in Store.SubStores.Values)
+			{
+				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
+				if (subscriber != null)
+				{
+					subscriber.AddPreLoadModelingEventHandlers();
+				}
+			}
+			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
+		}
+		/// <summary>
 		/// Attach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
 		protected override void AddPostLoadModelingEventHandlers()
 		{
-			Store store = Store;
+			base.AddPostLoadModelingEventHandlers();
+			foreach (object subStore in Store.SubStores.Values)
+			{
+				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
+				if (subscriber != null)
+				{
+					subscriber.AddPostLoadModelingEventHandlers();
+				}
+			}
 			AddErrorReportingEvents();
 			AddTabRestoreEvents();
-			NamedElementDictionary.AttachEventHandlers(store);
-			ORMDiagram.AttachEventHandlers(store);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 		}
 		/// <summary>
@@ -333,16 +364,23 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void RemoveModelingEventHandlers()
 		{
-			if (!GetFlag(PrivateFlags.AddedPostLoadEvents))
+			base.RemoveModelingEventHandlers();
+			bool addedPreLoad = GetFlag(PrivateFlags.AddedPreLoadEvents);
+			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
+			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents, false);
+			foreach (object subStore in Store.SubStores.Values)
 			{
-				return;
+				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
+				if (subscriber != null)
+				{
+					subscriber.RemoveModelingEventHandlers(addedPreLoad, addedPostLoad);
+				}
 			}
-			SetFlag(PrivateFlags.AddedPostLoadEvents, false);
-			Store store = Store;
-			NamedElementDictionary.DetachEventHandlers(store);
-			ORMDiagram.DetachEventHandlers(store);
-			RemoveTabRestoreEvents();
-			RemoveErrorReportingEvents();
+			if (addedPreLoad)
+			{
+				RemoveTabRestoreEvents();
+				RemoveErrorReportingEvents();
+			}
 		}
 		/// <summary>
 		/// Clear out the task provider

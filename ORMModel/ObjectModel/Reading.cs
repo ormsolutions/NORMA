@@ -344,7 +344,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the errors associated with the Reading.
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -357,6 +357,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (null != (tooMany = TooManyRolesError))
 				{
 					yield return tooMany;
+				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
 				}
 			}
 		}
@@ -372,7 +377,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateRoleCountError(notifyAdded);
 		}
@@ -384,7 +389,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static void DelayValidateErrors()
+		protected new static void DelayValidateErrors()
 		{
 			// UNDONE: DelayedValidation (Reading)
 		}

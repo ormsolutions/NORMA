@@ -545,7 +545,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the fact.
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -613,6 +613,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return frequencyContradictionError;
 				}
+
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -626,7 +633,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateRequiresReading(notifyAdded);
@@ -640,7 +647,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static void DelayValidateErrors()
+		protected new static void DelayValidateErrors()
 		{
 			// UNDONE: DelayedValidation (FactType)
 		}

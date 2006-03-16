@@ -5,7 +5,9 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/ExtensionExample"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore">
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-01/ORMCore"/>
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
 			Neumont Object-Role Modeling Architect for Visual Studio
@@ -38,4 +40,16 @@
 			<xs:enumeration value="Three" />
 		</xs:restriction>
 	</xs:simpleType>
+
+	<xs:element name="FactTypeRequiresMeaningfulNameError" type="FactTypeRequiresMeaningfulNameErrorType" substitutionGroup="orm:ExtensionModelError"/>
+	<xs:complexType name="FactTypeRequiresMeaningfulNameErrorType">
+		<xs:complexContent>
+			<xs:extension base="orm:ModelError">
+				<xs:sequence>
+					<xs:element name="Fact" type="orm:FactRef" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
 </xs:schema>

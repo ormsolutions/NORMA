@@ -1,8 +1,8 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <dmd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:schemas-microsoft-com:dmd">
   <model name="ExtensionDomainModel" identity="9f620b5a-9a99-45a4-a022-c9ed95ce85d6" id="i9f620b5az9a99z45a4za022zc9ed95ce85d6" namespace="ExtensionExample" isLoaded="true">
     <mdfmetadata xsi:type="modelmdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" majorversion="1" minorversion="0" alwaysgeneratecollection="false">
-			<copyright xml:space="preserve">Common Public License Copyright Notice
+      <copyright>Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
@@ -22,6 +22,7 @@
     </mdfmetadata>
     <extended>
       <model>i2b131234z7959z458dz834fz2dc0769ce683</model>
+      <model>i83ad9e12z0e90z47cdz8e2fza79f8d9c7288</model>
     </extended>
     <enumerations>
       <enumeration name="TestEnumeration" identity="d4c5d9a5-68e5-416e-a86c-9acfd0dbeb43" namespace="ExtensionExample" id="id4c5d9a5z68e5z416eza86cz9acfd0dbeb43">
@@ -35,6 +36,11 @@
             <source />
             <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
             <subType>i14db7e59z72e3z441fz9993z88fb3e3c01b3</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresMeaningfulNameError-ModelError" identity="454cc16f-ff7f-4f22-a3d3-8f924ba16812" id="i454cc16fzff7fz4f22za3d3z8f924ba16812" definitionlevel="none">
+            <source />
+            <superType>i38306f5cz63edz4ea0zafa8z2b56a81577c6</superType>
+            <subType>ib9448302zbeb4z451ezbfd8zcb824201784c</subType>
           </treeExpression>
         </expressions>
         <roots />
@@ -54,11 +60,20 @@
             <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
             <subType>i14db7e59z72e3z441fz9993z88fb3e3c01b3</subType>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresMeaningfulNameError-ModelError" identity="6f08fbd3-a7ee-447a-b84b-96db944db759" id="i6f08fbd3za7eez447azb84bz96db944db759" definitionlevel="definition">
+            <source>i454cc16fzff7fz4f22za3d3z8f924ba16812</source>
+            <superType>i38306f5cz63edz4ea0zafa8z2b56a81577c6</superType>
+            <subType>ib9448302zbeb4z451ezbfd8zcb824201784c</subType>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="" identity="4dfe86ec-dc09-4378-aad2-e4a56a2b91f8" id="i4dfe86eczdc09z4378zaad2ze4a56a2b91f8">
             <source />
             <referencetype>i1f92939dz732dz43c9z83e5z127d634068ee</referencetype>
+          </root>
+          <root name="" identity="f6e007ea-4847-499d-8435-fd11d63b8163" id="if6e007eaz4847z499dz8435zfd11d63b8163">
+            <source />
+            <referencetype>i38306f5cz63edz4ea0zafa8z2b56a81577c6</referencetype>
           </root>
         </roots>
         <source>i5870bb97zec11z42baz8468z694c47516950</source>
@@ -66,7 +81,7 @@
       <treenavigator xsi:type="ShadowTreeNavigator" name="serialization" identity="b303ccfe-0308-4f53-8f83-6819768fc91f" id="ib303ccfez0308z4f53z8f83z6819768fc91f">
         <expressions />
         <roots>
-          <root name="MyCustomExtensionElement" identity="a395d5e9-0c60-41b9-a470-fee98c9aa0ba" id="ia395d5e9z0c60z41b9za470zfee98c9aa0ba">
+          <root name="MyCustomExtensionElement" identity="a1d6c9f5-7ff6-466c-9c9c-4a867902d213" id="ia1d6c9f5z7ff6z466cz9c9cz4a867902d213">
             <source />
             <referencetype>i14db7e59z72e3z441fz9993z88fb3e3c01b3</referencetype>
           </root>
@@ -101,6 +116,21 @@
       <concept name="ModelElement" identity="1f92939d-732d-43c9-83e5-127d634068ee" namespace="Microsoft.VisualStudio.Modeling" id="i1f92939dz732dz43c9z83e5z127d634068ee" isLoaded="false" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
       </concept>
+      <concept name="FactTypeRequiresMeaningfulNameError" identity="b9448302-beb4-451e-bfd8-cb824201784c" namespace="ExtensionExample" id="ib9448302zbeb4z451ezbfd8zcb824201784c" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i38306f5cz63edz4ea0zafa8z2b56a81577c6</superType>
+      </concept>
+      <concept name="ModelError" identity="38306f5c-63ed-4ea0-afa8-2b56a81577c6" namespace="Neumont.Tools.ORM.ObjectModel" id="i38306f5cz63edz4ea0zafa8z2b56a81577c6" isLoaded="false" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+      </concept>
     </concepts>
+  </model>
+  <model name="ORMMetaModel" identity="83ad9e12-0e90-47cd-8e2f-a79f8d9c7288" id="i83ad9e12z0e90z47cdz8e2fza79f8d9c7288" namespace="Neumont.Tools.ORM.ObjectModel" isLoaded="false">
+    <mdfmetadata xsi:type="modelmdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" majorversion="1" minorversion="0" alwaysgeneratecollection="false">
+      <copyright />
+      <copyclosure name="ORMMetaModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
+      <removeclosure name="ORMMetaModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
+    </mdfmetadata>
+    <extended />
   </model>
 </dmd>

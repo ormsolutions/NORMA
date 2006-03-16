@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -32,6 +33,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The collection of extension <see cref="ModelElement"/>s.
 		/// </summary>
 		ModelElementMoveableCollection ExtensionCollection { get;}
+
+		/// <summary>
+		/// The collection of extension <see cref="ModelError"/>s.
+		/// </summary>
+		ModelErrorMoveableCollection ExtensionModelErrorCollection { get;}
 
 		/// <summary>
 		/// In order to support <see cref="IORMPropertyExtension"/>s, this method must call
@@ -100,5 +106,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion
 
-
+	#region IORMModelEventSubscriber
+	/// <summary>
+	/// This interface provides needed methods that are required to add Events to the Object Model.
+	/// </summary>
+	public interface IORMModelEventSubscriber
+	{
+		/// <summary>
+		/// This method attaches ModelEvents to the primary Store. Before the Document is Loaded.
+		/// </summary>
+		void AddPreLoadModelingEventHandlers();
+		/// <summary>
+		/// This method attaches ModelEvents to the primary Store. After the Document is Loaded.
+		/// </summary>
+		void AddPostLoadModelingEventHandlers();
+		/// <summary>
+		/// This method removes ModelEvents from the primary Store.
+		/// </summary>
+		/// <param name="preLoadAdded">The AddPreLoadModelingEventHandlers was called</param>
+		/// <param name="postLoadAdded">The AddPostLoadModelingEventHandlers was called</param>
+		void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded);
+	}
+	#endregion // IORMModelEventSubscriber
 }

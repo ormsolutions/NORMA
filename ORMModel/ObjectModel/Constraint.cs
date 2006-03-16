@@ -420,7 +420,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -440,7 +440,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return tooMany;
 				}
-				 
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
 			}
 		}
 		/// <summary>
@@ -451,7 +455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
@@ -464,7 +468,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 			ORMMetaModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
@@ -1477,7 +1481,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -1500,6 +1504,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return compatibleTypeError;
 				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
 			}
 		}
 		/// <summary>
@@ -1510,7 +1519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRoleSequenceCountForRule(notifyAdded);
@@ -1524,7 +1533,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
 			// ORMMetaModel.DelayValidateElement(this, DelayValidateArityMismatchError); // This is called by DelayValidateRoleSequenceCountErrors
@@ -2046,7 +2055,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the constraint.
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -2054,6 +2063,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (nMinusOneError != null)
 				{
 					yield return nMinusOneError;
+				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
 				}
 			}
 		}
@@ -2067,7 +2081,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyNMinusOneForRule(notifyAdded);
@@ -2079,7 +2093,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateNMinusOneError);
 		}

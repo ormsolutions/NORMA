@@ -29,7 +29,9 @@ namespace ExtensionExample
 				return Type.EmptyTypes;
 			}
 			Type[] retVal = new Type[]{
-				typeof(ExtensionAddRule)};
+				typeof(ExtensionAddRule),
+				typeof(FactTypeRequiresMeaningfulNameError).GetNestedType("ExtensionFactTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeRequiresMeaningfulNameError).GetNestedType("ExtensionFactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
 			System.Diagnostics.Debug.Assert(!(((System.Collections.IList)retVal).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to load.");
 			return retVal;
 		}

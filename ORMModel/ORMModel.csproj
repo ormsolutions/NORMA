@@ -165,6 +165,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\ORMShape.EventSubscriber.cs" />
     <Compile Include="ShapeModel\ORMBaseBinaryLinkShape.Extensions.cs" />
     <Compile Include="ShapeModel\ORMBaseBinaryLinkShape.cs" />
     <Compile Include="ShapeModel\ORMShape.AttachRules.cs">

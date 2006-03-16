@@ -31,7 +31,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <param name="element">The element to validate</param>
 	[CLSCompliant(true)]
 	public delegate void ElementValidator(ModelElement element);
-	public partial class ORMMetaModel
+	public partial class ORMMetaModel : IORMModelEventSubscriber
 	{
 		#region InitializingToolboxItems property
 		private static bool myReflectRulesSuspended;
@@ -128,5 +128,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 			dictionary[key] = null;
 		}
 		#endregion // Delayed Model Validation
+		#region IORMModelEventSubscriber Implementation
+		/// <summary>
+		/// Implements IORMModelEventSubscriber.AddPreLoadModelingEventHandlers
+		/// </summary>
+		protected static void AddPreLoadModelingEventHandlers()
+		{
+		}
+		void IORMModelEventSubscriber.AddPreLoadModelingEventHandlers()
+		{
+			AddPreLoadModelingEventHandlers();
+		}
+		/// <summary>
+		/// Implements IORMModelEventSubscriber.AddPostLoadModelingEventHandlers
+		/// </summary>
+		protected void AddPostLoadModelingEventHandlers()
+		{
+			NamedElementDictionary.AttachEventHandlers(Store);
+		}
+		void IORMModelEventSubscriber.AddPostLoadModelingEventHandlers()
+		{
+			AddPostLoadModelingEventHandlers();
+		}
+		/// <summary>
+		/// Implements IORMModelEventSubscriber.RemoveModelingEventHandlers
+		/// </summary>
+		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)
+		{
+			if (postLoadAdded)
+			{
+				NamedElementDictionary.DetachEventHandlers(Store);
+			}
+		}
+		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)
+		{
+			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded);
+		}
+		#endregion // IORMModelEventSubscriber Implementation
 	}
 }

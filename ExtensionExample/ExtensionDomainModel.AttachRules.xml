@@ -15,5 +15,7 @@
 	</arg:Copyright>
 	<arg:Model class="ExtensionDomainModel">
 		<arg:Rule class="ExtensionAddRule"/>
+		<arg:Rule class="FactTypeRequiresMeaningfulNameError.ExtensionFactTypeAddRule"/>
+		<arg:Rule class="FactTypeRequiresMeaningfulNameError.ExtensionFactTypeChangeRule"/>
 	</arg:Model>
 </arg:Rules>

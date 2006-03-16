@@ -206,7 +206,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 					}
 					else if (singleCol != null)
-					{ 
+					{
 						FixupRelatedLinks(droppedOnElement, singleCol.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid));
 					}
 					else if (multiCol != null)
@@ -368,12 +368,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
-				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;				
+				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
 				if (fact is SubtypeFact
 #if !SHOW_IMPLIED_SHAPES
-					|| fact.ImpliedByObjectification != null
+ || fact.ImpliedByObjectification != null
 #endif // !SHOW_IMPLIED_SHAPES
-					)
+)
 				{
 					return false;
 				}
@@ -944,7 +944,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The action used to drop an external constraint from the toolbox
 		/// </summary>
-		public  ExternalConstraintAction ExternalConstraintAction
+		public ExternalConstraintAction ExternalConstraintAction
 		{
 			get
 			{
@@ -1307,7 +1307,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			//return (startLuminosity >= luminosityCheck) ?
 			//	(int)(startLuminosity * luminosityFactor) :
 			//	(startLuminosity + luminosityDelta);
-			
+
 			// Use a sliding scale to brighten/darken colors
 			const int maxLuminosity = 255;
 			const int luminosityCheck = 160;
@@ -1317,35 +1317,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			const double luminosityIncrementalFactor = -0.06;
 			return (startLuminosity >= luminosityCheck) ?
 				(int)(startLuminosity * (luminosityFixedFactor + (luminosityIncrementalFactor * (double)(maxLuminosity - startLuminosity) / (maxLuminosity - luminosityCheck)))) :
-				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));
+				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity) / luminosityCheck * luminosityIncrementalDelta));
 		}
 		#endregion // Utility Methods
-		#region Object model event handlers
-		/// <summary>
-		/// Attach event handlers to the store. Central location defers to other shape objects.
-		/// </summary>
-		public static void AttachEventHandlers(Store store)
-		{
-			ReadingShape.AttachEventHandlers(store);
-			ExternalConstraintShape.AttachEventHandlers(store);
-			RolePlayerLink.AttachEventHandlers(store);
-			ObjectTypeShape.AttachEventHandlers(store);
-			FactTypeShape.AttachEventHandlers(store);
-			SubtypeLink.AttachEventHandlers(store);
-		}
-		/// <summary>
-		/// Detach event handlers to the store. Central location defers to other shape objects.
-		/// </summary>
-		public static void DetachEventHandlers(Store store)
-		{
-			SubtypeLink.DetachEventHandlers(store);
-			FactTypeShape.DetachEventHandlers(store);
-			ObjectTypeShape.DetachEventHandlers(store);
-			RolePlayerLink.DetachEventHandlers(store);
-			ExternalConstraintShape.DetachEventHandlers(store);
-			ReadingShape.DetachEventHandlers(store);
-		}
-		#endregion // Object model event handlers
 		#region IProxyDisplayProvider Implementation
 		/// <summary>
 		/// Implements IProxyDisplayProvider.ElementDisplayedAs
@@ -1395,5 +1369,5 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ElementDisplayedAs(element);
 		}
 		#endregion // IProxyDisplayProvider Implementation
-}
+	}
 }

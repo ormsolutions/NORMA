@@ -202,10 +202,12 @@
 	</xsl:template>
 	<xsl:template match="@AllowableValues">
 		<orm:ValueRestriction>
-			<orm:ValueConstraint id="GUID_RoleValueRangeDefinitionID{../PlayedRoles/PlayedRole/@PlayedRoleID}" Name="RoleValueRangeDefinitionID{../PlayedRoles/PlayedRole/@PlayedRoleID}">
+			<xsl:variable name="playedRoleId" select="../PlayedRoles/PlayedRole[1]/@PlayedRoleID"/>
+			<orm:ValueConstraint id="GUID_RoleValueRangeDefinitionID{$playedRoleId}" Name="RoleValueRangeDefinitionID{$playedRoleId}">
 				<orm:ValueRanges>
 					<xsl:call-template name="valueRanges">
 						<xsl:with-param name="allowedValues" select="translate(normalize-space(.), $apos, '')" />
+						<xsl:with-param name="objectID" select="$playedRoleId" />
 					</xsl:call-template>
 				</orm:ValueRanges>
 			</orm:ValueConstraint>
@@ -213,12 +215,14 @@
 	</xsl:template>
 	<xsl:template name="valueRanges">
 		<xsl:param name="allowedValues" />
+		<xsl:param name="objectID" />
 		<xsl:choose>
 			<xsl:when test="contains($allowedValues, $seperator)">
 				<xsl:variable name="valueRange" select="substring-before($allowedValues, $seperator)" />
-				<orm:ValueRange id="GUID_ObjectID{@ObjectID}_ValueRange_{translate($valueRange, ' ', '')}" MinValue="{$valueRange}" MaxValue="{$valueRange}" MinInclusion="NotSet" MaxInclusion="NotSet" />
+				<orm:ValueRange id="GUID_ObjectID{$objectID}_ValueRange_{translate($valueRange, ' ', '')}" MinValue="{$valueRange}" MaxValue="{$valueRange}" MinInclusion="NotSet" MaxInclusion="NotSet" />
 				<xsl:call-template name="valueRanges">
 					<xsl:with-param name="allowedValues" select="substring-after($allowedValues, $seperator)" />
+					<xsl:with-param name="objectID" select="$objectID" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="not(contains($allowedValues, $seperator))" >
@@ -227,16 +231,16 @@
 						<xsl:choose>
 							<xsl:when test="contains($allowedValues, ' ..')">
 								<xsl:variable name="adjustedValueRange" select="translate($allowedValues, ' ..', '-')"/>
-								<orm:ValueRange id="GUID_ObjectID{@ObjectID}_ValueRange_{$adjustedValueRange}" MinValue="{substring-before($adjustedValueRange, '-')}" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
+								<orm:ValueRange id="GUID_ObjectID{$objectID}_ValueRange_{$adjustedValueRange}" MinValue="{substring-before($adjustedValueRange, '-')}" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
 							</xsl:when>
 							<xsl:otherwise>
-								<orm:ValueRange id="GUID_ObjectID{@ObjectID}_ValueRange_{translate($allowedValues, ' ', '')}" MinValue="{$allowedValues}" MaxValue="{$allowedValues}" MinInclusion="NotSet" MaxInclusion="NotSet" />
+								<orm:ValueRange id="GUID_ObjectID{$objectID}_ValueRange_{translate($allowedValues, ' ', '')}" MinValue="{$allowedValues}" MaxValue="{$allowedValues}" MinInclusion="NotSet" MaxInclusion="NotSet" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 					<xsl:when test="contains($allowedValues, ' .. ')">
 						<xsl:variable name="adjustedValueRange" select="translate($allowedValues, ' .. ', '-')"/>
-						<orm:ValueRange id="GUID_ObjectID{@ObjectID}_ValueRange_{$adjustedValueRange}" MinValue="{substring-before($adjustedValueRange, '--')}" MaxValue="{substring-after($adjustedValueRange, '--')}" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="GUID_ObjectID{$objectID}_ValueRange_{$adjustedValueRange}" MinValue="{substring-before($adjustedValueRange, '--')}" MaxValue="{substring-after($adjustedValueRange, '--')}" MinInclusion="NotSet" MaxInclusion="NotSet" />
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
@@ -325,6 +329,7 @@
 				<orm:ValueRanges>
 					<xsl:call-template name="valueRanges">
 						<xsl:with-param name="allowedValues" select="translate($Values, $apos, '')" />
+						<xsl:with-param name="objectID" select="$ValueRole" />
 					</xsl:call-template>
 				</orm:ValueRanges>
 			</orm:RoleValueConstraint>
@@ -662,15 +667,14 @@
 								<orm:RoleSequences>
 									<xsl:for-each select="RoleSequences/RoleSequence">
 										<orm:RoleSequence>
+											<xsl:attribute name="id">
+												<xsl:text>GUID_EqualityConstraintID</xsl:text>
+												<xsl:value-of select="$constriantID"/>
+												<xsl:text>_Role</xsl:text>
+												<xsl:value-of select="position()"/>
+											</xsl:attribute>
 											<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
 												<xsl:sort select="@SequencePositionNumber" data-type="number"/>
-												<xsl:attribute name="id">
-													<xsl:text>GUID_EqualityConstraintID</xsl:text>
-													<xsl:value-of select="$constriantID"/>
-													<xsl:text>_Role</xsl:text>
-													<xsl:value-of select="@RoleSequenceItemRoleID"/>
-												</xsl:attribute>
-												<xsl:attribute name="Name" />
 												<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
 											</xsl:for-each>
 										</orm:RoleSequence>

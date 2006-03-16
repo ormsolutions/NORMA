@@ -730,7 +730,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -738,6 +738,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (null != (requiredError = RolePlayerRequiredError))
 				{
 					yield return requiredError;
+				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
 				}
 			}
 		}
@@ -749,7 +754,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected  new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRolePlayerRequiredForRule(notifyAdded);
@@ -761,7 +766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static void DelayValidateErrors()
+		protected static new void DelayValidateErrors()
 		{
 			// UNDONE: DelayedValidation (Role)
 		}

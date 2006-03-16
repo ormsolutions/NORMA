@@ -83,7 +83,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -97,13 +97,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return min;
 				}
+
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
 			}
 		}
 		/// <summary>
-		/// 
+		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>
-		/// <param name="notifyAdded"></param>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyValueMatch(notifyAdded);
@@ -115,7 +120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static void DelayValidateErrors()
+		protected static new void DelayValidateErrors()
 		{
 			// UNDONE: DelayedValidation (ValueRange)
 		}

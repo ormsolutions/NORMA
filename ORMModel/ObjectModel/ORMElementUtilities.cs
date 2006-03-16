@@ -37,6 +37,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			extendedElement.ExtensionCollection.Add(extensionElement);
 		}
 		/// <summary>
+		/// Adds the extension ModelError to the IORMExtendableElement.
+		/// </summary>
+		public static void AddExtensionModelError(IORMExtendableElement extendedElement, ModelError nameError)
+		{
+			extendedElement.ExtensionModelErrorCollection.Add(nameError);
+		}
+		/// <summary>
 		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelElement"/>
 		/// <paramref name="extensionElement"/> is attached to.
 		/// </summary>
@@ -47,6 +54,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 				extensionElement.GetCounterpartRolePlayer(ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuid, false)
 				??
 				extensionElement.GetCounterpartRolePlayer(ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuid, false)
+			);
+		}
+		/// <summary>
+		/// Gets the IORMExtendableElement that the extension ModelError extensionElement is attached to.
+		/// </summary>
+		public static IORMExtendableElement GetExtensionModelError(ModelError extensionElement)
+		{
+			return (IORMExtendableElement)
+			(
+				extensionElement.GetCounterpartRolePlayer(ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid, ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, false)
+				??
+				extensionElement.GetCounterpartRolePlayer(ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid, ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, false)
+
 			);
 		}
 	}

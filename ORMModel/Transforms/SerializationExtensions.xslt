@@ -18,6 +18,7 @@
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
 			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			<plx:namespaceImport name="Neumont.Tools.ORM.Shell"/>
+			<plx:namespaceImport name="Neumont.Tools.ORM.ObjectModel"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:leadingInfo>
 					<plx:comment>Common Public License Copyright Notice</plx:comment>

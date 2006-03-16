@@ -97,6 +97,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Entity- and ValueType specific collections
+		#region ErrorCollection
+		#region ErrorCollection's Generated Accessor Code
+		/// <summary>
+		/// The ErrorCollection
+		/// </summary>
+		public new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (object error in GetCounterpartRolePlayers(ModelHasError.ModelMetaRoleGuid, ModelHasError.ErrorCollectionMetaRoleGuid))
+				{
+					yield return (ModelError)error;
+				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+			}
+		}
+		#endregion
+		#endregion // ErrorCollection
 		#region MergeContext functions
 		/// <summary>
 		/// Support adding root elements and constraints directly to the design surface
@@ -1262,11 +1284,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
 				yield return this;
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -1282,7 +1309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
-		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
 			{
@@ -1306,7 +1333,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static void DelayValidateErrors()
+		protected static new void DelayValidateErrors()
 		{
 			// No implementation required
 		}

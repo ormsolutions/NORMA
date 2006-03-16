@@ -19,12 +19,14 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
+using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ORMModelElement
-	public abstract partial class ORMModelElement : IORMExtendableElement
+	public abstract partial class ORMModelElement : IORMExtendableElement, IModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>See <see cref="IORMExtendableElement.GetDisplayProperties"/></summary>
 		public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
 		{
@@ -50,12 +52,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return GetComponentName();
 			}
 		}
+		#endregion // Base overrides
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (object error in GetCounterpartRolePlayers(ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
+				{
+					yield return (ModelError)error;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors (empty implementation)
+		/// </summary>
+		protected static void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors (empty implementation)
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
 	#endregion // ORMModelElement
-
 	#region ORMNamedElement
-	public abstract partial class ORMNamedElement : IORMExtendableElement
+	public abstract partial class ORMNamedElement : IORMExtendableElement, IModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>See <see cref="IORMExtendableElement.GetDisplayProperties"/></summary>
 		public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
 		{
@@ -81,6 +126,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Name;
 			}
 		}
+		#endregion // Base overrides
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (object error in GetCounterpartRolePlayers(ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
+				{
+					yield return (ModelError)error;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors (empty implementation)
+		/// </summary>
+		protected static void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors (empty implementation)
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
 	#endregion // ORMNamedElement
 }

@@ -690,6 +690,7 @@
 	<!--ModelErrors-->
 	<xs:complexType name="ModelErrors">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="ExtensionModelError"/>
 			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
 			<xs:element name="FactTypeDuplicateNameError" type="FactTypeDuplicateNameError"/>
 			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
@@ -722,6 +723,7 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 	</xs:complexType>
+	<xs:element name="ExtensionModelError" type="ModelError" abstract="true"/>
 	<xs:complexType name="ConstraintDuplicateNameError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
