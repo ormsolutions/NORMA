@@ -157,15 +157,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
-		/// <summary>
 		/// Return the link object between a value type and its referenced
 		/// data type object.
 		/// </summary>
@@ -1093,8 +1084,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (error == null)
 				{
 					error = DataTypeNotSpecifiedError.CreateDataTypeNotSpecifiedError(Store);
-					error.Model = Model;
 					link.DataTypeNotSpecifiedError = error;
+					error.Model = Model;
 					error.GenerateErrorText();
 					if (notifyAdded != null)
 					{
@@ -1139,8 +1130,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (noRefSchemeError == null)
 					{
 						noRefSchemeError = EntityTypeRequiresReferenceSchemeError.CreateEntityTypeRequiresReferenceSchemeError(theStore);
-						noRefSchemeError.Model = theModel;
 						noRefSchemeError.ObjectType = this;
+						noRefSchemeError.Model = theModel;
 						noRefSchemeError.GenerateErrorText();
 						if (notifyAdded != null)
 						{

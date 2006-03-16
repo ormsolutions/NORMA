@@ -559,17 +559,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
-
-
-		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
 		#endregion // CustomStorage handlers
 		#region IComparable<ReferenceMode> Members
 

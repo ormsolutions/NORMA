@@ -442,15 +442,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
-		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
 		#endregion // CustomStorage handlers
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
@@ -684,8 +675,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (noReadingError == null)
 					{
 						noReadingError = FactTypeRequiresReadingError.CreateFactTypeRequiresReadingError(theStore);
-						noReadingError.Model = theModel;
 						noReadingError.FactType = this;
+						noReadingError.Model = theModel;
 						noReadingError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -725,8 +716,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (noUniquenessError == null)
 					{
 						noUniquenessError = FactTypeRequiresInternalUniquenessConstraintError.CreateFactTypeRequiresInternalUniquenessConstraintError(theStore);
-						noUniquenessError.Model = theModel;
 						noUniquenessError.FactType = this;
+						noUniquenessError.Model = theModel;
 						noUniquenessError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -791,8 +782,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (impConstraint == null)
 					{
 						impConstraint = ImpliedInternalUniquenessConstraintError.CreateImpliedInternalUniquenessConstraintError(theStore);
-						impConstraint.Model = theModel;
 						impConstraint.FactType = this;
+						impConstraint.Model = theModel;
 						impConstraint.GenerateErrorText();
 						if (notifyAdded != null)
 						{

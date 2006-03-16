@@ -471,8 +471,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (unspecifiedType != null)
 				{
 					DataTypeNotSpecifiedError error = DataTypeNotSpecifiedError.CreateDataTypeNotSpecifiedError(link.Store);
-					error.Model = unspecifiedType.Model;
 					link.DataTypeNotSpecifiedError = error;
+					error.Model = unspecifiedType.Model;
 					error.GenerateErrorText();
 				}
 			}

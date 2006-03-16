@@ -371,7 +371,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									ringConstraintShape.Bounds = bounds;
 								}
 								ringConstraintShape.AutoResize();
-								ringConstraintShape.Invalidate(true);
+								ringConstraintShape.InvalidateRequired(true);
 							}
 						}
 					}

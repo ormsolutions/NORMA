@@ -377,6 +377,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.MetaFieldInfo[] typeArray = new Microsoft.VisualStudio.Modeling.MetaFieldInfo[]
 			{
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ORMBaseShape), "UpdateCounter", Neumont.Tools.ORM.ShapeModel.ORMBaseShape.UpdateCounterMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ORMBaseShape.ORMBaseShapeUpdateCounterFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ShapeName", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeShapeNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ReferenceModeName", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeReferenceModeNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ExpandRefMode", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeExpandRefModeFieldHandler)),
@@ -476,6 +477,95 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 		#endregion
 
+		#region UpdateCounter's Generated  Field Code
+		#region UpdateCounter's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		internal const System.String UpdateCounterMetaAttributeGuidString = "85e23ba2-451a-4cd3-b233-64973e6133f6";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		internal static readonly System.Guid UpdateCounterMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ORMBaseShape.UpdateCounterMetaAttributeGuidString);
+		#endregion
+
+		#region UpdateCounter's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.LongDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ORMBaseShapeUpdateCounterFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ORMBaseShape.UpdateCounterMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape.UpdateCounter")]
+		private  System.Int64 UpdateCounter
+		{
+			get
+			{
+				return oRMBaseShapeUpdateCounterFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				oRMBaseShapeUpdateCounterFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ORMBaseShapeUpdateCounterFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ORMBaseShape.UpdateCounter field
+		/// </summary>
+		private static ORMBaseShapeUpdateCounterFieldHandler	oRMBaseShapeUpdateCounterFieldHandler	= ORMBaseShapeUpdateCounterFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ORMBaseShape.UpdateCounter
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ORMBaseShapeUpdateCounterFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ShapeModel.ORMBaseShape,System.Int64>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ORMBaseShapeUpdateCounterFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ORMBaseShape.UpdateCounter field handler
+			/// </summary>
+			/// <value>ORMBaseShapeUpdateCounterFieldHandler</value>
+			public static ORMBaseShapeUpdateCounterFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ShapeModel.ORMBaseShape.oRMBaseShapeUpdateCounterFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ShapeModel.ORMBaseShape.oRMBaseShapeUpdateCounterFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ORMBaseShape will assign this value to
+						// Neumont.Tools.ORM.ShapeModel.ORMBaseShape.oRMBaseShapeUpdateCounterFieldHandler, so just instantiate one and return it
+						return new ORMBaseShapeUpdateCounterFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ORMBaseShape.UpdateCounter field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ShapeModel.ORMBaseShape.UpdateCounterMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region ORMBaseShape's Generated Constructor Code
 	public abstract partial class ORMBaseShape

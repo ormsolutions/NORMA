@@ -61,9 +61,9 @@ namespace ExtensionExample
 					if (nameError == null)
 					{
 						nameError = FactTypeRequiresMeaningfulNameError.CreateFactTypeRequiresMeaningfulNameError(factType.Store);
+						ExtensionElementUtility.AddExtensionModelError(factType, nameError);
 						nameError.Model = factType.Model;
 						nameError.GenerateErrorText();
-						ExtensionElementUtility.AddExtensionModelError(factType, nameError);
 						if (notifyAdded != null)
 						{
 							notifyAdded.ElementAdded(nameError, true);

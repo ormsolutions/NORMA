@@ -238,15 +238,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
-		/// <summary>
 		/// Standard override determine when derived attributes are
 		/// displayed in the property grid. Called for all attributes.
 		/// </summary>
@@ -895,8 +886,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (null == RolePlayerRequiredError)
 						{
 							rolePlayerRequired = RolePlayerRequiredError.CreateRolePlayerRequiredError(Store);
-							rolePlayerRequired.Model = fact.Model;
 							rolePlayerRequired.Role = this;
+							rolePlayerRequired.Model = fact.Model;
 							rolePlayerRequired.GenerateErrorText();
 							if (notifyAdded != null)
 							{

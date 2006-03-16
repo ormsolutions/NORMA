@@ -565,7 +565,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Attach event handlers to the store
 		/// </summary>
-		public static void AttachEventHandlers(Store store)
+		public static new void AttachEventHandlers(Store store)
 		{
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
@@ -584,7 +584,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
-		public static void DetachEventHandlers(Store store)
+		public static new void DetachEventHandlers(Store store)
 		{
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;

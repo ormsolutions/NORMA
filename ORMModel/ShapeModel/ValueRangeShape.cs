@@ -130,13 +130,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private void InvalidateDisplayText()
 		{
+			Debug.Assert(TransactionManager.InTransaction);
 			myDisplayText = null;
-			this.Invalidate();
-			//this is triggering code that needs a transaction
-			if (Store.TransactionManager.InTransaction)
-			{
-				this.AutoResize();
-			}
+			InvalidateRequired();
+			this.AutoResize();
+		}
+		/// <summary>
+		/// The constraint shape text needs to be refreshed before it is invalidated
+		/// </summary>
+		protected override void BeforeInvalidate()
+		{
+			myDisplayText = null;
 		}
 		/// <summary>
 		/// Invalidate the display text on all presentation role players associated

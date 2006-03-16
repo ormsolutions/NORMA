@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -266,6 +267,163 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Accessibility Properties
+		#region Auto-invalidate tracking
+		/// <summary>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		public void InvalidateRequired()
+		{
+			InvalidateRequired(false);
+		}
+		/// <summary>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
+		public void InvalidateRequired(bool refreshBitmap)
+		{
+			TransactionManager tmgr = TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				UpdateCounter = unchecked(tmgr.CurrentTransaction.SequenceNumber - (refreshBitmap ? 0L : 1L));
+			}
+		}
+		/// <summary>
+		/// Called during event playback before an Invalidate call triggered
+		/// via the InvalidateRequired mechanism is called. The default implementation
+		/// is empty.
+		/// </summary>
+		protected virtual void BeforeInvalidate()
+		{
+		}
+		/// <summary>
+		/// Standard override. Retrieve values for calculated properties.
+		/// </summary>
+		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			Guid attributeId = attribute.Id;
+			if (attributeId == UpdateCounterMetaAttributeGuid)
+			{
+				TransactionManager tmgr = TransactionManager;
+				if (tmgr.InTransaction)
+				{
+					// Using subtract 2 and set to 1 under to indicate
+					// the difference between an Invalidate(true) and
+					// and Invalidate(false)
+					return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
+				}
+				else
+				{
+					return 0L;
+				}
+			}
+			return base.GetValueForCustomStoredAttribute(attribute);
+		}
+		/// <summary>
+		/// Standard override. All custom storage properties are derived, not stored. 
+		/// </summary>
+		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		{
+			Guid attributeGuid = attribute.Id;
+			if (attributeGuid == UpdateCounterMetaAttributeGuid)
+			{
+				// Nothing to do, we're just trying to create a transaction log
+				return;
+			}
+			base.SetValueForCustomStoredAttribute(attribute, newValue);
+		}
+		/// <summary>
+		/// Attach base shape event handlers
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ORMBaseShape.MetaClassGuid);
+			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(AttributeChangedEvent));
+		}
+		/// <summary>
+		/// Detach base shape event handlers
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ORMBaseShape.MetaClassGuid);
+			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(AttributeChangedEvent));
+		}
+		private static void AttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			Guid attributeId = e.MetaAttribute.Id;
+			if (attributeId == UpdateCounterMetaAttributeGuid)
+			{
+				ORMBaseShape shape = e.ModelElement as ORMBaseShape;
+				if (!shape.IsRemoved)
+				{
+					shape.BeforeInvalidate();
+					shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
+				}
+			}
+		}
+		#endregion // Auto-invalidate tracking
+		#region Update shapes on ModelError added/removed
+		[RuleOn(typeof(ModelHasError))]
+		private class ModelErrorAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ProcessModelErrorChange(e.ModelElement as ModelHasError);
+			}
+		}
+		[RuleOn(typeof(ModelHasError))]
+		private class ModelErrorRemoving : RemovingRule
+		{
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ModelHasError link = e.ModelElement as ModelHasError;
+				if (!link.Model.IsRemoving)
+				{
+					ProcessModelErrorChange(link);
+				}
+			}
+		}
+		private static void ProcessModelErrorChange(ModelHasError errorLink)
+		{
+			ModelError error = errorLink.ErrorCollection;
+			MetaClassInfo classInfo = error.MetaClass;
+			IList playedMetaRoles = classInfo.AllMetaRolesPlayed;
+			int playedMetaRoleCount = playedMetaRoles.Count;
+			for (int i = 0; i < playedMetaRoleCount; ++i)
+			{
+				MetaRoleInfo roleInfo = (MetaRoleInfo)playedMetaRoles[i];
+				if (roleInfo.Id != ModelHasError.ErrorCollectionMetaRoleGuid)
+				{
+					IList rolePlayers = error.GetCounterpartRolePlayers(roleInfo, roleInfo.OppositeMetaRole);
+					int rolePlayerCount = rolePlayers.Count;
+					for (int j = 0; j < rolePlayerCount; ++j)
+					{
+						ModelElement rolePlayer = (ModelElement)rolePlayers[j];
+						if (!rolePlayer.IsRemoving)
+						{
+							PresentationElementMoveableCollection pels = rolePlayer.PresentationRolePlayers;
+							int pelCount = pels.Count;
+							for (int k = 0; k < pelCount; ++k)
+							{
+								ORMBaseShape shape = pels[k] as ORMBaseShape;
+								if (shape != null && !shape.IsRemoving)
+								{
+									shape.InvalidateRequired();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Update shapes on ModelError added/removed
 		#region Luminosity Modification
 		/// <summary>
 		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity

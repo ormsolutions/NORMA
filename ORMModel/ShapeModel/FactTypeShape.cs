@@ -635,7 +635,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 								}
 
-								factShape.Invalidate();
+								factShape.InvalidateRequired(true);
 							}
 						}
 					}
@@ -2630,7 +2630,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 						factShape.AutoResize();
-						factShape.Invalidate(true);
+						factShape.InvalidateRequired(true);
 					}
 				}
 			}
@@ -4178,7 +4178,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 						factTypeShape.AutoResize();
-						factTypeShape.Invalidate(true);
+						factTypeShape.InvalidateRequired(true);
 					}
 				}
 			}
@@ -4373,7 +4373,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Attach event handlers to the store
 		/// </summary>
-		public static void AttachEventHandlers(Store store)
+		public static new void AttachEventHandlers(Store store)
 		{
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
@@ -4388,7 +4388,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
-		public static void DetachEventHandlers(Store store)
+		public static new void DetachEventHandlers(Store store)
 		{
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;

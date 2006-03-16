@@ -146,8 +146,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (minMismatch == null)
 					{
 						minMismatch = MinValueMismatchError.CreateMinValueMismatchError(Store);
-						minMismatch.Model = dataType.Model;
 						minMismatch.ValueRange = this;
+						minMismatch.Model = dataType.Model;
 						minMismatch.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -165,8 +165,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (maxMismatch == null)
 						{
 							maxMismatch = MaxValueMismatchError.CreateMaxValueMismatchError(Store);
-							maxMismatch.Model = dataType.Model;
 							maxMismatch.ValueRange = this;
+							maxMismatch.Model = dataType.Model;
 							maxMismatch.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -420,13 +420,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return false;
 		}
 		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
-		/// <summary>
 		/// Standard override. All custom storage properties are derived, not
 		/// stored. Actual changes are handled in FactTypeChangeRule.
 		/// </summary>
@@ -551,13 +544,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
-		}
-		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
 		/// Standard override. All custom storage properties are derived, not

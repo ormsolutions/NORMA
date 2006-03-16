@@ -211,8 +211,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null == TooFewRolesError)
 					{
 						tooFewError = TooFewReadingRolesError.CreateTooFewReadingRolesError(store);
-						tooFewError.Model = theModel;
 						tooFewError.Reading = this;
+						tooFewError.Model = theModel;
 						tooFewError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -227,8 +227,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null == TooManyRolesError)
 					{
 						tooManyError = TooManyReadingRolesError.CreateTooManyReadingRolesError(store);
-						tooManyError.Model = theModel;
 						tooManyError.Reading = this;
+						tooManyError.Model = theModel;
 						tooManyError.GenerateErrorText();
 						if (notifyAdded != null)
 						{

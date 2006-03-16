@@ -23,7 +23,12 @@
 	<metaclasses />
 	<shapes>
 		<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
-			<metaattributes />
+			<metaattributes>
+				<metaattribute name="UpdateCounter" identity="85e23ba2-451a-4cd3-b233-64973e6133f6" accessmodifier="private" type="System.Int64" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" category="" description="" doccomment="" localize="false" tag="">
+					<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+					<longdomain default="0" min="-9223372036854775808" max="9223372036854775807" />
+				</metaattribute>
+			</metaattributes>
 			<derivedshapes>
 				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectTypeShape" identity="00c1f246-d8f1-4eea-ac88-39ba238143a8" accessmodifier="public" category="" description="" doccomment="" localize="false">
 					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />

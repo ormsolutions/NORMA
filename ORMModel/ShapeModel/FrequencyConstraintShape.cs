@@ -168,7 +168,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (externalConstraintShape != null)
 							{
 								externalConstraintShape.AutoResize();
-								externalConstraintShape.Invalidate(true);
+								externalConstraintShape.InvalidateRequired(true);
 							}
 						}
 					}

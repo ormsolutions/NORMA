@@ -39,6 +39,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected void AddPostLoadModelingEventHandlers()
 		{
 			Store store = Store;
+			ORMBaseShape.AttachEventHandlers(store);
 			ReadingShape.AttachEventHandlers(store);
 			ExternalConstraintShape.AttachEventHandlers(store);
 			RolePlayerLink.AttachEventHandlers(store);
@@ -64,6 +65,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RolePlayerLink.DetachEventHandlers(store);
 				ExternalConstraintShape.DetachEventHandlers(store);
 				ReadingShape.DetachEventHandlers(store);
+				ORMBaseShape.DetachEventHandlers(store);
 			}
 		}
 		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)

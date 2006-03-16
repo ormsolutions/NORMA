@@ -47,7 +47,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Attaches event listeners for the purpose of notifying the
 		/// ReadingShape to invalidate its cached data.
 		/// </summary>
-		public static void AttachEventHandlers(Store store)
+		public static new void AttachEventHandlers(Store store)
 		{
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Detaches event listeners for the purpose of notifying the
 		/// ReadingShape to invalidate its cached data.
 		/// </summary>
-		public static void DetachEventHandlers(Store store)
+		public static new void DetachEventHandlers(Store store)
 		{
 			if (store == null || store.Disposed)
 			{

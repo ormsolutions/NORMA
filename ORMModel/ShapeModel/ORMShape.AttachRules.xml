@@ -29,6 +29,8 @@
 		<arg:Rule class="ObjectTypeShape.RolePlayerRemovedRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
 		<arg:Rule class="ORMBaseBinaryLinkShape.LinkChangeRule"/>
+		<arg:Rule class="ORMBaseShape.ModelErrorAdded"/>
+		<arg:Rule class="ORMBaseShape.ModelErrorRemoving"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleAdded"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.ExternalFactConstraintAdded"/>

@@ -561,8 +561,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null == TooFewRoleSequencesError)
 					{
 						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
-						insufficientError.Model = Model;
 						insufficientError.SingleColumnConstraint = this;
+						insufficientError.Model = Model;
 						insufficientError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -580,8 +580,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (null == TooManyRoleSequencesError)
 						{
 							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
-							extraError.Model = Model;
 							extraError.SingleColumnConstraint = this;
+							extraError.Model = Model;
 							extraError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -690,8 +690,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (null == CompatibleRolePlayerTypeError)
 								{
 									compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(Store);
-									compatibleError.Model = Model;
 									compatibleError.SingleColumnExternalConstraint = this;
+									compatibleError.Model = Model;
 									compatibleError.GenerateErrorText();
 									if (notifyAdded != null)
 									{
@@ -1050,8 +1050,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null == this.TooFewRoleSequencesError)
 					{
 						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
-						insufficientError.Model = Model;
 						insufficientError.MultiColumnConstraint = this;
+						insufficientError.Model = Model;
 						insufficientError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1069,8 +1069,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (null == TooManyRoleSequencesError)
 						{
 							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
-							extraError.Model = Model;
 							extraError.MultiColumnConstraint = this;
+							extraError.Model = Model;
 							extraError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -1159,8 +1159,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (arityError == null)
 							{
 								arityError = ExternalConstraintRoleSequenceArityMismatchError.CreateExternalConstraintRoleSequenceArityMismatchError(store);
-								arityError.Model = Model;
 								arityError.Constraint = this;
+								arityError.Model = Model;
 								arityError.GenerateErrorText();
 								if (notifyAdded != null)
 								{
@@ -1280,9 +1280,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 										{
 											// We need a new error, create it from scratch
 											compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
-											compatibleError.Model = Model;
 											compatibleError.Column = column;
 											compatibleError.MultiColumnExternalConstraint = this;
+											compatibleError.Model = Model;
 											compatibleError.GenerateErrorText();
 											if (notifyAdded != null)
 											{
@@ -1931,15 +1931,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
-		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
 		#endregion // CustomStorage handlers
 		#region Customize property display
 		/// <summary>
@@ -2130,8 +2121,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (error == null)
 						{
 							error = NMinusOneError.CreateNMinusOneError(Store);
-							error.Model = theFactType.Model;
 							error.Constraint = this;
+							error.Model = theFactType.Model;
 							error.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -2357,8 +2348,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (null == EqualityIsImpliedByMandatoryError)
 					{
 						impliedEqualityError = EqualityIsImpliedByMandatoryError.CreateEqualityIsImpliedByMandatoryError(Store);
-						impliedEqualityError.Model = Model;
 						impliedEqualityError.EqualityConstraint = this;
+						impliedEqualityError.Model = Model;
 						impliedEqualityError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -3077,15 +3068,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
-		/// <summary>
-		/// Standard override. Defer to GetValueForCustomStoredAttribute.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
-		{
-			return GetValueForCustomStoredAttribute(attribute);
-		}
 		#endregion // CustomStorage handlers
 		#region Customize property display
 		/// <summary>
@@ -3344,8 +3326,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (error == null)
 					{
 						error = DisjunctiveMandatoryImpliedByMandatoryError.CreateDisjunctiveMandatoryImpliedByMandatoryError(Store);
-						error.Model = Model;
 						error.DisjunctiveMandatoryConstraint = this;
+						error.Model = Model;
 						error.GenerateErrorText();
 						if (notifyAdded != null)
 						{

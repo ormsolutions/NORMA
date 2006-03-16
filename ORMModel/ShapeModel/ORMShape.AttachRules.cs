@@ -44,6 +44,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ObjectTypeShape).GetNestedType("RolePlayerRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ORMBaseShape).GetNestedType("ModelErrorAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ORMBaseShape).GetNestedType("ModelErrorRemoving", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ConstraintRoleSequenceRoleAdded),
 				typeof(ConstraintRoleSequenceRoleRemoved),
 				typeof(ExternalFactConstraintAdded),
