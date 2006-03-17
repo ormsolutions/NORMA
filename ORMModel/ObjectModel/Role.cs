@@ -65,7 +65,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		OneToMany,
 	}
 	#endregion // RoleMultiplicity enum
-	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent
+	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner
 	{
 		#region CustomStorage handlers
 		/// <summary>
@@ -766,6 +766,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasRole.RoleCollectionMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region RolePlayer validation rules
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
 		private class RolePlayerRequiredAddRule : AddRule

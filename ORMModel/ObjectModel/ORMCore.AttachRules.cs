@@ -47,7 +47,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(FactType).GetNestedType("FactTypeHasRoleRemoveRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ImpliedInternalUniquenessConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ImpliedInternalUniquenessConstraintRemoveRule", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(FactType).GetNestedType("InternalConstraintCollectionHasConstrintAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactType).GetNestedType("InternalConstraintCollectionHasConstraintAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("InternalConstraintCollectionHasConstraintRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ModelHasFactTypeAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ModelHasInternalConstraintAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),

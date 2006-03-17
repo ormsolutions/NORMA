@@ -78,6 +78,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void DelayValidateErrors();
 	}
 	#endregion // IModelErrorOwner interface
+	#region IHasIndirectModelErrorOwner interface
+	/// <summary>
+	/// The IHasIndirectModelErrorOwner interface is used to indicate
+	/// that the model errors directly attached to one object are
+	/// listed as part of the ErrorCollection for another object.
+	/// The other object is often the direct or indirect aggregate,
+	/// but does not have to be. IModelErrorIndirectOwner can also
+	/// be combined with IModelErrorOwner to show the error in multiple
+	/// places. If the error is shown more than one step away then
+	/// each element in the chain must implement this interface.
+	/// Implementing IHasIndirectModelErrorOwner allows shapes to
+	/// update automatically when an error is added/removed from
+	/// an indirect owner.
+	/// </summary>
+	public interface IHasIndirectModelErrorOwner
+	{
+		/// <summary>
+		/// Return an array of MetaRole guids. Each MetaRole
+		/// represents a role on this object that can be followed
+		/// to get an IModelErrorOwner implementation that represents
+		/// this object.
+		/// </summary>
+		Guid[] GetIndirectModelErrorOwnerLinkRoles();
+	}
+	#endregion // IHasIndirectModelErrorOwner interface
 	#region IModelErrorActivation interface
 	/// <summary>
 	/// Interface to implement on a shape element

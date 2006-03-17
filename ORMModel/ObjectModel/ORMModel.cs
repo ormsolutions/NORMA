@@ -1344,7 +1344,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 	}
 	#region Relationship-specific derivations of DuplicateNameError
-	public partial class ObjectTypeDuplicateNameError : DuplicateNameError
+	public partial class ObjectTypeDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
 		/// <summary>
 		/// Get the duplicate elements represented by this DuplicateNameError
@@ -1369,8 +1369,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateObjectTypeNames;
 			}
 		}
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
-	public partial class FactTypeDuplicateNameError : DuplicateNameError
+	public partial class FactTypeDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
 		/// <summary>
 		/// Get the duplicate elements represented by this DuplicateNameError
@@ -1395,8 +1409,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateFactTypeNames;
 			}
 		}
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
-	public partial class ConstraintDuplicateNameError : DuplicateNameError
+	public partial class ConstraintDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
 	{
 		/// <summary>
 		/// Get the duplicate elements represented by this DuplicateNameError
@@ -1679,6 +1707,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#endregion // IList Implementation
 		}
 		#endregion // ConstraintCollection Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[]{
+			MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
+			SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
+			InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
+			ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid};
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // Relationship-specific derivations of DuplicateNameError
 	#endregion // NamedElementDictionary and DuplicateNameError integration

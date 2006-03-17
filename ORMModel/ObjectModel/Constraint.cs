@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Constraint class
 	#region InternalConstraint class
-	public partial class InternalConstraint
+	public partial class InternalConstraint : IModelErrorOwner
 	{
 		#region InternalConstraint Specific
 		/// <summary>
@@ -195,6 +195,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // InternalConstraint Specific
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
+				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+			}
+		}
+		#endregion // IModelErrorOwner Implementation
 		#region Role owner validation rules
 		/// <summary>
 		/// If a role is added to an internal constraint then it must
@@ -439,6 +467,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (null != (tooMany = TooManyRoleSequencesError))
 				{
 					yield return tooMany;
+				}
+				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
 				}
 				// Get errors off the base
 				foreach (ModelError baseError in base.ErrorCollection)
@@ -1503,6 +1536,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				foreach (CompatibleRolePlayerTypeError compatibleTypeError in CompatibleRolePlayerTypeErrorCollection)
 				{
 					yield return compatibleTypeError;
+				}
+				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
 				}
 				// Get errors off the base
 				foreach (ModelError baseError in base.ErrorCollection)

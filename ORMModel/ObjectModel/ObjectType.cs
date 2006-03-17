@@ -1815,21 +1815,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return requiredReferenceSchemeError;
 				}
 
-				ValueTypeValueConstraint valueConstraint = ValueConstraint;
-				if (valueConstraint != null)
+				IModelErrorOwner valueErrors = ValueConstraint as IModelErrorOwner;
+				if (valueErrors != null)
 				{
-					foreach (ValueRange range in valueConstraint.ValueRangeCollection)
+					foreach (ModelError valueError in valueErrors.ErrorCollection)
 					{
-						MinValueMismatchError minError = range.MinValueMismatchError;
-						if (minError != null)
-						{
-							yield return minError;
-						}
-						MaxValueMismatchError maxError = range.MaxValueMismatchError;
-						if (maxError != null)
-						{
-							yield return maxError;
-						}
+						yield return valueError;
 					}
 				}
 
@@ -1849,6 +1840,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (compatibleSupertypes != null)
 				{
 					yield return compatibleSupertypes;
+				}
+
+				ObjectTypeDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
 				}
 
 				// Get errors off the base

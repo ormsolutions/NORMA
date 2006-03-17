@@ -393,6 +393,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static void ProcessModelErrorChange(ModelHasError errorLink)
 		{
 			ModelError error = errorLink.ErrorCollection;
+			// Give the error itself a change to have an indirect owner.
+			// A ModelError can own itself.
+			InvalidateIndirectErrorOwnerDisplay(error, null);
 			MetaClassInfo classInfo = error.MetaClass;
 			IList playedMetaRoles = classInfo.AllMetaRolesPlayed;
 			int playedMetaRoleCount = playedMetaRoles.Count;
@@ -406,17 +409,57 @@ namespace Neumont.Tools.ORM.ShapeModel
 					for (int j = 0; j < rolePlayerCount; ++j)
 					{
 						ModelElement rolePlayer = (ModelElement)rolePlayers[j];
-						if (!rolePlayer.IsRemoving)
+						InvalidateErrorOwnerDisplay(rolePlayer);
+						InvalidateIndirectErrorOwnerDisplay(rolePlayer, null);
+					}
+				}
+			}
+		}
+		private static void InvalidateErrorOwnerDisplay(ModelElement element)
+		{
+			if (!element.IsRemoving)
+			{
+				PresentationElementMoveableCollection pels = element.PresentationRolePlayers;
+				int pelCount = pels.Count;
+				for (int i = 0; i < pelCount; ++i)
+				{
+					ORMBaseShape shape = pels[i] as ORMBaseShape;
+					if (shape != null && !shape.IsRemoving)
+					{
+						shape.InvalidateRequired();
+					}
+				}
+			}
+		}
+		private static void InvalidateIndirectErrorOwnerDisplay(ModelElement element, MetaDataDirectory metaDataDirectory)
+		{
+			IHasIndirectModelErrorOwner indirectOwner = element as IHasIndirectModelErrorOwner;
+			if (indirectOwner != null)
+			{
+				Guid[] metaRoles = indirectOwner.GetIndirectModelErrorOwnerLinkRoles();
+				int roleCount;
+				if (metaRoles != null &&
+					0 != (roleCount = metaRoles.Length))
+				{
+					if (metaDataDirectory == null)
+					{
+						metaDataDirectory = element.Store.MetaDataDirectory;
+					}
+					for (int i = 0; i < roleCount; ++i)
+					{
+						MetaRoleInfo metaRole = metaDataDirectory.FindMetaRole(metaRoles[i]);
+						if (metaRole != null)
 						{
-							PresentationElementMoveableCollection pels = rolePlayer.PresentationRolePlayers;
-							int pelCount = pels.Count;
-							for (int k = 0; k < pelCount; ++k)
+							IList counterparts = element.GetCounterpartRolePlayers(metaRole, metaRole.OppositeMetaRole);
+							int counterpartCount = counterparts.Count;
+							for (int j = 0; j < counterpartCount; ++j)
 							{
-								ORMBaseShape shape = pels[k] as ORMBaseShape;
-								if (shape != null && !shape.IsRemoving)
+								ModelElement counterpart = (ModelElement)counterparts[j];
+								if (counterpart is IModelErrorOwner)
 								{
-									shape.InvalidateRequired();
+									InvalidateErrorOwnerDisplay(counterpart);
 								}
+								InvalidateIndirectErrorOwnerDisplay(counterpart, metaDataDirectory);
 							}
 						}
 					}

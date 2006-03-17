@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Closed
 	}
 	#endregion // RangeInclusion enum
-	public partial class ValueRange : IModelErrorOwner
+	public partial class ValueRange : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region variables
 		private static readonly string valueDelim = ResourceStrings.ValueConstraintValueDelimiter;
@@ -73,6 +73,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return containerString.Substring(containerString.IndexOf("{0}") + 3);
 		}
 		#endregion // variables
+		#region IModelErrorOwner implementation
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
 		{
 			get
@@ -128,6 +129,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			DelayValidateErrors();
 		}
+		#endregion // IModelErrorOwner implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region ValueMatch Validation
 		private void VerifyValueMatch(INotifyElementAdded notifyAdded)
 		{
 			DataType dataType = ValueConstraint.DataType;
@@ -199,6 +216,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ranges[i].VerifyValueMatch(null);
 			}
 		}
+		#region ValueTypeHasDataType rule
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
 		private class DataTypeAddRule : AddRule
 		{
@@ -219,6 +237,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		#endregion // ValueTypeHasDataType rule
+		#region DataTypeChangeRule rule
 		[RuleOn(typeof(ValueTypeHasDataType))]
 		private class DataTypeChangeRule: ChangeRule
 		{
@@ -240,6 +260,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		#endregion // DataTypeChangeRule rule
+		#region ValueConstraintAddRule rule
 		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
 		private class ValueConstraintAddRule : AddRule
 		{
@@ -260,6 +282,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		#endregion // ValueConstraintAddRule rule
+		#region RoleValueConstraintAdded rule
 		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
 		private class RoleValueConstraintAdded : AddRule
 		{
@@ -280,6 +304,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		#endregion // RoleValueConstraintAdded rule
+		#region ObjectTypeRoleAdded rule
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime= TimeToFire.LocalCommit)]
 		private class ObjectTypeRoleAdded : AddRule
 		{
@@ -300,6 +326,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		#endregion // ObjectTypeRoleAdded rule
+		#region ValueRangeAdded rule
 		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)]
 		private class ValueRangeAdded : AddRule
 		{
@@ -309,8 +337,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.ValueRangeCollection.VerifyValueMatch(null);
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))]
-		#region ValueRangeChangeRule class
+		#endregion // ValueRangeAdded rule
+		#region ValueRangeChangeRule rule
 		[RuleOn(typeof(ValueRange))]
 		private class ValueRangeChangeRule : ChangeRule
 		{
@@ -356,7 +384,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ValueRangeChangeRule class
+		#endregion // ValueRangeChangeRule rule
+		#endregion // ValueMatch Validation
 		#region CustomStorage handlers
 		/// <summary>
 		/// Standard override. Retrieve values for calculated properties.
@@ -500,7 +529,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // CustomStorage handlers
 	}
-	public partial class ValueConstraint
+	public partial class ValueConstraint : IModelErrorOwner
 	{
 		#region variables
 		private static readonly string defnContainerString = ResourceStrings.ValueConstraintDefinitionContainerPattern;
@@ -613,10 +642,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return definition;
 		}
 		#endregion //ValueConstraint specific
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				ValueRangeMoveableCollection ranges = ValueRangeCollection;
+				int rangeCount = ranges.Count;
+				for (int i = 0; i < rangeCount; ++i)
+				{
+					foreach (ModelError rangeError in (ranges[i] as IModelErrorOwner).ErrorCollection)
+					{
+						yield return rangeError;
+					}
+				}
+				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
+				}
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+			}
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
 	#region ValueTypeValueConstraint class
-	public partial class ValueTypeValueConstraint
+	public partial class ValueTypeValueConstraint : IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Tests if the associated data type is a text type.
 		/// </summary>
@@ -638,6 +705,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return ValueType.DataType;
 			}
 		}
+		#endregion // Base overrides
 		#region ValueTypeValueConstraintChangeRule class
 		[RuleOn(typeof(ValueTypeValueConstraint))]
 		private class ValueTypeValueConstraintChangeRule : ChangeRule
@@ -666,11 +734,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ValueTypeValueConstraintChangeRule class
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // ValueTypeValueConstraint class
 	#region RoleValueConstraint class
-	public partial class RoleValueConstraint
+	public partial class RoleValueConstraint : IHasIndirectModelErrorOwner
 	{
+		#region Base overrides
 		/// <summary>
 		/// Tests if the associated data type is a text type.
 		/// </summary>
@@ -703,6 +786,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
+		#endregion // Base overrides
 		#region RoleValueConstraintChangeRule class
 		[RuleOn(typeof(RoleValueConstraint))]
 		private class RoleValueConstraintChangeRule : ChangeRule
@@ -730,6 +814,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // RoleValueConstraintChangeRule class
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { RoleHasValueConstraint.ValueConstraintMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // RoleValueConstraint class
 	/// <summary>

@@ -32,7 +32,7 @@
 		<arg:Rule class="FactType.FactTypeHasRoleRemoveRule"/>
 		<arg:Rule class="FactType.ImpliedInternalUniquenessConstraintAddRule"/>
 		<arg:Rule class="FactType.ImpliedInternalUniquenessConstraintRemoveRule"/>
-		<arg:Rule class="FactType.InternalConstraintCollectionHasConstrintAddedRule"/>
+		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintAddedRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintRemovedRule"/>
 		<arg:Rule class="FactType.ModelHasFactTypeAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintAddRuleModelValidation"/>

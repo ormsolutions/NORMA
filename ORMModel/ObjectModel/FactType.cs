@@ -569,32 +569,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 						yield return nMinusOneError;
 					}
 				}
+
+				FactTypeDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
+				}
 				
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
 				// we do not validate this error on the fact type, it is done on the role.
 				foreach (Role role in RoleCollection)
 				{
-					RolePlayerRequiredError rolePlayerRequired = role.RolePlayerRequiredError;
-					if (rolePlayerRequired != null)
+					foreach (ModelError roleError in (role as IModelErrorOwner).ErrorCollection)
 					{
-						yield return rolePlayerRequired;
+						yield return roleError;
 					}
-					RoleValueConstraint valueConstraint = role.ValueConstraint;
-					if (valueConstraint != null)
+					IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
+					if (valueErrors != null)
 					{
-						foreach (ValueRange range in valueConstraint.ValueRangeCollection)
+						// Get errors off the base
+						foreach (ModelError valueError in valueErrors.ErrorCollection)
 						{
-							MinValueMismatchError minError = range.MinValueMismatchError;
-							if (minError != null)
-							{
-								yield return minError;
-							}
-							MaxValueMismatchError maxError = range.MaxValueMismatchError;
-							if (maxError != null)
-							{
-								yield return maxError;
-							}
+							yield return valueError;
 						}
 					}
 				}
@@ -610,7 +607,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return baseError;
 				}
-
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -888,7 +884,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class InternalConstraintCollectionHasConstrintAddedRule : AddRule
+		private class InternalConstraintCollectionHasConstraintAddedRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
