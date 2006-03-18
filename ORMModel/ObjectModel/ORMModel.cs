@@ -313,7 +313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(MultiColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(SingleColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(InternalConstraintHasDuplicateNameError))]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(SingleColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(InternalConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))]
 		private class RemoveDuplicateConstraintNameErrorRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -322,6 +322,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				MultiColumnExternalConstraintHasDuplicateNameError mcLink;
 				SingleColumnExternalConstraintHasDuplicateNameError scLink;
 				InternalConstraintHasDuplicateNameError iLink;
+				ValueConstraintHasDuplicateNameError vLink;
 				ConstraintDuplicateNameError error = null;
 				if (null != (mcLink = link as MultiColumnExternalConstraintHasDuplicateNameError))
 				{
@@ -335,9 +336,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					error = iLink.DuplicateNameError;
 				}
+				else if (null != (vLink = link as ValueConstraintHasDuplicateNameError))
+				{
+					error = vLink.DuplicateNameError;
+				}
 				if (error != null && !error.IsRemoved)
 				{
-					if ((error.MultiColumnExternalConstraintCollection.Count + error.SingleColumnExternalConstraintCollection.Count + error.InternalConstraintCollection.Count) < 2)
+					if ((error.MultiColumnExternalConstraintCollection.Count + error.SingleColumnExternalConstraintCollection.Count + error.InternalConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
 					{
 						error.Remove();
 					}
@@ -356,17 +361,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
+				#region TrackingList class
+				private class TrackingList : List<ObjectType>
+				{
+					private ObjectTypeMoveableCollection myNativeCollection;
+					public TrackingList(ObjectTypeDuplicateNameError error)
+					{
+						myNativeCollection = error.ObjectTypeCollection;
+					}
+					public ObjectTypeMoveableCollection NativeCollection
+					{
+						get
+						{
+							return myNativeCollection;
+						}
+					}
+				}
+				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					ObjectType objectType = (ObjectType)element;
 					if (afterTransaction)
 					{
-						// We're not in a transaction, but the object model will be in
-						// the state we need it because we put it there during a transaction.
-						// Just return the collection from the current state of the object model.
-						ObjectTypeDuplicateNameError error = objectType.DuplicateNameError;
-						return (error != null) ? error.ObjectTypeCollection : null;
+						if (elementCollection == null)
+						{
+							ObjectTypeDuplicateNameError error = objectType.DuplicateNameError;
+							if (error != null)
+							{
+								// We're not in a transaction, but the object model will be in
+								// the state we need it because we put it there during a transaction.
+								// Just return the collection from the current state of the object model.
+								TrackingList trackingList = new TrackingList(error);
+								trackingList.Add(objectType);
+								elementCollection = trackingList;
+							}
+						}
+						else
+						{
+							((TrackingList)elementCollection).Add(objectType);
+						}
+						return elementCollection;
 					}
 					else
 					{
@@ -397,13 +432,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 									notifyAdded.ElementAdded(error, true);
 								}
 							}
-							elementCollection = error.ObjectTypeCollection;
+							TrackingList trackingList = new TrackingList(error);
+							trackingList.Add(objectType);
+							elementCollection = trackingList;
 						}
 						else
 						{
+							TrackingList trackingList = (TrackingList)elementCollection;
+							trackingList.Add(objectType);
 							// During deserialization fixup (notifyAdded != null), we need
 							// to make sure that the element is not already in the collection
-							ObjectTypeMoveableCollection typedCollection = (ObjectTypeMoveableCollection)elementCollection;
+							ObjectTypeMoveableCollection typedCollection = trackingList.NativeCollection;
 							if (notifyAdded == null || !typedCollection.Contains(objectType))
 							{
 								typedCollection.Add(objectType);
@@ -414,11 +453,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
 				{
+					TrackingList trackingList = (TrackingList)elementCollection;
+					ObjectType objectType = (ObjectType)element;
+					trackingList.Remove(objectType);
 					if (!afterTransaction)
 					{
 						// Just clear the error. A rule is used to remove the error
-						// object itself when there is not longer a duplicate.
-						((ObjectType)element).DuplicateNameError = null;
+						// object itself when there is no longer a duplicate.
+						objectType.DuplicateNameError = null;
 					}
 					return elementCollection;
 				}
@@ -465,17 +507,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
+				#region TrackingList class
+				private class TrackingList : List<FactType>
+				{
+					private FactTypeMoveableCollection myNativeCollection;
+					public TrackingList(FactTypeDuplicateNameError error)
+					{
+						myNativeCollection = error.FactTypeCollection;
+					}
+					public FactTypeMoveableCollection NativeCollection
+					{
+						get
+						{
+							return myNativeCollection;
+						}
+					}
+				}
+				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					FactType factType = (FactType)element;
 					if (afterTransaction)
 					{
-						// We're not in a transaction, but the object model will be in
-						// the state we need it because we put it there during a transaction.
-						// Just return the collection from the current state of the object model.
-						FactTypeDuplicateNameError error = factType.DuplicateNameError;
-						return (error != null) ? error.FactTypeCollection : null;
+						if (elementCollection == null)
+						{
+							FactTypeDuplicateNameError error = factType.DuplicateNameError;
+							if (error != null)
+							{
+								// We're not in a transaction, but the object model will be in
+								// the state we need it because we put it there during a transaction.
+								// Just return the collection from the current state of the object model.
+								TrackingList trackingList = new TrackingList(error);
+								trackingList.Add(factType);
+								elementCollection = trackingList;
+							}
+						}
+						else
+						{
+							((TrackingList)elementCollection).Add(factType);
+						}
+						return elementCollection;
 					}
 					else
 					{
@@ -506,13 +578,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 									notifyAdded.ElementAdded(error, true);
 								}
 							}
-							elementCollection = error.FactTypeCollection;
+							TrackingList trackingList = new TrackingList(error);
+							trackingList.Add(factType);
+							elementCollection = trackingList;
 						}
 						else
 						{
+							TrackingList trackingList = (TrackingList)elementCollection;
+							trackingList.Add(factType);
 							// During deserialization fixup (notifyAdded != null), we need
 							// to make sure that the element is not already in the collection
-							FactTypeMoveableCollection typedCollection = (FactTypeMoveableCollection)elementCollection;
+							FactTypeMoveableCollection typedCollection = trackingList.NativeCollection;
 							if (notifyAdded == null || !typedCollection.Contains(factType))
 							{
 								typedCollection.Add(factType);
@@ -523,11 +599,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
 				{
+					TrackingList trackingList = (TrackingList)elementCollection;
+					FactType factType = (FactType)element;
+					trackingList.Remove(factType);
 					if (!afterTransaction)
 					{
 						// Just clear the error. A rule is used to remove the error
-						// object itself when there is not longer a duplicate.
-						((FactType)element).DuplicateNameError = null;
+						// object itself when there is no longer a duplicate.
+						factType.DuplicateNameError = null;
 					}
 					return elementCollection;
 				}
@@ -574,6 +653,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
+				#region TrackingList class
+				private class TrackingList : List<NamedElement>
+				{
+					private MultiColumnExternalConstraintMoveableCollection myNativeMCCollection;
+					private SingleColumnExternalConstraintMoveableCollection myNativeSCCollection;
+					private InternalConstraintMoveableCollection myNativeICCollection;
+					private ValueConstraintMoveableCollection myNativeVCCollection;
+					public TrackingList(ConstraintDuplicateNameError error)
+					{
+						myNativeMCCollection = error.MultiColumnExternalConstraintCollection;
+						myNativeSCCollection = error.SingleColumnExternalConstraintCollection;
+						myNativeICCollection = error.InternalConstraintCollection;
+						myNativeVCCollection = error.ValueConstraintCollection;
+					}
+					public MultiColumnExternalConstraintMoveableCollection NativeMultiColumnCollection
+					{
+						get
+						{
+							return myNativeMCCollection;
+						}
+					}
+					public SingleColumnExternalConstraintMoveableCollection NativeSingleColumnCollection
+					{
+						get
+						{
+							return myNativeSCCollection;
+						}
+					}
+					public InternalConstraintMoveableCollection NativeInternalCollection
+					{
+						get
+						{
+							return myNativeICCollection;
+						}
+					}
+					public ValueConstraintMoveableCollection NativeValueCollection
+					{
+						get
+						{
+							return myNativeVCCollection;
+						}
+					}
+				}
+				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
@@ -601,10 +724,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 					Debug.Assert(scConstraint != null || mcConstraint != null || iConstraint != null || vConstraint != null);
 					if (afterTransaction)
 					{
-						// We're not in a transaction, but the object model will be in
-						// the state we need it because we put it there during a transaction.
-						// Just return the collection from the current state of the object model.
-						return (existingError != null) ? existingError.ConstraintCollection : null;
+						if (elementCollection == null)
+						{
+							if (existingError != null)
+							{
+								// We're not in a transaction, but the object model will be in
+								// the state we need it because we put it there during a transaction.
+								// Just return the collection from the current state of the object model.
+								TrackingList trackingList = new TrackingList(existingError);
+								trackingList.Add(element);
+								elementCollection = trackingList;
+							}
+						}
+						else
+						{
+							((TrackingList)elementCollection).Add(element);
+						}
+						return elementCollection;
 					}
 					else
 					{
@@ -663,16 +799,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 									notifyAdded.ElementAdded(error, true);
 								}
 							}
-							elementCollection = error.ConstraintCollection;
+							TrackingList trackingList = new TrackingList(error);
+							trackingList.Add(element);
+							elementCollection = trackingList;
 						}
 						else
 						{
+							TrackingList trackingList = (TrackingList)elementCollection;
+							trackingList.Add(element);
 							// During deserialization fixup (notifyAdded != null), we need
 							// to make sure that the element is not already in the collection
-							IList typedCollection = (IList)elementCollection;
-							if (notifyAdded == null || !typedCollection.Contains(element))
+							if (null != mcConstraint)
 							{
-								typedCollection.Add(element);
+								MultiColumnExternalConstraintMoveableCollection typedCollection = trackingList.NativeMultiColumnCollection;
+								if (notifyAdded == null || !typedCollection.Contains(mcConstraint))
+								{
+									typedCollection.Add(mcConstraint);
+								}
+							}
+							else if (null != scConstraint)
+							{
+								SingleColumnExternalConstraintMoveableCollection typedCollection = trackingList.NativeSingleColumnCollection;
+								if (notifyAdded == null || !typedCollection.Contains(scConstraint))
+								{
+									typedCollection.Add(scConstraint);
+								}
+							}
+							else if (null != iConstraint)
+							{
+								InternalConstraintMoveableCollection typedCollection = trackingList.NativeInternalCollection;
+								if (notifyAdded == null || !typedCollection.Contains(iConstraint))
+								{
+									typedCollection.Add(iConstraint);
+								}
+							}
+							else if (null != vConstraint)
+							{
+								ValueConstraintMoveableCollection typedCollection = trackingList.NativeValueCollection;
+								if (notifyAdded == null || !typedCollection.Contains(vConstraint))
+								{
+									typedCollection.Add(vConstraint);
+								}
 							}
 						}
 						return elementCollection;
@@ -680,13 +847,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
 				{
+					TrackingList trackingList = (TrackingList)elementCollection;
+					trackingList.Remove(element);
 					if (!afterTransaction)
 					{
 						// Just clear the error. A rule is used to remove the error
-						// object itself when there is not longer a duplicate.
+						// object itself when there is no longer a duplicate.
 						MultiColumnExternalConstraint mcConstraint;
 						SingleColumnExternalConstraint scConstraint;
 						InternalConstraint iConstraint;
+						ValueConstraint vConstraint;
 						if (null != (scConstraint = element as SingleColumnExternalConstraint))
 						{
 							scConstraint.DuplicateNameError = null;
@@ -698,6 +868,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						else if (null != (iConstraint = element as InternalConstraint))
 						{
 							iConstraint.DuplicateNameError = null;
+						}
+						else if (null != (vConstraint = element as ValueConstraint))
+						{
+							vConstraint.DuplicateNameError = null;
 						}
 					}
 					return elementCollection;
@@ -1454,7 +1628,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private IList myCompositeList;
 		/// <summary>
 		/// Return a constraint collection encompassing
-		/// single column external, multi column external, and internal constraints
+		/// single column external, multi column external, internal constraints, and value constraints
 		/// </summary>
 		/// <value></value>
 		public IList ConstraintCollection

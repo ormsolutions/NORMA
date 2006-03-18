@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Constraint class
 	#region InternalConstraint class
-	public partial class InternalConstraint : IModelErrorOwner
+	public partial class InternalConstraint : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region InternalConstraint Specific
 		/// <summary>
@@ -276,6 +276,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Role owner validation rules
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // InternalConstraint class
 	#region SingleColumnExternalConstraint class
