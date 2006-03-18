@@ -203,6 +203,7 @@
 			<se:Link RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRangeCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueConstraintHasValueRangeOverlapError" RoleName="ValueRangeOverlapError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeValueConstraint" Name="ValueConstraint" Override="true"/>
 	<se:Element Class="RoleValueConstraint" Name="RoleValueConstraint" Override="true"/>
@@ -442,6 +443,9 @@
 	</se:Element>
 	<se:Element Class="MaxValueMismatchError" Override="true">
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="ValueRange" Name="ValueRange"/>
+	</se:Element>
+	<se:Element Class="ValueRangeOverlapError" Override="true">
+		<se:Link RelationshipName="ValueConstraintHasValueRangeOverlapError" RoleName="ValueConstraint" Name="ValueConstraint"/>
 	</se:Element>
 	<se:Element Class="RingConstraintTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>

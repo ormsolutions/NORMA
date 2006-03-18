@@ -711,6 +711,7 @@
 			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintError"/>
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
+			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapError"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
 			<xs:element name="DisjunctiveMandatoryImpliedByMandatoryError" type="DisjunctiveMandatoryImpliedByMandatoryError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
@@ -868,6 +869,15 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="ValueRange" type="ValueRangeRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ValueRangeOverlapError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

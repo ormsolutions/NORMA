@@ -10,7 +10,7 @@
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
-// * Copyright © Neumont University. All rights reserved.                     *
+// * Copyright (c) Neumont University. All rights reserved.                   *
 // *                                                                          *
 // * The use and distribution terms for this software are covered by the      *
 // * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -256,6 +256,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ImpliedByUniquenessErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ImpliedByUniquenessErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			#endregion
@@ -471,6 +472,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessImpliedByUniquenessErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.PreferredIdentifierRequiresMandatoryError),
 				typeof(Neumont.Tools.ORM.ObjectModel.PreferredIdentifierRequiresMandatoryErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode),
@@ -681,6 +684,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
@@ -907,6 +912,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError), "ExternalUniquenessConstraint", Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError), "PreferredIdentifierRequiresMandatoryError", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError), "ObjectType", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.ObjectTypeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError), "ValueRangeOverlapError", Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError), "ValueConstraint", Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
@@ -16702,6 +16709,154 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError")]
+	public  partial class ValueRangeOverlapError : Neumont.Tools.ORM.ObjectModel.ModelError
+	{
+		#region ValueRangeOverlapError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "bb07b502-6a9f-4c25-8712-5bdbae3750f3";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError.MetaClassGuidString);
+		#endregion
+
+		#region ValueConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ValueConstraint ValueConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ValueConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region ValueRangeOverlapError's Generated Constructor Code
+	public  partial class ValueRangeOverlapError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeOverlapError CreateValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateValueRangeOverlapError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeOverlapError CreateAndInitializeValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeValueRangeOverlapError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeOverlapError CreateValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (ValueRangeOverlapError)partition.ElementFactory.CreateElement(typeof(ValueRangeOverlapError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeOverlapError CreateAndInitializeValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRangeOverlapError)partition.ElementFactory.CreateElement(typeof(ValueRangeOverlapError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRangeOverlapError
+	/// <summary>
+	/// ValueRangeOverlapError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError))]
+	public sealed class ValueRangeOverlapErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeOverlapErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ValueRangeOverlapErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ValueRangeOverlapErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ReferenceModeKind")]
 	public  partial class ReferenceModeKind : Neumont.Tools.ORM.ObjectModel.ORMNamedElement
 	{
@@ -18581,6 +18736,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public Neumont.Tools.ORM.ObjectModel.ValueRangeMoveableCollection ValueRangeCollection
 		{
 			get { return new Neumont.Tools.ORM.ObjectModel.ValueRangeMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ValueRangeOverlapError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError ValueRangeOverlapError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError), newRoles);
+				}
+			}
 		}
 		#endregion
 		#region DuplicateNameError's Generated Accessor Code
@@ -36695,6 +36895,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new ObjectTypeHasPreferredIdentifierRequiresMandatoryErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError")]
+	public  partial class ValueConstraintHasValueRangeOverlapError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region ValueConstraintHasValueRangeOverlapError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "eb7d2402-a919-4d86-83df-a0089863538c";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ValueConstraintHasValueRangeOverlapError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ValueConstraintHasValueRangeOverlapError.MetaClassGuid;
+		#endregion
+
+		#region ValueRangeOverlapError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeOverlapErrorMetaRoleGuidString = "a081a6d9-3318-4ee5-b1a6-7a7abc78340b";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeOverlapErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapError")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError ValueRangeOverlapError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueRangeOverlapError)this.GetRolePlayer(ValueRangeOverlapErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeOverlapErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ValueConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueConstraintMetaRoleGuidString = "09a72a0b-3ad4-45b2-bdc7-1beb3c12230e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.ValueConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueConstraint ValueConstraint
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueConstraint)this.GetRolePlayer(ValueConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ValueConstraintHasValueRangeOverlapError's Generated Constructor Code
+	public  partial class ValueConstraintHasValueRangeOverlapError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueConstraintHasValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasValueRangeOverlapError CreateValueConstraintHasValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateValueConstraintHasValueRangeOverlapError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasValueRangeOverlapError CreateAndInitializeValueConstraintHasValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeValueConstraintHasValueRangeOverlapError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueConstraintHasValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasValueRangeOverlapError CreateValueConstraintHasValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueConstraintHasValueRangeOverlapError)partition.ElementFactory.CreateElementLink(typeof(ValueConstraintHasValueRangeOverlapError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasValueRangeOverlapError CreateAndInitializeValueConstraintHasValueRangeOverlapError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueConstraintHasValueRangeOverlapError)partition.ElementFactory.CreateElementLink(typeof(ValueConstraintHasValueRangeOverlapError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueConstraintHasValueRangeOverlapError
+	/// <summary>
+	/// ValueConstraintHasValueRangeOverlapError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError))]
+	public sealed class ValueConstraintHasValueRangeOverlapErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueConstraintHasValueRangeOverlapErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ValueConstraintHasValueRangeOverlapErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ValueConstraintHasValueRangeOverlapErrorElementFactoryCreator();
 			}
 		}
 	}

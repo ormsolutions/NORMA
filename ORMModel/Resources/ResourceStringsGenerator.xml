@@ -290,17 +290,23 @@
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text">
 		<comment type="summary">Model validation error shown when multiple object types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Message2">
+	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Role.Message">
 		<comment type="summary">Role data type does not match max inclusion</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorRoleValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Message2">
+	<ResourceString name="ModelErrorRoleValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Role.Message">
 		<comment type="summary">Role data type does not match min inclusion</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Message">
+	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message">
 		<comment type="summary">Data type does not match max inclusion</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Message">
+	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.ValueType.Message">
 		<comment type="summary">Data type does not match min inclusion</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorValueTypeValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message">
+		<comment type="summary">ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorRoleValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message">
+		<comment type="summary">ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.</comment>
 	</ResourceString>
 	<ResourceString name="ModelExceptionNameAlreadyUsedByModel" model="Model" resourceName="ModelException.Model.DuplicateName.Text">
 		<comment type="summary">Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 // Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -178,6 +179,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeUnspecified;
 		}
+		/// <summary>
+		/// The data type does not support comparison
+		/// </summary>
+		public override bool CanCompare
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// CanCompare is false. Compare asserts if called.
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Fail("Don't call Compare if CanCompare returns false");
+			return 0;
+		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
 	}
 	/// <summary>
 	/// A fixed length text data type
@@ -200,6 +229,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTextFixedLength;
+		}
+		/// <summary>
+		/// The data type supports 'Closed' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			return true;
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			return value1.CompareTo(value2);
 		}
 	}
 	/// <summary>
@@ -224,6 +277,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeTextVariableLength;
 		}
+		/// <summary>
+		/// The data type supports 'Closed' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			return true;
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			return value1.CompareTo(value2);
+		}
 	}
 	/// <summary>
 	/// A large length text data type
@@ -246,6 +323,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTextLargeLength;
+		}
+		/// <summary>
+		/// The data type supports 'Closed' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			return true;
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			return value1.CompareTo(value2);
 		}
 	}
 	/// <summary>
@@ -270,6 +371,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeNumericSignedInteger;
 		}
+		/// <summary>
+		/// The data type supports 'Closed' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			int result;
+			return int.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			int typedValue1;
+			int.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			int typedValue2;
+			int.TryParse(value2, out typedValue2);
+			return ((IComparable<int>)typedValue1).CompareTo(typedValue2);
+		}
 	}
 	/// <summary>
 	/// An unsigned integer numeric data type
@@ -292,6 +424,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericUnsignedInteger;
+		}
+		/// <summary>
+		/// The data type supports 'Closed' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			uint result;
+			return uint.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			uint typedValue1;
+			uint.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			uint typedValue2;
+			uint.TryParse(value2, out typedValue2);
+			return ((IComparable<uint>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>
@@ -316,6 +479,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeNumericAutoCounter;
 		}
+		/// <summary>
+		/// The data type supports 'Closed' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Closed;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			ulong result;
+			return ulong.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			ulong typedValue1;
+			ulong.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			ulong typedValue2;
+			ulong.TryParse(value2, out typedValue2);
+			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
+		}
 	}
 	/// <summary>
 	/// A floating point numeric data type
@@ -338,6 +532,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericFloatingPoint;
+		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			double result;
+			return double.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			double typedValue1;
+			double.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			double typedValue2;
+			double.TryParse(value2, out typedValue2);
+			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>
@@ -362,6 +587,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeNumericDecimal;
 		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			decimal result;
+			return decimal.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			decimal typedValue1;
+			decimal.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			decimal typedValue2;
+			decimal.TryParse(value2, out typedValue2);
+			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
+		}
 	}
 	/// <summary>
 	/// A money numeric data type
@@ -384,6 +640,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeNumericMoney;
+		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			decimal result;
+			return decimal.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			decimal typedValue1;
+			decimal.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			decimal typedValue2;
+			decimal.TryParse(value2, out typedValue2);
+			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>
@@ -408,6 +695,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeRawDataFixedLength;
 		}
+		/// <summary>
+		/// The data type does not support comparison
+		/// </summary>
+		public override bool CanCompare
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// CanCompare is false. Compare asserts if called.
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Fail("Don't call Compare if CanCompare returns false");
+			return 0;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
 	}
 	/// <summary>
 	/// A variable length raw data data type
@@ -430,6 +745,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataVariableLength;
+		}
+		/// <summary>
+		/// The data type does not support comparison
+		/// </summary>
+		public override bool CanCompare
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// CanCompare is false. Compare asserts if called.
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Fail("Don't call Compare if CanCompare returns false");
+			return 0;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
 		}
 	}
 	/// <summary>
@@ -454,6 +797,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeRawDataLargeLength;
 		}
+		/// <summary>
+		/// The data type does not support comparison
+		/// </summary>
+		public override bool CanCompare
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// CanCompare is false. Compare asserts if called.
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Fail("Don't call Compare if CanCompare returns false");
+			return 0;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
 	}
 	/// <summary>
 	/// A picture raw data data type
@@ -476,6 +847,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeRawDataPicture;
+		}
+		/// <summary>
+		/// The data type does not support comparison
+		/// </summary>
+		public override bool CanCompare
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// CanCompare is false. Compare asserts if called.
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Fail("Don't call Compare if CanCompare returns false");
+			return 0;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
 		}
 	}
 	/// <summary>
@@ -500,6 +899,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeRawDataOleObject;
 		}
+		/// <summary>
+		/// The data type does not support comparison
+		/// </summary>
+		public override bool CanCompare
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// CanCompare is false. Compare asserts if called.
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Fail("Don't call Compare if CanCompare returns false");
+			return 0;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
 	}
 	/// <summary>
 	/// An auto timestamp temporal data type
@@ -522,6 +949,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTemporalAutoTimestamp;
+		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			System.DateTime result;
+			return System.DateTime.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			System.DateTime typedValue1;
+			System.DateTime.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			System.DateTime typedValue2;
+			System.DateTime.TryParse(value2, out typedValue2);
+			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>
@@ -546,6 +1004,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeTemporalTime;
 		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			System.DateTime result;
+			return System.DateTime.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			System.DateTime typedValue1;
+			System.DateTime.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			System.DateTime typedValue2;
+			System.DateTime.TryParse(value2, out typedValue2);
+			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
+		}
 	}
 	/// <summary>
 	/// A date temporal data type
@@ -568,6 +1057,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeTemporalDate;
+		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			System.DateTime result;
+			return System.DateTime.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			System.DateTime typedValue1;
+			System.DateTime.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			System.DateTime typedValue2;
+			System.DateTime.TryParse(value2, out typedValue2);
+			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
 		}
 	}
 	/// <summary>
@@ -592,6 +1112,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeTemporalDateAndTime;
 		}
+		/// <summary>
+		/// The data type supports 'Open' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.Open;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			System.DateTime result;
+			return System.DateTime.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			System.DateTime typedValue1;
+			System.DateTime.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			System.DateTime typedValue2;
+			System.DateTime.TryParse(value2, out typedValue2);
+			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
+		}
 	}
 	/// <summary>
 	/// A true or false logical data type
@@ -614,6 +1165,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeLogicalTrueOrFalse;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			bool result;
+			return bool.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			bool typedValue1;
+			bool.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			bool typedValue2;
+			bool.TryParse(value2, out typedValue2);
+			if (((IEquatable<bool>)typedValue1).Equals(typedValue2))
+			{
+				return 0;
+			}
+			return 1;
 		}
 	}
 	/// <summary>
@@ -638,6 +1224,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeLogicalYesOrNo;
 		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
 	}
 	/// <summary>
 	/// A row id data type (can not be classified in any of the groups above)
@@ -661,6 +1257,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ResourceStrings.PortableDataTypeOtherRowId;
 		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			ulong result;
+			return ulong.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			ulong typedValue1;
+			ulong.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			ulong typedValue2;
+			ulong.TryParse(value2, out typedValue2);
+			if (((IEquatable<ulong>)typedValue1).Equals(typedValue2))
+			{
+				return 0;
+			}
+			return 1;
+		}
 	}
 	/// <summary>
 	/// An object id data type (can not be classified in any of the groups above)
@@ -683,6 +1314,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string ToString()
 		{
 			return ResourceStrings.PortableDataTypeOtherObjectId;
+		}
+		/// <summary>
+		/// The data type supports 'None' ranges
+		/// </summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
+		/// <summary>
+		/// Returns true if the string value can be interpreted as this data type
+		/// </summary>
+		public override bool CanParse(string value)
+		{
+			ulong result;
+			return ulong.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Compare two values. Each value should be checked previously with CanParse
+		/// </summary>
+		public override int Compare(string value1, string value2)
+		{
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			ulong typedValue1;
+			ulong.TryParse(value1, out typedValue1);
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			ulong typedValue2;
+			ulong.TryParse(value2, out typedValue2);
+			if (((IEquatable<ulong>)typedValue1).Equals(typedValue2))
+			{
+				return 0;
+			}
+			return 1;
 		}
 	}
 }

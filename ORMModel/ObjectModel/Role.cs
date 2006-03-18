@@ -869,6 +869,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 									maxError.GenerateErrorText();
 								}
 							}
+							ValueRangeOverlapError rangeOverlap = valueConstraint.ValueRangeOverlapError;
+							if (rangeOverlap != null)
+							{
+								rangeOverlap.GenerateErrorText();
+							}
 						}
 					}
 					else if (roleAdded == currentRole)

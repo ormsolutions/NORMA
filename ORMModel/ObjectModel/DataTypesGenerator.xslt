@@ -2,13 +2,16 @@
 <xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	xmlns:exsl="http://exslt.org/common"
+	extension-element-prefixes="exsl">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="DataTypes">
 		<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 			<plx:namespaceImport name="System"/>
+			<plx:namespaceImport name="System.Diagnostics"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:leadingInfo>
 					<plx:comment>Common Public License Copyright Notice</plx:comment>
@@ -98,9 +101,46 @@
 				</plx:trailingInfo>
 				<xsl:for-each select="DataType">
 					<xsl:variable name="dataTypeName" select="@name"/>
+					<xsl:variable name="dataTypeCanCompareFalse" select="@canCompare='false' or @canCompare='0'"/>
+					<xsl:variable name="dataTypeRangeSupportFragment">
+						<xsl:choose>
+							<xsl:when test="string-length(@rangeSupport)">
+								<xsl:value-of select="@rangeSupport"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>Closed</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:variable name="dataTypeRangeSupport" select="string($dataTypeRangeSupportFragment)"/>
+					<xsl:variable name="dataTypeBackingType" select="string(@backingType)"/>
 					<xsl:if test="not(@enumOnly)">
 						<xsl:for-each select="SubType">
 							<xsl:variable name="subTypeName" select="@name"/>
+							<xsl:variable name="subTypeCanCompareFalse" select="not(@canCompare='true' or @canCompare='1') and ($dataTypeCanCompareFalse or (@canCompare='false' or @canCompare='0'))"/>
+							<xsl:variable name="subTypeRangeSupportFragment">
+								<xsl:choose>
+									<xsl:when test="string-length(@rangeSupport)">
+										<xsl:value-of select="@rangeSupport"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$dataTypeRangeSupport"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="subTypeRangeSupport" select="string($subTypeRangeSupportFragment)"/>
+							<xsl:variable name="subTypeBackingTypeFragment">
+								<xsl:variable name="backingType" select="string(@backingType)"/>
+								<xsl:choose>
+									<xsl:when test="string-length($backingType)">
+										<xsl:value-of select="$backingType"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$dataTypeBackingType"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="subTypeBackingType" select="string($subTypeBackingTypeFragment)"/>
 							<plx:class name="{$subTypeName}{$dataTypeName}DataType" partial="true" visibility="public">
 								<xsl:if test="comment">
 									<plx:leadingInfo>
@@ -137,6 +177,180 @@
 										<plx:callStatic name="PortableDataType{$dataTypeName}{$subTypeName}" dataTypeName="ResourceStrings" type="property"/>
 									</plx:return>
 								</plx:function>
+								<xsl:if test="$subTypeCanCompareFalse">
+									<plx:property name="CanCompare" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>The data type does not support comparison</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:returns dataTypeName=".boolean"/>
+										<plx:get>
+											<plx:return>
+												<plx:falseKeyword/>
+											</plx:return>
+										</plx:get>
+									</plx:property>
+									<plx:function name="Compare" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>CanCompare is false. Compare asserts if called.</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:param name="value1" dataTypeName=".string"/>
+										<plx:param name="value2" dataTypeName=".string"/>
+										<plx:returns dataTypeName=".i4"/>
+										<plx:callStatic name="Fail" dataTypeName="Debug">
+											<plx:passParam>
+												<plx:string>Don't call Compare if CanCompare returns false</plx:string>
+											</plx:passParam>
+										</plx:callStatic>
+										<plx:return>
+											<plx:value data="0" type="i4"/>
+										</plx:return>
+									</plx:function>
+								</xsl:if>
+								<plx:property name="RangeSupport" modifier="override" visibility="public">
+									<plx:leadingInfo>
+										<plx:docComment>
+											<summary>The data type supports '<xsl:value-of select="$subTypeRangeSupport"/>' ranges</summary>
+										</plx:docComment>
+									</plx:leadingInfo>
+									<plx:returns dataTypeName="DataTypeRangeSupport"/>
+									<plx:get>
+										<plx:return>
+											<plx:callStatic name="{$subTypeRangeSupport}" dataTypeName="DataTypeRangeSupport" type="field"/>
+										</plx:return>
+									</plx:get>
+								</plx:property>
+								<xsl:if test="string-length($subTypeBackingType)">
+									<plx:function name="CanParse" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>Returns true if the string value can be interpreted as this data type</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:param name="value" dataTypeName=".string"/>
+										<plx:returns dataTypeName=".boolean"/>
+										<xsl:choose>
+											<xsl:when test="$subTypeBackingType='.string'">
+												<plx:return>
+													<plx:trueKeyword/>
+												</plx:return>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:local name="result" dataTypeName="{$subTypeBackingType}"/>
+												<plx:return>
+													<plx:callStatic name="TryParse" dataTypeName="{$subTypeBackingType}">
+														<plx:passParam>
+															<plx:nameRef name="value" type="parameter"/>
+														</plx:passParam>
+														<plx:passParam type="out">
+															<plx:nameRef name="result"/>
+														</plx:passParam>
+													</plx:callStatic>
+												</plx:return>
+											</xsl:otherwise>
+										</xsl:choose>
+									</plx:function>
+									<plx:function name="Compare" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>Compare two values. Each value should be checked previously with CanParse</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:param name="value1" dataTypeName=".string"/>
+										<plx:param name="value2" dataTypeName=".string"/>
+										<plx:returns dataTypeName=".i4"/>
+										<xsl:choose>
+											<xsl:when test="$subTypeBackingType='.string'">
+												<plx:return>
+													<plx:callInstance name="CompareTo">
+														<plx:callObject>
+															<plx:nameRef name="value1" type="parameter"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="value2" type="parameter"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:return>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:variable name="OneAndTwo">
+													<Number>1</Number>
+													<Number>2</Number>
+												</xsl:variable>
+												<xsl:for-each select="exsl:node-set($OneAndTwo)/child::*">
+													<!-- Assert precondition -->
+													<xsl:variable name="currentNumber" select="string(.)"/>
+													<plx:callStatic name="Assert" dataTypeName="Debug">
+														<plx:passParam>
+															<plx:callThis name="CanParse">
+																<plx:passParam>
+																	<plx:nameRef name="value{$currentNumber}" type="parameter"/>
+																</plx:passParam>
+															</plx:callThis>
+														</plx:passParam>
+														<plx:passParam>
+															<plx:string>Don't call Compare if CanCompare(value<xsl:value-of select="$currentNumber"/>) returns false</plx:string>
+														</plx:passParam>
+													</plx:callStatic>
+													<!-- Get the typed value -->
+													<plx:local name="typedValue{$currentNumber}" dataTypeName="{$subTypeBackingType}"/>
+													<plx:callStatic name="TryParse" dataTypeName="{$subTypeBackingType}">
+														<plx:passParam>
+															<plx:nameRef name="value{$currentNumber}" type="parameter"/>
+														</plx:passParam>
+														<plx:passParam type="out">
+															<plx:nameRef name="typedValue{$currentNumber}"/>
+														</plx:passParam>
+													</plx:callStatic>
+													<!-- End of OneAndTwo-->
+												</xsl:for-each>
+												<xsl:choose>
+													<xsl:when test="$subTypeRangeSupport='None'">
+														<plx:branch>
+															<plx:condition>
+																<plx:callInstance name="Equals">
+																	<plx:callObject>
+																		<plx:cast dataTypeName="IEquatable">
+																			<plx:passTypeParam dataTypeName="{$subTypeBackingType}"/>
+																			<plx:nameRef name="typedValue1" type="parameter"/>
+																		</plx:cast>
+																	</plx:callObject>
+																	<plx:passParam>
+																		<plx:nameRef name="typedValue2" type="parameter"/>
+																	</plx:passParam>
+																</plx:callInstance>
+															</plx:condition>
+															<plx:return>
+																<plx:value data="0" type="i4"/>
+															</plx:return>
+														</plx:branch>
+														<plx:return>
+															<plx:value data="1" type="i4"/>
+														</plx:return>
+													</xsl:when>
+													<xsl:otherwise>
+														<plx:return>
+															<plx:callInstance name="CompareTo">
+																<plx:callObject>
+																	<plx:cast dataTypeName="IComparable">
+																		<plx:passTypeParam dataTypeName="{$subTypeBackingType}"/>
+																		<plx:nameRef name="typedValue1" type="parameter"/>
+																	</plx:cast>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:nameRef name="typedValue2" type="parameter"/>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:return>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:otherwise>
+										</xsl:choose>
+									</plx:function>
+								</xsl:if>
 							</plx:class>
 						</xsl:for-each>
 					</xsl:if>

@@ -240,7 +240,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueTypeHasDataType rule
 		#region DataTypeChangeRule rule
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class DataTypeChangeRule: ChangeRule
+		private class DataTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// checks first if the data type has been chagned and then test if the 
@@ -331,7 +331,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)]
 		private class ValueRangeAdded : AddRule
 		{
-			public override void  ElementAdded(ElementAddedEventArgs e)
+			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
 				link.ValueRangeCollection.VerifyValueMatch(null);
@@ -539,6 +539,319 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static readonly string delimSansSpace = rangeDelim.Trim();
 		private static readonly string delimSansSpaceEscaped = Regex.Escape(delimSansSpace);
 		#endregion // variables
+		#region IModelErrorOwner implementation
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				ValueRangeMoveableCollection ranges = ValueRangeCollection;
+				int rangeCount = ranges.Count;
+				for (int i = 0; i < rangeCount; ++i)
+				{
+					foreach (ModelError rangeError in (ranges[i] as IModelErrorOwner).ErrorCollection)
+					{
+						yield return rangeError;
+					}
+				}
+				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
+				if (duplicateName != null)
+				{
+					yield return duplicateName;
+				}
+
+				ValueRangeOverlapError overlap;
+				if (null != (overlap = ValueRangeOverlapError))
+				{
+					yield return overlap;
+				}
+
+				// Get errors off the base
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
+			VerifyValueRangeOverlapError(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			ORMMetaModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner implementation
+		#region VerifyValueRangeOverlapError
+		private void DelayValidateValueRangeOverlapError(ModelElement element)
+		{
+			(element as ValueConstraint).VerifyValueRangeOverlapError(null);
+		}
+		private struct RangeValueNode
+		{
+			private string myValue;
+			private bool myIsLower;
+			private int myIndex;
+			private RangeInclusion myInclusion;
+			public RangeValueNode(string value, bool isLower, int index, RangeInclusion inclusion)
+			{
+				myValue = value;
+				myIsLower = isLower;
+				myIndex = index;
+				myInclusion = inclusion;
+			}
+			public string Value
+			{
+				get
+				{
+					return myValue;
+				}
+			}
+			public bool IsLower
+			{
+				get
+				{
+					return myIsLower;
+				}
+			}
+			public int Index
+			{
+				get
+				{
+					return myIndex;
+				}
+			}
+			public RangeInclusion Inclusion
+			{
+				get
+				{
+					return myInclusion;
+				}
+			}
+		}
+		private void VerifyValueRangeOverlapError(INotifyElementAdded notifyAdded)
+		{
+			bool hasError = false;
+			if (IsRemoved)
+			{
+				return;
+			}
+			DataType dataType = DataType;
+			if (dataType != null && dataType.CanCompare == true)
+			{
+				DataTypeRangeSupport rangeSupport = dataType.RangeSupport;
+				ValueRangeMoveableCollection ranges = ValueRangeCollection;
+				int rangeCount = ranges.Count;
+				string minValue;
+				string maxValue;
+				ValueRange range;
+				switch (rangeSupport)
+				{
+					case DataTypeRangeSupport.None:
+						{
+							if (rangeCount > 1)
+							{
+								// UNDONE: None of the single elements should be equal
+							}
+							break;
+						}
+					case DataTypeRangeSupport.Closed:
+					case DataTypeRangeSupport.Open:
+						{
+							bool alwaysClosed = rangeSupport == DataTypeRangeSupport.Closed;
+							if (rangeCount == 1)
+							{
+								// The data is overlapping if the values are backwards
+								range = ranges[0];
+								minValue = range.MinValue;
+								maxValue = range.MaxValue;
+								if (minValue.Length != 0 && dataType.CanParse(minValue) &&
+									maxValue.Length != 0 && dataType.CanParse(maxValue))
+								{
+									hasError = dataType.Compare(minValue, maxValue) > 0;
+								}
+							}
+							else
+							{
+								RangeValueNode[] nodes = new RangeValueNode[rangeCount + rangeCount];
+								int index = 0;
+								int leftIndex;
+								int rightIndex;
+								RangeInclusion inclusion = RangeInclusion.Closed;
+								bool keepGoing = true;
+								for (int i = 0; i < rangeCount; ++i)
+								{
+									range = ranges[i];
+
+									// Add the lower node
+									if (!alwaysClosed)
+									{
+										inclusion = range.MinInclusion;
+										if (inclusion == RangeInclusion.NotSet)
+										{
+											inclusion = RangeInclusion.Closed;
+										}
+									}
+									minValue = range.MinValue;
+									if (minValue.Length != 0 && !dataType.CanParse(minValue))
+									{
+										keepGoing = false;
+										break;
+									}
+
+									nodes[index] = new RangeValueNode(minValue, true, i, inclusion);
+
+									// Add the upper node
+									maxValue = range.MaxValue;
+									if (maxValue.Length != 0 && !dataType.CanParse(maxValue))
+									{
+										keepGoing = false;
+										break;
+									}
+									if (!alwaysClosed)
+									{
+										inclusion = range.MaxInclusion;
+										if (inclusion == RangeInclusion.NotSet)
+										{
+											inclusion = RangeInclusion.Closed;
+										}
+									}
+									nodes[index + 1] = new RangeValueNode(maxValue, false, i, inclusion);
+									index += 2;
+								}
+								if (keepGoing)
+								{
+									Array.Sort<RangeValueNode>(
+										nodes,
+										delegate(RangeValueNode leftNode, RangeValueNode rightNode)
+										{
+											string leftValue = leftNode.Value;
+											string rightValue = rightNode.Value;
+											int retVal = 0;
+											if (leftValue.Length == 0)
+											{
+												if (rightValue.Length != 0)
+												{
+													retVal = leftNode.IsLower ? -1 : 1;
+												}
+											}
+											else if (rightValue.Length == 0)
+											{
+												retVal = rightNode.IsLower ? 1 : -1;
+											}
+											else
+											{
+												retVal = dataType.Compare(leftValue, rightValue);
+											}
+											if (retVal == 0)
+											{
+												leftIndex = leftNode.Index;
+												rightIndex = rightNode.Index;
+												if (leftIndex < rightIndex)
+												{
+													retVal = -1;
+												}
+												else if (leftIndex != rightIndex)
+												{
+													retVal = 1;
+												}
+												if (retVal == 0)
+												{
+													if (leftNode.IsLower)
+													{
+														if (!rightNode.IsLower)
+														{
+															retVal = -1;
+														}
+													}
+													else if (rightNode.IsLower)
+													{
+														retVal = 1;
+													}
+												}
+											}
+											return retVal;
+										});
+									index = 0;
+									RangeValueNode lower;
+									RangeValueNode upper = default(RangeValueNode);
+									for (int i = 0; i < rangeCount; ++i)
+									{
+										lower = nodes[index];
+										if (!lower.IsLower || lower.Index != i)
+										{
+											keepGoing = false;
+											break;
+										}
+										if ((alwaysClosed ||(lower.Inclusion == RangeInclusion.Closed && upper.Inclusion == RangeInclusion.Closed)) &&
+											i != 0 &&
+											lower.Value.Length != 0 &&
+											upper.Value.Length != 0 &&
+											0 == dataType.Compare(lower.Value, upper.Value))
+										{
+											keepGoing = false;
+											break;
+										}
+										upper = nodes[index + 1];
+										if (upper.IsLower || upper.Index != i)
+										{
+											keepGoing = false;
+											break;
+										}
+										index += 2;
+									}
+									hasError = !keepGoing;
+								}
+							}
+							break;
+						}
+				}
+			}
+			ValueRangeOverlapError error = ValueRangeOverlapError;
+			if (hasError)
+			{
+				if (error == null)
+				{
+					error = ValueRangeOverlapError.CreateValueRangeOverlapError(Store);
+					error.ValueConstraint = this;
+					error.Model = DataType.Model;
+					error.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(error, true);
+					}
+				}
+			}
+			else if (error != null)
+			{
+				error.Remove();
+			}
+		}
+		#endregion // VerifyValueRangeOverlapError
 		#region CustomStorage handlers
 		/// <summary>
 		/// Standard override. Retrieve values for calculated properties.
@@ -610,7 +923,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			newDefinition = TrimDefinitionMarkers(newDefinition);
 			// Second, find the value ranges in the definition string
 			// and add them to the collection
-			if(newDefinition.Length != 0)
+			if (newDefinition.Length != 0)
 			{
 				vrColl.Clear();
 				string[] ranges = Regex.Split(newDefinition, delimSansSpaceEscaped);
@@ -627,7 +940,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Removes the left- and right-strings which denote a value range definition.
 		/// </summary>
 		/// <param name="definition">The string to remove left and right value range definition strings from.</param>
-		public static string TrimDefinitionMarkers(string definition){
+		public static string TrimDefinitionMarkers(string definition)
+		{
 			definition = definition.Trim();
 			string leftContainerMarkTrimmed = leftContainerMark.Trim();
 			if (definition.StartsWith(leftContainerMarkTrimmed))
@@ -642,43 +956,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return definition;
 		}
 		#endregion //ValueConstraint specific
-		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
-		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
-		{
-			get
-			{
-				ValueRangeMoveableCollection ranges = ValueRangeCollection;
-				int rangeCount = ranges.Count;
-				for (int i = 0; i < rangeCount; ++i)
-				{
-					foreach (ModelError rangeError in (ranges[i] as IModelErrorOwner).ErrorCollection)
-					{
-						yield return rangeError;
-					}
-				}
-				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
-				if (duplicateName != null)
-				{
-					yield return duplicateName;
-				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
-			}
-		}
-		#endregion // IModelErrorOwner Implementation
 	}
 	#region ValueTypeValueConstraint class
 	public partial class ValueTypeValueConstraint : IHasIndirectModelErrorOwner
@@ -830,11 +1107,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // RoleValueConstraint class
+	#region ValueMismatchError class
 	/// <summary>
-	/// 
+	/// ValueMismatch error abstract class
 	/// </summary>
-	public abstract partial class ValueMismatchError 
-	{ 
+	public abstract partial class ValueMismatchError
+	{
 		/// <summary>
 		/// 
 		/// </summary>
@@ -845,15 +1123,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
 			}
 		}
-		
 	}
+	#endregion // ValueMismatchError class
+	#region MinValueMismatchError class
 	/// <summary>
-	/// 
+	/// MinValueMismatchError class
 	/// </summary>
 	public partial class MinValueMismatchError : IRepresentModelElements
-	{ 
+	{
 		/// <summary>
-		/// 
+		/// Standard override
 		/// </summary>
 		public override void GenerateErrorText()
 		{
@@ -883,12 +1162,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Name = newText;
 			}
 		}
-		//we need to find out what object this value range is associated with.  if the value range is the ref mode for the object, then
-		// return that object, otherwise return...
 		/// <summary>
-		/// 
+		/// Implements IRepresentModelElements.GetRepresentedElements
 		/// </summary>
-		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
 			return new ModelElement[] { this.ValueRange.ValueConstraint };
@@ -898,13 +1174,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 	}
+	#endregion // MinValueMismatchError class
+	#region MaxValueMismatchError class
 	/// <summary>
-	/// 
+	/// MaxValueMismatchError class
 	/// </summary>
 	public partial class MaxValueMismatchError : IRepresentModelElements
 	{
 		/// <summary>
-		/// 
+		/// Standard override
 		/// </summary>
 		public override void GenerateErrorText()
 		{
@@ -935,9 +1213,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// 
+		/// Implements IRepresentModelElements.GetRepresentedElements
 		/// </summary>
-		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
 			return new ModelElement[] { this.ValueRange.ValueConstraint };
@@ -947,4 +1224,69 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 	}
+	#endregion // MaxValueMismatchError class
+	#region ValueRangeOverlapError
+	/// <summary>
+	/// This is the model error message for value ranges that overlap
+	/// </summary>
+	public partial class ValueRangeOverlapError : IRepresentModelElements
+	{
+		/// <summary>
+		/// GenerateErrorText
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueConstraint defn = ValueConstraint;
+			RoleValueConstraint roleDefn;
+			ValueTypeValueConstraint valueDefn;
+			string value = null;
+			string newText = null;
+			string currentText = Name;
+			if (null != (roleDefn = defn as RoleValueConstraint))
+			{
+				Role attachedRole = roleDefn.Role;
+				FactType roleFact = attachedRole.FactType;
+				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
+				string name = roleFact.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeOverlapError, model, name, index);
+			}
+			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
+			{
+				value = valueDefn.ValueType.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorValueTypeValueRangeOverlapError, value, model);
+			}
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// RegenerateEvents
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#region IRepresentModelElements Members
+		/// <summary>
+		/// GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+
+		public ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ValueConstraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Members
+	}
+	#endregion // ValueRangeOverlapError
 }

@@ -221,6 +221,14 @@
     <value xml:space="preserve">Role '{0}' in fact '{1}' in model '{2}' requires a role player.</value>
     <comment xml:space="preserve">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
   </data>
+  <data name="ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message">
+    <value xml:space="preserve">The value constraint for '{0}' in model '{1}' has overlapping values.</value>
+    <comment xml:space="preserve">ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.</comment>
+  </data>
+  <data name="ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message">
+    <value xml:space="preserve">Role '{2}' of fact '{1}' in model '{0}' has a value constraint with overlapping values.</value>
+    <comment xml:space="preserve">ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.</comment>
+  </data>
   <data name="ModelError.ValueType.DataTypeNotSpecified.Message">
     <value xml:space="preserve">A data type must be specified for value type '{0}' in model '{1}'.</value>
     <comment xml:space="preserve">Text displayed for an unspecified data type</comment>
@@ -473,19 +481,19 @@
     <value xml:space="preserve">ORM Verbalization Browser</value>
     <comment xml:space="preserve">Text to place in the title of the verbalization tool window.</comment>
   </data>
-  <data name="ModelError.ValueRange.MaxValueMismatchError.Message">
+  <data name="ModelError.ValueRange.MaxValueMismatchError.ValueType.Message">
     <value xml:space="preserve">The max value for '{0}' in model '{1}' must match the specified data type.</value>
     <comment xml:space="preserve">data type does not match max inclusion. Replace valuetype, model.</comment>
   </data>
-  <data name="ModelError.ValueRange.MinValueMismatchError.Message">
+  <data name="ModelError.ValueRange.MinValueMismatchError.ValueType.Message">
     <value xml:space="preserve">The min value for '{0}' in model '{1}' must match the specified data type.</value>
     <comment xml:space="preserve">data type does not match min inclusion. Replace valuetype, model.</comment>
   </data>
-  <data name="ModelError.ValueRange.MaxValueMismatchError.Message2">
+  <data name="ModelError.ValueRange.MaxValueMismatchError.Role.Message">
     <value xml:space="preserve">Role '{2}' of fact '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
     <comment xml:space="preserve">Role data type does not match max inclusion. Replace model,fact,role number.</comment>
   </data>
-  <data name="ModelError.ValueRange.MinValueMismatchError.Message2">
+  <data name="ModelError.ValueRange.MinValueMismatchError.Role.Message">
     <value xml:space="preserve">Role '{2}' of fact '{1}' in model '{0}' has a min value that does not match the specified data type.</value>
     <comment xml:space="preserve">Role data type does not match min inclusion. Replace model,fact,role number.</comment>
   </data>

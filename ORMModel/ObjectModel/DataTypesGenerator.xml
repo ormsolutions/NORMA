@@ -13,12 +13,12 @@
 
 		You must not remove this notice, or any other, from this software.
 	</Copyright>
-	<DataType name="Unspecified">
+	<DataType name="Unspecified" canCompare="false" rangeSupport="Open">
 		<SubType name="">
 			<comment type="summary">A default type indicating 'no type set'</comment>
 		</SubType>
 	</DataType>
-	<DataType name="Text">
+	<DataType name="Text" backingType=".string">
 		<SubType name="FixedLength">
 			<comment type="summary">A fixed length text data type</comment>
 		</SubType>
@@ -30,26 +30,26 @@
 		</SubType>
 	</DataType>
 	<DataType name="Numeric">
-		<SubType name="SignedInteger">
+		<SubType name="SignedInteger" backingType=".i4">
 			<comment type="summary">A signed integer numeric data type</comment>
 		</SubType>
-		<SubType name="UnsignedInteger">
+		<SubType name="UnsignedInteger" backingType=".u4">
 			<comment type="summary">An unsigned integer numeric data type</comment>
 		</SubType>
-		<SubType name="AutoCounter">
+		<SubType name="AutoCounter" backingType=".u8">
 			<comment type="summary">An auto counter numeric data type</comment>
 		</SubType>
-		<SubType name="FloatingPoint">
+		<SubType name="FloatingPoint" rangeSupport="Open" backingType=".r8">
 			<comment type="summary">A floating point numeric data type</comment>
 		</SubType>
-		<SubType name="Decimal">
+		<SubType name="Decimal" rangeSupport="Open" backingType=".decimal">
 			<comment type="summary">A decimal numeric data type</comment>
 		</SubType>
-		<SubType name="Money">
+		<SubType name="Money" rangeSupport="Open" backingType=".decimal">
 			<comment type="summary">A money numeric data type</comment>
 		</SubType>
 	</DataType>
-	<DataType name="RawData">
+	<DataType name="RawData" canCompare="false" rangeSupport="None">
 		<SubType name="FixedLength">
 			<comment type="summary">A fixed length raw data data type</comment>
 		</SubType>
@@ -66,7 +66,7 @@
 			<comment type="summary">An OLE object raw data data type</comment>
 		</SubType>
 	</DataType>
-	<DataType name="Temporal">
+	<DataType name="Temporal" rangeSupport="Open" backingType=".date">
 		<SubType name="AutoTimestamp">
 			<comment type="summary">An auto timestamp temporal data type</comment>
 		</SubType>
@@ -80,15 +80,15 @@
 			<comment type="summary">A date and time temporal data type</comment>
 		</SubType>
 	</DataType>
-	<DataType name="Logical">
-		<SubType name="TrueOrFalse">
+	<DataType name="Logical" rangeSupport="None">
+		<SubType name="TrueOrFalse" backingType=".boolean">
 			<comment type="summary">A true or false logical data type</comment>
 		</SubType>
 		<SubType name="YesOrNo">
 			<comment type="summary">A yes or no logical data type</comment>
 		</SubType>
 	</DataType>
-	<DataType name="Other">
+	<DataType name="Other" rangeSupport="None" backingType=".u8">
 		<SubType name="RowId">
 			<comment type="summary">A row id data type (can not be classified in any of the groups above)</comment>
 		</SubType>

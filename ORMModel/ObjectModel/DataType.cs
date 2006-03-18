@@ -142,6 +142,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Deserialization Fixup
 	}
 	#endregion // ORMModel class elements relating to DataType
+	#region DataTypeRangeSupport enum
+	/// <summary>
+	/// Values indicating the range support for a data type
+	/// </summary>
+	public enum DataTypeRangeSupport
+	{
+		/// <summary>
+		/// The data type does not support ranges
+		/// </summary>
+		None,
+		/// <summary>
+		/// The data type supports closed ranges only
+		/// </summary>
+		Closed,
+		/// <summary>
+		/// The data type supports open and closed ranges
+		/// </summary>
+		Open,
+	}
+	#endregion // DataTypeRangeSupport enum
 	#region DataType class
 	public abstract partial class DataType
 	{
@@ -171,33 +191,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return true;
 		}
+		/// <summary>
+		/// Specify if a data type supports single values only, closed ranges, or open ranges
+		/// </summary>
+		public abstract DataTypeRangeSupport RangeSupport { get; }
+		/// <summary>
+		/// Return true if the compare function should be called. Should
+		/// be true (the default) for all but the UnspecifiedDataType
+		/// </summary>
+		public virtual bool CanCompare
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Compare two values according to the semantics of this data type
+		/// </summary>
+		/// <param name="value1">Left string value</param>
+		/// <param name="value2">Right string value</param>
+		/// <returns>Standard compare functions values (-1, 0, 1)</returns>
+		public abstract int Compare(string value1, string value2);
 	}
 	#endregion // DataType class
-	#region Temporary test of CanParse method
-	public partial class FloatingPointNumericDataType
-	{
-		/// <summary>
-		/// Return true if the string is recognizable as a double
-		/// </summary>
-		public override bool CanParse(string value)
-		{
-			double result;
-			return double.TryParse(value, out result);
-		}
-	}
-	public partial class TrueOrFalseLogicalDataType
-	{
-		/// <summary>
-		/// Return true if string is recognizable as a boolean
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			bool result;
-			return bool.TryParse(value, out result);
-		}
-	}
+	#region Custom CanParse implementations
 	public partial class YesOrNoLogicalDataType
 	{
 		/// <summary>
@@ -215,166 +233,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				0 == string.Compare(value, "yes", true, CultureInfo.InvariantCulture) ||
 				0 == string.Compare(value, "no", true, CultureInfo.InvariantCulture)));
 		}
-	}
-	public partial class AutoCounterNumericDataType
-	{
 		/// <summary>
-		/// returns true if value is an integer
+		/// Returns true if the values are equivalent
 		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
+		public override int Compare(string value1, string value2)
 		{
-			int result;
-			return int.TryParse(value, out result);
-		}
-	}
-	public partial class DecimalNumericDataType
-	{
-		/// <summary>
-		/// Return true if the string is recognizable as a double
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			double result;
-			return double.TryParse(value, out result);
-		}
-	}
-	public partial class MoneyNumericDataType
-	{
-		/// <summary>
-		/// Return true if the string is recognizable as a double
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			double result;
-			return double.TryParse(value, out result);
-		}
-	}
-	public partial class SignedIntegerNumericDataType
-	{
-		/// <summary>
-		/// almost silly to have, it takes a string and determines if that string can be parsed as a string
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			int result;
-			return int.TryParse(value, out result);
-		}
-	}
-	public partial class UnsignedIntegerNumericDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			uint result;
-			return uint.TryParse(value, out result);
-		}
-	}
-	public partial class ObjectIdOtherDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class VariableLengthTextDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class LargeLengthTextDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class FixedLengthTextDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class TimeTemporalDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class DateTemporalDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class DateAndTimeTemporalDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class AutoTimestampTemporalDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
+			// UNDONE: How are we going to localize this properly? We may need to
+			// get the y/n/yes/no values from the resource file.
+			bool v1 = 0 == string.Compare(value1, "y", true, CultureInfo.InvariantCulture) || 0 == string.Compare(value1, "yes", true, CultureInfo.InvariantCulture);
+			bool v2 = 0 == string.Compare(value2, "y", true, CultureInfo.InvariantCulture) || 0 == string.Compare(value2, "yes", true, CultureInfo.InvariantCulture);
+			if (v1 == v2)
+			{
+				return 0;
+			}
+			return 1;
 		}
 	}
 	public partial class VariableLengthRawDataDataType
@@ -437,19 +309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return true;
 		}
 	}
-	public partial class RowIdOtherDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	#endregion // Temporary test of CanParse method
+	#endregion // Custom CanParse implementations
 	#region DataTypeNotSpecified Error
 	public partial class DataTypeNotSpecifiedError : IRepresentModelElements
 	{

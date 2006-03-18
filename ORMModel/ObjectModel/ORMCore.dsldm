@@ -6,7 +6,7 @@
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Neumont University. All rights reserved.                     *
+* Copyright (c) Neumont University. All rights reserved.                   *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1569,6 +1569,28 @@
           </role>
         </roles>
       </relationship>
+      <relationship name="ValueConstraintHasValueRangeOverlapError" identity="eb7d2402-a919-4d86-83df-a0089863538c" namespace="Neumont.Tools.ORM.ObjectModel" id="ieb7d2402za919z4d86z83dfza0089863538c" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles>
+          <role name="ValueRangeOverlapError" identity="a081a6d9-3318-4ee5-b1a6-7a7abc78340b" id="ia081a6d9z3318z4ee5zb1a6z7a7abc78340b" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</source>
+            <type>ibb07b502z6a9fz4c25z8712z5bdbae3750f3</type>
+            <generatedProperty name="ValueRangeOverlapError" identity="23016769-20eb-4b12-afe8-6a3a37898f96">
+              <referenceType>ibb07b502z6a9fz4c25z8712z5bdbae3750f3</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ValueConstraint" identity="09a72a0b-3ad4-45b2-bdc7-1beb3c12230e" id="i09a72a0bz3ad4z45b2zbdc7z1beb3c12230e" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>ibb07b502z6a9fz4c25z8712z5bdbae3750f3</source>
+            <type>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</type>
+            <generatedProperty name="ValueConstraint" identity="ba951ea5-5ef0-4fc0-9820-2df52c887a2c">
+              <referenceType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="ba1d8762-3be9-41fa-b3ad-3a2bc978f8fe" id="iba1d8762z3be9z41fazb3adz3a2bc978f8fe">
@@ -2683,6 +2705,20 @@
             <source />
             <superType>ib06c6e97zc334z49e2z812az352b5efe49bc</superType>
             <subType>ic3ed4bffzc606z49d5zbf41zcd5c1bff17b8</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ValueRangeOverlapError-ModelError" identity="26edeed0-9336-4d0c-a5c4-787a0085abc7" id="i26edeed0z9336z4d0cza5c4z787a0085abc7" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>ibb07b502z6a9fz4c25z8712z5bdbae3750f3</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapError" identity="3198ce83-1aa6-441c-9c1b-dc11fa4d5593" id="i3198ce83z1aa6z441cz9c1bzdc11fa4d5593" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>ia081a6d9z3318z4ee5zb1a6z7a7abc78340b</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ValueConstraintHasValueRangeOverlapError-ORMElementLink" identity="cdb94ce1-71a5-4660-add1-1913fbf550e9" id="icdb94ce1z71a5z4660zadd1z1913fbf550e9" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>ieb7d2402za919z4d86z83dfza0089863538c</subType>
           </treeExpression>
         </expressions>
         <roots />
@@ -4000,6 +4036,20 @@
             <superType>ib06c6e97zc334z49e2z812az352b5efe49bc</superType>
             <subType>ic3ed4bffzc606z49d5zbf41zcd5c1bff17b8</subType>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ValueRangeOverlapError-ModelError" identity="632892ce-6d07-44e6-a153-53d7d8765b2f" id="i632892cez6d07z44e6za153z53d7d8765b2f" definitionlevel="definition">
+            <source>i26edeed0z9336z4d0cza5c4z787a0085abc7</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>ibb07b502z6a9fz4c25z8712z5bdbae3750f3</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapError" identity="a55f32ae-f149-4553-a510-b3a819c299d6" id="ia55f32aezf149z4553za510zb3a819c299d6" definitionlevel="use" containmentstyle="fromsource">
+            <source>i3198ce83z1aa6z441cz9c1bzdc11fa4d5593</source>
+            <role>ia081a6d9z3318z4ee5zb1a6z7a7abc78340b</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ValueConstraintHasValueRangeOverlapError-ORMElementLink" identity="b0a88f8f-4fce-40b2-88e0-d11d1a94ba0a" id="ib0a88f8fz4fcez40b2z88e0zd11d1a94ba0a" definitionlevel="definition">
+            <source>icdb94ce1z71a5z4660zadd1z1913fbf550e9</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>ieb7d2402za919z4d86z83dfza0089863538c</subType>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
@@ -4576,6 +4626,14 @@
           <treeExpression xsi:type="RoleExpression" name="ORMModelElementHasModelError.ORMModelElement" identity="b9643ca7-b5c5-4757-9e58-1b4610dfc10d" id="ib9643ca7zb5c5z4757z9e58z1b4610dfc10d" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i08e186c3zce0dz4591za514z6131f86866a9</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapError" identity="1b55a18d-bf31-42e5-badd-c04d427085fe" id="i1b55a18dzbf31z42e5zbaddzc04d427085fe" definitionlevel="none" containmentstyle="embedding">
+            <source>i3198ce83z1aa6z441cz9c1bzdc11fa4d5593</source>
+            <role>ia081a6d9z3318z4ee5zb1a6z7a7abc78340b</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRangeOverlapError.ValueConstraint" identity="c3f00e24-a72f-4cf2-9988-342db8fe855b" id="ic3f00e24za72fz4cf2z9988z342db8fe855b" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i09a72a0bz3ad4z45b2zbdc7z1beb3c12230e</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -5265,6 +5323,10 @@
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
       <concept name="PreferredIdentifierRequiresMandatoryError" identity="90b39c97-af3f-4b28-8657-6a5fba74a2ee" namespace="Neumont.Tools.ORM.ObjectModel" id="i90b39c97zaf3fz4b28z8657z6a5fba74a2ee" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="ValueRangeOverlapError" identity="bb07b502-6a9f-4c25-8712-5bdbae3750f3" namespace="Neumont.Tools.ORM.ObjectModel" id="ibb07b502z6a9fz4c25z8712z5bdbae3750f3" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>

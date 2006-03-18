@@ -757,7 +757,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Message2");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Role.Message");
 			}
 		}
 		/// <summary>
@@ -767,7 +767,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Message2");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Role.Message");
 			}
 		}
 		/// <summary>
@@ -777,7 +777,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.ValueType.Message");
 			}
 		}
 		/// <summary>
@@ -787,7 +787,27 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.ValueType.Message");
+			}
+		}
+		/// <summary>
+		/// ValueRangeOverlapError text for a ValueTypeConstraint. Replace valuetype, model.
+		/// </summary>
+		public static string ModelErrorValueTypeValueRangeOverlapError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.ValueType.Message");
+			}
+		}
+		/// <summary>
+		/// ValueRangeOverlapError text for a RoleValueConstraint. Replace model,fact,role number.
+		/// </summary>
+		public static string ModelErrorRoleValueRangeOverlapError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.Role.Message");
 			}
 		}
 		/// <summary>
