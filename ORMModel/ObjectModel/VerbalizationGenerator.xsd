@@ -6,8 +6,8 @@
 	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:include schemaLocation="VerbalizationGeneratorSnippets.xsd"/>
-    <xs:annotation>
+	<xs:include schemaLocation="VerbalizationGeneratorSnippets.xsd"/>
+	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
 			Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -723,7 +723,7 @@
 						</xs:simpleContent>
 					</xs:complexType>
 				</xs:element>
-                <xs:element ref="Languages" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="Languages" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="Constructs" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:all>
