@@ -757,9 +757,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static new void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
-			// UNDONE: DelayedValidation (Role)
+			ORMMetaModel.DelayValidateElement(this, DelayValidateRolePlayerRequiredError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -790,16 +790,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.PlayedRoleCollection.VerifyRolePlayerRequiredForRule(null);
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class RolePlayerRequiredRemovedRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				link.PlayedRoleCollection.VerifyRolePlayerRequiredForRule(null);
+				Role role = link.PlayedRoleCollection;
+				if (!role.IsRemoved)
+				{
+					ORMMetaModel.DelayValidateElement(role, DelayValidateRolePlayerRequiredError);
+				}
 			}
 		}
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasRole))]
 		private class RolePlayerRequiredForNewRoleAddRule : AddRule
 		{
 			/// <summary>
@@ -811,11 +815,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				Role addedRole = link.RoleCollection;
-				addedRole.VerifyRolePlayerRequiredForRule(null);
-				RenumberErrorsWithRoleNumbers(link.FactType, addedRole);
+				ORMMetaModel.DelayValidateElement(addedRole, DelayValidateRolePlayerRequiredError);
+				ORMMetaModel.DelayValidateElement(addedRole, DelayRenumberErrorsWithRoleNumbersAfterRole);
 			}
 		}
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasRole))]
 		private class UpdatedRolePlayerRequiredErrorsRemovedRule : RemoveRule
 		{
 			/// <summary>
@@ -826,7 +830,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
-				RenumberErrorsWithRoleNumbers(factType, null);
+				if (!factType.IsRemoved)
+				{
+					ORMMetaModel.DelayValidateElement(factType, DelayRenumberErrorsWithRoleNumbers);
+				}
+			}
+		}
+		private static void DelayRenumberErrorsWithRoleNumbers(ModelElement element)
+		{
+			RenumberErrorsWithRoleNumbers((FactType)element, null);
+		}
+		private static void DelayRenumberErrorsWithRoleNumbersAfterRole(ModelElement element)
+		{
+			Role role = (Role)element;
+			FactType fact;
+			if (!role.IsRemoved &&
+				(null != (fact = role.FactType)))
+			{
+				RenumberErrorsWithRoleNumbers(fact, role);
 			}
 		}
 		/// <summary>
@@ -883,6 +904,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+		}
+		/// <summary>
+		/// Delayed validator for RolePlayerRequiredError
+		/// </summary>
+		private static void DelayValidateRolePlayerRequiredError(ModelElement element)
+		{
+			(element as Role).VerifyRolePlayerRequiredForRule(null);
 		}
 		/// <summary>
 		/// Utility function to verify that a role player is present for all roles

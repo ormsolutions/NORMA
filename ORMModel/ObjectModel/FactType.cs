@@ -634,9 +634,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected new static void DelayValidateErrors()
+		protected new void DelayValidateErrors()
 		{
-			// UNDONE: DelayedValidation (FactType)
+			ORMMetaModel.DelayValidateElement(this, DelayValidateFactTypeRequiresReadingError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateImpliedInternalUniquenessConstraintError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -644,7 +646,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Validation Methods
-
+		/// <summary>
+		/// Validator callback for FactTypeRequiresReadingError
+		/// </summary>
+		private static void DelayValidateFactTypeRequiresReadingError(ModelElement element)
+		{
+			(element as FactType).ValidateRequiresReading(null);
+		}
 		private void ValidateRequiresReading(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
@@ -689,6 +697,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Validator callback for FactTypeRequiresInternalUniquenessConstraintError
+		/// </summary>
+		private static void DelayValidateFactTypeRequiresInternalUniquenessConstraintError(ModelElement element)
+		{
+			(element as FactType).ValidateRequiresInternalUniqueness(null);
+		}
 		private void ValidateRequiresInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
 			ORMModel theModel;
@@ -699,9 +714,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (hasError)
 				{
-					using (IEnumerator<InternalUniquenessConstraint> iucs = GetInternalConstraints<InternalUniquenessConstraint>().GetEnumerator())
+					foreach (InternalUniquenessConstraint iuc in GetInternalConstraints<InternalUniquenessConstraint>())
 					{
-						hasError = !iucs.MoveNext();
+						if (iuc.Modality == ConstraintModality.Alethic)
+						{
+							hasError = false;
+							break;
+						}
 					}
 				}
 
@@ -727,6 +746,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Validator callback for ImpliedInternalUniquenessConstraintError
+		/// </summary>
+		private static void DelayValidateImpliedInternalUniquenessConstraintError(ModelElement element)
+		{
+			(element as FactType).ValidateImpliedInternalUniqueness(null);
+		}
 		private void ValidateImpliedInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
 
@@ -739,16 +765,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
 				if (iucCount != 0)
 				{
-					int[] roleBits = new int[iucCount];
+					uint[] roleBits = new uint[iucCount];
+					const uint deonticBit = 1U << 31;
 					int index = 0;
 					foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
 					{
-						int bits = 0;
+						uint bits = 0;
 						RoleMoveableCollection constraintRoles = ic.RoleCollection;
 						int roleCount = constraintRoles.Count;
 						for (int i = 0; i < roleCount; ++i)
 						{
-							bits |= 1 << factRoles.IndexOf(constraintRoles[i]);
+							bits |= 1U << factRoles.IndexOf(constraintRoles[i]);
+						}
+						if (bits != 0 && ic.Modality == ConstraintModality.Deontic)
+						{
+							bits |= deonticBit;
 						}
 						roleBits[index] = bits;
 						++index;
@@ -758,15 +789,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						for (int j = i + 1; j < rbLength; ++j)
 						{
-							int left = roleBits[i];
-							int right = roleBits[j];
+							uint left = roleBits[i];
+							uint right = roleBits[j];
 							if (left != 0 && right != 0)
 							{
-								int	compare = left & right;
-								if ((compare == left) || (compare == right))
+								if (0 != ((left ^ right) & deonticBit))
 								{
-									hasError = true;
-									break;
+									// Modality is different. The alethic constraint
+									// should not be a subset of the deontic constraint,
+									// but there are no restrictions the other way around.
+									if ((left & right) == ((0 == (left & deonticBit)) ? left : right))
+									{
+										hasError = true;
+										break;
+									}
+								}
+								else
+								{
+									uint compare = left & right;
+									if ((compare == left) || (compare == right))
+									{
+										hasError = true;
+										break;
+									}
 								}
 							}
 						}
@@ -799,91 +844,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole), FireTime=TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasRole))]
 		private class FactTypeHasRoleAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				link.FactType.ValidateRequiresInternalUniqueness(null);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 			}
 		}
 		/// <summary>
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasRole))]
 		private class FactTypeHasRoleRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				link.FactType.ValidateRequiresInternalUniqueness(null);
+				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
+				if (!factType.IsRemoved)
+				{
+					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				}
 			}
 		}
 		/// <summary>
-		/// Only validates the InternalUniquenessConstraintRequired error
+		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime=TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasInternalConstraint))]
 		private class ModelHasInternalConstraintAddRuleModelValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				FactType fact = link.FactType;
-				fact.ValidateRequiresInternalUniqueness(null);
+				if (link.InternalConstraintCollection is InternalUniquenessConstraint)
+				{
+					FactType fact = link.FactType;
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+				}
 			}
 		}
-
-
 		/// <summary>
-		/// Only validates the InternalUniquenessConstraintRequired error
+		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasInternalConstraint))]
 		private class ModelHasInternalConstraintRemoveRuleModelValidation : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
 				FactType fact = link.FactType;
-				if (!fact.IsRemoved)
+				if (!fact.IsRemoved && (link.InternalConstraintCollection is InternalUniquenessConstraint))
 				{
-					fact.ValidateRequiresInternalUniqueness(null);
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
-		/// <summary>
-		///  validates the ImpliedInternalUniquenessConstraintError
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class ImpliedInternalUniquenessConstraintAddRule : AddRule
+		[RuleOn(typeof(InternalUniquenessConstraint))]
+		private class InternalUniquenessConstraintChangeRule : ChangeRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				FactType fact = link.FactType;
-				fact.ValidateImpliedInternalUniqueness(null);
-			}
-		}
-		/// <summary>
-		///   needed when changing an implied error to a duplicate error 
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class ImpliedInternalUniquenessConstraintRemoveRule : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				FactType fact = link.FactType;
-				if (!fact.IsRemoved)
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == InternalUniquenessConstraint.ModalityMetaAttributeGuid)
 				{
-					fact.ValidateImpliedInternalUniqueness(null);
+					InternalUniquenessConstraint constraint = e.ModelElement as InternalUniquenessConstraint;
+					FactType fact;
+					if (!constraint.IsRemoved &&
+						null != (fact = constraint.FactType))
+					{
+						ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+						ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+					}
 				}
 			}
 		}
-
-
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class InternalConstraintCollectionHasConstraintAddedRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -895,14 +933,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType fact = constr.FactType;
 					if (fact != null && !fact.IsRemoved)
 					{
-						fact.ValidateImpliedInternalUniqueness(null);
+						ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 					}
 					
 				}
 			}
 		}
 
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class InternalConstraintCollectionHasConstraintRemovedRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -914,7 +952,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType fact = constr.FactType;
 					if (fact != null && !fact.IsRemoved)
 					{
-						fact.ValidateImpliedInternalUniqueness(null);
+						ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 					}
 				}
 			}
@@ -935,8 +973,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType fact = link.FactTypeCollection;
 					if (fact != null)
 					{
-						// UNDONE: DelayedValidation
-						fact.ValidateErrors(null);
+						fact.DelayValidateErrors();
 					}
 				}
 			}
@@ -950,18 +987,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
-				FactType fact = link.FactType;
-				if (fact.ReadingRequiredError != null)
-				{
-					fact.ValidateRequiresReading(null);
-				}
+				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasReadingOrder).FactType, DelayValidateFactTypeRequiresReadingError);
 			}
 		}
 		/// <summary>
 		/// Only validates ReadingRequiredError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasReadingOrder))]
 		private class FactTypeHasReadingOrderRemovedRuleModelValidation : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -970,7 +1002,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType fact = link.FactType;
 				if (!fact.IsRemoved)
 				{
-					fact.ValidateRequiresReading(null);
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresReadingError);
 				}
 			}
 		}
@@ -988,14 +1020,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType fact = ord.FactType;
 				if (fact != null)
 				{
-					fact.ValidateRequiresReading(null);
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresReadingError);
 				}
 			}
 		}
 		/// <summary>
 		/// Only validates ReadingRequiredError
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ReadingOrderHasReading))]
 		private class ReadingOrderHasReadingRemoveRuleModelValidation : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -1007,7 +1039,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (fact = ord.FactType) &&
 					!fact.IsRemoved)
 				{
-					fact.ValidateRequiresReading(null);
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresReadingError);
 				}
 			}
 		}
@@ -1030,23 +1062,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				RoleMoveableCollection factRoles = RoleCollection;
 				InternalUniquenessConstraint[] iuc = new InternalUniquenessConstraint[iucCount];
-				int[] roleBits = new int[iucCount];
+				const uint deonticBit = 1U << 31;
+				uint[] roleBits = new uint[iucCount];
 				int index = 0;
 				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
 				{
 					iuc[index] = ic;
-					int bits = 0;
+					uint bits = 0;
 					RoleMoveableCollection constraintRoles = ic.RoleCollection;
 					int roleCount = constraintRoles.Count;
 					for (int i = 0; i < roleCount; ++i)
 					{
-						bits |= 1 << factRoles.IndexOf(constraintRoles[i]);
+						bits |= 1U << factRoles.IndexOf(constraintRoles[i]);
+					}
+					if (bits != 0 && ic.Modality == ConstraintModality.Deontic)
+					{
+						bits |= deonticBit;
 					}
 					roleBits[index] = bits;
 					++index;
 				}
 				int rbLength = roleBits.Length;
-				int left, right, compare;
+				uint left, right, compare;
 				InternalUniquenessConstraint leftIUC;
 				InternalUniquenessConstraint rightIUC;
 				for (int i = 0; i < rbLength - 1; ++i)
@@ -1066,16 +1103,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							continue;
 						}
-						
 						right = roleBits[j];
 						compare = left & right;
-						if ((compare == left) && (compare == right))
+						if (0 != ((left ^ right) & deonticBit))
 						{
-							// found a duplicate.
-							// Remove the one on the right so we can
-							// keep processing this element
-							rightIUC.Remove();
-							iuc[j] = null;
+							// Modality is different. The alethic constraint
+							// should not be a subset of the deontic constraint,
+							// but there are no restrictions the other way around.
+							if ((compare == (left & ~deonticBit)) && (compare == (right & ~deonticBit)))
+							{
+								// Found a duplicate. Remove the deontic one
+								if (0 != (left & deonticBit))
+								{
+									leftIUC.Remove();
+									iuc[i] = null;
+									left = 0;
+									break;
+								}
+								else
+								{
+									rightIUC.Remove();
+									iuc[j] = null;
+								}
+							}
+						}
+						else
+						{
+							if ((compare == left) && (compare == right))
+							{
+								// found a duplicate.
+								// Remove the one on the right so we can
+								// keep processing this element
+								rightIUC.Remove();
+								iuc[j] = null;
+							}
 						}
 					}
 					if (left == 0)
@@ -1092,18 +1153,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 
 						compare = left & right;
-						if (compare == left)
+						if (0 != ((left ^ right) & deonticBit))
 						{
-							// left implies right
-							rightIUC.Remove();
-							iuc[j] = null;
+							// Modality is different. The alethic constraint
+							// should not be a subset of the deontic constraint,
+							// but there are no restrictions the other way around.
+							if (compare == (left & ~deonticBit))
+							{
+								// left implies right unless left is deontic
+								if (0 == (left & deonticBit))
+								{
+									rightIUC.Remove();
+									iuc[j] = null;
+								}
+							}
+							else if (compare == (right & ~deonticBit))
+							{
+								// right implies left unless right is deontic
+								if (0 == (right & deonticBit))
+								{
+									leftIUC.Remove();
+									iuc[i] = null;
+									break;
+								}
+							}
 						}
-						else if (compare == right)
+						else
 						{
-							// right implies left
-							leftIUC.Remove();
-							iuc[i] = null;
-							break;
+							if (compare == left)
+							{
+								// left implies right
+								rightIUC.Remove();
+								iuc[j] = null;
+							}
+							else if (compare == right)
+							{
+								// right implies left
+								leftIUC.Remove();
+								iuc[i] = null;
+								break;
+							}
 						}
 					}
 				}

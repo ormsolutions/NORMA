@@ -1445,7 +1445,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class EnforceRoleSequenceValidityForReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -1457,7 +1457,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
 					if (externalConstraint != null && !externalConstraint.IsRemoved)
 					{
-						externalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+						ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 					}
 				}
 			}
@@ -2337,6 +2337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
+		// UNDONE: Delayed validation (EqualityConstraint)
 		#endregion // IModelErrorOwner Implementation
 		#region Error synchronization rules
 		/// <summary>
@@ -3307,6 +3308,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
+		// UNDONE: Delayed validation (DisjunctiveMandatoryConstraint)
 		#endregion // IModelErrorOwner Implementation
 		#region Error Rules
 		/// <summary>
@@ -3534,6 +3536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
+		// UNDONE: Delayed validation (Frequenceconstraint)
 		#endregion //IModelErrorOwner Implementation
 		#region VerifyContradictionErrorsWithFactTypeRule
 		/// <summary>
@@ -3797,7 +3800,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			this.ValidateErrors(notifyAdded);
 		}
-
+		// UNDONE: Delayed validation (RingConstraint)
 		#endregion//Ring Constraint class
 		#region RingConstraintTypeNotSpecifiedError Rule
 		/// <summary>

@@ -420,14 +420,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private static void RedrawOwningFactType(Role role)
 		{
-			PresentationElementMoveableCollection pels = role.FactType.PresentationRolePlayers;
-			int pelsCount = pels.Count;
-			for (int i = 0; i < pelsCount; ++i)
+			FactType factType = role.FactType;
+			if (factType != null)
 			{
-				ShapeElement shape = pels[i] as ShapeElement;
-				if (shape != null)
+				PresentationElementMoveableCollection pels = factType.PresentationRolePlayers;
+				int pelsCount = pels.Count;
+				for (int i = 0; i < pelsCount; ++i)
 				{
-					shape.Invalidate(true);
+					ShapeElement shape = pels[i] as ShapeElement;
+					if (shape != null)
+					{
+						shape.Invalidate(true);
+					}
 				}
 			}
 		}

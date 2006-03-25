@@ -30,10 +30,9 @@
 		<arg:Rule class="FactType.FactTypeHasReadingOrderRemovedRuleModelValidation"/>
 		<arg:Rule class="FactType.FactTypeHasRoleAddRule"/>
 		<arg:Rule class="FactType.FactTypeHasRoleRemoveRule"/>
-		<arg:Rule class="FactType.ImpliedInternalUniquenessConstraintAddRule"/>
-		<arg:Rule class="FactType.ImpliedInternalUniquenessConstraintRemoveRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintAddedRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintRemovedRule"/>
+		<arg:Rule class="FactType.InternalUniquenessConstraintChangeRule"/>
 		<arg:Rule class="FactType.ModelHasFactTypeAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintRemoveRuleModelValidation"/>
