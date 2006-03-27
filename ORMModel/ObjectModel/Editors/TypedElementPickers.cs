@@ -399,17 +399,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			if (rawModes.Count > 1)
 			{
 				// Make sure we're sorted
-				List<ReferenceMode> modes = new List<ReferenceMode>(rawModes.Count);
-				foreach (ReferenceMode mode in rawModes)
-				{
-					modes.Add(mode);
-				}
-				modes.Sort(delegate(ReferenceMode mode1, ReferenceMode mode2)
+				int modeCount = rawModes.Count;
+				ReferenceMode[] modes = new ReferenceMode[modeCount];
+				rawModes.CopyTo(modes, 0);
+				Array.Sort<ReferenceMode>(modes, delegate(ReferenceMode mode1, ReferenceMode mode2)
 				{
 					return string.Compare(mode1.Name, mode2.Name);
 				});
 				myModes = modes;
-				int modeCount = modes.Count;
 				string[] prettyStrings = new string[modeCount];
 				for (int i = 0; i < modeCount; ++i)
 				{

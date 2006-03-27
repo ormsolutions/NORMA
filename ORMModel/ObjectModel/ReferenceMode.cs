@@ -295,10 +295,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 
 						// Now populate all intrinsic reference modes
+						CreateIntrinsicReferenceMode(store, model, popularKind, "Id", PortableDataType.NumericAutoCounter);
 						CreateIntrinsicReferenceMode(store, model, popularKind, "id", PortableDataType.NumericAutoCounter);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "ID", PortableDataType.NumericAutoCounter);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "Name", PortableDataType.TextVariableLength);
 						CreateIntrinsicReferenceMode(store, model, popularKind, "name", PortableDataType.TextVariableLength);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "Code", PortableDataType.TextFixedLength);
 						CreateIntrinsicReferenceMode(store, model, popularKind, "code", PortableDataType.TextFixedLength);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "Title", PortableDataType.TextVariableLength);
 						CreateIntrinsicReferenceMode(store, model, popularKind, "title", PortableDataType.TextVariableLength);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "Nr", PortableDataType.NumericSignedInteger);
 						CreateIntrinsicReferenceMode(store, model, popularKind, "nr", PortableDataType.NumericSignedInteger);
 						CreateIntrinsicReferenceMode(store, model, popularKind, "#", PortableDataType.NumericSignedInteger);
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "kg", PortableDataType.NumericDecimal);
