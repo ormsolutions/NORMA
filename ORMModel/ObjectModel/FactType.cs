@@ -532,20 +532,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // RoleChangeRule class
 		#region IModelErrorOwner Members
-
 		/// <summary>
 		/// Returns the error associated with the fact.
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.BlockVerbalization))
 			{
 				FactTypeRequiresReadingError noReadingError = this.ReadingRequiredError;
 				if (noReadingError != null)
 				{
-					yield return noReadingError;
+					yield return new ModelErrorUsage(noReadingError, ModelErrorUses.BlockVerbalization);
 				}
+			}
 
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
 				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = this.InternalUniquenessConstraintRequiredError;
 				if (noUniquenessError != null)
 				{
@@ -559,29 +565,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return dupConstraint;
 				}
 
-				// NMinusOneError is parented off InternalConstraint, but it doesn't have
-				// a name, so we show the FactType as an owner.
-				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
-				{
-					NMinusOneError nMinusOneError = ic.NMinusOneError;
-					if (nMinusOneError != null)
-					{
-						yield return nMinusOneError;
-					}
-				}
-
 				FactTypeDuplicateNameError duplicateName = DuplicateNameError;
 				if (duplicateName != null)
 				{
 					yield return duplicateName;
 				}
-				
+			}
+
+			if (0 == (filter & (ModelErrorUses.Verbalize | ModelErrorUses.BlockVerbalization)))
+			{
+				// The fact name is used in the generated error text, it needs to be an owner
+				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError frequencyContradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
+				{
+					yield return new ModelErrorUsage(frequencyContradictionError, ModelErrorUses.None);
+				}
+
+				// NMinusOneError is parented off InternalConstraint. The constraint has a name,
+				// but the name is often arbitrary. Including the fact name as well makes the
+				// error message much more meaningful.
+				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+				{
+					NMinusOneError nMinusOneError = ic.NMinusOneError;
+					if (nMinusOneError != null)
+					{
+						yield return new ModelErrorUsage(nMinusOneError, ModelErrorUses.None);
+					}
+				}
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize)) // Roles don't verbalize, we need to show these here
+			{
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
 				// we do not validate this error on the fact type, it is done on the role.
 				foreach (Role role in RoleCollection)
 				{
-					foreach (ModelError roleError in (role as IModelErrorOwner).ErrorCollection)
+					foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
 					{
 						yield return roleError;
 					}
@@ -589,32 +607,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (valueErrors != null)
 					{
 						// Get errors off the base
-						foreach (ModelError valueError in valueErrors.ErrorCollection)
+						foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
 						{
 							yield return valueError;
 						}
 					}
 				}
-
-				// The fact name is used in the generated error text, it needs to be an owner
-				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError frequencyContradictionError in  FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
-				{
-					yield return frequencyContradictionError;
-				}
-
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get 
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 
 		/// <summary>
@@ -1311,8 +1319,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			FactType factType = Constraint.FactType;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, factType.Name, factType.RoleCollection.Count - 1, factType.Model.Name);
+			InternalUniquenessConstraint iuc = Constraint;
+			FactType factType = iuc.FactType;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, iuc.Name, factType.Name, factType.Model.Name, factType.RoleCollection.Count - 1);
 			if (Name != newText)
 			{
 				Name = newText;

@@ -55,11 +55,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 		#region IModelErrorOwner Implementation
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0 || (0 != (filter & ModelErrorUses.Verbalize)))
 			{
 				foreach (object error in GetCounterpartRolePlayers(ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
 				{
@@ -67,12 +67,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors (empty implementation)
@@ -129,11 +126,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 		#region IModelErrorOwner Implementation
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected IEnumerable<ModelError> ErrorCollection
+		protected IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0 || (0 != (filter & ModelErrorUses.Verbalize)))
 			{
 				foreach (object error in GetCounterpartRolePlayers(ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
 				{
@@ -141,12 +138,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors (empty implementation)

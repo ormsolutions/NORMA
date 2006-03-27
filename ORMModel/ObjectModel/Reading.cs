@@ -344,36 +344,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the errors associated with the Reading.
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.BlockVerbalization))
 			{
 				TooFewReadingRolesError tooFew;
 				TooManyReadingRolesError tooMany;
 				if (null != (tooFew = TooFewRolesError))
 				{
-					yield return tooFew;
+					yield return new ModelErrorUsage(tooFew, ModelErrorUses.BlockVerbalization);
 				}
 				if (null != (tooMany = TooManyRolesError))
 				{
-					yield return tooMany;
-				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
+					yield return new ModelErrorUsage(tooMany, ModelErrorUses.BlockVerbalization);
 				}
 			}
-		}
-
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
-				return ErrorCollection;
+				yield return baseError;
 			}
 		}
-
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>

@@ -170,15 +170,15 @@
     <comment xml:space="preserve">Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
   <data name="ModelError.FactType.NMinusOneRule.Text">
-    <value xml:space="preserve">Fact type '{0}' requires uniqueness constraint spanning &gt;= {1} roles in model '{2}'.</value>
-    <comment xml:space="preserve">Internal uniqueness constraint must span at least the arity of the fact type - 1.</comment>
+    <value xml:space="preserve">Uniqueness constraint '{0}' on fact type '{1}' in model '{2}' must span at least {3} roles.</value>
+    <comment xml:space="preserve">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</comment>
   </data>
   <data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
-    <value xml:space="preserve">Fact '{0}' in the model '{1}' requires an internal uniqueness constraint with alethic modality.</value>
+    <value xml:space="preserve">Fact '{0}' in model '{1}' requires an internal uniqueness constraint with alethic modality.</value>
     <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError</comment>
   </data>
   <data name="ModelError.FactType.RequiresReading.Message">
-    <value xml:space="preserve">At least one reading is required for the fact '{0}' in the model '{1}'.</value>
+    <value xml:space="preserve">At least one reading is required for fact '{0}' in model '{1}'.</value>
     <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresReadingError</comment>
   </data>
   <data name="ModelError.Model.DuplicateConstraintNames.Text">

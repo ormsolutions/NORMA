@@ -108,8 +108,9 @@
 				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
 					 Leverage the code snippets we use for constraints by setting the right
 					 variable names and calling the constraint verbalization templates -->
-				<xsl:call-template name="CheckErrorConditions"/>
 				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
 				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
 					<plx:initialize>
 						<plx:falseKeyword/>
@@ -118,6 +119,10 @@
 				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+				</xsl:call-template>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
@@ -170,8 +175,9 @@
 				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
 					 Leverage the code snippets we use for constraints by setting the right
 					 variable names and calling the constraint verbalization templates -->
-				<xsl:call-template name="CheckErrorConditions"/>
 				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
 				<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
 					<plx:initialize>
 						<plx:callThis name="RoleCollection" type="property"/>
@@ -205,6 +211,10 @@
 				<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+				</xsl:call-template>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
@@ -236,23 +246,26 @@
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
-				<!-- Don't proceed with verbalization if errors are present -->
-				<xsl:call-template name="CheckErrorConditions"/>
-
 				<xsl:call-template name="DeclareSnippetsLocal"/>
-				<plx:local name="sbTemp" dataTypeName="StringBuilder">
-					<plx:initialize>
-						<plx:nullKeyword/>
-					</plx:initialize>
-				</plx:local>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
 				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
 					<plx:initialize>
 						<plx:falseKeyword/>
 					</plx:initialize>
 				</plx:local>
+				<plx:local name="sbTemp" dataTypeName="StringBuilder">
+					<plx:initialize>
+						<plx:nullKeyword/>
+					</plx:initialize>
+				</plx:local>
 				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+				</xsl:call-template>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
@@ -289,10 +302,9 @@
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
 
-				<!-- Don't proceed with verbalization if errors are present -->
-				<xsl:call-template name="CheckErrorConditions"/>
-
 				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
 				<xsl:variable name="subscriptConditionsFragment">
 					<!-- UNDONE: Better subscript handling. The conditional processing needs
 						 to be moved inside each pattern, but we need to prepare for the situation
@@ -462,6 +474,11 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
+						<xsl:call-template name="CheckErrorConditions">
+							<xsl:with-param name="Primary" select="false()"/>
+							<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+							<xsl:with-param name="BeginVerbalization" select="true()"/>
+						</xsl:call-template>
 						<plx:return>
 							<!-- This should be an error on the constraint, but be defensive and bail
 								if we have no facts -->
@@ -511,6 +528,11 @@
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
+							<xsl:call-template name="CheckErrorConditions">
+								<xsl:with-param name="Primary" select="false()"/>
+								<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+								<xsl:with-param name="BeginVerbalization" select="true()"/>
+							</xsl:call-template>
 							<plx:return>
 								<plx:falseKeyword/>
 							</plx:return>
@@ -596,6 +618,11 @@
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:condition>
+								<xsl:call-template name="CheckErrorConditions">
+									<xsl:with-param name="Primary" select="false()"/>
+									<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+									<xsl:with-param name="BeginVerbalization" select="true()"/>
+								</xsl:call-template>
 								<plx:return>
 									<plx:falseKeyword/>
 								</plx:return>
@@ -794,6 +821,10 @@
 					<xsl:with-param name="PatternGroup" select="$patternGroup"/>
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+				</xsl:call-template>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
@@ -807,14 +838,19 @@
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template name="CheckErrorConditions">
-		<!-- Don't proceed with verbalization if errors are present -->
-		<plx:local name="errorOwner" dataTypeName="IModelErrorOwner">
-			<plx:initialize>
-				<plx:cast type="testCast" dataTypeName="IModelErrorOwner">
-					<plx:thisKeyword/>
-				</plx:cast>
-			</plx:initialize>
-		</plx:local>
+		<xsl:param name="Primary" select="true()"/>
+		<xsl:param name="BeginVerbalization" select="$Primary"/>
+		<xsl:param name="DeclareErrorOwner" select="true()"/>
+		<xsl:if test="$DeclareErrorOwner">
+			<plx:local name="errorOwner" dataTypeName="IModelErrorOwner">
+				<plx:initialize>
+					<plx:cast type="testCast" dataTypeName="IModelErrorOwner">
+						<plx:thisKeyword/>
+					</plx:cast>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="firstErrorPending" dataTypeName=".boolean"/>
+		</xsl:if>
 		<plx:branch>
 			<plx:condition>
 				<plx:binaryOperator type="identityInequality">
@@ -826,70 +862,177 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
-			<plx:local name="firstElement" dataTypeName=".boolean">
-				<plx:initialize>
-					<plx:trueKeyword/>
-				</plx:initialize>
-			</plx:local>
-			<plx:iterator localName="error" dataTypeName="ModelError">
-				<plx:initialize>
-					<plx:callInstance name="ErrorCollection" type="property">
-						<plx:callObject>
-							<plx:nameRef name="errorOwner"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:initialize>
-				<plx:branch>
-					<plx:condition>
-						<plx:nameRef name="firstElement"/>
-					</plx:condition>
-					<plx:assign>
-						<plx:left>
-							<plx:nameRef name="firstElement"/>
-						</plx:left>
-						<plx:right>
-							<plx:falseKeyword/>
-						</plx:right>
-					</plx:assign>
-					<plx:callInstance name=".implied" type="delegateCall">
-						<plx:callObject>
-							<plx:nameRef type="parameter" name="beginVerbalization"/>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:branch>
-				<plx:fallbackBranch>
-					<plx:callInstance name="WriteLine">
-						<plx:callObject>
-							<plx:nameRef type="parameter" name="writer"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:fallbackBranch>
+			<xsl:call-template name="CheckErrorConditionsBody">
+				<xsl:with-param name="Primary" select="$Primary"/>
+				<xsl:with-param name="BeginVerbalization" select="$BeginVerbalization"/>
+			</xsl:call-template>
+		</plx:branch>
+	</xsl:template>
+	<xsl:template name="CheckErrorConditionsBody">
+		<xsl:param name="Primary" select="true()"/>
+		<xsl:param name="BeginVerbalization" select="$Primary"/>
+		<xsl:variable name="stageFragment">
+			<xsl:choose>
+				<xsl:when test="$Primary">
+					<xsl:text>Primary</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>Secondary</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="stage" select="string($stageFragment)"/>
+		<xsl:variable name="filterFragment">
+			<xsl:choose>
+				<xsl:when test="$Primary">
+					<xsl:text>BlockVerbalization</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>Verbalize</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="filter" select="string($filterFragment)"/>
+
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="firstErrorPending"/>
+			</plx:left>
+			<plx:right>
+				<plx:trueKeyword/>
+			</plx:right>
+		</plx:assign>
+		<plx:iterator localName="error" dataTypeName="ModelError">
+			<plx:initialize>
+				<plx:callInstance name="GetErrorCollection" type="methodCall">
+					<plx:callObject>
+						<plx:nameRef name="errorOwner"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callStatic dataTypeName="ModelErrorUses" name="{$filter}" type="field"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:initialize>
+			<plx:branch>
+				<plx:condition>
+					<plx:nameRef name="firstErrorPending"/>
+				</plx:condition>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="firstErrorPending"/>
+					</plx:left>
+					<plx:right>
+						<plx:falseKeyword/>
+					</plx:right>
+				</plx:assign>
+				<xsl:choose>
+					<xsl:when test="$BeginVerbalization">
+						<plx:callInstance name=".implied" type="delegateCall">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="beginVerbalization"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:callInstance name="WriteLine">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="writer"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</xsl:otherwise>
+				</xsl:choose>
 				<plx:callInstance name="Write">
 					<plx:callObject>
 						<plx:nameRef type="parameter" name="writer"/>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:callInstance name="Name" type="property">
-							<plx:callObject>
-								<plx:nameRef name="error"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<xsl:call-template name="SnippetFor">
+							<xsl:with-param name="SnippetType" select="concat('ErrorOpen',$stage,'Report')"/>
+							<xsl:with-param name="IsDeonticSnippet">
+								<plx:falseKeyword/>
+							</xsl:with-param>
+							<xsl:with-param name="IsNegativeSnippet">
+								<plx:falseKeyword/>
+							</xsl:with-param>
+						</xsl:call-template>
 					</plx:passParam>
 				</plx:callInstance>
-			</plx:iterator>
-			<plx:branch>
-				<plx:condition>
-					<plx:unaryOperator type="booleanNot">
-						<plx:nameRef name="firstElement"/>
-					</plx:unaryOperator>
-				</plx:condition>
-				<plx:return>
-					<plx:falseKeyword/>
-				</plx:return>
 			</plx:branch>
+			<plx:fallbackBranch>
+				<plx:callInstance name="WriteLine">
+					<plx:callObject>
+						<plx:nameRef type="parameter" name="writer"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:fallbackBranch>
+			<plx:callInstance name="Write">
+				<plx:callObject>
+					<plx:nameRef type="parameter" name="writer"/>
+				</plx:callObject>
+				<plx:passParam>
+					<plx:callStatic name="Format" dataTypeName=".string">
+						<plx:passParam>
+							<plx:callInstance name="FormatProvider" type="property">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="writer"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:passParam>
+						<plx:passParam>
+							<xsl:call-template name="SnippetFor">
+								<xsl:with-param name="SnippetType" select="concat('Error',$stage)"/>
+								<xsl:with-param name="IsDeonticSnippet">
+									<plx:falseKeyword/>
+								</xsl:with-param>
+								<xsl:with-param name="IsNegativeSnippet">
+									<plx:falseKeyword/>
+								</xsl:with-param>
+							</xsl:call-template>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callInstance name="Name" type="property">
+								<plx:callObject>
+									<plx:nameRef name="error"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:passParam>
+					</plx:callStatic>
+				</plx:passParam>
+			</plx:callInstance>
+		</plx:iterator>
+		<plx:branch>
+			<plx:condition>
+				<plx:unaryOperator type="booleanNot">
+					<plx:nameRef name="firstErrorPending"/>
+				</plx:unaryOperator>
+			</plx:condition>
+			<plx:callInstance name="Write">
+				<plx:callObject>
+					<plx:nameRef type="parameter" name="writer"/>
+				</plx:callObject>
+				<plx:passParam>
+					<xsl:call-template name="SnippetFor">
+						<xsl:with-param name="SnippetType" select="concat('ErrorClose',$stage,'Report')"/>
+						<xsl:with-param name="IsDeonticSnippet">
+							<plx:falseKeyword/>
+						</xsl:with-param>
+						<xsl:with-param name="IsNegativeSnippet">
+							<plx:falseKeyword/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</plx:passParam>
+			</plx:callInstance>
+			<xsl:if test="$Primary">
+				<xsl:call-template name="CheckErrorConditionsBody">
+					<xsl:with-param name="Primary" select="false()"/>
+				</xsl:call-template>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</xsl:if>
 		</plx:branch>
 	</xsl:template>
 	<!-- Handle the span constraint condition attribute -->
@@ -4394,6 +4537,12 @@
 	<xsl:template name="SnippetFor">
 		<xsl:param name="SnippetType"/>
 		<xsl:param name="VariableName"/>
+		<xsl:param name="IsDeonticSnippet">
+			<plx:nameRef name="isDeontic"/>
+		</xsl:param>
+		<xsl:param name="IsNegativeSnippet">
+			<plx:nameRef name="isNegative"/>
+		</xsl:param>
 		<plx:callInstance name="GetSnippet">
 			<plx:callObject>
 				<plx:nameRef name="snippets"/>
@@ -4409,10 +4558,10 @@
 				</xsl:choose>
 			</plx:passParam>
 			<plx:passParam>
-				<plx:nameRef name="isDeontic"/>
+				<xsl:copy-of select="$IsDeonticSnippet"/>
 			</plx:passParam>
 			<plx:passParam>
-				<plx:nameRef name="isNegative"/>
+				<xsl:copy-of select="$IsNegativeSnippet"/>
 			</plx:passParam>
 		</plx:callInstance>
 	</xsl:template>

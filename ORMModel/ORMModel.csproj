@@ -373,6 +373,9 @@
     <EmbeddedResource Include="ShapeModel\ConnectRoleSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintSearching.cur" />
+    <None Include="ObjectModel\VerbalizationGeneratorSnippets.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />

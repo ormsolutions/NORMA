@@ -387,6 +387,32 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			return new ORMModelExplorerTreeContainer(this);
 		}
+		/// <summary>
+		/// Hack override for the framework's incomplete impelementation of OnDocumentWindowChanged
+		/// </summary>
+		protected override void OnDocumentWindowChanged(DocView oldView, DocView newView)
+		{
+			// UNDONE: MSBUG The frameworks implementation of OnDocumentWindowChanged is
+			// garbage. Specifically, the ModelExplorerTreeContainer.ModelingDocData property
+			// is not set if the newView is empty. This causes an immediate crash during document
+			// reload (the new docdata has not changed, but the events are still attached to the
+			// old store), and delayed crashes if the model browser is touched when the document
+			// is closed.
+			ModelExplorerTreeContainer container = ObjectModelBrowser;
+			if (container != null)
+			{
+				ModelingDocData newDocData = (newView != null) ? (newView.DocData as ModelingDocData) : null;
+				if (newDocData != null)
+				{
+					container.ShowTree();
+				}
+				else
+				{
+					container.HideTree();
+				}
+				container.ModelingDocData = newDocData;
+			}
+		}
 		#endregion
 	}
 }

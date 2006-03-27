@@ -53,8 +53,6 @@ namespace Neumont.Tools.ORM.Shell
 		public ORMNotesToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
-			mySelectedRootTypes = new List<RootType>();
-			PopulateSelectedRootTypes();
 		}
 		/// <summary>
 		/// Returns the parent of myTextBox.
@@ -118,12 +116,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void PopulateSelectedRootTypes()
 		{
-			if (mySelectedRootTypes == null)
+			List<RootType> selectedTypes = mySelectedRootTypes;
+			if (selectedTypes == null)
 			{
-				mySelectedRootTypes = new List<RootType>();
+				selectedTypes = new List<RootType>();
+				mySelectedRootTypes = selectedTypes;
 			}
-			mySelectedRootTypes.Clear();	// Clear the list of selected root types.
-			IORMSelectionContainer selectionContainer = myCurrentORMSelectionContainer;
+			selectedTypes.Clear();	// Clear the list of selected root types.
+			IORMSelectionContainer selectionContainer = CurrentORMSelectionContainer;
 			if (selectionContainer != null)
 			{
 
@@ -133,7 +133,7 @@ namespace Neumont.Tools.ORM.Shell
 					RootType rootType = EditorUtility.ResolveContextInstance(o, false) as RootType;	// and if they are a RootType,
 					if (rootType != null)
 					{
-						mySelectedRootTypes.Add(rootType);	// add them to the list of selected RootTypes.
+						selectedTypes.Add(rootType);	// add them to the list of selected RootTypes.
 					}
 				}
 			}
@@ -234,7 +234,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (!handled)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
-				ModelingDocData docData = myCurrentDocument;
+				ModelingDocData docData = CurrentDocument;
 				if (docData != null)
 				{
 					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
@@ -302,7 +302,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (!handled)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
-				ModelingDocData docData = myCurrentDocument;
+				ModelingDocData docData = CurrentDocument;
 				if (docData != null)
 				{
 					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
@@ -319,16 +319,11 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion
 		#region ORMToolWindow Implementation
 		/// <summary>
-		/// Retains base CurrentModelElementSelectionContainer implementation and adds a
-		/// method call to PopulateSelectedRootTypes.
+		/// Populates the tool window when the selection changes
 		/// </summary>
-		protected override IORMSelectionContainer CurrentModelElementSelectionContainer
+		protected override void OnORMSelectionContainerChanged()
 		{
-			set
-			{
-				base.CurrentModelElementSelectionContainer = value;
-				PopulateSelectedRootTypes();
-			}
+			PopulateSelectedRootTypes();
 		}
 		/// <summary>
 		/// Attaches event handlers to the store.

@@ -94,6 +94,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		EntityTypeVerbalization,
 		/// <summary>
+		/// The 'ErrorClosePrimaryReport' simple snippet value.
+		/// </summary>
+		ErrorClosePrimaryReport,
+		/// <summary>
+		/// The 'ErrorCloseSecondaryReport' simple snippet value.
+		/// </summary>
+		ErrorCloseSecondaryReport,
+		/// <summary>
+		/// The 'ErrorOpenPrimaryReport' simple snippet value.
+		/// </summary>
+		ErrorOpenPrimaryReport,
+		/// <summary>
+		/// The 'ErrorOpenSecondaryReport' simple snippet value.
+		/// </summary>
+		ErrorOpenSecondaryReport,
+		/// <summary>
+		/// The 'ErrorPrimary' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		ErrorPrimary,
+		/// <summary>
+		/// The 'ErrorSecondary' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		ErrorSecondary,
+		/// <summary>
 		/// The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		ExistentialQuantifier,
@@ -386,10 +410,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		ValueTypeVerbalization,
 		/// <summary>
-		/// The 'VerbalizerCloseError' simple snippet value.
-		/// </summary>
-		VerbalizerCloseError,
-		/// <summary>
 		/// The 'VerbalizerCloseVerbalization' simple snippet value.
 		/// </summary>
 		VerbalizerCloseVerbalization,
@@ -421,10 +441,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'VerbalizerNewLine' simple snippet value.
 		/// </summary>
 		VerbalizerNewLine,
-		/// <summary>
-		/// The 'VerbalizerOpenError' simple snippet value.
-		/// </summary>
-		VerbalizerOpenError,
 		/// <summary>
 		/// The 'VerbalizerOpenVerbalization' simple snippet value.
 		/// </summary>
@@ -689,6 +705,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
+				"</span>",
+				"</span>",
+				@"<span class=""primaryErrorReport"">",
+				@"<span class=""secondaryErrorReport"">",
+				"Model Error: {0}",
+				"Model Error: {0}",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
@@ -762,22 +784,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
-				"</span>",
 				"</p>",
 				"</span>",
 				"</body></html>",
 				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
+<html xmlns=""http://www.w3.org/1999/xhtml"">
 	<head>
 		<title>ORM2 Verbalization</title>
-		<style>
+		<style type=""text/css"">
 			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
 			.objectType {{ color: {4}; {5} }}
 			.objectTypeMissing {{ color: {4}; {5} }}
 			.referenceMode {{ color: {10}; {11} }}
 			.predicateText {{ color: #0000ff; }}
 			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
+			.primaryErrorReport {{ color: red; font-weight: bolder; }}
+			.secondaryErrorReport {{ color: red; }}
 			.verbalization {{ }}
 			.indent {{ left: 20px; position: relative; }}
 			.smallIndent {{ left: 8px; position: relative;}}
@@ -792,7 +814,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>\n",
-				@"<span class=""error"">",
 				@"<p class=""verbalization"">"});
 			sets[1] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -812,6 +833,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
+				"</span>",
+				"</span>",
+				@"<span class=""primaryErrorReport"">",
+				@"<span class=""secondaryErrorReport"">",
+				"Model Error: {0}",
+				"Model Error: {0}",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
@@ -885,22 +912,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
-				"</span>",
 				"</p>",
 				"</span>",
 				"</body></html>",
 				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
+<html xmlns=""http://www.w3.org/1999/xhtml"">
 	<head>
 		<title>ORM2 Verbalization</title>
-		<style>
+		<style type=""text/css"">
 			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
 			.objectType {{ color: {4}; {5} }}
 			.objectTypeMissing {{ color: {4}; {5} }}
 			.referenceMode {{ color: {10}; {11} }}
 			.predicateText {{ color: #0000ff; }}
 			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
+			.primaryErrorReport {{ color: red; font-weight: bolder; }}
+			.secondaryErrorReport {{ color: red; }}
 			.verbalization {{ }}
 			.indent {{ left: 20px; position: relative; }}
 			.smallIndent {{ left: 8px; position: relative;}}
@@ -915,7 +942,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>\n",
-				@"<span class=""error"">",
 				@"<p class=""verbalization"">"});
 			sets[2] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -935,6 +961,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
+				"</span>",
+				"</span>",
+				@"<span class=""primaryErrorReport"">",
+				@"<span class=""secondaryErrorReport"">",
+				"Model Error: {0}",
+				"Model Error: {0}",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
@@ -1008,22 +1040,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
-				"</span>",
 				"</p>",
 				"</span>",
 				"</body></html>",
 				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
+<html xmlns=""http://www.w3.org/1999/xhtml"">
 	<head>
 		<title>ORM2 Verbalization</title>
-		<style>
+		<style type=""text/css"">
 			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
 			.objectType {{ color: {4}; {5} }}
 			.objectTypeMissing {{ color: {4}; {5} }}
 			.referenceMode {{ color: {10}; {11} }}
 			.predicateText {{ color: #0000ff; }}
 			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
+			.primaryErrorReport {{ color: red; font-weight: bolder; }}
+			.secondaryErrorReport {{ color: red; }}
 			.verbalization {{ }}
 			.indent {{ left: 20px; position: relative; }}
 			.smallIndent {{ left: 8px; position: relative;}}
@@ -1038,7 +1070,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>\n",
-				@"<span class=""error"">",
 				@"<p class=""verbalization"">"});
 			sets[3] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">at most one</span> {0}",
@@ -1058,6 +1089,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
+				"</span>",
+				"</span>",
+				@"<span class=""primaryErrorReport"">",
+				@"<span class=""secondaryErrorReport"">",
+				"Model Error: {0}",
+				"Model Error: {0}",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
@@ -1131,22 +1168,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
-				"</span>",
 				"</p>",
 				"</span>",
 				"</body></html>",
 				@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
+<html xmlns=""http://www.w3.org/1999/xhtml"">
 	<head>
 		<title>ORM2 Verbalization</title>
-		<style>
+		<style type=""text/css"">
 			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
 			.objectType {{ color: {4}; {5} }}
 			.objectTypeMissing {{ color: {4}; {5} }}
 			.referenceMode {{ color: {10}; {11} }}
 			.predicateText {{ color: #0000ff; }}
 			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
+			.primaryErrorReport {{ color: red; font-weight: bolder; }}
+			.secondaryErrorReport {{ color: red; }}
 			.verbalization {{ }}
 			.indent {{ left: 20px; position: relative; }}
 			.smallIndent {{ left: 8px; position: relative;}}
@@ -1161,7 +1198,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>\n",
-				@"<span class=""error"">",
 				@"<p class=""verbalization"">"});
 		}
 		/// <summary>
@@ -1181,29 +1217,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			RoleMoveableCollection factRoles = this.RoleCollection;
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = this.ReadingOrderCollection;
@@ -1227,6 +1285,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			beginVerbalization(VerbalizationContent.Normal);
 			reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 			FactType.WriteVerbalizerSentence(writer, FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -1243,31 +1323,53 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
-			StringBuilder sbTemp = null;
 			const bool isDeontic = false;
+			StringBuilder sbTemp = null;
 			CoreVerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
 			if (!(this.IsValueType))
 			{
@@ -1420,6 +1522,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet6Replace1 = this.DataType.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat6, snippet6Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -1436,35 +1560,79 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			const bool isDeontic = false;
 			beginVerbalization(VerbalizationContent.Normal);
 			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationTextSnippetType.NotesVerbalization, isDeontic, isNegative);
 			string snippet1Replace1;
 			snippet1Replace1 = this.Text;
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -1481,29 +1649,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
@@ -1514,6 +1704,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int includedArity = includedRoles.Count;
 			if ((allReadingOrders.Count == 0) || (includedArity == 0))
 			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
 				return false;
 			}
 			string[] basicRoleReplacements = new string[factArity];
@@ -2164,6 +2376,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -2180,29 +2414,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
@@ -2213,6 +2469,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int includedArity = includedRoles.Count;
 			if ((allReadingOrders.Count == 0) || (includedArity == 0))
 			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
 				return false;
 			}
 			string[] basicRoleReplacements = new string[factArity];
@@ -2486,6 +2764,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -2502,29 +2802,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
@@ -2536,6 +2858,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int allFactsCount = allFacts.Count;
 			if (allFactsCount == 0)
 			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
@@ -2547,6 +2891,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType currentFact = allFacts[iFact];
 				if (currentFact.ReadingOrderCollection.Count == 0)
 				{
+					if (errorOwner != null)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								beginVerbalization(VerbalizationContent.ErrorReport);
+								writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+						}
+						if (!(firstErrorPending))
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+					}
 					return false;
 				}
 				factRoles = currentFact.RoleCollection;
@@ -3142,6 +3508,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -3158,29 +3546,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
@@ -3192,6 +3602,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int allFactsCount = allFacts.Count;
 			if (allFactsCount == 0)
 			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
 				return false;
 			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
@@ -3203,6 +3635,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType currentFact = allFacts[iFact];
 				if (currentFact.ReadingOrderCollection.Count == 0)
 				{
+					if (errorOwner != null)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								beginVerbalization(VerbalizationContent.ErrorReport);
+								writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+						}
+						if (!(firstErrorPending))
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+					}
 					return false;
 				}
 				factRoles = currentFact.RoleCollection;
@@ -3514,6 +3968,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -3530,29 +4006,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			Role valueRole = this.Role;
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
@@ -3565,6 +4063,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int includedArity = includedRoles.Count;
 			if ((allReadingOrders.Count == 0) || (includedArity == 0))
 			{
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							beginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
 				return false;
 			}
 			string[] basicRoleReplacements = new string[factArity];
@@ -3776,6 +4296,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			variableSnippet1Replace2 = sbTemp.ToString();
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -3792,29 +4334,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
 			if (errorOwner != null)
 			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
 				{
-					if (firstElement)
+					if (firstErrorPending)
 					{
-						firstElement = false;
+						firstErrorPending = false;
 						beginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenPrimaryReport, false, false));
 					}
 					else
 					{
 						writer.WriteLine();
 					}
-					writer.Write(error.Name);
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorPrimary, false, false), error.Name));
 				}
-				if (!(firstElement))
+				if (!(firstErrorPending))
 				{
-					return false;
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorClosePrimaryReport, false, false));
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
 				}
 			}
-			VerbalizationSets<CoreVerbalizationTextSnippetType> snippets = (VerbalizationSets<CoreVerbalizationTextSnippetType>)snippetsDictionary[typeof(CoreVerbalizationTextSnippetType)];
 			const bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
@@ -3924,6 +4488,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			variableSnippet1Replace2 = sbTemp.ToString();
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						writer.WriteLine();
+						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorSecondary, false, false), error.Name));
+				}
+				if (!(firstErrorPending))
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)

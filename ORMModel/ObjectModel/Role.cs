@@ -711,31 +711,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // RoleChangeRule class
 		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
 			{
 				RolePlayerRequiredError requiredError;
 				if (null != (requiredError = RolePlayerRequiredError))
 				{
 					yield return requiredError;
 				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
 			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors

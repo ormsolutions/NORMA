@@ -196,31 +196,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // InternalConstraint Specific
 		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
 			{
 				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
 				if (duplicateName != null)
 				{
 					yield return duplicateName;
 				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
 			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region Role owner validation rules
@@ -452,47 +453,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // SingleColumnExternalConstraint synchronization rules
 		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
 			{
-				CompatibleRolePlayerTypeError typeCompatibility;
-				if (null != (typeCompatibility = CompatibleRolePlayerTypeError))
-				{
-					yield return typeCompatibility; 
-				}
-
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.BlockVerbalization))
+			{
 				TooFewRoleSequencesError tooFew;
 				if (null != (tooFew = TooFewRoleSequencesError))
 				{
-					yield return tooFew;
+					yield return new ModelErrorUsage(tooFew, ModelErrorUses.BlockVerbalization);
 				}
 				TooManyRoleSequencesError tooMany;
 				if (null != (tooMany = TooManyRoleSequencesError))
 				{
-					yield return tooMany;
+					yield return new ModelErrorUsage(tooMany, ModelErrorUses.BlockVerbalization);
+				}
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
+				CompatibleRolePlayerTypeError typeCompatibility;
+				if (null != (typeCompatibility = CompatibleRolePlayerTypeError))
+				{
+					yield return typeCompatibility;
 				}
 				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
 				if (duplicateName != null)
 				{
 					yield return duplicateName;
 				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
 			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -1518,35 +1522,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Add/Remove Rules
 		#endregion // Error synchronization rules
 		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.BlockVerbalization))
 			{
 				TooManyRoleSequencesError tooMany;
 				TooFewRoleSequencesError tooFew;
 				ExternalConstraintRoleSequenceArityMismatchError arityMismatch;
 				if (null != (tooMany = TooManyRoleSequencesError))
 				{
-					yield return tooMany;
+					yield return new ModelErrorUsage(tooMany, ModelErrorUses.BlockVerbalization);
 				}
 				if (null != (tooFew = TooFewRoleSequencesError))
 				{
-					yield return tooFew;
+					yield return new ModelErrorUsage(tooFew, ModelErrorUses.BlockVerbalization);
 				}
 				if (null != (arityMismatch = ArityMismatchError))
 				{
 					yield return arityMismatch;
 				}
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
 				foreach (CompatibleRolePlayerTypeError compatibleTypeError in CompatibleRolePlayerTypeErrorCollection)
 				{
 					yield return compatibleTypeError;
@@ -1556,12 +1560,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return duplicateName;
 				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
 			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -2098,28 +2106,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the constraint.
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
 			{
 				NMinusOneError nMinusOneError = NMinusOneError;
 				if (nMinusOneError != null)
 				{
 					yield return nMinusOneError;
 				}
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -2295,30 +2304,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class EqualityConstraint : IModelErrorOwner
 	{
 		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
 			{
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+				filter = (ModelErrorUses)(-1);
+			}
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
 				EqualityIsImpliedByMandatoryError equalityImplied;
 				if (null != (equalityImplied = EqualityIsImpliedByMandatoryError))
 				{
 					yield return equalityImplied;
 				}
 			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -3266,30 +3276,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class DisjunctiveMandatoryConstraint : IModelErrorOwner
 	{
 		#region IModelErrorOwner Implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
 			{
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+				filter = (ModelErrorUses)(-1);
+			}
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
 				DisjunctiveMandatoryImpliedByMandatoryError impliedDisjunctive = ImpliedByMandatoryError;
 				if (impliedDisjunctive != null)
 				{
 					yield return impliedDisjunctive;
 				}
 			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -3496,14 +3507,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the constraint.
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
 			{
-				foreach (ModelError error in base.ErrorCollection)
-				{
-					yield return error;
-				}
+				filter = (ModelErrorUses)(-1);
+			}
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
 				FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
 				if (minMaxError != null)
 				{
@@ -3515,12 +3530,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -3764,28 +3776,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Return errors associated with the constraint
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
 			{
-				foreach (ModelError error in base.ErrorCollection)
-				{
-					yield return error;
-				}
+				filter = (ModelErrorUses)(-1);
+			}
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+			if (0 != (filter & ModelErrorUses.BlockVerbalization))
+			{
 				RingConstraintTypeNotSpecifiedError notSpecified = this.RingConstraintTypeNotSpecifiedError;
 				if (notSpecified != null)
 				{
-					yield return notSpecified;
+					yield return new ModelErrorUsage(notSpecified, ModelErrorUses.BlockVerbalization);
 				}
 			}
 		}
-
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return this.ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors

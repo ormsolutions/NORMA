@@ -102,7 +102,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The ErrorCollection
 		/// </summary>
-		public new IEnumerable<ModelError> ErrorCollection
+		public IEnumerable<ModelError> ErrorCollection
 		{
 			get
 			{
@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return (ModelError)error;
 				}
 				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
+				foreach (ModelErrorUsage baseError in base.GetErrorCollection(ModelErrorUses.None))
 				{
 					yield return baseError;
 				}
@@ -1456,26 +1456,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 		#region IModelErrorOwner Implementation
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			yield return this;
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
-				yield return this;
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+				yield return baseError;
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors

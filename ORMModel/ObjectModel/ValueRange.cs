@@ -74,19 +74,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // variables
 		#region IModelErrorOwner implementation
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
-		{
-			get
-			{
-				return ErrorCollection;
-			}
-		}
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
 			{
 				MaxValueMismatchError max;
 				MinValueMismatchError min;
@@ -98,13 +95,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return min;
 				}
-
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
 			}
+
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
@@ -541,21 +542,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // variables
 		#region IModelErrorOwner implementation
 		/// <summary>
-		/// Implements IModelErrorOwner.ErrorCollection
+		/// Implements IModelErrorOwner.GetErrorCollection
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
 			{
-				ValueRangeMoveableCollection ranges = ValueRangeCollection;
-				int rangeCount = ranges.Count;
-				for (int i = 0; i < rangeCount; ++i)
+				filter = (ModelErrorUses)(-1);
+			}
+			ValueRangeMoveableCollection ranges = ValueRangeCollection;
+			int rangeCount = ranges.Count;
+			for (int i = 0; i < rangeCount; ++i)
+			{
+				foreach (ModelErrorUsage rangeError in (ranges[i] as IModelErrorOwner).GetErrorCollection(filter))
 				{
-					foreach (ModelError rangeError in (ranges[i] as IModelErrorOwner).ErrorCollection)
-					{
-						yield return rangeError;
-					}
+					yield return rangeError;
 				}
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
 				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
 				if (duplicateName != null)
 				{
@@ -567,20 +572,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return overlap;
 				}
+			}
 
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors

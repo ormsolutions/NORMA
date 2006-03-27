@@ -231,6 +231,36 @@
 					<xs:documentation>{0} in {1} :: Used to verbalize [RolePlayer in Fact] for role value constraints, e.g. Person in Person has Age.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ErrorOpenPrimaryReport">
+				<xs:annotation>
+					<xs:documentation>Used to open a primary error report. Primary error reports block further verbalization.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ErrorClosePrimaryReport">
+				<xs:annotation>
+					<xs:documentation>Close a primary error report opened with ErrorOpenPrimaryReport</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ErrorPrimary">
+				<xs:annotation>
+					<xs:documentation>Used to verbalize a single primary error. 1 replacement field.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ErrorOpenSecondaryReport">
+				<xs:annotation>
+					<xs:documentation>Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ErrorCloseSecondaryReport">
+				<xs:annotation>
+					<xs:documentation>Close a secondary error report opened with ErrorOpenSecondaryReport.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ErrorSecondary">
+				<xs:annotation>
+					<xs:documentation>Used to verbalize a single secondary error. 1 replacement field.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="LanguageType">
@@ -271,16 +301,6 @@
 															<xs:enumeration value="VerbalizerCloseVerbalization">
 																<xs:annotation>
 																	<xs:documentation>Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization</xs:documentation>
-																</xs:annotation>
-															</xs:enumeration>
-															<xs:enumeration value="VerbalizerOpenError">
-																<xs:annotation>
-																	<xs:documentation>Used by the verbalizer around an error section</xs:documentation>
-																</xs:annotation>
-															</xs:enumeration>
-															<xs:enumeration value="VerbalizerCloseError">
-																<xs:annotation>
-																	<xs:documentation>Used by the verbalizer to close an error section</xs:documentation>
 																</xs:annotation>
 															</xs:enumeration>
 															<xs:enumeration value="VerbalizerDocumentHeader">

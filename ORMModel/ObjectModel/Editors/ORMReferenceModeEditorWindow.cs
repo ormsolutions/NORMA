@@ -141,7 +141,7 @@ namespace Neumont.Tools.ORM.Shell
 		private void LoadWindow()
 		{
 			ORMModel model = null;
-			ORMDesignerDocData docData = myCurrentDocument;
+			ORMDesignerDocData docData = CurrentDocument;
 			if (docData != null)
 			{
 				ORMDesignerDocView docView = docData.DocViews[0] as ORMDesignerDocView;
@@ -166,11 +166,10 @@ namespace Neumont.Tools.ORM.Shell
 			get { return ResourceStrings.ModelReferenceModeEditorEditorWindowTitle; }
 		}
 		/// <summary>
-		/// Handles the IMonitorSelectionService DocumentWindowChanged event.
+		/// Update the current window when the document changes
 		/// </summary>
-		protected override void DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
+		protected override void OnCurrentDocumentChanged()
 		{
-			base.DocumentWindowChanged(sender, e);
 			LoadWindow();
 		}
 		/// <summary>

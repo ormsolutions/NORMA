@@ -48,18 +48,15 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private ReadingsViewForm myForm = new ReadingsViewForm();
 		#endregion // Member variables
-
 		#region construction
 		/// <summary>
 		/// Creates a new instance of the reading editor tool window.
 		/// </summary>
-		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider) : base(serviceProvider) { }
+		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider)
+			: base(serviceProvider)
+		{
+		}
 		#endregion
-
-		#region selection monitor event handlers and helpers
-
-		#endregion
-
 		#region ToolWindow overrides
 		/// <summary>
 		/// See <see cref="ToolWindow.BitmapResource"/>.
@@ -103,7 +100,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion
-
 		#region Reading activation helper
 		/// <summary>
 		/// Select the current reading in the window. The
@@ -126,22 +122,31 @@ namespace Neumont.Tools.ORM.Shell
 			myForm.ActivateReading(fact);
 		}
 		#endregion // Reading activation helper
+		#region Selection Monitoring
 		/// <summary>
-		/// First calls the base implementation of SelectionChanged, and then call custom logic.
+		/// Update our reading to reflect the current selection
 		/// </summary>
-		protected override void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
+		protected override void OnORMSelectionContainerChanged()
 		{
-			base.MonitorSelectionChanged(sender, e);
-			if (myCurrentORMSelectionContainer != null)
+			if (CurrentORMSelectionContainer != null)
 			{
 				ICollection selectedObjects = base.GetSelectedComponents();
-				object my = null;
+				FactType theFact = null;
 				foreach (object o in selectedObjects)
 				{
-					my = o;
-					break;
+					FactType testFact = EditorUtility.ResolveContextFactType(o);
+					// Handle selection of multiple elements as long as
+					// they all resolve to the same fact
+					if (theFact == null)
+					{
+						theFact = testFact;
+					}
+					else if (!object.ReferenceEquals(testFact, theFact))
+					{
+						theFact = null;
+						break;
+					}
 				}
-				FactType theFact = EditorUtility.ResolveContextFactType(my);
 				FactType currentFact = EditingFactType;
 				if (theFact == null && currentFact != null)
 				{
@@ -153,8 +158,12 @@ namespace Neumont.Tools.ORM.Shell
 					EditingFactType = theFact;
 				}
 			}
+			else
+			{
+				EditingFactType = null;
+			}
 		}
-
+		#endregion // Selection Monitoring
 		#region properties
 		/// <summary>
 		/// Controls which fact is being displayed by the tool window.
@@ -171,7 +180,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion
-
 		#region nested class ReadingsViewForm
 		private class ReadingsViewForm : Form
 		{
@@ -259,7 +267,6 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion // Reading activation helper
 		}
 		#endregion
-
 		#region IOleCommandTarget Members
 
 		/// <summary>
@@ -316,19 +323,15 @@ namespace Neumont.Tools.ORM.Shell
 				handled = false;
 				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
 			}
-			if (!handled && myCurrentDocument != null)
+			if (!handled)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
-				ModelingDocData docData = myCurrentDocument;
+				ModelingDocData docData = CurrentDocument;
 				if (docData != null)
 				{
 					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
 					// If the command wasn't handled already, forward it to the undo manager.
 					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
-				}
-				else
-				{
-					hr = (int)MSOLE.Constants.MSOCMDERR_E_NOTSUPPORTED;
 				}
 			}
 			return hr;
@@ -410,10 +413,10 @@ namespace Neumont.Tools.ORM.Shell
 				handled = false;
 				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
 			}
-			if (!handled && myCurrentDocument != null)
+			if (!handled)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
-				ModelingDocData docData = myCurrentDocument;
+				ModelingDocData docData = CurrentDocument;
 				if (docData != null)
 				{
 					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
@@ -429,7 +432,6 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		#endregion
-
 		#region event handler attach/detach methods
 
 		/// <summary>

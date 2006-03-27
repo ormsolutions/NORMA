@@ -133,26 +133,31 @@
 				<Snippet type="CompactSimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="CompactSimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="CompactSimpleListClose"><![CDATA[]]></Snippet>
+				<Snippet type="ErrorOpenPrimaryReport"><![CDATA[<span class="primaryErrorReport">]]></Snippet>
+				<Snippet type="ErrorClosePrimaryReport"><![CDATA[</span>]]></Snippet>
+				<Snippet type="ErrorOpenSecondaryReport"><![CDATA[<span class="secondaryErrorReport">]]></Snippet>
+				<Snippet type="ErrorCloseSecondaryReport"><![CDATA[</span>]]></Snippet>
+				<Snippet type="ErrorPrimary"><![CDATA[Model Error: {0}]]></Snippet>
+				<Snippet type="ErrorSecondary"><![CDATA[Model Error: {0}]]></Snippet>
 				<Snippet type="CloseVerbalizationSentence"><![CDATA[<span class="listSeparator">.</span>]]></Snippet>
 				<Snippet type="VerbalizerNewLine"><![CDATA[<br/>\n]]></Snippet>
 				<Snippet type="VerbalizerIncreaseIndent"><![CDATA[<span class="indent">]]></Snippet>
 				<Snippet type="VerbalizerDecreaseIndent"><![CDATA[</span>]]></Snippet>
 				<Snippet type="VerbalizerOpenVerbalization"><![CDATA[<p class="verbalization">]]></Snippet>
 				<Snippet type="VerbalizerCloseVerbalization"><![CDATA[</p>]]></Snippet>
-				<Snippet type="VerbalizerOpenError"><![CDATA[<span class="error">]]></Snippet>
-				<Snippet type="VerbalizerCloseError"><![CDATA[</span>]]></Snippet>
 				<Snippet type="VerbalizerDocumentHeader"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>ORM2 Verbalization</title>
-		<style>
+		<style type="text/css">
 			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
 			.objectType {{ color: {4}; {5} }}
 			.objectTypeMissing {{ color: {4}; {5} }}
 			.referenceMode {{ color: {10}; {11} }}
 			.predicateText {{ color: #0000ff; }}
 			.quantifier {{ color: {6}; {7} }}
-			.error {{ color: red; }}
+			.primaryErrorReport {{ color: red; font-weight: bolder; }}
+			.secondaryErrorReport {{ color: red; }}
 			.verbalization {{ }}
 			.indent {{ left: 20px; position: relative; }}
 			.smallIndent {{ left: 8px; position: relative;}}

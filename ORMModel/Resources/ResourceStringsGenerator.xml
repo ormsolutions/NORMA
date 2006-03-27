@@ -570,7 +570,7 @@
 		<comment type="summary">The string used to display a reading with a non-primary order when the role is not attached.</comment>
 	</ResourceString>
 	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text">
-		<comment type="summary">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1</comment>
+		<comment type="summary">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text">
 		<comment type="summary">The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>

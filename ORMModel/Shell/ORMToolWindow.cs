@@ -21,27 +21,34 @@ namespace Neumont.Tools.ORM.Shell
 		/// The most recently selected SelectionContainer that contains selectable
 		/// ORM ModelElements.
 		/// </summary>
-		protected IORMSelectionContainer myCurrentORMSelectionContainer;
+		private IORMSelectionContainer myCurrentORMSelectionContainer;
 		/// <summary>
 		/// The current ORM document.
 		/// </summary>
-		protected ORMDesignerDocData myCurrentDocument;
+		private ORMDesignerDocData myCurrentDocument;
+		/// <summary>
+		/// The service provider passed to the constructor. The base class messes with this.
+		/// </summary>
+		private IServiceProvider myCtorServiceProvider;
 		#endregion // Local Data Members
-
 		#region Properties for CurrentDocument and CurrentORMSelectionContainer
 		/// <summary>
-		/// Sets myCurrentDocument and wires/unwires event handlers.
+		/// Get the current ORMDesignerDocData
 		/// </summary>
 		protected ORMDesignerDocData CurrentDocument
 		{
-			set
+			get
 			{
+				return myCurrentDocument;
+			}
+			private set
+			{
+				if (object.ReferenceEquals(myCurrentDocument, value))
+				{
+					return;
+				}
 				if (myCurrentDocument != null && myCurrentDocument.Store != null)	// If the current document is not null
 				{
-					if (value != null && object.ReferenceEquals(myCurrentDocument, value))
-					{
-						return;
-					}
 					// If we get to this point, we know that the document window
 					// has really changed, so we need to unwire the event handlers
 					// from the model store.
@@ -60,56 +67,75 @@ namespace Neumont.Tools.ORM.Shell
 						myCurrentDocument = null;
 					}
 				}
+				OnCurrentDocumentChanged();
 			}
 		}
 		/// <summary>
-		/// Sets myCurrentORMSelectionContainer if the new value is not null.
-		/// This allows us to travel between multiple different ORM tool
-		/// windows and maintain our most recent ORM SelectionContainer.
+		/// Provide a notification when the selection container has been modified. The
+		/// default implemention is empty.
 		/// </summary>
-		protected virtual IORMSelectionContainer CurrentModelElementSelectionContainer
+		protected virtual void OnCurrentDocumentChanged() { }
+		/// <summary>
+		/// Get the current IORMSelectionContainer. Tracking this separate
+		/// from CurrentDocument allows us to switch between multiple
+		/// different ORM tool windows without changing the current ORM documtn.
+		/// </summary>
+		protected virtual IORMSelectionContainer CurrentORMSelectionContainer
 		{
-			set
+			get
 			{
-				if (value != null)
-				{
-					myCurrentORMSelectionContainer = value;
-				}
+				return myCurrentORMSelectionContainer;
+			}
+			private set
+			{
+				myCurrentORMSelectionContainer = value;
+				OnORMSelectionContainerChanged();
 			}
 		}
+		/// <summary>
+		/// Provide a notification when the selection container has been modified. The
+		/// default implemention is empty.
+		/// </summary>
+		protected virtual void OnORMSelectionContainerChanged() { }
 		#endregion // Properties for CurrentDocument and CurrentORMSelectionContainer
-
 		#region ORMToolWindow Constructor
+		/// <summary>
+		/// Constructs a new ORM tool window. Initialization is performed in the Initialize method.
+		/// </summary>
+		public ORMToolWindow(IServiceProvider serviceProvider)
+			: base(serviceProvider)
+		{
+			myCtorServiceProvider = serviceProvider;
+		}
 		/// <summary>
 		/// Constructs a new ORM tool window, wires selection and document changed events,
 		/// and initializes the CurrentModelElementSelectionContainer to the current DocView.
 		/// </summary>
-		public ORMToolWindow(IServiceProvider serviceProvider) : base(serviceProvider)
+		protected override void Initialize()
 		{
-			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
+			IMonitorSelectionService monitor = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-			CurrentModelElementSelectionContainer = monitor.CurrentDocumentView as IORMSelectionContainer;
+			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
+			CurrentORMSelectionContainer = monitor.CurrentDocumentView as IORMSelectionContainer;
 		}
 		#endregion // ORMToolWindow Constructor
-
 		#region IMonitorSelectionService Event Handlers
 		/// <summary>
 		/// Handles the SelectionChanged event on the IMonitorSelectionService
 		/// </summary>
-		protected virtual void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
+		private void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
 		{
-			CurrentModelElementSelectionContainer = e.NewValue as IORMSelectionContainer;
+			CurrentORMSelectionContainer = ((IMonitorSelectionService)sender).CurrentSelectionContainer as IORMSelectionContainer;
 		}
 		/// <summary>
 		/// Handles the DocumentWindowChanged event on the IMonitorSelectionService
 		/// </summary>
-		protected virtual void DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
+		private void DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
 		{
 			CurrentDocument = ((IMonitorSelectionService)sender).CurrentDocument as ORMDesignerDocData;
 		}
 		#endregion // IMonitorSelectionService Event Handlers
-
 		#region Abstract Methods and Properties
 		/// <summary>
 		/// Attaches custom event handlers to the store.  This method must be overridden.
@@ -140,7 +166,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </remarks>
 		protected abstract override int BitmapIndex { get; }
 		#endregion // Abstract Methods and Properties
-
 		#region ISelectionContainer overrides
 		/// <summary>
 		/// Passes the count request through to myCurrentORMSelectionContainer.

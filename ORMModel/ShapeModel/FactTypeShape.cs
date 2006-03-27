@@ -328,7 +328,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 							IModelErrorOwner errorOwner = myFactConstraint.Constraint as IModelErrorOwner;
 							if (errorOwner != null)
 							{
-								using (IEnumerator<ModelError> errors = errorOwner.ErrorCollection.GetEnumerator())
+								// UNDONE: ModelErrorUses filter
+								using (IEnumerator<ModelErrorUsage> errors = errorOwner.GetErrorCollection(ModelErrorUses.None).GetEnumerator())
 								{
 									retVal = !errors.MoveNext();
 								}

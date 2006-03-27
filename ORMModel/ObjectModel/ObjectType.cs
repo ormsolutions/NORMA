@@ -1799,9 +1799,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the errors associated with the object.
 		/// </summary>
-		protected new IEnumerable<ModelError> ErrorCollection
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			get
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
 			{
 				DataTypeNotSpecifiedError unspecifiedDataTypeError = DataTypeNotSpecifiedError;
 				if (unspecifiedDataTypeError != null)
@@ -1818,7 +1822,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IModelErrorOwner valueErrors = ValueConstraint as IModelErrorOwner;
 				if (valueErrors != null)
 				{
-					foreach (ModelError valueError in valueErrors.ErrorCollection)
+					foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
 					{
 						yield return valueError;
 					}
@@ -1847,20 +1851,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return duplicateName;
 				}
+			}
 
-				// Get errors off the base
-				foreach (ModelError baseError in base.ErrorCollection)
-				{
-					yield return baseError;
-				}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
 			}
 		}
-		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
 		{
-			get
-			{
-				return ErrorCollection;
-			}
+			return GetErrorCollection(filter);
 		}
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors

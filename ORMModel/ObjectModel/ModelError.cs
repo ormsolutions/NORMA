@@ -49,6 +49,143 @@ namespace Neumont.Tools.ORM.ObjectModel
 		OwnerNameChange,
 	}
 	#endregion // RegenerateErrorTextEvents enum
+	#region ModelErrorUses enum
+	/// <summary>
+	/// A model error can be interpreted differently depending
+	/// on which element is returning it. For example, some errors
+	/// may block verbalization of a given element and others
+	/// are listed with a specific element so they will not
+	/// </summary>
+	[Flags]
+	[CLSCompliant(true)]
+	public enum ModelErrorUses
+	{
+		/// <summary>
+		/// Use is not specified
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Verbalization of the element can be completed and
+		/// will display errors matching this filter when verbalization completes.
+		/// Should not be combined with BlockVerbalization.
+		/// </summary>
+		Verbalize = 1,
+		/// <summary>
+		/// Verbalization of the element cannot be completed until
+		/// this error is fixed.
+		/// </summary>
+		BlockVerbalization = 2,
+	}
+	#endregion // ModelErrorUses enum
+	#region ModelErrorUsage struct
+	/// <summary>
+	/// A structure defining how a model error is being used.
+	/// </summary>
+	public struct ModelErrorUsage
+	{
+		private ModelError myError;
+		private ModelErrorUses myUses;
+		/// <summary>
+		/// Create a ModelErrorUsage structure
+		/// </summary>
+		/// <param name="error">The error. Cannot be null.</param>
+		/// <param name="uses">Specifies how the error is used</param>
+		public ModelErrorUsage(ModelError error, ModelErrorUses uses)
+		{
+			if (error == null)
+			{
+				throw new ArgumentNullException("error");
+			}
+			myError = error;
+			myUses = uses;
+		}
+		/// <summary>
+		/// Create a ModelErrorUsage with default usage
+		/// </summary>
+		/// <param name="error">The error. Cannot be null.</param>
+		public ModelErrorUsage(ModelError error) : this(error, ModelErrorUses.Verbalize){}
+		/// <summary>
+		/// The ModelError
+		/// </summary>
+		public ModelError Error
+		{
+			get
+			{
+				return myError;
+			}
+		}
+		/// <summary>
+		/// How the ModelError should be used
+		/// </summary>
+		public ModelErrorUses UseFor
+		{
+			get
+			{
+				return myUses;
+			}
+		}
+		#region Equality and casting routines
+		/// <summary>
+		/// Standard Equals override
+		/// </summary>
+		public override bool Equals(object obj)
+		{
+			if (obj is ModelErrorUsage)
+			{
+				return Equals((ModelErrorUsage)obj);
+			}
+			return false;
+		}
+		/// <summary>
+		/// Standard GetHashCode override
+		/// </summary>
+		public override int GetHashCode()
+		{
+			ModelError error = myError;
+			if (error != null)
+			{
+				return error.GetHashCode() ^ (((int)myUses) << 2);
+			}
+			return 0;
+		}
+		/// <summary>
+		/// Typed Equals method
+		/// </summary>
+		public bool Equals(ModelErrorUsage obj)
+		{
+			return object.ReferenceEquals(myError, obj.myError) && (myUses == obj.myUses);
+		}
+		/// <summary>
+		/// Equality operator
+		/// </summary>
+		public static bool operator ==(ModelErrorUsage left, ModelErrorUsage right)
+		{
+			return left.Equals(right);
+		}
+		/// <summary>
+		/// Inequality operator
+		/// </summary>
+		public static bool operator !=(ModelErrorUsage left, ModelErrorUsage right)
+		{
+			return !left.Equals(right);
+		}
+		/// <summary>
+		/// Automatically cast this structure to a ModelError
+		/// </summary>
+		public static implicit operator ModelError(ModelErrorUsage usage)
+		{
+			return usage.Error;
+		}
+		/// <summary>
+		/// Automatically cast a ModelError to this structure
+		/// </summary>
+		public static implicit operator ModelErrorUsage(ModelError error)
+		{
+			return (error == null) ? default(ModelErrorUsage) : new ModelErrorUsage(error);
+		}
+		#endregion // Equality and casting routines
+	}
+	#endregion // ModelErrorUsage struct
 	#region IModelErrorOwner interface
 	/// <summary>
 	/// Identify an object as an error owner. Used
@@ -62,7 +199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the enumeration of errors associated
 		/// with this object.
 		/// </summary>
-		IEnumerable<ModelError> ErrorCollection { get;}
+		IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter);
 		/// <summary>
 		/// Called after deserialization to validate errors. Rules
 		/// are not enabled when this is called.
@@ -282,7 +419,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					Guid attributeGuid = e.MetaAttribute.Id;
 					if (attributeGuid == NamedElement.NameMetaAttributeGuid)
 					{
-						foreach (ModelError error in owner.ErrorCollection)
+						foreach (ModelError error in owner.GetErrorCollection(ModelErrorUses.None))
 						{
 							if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
 							{
@@ -304,7 +441,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IModelErrorOwner errorOwner = modelElement as IModelErrorOwner;
 			if (errorOwner != null)
 			{
-				using (IEnumerator<ModelError> enumerator = errorOwner.ErrorCollection.GetEnumerator())
+				using (IEnumerator<ModelErrorUsage> enumerator = errorOwner.GetErrorCollection(ModelErrorUses.None).GetEnumerator())
 				{
 					hasError = enumerator.MoveNext();
 				}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -60,17 +61,16 @@ namespace Neumont.Tools.ORM.Shell
 					(docData as EnvDTE.IExtensibleObject).GetAutomationObject("ORMXmlStream", null, out streamObj);
 					stream = streamObj as Stream;
 
-					System.Diagnostics.Debug.Assert(stream != null);
+					Debug.Assert(stream != null);
 
 					stream = CleanupStream(stream, checkedTypes);
-
-					docData.LoadDocDataFromStream(docData.FileName, true, stream);
+					docData.ReloadFromStream(stream);
 				}
 				finally
 				{
 					if (stream != null)
 					{
-						stream.Close();
+						(stream as IDisposable).Dispose();
 					}
 				}
 			}
@@ -219,7 +219,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else
 			{
-				System.Diagnostics.Debug.Assert(false, "Custom extension does not have MetaModelDisplayNameAttribute");
+				Debug.Assert(false, "Custom extension does not have MetaModelDisplayNameAttribute");
 			}
 			//Add the description
 			attributes = type.GetCustomAttributes(typeof(MetaModelDescriptionAttribute), true);
@@ -230,7 +230,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else
 			{
-				System.Diagnostics.Debug.Assert(false, "Custom extension does not have MetaModelDescriptionAttribute");
+				Debug.Assert(false, "Custom extension does not have MetaModelDescriptionAttribute");
 			}
 			lvExtensions.Items.Add(lvi);
 		}

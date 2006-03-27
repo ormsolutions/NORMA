@@ -1681,7 +1681,7 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1
+		/// Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1
 		/// </summary>
 		public static string NMinusOneRuleInternalSpan
 		{

@@ -45,11 +45,30 @@ namespace Neumont.Tools.ORM.Shell
 		private bool myShowNegativeVerbalizations;
 		private StringWriter myStringWriter;
 		private static string[] myDocumentHeaderReplacementFields;
+		private Dictionary<IVerbalize, IVerbalize> myAlreadyVerbalized;
 		private IDictionary<Type, IVerbalizationSets> mySnippetsDictionary;
+		/// <summary>
+		/// An enum to determine callback handling during verbalization
+		/// </summary>
+		private enum VerbalizationResult
+		{
+			/// <summary>
+			/// The element was successfully verbalized
+			/// </summary>
+			Verbalized,
+			/// <summary>
+			/// The element was previously verbalized
+			/// </summary>
+			AlreadyVerbalized,
+			/// <summary>
+			/// The element was not verbalized
+			/// </summary>
+			NotVerbalized,
+		}
 		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
-		private delegate bool VerbalizationHandler(IVerbalize verbalizer, int indentationLevel);
+		private delegate VerbalizationResult VerbalizationHandler(IVerbalize verbalizer, int indentationLevel);
 		#endregion // Member variables
 		#region Accessor Properties
 		/// <summary>
@@ -76,7 +95,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Construct a verbalization window with a monitor selection service
 		/// </summary>
 		/// <param name="serviceProvider">Service provider</param>
-		public ORMVerbalizationToolWindow(IServiceProvider serviceProvider) : base(serviceProvider) { }
+		public ORMVerbalizationToolWindow(IServiceProvider serviceProvider)
+			: base(serviceProvider)
+		{
+		}
 		/// <summary>
 		/// Initialize here after we have the frame so we can grab the toolbar host
 		/// </summary>
@@ -94,6 +116,7 @@ namespace Neumont.Tools.ORM.Shell
 			// create the string writer to hold the html
 			StringBuilder builder = new StringBuilder();
 			myStringWriter = new StringWriter(builder, CultureInfo.CurrentUICulture);
+			UpdateVerbalization();
 		}
 		/// <summary>
 		/// Make sure the toolbar flag gets set
@@ -289,7 +312,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void UpdateVerbalization()
 		{
-			if (myCurrentORMSelectionContainer == null)
+			if (CurrentORMSelectionContainer == null)
 			{
 				return;
 			}
@@ -303,6 +326,16 @@ namespace Neumont.Tools.ORM.Shell
 				myStringWriter.NewLine = snippets.GetSnippet(CoreVerbalizationTextSnippetType.VerbalizerNewLine);
 				bool showNegative = myShowNegativeVerbalizations;
 				bool firstCallPending = true;
+				Dictionary<IVerbalize, IVerbalize> verbalized = myAlreadyVerbalized;
+				if (verbalized == null)
+				{
+					verbalized = new Dictionary<IVerbalize, IVerbalize>();
+					myAlreadyVerbalized = verbalized;
+				}
+				else
+				{
+					verbalized.Clear();
+				}
 				foreach (ModelElement melIter in selectedObjects)
 				{
 					ModelElement mel = melIter;
@@ -313,13 +346,15 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					if (mel != null)
 					{
-						VerbalizeElement(mel, snippetsDictionary, showNegative, myStringWriter, ref firstCallPending);
+						VerbalizeElement(mel, snippetsDictionary, verbalized, showNegative, myStringWriter, ref firstCallPending);
 					}
 				}
 				if (!firstCallPending)
 				{
 					// Write footer
 					myStringWriter.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.VerbalizerDocumentFooter));
+					// Clear cache
+					verbalized.Clear();
 				}
 				else
 				{
@@ -338,10 +373,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="element">The element to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
+		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="isNegative">Use the negative form of the reading</param>
 		/// <param name="writer">The TextWriter for verbalization output</param>
 		/// <param name="firstCallPending"></param>
-		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, bool isNegative, TextWriter writer, ref bool firstCallPending)
+		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, bool isNegative, TextWriter writer, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -352,19 +388,18 @@ namespace Neumont.Tools.ORM.Shell
 				snippetsDictionary,
 				delegate(IVerbalize verbalizer, int indentationLevel)
 				{
-					bool openedErrorReport = false;
+					if (indentationLevel == 0)
+					{
+						if (alreadyVerbalized.ContainsKey(verbalizer))
+						{
+							return VerbalizationResult.AlreadyVerbalized;
+						}
+					}
 					bool retVal = verbalizer.GetVerbalization(
 						writer,
 						snippetsDictionary,
 						delegate(VerbalizationContent content)
 						{
-							if (content == VerbalizationContent.ErrorReport)
-							{
-								// spit opening tag for text denoting an error
-								openedErrorReport = true;
-								writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.VerbalizerOpenError));
-							}
-
 							// Prepare for verbalization on this element. Everything
 							// is delayed to this point in case the verbalization implementation
 							// does not callback to the text writer.
@@ -379,14 +414,12 @@ namespace Neumont.Tools.ORM.Shell
 
 								// write open tag for new verbalization
 								writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.VerbalizerOpenVerbalization));
-
 								firstWrite = false;
 							}
 							else
 							{
 								writer.WriteLine();
 							}
-
 
 							// Write indentation tags as needed
 							if (indentationLevel > lastLevel)
@@ -407,12 +440,18 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						},
 						isNegative);
-					if (openedErrorReport)
+					if (retVal)
 					{
-						// Close error report tag
-						writer.Write(snippets.GetSnippet(CoreVerbalizationTextSnippetType.VerbalizerCloseError));
+						if (indentationLevel == 0)
+						{
+							alreadyVerbalized.Add(verbalizer, verbalizer);
+						}
+						return VerbalizationResult.Verbalized;
 					}
-					return retVal;
+					else
+					{
+						return VerbalizationResult.NotVerbalized;
+					}
 				},
 				0);
 			while (lastLevel > 0)
@@ -445,7 +484,12 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			bool parentVerbalizeOK = (parentVerbalize != null) ? callback(parentVerbalize, indentLevel) : false;
+			VerbalizationResult result = (parentVerbalize != null) ? callback(parentVerbalize, indentLevel) : VerbalizationResult.NotVerbalized;
+			if (result == VerbalizationResult.AlreadyVerbalized)
+			{
+				return;
+			}
+			bool parentVerbalizeOK = result == VerbalizationResult.Verbalized;
 			bool verbalizeChildren = parentVerbalizeOK ? (element != null) : (element is IVerbalizeChildren);
 			if (verbalizeChildren)
 			{
@@ -477,11 +521,10 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Verbalization Implementation
 		#region ORMToolWindow Implementation
 		/// <summary>
-		/// Calls the base selection changed functionality first, and then calls UpdateVerbalization().
+		/// Update verbalization when the selection changes
 		/// </summary>
-		protected override void MonitorSelectionChanged(object sender, MonitorSelectionEventArgs e)
+		protected override void OnORMSelectionContainerChanged()
 		{
-			base.MonitorSelectionChanged(sender, e);
 			UpdateVerbalization();
 		}
 		/// <summary>

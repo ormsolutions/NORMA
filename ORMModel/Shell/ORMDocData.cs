@@ -125,15 +125,23 @@ namespace Neumont.Tools.ORM.Shell
 			return null;
 		}
 		/// <summary>
+		/// Reload this document from a file stream instead of from disk
+		/// </summary>
+		/// <param name="stream">The stream to load</param>
+		public void ReloadFromStream(Stream stream)
+		{
+			myFileStream = stream;
+			// This calls into LoadDocData(string, bool) after doing necessary cleanup
+			ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+		}
+		/// <summary>
 		/// See the <see cref="LoadDocData"/> method.
 		/// </summary>
 		/// <param name="fileName">The file name that we pass to <see cref="ModelingDocData.LoadDocData"/>.</param>
 		/// <param name="inputStream">The stream from which we are trying to load.</param>
 		/// <param name="isReload">Tells us if the file is being reloaded or not.</param>
-		public int LoadDocDataFromStream(string fileName, bool isReload, Stream inputStream)
+		private int LoadDocDataFromStream(string fileName, bool isReload, Stream inputStream)
 		{
-			// MSBUG: We're calling OnDocumentLoading beause they don't...
-			base.OnDocumentLoading(EventArgs.Empty);
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;
 			bool dontSave = false;
@@ -197,6 +205,11 @@ namespace Neumont.Tools.ORM.Shell
 						// So, we have duplicates when a file is reloaded
 						// (after a custom extension is removed or added)!
 						this.TaskProvider.RemoveAllTasks();
+						// UNDONE: MSBUG Reload of the framework completely disables the undo stack.
+						// This appears to be related to the fact that the UndoManager for the docdata
+						// is disposed when ModelingDocStore is disposed, but is never recreated on the shell.
+						// This temporary hack works around the problem.
+						typeof(DocData).GetField("undoManager", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, null);
 					}
 					retVal = base.LoadDocData(fileName, isReload);
 				}
@@ -211,8 +224,6 @@ namespace Neumont.Tools.ORM.Shell
 				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
 			}
-			// MSBUG: We're calling OnDocumentLoaded beause they don't...
-			base.OnDocumentLoaded(EventArgs.Empty);
 			return retVal;
 		}
 		/// <summary>
@@ -224,16 +235,23 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns></returns>
 		protected override int LoadDocData(string fileName, bool isReload)
 		{
-			using (FileStream fileStream = File.OpenRead(fileName))
+			Stream surrogateStream = myFileStream;
+			if (surrogateStream != null)
 			{
-				return LoadDocDataFromStream(fileName, isReload, fileStream);
+				myFileStream = null;
+				return LoadDocDataFromStream(fileName, isReload, surrogateStream);
+			}
+			else
+			{
+				using (FileStream fileStream = File.OpenRead(fileName))
+				{
+					return LoadDocDataFromStream(fileName, isReload, fileStream);
+				}
 			}
 		}
 		/// <summary>
 		/// Load a file
 		/// </summary>
-		/// <param name="fileName"></param>
-		/// <param name="isReload"></param>
 		protected override void Load(string fileName, bool isReload)
 		{
 			if (fileName == null)
