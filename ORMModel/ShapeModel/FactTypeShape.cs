@@ -2617,6 +2617,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						case ConstraintType.Exclusion:
 						case ConstraintType.Subset:
 						case ConstraintType.Equality:
+						case ConstraintType.Frequency:
 							resize = true;
 							break;
 					}

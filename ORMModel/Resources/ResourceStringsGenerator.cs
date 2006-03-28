@@ -491,6 +491,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The format to be used in frequency constraints with a minimum value of 1 (eg: Maximum of {0}).
+		/// </summary>
+		public static string FrequencyConstraintMinimumOneFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.MinimumOne.FormatString");
+			}
+		}
+		/// <summary>
 		/// The string used to represent 'between' on a frequency constraint (eg: 'Between 1 and 5' would be represented as '1[this string]5'.
 		/// </summary>
 		public static string FrequencyConstraintBetweenFormatString

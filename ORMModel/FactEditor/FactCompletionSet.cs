@@ -479,20 +479,39 @@ namespace Neumont.Tools.ORM.FactEditor
 			IVsTextLines textLines = null;
 			ErrorHandler.ThrowOnFailure(myTextView.GetBuffer(out textLines));
 
-			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
 			FactType fact = null;
+			IORMSelectionContainer selectionContainer = e.NewValue as IORMSelectionContainer;
+			if (selectionContainer != null)
+			{
+				ModelingWindowPane pane = selectionContainer as ModelingWindowPane;
+				if (pane != null)
+				{
+					ICollection selectedObjects = pane.GetSelectedComponents();
+					foreach (object o in selectedObjects)
+					{
+						FactType testFact = EditorUtility.ResolveContextFactType(o);
+						// Handle selection of multiple elements as long as
+						// they all resolve to the same fact
+						if (fact == null)
+						{
+							fact = testFact;
+						}
+						else if (!object.ReferenceEquals(testFact, fact))
+						{
+							fact = null;
+							break;
+						}
+					}
+				}
+			}
 			Reading reading = null;
 			ReadingOrder readingOrder = null;
-			if (theView != null)
+			if (fact != null)
 			{
-				fact = EditorUtility.ResolveContextFactType(theView.PrimarySelection);
-				if (fact != null)
+				readingOrder = FactType.FindMatchingReadingOrder(fact);
+				if (readingOrder != null)
 				{
-					readingOrder = FactType.FindMatchingReadingOrder(fact);
-					if (readingOrder != null)
-					{
-						reading = readingOrder.PrimaryReading;
-					}
+					reading = readingOrder.PrimaryReading;
 				}
 			}
 			string fullReading = "";
@@ -513,7 +532,15 @@ namespace Neumont.Tools.ORM.FactEditor
 							ObjectType player = roles[rolePosition].RolePlayer;
 							if (player != null)
 							{
-								retval = string.Format(CultureInfo.InvariantCulture, "[{0}({1})]", player.Name, player.ReferenceModeString);
+								string refModeString = player.ReferenceModeString;
+								if ((refModeString == null || refModeString.Length == 0) && !player.IsValueType)
+								{
+									retval = string.Format(CultureInfo.InvariantCulture, "[{0}]", player.Name);
+								}
+								else
+								{
+									retval = string.Format(CultureInfo.InvariantCulture, "[{0}({1})]", player.Name, refModeString);
+								}
 							}
 							else
 							{

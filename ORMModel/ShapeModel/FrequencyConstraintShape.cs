@@ -134,6 +134,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return minFreq.ToString(CultureInfo.InvariantCulture);
 				}
+				else if (minFreq == 1 && maxFreq > 1)
+				{
+					freqString = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FrequencyConstraintMinimumOneFormatString, maxFreq);
+				}
 				else if (minFreq + maxFreq != 0)
 				{
 					freqString = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FrequencyConstraintBetweenFormatString, minFreq, maxFreq);
@@ -144,6 +148,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return freqString;
+		}
+		/// <summary>
+		/// Make the frequency constraint background transparent
+		/// </summary>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			base.InitializeResources(classStyleSet);
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = Color.FromArgb(0, (classStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush).Color);
+			classStyleSet.OverrideBrush(DiagramBrushes.DiagramBackground, brushSettings);
 		}
 		#endregion // Customize appearance
 		#region Shape display update rules

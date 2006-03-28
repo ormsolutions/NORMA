@@ -212,6 +212,9 @@
 	<ResourceString name="FrequencyConstraintMinimumFormatString" model="Diagram" resourceName="FrequencyConstraint.Minimum.FormatString">
 		<comment type="summary">The string used to represent a greater than symbol on a frequency constraint.</comment>
 	</ResourceString>
+	<ResourceString name="FrequencyConstraintMinimumOneFormatString" model="Diagram" resourceName="FrequencyConstraint.MinimumOne.FormatString">
+		<comment type="summary">The format to be used in frequency constraints with a minimum value of 1 (eg: Maximum of {0}).</comment>
+	</ResourceString>
 	<ResourceString name="FrequencyConstraintBetweenFormatString" model="Diagram" resourceName="FrequencyConstraint.Between.FormatString">
 		<comment type="summary">The string used to represent 'between' on a frequency constraint (eg: 'Between 1 and 5' would be represented as '1[this string]5'.</comment>
 	</ResourceString>

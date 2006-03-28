@@ -4883,7 +4883,7 @@
           </property>
           <property name="MaxFrequency" identity="7c65f145-1e17-4ea6-8863-2c3c6974b22c" id="i7c65f145z1e17z4ea6z8863z2c3c6974b22c">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="IntegerPropertyInfo" name="IntegerPropertyInfo" identity="4469254d-9507-4ed4-9ca5-d8889a540706" default="0" max="2147483647" min="0" />
+            <propertyInfo xsi:type="IntegerPropertyInfo" name="IntegerPropertyInfo" identity="4469254d-9507-4ed4-9ca5-d8889a540706" default="2" max="2147483647" min="0" />
           </property>
         </valueProperties>
       </concept>

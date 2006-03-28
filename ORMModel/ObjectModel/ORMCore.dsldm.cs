@@ -10245,12 +10245,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#region MaxFrequency's Generated Property Code
 
-		private System.Int32 maxFrequencyPropertyStorage = 0;
+		private System.Int32 maxFrequencyPropertyStorage = 2;
 		
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.IntegerDomainAttribute(MinValue=0)]
+		[Microsoft.VisualStudio.Modeling.IntegerDomainAttribute(MinValue=0,DefaultInt=2)]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FrequencyConstraintMaxFrequencyFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequency")]
 		public  System.Int32 MaxFrequency

@@ -358,6 +358,10 @@
     <value xml:space="preserve">≥{0}</value>
     <comment xml:space="preserve">The format to be used in frequency constraints for a minimum value (eg: Minimum of {0}).</comment>
   </data>
+  <data name="FrequencyConstraint.MinimumOne.FormatString">
+    <value xml:space="preserve">≤{0}</value>
+    <comment xml:space="preserve">The format to be used in frequency constraints with a minimum value of 1 (eg: Maximum of {0}).</comment>
+  </data>
   <data name="AddInternalUniquenessConstraint.TransactionName">
     <value xml:space="preserve">Add Internal Uniqueness Constraint</value>
     <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint.</comment>

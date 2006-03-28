@@ -93,6 +93,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					retVal = 2;
 					break;
 #if DEBUG
+				case RoleSequenceStyles.OneOrMoreRoleSequences:
 				case RoleSequenceStyles.OneRoleSequence:
 					break;
 				default:
@@ -111,6 +112,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int retVal = 1;
 			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SequenceMultiplicityMask)
 			{
+				case RoleSequenceStyles.OneOrMoreRoleSequences:
 				case RoleSequenceStyles.MultipleRowSequences:
 					retVal = -1;
 					break;
@@ -4536,34 +4538,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		OneRoleSequence = 1,
 		/// <summary>
+		/// Constraint uses one or more role sequences
+		/// </summary>
+		OneOrMoreRoleSequences = 2,
+		/// <summary>
 		/// Constraint uses exactly two role sequences
 		/// </summary>
-		TwoRoleSequences = 2,
+		TwoRoleSequences = 4,
 		/// <summary>
 		/// Constraint uses >=2 role sequences
 		/// </summary>
-		MultipleRowSequences = 4,
+		MultipleRowSequences = 8,
 		/// <summary>
 		/// A mask to extract the sequence multiplicity values
 		/// </summary>
-		SequenceMultiplicityMask = OneRoleSequence | TwoRoleSequences | MultipleRowSequences,
+		SequenceMultiplicityMask = OneRoleSequence | OneOrMoreRoleSequences | TwoRoleSequences | MultipleRowSequences,
 		/// <summary>
 		/// Each role sequence contains exactly one role
 		/// </summary>
-		OneRolePerSequence = 8,
+		OneRolePerSequence = 0x10,
 		/// <summary>
 		/// Each role sequence contains exactly two roles
 		/// </summary>
-		TwoRolesPerSequence = 0x10,
+		TwoRolesPerSequence = 0x20,
 		/// <summary>
 		/// Each role sequence can contain >=1 roles
 		/// </summary>
-		MultipleRolesPerSequence = 0x20,
+		MultipleRolesPerSequence = 0x40,
 		/// <summary>
 		/// The role sequence must contain n or n-1 roles. Applicable
 		/// to OneRoleSequence constraints only
 		/// </summary>
-		AtLeastCountMinusOneRolesPerSequence = 0x40,
+		AtLeastCountMinusOneRolesPerSequence = 0x80,
 		/// <summary>
 		/// A mask to extract the row multiplicity values
 		/// </summary>
@@ -4571,11 +4577,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The order of the role sequences is significant
 		/// </summary>
-		OrderedRoleSequences = 0x80,
+		OrderedRoleSequences = 0x100,
 		/// <summary>
 		/// Each of the columns must be type compatible
 		/// </summary>
-		CompatibleColumns = 0x100,
+		CompatibleColumns = 0x200,
 	}
 	#endregion // RoleSequenceStyles enum
 	#region ConstraintType enum
@@ -4828,13 +4834,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, MultipleRolesPerSequence}.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {OneOrMoreRoleSequences, OneRolePerSequence}.
 		/// </summary>
 		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
-				return RoleSequenceStyles.OneRoleSequence | RoleSequenceStyles.MultipleRolesPerSequence;
+				return RoleSequenceStyles.OneOrMoreRoleSequences | RoleSequenceStyles.OneRolePerSequence;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles
