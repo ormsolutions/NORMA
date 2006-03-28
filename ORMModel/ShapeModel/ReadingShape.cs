@@ -380,7 +380,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							if (numReadingOrders <= 2 && roleCount <= 2 &&
 								aReading.IndexOf(c_ellipsis) == 0 &&
-								aReading.LastIndexOf(c_ellipsis) == aReading.Length - 1)
+								(roleCount == 1 || aReading.LastIndexOf(c_ellipsis) == aReading.Length - 1))
 							{
 								aReading = aReading.Replace(ellipsis, String.Empty).Trim();
 							}

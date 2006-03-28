@@ -106,11 +106,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if (attributeGuid == ObjectType.ScaleMetaAttributeGuid)
 			{
 				ValueTypeHasDataType link = GetDataTypeLink();
+				if (link == null)
+				{
+					ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+					if (refModeRolePlayer != null)
+					{
+						link = refModeRolePlayer.GetDataTypeLink();
+					}
+				}
 				return (link == null) ? 0 : link.Scale;
 			}
 			else if (attributeGuid == ObjectType.LengthMetaAttributeGuid)
 			{
 				ValueTypeHasDataType link = GetDataTypeLink();
+				if (link == null)
+				{
+					ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+					if (refModeRolePlayer != null)
+					{
+						link = refModeRolePlayer.GetDataTypeLink();
+					}
+				}
 				return (link == null) ? 0 : link.Length;
 			}
 			else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
@@ -184,25 +200,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
 		{
 			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == ScaleMetaAttributeGuid ||
-				attributeGuid == LengthMetaAttributeGuid)
-			{
-				return IsValueType;
-			}
-			else if (attributeGuid == DataTypeDisplayMetaAttributeGuid ||
+			if (attributeGuid == DataTypeDisplayMetaAttributeGuid ||
+				attributeGuid == ScaleMetaAttributeGuid ||
+				attributeGuid == LengthMetaAttributeGuid ||
 				attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
-				if (!IsValueType && HasReferenceMode)
-				{
-					foreach (PresentationElement pel in PresentationRolePlayers)
-					{
-						ShapeModel.ObjectTypeShape objectShape;
-						if (null != (objectShape = pel as ShapeModel.ObjectTypeShape))
-						{
-							return !objectShape.ExpandRefMode;
-						}
-					}
-				}
 				return NestedFactType == null && (IsValueType || HasReferenceMode);
 			}
 			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid)
@@ -771,11 +773,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.ScaleMetaAttributeGuid)
 				{
-					ValueTypeHasDataType link = (e.ModelElement as ObjectType).GetDataTypeLink();
+					ObjectType objectType = e.ModelElement as ObjectType;
+					ValueTypeHasDataType link = objectType.GetDataTypeLink();
 					// No effect for non-value types
 					if (link != null)
 					{
 						link.Scale = (int)e.NewValue;
+					}
+					else
+					{
+						objectType = objectType.GetValueTypeForPreferredConstraint();
+						if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
+							(null != (link = objectType.GetDataTypeLink()))))
+						{
+							link.Scale = (int)e.NewValue;
+						}
 					}
 				}
 				else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
@@ -792,11 +804,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.LengthMetaAttributeGuid)
 				{
-					ValueTypeHasDataType link = (e.ModelElement as ObjectType).GetDataTypeLink();
+					ObjectType objectType = e.ModelElement as ObjectType;
+					ValueTypeHasDataType link = objectType.GetDataTypeLink();
 					// No effect for non-value types
 					if (link != null)
 					{
 						link.Length = (int)e.NewValue;
+					}
+					else
+					{
+						objectType = objectType.GetValueTypeForPreferredConstraint();
+						if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
+							(null != (link = objectType.GetDataTypeLink()))))
+						{
+							link.Length = (int)e.NewValue;
+						}
 					}
 				}
 				else if (attributeGuid == ObjectType.NestedFactTypeDisplayMetaAttributeGuid)

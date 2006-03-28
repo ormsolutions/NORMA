@@ -510,10 +510,10 @@
 		<comment type="summary">returns the format string for the display text for reference mode picker</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message">
-		<comment type="summary">Text displayed in the text of the TooFewRolesError</comment>
+		<comment type="summary">Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message">
-		<comment type="summary">Text displayed in the text of the TooManyRolesError</comment>
+		<comment type="summary">Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
 	</ResourceString>
 	<ResourceString name="ModelReadingRoleDeletedRoleText" model="Model" resourceName="Model.Reading.RoleDeletedText">
 		<comment type="summary">Text used to replace a role place holder when the role is deleted</comment>

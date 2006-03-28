@@ -601,7 +601,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
 					{
-						yield return roleError;
+						yield return new ModelErrorUsage(roleError, ModelErrorUses.None);
 					}
 					IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
 					if (valueErrors != null)
@@ -609,7 +609,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// Get errors off the base
 						foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
 						{
-							yield return valueError;
+							yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
+						}
+					}
+				}
+				foreach (ReadingOrder readingOrder in ReadingOrderCollection)
+				{
+					foreach (Reading reading in readingOrder.ReadingCollection)
+					{
+						foreach (ModelError readingError in (reading as IModelErrorOwner).GetErrorCollection(filter))
+						{
+							yield return new ModelErrorUsage(readingError, ModelErrorUses.None);
 						}
 					}
 				}

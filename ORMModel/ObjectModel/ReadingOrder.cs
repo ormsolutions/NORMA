@@ -28,7 +28,7 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ReadingOrder : IRedirectVerbalization
+	public partial class ReadingOrder : IRedirectVerbalization, IHasIndirectModelErrorOwner
 	{
 		private Reading primaryReading;
 
@@ -64,7 +64,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return retval;
 		}
 		#endregion // Reading facade method
-
 		#region CustomStoredAttribute handling
 		/// <summary>
 		/// Currently only handles when the ReadingText value is accessed.
@@ -149,7 +148,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			primaryReading = null;
 		}
 		#endregion
-
 		#region ReadingOrderHasReading rule classes
 		[RuleOn(typeof(ReadingOrderHasReading))]
 		private class ReadingOrderHasReadingAdded : AddRule
@@ -371,5 +369,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // IRedirectVerbalization Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 }

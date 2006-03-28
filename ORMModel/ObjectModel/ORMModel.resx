@@ -206,12 +206,12 @@
     <comment xml:space="preserve">Text displayed in the text of the PreferredIdentifierRequiresMandatoryError.</comment>
   </data>
   <data name="ModelError.Reading.TooFewRoles.Message">
-    <value xml:space="preserve">Too few roles for the reading with text '{0}' in model '{1}'</value>
-    <comment xml:space="preserve">Text displayed in the text of the TooFewRolesError</comment>
+    <value xml:space="preserve">Fact '{0}' in model '{1}' has too few roles for the reading with text '{2}'.</value>
+    <comment xml:space="preserve">Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
   </data>
   <data name="ModelError.Reading.TooManyRoles.Message">
-    <value xml:space="preserve">Too many roles for the reading with text '{0}' in model '{1}'</value>
-    <comment xml:space="preserve">Text displayed in the text of the TooManyRolesError</comment>
+    <value xml:space="preserve">Fact '{0}' in model '{1}' has too many roles for the reading with text '{2}'.</value>
+    <comment xml:space="preserve">Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
   </data>
   <data name="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message">
     <value xml:space="preserve">The ring type for ring constraint '{0}' in model '{1}' is not specified.</value>

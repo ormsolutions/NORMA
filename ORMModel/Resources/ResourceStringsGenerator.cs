@@ -1481,7 +1481,7 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Text displayed in the text of the TooFewRolesError
+		/// Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text
 		/// </summary>
 		public static string ModelErrorReadingTooFewRolesMessage
 		{
@@ -1491,7 +1491,7 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Text displayed in the text of the TooManyRolesError
+		/// Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text
 		/// </summary>
 		public static string ModelErrorReadingTooManyRolesMessage
 		{

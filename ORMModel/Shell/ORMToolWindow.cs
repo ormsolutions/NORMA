@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -67,6 +68,11 @@ namespace Neumont.Tools.ORM.Shell
 						myCurrentDocument = null;
 					}
 				}
+				else
+				{
+					myCurrentORMSelectionContainer = null;
+					OnORMSelectionContainerChanged();
+				}
 				OnCurrentDocumentChanged();
 			}
 		}
@@ -88,8 +94,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			private set
 			{
-				myCurrentORMSelectionContainer = value;
-				OnORMSelectionContainerChanged();
+				if (value != null)
+				{
+					myCurrentORMSelectionContainer = value;
+					OnORMSelectionContainerChanged();
+				}
 			}
 		}
 		/// <summary>
@@ -113,11 +122,30 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void Initialize()
 		{
+			base.Initialize();
 			IMonitorSelectionService monitor = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
-			CurrentORMSelectionContainer = monitor.CurrentDocumentView as IORMSelectionContainer;
+			ORMDesignerDocData docData = null;
+			try
+			{
+				docData = monitor.CurrentDocument as ORMDesignerDocData;
+			}
+			catch (COMException)
+			{
+				// Swallow, this will occasionally be initialized when the document is shutting down
+			}
+			IORMSelectionContainer container = null;
+			try
+			{
+				container = monitor.CurrentDocumentView as IORMSelectionContainer;
+			}
+			catch (COMException)
+			{
+				// Swallow, this will occasionally be initialized when the document is shutting down
+			}
+			CurrentDocument = docData;
+			CurrentORMSelectionContainer = container;
 		}
 		#endregion // ORMToolWindow Constructor
 		#region IMonitorSelectionService Event Handlers

@@ -26,7 +26,7 @@ using Neumont.Tools.ORM.Framework;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region Reading class
-	public partial class Reading : IModelErrorOwner
+	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
 		/// <summary>
@@ -397,6 +397,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ReadingOrderHasReading.ReadingCollectionMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // Reading class
 	#region TooFewReadingRolesError class
@@ -409,8 +423,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesMessage, Reading.Text, Model.Name);
-			if(Name != newText)
+			Reading reading = Reading;
+			ReadingOrder order = reading.ReadingOrder;
+			FactType fact = order.FactType;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesMessage, fact.Name, Model.Name, Reading.Text);
+			if (Name != newText)
 			{
 				Name = newText;
 			}
@@ -455,7 +472,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesMessage, Reading.Text, Model.Name);
+			Reading reading = Reading;
+			ReadingOrder order = reading.ReadingOrder;
+			FactType fact = order.FactType;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesMessage, fact.Name, Model.Name, Reading.Text);
 			if (Name != newText)
 			{
 				Name = newText;
