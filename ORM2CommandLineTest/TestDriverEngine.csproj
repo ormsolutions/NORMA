@@ -74,6 +74,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="ORMDocServices.cs" />
     <Compile Include="ORMTaskItem.cs" />
     <Compile Include="ORMTaskProvider.cs" />

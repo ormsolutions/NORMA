@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 [assembly: NeutralResourcesLanguage("en-US")]
-[assembly: AssemblyTitle("Neumont.Tools.ORM.SDK.TestEngine.dll")]
+[assembly: AssemblyTitle("ORMTestDriver.exe")]
 [assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
-[assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Unit Test Engine DLL")]
+[assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Unit Test Driver Application")]
 [assembly: AssemblyCompany("Neumont University")]
 [assembly: AssemblyCopyright("Copyright © Neumont University. All rights reserved.")]
 #if DEBUG
