@@ -34,47 +34,47 @@ namespace TestSample.FCMinMaxTests
 		//method bodies intentionally empty. Loading the file should
 		//fixup the object model, which will be verified on save.
 
-		[Test(Description = "Load/Save with FrequenceConstraintMinMaxError")]
+		[Test(Description = "Load/Save with FrequencyConstraintMinMaxError")]
 		[NUnitCategory("ExternalConstraints")]
-		[NUnitCategory("FrequenceConstraintMinMaxError")]
+		[NUnitCategory("FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1a()
 		{
 			Suite.RunNUnitTest(this, myTestServices);
 		}
-		[ORMTest("ExternalConstraints", "FrequenceConstraintMinMaxError")]
+		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1a(Store store)
 		{ }
 
-		[Test(Description = "Verify FrequenceConstraintMinMaxError added automatically on load")]
+		[Test(Description = "Verify FrequencyConstraintMinMaxError added automatically on load")]
 		[NUnitCategory("ExternalConstraints")]
-		[NUnitCategory("FrequenceConstraintMinMaxError")]
+		[NUnitCategory("FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1b()
 		{
 			Suite.RunNUnitTest(this, myTestServices);
 		}
-		[ORMTest("ExternalConstraints", "FrequenceConstraintMinMaxError")]
+		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1b(Store store)
 		{ }
 
-		[Test(Description = "Verify FrequenceConstraintMinMaxError added automatically removed on load")]
+		[Test(Description = "Verify FrequencyConstraintMinMaxError added automatically removed on load")]
 		[NUnitCategory("ExternalConstraints")]
-		[NUnitCategory("FrequenceConstraintMinMaxError")]
+		[NUnitCategory("FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1c()
 		{
 			Suite.RunNUnitTest(this, myTestServices);
 		}
-		[ORMTest("ExternalConstraints", "FrequenceConstraintMinMaxError")]
+		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest1c(Store store)
 		{}
 
-		[Test(Description = "Verify FrequenceConstraintMinMaxError added when error condition is added")]
+		[Test(Description = "Verify FrequencyConstraintMinMaxError added when error condition is added")]
 		[NUnitCategory("ExternalConstraints")]
-		[NUnitCategory("FrequenceConstraintMinMaxError")]
+		[NUnitCategory("FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest2a()
 		{
 			Suite.RunNUnitTest(this, myTestServices);
 		}
-		[ORMTest("ExternalConstraints", "FrequenceConstraintMinMaxError")]
+		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest2a(Store store)
 		{
 			
@@ -95,14 +95,14 @@ namespace TestSample.FCMinMaxTests
 			myTestServices.LogValidationErrors("After adding error");
 		}
 
-		[Test(Description = "Verify FrequenceConstraintMinMaxError removed when error condition is resolved")]
+		[Test(Description = "Verify FrequencyConstraintMinMaxError removed when error condition is resolved")]
 		[NUnitCategory("ExternalConstraints")]
-		[NUnitCategory("FrequenceConstraintMinMaxError")]
+		[NUnitCategory("FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest2b()
 		{
 			Suite.RunNUnitTest(this, myTestServices);
 		}
-		[ORMTest("ExternalConstraints", "FrequenceConstraintMinMaxError")]
+		[ORMTest("ExternalConstraints", "FrequencyConstraintMinMaxError")]
 		public void FCMinMaxTest2b(Store store)
 		{
 

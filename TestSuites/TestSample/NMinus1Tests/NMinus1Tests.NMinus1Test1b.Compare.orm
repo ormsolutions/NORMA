@@ -239,7 +239,7 @@
 			<orm:VariableLengthTextDataType id="_616B99E0-CF14-4A74-A0CE-285D6E118BD6" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
-			<orm:NMinusOneError id="_DAAC79BF-6DBB-4DF6-8395-0F29A4B3DA2D" Name="Fact type 'FactType1' requires uniqueness constraint spanning &gt;= 2 roles in model 'NewModel'.">
+			<orm:NMinusOneError id="_22750270-A567-4894-ABA0-FC2B64284943" Name="Uniqueness constraint 'InternalUniquenessConstraint7' on fact type 'FactType1' in model 'NewModel' must span at least 2 roles.">
 				<orm:InternalUniquenessConstraint ref="_3CCAC4FA-F704-42D5-9E2D-E57931DF375F" />
 			</orm:NMinusOneError>
 		</orm:ModelErrors>

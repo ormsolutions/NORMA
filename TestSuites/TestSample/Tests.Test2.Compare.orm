@@ -272,13 +272,13 @@
 			<orm:AutoCounterNumericDataType id="_0CC2F59C-D286-4D9A-AFE3-72AA4D040989" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
-			<orm:NMinusOneError id="_72117AEE-D115-4454-AB13-67F099353119" Name="Fact type 'FactType1' requires uniqueness constraint spanning &gt;= 1 roles in model 'NewModel'.">
+			<orm:NMinusOneError id="_72117AEE-D115-4454-AB13-67F099353119" Name="Uniqueness constraint 'InternalUniquenessConstraint1' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.">
 				<orm:InternalUniquenessConstraint ref="_20333A00-5EA3-49DC-B618-8C878D8F6382" />
 			</orm:NMinusOneError>
-			<orm:NMinusOneError id="_2557B2EC-70BC-4772-8794-6FB0D9B686EB" Name="Fact type 'FactType1' requires uniqueness constraint spanning &gt;= 1 roles in model 'NewModel'.">
+			<orm:NMinusOneError id="_2557B2EC-70BC-4772-8794-6FB0D9B686EB" Name="Uniqueness constraint 'InternalUniquenessConstraint8' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.">
 				<orm:InternalUniquenessConstraint ref="_0B174091-7C3C-451E-AD9F-4EA4BAB30253" />
 			</orm:NMinusOneError>
-			<orm:NMinusOneError id="_FC7B8B3D-4841-459B-9FF6-64DDBDAC3E95" Name="Fact type 'FactType1' requires uniqueness constraint spanning &gt;= 1 roles in model 'NewModel'.">
+			<orm:NMinusOneError id="_FC7B8B3D-4841-459B-9FF6-64DDBDAC3E95" Name="Uniqueness constraint 'InternalUniquenessConstraint9' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.">
 				<orm:InternalUniquenessConstraint ref="_791A9BF0-BCEE-4562-9E2D-AC73CCAF5673" />
 			</orm:NMinusOneError>
 			<orm:ImpliedInternalUniquenessConstraintError id="_0E7D03E5-9B8E-40CD-953C-05B0F971511A" Name="FactType 'FactType5' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.">
