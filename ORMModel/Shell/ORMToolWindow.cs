@@ -138,7 +138,7 @@ namespace Neumont.Tools.ORM.Shell
 			IORMSelectionContainer container = null;
 			try
 			{
-				container = monitor.CurrentDocumentView as IORMSelectionContainer;
+				container = monitor.CurrentSelectionContainer as IORMSelectionContainer;
 			}
 			catch (COMException)
 			{

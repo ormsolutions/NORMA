@@ -804,7 +804,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									for (int i = 0; i < rangeCount; ++i)
 									{
 										lower = nodes[index];
-										if (!lower.IsLower || lower.Index != i)
+										if (!lower.IsLower)
 										{
 											keepGoing = false;
 											break;
@@ -819,7 +819,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											break;
 										}
 										upper = nodes[index + 1];
-										if (upper.IsLower || upper.Index != i)
+										if (upper.IsLower || (upper.Index != lower.Index))
 										{
 											keepGoing = false;
 											break;
