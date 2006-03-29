@@ -65,7 +65,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// that a transaction has already been started.
 		/// </summary>
 		/// <returns></returns>
-		public static ReadingOrder GetReadingOrder(FactType theFact, Role[] roleOrder)
+		public static ReadingOrder GetReadingOrder(FactType theFact, IList<Role> roleOrder)
 		{
 			ReadingOrder retval = FindMatchingReadingOrder(theFact, roleOrder);
 			if (retval == null)
@@ -76,19 +76,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
-		/// Lookes for a ReadingOrder that has the roles in the same order
+		/// Looks for a ReadingOrder that has the roles in the same order
 		/// as the currently selected role order.
 		/// </summary>
 		/// <returns>The reading order if found, null if it was not.</returns>
-		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, Role[] roleOrder)
+		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, IList<Role> roleOrder)
 		{
 			ReadingOrder retval = null;
 			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
+			int roleOrderCount = roleOrder.Count;
 			foreach (ReadingOrder order in readingOrders)
 			{
 				RoleMoveableCollection roles = order.RoleCollection;
 				int numRoles = roles.Count;
-				if (numRoles == roleOrder.Length)
+				if (numRoles == roleOrderCount)
 				{
 					bool match = true;
 					for (int i = 0; i < numRoles; ++i)
@@ -128,14 +129,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the assumption that a transaction has already been started.
 		/// </summary>
 		/// <returns>Should always return a value unless there was an error creating the ReadingOrder</returns>
-		public static ReadingOrder CreateReadingOrder(FactType theFact, Role[] roleOrder)
+		public static ReadingOrder CreateReadingOrder(FactType theFact, IList<Role> roleOrder)
 		{
 			ReadingOrder retval = null;
-			if (roleOrder.Length > 0)
+			if (roleOrder.Count > 0)
 			{
 				retval = ReadingOrder.CreateReadingOrder(theFact.Store);
 				RoleMoveableCollection readingRoles = retval.RoleCollection;
-				int numRoles = roleOrder.Length;
+				int numRoles = roleOrder.Count;
 				for (int i = 0; i < numRoles; ++i)
 				{
 					readingRoles.Add(roleOrder[i]);

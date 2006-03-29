@@ -71,6 +71,8 @@
 #define cmdIdMoveRoleLeft				0x2915
 #define cmdIdMoveRoleRight				0x2916
 
+#define cmdIdViewNewReadingEditor			0x2917
+
 #define cmdIdErrorList					0x2a00
 #define cmdIdErrorListEnd				0x2aff
 // Reserve 2a00 range for errors, start additional commands after

@@ -63,7 +63,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				if (fact != null)
 				{
 					ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;
-					editorWindow.EditingFactType = fact;
 					editorWindow.Show();
 				}
 			}

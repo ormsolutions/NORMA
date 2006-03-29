@@ -103,6 +103,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuReadingsWindow),
 				ORMDesignerCommandIds.ViewReadingEditor)
 				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusReadingsWindow),
+				new EventHandler(OnMenuNewReadingsWindow),
+				ORMDesignerCommandIds.ViewNewReadingEditor)
+				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusInsertRole),
 				new EventHandler(OnMenuInsertRoleBefore),
 				ORMDesignerCommandIds.InsertRoleBefore)
@@ -384,6 +388,14 @@ namespace Neumont.Tools.ORM.Shell
 			protected void OnMenuReadingsWindow(object sender, EventArgs e)
 			{
 				ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;
+				editorWindow.Show();
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuNewReadingsWindow(object sender, EventArgs e)
+			{
+				NewORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.NewReadingEditorWindow;
 				editorWindow.Show();
 			}
 			private void OnStatusSelectAll(object sender, EventArgs e)
@@ -888,6 +900,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
 			/// <summary>
+			/// The ORM Readings Window item on the fact type context menu
+			/// </summary>
+			public static readonly CommandID ViewNewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewNewReadingEditor);
+			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewNotesWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewNotesWindow);
@@ -1017,6 +1033,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
+			/// <summary>
+			/// The ORM Readings Window item on the fact type context menu
+			/// </summary>
+			private const int cmdIdViewNewReadingEditor = 0x2917;
 			/// <summary>
 			/// View the reference mode editor
 			/// </summary>
