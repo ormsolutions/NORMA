@@ -42,16 +42,37 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		{
 			this.InitializeComponent();
 		}
-		public ORMGeneratorSelectionControl(ORMCustomTool ormCustomTool, Project project, BuildItemGroup originalBuildItemGroup)
+		public ORMGeneratorSelectionControl(EnvDTE.ProjectItem projectItem)
 			: this()
 		{
-			this._ormCustomTool = ormCustomTool;
+			Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
+			BuildItemGroup originalBuildItemGroup = ORMCustomTool.GetBuildItemGroup(project, projectItem.Name);
 			this._project = project;
 			this._originalBuildItemGroup = originalBuildItemGroup;
-			BuildItemGroup buildItemGroup = this._buildItemGroup = originalBuildItemGroup.Clone(true);
+
+			BuildItemGroup buildItemGroup;
+			if (originalBuildItemGroup == null)
+			{
+				buildItemGroup = project.AddNewItemGroup();
+				buildItemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItem.Name, ITEMGROUP_CONDITIONEND);
+			}
+			else
+			{
+				buildItemGroup = project.AddNewItemGroup();
+				buildItemGroup.Condition = originalBuildItemGroup.Condition;
+				foreach (BuildItem item in originalBuildItemGroup)
+				{
+					BuildItem newItem = buildItemGroup.AddNewItem(item.Name, item.Include, false);
+					newItem.Condition = item.Condition;
+					item.CopyCustomMetadataTo(newItem);
+				}
+			}
+			this._buildItemGroup = buildItemGroup;
 
 			string condition = buildItemGroup.Condition.Trim();
-			string sourceFileName = this._sourceFileName = this.textBox_ORMFileName.Text = condition.Substring(ITEMGROUP_CONDITIONSTART.Length, condition.Length - (ITEMGROUP_CONDITIONSTART.Length + ITEMGROUP_CONDITIONEND.Length));
+			string sourceFileName = condition.Substring(ITEMGROUP_CONDITIONSTART.Length, condition.Length - (ITEMGROUP_CONDITIONSTART.Length + ITEMGROUP_CONDITIONEND.Length));
+			this._sourceFileName = sourceFileName;
+			this.textBox_ORMFileName.Text = sourceFileName;
 
 			this.button_SaveChanges.Click += new EventHandler(this.SaveChanges);
 			this.button_Cancel.Click += new EventHandler(this.Cancel);
@@ -91,15 +112,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 		}
 
-		private readonly ORMCustomTool _ormCustomTool;
-		private ORMCustomTool ORMCustomTool
-		{
-			get
-			{
-				return this._ormCustomTool;
-			}
-		}
-
 		private readonly BuildItemGroup _buildItemGroup;
 		private BuildItemGroup BuildItemGroup
 		{
@@ -120,7 +132,17 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 		protected override void OnClosed(EventArgs e)
 		{
-			this._project.RemoveItemGroup(this._savedChanges ? this._originalBuildItemGroup : this._buildItemGroup);
+			if (_savedChanges)
+			{
+				if (_originalBuildItemGroup != null)
+				{
+					_project.RemoveItemGroup(_originalBuildItemGroup);
+				}
+			}
+			else
+			{
+				_project.RemoveItemGroup(_buildItemGroup);
+			}
 			base.OnClosed(e);
 		}
 		private void SaveChanges(object sender, EventArgs e)

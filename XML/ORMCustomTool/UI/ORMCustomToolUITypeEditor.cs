@@ -24,42 +24,71 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using VSLangProj;
+using Microsoft.VisualStudio;
+using EnvDTE;
+using EnvDTE80;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
-	public sealed partial class ORMCustomTool
+	public sealed partial class Extender
 	{
 		private sealed partial class ORMCustomToolPropertyDescriptor : PropertyDescriptor
 		{
-			private sealed class ORMCustomToolUITypeEditor : UITypeEditor
+			public sealed class ORMCustomToolUITypeEditor : UITypeEditor
 			{
 				public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
 				{
 					return UITypeEditorEditStyle.Modal;
 				}
 
+				[DllImport("ole32.dll")]
+				private static extern int GetRunningObjectTable(
+					int reserved,
+					out IRunningObjectTable prot);
+				[DllImport("ole32.dll", CharSet=CharSet.Unicode, ExactSpelling=true)]
+				private static extern int CreateItemMoniker(
+					string lpszDelim,
+					string lpszItem,
+					out IMoniker ppmk);
 				public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 				{
 					IWindowsFormsEditorService windowsFormsEditorService = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
 					if (windowsFormsEditorService != null)
 					{
-						/*ORMCustomTool ormCustomTool = ORMCustomTool.Singleton;
-						if (ormCustomTool != null)
+						FileProperties fileProperties = context.Instance as FileProperties;
+						if (fileProperties != null)
 						{
-							EnvDTE.ProjectItem projectItem = ormCustomTool.GetService<EnvDTE.ProjectItem>();
-							Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
-							BuildItemGroup buildItemGroup = ORMCustomTool.GetBuildItemGroup(project, projectItem.Name);
-							windowsFormsEditorService.ShowDialog(new ORMGeneratorSelectionControl(ormCustomTool, project, buildItemGroup));
-						}*/
+							IRunningObjectTable rot;
+							int procId = System.Diagnostics.Process.GetCurrentProcess().Id;
+							ErrorHandler.ThrowOnFailure(GetRunningObjectTable(0, out rot));
+							IMoniker moniker;
+							ErrorHandler.ThrowOnFailure(CreateItemMoniker(
+								"!",
+								"VisualStudio.DTE.8.0:" + procId.ToString(),
+								out moniker));
+							object objDTE;
+							ErrorHandler.ThrowOnFailure(rot.GetObject(moniker, out objDTE));
+							DTE2 dte = (DTE2)objDTE;
+							SelectedItems items = dte.SelectedItems;
+							if (items.Count == 1)
+							{
+								ProjectItem projectItem = items.Item(1).ProjectItem;
+								if (projectItem != null)
+								{
+									windowsFormsEditorService.ShowDialog(new ORMGeneratorSelectionControl(projectItem));
+								}
+							}
+						}
 					}
 					return null;
 				}
-
 				public override bool GetPaintValueSupported(ITypeDescriptorContext context)
 				{
 					return false;
 				}
-
 				public override void PaintValue(PaintValueEventArgs e)
 				{
 					// Don't do anything, since we don't have a visual representation.

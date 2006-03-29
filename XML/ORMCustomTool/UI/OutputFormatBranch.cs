@@ -81,7 +81,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					}
 					else if (column == (int)Column.GeneratedFileName)
 					{
-
 						IORMGenerator selectedORMGenerator = this.SelectedORMGenerator;
 						if (selectedORMGenerator == null)
 						{
@@ -103,7 +102,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						return base.GetText(row, column);
 					}
 				}
-
 				public override VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
 					if (this.SelectedORMGenerator != null)

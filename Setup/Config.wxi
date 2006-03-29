@@ -44,6 +44,7 @@
 	<?define NORMAVSEditorGuid="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"?>
 	<?define NORMAVSFontAndColorsServiceGuid="C5AA80F8-F730-4809-AAB1-8D925E36F9F5"?>
 	<?define ORMCustomToolGuid="977BD01E-F2B4-4341-9C47-459420624A20"?>
+	<?define ORMCustomToolExtenderGuid="6FDCC073-20C2-4435-9B2E-9E70451C81D8"?>
 	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool, Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
 	<!-- The LCID of the MSI and the fallback resources. This should NOT be changed. -->
 	<?define DefaultLCID="1033"?>
@@ -79,6 +80,7 @@
 	<?endif?>
 	<!-- The Visual Studio registry root used for installation. -->
 	<?define VSRegRoot="SOFTWARE\Microsoft\VisualStudio\$(var.RootSuffix)"?>
+	<?define VSClsidRoot="$(var.VSRegRoot)\CLSID"?>
 	<?define NORMAVSRegRoot="$(var.VSRegRoot)\Neumont\ORM Architect"?>
 	<?define NORMARegRoot="SOFTWARE\Neumont\ORM Architect for Visual Studio"?>
 	<!-- The default target directory for installation (under ProgramFilesFolder). -->

@@ -13,7 +13,10 @@ XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "%NORMADir%\bi
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.pdb" "%NORMADir%\bin\"
 :: For some reason, the next copy is randomly giving errors about half the time. They can be safely ignored, so they've been redirected to NUL.
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.xml" "%NORMADir%\bin\" 2>NUL
-CALL:_InstallCustomToolReg
+CALL:_InstallCustomToolReg "8.0"
+CALL:_InstallExtenderReg "8.0"
+CALL:_InstallCustomToolReg "8.0Exp"
+CALL:_InstallExtenderReg "8.0Exp"
 
 :: Install and register ORM Transforms
 XCOPY /Y /D /V /Q "%~dp0\..\OIAL\CoRefORM.xslt" "%ORMTransformsDir%\"
@@ -57,29 +60,51 @@ CALL:_AddXslORMGenerator "PLiXtoVisualBasic" "PLiX to Visual Basic" "Transforms 
 GOTO:EOF
 
 :_InstallCustomToolReg
-REG QUERY HKCR\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /v "CodeBase" 1>NUL 2>&1
+REG QUERY HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /v "CodeBase" 1>NUL 2>&1
 IF NOT ERRORLEVEL 1 (GOTO:EOF)
-CALL:_AddCustomToolRegCR
-CALL:_AddRegGenerator "8.0" "{164b10b9-b200-11d0-8c61-00a0c91e29d5}"
-CALL:_AddRegGenerator "8.0" "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}"
-CALL:_AddRegGenerator "8.0" "{e6fdf8b0-f3d1-11d4-8576-0002a516ece8}"
-CALL:_AddRegGenerator "8.0Exp" "{164b10b9-b200-11d0-8c61-00a0c91e29d5}"
-CALL:_AddRegGenerator "8.0Exp" "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}"
-CALL:_AddRegGenerator "8.0Exp" "{e6fdf8b0-f3d1-11d4-8576-0002a516ece8}"
+CALL:_AddCustomToolReg "%~1"
+CALL:_AddRegGenerator "%~1" "{164b10b9-b200-11d0-8c61-00a0c91e29d5}"
+CALL:_AddRegGenerator "%~1" "{fae04ec1-301f-11d3-bf4b-00c04f79efbc}"
+CALL:_AddRegGenerator "%~1" "{e6fdf8b0-f3d1-11d4-8576-0002a516ece8}"
 GOTO:EOF
 
-:_AddCustomToolRegCR
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool, Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /ve /d "%SystemRoot%\System32\mscoree.dll"
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "ThreadingModel" /d "Both"
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+:_InstallExtenderReg
+REG QUERY HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /v "CodeBase" 1>NUL 2>&1
+IF NOT ERRORLEVEL 1 (GOTO:EOF)
+CALL:_AddExtenderReg "%~1"
+CALL:_AddRegExtender "%~1" "{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}"
+CALL:_AddRegExtender "%~1" "{EA5BD05D-3C72-40A5-95A0-28A2773311CA}"
+CALL:_AddRegExtender "%~1" "{E6FDF869-F3D1-11D4-8576-0002A516ECE8}"
+GOTO:EOF
+
+:_AddCustomToolReg
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /ve /d "%SystemRoot%\System32\mscoree.dll"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "ThreadingModel" /d "Both"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+GOTO:EOF
+
+:_AddExtenderReg
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /ve /d "%SystemRoot%\System32\mscoree.dll"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "ThreadingModel" /d "Both"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 GOTO:EOF
 
 :_AddRegGenerator
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\ORMCustomTool /f /ve /d "ORM Custom Tool"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Generators\%~2\ORMCustomTool /f /v "CLSID" /d "{977BD01E-F2B4-4341-9C47-459420624A20}"
+GOTO:EOF
+
+:_AddRegExtender
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Extenders\%~2\ORMCustomTool /f /ve /d "{6FDCC073-20C2-4435-9B2E-9E70451C81D8}"
 GOTO:EOF
 
 :_AddXslORMGenerator

@@ -23,7 +23,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
-    <DocumentationFile>bin\Neumont.Tools.ORM.ORMCustomTool.xml</DocumentationFile>
+    <DocumentationFile>bin\Neumont.Tools.ORM.ORMCustomTool.XML</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,8 +69,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extender.cs" />
+    <Compile Include="ExtenderProvider.cs" />
     <Compile Include="UI\BranchBase.cs">
       <SubType>Form</SubType>
     </Compile>

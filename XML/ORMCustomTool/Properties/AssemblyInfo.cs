@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 [assembly: NeutralResourcesLanguage("en-US")]
 [assembly: Guid("977BD01E-F2B4-4341-9C47-459420624A20")]
 [assembly: AssemblyTitle("Neumont.Tools.ORM.ORMCustomTool.dll")]

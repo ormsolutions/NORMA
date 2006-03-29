@@ -73,15 +73,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private IOleServiceProvider _dteServiceProvider;
 
 		/// <summary>
-		/// TODO: Remove this.
-		/// This is here temporarily for UI testing purposes.
-		/// </summary>
-		public static System.ComponentModel.PropertyDescriptor GetPropertyDescriptor()
-		{
-			return new ORMCustomToolPropertyDescriptor();
-		}
-
-		/// <summary>
 		/// Returns a service instance of type <typeparamref name="T"/>, or <see langword="null"/> if no service instance of
 		/// type <typeparamref name="T"/> is available.
 		/// </summary>
@@ -103,8 +94,10 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			Debug.WriteLine(ex);
 			Debug.Unindent();
 		}
-
-		private static BuildItemGroup GetBuildItemGroup(Project project, string projectItemName)
+		/// <summary>
+		/// Retrieve a build item group for the specified project and item
+		/// </summary>
+		public static BuildItemGroup GetBuildItemGroup(Project project, string projectItemName)
 		{
 			foreach (BuildItemGroup buildItemGroup in project.ItemGroups)
 			{

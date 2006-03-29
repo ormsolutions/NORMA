@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
-	public sealed partial class ORMCustomTool
+	public sealed partial class Extender
 	{
 		private sealed partial class ORMCustomToolPropertyDescriptor : PropertyDescriptor
 		{
@@ -59,12 +59,12 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 			public override bool IsReadOnly
 			{
-				get { return false; }
+				get { return true; }
 			}
 
 			public override Type PropertyType
 			{
-				get { return typeof(ORMCustomTool); }
+				get { return typeof(string); }
 			}
 
 			public override void ResetValue(object component)

@@ -80,14 +80,29 @@
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
 								<File Id="Neumont.Tools.ORM.ORMCustomTool.xml" Name="ORMCstTl.xml" LongName="Neumont.Tools.ORM.ORMCustomTool.xml" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKCR" Key="CLSID\{$(var.ORMCustomToolGuid)}">
-									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool, $(var.ORMCustomToolAssemblyName)"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
+									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
 									<Registry Action="createKey" Key="InprocServer32">
 										<Registry Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
 										<Registry Type="string" Name="ThreadingModel" Value="Both"/>
 										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
 										<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
 										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
+									</Registry>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolExtenderGuid)}">
+									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+									<Registry Action="createKey" Key="InprocServer32">
+										<Registry Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
+										<Registry Type="string" Name="ThreadingModel" Value="Both"/>
+										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+										<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
+										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
+										<Registry Action="createKey" Key="$(var.MajorMinorVersion).0.0">
+											<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"/>
+											<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
+											<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
+										</Registry>
 									</Registry>
 								</Registry>
 							</Component>
@@ -98,6 +113,9 @@
 									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
 									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool">
+									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
+								</Registry>
 							</Component>
 							<Component Id="ORMCustomToolVCSharpComponent" Guid="E42EF6E9-2EBD-4AA7-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
@@ -106,6 +124,9 @@
 									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
 									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool">
+									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
+								</Registry>
 							</Component>
 							<Component Id="ORMCustomToolVJSharpComponent" Guid="5E506A17-A87F-4B81-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
@@ -113,6 +134,9 @@
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\ORMCustomTool">
 									<Registry Type="string" Value="$(loc.ORMCustomToolDescription)"/>
 									<Registry Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{E6FDF869-F3D1-11D4-8576-0002A516ECE8}\ORMCustomTool">
+									<Registry Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</Registry>
 							</Component>
 						</Directory>
