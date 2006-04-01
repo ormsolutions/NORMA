@@ -328,11 +328,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				// Execute the rest of the generators.
 				// We limit this to 100 iterations in order to avoid an infinite loop if no BuiltItem exists that provides
 				// the format required by one of the BuildItems that do exist.
-				for (int i = 0; ormBuildItems.Count > 0 && i < 100; i++)
+				for (int i = 0; ormBuildItems.Count > 0 && i < 100; ++i)
 				{
 				LABEL_START_INNER_LOOP:
 					// TODO: This would perform *much* better if we did real dependency analysis and scheduling for RequiresInputFormats
-					for (int j = 0; j < ormBuildItems.Count; j++)
+					for (int j = 0; j < ormBuildItems.Count; ++j)
 					{
 						BuildItem buildItem = ormBuildItems[j];
 						IORMGenerator ormGenerator;
@@ -347,7 +347,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						}
 						try
 						{
-							ReadOnlyCollection<string> requiresInputFormats = ormGenerator.RequiresInputFormats;
+							IList<string> requiresInputFormats = ormGenerator.RequiresInputFormats;
 							bool missingInputFormat = false;
 							foreach (string inputFormat in requiresInputFormats)
 							{

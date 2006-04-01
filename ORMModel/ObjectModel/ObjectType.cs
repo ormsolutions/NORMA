@@ -782,7 +782,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						objectType = objectType.GetValueTypeForPreferredConstraint();
 						if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
 							(null != (link = objectType.GetDataTypeLink()))))
 						{
@@ -813,7 +812,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						objectType = objectType.GetValueTypeForPreferredConstraint();
 						if ((null != (objectType = objectType.GetValueTypeForPreferredConstraint()) &&
 							(null != (link = objectType.GetDataTypeLink()))))
 						{

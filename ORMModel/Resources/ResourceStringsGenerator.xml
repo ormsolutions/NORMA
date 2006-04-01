@@ -518,11 +518,11 @@
 	<ResourceString name="ModelReadingRoleDeletedRoleText" model="Model" resourceName="Model.Reading.RoleDeletedText">
 		<comment type="summary">Text used to replace a role place holder when the role is deleted</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquessConstraintMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
+	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
 		<comment type="summary">Text displayed in the text of the FactTypeRequiresReadingError</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorFactTypeRequiresReadingMessage" model="Model" resourceName="ModelError.FactType.RequiresReading.Message">
-		<comment type="summary">Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError</comment>
+		<comment type="summary">Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message">
 		<comment type="summary">Text displayed for an unspecified data type.</comment>

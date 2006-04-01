@@ -558,6 +558,7 @@ namespace Neumont.Tools.ORM.Shell
 			Role role;
 			ObjectType objectType;
 			NodeShape nodeShape;
+			bool otherShape = false;
 			if (element is FactType)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
@@ -565,6 +566,10 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
 					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
+				}
+				else if (null != presentationElement)
+				{
+					otherShape = true;
 				}
 			}
 			else if (null != (objectType = element as ObjectType))
@@ -586,6 +591,10 @@ namespace Neumont.Tools.ORM.Shell
 						toleratedCommands |= ORMDesignerCommands.AlignShapes;
 					}
 				}
+				else if (null != presentationElement)
+				{
+					otherShape = true;
+				}
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
@@ -594,6 +603,10 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
 					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+				}
+				else if (null != presentationElement)
+				{
+					otherShape = true;
 				}
 			}
 			else if (element is InternalConstraint)
@@ -704,6 +717,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if ((null != (nodeShape = presentationElement as NodeShape)) &&
 					!(nodeShape.ParentShape is Diagram))
+			{
+				otherShape = true;
+			}
+			if (otherShape)
 			{
 				toleratedCommands |=
 					ORMDesignerCommands.AutoLayout |

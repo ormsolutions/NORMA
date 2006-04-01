@@ -1513,7 +1513,7 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// Text displayed in the text of the FactTypeRequiresReadingError
 		/// </summary>
-		public static string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage
+		public static string ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage
 		{
 			get
 			{
@@ -1521,7 +1521,7 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError
+		/// Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError
 		/// </summary>
 		public static string ModelErrorFactTypeRequiresReadingMessage
 		{

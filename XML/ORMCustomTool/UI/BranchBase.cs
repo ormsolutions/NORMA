@@ -66,7 +66,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 			public virtual string GetTipText(int row, int column, ToolTipType tipType)
 			{
-				return null;
+				if (tipType == ToolTipType.Default)
+				{
+					return null;
+				}
+				return "";
 			}
 
 			public virtual bool IsExpandable(int row, int column)

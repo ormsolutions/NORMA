@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// <remarks>
 		/// The official names for several predefined output formats are accessible through <see cref="ORMOutputFormat"/>.
 		/// </remarks>
-		ReadOnlyCollection<string> RequiresInputFormats
+		IList<string> RequiresInputFormats
 		{
 			get;
 		}

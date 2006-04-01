@@ -342,7 +342,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return false;
 			}
-			else if (!isLink && this.ActiveDiagramView == null)
+			else if (!isLink && (!this.AutoPopulateShapes && this.ActiveDiagramView == null))
 			{
 				return false;
 			}

@@ -44,9 +44,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.Label label_GeneratedFilesFor;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ORMGeneratorSelectionControl));
 			this.virtualTreeControl = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.textBox_ORMFileName = new System.Windows.Forms.TextBox();
 			this.button_Cancel = new System.Windows.Forms.Button();
 			this.button_SaveChanges = new System.Windows.Forms.Button();
@@ -62,7 +64,15 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			// virtualTreeControl
 			// 
 			resources.ApplyResources(this.virtualTreeControl, "virtualTreeControl");
+			this.virtualTreeControl.ImageList = this.imageList1;
 			this.virtualTreeControl.Name = "virtualTreeControl";
+			this.virtualTreeControl.StandardCheckBoxes = true;
+			// 
+			// imageList1
+			// 
+			this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			resources.ApplyResources(this.imageList1, "imageList1");
+			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// textBox_ORMFileName
 			// 
@@ -113,6 +123,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private System.Windows.Forms.TextBox textBox_ORMFileName;
 		private System.Windows.Forms.Button button_Cancel;
 		private System.Windows.Forms.Button button_SaveChanges;
+		private System.Windows.Forms.ImageList imageList1;
 
 
 	}

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -251,9 +251,9 @@
 								<Registry Type="string" Name="OfficialName" Value="CoRefORM"/>
 								<Registry Type="string" Name="DisplayName" Value="ORM Co-Referencer"/>
 								<Registry Type="string" Name="DisplayDescription" Value="Co-references (binarizes) an ORM file."/>
-								<Registry Type="string" Name="FileExtension" Value=".orm"/>
+								<Registry Type="string" Name="FileExtension" Value=".CoRef.orm"/>
 								<Registry Type="string" Name="SourceInputFormat" Value="ORM"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="ORM"/>
+								<Registry Type="string" Name="ProvidesOutputFormat" Value="CoRefORM"/>
 								<Registry Type="string" Name="TransformUri" Value="[#CoRefORM.xslt]"/>
 							</Registry>
 						</Component>
@@ -420,6 +420,30 @@
 								<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
 								<Registry Type="string" Name="ProvidesOutputFormat" Value="DDIL"/>
 								<Registry Type="string" Name="TransformUri" Value="[#DCILtoDDIL.xslt]"/>
+							</Registry>
+							<File Id="DCILtoTV.xslt" Name="DCIL2TV.xsl" LongName="DCILtoTV.xslt" src="..\XML\DCILtoHTML\DCILtoTV.xslt"
+								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
+								<Registry Type="string" Name="Type" Value="XSLT"/>
+								<Registry Type="string" Name="OfficialName" Value="DCILtoTV"/>
+								<Registry Type="string" Name="DisplayName" Value="DCIL to TableView"/>
+								<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to TableView."/>
+								<Registry Type="string" Name="FileExtension" Value=".TableView.xml"/>
+								<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
+								<Registry Type="string" Name="ProvidesOutputFormat" Value="TV"/>
+								<Registry Type="string" Name="TransformUri" Value="[#DCILtoTV.xslt]"/>
+							</Registry>
+							<File Id="TVtoHTML.xslt" Name="TV2HTML.xsl" LongName="TVtoHTML.xslt" src="..\XML\DCILtoHTML\TVtoHTML.xslt"
+								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
+								<Registry Type="string" Name="Type" Value="XSLT"/>
+								<Registry Type="string" Name="OfficialName" Value="TVtoHTML"/>
+								<Registry Type="string" Name="DisplayName" Value="TableView to HTML"/>
+								<Registry Type="string" Name="DisplayDescription" Value="Transforms TableView to HTML."/>
+								<Registry Type="string" Name="FileExtension" Value=".TableView.html"/>
+								<Registry Type="string" Name="SourceInputFormat" Value="TV"/>
+								<Registry Type="string" Name="ProvidesOutputFormat" Value="TableViewHTML"/>
+								<Registry Type="string" Name="TransformUri" Value="[#TVtoHTML.xslt]"/>
 							</Registry>
 						</Component>
 					</Directory>

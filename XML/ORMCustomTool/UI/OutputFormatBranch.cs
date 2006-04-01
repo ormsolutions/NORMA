@@ -85,7 +85,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						if (selectedORMGenerator == null)
 						{
 							// TODO: Localize this.
-							return "Add...";
+							return "";
 						}
 						if (selectedORMGenerator == this.ORMGenerators[row])
 						{
@@ -116,24 +116,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						return base.GetDisplayData(row, column, requiredData);
 					}
 				}
-
-				public override string GetTipText(int row, int column, ToolTipType tipType)
-				{
-					IORMGenerator selectedORMGenerator;
-					if (column == (int)Column.GeneratorName)
-					{
-						return this.ORMGenerators[row].DisplayDescription;
-					}
-					else if (column == (int)Column.GeneratedFileName && (selectedORMGenerator = this.SelectedORMGenerator) == this.ORMGenerators[row])
-					{
-						return this.MainBranch.Parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName].FinalItemSpec;
-					}
-					else
-					{
-						return base.GetTipText(row, column, tipType);
-					}
-				}
-
 				public override int VisibleItemCount
 				{
 					get

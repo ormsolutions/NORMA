@@ -34,6 +34,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
 
 		private readonly MainBranch _mainBranch;
+		private readonly EnvDTE.ProjectItem _projectItem;
 		private readonly Project _project;
 		private readonly BuildItemGroup _originalBuildItemGroup;
 		private bool _savedChanges;
@@ -47,6 +48,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		{
 			Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
 			BuildItemGroup originalBuildItemGroup = ORMCustomTool.GetBuildItemGroup(project, projectItem.Name);
+			_projectItem = projectItem;
 			this._project = project;
 			this._originalBuildItemGroup = originalBuildItemGroup;
 
@@ -137,6 +139,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				if (_originalBuildItemGroup != null)
 				{
 					_project.RemoveItemGroup(_originalBuildItemGroup);
+				}
+				VSLangProj.VSProjectItem vsProjectItem = _projectItem.Object as VSLangProj.VSProjectItem;
+				if (vsProjectItem != null)
+				{
+					vsProjectItem.RunCustomTool();
 				}
 			}
 			else

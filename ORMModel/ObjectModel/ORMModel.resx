@@ -175,7 +175,7 @@
   </data>
   <data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
     <value xml:space="preserve">Fact '{0}' in model '{1}' requires an internal uniqueness constraint with alethic modality.</value>
-    <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError</comment>
+    <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</comment>
   </data>
   <data name="ModelError.FactType.RequiresReading.Message">
     <value xml:space="preserve">At least one reading is required for fact '{0}' in model '{1}'.</value>

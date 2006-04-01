@@ -1065,10 +1065,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region AutoFix Methods
 		/// <summary>
-		/// Remove implied (including duplicate) internal uniquess constraints. Internal
+		/// Remove implied (including duplicate) internal uniqueness constraints. Internal
 		/// uniqueness constraint A implies internal uniqueness constraint B if the roles of
 		/// A form a subset of the roles of B. Running this method will fix a
-		/// FactTypeHasImpliedInternalUniquessConstraintError on this FactType.
+		/// FactTypeHasImpliedInternalUniquenessConstraintError on this FactType.
 		/// </summary>
 		public void RemoveImpliedInternalUniquenessConstraints() 
 		{
@@ -1283,7 +1283,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquessConstraintMessage, FactType.Name, Model.Name);
+			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage, FactType.Name, Model.Name);
 			if (Name != newText)
 			{
 				Name = newText;

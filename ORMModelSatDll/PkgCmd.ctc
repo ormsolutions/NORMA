@@ -89,7 +89,7 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdAutoLayout,					guidORMDesignerCommandSet:groupIdModelCommands,			0x0400,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Auto &Layout";
 
 		guidORMDesignerCommandSet:cmdIdToggleSimpleMandatory,		guidORMDesignerCommandSet:groupIdRoleCommands,			0x010,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Is &Mandatory";
-		guidORMDesignerCommandSet:cmdIdAddInternalUniqueness,		guidORMDesignerCommandSet:groupIdRoleCommands,			0x020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Add &Uniquess Constraint";
+		guidORMDesignerCommandSet:cmdIdAddInternalUniqueness,		guidORMDesignerCommandSet:groupIdRoleCommands,			0x020,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Add &Uniqueness Constraint";
 		guidORMDesignerCommandSet:cmdIdInsertRoleAfter,				guidORMDesignerCommandSet:groupIdRoleCommands,			0x030,		guidOfficeIcon:msotcidShapeRightArrow,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &After";
 		guidORMDesignerCommandSet:cmdIdInsertRoleBefore,			guidORMDesignerCommandSet:groupIdRoleCommands,			0x040,		guidOfficeIcon:msotcidShapeLeftArrow,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &Before";
 		guidORMDesignerCommandSet:cmdIdMoveRoleLeft,				guidORMDesignerCommandSet:groupIdRoleCommands,			0x050,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"Move Role Lef&t";

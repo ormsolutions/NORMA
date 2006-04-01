@@ -164,8 +164,8 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 			private readonly string _sourceInputFormat;
 			private readonly string[] _referenceInputFormats;
-			private readonly ReadOnlyCollection<string> _requiresInputFormats;
-			public System.Collections.ObjectModel.ReadOnlyCollection<string> RequiresInputFormats
+			private readonly IList<string> _requiresInputFormats;
+			public IList<string> RequiresInputFormats
 			{
 				get { return this._requiresInputFormats; }
 			}
@@ -179,6 +179,10 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			private readonly bool _compilable;
 			public BuildItem AddGeneratedFileBuildItem(BuildItemGroup buildItemGroup, string sourceFileName, string outputFileName)
 			{
+				if (outputFileName == null || outputFileName.Length == 0)
+				{
+					outputFileName = GetOutputFileDefaultName(sourceFileName);
+				}
 				bool compilable = this._compilable;
 				BuildItem buildItem = buildItemGroup.AddNewItem(compilable ? "Compile" : "None", outputFileName);
 				buildItem.SetMetadata(ITEMMETADATA_AUTOGEN, "True");

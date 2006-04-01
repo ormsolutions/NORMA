@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<metadata name="Common Public License Copyright Notice">
-		<value>
-			Neumont Object-Role Modeling Architect for Visual Studio
-
-			Copyright © Neumont University. All rights reserved.
-
-			The use and distribution terms for this software are covered by the
-			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
-			can be found in the file CPL.txt at the root of this distribution.
-			By using this software in any fashion, you are agreeing to be bound by
-			the terms of this license.
-
-			You must not remove this notice, or any other, from this software.
-		</value>
-  </metadata>
   <!-- 
     Microsoft ResX Schema 
     
@@ -171,6 +156,12 @@
   <data name="virtualTreeControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <metadata name="imageList1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="imageList1.ImageSize" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
   <data name="virtualTreeControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 32</value>
   </data>
@@ -284,6 +275,12 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>ORM Generator Selection</value>
+  </data>
+  <data name="&gt;&gt;imageList1.Name" xml:space="preserve">
+    <value>imageList1</value>
+  </data>
+  <data name="&gt;&gt;imageList1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ORMGeneratorSelectionControl</value>

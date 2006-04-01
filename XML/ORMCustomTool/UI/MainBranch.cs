@@ -75,12 +75,32 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				System.Diagnostics.Debug.Assert(row >= 0 && row < this._branches.Count);
 				return this._branches.Keys[row];
 			}
-
+			public override string GetTipText(int row, int column, ToolTipType tipType)
+			{
+				if (tipType == ToolTipType.StateIcon)
+				{
+					OutputFormatBranch currentBranch = _branches.Values[row];
+					IORMGenerator useGenerator = currentBranch.SelectedORMGenerator;
+					if (useGenerator == null)
+					{
+						useGenerator = currentBranch.ORMGenerators[0];
+					}
+					return useGenerator.DisplayDescription;
+				}
+				return base.GetTipText(row, column, tipType);
+			}
 			public override VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
-				VirtualTreeDisplayData displayData = new VirtualTreeDisplayData();
+				VirtualTreeDisplayData displayData = VirtualTreeDisplayData.Empty;
 				displayData.BackColor = System.Drawing.SystemColors.ControlLight;
-				displayData.State = VirtualTreeDisplayStates.Expanded;
+				if (_branches.Values[row].SelectedORMGenerator != null)
+				{
+					displayData.StateImageIndex = (short)StandardCheckBoxImage.CheckedDisabled;
+				}
+				else
+				{
+					displayData.StateImageIndex = (short)StandardCheckBoxImage.Unchecked;
+				}
 				return displayData;
 			}
 
@@ -91,12 +111,40 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					return this.Branches.Count;
 				}
 			}
-
+			public override StateRefreshChanges ToggleState(int row, int column)
+			{
+				return ToggleOnRequiredBranches(_branches.Values[row]);
+			}
+			private StateRefreshChanges ToggleOnRequiredBranches(OutputFormatBranch formatBranch)
+			{
+				StateRefreshChanges retVal = StateRefreshChanges.None;
+				if (formatBranch.SelectedORMGenerator == null)
+				{
+					retVal = StateRefreshChanges.Current | StateRefreshChanges.Children;
+					IORMGenerator useGenerator = formatBranch.ORMGenerators[0];
+					_parent.BuildItemsByGenerator[useGenerator.OfficialName] = useGenerator.AddGeneratedFileBuildItem(_parent._buildItemGroup, _parent._sourceFileName, null);
+					formatBranch.SelectedORMGenerator = useGenerator;
+					IList<string> requiredFormats = useGenerator.RequiresInputFormats;
+					int requiredFormatsCount = requiredFormats.Count;
+					for (int i = 0; i < requiredFormatsCount; ++i)
+					{
+						OutputFormatBranch requiredBranch;
+						if (_branches.TryGetValue(requiredFormats[i], out requiredBranch))
+						{
+							if (StateRefreshChanges.None != ToggleOnRequiredBranches(requiredBranch))
+							{
+								retVal = StateRefreshChanges.Entire;
+							}
+						}
+					}
+				}
+				return retVal;
+			}
 			public override BranchFeatures Features
 			{
 				get
 				{
-					return BranchFeatures.Expansions | BranchFeatures.Realigns;
+					return BranchFeatures.Expansions | BranchFeatures.StateChanges;
 				}
 			}
 
