@@ -31,7 +31,7 @@
 		<orm:ORMModel id="Model_id" Name="importedModel">
 			<xsl:apply-templates select="Objects" />
 			<xsl:apply-templates select="Facts" />
-			<xsl:call-template name="ExternalConstraints" />
+			<xsl:apply-templates select="Constraints"/>
 			<xsl:call-template name="DataTypes" />
 			<xsl:call-template name="ReferenceModeKinds" />
 		</orm:ORMModel>
@@ -458,65 +458,43 @@
 		</orm:InternalConstraints>
 	</xsl:template>
 	<xsl:template match="FactConstraint">
-		<xsl:variable name="constraintFragment" select="../../../../Constraints/Constraint[@ConstraintID=current()/@FactConstraintID]"/>
-		<xsl:choose>
-			<xsl:when test="$constraintFragment[@ConstraintID=current()/@FactConstraintID and @IsInternal='true' and @ConstraintType='Uniqueness']">
-				<orm:InternalUniquenessConstraint>
-					<xsl:attribute name="id">
-						<xsl:text>GUID_ConstraintID</xsl:text>
-						<xsl:value-of select="$constraintFragment/@ConstraintID"/>
-					</xsl:attribute>
-					<xsl:attribute name="Name">
-						<xsl:text>InternalUniquenessConstraint</xsl:text>
-						<xsl:value-of select="$constraintFragment/@ConstraintID"/>
-					</xsl:attribute>
-					<orm:RoleSequence>
-						<xsl:for-each select="$constraintFragment/RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID">
-							<orm:Role>
-								<xsl:attribute name="ref">
-									<xsl:text>GUID_RoleID</xsl:text>
-									<xsl:value-of select="."/>
-								</xsl:attribute>
-							</orm:Role>
-						</xsl:for-each>
-					</orm:RoleSequence>
-					<xsl:apply-templates select="$constraintFragment[@NumberOfItemsPerSequence='1' and @IsPrimaryReference='true']" mode="preferredId" />
-				</orm:InternalUniquenessConstraint>
-			</xsl:when>
-			<xsl:when test="$constraintFragment[@ConstraintID=current()/@FactConstraintID and @IsInternal='true' and @ConstraintType='Mandatory']">
-				<orm:SimpleMandatoryConstraint>
-					<xsl:attribute name="id">
-						<xsl:text>GUID_ConstraintID</xsl:text>
-						<xsl:value-of select="$constraintFragment/@ConstraintID"/>
-					</xsl:attribute>
-					<xsl:attribute name="Name">
-						<xsl:text>SimpleMandatoryConstraint</xsl:text>
-						<xsl:value-of select="$constraintFragment/@ConstraintID"/>
-					</xsl:attribute>
-					<orm:RoleSequence>
-						<xsl:for-each select="$constraintFragment/RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID">
-							<orm:Role>
-								<xsl:attribute name="ref">
-									<xsl:text>GUID_RoleID</xsl:text>
-									<xsl:value-of select="."/>
-								</xsl:attribute>
-							</orm:Role>
-						</xsl:for-each>
-					</orm:RoleSequence>
-				</orm:SimpleMandatoryConstraint>
-			</xsl:when>
-		</xsl:choose>
+		<xsl:variable name="tempConstraint" select="../../../../Constraints/Constraint[@ConstraintID=current()/@FactConstraintID]"/>
+		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']" />
+		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Mandatory']" />
+		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']" />
 	</xsl:template>
-	<xsl:template match="Constraint" mode="preferredId">
-		<!--Pretty dirty here.  I had to do it because Orthogonal
-			references the preferred identifier by an attribute called @ObjectNamespace
-			not the Object ID. So all of this is to get the ObjectID of the preferred identifier.-->
-		<!--Note: This is the source of the slow down in the entire transform!-->
-		<xsl:variable name="tempRoleId" select="current()/RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID" />
-		<xsl:variable name="tempObjectId" select="../../Roles/Role[@RoleID=$tempRoleId]/@RolePlayerObjectID" />
-		<xsl:variable name="tempObjectName" select="../../Objects/Object[@ObjectKind='Value Type' and @ObjectNamespace and @ObjectID=$tempObjectId]/@ObjectNamespace" />
-		<xsl:variable name="finalTempObjectID" select="../../Objects/Object[@ObjectKind='Entity Type' and @ObjectName=$tempObjectName]/@ObjectID" />
-		<orm:PreferredIdentifierFor ref="GUID_ObjectID{$finalTempObjectID}" />
+	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']">
+		<xsl:variable name="tempID" select="@ConstraintID" />
+		<orm:InternalUniquenessConstraint id="GUID_ConstraintID{$tempID}" Name="InternalUniquenessConstraint{$tempID}">
+			<orm:RoleSequence>
+				<xsl:for-each select="RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID">
+					<orm:Role ref="GUID_RoleID{.}" />
+				</xsl:for-each>
+			</orm:RoleSequence>
+		</orm:InternalUniquenessConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Mandatory']">
+		<xsl:variable name="tempID" select="@ConstraintID" />
+		<orm:SimpleMandatoryConstraint id="GUID_ConstraintID{$tempID}" Name="SimpleMandatoryConstraint{$tempID}">
+			<orm:RoleSequence>
+				<xsl:for-each select="RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID">
+					<orm:Role ref="GUID_RoleID{.}" />
+				</xsl:for-each>
+			</orm:RoleSequence>
+		</orm:SimpleMandatoryConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
+		<xsl:variable name="tempID" select="@ConstraintID" />
+		<orm:InternalUniquenessConstraint id="GUID_ConstraintID{$tempID}" Name="InternalUniquenessConstraint{$tempID}">
+			<orm:RoleSequence>
+				<xsl:for-each select="RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID">
+					<orm:Role ref="GUID_RoleID{.}" />
+				</xsl:for-each>
+			</orm:RoleSequence>
+			<xsl:variable name="tempFact" select="../../Facts/Fact[FactConstraints/FactConstraint/@FactConstraintID=current()/@ConstraintID]/FactRoles/FactRole[1]/@FactRoleID" />
+			<xsl:variable name="tempRole" select="../../Roles/Role[@RoleID = $tempFact]/@RolePlayerObjectID" />
+			<orm:PreferredIdentifierFor ref="GUID_ObjectID{$tempRole}" />
+		</orm:InternalUniquenessConstraint>
 	</xsl:template>
 	<!--End Fact Templates-->
 	<!--Begin SubtypeFactTemplates-->
@@ -600,116 +578,126 @@
 	</xsl:template>
 	<!--End SubtypeFactTemplates-->
 	<!--Begin External Constraints Template-->
-	<xsl:template name="ExternalConstraints">
-		<xsl:variable name="externalConstraintsFragment">
-			<xsl:for-each select="Constraints/Constraint[@IsInternal='false' or @ConstraintType='Ring' or @ConstraintType='Equality' or @ConstraintType='Subset' or @ConstraintType='Frequency']">
-				<xsl:copy-of select="."/>
+	<xsl:template match="Constraints">
+		<orm:ExternalConstraints>
+			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']" />
+			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']" />
+			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Mandatory']" />
+			<xsl:apply-templates select="Constraint[@IsInternal='false' and @ConstraintType='Exclusion']" />
+			<xsl:apply-templates select="Constraint[@ConstraintType='Ring']" />
+			<xsl:apply-templates select="Constraint[@ConstraintType='Equality']" />
+			<xsl:apply-templates select="Constraint[@ConstraintType='Subset']" />
+			<xsl:apply-templates select="Constraint[@ConstraintType='Frequency']" />
+		</orm:ExternalConstraints>
+	</xsl:template>
+	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']">
+		<orm:ExternalUniquenessConstraint id="GUID_ExternalConstraintID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
+			<xsl:for-each select="RoleSequences/RoleSequence">
+				<orm:RoleSequence>
+					<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+						<xsl:sort select="@SequencePositionNumber" data-type="number"/>
+						<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
+					</xsl:for-each>
+				</orm:RoleSequence>
 			</xsl:for-each>
-		</xsl:variable>
-		<xsl:variable name="externalConstraints" select="exsl:node-set($externalConstraintsFragment)/child::*"/>
-		<xsl:if test="count($externalConstraints) &gt; 0">
-			<orm:ExternalConstraints>
-				<xsl:for-each select="$externalConstraints">
-					<xsl:variable name="constriantID" select="@ConstraintID"/>
-					<xsl:choose>
-						<xsl:when test="@ConstraintType='Uniqueness'">
-							<orm:ExternalUniquenessConstraint id="GUID_ExternalConstraintID{$constriantID[1]}" Name="ExternalConstraintID{$constriantID[1]}">
-								<xsl:for-each select="RoleSequences/RoleSequence">
-									<orm:RoleSequence>
-										<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-											<xsl:sort select="@SequencePositionNumber" data-type="number"/>
-											<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
-										</xsl:for-each>
-									</orm:RoleSequence>
-								</xsl:for-each>
-							</orm:ExternalUniquenessConstraint>
-						</xsl:when>
-						<xsl:when test="@ConstraintType='Exclusion'">
-							<orm:ExclusionConstraint id="GUID_ExternalConstraingID{$constriantID}" Name="ExternalConstraintID{$constriantID}">
-								<orm:RoleSequences>
-									<xsl:for-each select="RoleSequences/RoleSequence">
-										<orm:RoleSequence id="GUID_RoleSequenceID{$constriantID}_{@SequenceNumber}">
-											<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-												<xsl:sort select="@SequencePositionNumber" data-type="number"/>
-												<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
-											</xsl:for-each>
-										</orm:RoleSequence>
-									</xsl:for-each>
-								</orm:RoleSequences>
-							</orm:ExclusionConstraint>
-						</xsl:when>
-						<xsl:when test="@ConstraintType='Mandatory'">
-							<orm:DisjunctiveMandatoryConstraint id="GUID_ExternalConstraintID{$constriantID}" Name="ExternalConstraintID{$constriantID}">
-								<xsl:for-each select="RoleSequences/RoleSequence">
-									<orm:RoleSequence>
-										<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-											<xsl:sort select="@SequencePositionNumber" data-type="number"/>
-											<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
-										</xsl:for-each>
-									</orm:RoleSequence>
-								</xsl:for-each>
-							</orm:DisjunctiveMandatoryConstraint>
-						</xsl:when>
-						<xsl:when test="@ConstraintType='Ring'">
-							<orm:RingConstraint id="GUID_RingConstraintID{$constriantID}" Name="RingConstraintID{$constriantID}" Type="{@RingConstraintType}">
-								<xsl:for-each select="RoleSequences/RoleSequence">
-									<orm:RoleSequence>
-										<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-											<xsl:sort select="@SequencePositionNumber" data-type="number"/>
-											<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
-										</xsl:for-each>
-									</orm:RoleSequence>
-								</xsl:for-each>
-							</orm:RingConstraint>
-						</xsl:when>
-						<xsl:when test="@ConstraintType='Equality'">
-							<orm:EqualityConstraint id="GUID_EqualityConstraintID{$constriantID}" Name="EqualityConstraintID{$constriantID}">
-								<orm:RoleSequences>
-									<xsl:for-each select="RoleSequences/RoleSequence">
-										<orm:RoleSequence>
-											<xsl:attribute name="id">
-												<xsl:text>GUID_EqualityConstraintID</xsl:text>
-												<xsl:value-of select="$constriantID"/>
-												<xsl:text>_Role</xsl:text>
-												<xsl:value-of select="position()"/>
-											</xsl:attribute>
-											<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-												<xsl:sort select="@SequencePositionNumber" data-type="number"/>
-												<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
-											</xsl:for-each>
-										</orm:RoleSequence>
-									</xsl:for-each>
-								</orm:RoleSequences>
-							</orm:EqualityConstraint>
-						</xsl:when>
-						<xsl:when test="@ConstraintType='Subset'">
-							<orm:SubsetConstraint id="GUID_SubsetConstraintID{$constriantID}" Name="SubsetConstraintID{$constriantID}">
-								<orm:RoleSequences>
-									<xsl:for-each select="RoleSequences/RoleSequence">
-										<orm:RoleSequence id="GUID_RoleSequenceID{$constriantID}_{@SequenceNumber}">
-											<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-												<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}" />
-											</xsl:for-each>
-										</orm:RoleSequence>
-									</xsl:for-each>
-								</orm:RoleSequences>
-							</orm:SubsetConstraint>
-						</xsl:when>
-						<xsl:when test="@ConstraintType='Frequency'">
-							<orm:FrequencyConstraint id="GUID_FrequencyConstraintID{$constriantID}" Name="" MinFrequency="{@MinimumFrequency}" MaxFrequency="{@MaximumFrequency}">
-								<xsl:for-each select="RoleSequences/RoleSequence">
-									<orm:RoleSequence>
-										<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
-											<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}" />
-										</xsl:for-each>
-									</orm:RoleSequence>
-								</xsl:for-each>
-							</orm:FrequencyConstraint>
-						</xsl:when>
-					</xsl:choose>
+		</orm:ExternalUniquenessConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
+		<orm:ExternalUniquenessConstraint id="GUID_ExternalConstraintID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
+			<xsl:for-each select="RoleSequences/RoleSequence">
+				<orm:RoleSequence>
+					<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+						<xsl:sort select="@SequencePositionNumber" data-type="number"/>
+						<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
+					</xsl:for-each>
+				</orm:RoleSequence>
+			</xsl:for-each>
+			<xsl:variable name="tempFact" select="../../Facts/Fact[FactConstraints/FactConstraint/@FactConstraintID=current()/@ConstraintID][1]/FactRoles/FactRole[1]/@FactRoleID" />
+			<xsl:variable name="tempRole" select="../../Roles/Role[@RoleID = $tempFact]/@RolePlayerObjectID" />
+			<orm:PreferredIdentifierFor ref="GUID_ObjectID{$tempRole}" />
+		</orm:ExternalUniquenessConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Mandatory']">
+		<orm:DisjunctiveMandatoryConstraint id="GUID_ExternalConstraintID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
+			<xsl:for-each select="RoleSequences/RoleSequence">
+				<orm:RoleSequence>
+					<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+						<xsl:sort select="@SequencePositionNumber" data-type="number"/>
+						<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
+					</xsl:for-each>
+				</orm:RoleSequence>
+			</xsl:for-each>
+		</orm:DisjunctiveMandatoryConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@IsInternal='false' and @ConstraintType='Exclusion']">
+		<orm:ExclusionConstraint id="GUID_ExternalConstraingID{@ConstraintID}" Name="ExternalConstraintID{@ConstraintID}">
+			<orm:RoleSequences>
+				<xsl:for-each select="RoleSequences/RoleSequence">
+					<orm:RoleSequence id="GUID_RoleSequenceID{../../@ConstraintID}_{@SequenceNumber}">
+						<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+							<xsl:sort select="@SequencePositionNumber" data-type="number"/>
+							<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
+						</xsl:for-each>
+					</orm:RoleSequence>
 				</xsl:for-each>
-			</orm:ExternalConstraints>
-		</xsl:if>
+			</orm:RoleSequences>
+		</orm:ExclusionConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@ConstraintType='Ring']">
+		<orm:RingConstraint id="GUID_RingConstraintID{@ConstraintID}" Name="RingConstraintID{@ConstraintID}" Type="{@RingConstraintType}">
+			<xsl:for-each select="RoleSequences/RoleSequence">
+				<orm:RoleSequence>
+					<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+						<xsl:sort select="@SequencePositionNumber" data-type="number"/>
+						<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
+					</xsl:for-each>
+				</orm:RoleSequence>
+			</xsl:for-each>
+		</orm:RingConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@ConstraintType='Equality']">
+		<orm:EqualityConstraint id="GUID_EqualityConstraintID{@ConstraintID}" Name="EqualityConstraintID{@ConstraintID}">
+			<orm:RoleSequences>
+				<xsl:for-each select="RoleSequences/RoleSequence">
+					<orm:RoleSequence>
+						<xsl:attribute name="id">
+							<xsl:text>GUID_EqualityConstraintID</xsl:text>
+							<xsl:value-of select="../../@ConstraintID"/>
+							<xsl:text>_Role</xsl:text>
+							<xsl:value-of select="position()"/>
+						</xsl:attribute>
+						<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+							<xsl:sort select="@SequencePositionNumber" data-type="number"/>
+							<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}"/>
+						</xsl:for-each>
+					</orm:RoleSequence>
+				</xsl:for-each>
+			</orm:RoleSequences>
+		</orm:EqualityConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@ConstraintType='Subset']">
+		<orm:SubsetConstraint id="GUID_SubsetConstraintID{@ConstraintID}" Name="SubsetConstraintID{@ConstraintID}">
+			<orm:RoleSequences>
+				<xsl:for-each select="RoleSequences/RoleSequence">
+					<orm:RoleSequence id="GUID_RoleSequenceID{../../@ConstraintID}_{@SequenceNumber}">
+						<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+							<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}" />
+						</xsl:for-each>
+					</orm:RoleSequence>
+				</xsl:for-each>
+			</orm:RoleSequences>
+		</orm:SubsetConstraint>
+	</xsl:template>
+	<xsl:template match="Constraint[@ConstraintType='Frequency']">
+		<orm:FrequencyConstraint id="GUID_FrequencyConstraintID{@ConstraintID}" Name="" MinFrequency="{@MinimumFrequency}" MaxFrequency="{@MaximumFrequency}">
+			<xsl:for-each select="RoleSequences/RoleSequence">
+				<orm:RoleSequence>
+					<xsl:for-each select="RoleSequenceItems/RoleSequenceItem">
+						<orm:Role ref="GUID_RoleID{@RoleSequenceItemRoleID}" />
+					</xsl:for-each>
+				</orm:RoleSequence>
+			</xsl:for-each>
+		</orm:FrequencyConstraint>
 	</xsl:template>
 	<!--End External Constraints Template-->
 	<!--Begin DataType Templates-->
