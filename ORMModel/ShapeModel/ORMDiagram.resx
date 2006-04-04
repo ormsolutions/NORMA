@@ -158,58 +158,58 @@
     <value xml:space="preserve">&amp;Delete Object Type</value>
     <comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
   </data>
-	<data name="Command.DeleteConstraintShape.Text">
-		<value xml:space="preserve">Delete Constraint &amp;Shape</value>
-		<comment xml:space="preserve">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
-	</data>
-	<data name="Command.DeleteFactTypeShape.Text">
-		<value xml:space="preserve">Delete Fact &amp;Shape</value>
-		<comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
-	</data>
-	<data name="Command.DeleteMultipleShape.Text">
-		<value xml:space="preserve">Delete Selected &amp;Shapes</value>
-		<comment xml:space="preserve">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
-	</data>
-	<data name="Command.DeleteObjectTypeShape.Text">
-		<value xml:space="preserve">Delete Object &amp;Shape</value>
-		<comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
-	</data>
+  <data name="Command.DeleteConstraintShape.Text">
+    <value xml:space="preserve">Delete Constraint &amp;Shape</value>
+    <comment xml:space="preserve">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteFactTypeShape.Text">
+    <value xml:space="preserve">Delete Fact &amp;Shape</value>
+    <comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteMultipleShape.Text">
+    <value xml:space="preserve">Delete Selected &amp;Shapes</value>
+    <comment xml:space="preserve">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteObjectTypeShape.Text">
+    <value xml:space="preserve">Delete Object &amp;Shape</value>
+    <comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
+  </data>
   <data name="Command.DeleteRole.Text">
     <value xml:space="preserve">&amp;Delete Role</value>
     <comment xml:space="preserve">This text appears in the edit menu when roles are selected in the diagram.</comment>
   </data>
-	<data name="Command.DeleteReading.Text">
-		<value xml:space="preserve">Delete Reading</value>
-		<comment xml:space="preserve">This text appears on the undo/redo menu when a reading is deleted.</comment>
-	</data>
-	<data name="Command.EditReading.Text">
-		<value xml:space="preserve">Edit Reading</value>
-		<comment xml:space="preserve">This text appears on the undo/redo menu when a reading is edited.</comment>
-	</data>
-	<data name="Command.SwapRoleOrder.Text">
-		<value xml:space="preserve">Swap Role Order</value>
-		<comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
-	</data>
+  <data name="Command.DeleteReading.Text">
+    <value xml:space="preserve">Delete Reading</value>
+    <comment xml:space="preserve">This text appears on the undo/redo menu when a reading is deleted.</comment>
+  </data>
+  <data name="Command.EditReading.Text">
+    <value xml:space="preserve">Edit Reading</value>
+    <comment xml:space="preserve">This text appears on the undo/redo menu when a reading is edited.</comment>
+  </data>
+  <data name="Command.SwapRoleOrder.Text">
+    <value xml:space="preserve">Swap Role Order</value>
+    <comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
+  </data>
   <data name="DeleteRoleSequence.TransactionName">
     <value xml:space="preserve">Delete Role Sequence</value>
     <comment xml:space="preserve">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
-	<data name="Diagram.DefaultNewPageName">
-		<value xml:space="preserve">New Page</value>
-		<comment xml:space="preserve">The text shown for a new page on the tabbed diagram.</comment>
-	</data>
-	<data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-		<value>../Resources/DiagramTabImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-		<comment xml:space="preserve">The image shown on the tab for ORM diagrams.</comment>
-	</data>
-	<data name="ExtensionLoadFailure.Message">
-		<value xml:space="preserve">ORM Designer extension '{1}' failed to load.{0}{0}{0}----BEGIN EXCEPTION----{0}{0}{2}{0}----END EXCEPTION----{0}{0}{0}Abort  = Allow ORM Designer package load to fail and signal a breakpoint{0}Retry  = Retry loading the extension{0}Ignore = Ignore the extension load failure and continue with the next extension{0}</value>
-		<comment xml:space="preserve">The format string for the content of the message shown when a registered extension fails to load. {0} will be System.Environment.NewLine. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling ToString() on the Exception that caused the load failure.</comment>
-	</data>
-	<data name="ExtensionLoadFailure.Title">
-		<value xml:space="preserve">Extension Load Failure</value>
-		<comment xml:space="preserve">The title of the message shown when a registered extension fails to load.</comment>
-	</data>
+  <data name="Diagram.DefaultNewPageName">
+    <value xml:space="preserve">New Page</value>
+    <comment xml:space="preserve">The text shown for a new page on the tabbed diagram.</comment>
+  </data>
+  <data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Resources/DiagramTabImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment xml:space="preserve">The image shown on the tab for ORM diagrams.</comment>
+  </data>
+  <data name="ExtensionLoadFailure.Message">
+    <value xml:space="preserve">ORM Designer extension '{1}' failed to load.{0}{0}{0}----BEGIN EXCEPTION----{0}{0}{2}{0}----END EXCEPTION----{0}{0}{0}Abort  = Allow ORM Designer package load to fail and signal a breakpoint{0}Retry  = Retry loading the extension{0}Ignore = Ignore the extension load failure and continue with the next extension{0}</value>
+    <comment xml:space="preserve">The format string for the content of the message shown when a registered extension fails to load. {0} will be System.Environment.NewLine. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling ToString() on the Exception that caused the load failure.</comment>
+  </data>
+  <data name="ExtensionLoadFailure.Title">
+    <value xml:space="preserve">Extension Load Failure</value>
+    <comment xml:space="preserve">The title of the message shown when a registered extension fails to load.</comment>
+  </data>
   <data name="ExternalConstraintConnectAction.Instructions">
     <value xml:space="preserve">To select role sequences to populate the constraint:
 -Click a role to add it to an argument set
@@ -298,10 +298,6 @@
     <value xml:space="preserve">ORM Fact Editor</value>
     <comment xml:space="preserve">This is the caption that appears in the title bar of the Fact Editor tool window.</comment>
   </data>
-	<data name="FontsAndColors.RoleNameColor">
-		<value xml:space="preserve">Role Name</value>
-		<comment xml:space="preserve">Display name for the color used to draw an ORM role name</comment>
-	</data>
   <data name="FontsAndColors.ActiveConstraintColor">
     <value xml:space="preserve">Constraint (Activated)</value>
     <comment xml:space="preserve">Display name for the color used to draw an active ORM constraint and associated roles</comment>
@@ -321,6 +317,10 @@
   <data name="FontsAndColors.EditorCategoryName">
     <value xml:space="preserve">ORM Designer</value>
     <comment xml:space="preserve">Display name for the ORM Designer fonts and colors category</comment>
+  </data>
+  <data name="FontsAndColors.RoleNameColor">
+    <value xml:space="preserve">Role Name</value>
+    <comment xml:space="preserve">Display name for the color used to draw an ORM role name</comment>
   </data>
   <data name="FontsAndColors.RolePickerColor">
     <value xml:space="preserve">Role Picker</value>
@@ -394,10 +394,10 @@
     <value xml:space="preserve">The only shape representing this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
   </data>
-	<data name="MoveRoleOrder.TransactionName">
-		<value xml:space="preserve">Move Role Order</value>
-		<comment xml:space="preserve">The transaction name used for moving a role order in a fact type shape.</comment>
-	</data>
+  <data name="MoveRoleOrder.TransactionName">
+    <value xml:space="preserve">Move Role Order</value>
+    <comment xml:space="preserve">The transaction name used for moving a role order in a fact type shape.</comment>
+  </data>
   <data name="MoveRoleSequenceDown.TransactionName">
     <value xml:space="preserve">Move Role Sequence Down</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -433,6 +433,18 @@
   <data name="OptionsPage.Category.DeleteBehavior">
     <value xml:space="preserve">Delete Behavior</value>
     <comment xml:space="preserve">This is the title of the category on the options page (delete behavior).</comment>
+  </data>
+  <data name="OptionsPage.Category.VerbalizationBehavior">
+    <value xml:space="preserve">Verbalization</value>
+    <comment xml:space="preserve">This is the title of the category on the options page (verbalization).</comment>
+  </data>
+  <data name="OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.Description">
+    <value xml:space="preserve">Should verbalization of single-role uniqueness constraints be combined with the verbalization of a simple mandatory constraint on the same role?</value>
+    <comment xml:space="preserve">The description of the Combine Mandatory And Unique Verbalization option.</comment>
+  </data>
+  <data name="OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.DisplayName">
+    <value xml:space="preserve">Combine Mandatory and Uniqueness Constraint</value>
+    <comment xml:space="preserve">The display name of the Combine Mandatory And Unique Verbalization option.</comment>
   </data>
   <data name="OptionsPage.Property.DataType.Description">
     <value xml:space="preserve">The data type for objects. This will be the default data type used when creating new value types.</value>

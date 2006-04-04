@@ -247,6 +247,10 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPageCategoryDeleteBehaviorId = "OptionsPage.Category.DeleteBehavior";
 		/// <summary>
+		/// Category name for options page (verbalization)
+		/// </summary>
+		public const string OptionsPageCategoryVerbalizationBehaviorId = "OptionsPage.Category.VerbalizationBehavior";
+		/// <summary>
 		/// Description of the default data type option
 		/// </summary>
 		public const string OptionsPagePropertyDataTypeDescriptionId = "OptionsPage.Property.DataType.Description";
@@ -310,6 +314,14 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the Final Shape Delete Behavior option
 		/// </summary>
 		public const string OptionsPagePropertyFinalShapeDeleteBehaviorDisplayNameId = "OptionsPage.Property.FinalShapeDeleteBehavior.DisplayName";
+		/// <summary>
+		/// Description of the Combine Mandatory And Unique Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyCombineMandatoryAndUniqueVerbalizationDescriptionId = "OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.Description";
+		/// <summary>
+		/// Name of the Combine Mandatory And Unique Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyCombineMandatoryAndUniqueVerbalizationDisplayNameId = "OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.DisplayName";
 		/// <summary>
 		/// Display Name of the Object Name color
 		/// </summary>

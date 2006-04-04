@@ -95,6 +95,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="UniversalQuantifier"/>
 			<xs:enumeration value="AtMostOneQuantifier"/>
+			<xs:enumeration value="ExactlyOneQuantifier"/>
 			<xs:enumeration value="EachInstanceQuantifier"/>
 			<xs:enumeration value="ForEachCompactQuantifier"/>
 			<xs:enumeration value="ForEachQuantifier"/>

@@ -386,6 +386,7 @@ namespace Neumont.Tools.ORM.Shell
 			VerbalizeElement(
 				element,
 				snippetsDictionary,
+				null,
 				delegate(IVerbalize verbalizer, int indentationLevel)
 				{
 					if (indentationLevel == 0)
@@ -453,6 +454,7 @@ namespace Neumont.Tools.ORM.Shell
 						return VerbalizationResult.NotVerbalized;
 					}
 				},
+				isNegative,
 				0);
 			while (lastLevel > 0)
 			{
@@ -469,7 +471,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Verbalize the passed in element and all its children
 		/// </summary>
-		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, VerbalizationHandler callback, int indentLevel)
+		private static void VerbalizeElement(ModelElement element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizeFilterChildren filter, VerbalizationHandler callback, bool isNegative, int indentLevel)
 		{
 			IVerbalize parentVerbalize = element as IVerbalize;
 			if (parentVerbalize == null && indentLevel == 0)
@@ -484,38 +486,85 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			VerbalizationResult result = (parentVerbalize != null) ? callback(parentVerbalize, indentLevel) : VerbalizationResult.NotVerbalized;
-			if (result == VerbalizationResult.AlreadyVerbalized)
+			bool disposeVerbalizer = false;
+			if (filter != null)
 			{
-				return;
+				CustomChildVerbalizer filterResult = filter.FilterChildVerbalizer(parentVerbalize, isNegative);
+				parentVerbalize = filterResult.Instance;
+				disposeVerbalizer = filterResult.Options;
 			}
-			bool parentVerbalizeOK = result == VerbalizationResult.Verbalized;
-			bool verbalizeChildren = parentVerbalizeOK ? (element != null) : (element is IVerbalizeChildren);
-			if (verbalizeChildren)
+			try
 			{
-				if (parentVerbalizeOK)
+				VerbalizationResult result = (parentVerbalize != null) ? callback(parentVerbalize, indentLevel) : VerbalizationResult.NotVerbalized;
+				if (result == VerbalizationResult.AlreadyVerbalized)
 				{
-					++indentLevel;
+					return;
 				}
-				MetaClassInfo currentMetaClass = element.MetaClass;
-				while (currentMetaClass != null)
+				bool parentVerbalizeOK = result == VerbalizationResult.Verbalized;
+				bool verbalizeChildren = parentVerbalizeOK ? (element != null) : (element is IVerbalizeChildren);
+				if (verbalizeChildren)
 				{
-					IList aggregateList = currentMetaClass.AggregatedRoles;
-					int aggregateCount = aggregateList.Count;
-					for (int i = 0; i < aggregateCount; ++i)
+					if (parentVerbalizeOK)
 					{
-						MetaRoleInfo roleInfo = (MetaRoleInfo)aggregateList[i];
-						IList children = element.GetCounterpartRolePlayers(roleInfo.OppositeMetaRole, roleInfo, false);
-						int childCount = children.Count;
-						for (int j = 0; j < childCount; ++j)
+						++indentLevel;
+					}
+					filter = parentVerbalize as IVerbalizeFilterChildren;
+					MetaClassInfo currentMetaClass = element.MetaClass;
+					while (currentMetaClass != null)
+					{
+						IList aggregateList = currentMetaClass.AggregatedRoles;
+						int aggregateCount = aggregateList.Count;
+						for (int i = 0; i < aggregateCount; ++i)
 						{
-							VerbalizeElement((ModelElement)children[j], snippetsDictionary, callback, indentLevel);
+							MetaRoleInfo roleInfo = (MetaRoleInfo)aggregateList[i];
+							IList children = element.GetCounterpartRolePlayers(roleInfo.OppositeMetaRole, roleInfo, false);
+							int childCount = children.Count;
+							for (int j = 0; j < childCount; ++j)
+							{
+								VerbalizeElement((ModelElement)children[j], snippetsDictionary, filter, callback, isNegative, indentLevel);
+							}
+						}
+						currentMetaClass = currentMetaClass.BaseMetaClass;
+					}
+					// TODO: Need BeforeNaturalChildren/AfterNaturalChildren/SkipNaturalChildren settings for IVerbalizeCustomChildren
+					IVerbalizeCustomChildren customChildren = parentVerbalize as IVerbalizeCustomChildren;
+					if (customChildren != null)
+					{
+						foreach (CustomChildVerbalizer customChild in customChildren.GetCustomChildVerbalizations(isNegative))
+						{
+							IVerbalize childVerbalize = customChild.Instance;
+							if (childVerbalize != null)
+							{
+								try
+								{
+									callback(childVerbalize, indentLevel);
+								}
+								finally
+								{
+									if (customChild.Options)
+									{
+										IDisposable dispose = childVerbalize as IDisposable;
+										if (dispose != null)
+										{
+											dispose.Dispose();
+										}
+									}
+								}
+							}
 						}
 					}
-					currentMetaClass = currentMetaClass.BaseMetaClass;
 				}
-				// TODO: Custom child verbalization goes here. Need BeforeNaturalChildren/AfterNaturalChildren/SkipNaturalChildren setting
-				// on IVerbalizeCustomChildren
+			}
+			finally
+			{
+				if (disposeVerbalizer)
+				{
+					IDisposable dispose = parentVerbalize as IDisposable;
+					if (dispose != null)
+					{
+						dispose.Dispose();
+					}
+				}
 			}
 		}
 		#endregion // Verbalization Implementation

@@ -37,12 +37,15 @@
 				<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 				<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span> {0}]]></Snippet>
 
-				<Snippet type="UniversalQuantifier"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
+				<Snippet type="UniversalQuantifier" sign="positive"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
+				<Snippet type="UniversalQuantifier" sign="negative"><![CDATA[<span class="quantifier">any</span> {0}]]></Snippet>
 				<Snippet type="AtMostOneQuantifier"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
 				<Snippet type="EachInstanceQuantifier"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Snippet>
 				<Snippet type="ForEachCompactQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, {1}]]></Snippet>
 				<Snippet type="ForEachQuantifier"><![CDATA[<span class="quantifier">for each</span> {0},<br/><span class="smallIndent">{1}</span>]]></Snippet>
-				<Snippet type="ExistentialQuantifier"><![CDATA[<span class="quantifier">some</span> {0}]]></Snippet>
+				<Snippet type="ExistentialQuantifier" sign="positive"><![CDATA[<span class="quantifier">some</span> {0}]]></Snippet>
+				<Snippet type="ExistentialQuantifier" sign="negative"><![CDATA[<span class="quantifier">no</span> {0}]]></Snippet>
+				<Snippet type="ExactlyOneQuantifier"><![CDATA[<span class="quantifier">exactly one</span> {0}]]></Snippet>
 
 				<!-- UNDONE:
 						<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> {0}]]></Form>
@@ -65,8 +68,10 @@
 				<Snippet type="ModalPossibilityOperator" modality="deontic" sign="negative"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Snippet>
 				<Snippet type="ModalNecessityOperator" modality="alethic"><![CDATA[<span class="quantifier">it is necessary that</span> {0}]]></Snippet>
 				<Snippet type="ModalNecessityOperator" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Snippet>
-				<Snippet type="ImpliedModalNecessityOperator" modality="alethic"><![CDATA[{0}]]></Snippet>
-				<Snippet type="ImpliedModalNecessityOperator" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Snippet>
+				<Snippet type="ImpliedModalNecessityOperator" modality="alethic" sign="positive"><![CDATA[{0}]]></Snippet>
+				<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="positive"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Snippet>
+				<Snippet type="ImpliedModalNecessityOperator" modality="alethic" sign="negative"><![CDATA[<span class="quantifier">it is impossible that</span> {0}]]></Snippet>
+				<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="negative"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Snippet>
 				<!-- Used inside a ModalOperator -->
 				<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>
 
@@ -299,9 +304,9 @@
 							</Snippet>
 						</ReadingChoice>
 						<ReadingChoice>
-							<Snippet ref="ImpliedModalNecessityOperator">
-								<Snippet ref="ForEachCompactQuantifier">
-									<IterateRoles listStyle="SimpleList" match="included"/>
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles listStyle="SimpleList" match="included"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
 											<Snippet ref="DefiniteArticle"/>
@@ -350,9 +355,9 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles>
 					<!-- sign="positive" is implied by the previous element -->
-					<Snippet ref="ImpliedModalNecessityOperator">
-						<Snippet ref="ForEachQuantifier">
-							<IterateRoles match="included" listStyle="SimpleList"/>
+					<Snippet ref="ForEachQuantifier">
+						<IterateRoles match="included" listStyle="SimpleList"/>
+						<Snippet ref="ImpliedModalNecessityOperator">
 							<Fact>
 								<PredicateReplacement match="included">
 									<Snippet ref="DefiniteArticle"/>
@@ -371,7 +376,7 @@
 
 				<!-- 3.1.1 unary predicate -->
 				<!-- Each A R -->
-				<ConstrainedRoles factArity="1">
+				<ConstrainedRoles factArity="1" sign="positive">
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="UniversalQuantifier">
 							<Fact/>
@@ -402,9 +407,9 @@
 						<!-- mandatory role does NOT start reading -->
 						<!-- For each A, some B S that A -->
 						<ReadingChoice>
-							<Snippet ref="ImpliedModalNecessityOperator">
-								<Snippet ref="ForEachCompactQuantifier">
-									<IterateRoles match="included" listStyle="SimpleList"/>
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
 											<Snippet ref="DefiniteArticle"/>
@@ -424,7 +429,7 @@
 				<!-- not doing this time around -->
 
 				<!-- 3.1.3 n-ary predicate -->
-				<ConstrainedRoles>
+				<ConstrainedRoles minFactArity="3">
 					<ConditionalReading>
 						<!-- mandatory role starts reading -->
 						<!-- Each A R some B1 ... some Bn -->
@@ -445,15 +450,72 @@
 						<!-- For each A,
 							some B1 R ... that A ... some Bn -->
 						<ReadingChoice>
-							<Snippet ref="ImpliedModalNecessityOperator">
-								<Snippet ref="ForEachQuantifier">
-									<IterateRoles match="included" listStyle="SimpleList"/>
+							<Snippet ref="ForEachQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
 											<Snippet ref="DefiniteArticle"/>
 										</PredicateReplacement>
 										<PredicateReplacement>
 											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+			</Constraint>
+			<!-- FactType.DefaultBinaryMissingUniquenessVerbalizer -->
+			<Constraint type="DefaultBinaryMissingUniquenessVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
+				<!-- The context here is an alethic constraint covering the opposite single role -->
+				<ConstrainedRoles factArity="2" sign="positive">
+					<Snippet ref="ModalPossibilityOperator">
+						<Fact readingChoice="PreferNonLeadReading">
+							<PredicateReplacement match="included">
+								<Snippet ref="MoreThanOneQuantifier"/>
+							</PredicateReplacement>
+							<PredicateReplacement>
+								<Snippet ref="IdentityReferenceQuantifier"/>
+							</PredicateReplacement>
+						</Fact>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
+			<!-- FactType.CombinedMandatoryUniqueVerbalizer -->
+			<Constraint type="CombinedMandatoryUniqueVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
+				<!-- 3.1.2 binary predicate -->
+				<ConstrainedRoles factArity="2" sign="positive">
+					<ConditionalReading>
+
+						<!-- mandatory constraint starts reading relational style -->
+						<!-- Each A R some B -->
+						<ReadingChoice match="RequireLeadReading">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="included">
+										<Snippet ref="UniversalQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExactlyOneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
+						</ReadingChoice>
+
+						<!-- mandatory role does NOT start reading -->
+						<!-- For each A, some B S that A -->
+						<ReadingChoice>
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<Fact>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Snippet ref="ExactlyOneQuantifier"/>
 										</PredicateReplacement>
 									</Fact>
 								</Snippet>

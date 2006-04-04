@@ -53,6 +53,28 @@
 					<xs:documentation>Verbalizes value range constraints on value types.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="DefaultBinaryMissingUniquenessVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Helper class for verbalizing default binary conditions. The childHelperFor attribute should be set to FactType/</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CombinedMandatoryUniqueVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Helper class for verbalizing combinations of uniqueness and mandatory constraints on binaries. The childHelperFor attribute should be set to FactType/</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ChildHelperForEnum">
+		<xs:annotation>
+			<xs:documentation>Used to specify child helper classes as nested classes inside this type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FactType">
+				<xs:annotation>
+					<xs:documentation>Use with the DefaultBinaryMissingUniquenessVerbalizer and CombinedMandatoryUniqueVerbalizer types</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintPatternGroupEnum">
@@ -707,6 +729,7 @@
 		</xs:choice>
 		<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
+		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
 	</xs:complexType>
 	<xs:element name="VerbalizationRoot">
 		<xs:complexType>

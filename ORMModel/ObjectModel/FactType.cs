@@ -56,7 +56,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, INamedElementDictionaryParent, IModelErrorOwner
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, INamedElementDictionaryParent, IModelErrorOwner, IVerbalizeFilterChildren, IVerbalizeCustomChildren
 	{
 		#region ReadingOrder acquisition
 		/// <summary>
@@ -1222,6 +1222,202 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // AutoFix Methods
+		#region IVerbalizeFilterChildren Implementation
+		/// <summary>
+		/// Implements IVerbalizeFilterChildren.FilterChildVerbalizer
+		/// </summary>
+		protected CustomChildVerbalizer FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative)
+		{
+			if (!isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization)
+			{
+				InternalConstraint constraint = childVerbalizer as InternalConstraint;
+				if (constraint != null)
+				{
+					RoleMoveableCollection factRoles = RoleCollection;
+					if (factRoles.Count == 2)
+					{
+						ConstraintModality modality = constraint.Modality;
+						// See if we want to do an 'exactly one' instead of 'at most one'/'some'
+						SimpleMandatoryConstraint mandatory;
+						InternalUniquenessConstraint iuc;
+						if (null != (mandatory = constraint as SimpleMandatoryConstraint))
+						{
+							foreach (ConstraintRoleSequence testConstraint in mandatory.RoleCollection[0].ConstraintRoleSequenceCollection)
+							{
+								InternalUniquenessConstraint testIuc = testConstraint as InternalUniquenessConstraint;
+								if (testIuc != null &&
+									testIuc.Modality == modality &&
+									testIuc.RoleCollection.Count == 1)
+								{
+									// Don't verbalize the mandatory role
+									return CustomChildVerbalizer.Empty;
+								}
+							}
+						}
+						else if (null != (iuc = constraint as InternalUniquenessConstraint))
+						{
+							RoleMoveableCollection roles = iuc.RoleCollection;
+							if (roles.Count == 1)
+							{
+								foreach (ConstraintRoleSequence testConstraint in roles[0].ConstraintRoleSequenceCollection)
+								{
+									SimpleMandatoryConstraint testMandatory = testConstraint as SimpleMandatoryConstraint;
+									if (testMandatory != null &&
+										testMandatory.Modality == modality)
+									{
+										// Fold the verbalizations into one
+										CombinedMandatoryUniqueVerbalizer verbalizer = CombinedMandatoryUniqueVerbalizer.GetVerbalizer();
+										verbalizer.Initialize(this, iuc);
+										return new CustomChildVerbalizer(verbalizer, true);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return new CustomChildVerbalizer(childVerbalizer);
+		}
+		CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative)
+		{
+			return FilterChildVerbalizer(childVerbalizer, isNegative);
+		}
+		#endregion // IVerbalizeFilterChildren Implementation
+		#region CombinedMandatoryUniqueVerbalizer class
+		/// <summary>
+		/// Non-generated portions of verbalization helper used to verbalize a
+		/// combined internal uniqueness constraint and mandatory constraint.
+		/// </summary>
+		private partial class CombinedMandatoryUniqueVerbalizer
+		{
+			private FactType myFact;
+			private InternalUniquenessConstraint myConstraint;
+			public void Initialize(FactType fact, InternalUniquenessConstraint constraint)
+			{
+				myFact = fact;
+				myConstraint = constraint;
+			}
+			private void DisposeHelper()
+			{
+				myFact = null;
+				myConstraint = null;
+			}
+			private FactType FactType
+			{
+				get
+				{
+					return myFact;
+				}
+			}
+			private RoleMoveableCollection RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			private ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
+		}
+		#endregion // CombinedMandatoryUniqueVerbalizer class
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
+		/// </summary>
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
+		{
+			if (!isNegative)
+			{
+				RoleMoveableCollection factRoles = RoleCollection;
+				if (factRoles.Count == 2)
+				{
+					foreach (InternalUniquenessConstraint contextIuc in GetInternalConstraints<InternalUniquenessConstraint>())
+					{
+						if (contextIuc.Modality == ConstraintModality.Alethic)
+						{
+							RoleMoveableCollection roles = contextIuc.RoleCollection;
+							if (roles.Count == 1)
+							{
+								// We have an appropriate context role. See if there
+								// a single-role constraint opposite it. If not, then
+								// we provide the default verbalization.
+								Role oppositeRole = factRoles[0];
+								if (object.ReferenceEquals(oppositeRole, roles[0]))
+								{
+									oppositeRole = factRoles[1];
+								}
+
+								bool provideDefault = true;
+								foreach (ConstraintRoleSequence sequence in oppositeRole.ConstraintRoleSequenceCollection)
+								{
+									InternalUniquenessConstraint iucTest = sequence as InternalUniquenessConstraint;
+									if (iucTest != null && iucTest.RoleCollection.Count == 1 && iucTest.Modality == ConstraintModality.Alethic)
+									{
+										provideDefault = false;
+										break;
+									}
+								}
+								if (provideDefault)
+								{
+									DefaultBinaryMissingUniquenessVerbalizer verbalizer = DefaultBinaryMissingUniquenessVerbalizer.GetVerbalizer();
+									verbalizer.Initialize(this, contextIuc);
+									yield return new CustomChildVerbalizer(verbalizer, true);
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
+		{
+			return GetCustomChildVerbalizations(isNegative);
+		}
+		#endregion // IVerbalizeCustomChildren Implementation
+		#region DefaultBinaryMissingUniquenessVerbalizer
+		private partial class DefaultBinaryMissingUniquenessVerbalizer
+		{
+			private FactType myFact;
+			private InternalUniquenessConstraint myConstraint;
+			public void Initialize(FactType fact, InternalUniquenessConstraint constraint)
+			{
+				myFact = fact;
+				myConstraint = constraint;
+			}
+			private void DisposeHelper()
+			{
+				myFact = null;
+				myConstraint = null;
+			}
+			private FactType FactType
+			{
+				get
+				{
+					return myFact;
+				}
+			}
+			private RoleMoveableCollection RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			private ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
+		}
+		#endregion // DefaultBinaryMissingUniquenessVerbalizer
 	}
 
 	#region FactType Model Validation Errors

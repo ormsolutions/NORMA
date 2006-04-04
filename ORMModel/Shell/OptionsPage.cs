@@ -170,7 +170,7 @@ namespace Neumont.Tools.ORM.Shell
 	#endregion // NotifyDocument Delegate
 	/// <summary>
 	/// Options dialog for ORM designers
-	/// see https://svn.neumont.edu/projects/orm2/wiki/HowToAddOptionPageOptions for adding options
+	/// see https://projects.neumont.edu/orm2/wiki/HowToAddOptionPageOptions for adding options
 	/// </summary>
 	[CLSCompliant(false)]
 	[Guid("B4ABD9FD-CE79-4B26-8D36-F345CB53B525")]
@@ -242,6 +242,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const FinalShapeDeleteBehavior FinalShapeDeleteBehavior_Default = FinalShapeDeleteBehavior.Prompt;
 		private static FinalShapeDeleteBehavior myCurrentFinalShapeDeleteBehavior = FinalShapeDeleteBehavior_Default;
 		private FinalShapeDeleteBehavior myFinalShapeDeleteBehavior = FinalShapeDeleteBehavior_Default;
+
+		private const bool CombineMandatoryAndUniqueVerbalization_Default = true;
+		private static bool myCurrentCombineMandatoryAndUniqueVerbalization = CombineMandatoryAndUniqueVerbalization_Default;
+		private bool myCombineMandatoryAndUniqueVerbalization = CombineMandatoryAndUniqueVerbalization_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -259,6 +263,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
+			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -275,6 +280,7 @@ namespace Neumont.Tools.ORM.Shell
 			myExternalConstraintRoleBarDisplay = myCurrentExternalConstraintRoleBarDisplay;
 			myPrimaryDeleteBehavior = myCurrentPrimaryDeleteBehavior;
 			myFinalShapeDeleteBehavior = myCurrentFinalShapeDeleteBehavior;
+			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
 		}
 
 		/// <summary>
@@ -283,6 +289,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="e"></param>
 		protected override void OnApply(DialogPage.PageApplyEventArgs e)
 		{
+			bool updateVerbalizer = myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization;
 			// Get out early if none of the settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
@@ -294,6 +301,11 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentDefaultDataType = myDefaultDataType;
 				myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
 				myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
+				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
+				if (updateVerbalizer)
+				{
+					ORMDesignerPackage.VerbalizationWindowSettingsChanged();
+				}
 				return;
 			}
 
@@ -310,6 +322,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentDefaultDataType = myDefaultDataType;
 			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
+			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -350,6 +363,10 @@ namespace Neumont.Tools.ORM.Shell
 					diagram.Invalidate(true);
 				}
 			});
+			if (updateVerbalizer)
+			{
+				ORMDesignerPackage.VerbalizationWindowSettingsChanged();
+			}
 		}
 		#endregion // Base overrides
 		#region Change Notification Functions
@@ -585,6 +602,27 @@ namespace Neumont.Tools.ORM.Shell
 		public static FinalShapeDeleteBehavior CurrentFinalShapeDeleteBehavior
 		{
 			get { return myCurrentFinalShapeDeleteBehavior; }
+		}
+
+		/// <summary>
+		/// Current setting for CombineMandatoryAndUniqueVerbalization
+		/// </summary>
+		[DefaultValue(CombineMandatoryAndUniqueVerbalization_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyCombineMandatoryAndUniqueVerbalizationDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyCombineMandatoryAndUniqueVerbalizationDisplayNameId)]
+		public bool CombineMandatoryAndUniqueVerbalization
+		{
+			get { return myCombineMandatoryAndUniqueVerbalization; }
+			set { myCombineMandatoryAndUniqueVerbalization = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for CombineMandatoryAndUniqueVerbalization
+		/// </summary>
+		public static bool CurrentCombineMandatoryAndUniqueVerbalization
+		{
+			get { return myCurrentCombineMandatoryAndUniqueVerbalization; }
 		}
 		#endregion // Accessor properties
 	}

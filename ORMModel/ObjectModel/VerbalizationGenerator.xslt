@@ -278,14 +278,136 @@
 		<xsl:variable name="isRoleValue" select="$patternGroup='RoleValueConstraint'"/>
 		<xsl:variable name="isInternal" select="$patternGroup='InternalConstraint' or $isRoleValue"/>
 		<xsl:variable name="isSingleColumn" select="$patternGroup='SingleColumnExternalConstraint'"/>
+		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
+		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
+		<xsl:if test="$isChildHelper">
+			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:class name="]]></xsl:text>
+			<xsl:value-of select="$parentClass"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[" visibility="public" partial="true"><plx:leadingInfo><plx:pragma type="region" data="]]></xsl:text>
+			<xsl:value-of select="concat($parentClass,'.',@type)"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[ verbalization"/></plx:leadingInfo><plx:trailingInfo><plx:pragma type="closeRegion" data="]]></xsl:text>
+			<xsl:value-of select="concat($parentClass,'.',@type)"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[ verbalization"/></plx:trailingInfo>]]></xsl:text>
+		</xsl:if>
 		<plx:class name="{@type}" visibility="public" partial="true">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="{@type} verbalization"/>
-			</plx:leadingInfo>
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="{@type} verbalization"/>
-			</plx:trailingInfo>
+			<xsl:choose>
+				<xsl:when test="$isChildHelper">
+					<xsl:attribute name="visibility">
+						<xsl:text>private</xsl:text>
+					</xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:leadingInfo>
+						<plx:pragma type="region" data="{@type} verbalization"/>
+					</plx:leadingInfo>
+					<plx:trailingInfo>
+						<plx:pragma type="closeRegion" data="{@type} verbalization"/>
+					</plx:trailingInfo>
+				</xsl:otherwise>
+			</xsl:choose>
 			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<xsl:if test="$isChildHelper">
+				<plx:implementsInterface dataTypeName="IDisposable"/>
+				<plx:field name="myCache"  visibility="private" static="true" dataTypeName="{@type}">
+					<plx:leadingInfo>
+						<plx:comment>Cache an instance so we only create one helper in single-threaded scenarios</plx:comment>
+					</plx:leadingInfo>
+				</plx:field>
+				<plx:function name="GetVerbalizer" visibility="public" modifier="static">
+					<plx:returns dataTypeName="{@type}"/>
+					<plx:local name="retVal" dataTypeName="{@type}">
+						<plx:initialize>
+							<plx:callThis accessor="static" name="myCache" type="field"/>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:nameRef name="retVal"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="retVal"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+									<plx:passMemberTypeParam dataTypeName="{@type}"/>
+									<plx:passParam type="inOut">
+										<plx:callThis name="myCache" accessor="static" type="field"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:cast dataTypeName="{@type}" type="testCast">
+											<plx:nullKeyword/>
+										</plx:cast>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="retVal"/>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef name="retVal"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="retVal"/>
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="{@type}" />
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:nameRef name="retVal"/>
+					</plx:return>
+				</plx:function>
+				<plx:function name="Dispose" visibility="privateInterfaceMember">
+					<plx:interfaceMember memberName="Dispose" dataTypeName="IDisposable"/>
+					<plx:callThis name="DisposeHelper"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:callThis name="myCache" accessor="static" type="field"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:callStatic name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+							<plx:passMemberTypeParam dataTypeName="{@type}"/>
+							<plx:passParam type="inOut">
+								<plx:callThis name="myCache" accessor="static" type="field"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:thisKeyword/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:cast dataTypeName="{@type}" type="testCast">
+									<plx:nullKeyword/>
+								</plx:cast>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:branch>
+				</plx:function>
+			</xsl:if>
 			<plx:function name="GetVerbalization" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -304,7 +426,9 @@
 
 				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<!-- Don't proceed with verbalization if blocking errors are present -->
-				<xsl:call-template name="CheckErrorConditions"/>
+				<xsl:if test="not($isChildHelper)">
+					<xsl:call-template name="CheckErrorConditions"/>
+				</xsl:if>
 				<xsl:variable name="subscriptConditionsFragment">
 					<!-- UNDONE: Better subscript handling. The conditional processing needs
 						 to be moved inside each pattern, but we need to prepare for the situation
@@ -331,13 +455,20 @@
 							<plx:initialize>
 								<plx:binaryOperator type="equality">
 									<plx:left>
-										<plx:callInstance name="Modality" type="property">
-											<plx:callObject>
-												<plx:cast dataTypeName="IConstraint" type="testCast">
-													<plx:thisKeyword/>
-												</plx:cast>
-											</plx:callObject>
-										</plx:callInstance>
+										<xsl:choose>
+											<xsl:when test="$isChildHelper">
+												<plx:callThis name="Modality" type="property"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:callInstance name="Modality" type="property">
+													<plx:callObject>
+														<plx:cast dataTypeName="IConstraint" type="testCast">
+															<plx:thisKeyword/>
+														</plx:cast>
+													</plx:callObject>
+												</plx:callInstance>
+											</xsl:otherwise>
+										</xsl:choose>
 									</plx:left>
 									<plx:right>
 										<plx:callStatic dataTypeName="ConstraintModality" name="Deontic" type="field"/>
@@ -361,11 +492,13 @@
 						</plx:local>
 					</xsl:otherwise>
 				</xsl:choose>
-				<plx:local name="sbTemp" dataTypeName="StringBuilder">
-					<plx:initialize>
-						<plx:nullKeyword/>
-					</plx:initialize>
-				</plx:local>
+				<xsl:if test="descendant::*/@listStyle">
+					<plx:local name="sbTemp" dataTypeName="StringBuilder">
+						<plx:initialize>
+							<plx:nullKeyword/>
+						</plx:initialize>
+					</plx:local>
+				</xsl:if>
 				<xsl:if test="not($isValueTypeValueConstraint)">
 					<plx:local name="parentFact" dataTypeName="FactType">
 						<xsl:choose>
@@ -474,11 +607,13 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<xsl:call-template name="CheckErrorConditions">
-							<xsl:with-param name="Primary" select="false()"/>
-							<xsl:with-param name="DeclareErrorOwner" select="false()"/>
-							<xsl:with-param name="BeginVerbalization" select="true()"/>
-						</xsl:call-template>
+						<xsl:if test="not($isChildHelper)">
+							<xsl:call-template name="CheckErrorConditions">
+								<xsl:with-param name="Primary" select="false()"/>
+								<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+								<xsl:with-param name="BeginVerbalization" select="true()"/>
+							</xsl:call-template>
+						</xsl:if>
 						<plx:return>
 							<!-- This should be an error on the constraint, but be defensive and bail
 								if we have no facts -->
@@ -528,11 +663,13 @@
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
-							<xsl:call-template name="CheckErrorConditions">
-								<xsl:with-param name="Primary" select="false()"/>
-								<xsl:with-param name="DeclareErrorOwner" select="false()"/>
-								<xsl:with-param name="BeginVerbalization" select="true()"/>
-							</xsl:call-template>
+							<xsl:if test="not($isChildHelper)">
+								<xsl:call-template name="CheckErrorConditions">
+									<xsl:with-param name="Primary" select="false()"/>
+									<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+									<xsl:with-param name="BeginVerbalization" select="true()"/>
+								</xsl:call-template>
+							</xsl:if>
 							<plx:return>
 								<plx:falseKeyword/>
 							</plx:return>
@@ -618,11 +755,13 @@
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:condition>
-								<xsl:call-template name="CheckErrorConditions">
-									<xsl:with-param name="Primary" select="false()"/>
-									<xsl:with-param name="DeclareErrorOwner" select="false()"/>
-									<xsl:with-param name="BeginVerbalization" select="true()"/>
-								</xsl:call-template>
+								<xsl:if test="not($isChildHelper)">
+									<xsl:call-template name="CheckErrorConditions">
+										<xsl:with-param name="Primary" select="false()"/>
+										<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+										<xsl:with-param name="BeginVerbalization" select="true()"/>
+									</xsl:call-template>
+								</xsl:if>
 								<plx:return>
 									<plx:falseKeyword/>
 								</plx:return>
@@ -821,15 +960,20 @@
 					<xsl:with-param name="PatternGroup" select="$patternGroup"/>
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
-				<xsl:call-template name="CheckErrorConditions">
-					<xsl:with-param name="Primary" select="false()"/>
-					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
-				</xsl:call-template>
+				<xsl:if test="not($isChildHelper)">
+					<xsl:call-template name="CheckErrorConditions">
+						<xsl:with-param name="Primary" select="false()"/>
+						<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+					</xsl:call-template>
+				</xsl:if>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
 			</plx:function>
 		</plx:class>
+		<xsl:if test="$isChildHelper">
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:class>]]></xsl:text>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="ve:ConstrainedRoles" mode="ConstraintVerbalization">
 		<xsl:param name="PatternGroup"/>
@@ -1068,9 +1212,17 @@
 	</xsl:template>
 	<!-- Handle the minFactArity constraint condition attribute -->
 	<xsl:template match="@minFactArity" mode="ConstraintConditionOperator">
+		<xsl:param name="PatternGroup"/>
 		<plx:binaryOperator type="greaterThanOrEqual">
 			<plx:left>
-				<plx:nameRef name="minFactArity"/>
+				<xsl:choose>
+					<xsl:when test="$PatternGroup='InternalConstraint'">
+						<plx:nameRef name="factArity"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:nameRef name="minFactArity"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:left>
 			<plx:right>
 				<plx:value type="i4" data="{.}"/>
@@ -1079,9 +1231,17 @@
 	</xsl:template>
 	<!-- Handle the maxFactArity constraint condition attribute -->
 	<xsl:template match="@maxFactArity" mode="ConstraintConditionOperator">
+		<xsl:param name="PatternGroup"/>
 		<plx:binaryOperator type="lessThanOrEqual">
 			<plx:left>
-				<plx:nameRef name="maxFactArity"/>
+				<xsl:choose>
+					<xsl:when test="$PatternGroup='InternalConstraint'">
+						<plx:nameRef name="factArity"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:nameRef name="maxFactArity"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:left>
 			<plx:right>
 				<plx:value type="i4" data="{.}"/>
@@ -1133,7 +1293,9 @@
 		<xsl:variable name="fallback" select="position()!=1"/>
 		<xsl:variable name="conditionTestFragment">
 			<xsl:variable name="conditionOperatorsFragment">
-				<xsl:apply-templates select="@*" mode="ConstraintConditionOperator"/>
+				<xsl:apply-templates select="@*" mode="ConstraintConditionOperator">
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:for-each select="exsl:node-set($conditionOperatorsFragment)/child::*">
 				<xsl:if test="position()=1">

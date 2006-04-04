@@ -163,17 +163,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region InternalConstraint Specific
 		/// <summary>
-		/// The internal storage style of this constraint.
-		/// </summary>
-		/// <value>ConstraintStorageStyle.InternalConstraint</value>
-		public ConstraintStorageStyle ConstraintStorageStyle
-		{
-			get
-			{
-				return ConstraintStorageStyle.InternalConstraint;
-			}
-		}
-		/// <summary>
 		/// Ensure that the role is owned by the same
 		/// fact type as the constraint. This method should
 		/// be called from inside a transaction
@@ -299,17 +288,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SingleColumnExternalConstraint : IModelErrorOwner
 	{
 		#region SingleColumnExternalConstraint Specific
-		/// <summary>
-		/// The internal storage style of this constraint.
-		/// </summary>
-		/// <value>ConstraintStorageStyle.SingleColumnExternalConstraint</value>
-		public ConstraintStorageStyle ConstraintStorageStyle
-		{
-			get
-			{
-				return ConstraintStorageStyle.SingleColumnExternalConstraint;
-			}
-		}
 		/// <summary>
 		/// Ensure that an ExternalFactConstraint exists between the
 		/// fact type owning the passed in role and this constraint.
@@ -825,6 +803,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Model;
 			}
 		}
+		/// <summary>
+		/// Implements IConstraint.ConstraintStorageStyle
+		/// </summary>
+		protected ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle.SingleColumnExternalConstraint;
+			}
+		}
+		ConstraintStorageStyle IConstraint.ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle;
+			}
+		}
 		ConstraintType IConstraint.ConstraintType
 		{
 			get
@@ -872,17 +867,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class MultiColumnExternalConstraint : IModelErrorOwner
 	{
 		#region MultiColumnExternalConstraint Specific
-		/// <summary>
-		/// The internal storage style of this constraint.
-		/// </summary>
-		/// <value>ConstraintStorageStyle.MultiColumnExternalConstraint</value>
-		public ConstraintStorageStyle ConstraintStorageStyle
-		{
-			get
-			{
-				return ConstraintStorageStyle.MultiColumnExternalConstraint;
-			}
-		}
 		/// <summary>
 		/// Get a read-only list of FactConstraint links. To get the
 		/// fact type from here, use the FactTypeCollection property on the returned
@@ -1617,6 +1601,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Model;
 			}
 		}
+		/// <summary>
+		/// Implements IConstraint.ConstraintStorageStyle
+		/// </summary>
+		protected ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle.MultiColumnExternalConstraint;
+			}
+		}
+		ConstraintStorageStyle IConstraint.ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle;
+			}
+		}
 		ConstraintType IConstraint.ConstraintType
 		{
 			get
@@ -1722,6 +1723,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactType factType = FactType;
 				return (factType != null) ? factType.Model : null;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.ConstraintStorageStyle
+		/// </summary>
+		protected ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle.InternalConstraint;
+			}
+		}
+		ConstraintStorageStyle IConstraint.ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle;
 			}
 		}
 		ConstraintType IConstraint.ConstraintType

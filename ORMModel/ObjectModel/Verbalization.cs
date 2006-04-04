@@ -91,6 +91,157 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[CLSCompliant(true)]
 	public interface IVerbalizeChildren { }
 	#endregion // IVerbalizeChildren interface
+	#region CustomChildVerbalizer struct
+	/// <summary>
+	/// Structure to hold return information from the IVerbalizeFilterChildren.FilterChildVerbalizer
+	/// and IVerbalizeCustomChildren.GetCustomChildVerbalizations methods
+	/// </summary>
+	public struct CustomChildVerbalizer
+	{
+		private IVerbalize myInstance;
+		private bool myOptions;
+		/// <summary>
+		/// Any empty VerbalizationFilterResult structure
+		/// </summary>
+		public readonly static CustomChildVerbalizer Empty = default(CustomChildVerbalizer);
+		/// <summary>
+		/// Test if the structure is empty
+		/// </summary>
+		public bool IsEmpty
+		{
+			get
+			{
+				return myInstance == null;
+			}
+		}
+		/// <summary>
+		/// Create an VerbalizationFilterResult structure
+		/// </summary>
+		/// <param name="instance">The resulting IVerbalize</param>
+		/// <param name="options">Options specifying how the instance is used. true indicates
+		/// the returned element should be disposed.</param>
+		public CustomChildVerbalizer(IVerbalize instance, bool options)
+		{
+			myInstance = instance;
+			myOptions = options;
+		}
+		/// <summary>
+		/// Create an VerbalizationFilterResult structure
+		/// </summary>
+		/// <param name="instance">The resulting IVerbalize</param>
+		public CustomChildVerbalizer(IVerbalize instance) : this(instance, false) { }
+		/// <summary>
+		/// The instance.
+		/// </summary>
+		public IVerbalize Instance
+		{
+			get
+			{
+				return myInstance;
+			}
+		}
+		/// <summary>
+		/// Options for using the instance
+		/// </summary>
+		public bool Options
+		{
+			get
+			{
+				return myOptions;
+			}
+		}
+		#region Equality and casting routines
+		/// <summary>
+		/// Standard Equals override
+		/// </summary>
+		public override bool Equals(object obj)
+		{
+			if (obj is CustomChildVerbalizer)
+			{
+				return Equals((CustomChildVerbalizer)obj);
+			}
+			return false;
+		}
+		/// <summary>
+		/// Standard GetHashCode override
+		/// </summary>
+		public override int GetHashCode()
+		{
+			IVerbalize instance = myInstance;
+			if (instance != null)
+			{
+				return instance.GetHashCode() ^ RotateRight(myOptions.GetHashCode(), 1);
+			}
+			return 0;
+		}
+		private static int RotateRight(int value, int places)
+		{
+			places = places & 0x1F;
+			if (places == 0)
+			{
+				return value;
+			}
+			int mask = ~0x7FFFFFF >> (places - 1);
+			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
+		}
+		/// <summary>
+		/// Typed Equals method
+		/// </summary>
+		public bool Equals(CustomChildVerbalizer obj)
+		{
+			return object.ReferenceEquals(myInstance, obj.myInstance) && myOptions == obj.myOptions;
+		}
+		/// <summary>
+		/// Equality operator
+		/// </summary>
+		public static bool operator ==(CustomChildVerbalizer left, CustomChildVerbalizer right)
+		{
+			return left.Equals(right);
+		}
+		/// <summary>
+		/// Inequality operator
+		/// </summary>
+		public static bool operator !=(CustomChildVerbalizer left, CustomChildVerbalizer right)
+		{
+			return !left.Equals(right);
+		}
+		#endregion // Equality and casting routines
+	}
+	#endregion // CustomChildVerbalizer struct
+	#region IVerbalizeCustomChildren interface
+	/// <summary>
+	/// Implement to verbalize children that are not naturally aggregated
+	/// </summary>
+	public interface IVerbalizeCustomChildren
+	{
+		/// <summary>
+		/// Retrieve children to verbalize that are not part of the standard
+		/// verbalization.
+		/// </summary>
+		/// <param name="isNegative">true if a negative verbalization is being requested</param>
+		/// <returns>IEnumerable of CustomChildVerbalizer structures</returns>
+		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative);
+	}
+	#endregion // IVerbalizeCustomChildren interface
+	#region IVerbalizeFilterChildren interface
+	/// <summary>
+	/// Implement to remove or provide an alternate verbalization for
+	/// aggregated children that are naturally verbalized.
+	/// </summary>
+	public interface IVerbalizeFilterChildren
+	{
+		/// <summary>
+		/// Provides an opportunity for a parent object to filter the
+		/// verbalization of aggregated child verbalization implementations
+		/// </summary>
+		/// <param name="childVerbalizer"></param>
+		/// <param name="isNegative">true if a negative verbalization is being requested</param>
+		/// <returns>Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
+		/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
+		/// this is true.</returns>
+		CustomChildVerbalizer FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative);
+	}
+	#endregion // IVerbalizeFilterChildren interface
 	#region Static verbalization helpers on FactType class
 	public partial class FactType
 	{
