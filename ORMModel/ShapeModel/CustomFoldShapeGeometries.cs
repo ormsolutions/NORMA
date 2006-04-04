@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Plugging back into the line equation gives us a +/- y value
 			// Final point = (xc, yc) + (x, y)
 			// The quadrant is determined by the relative position of the vectorEndPoint
-			RectangleD box = geometryHost.GeometryBoundingBox;
+			RectangleD box = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
 			PointD boxCenter = box.Center;
 			double xRadius = box.Width / 2;
 			double yRadius = box.Height / 2;
@@ -305,7 +305,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Plugging back into the line equation gives us a +/- y value
 			// Final point = (xc, yc) + (x, y)
 			// The quadrant is determined by the relative position of the vectorEndPoint
-			RectangleD box = geometryHost.GeometryBoundingBox;
+			RectangleD box = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
 			PointD boxCenter = box.Center;
 			double radius = Math.Min(box.Width / 2, box.Height / 2);
 
@@ -381,7 +381,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
 			{
 				// Translate back to local coordinates
-				PointD location = geometryHost.GeometryBoundingBox.Location;
+				PointD location = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location;
 				customPoint.Offset(-location.X, -location.Y);
 				return customPoint;
 			}
@@ -390,7 +390,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// This is used for center to center routing, so the potential point is the
 				// center of the shape. We need to see where a line through the center intersects
 				// the rectangle border and return relative coordinates.
-				RectangleD bounds = geometryHost.GeometryBoundingBox;
+				RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
 				PointD center = bounds.Center;
 				vectorEndPoint.Offset(-center.X, -center.Y);
 				bool negativeX = vectorEndPoint.X < 0;
@@ -478,7 +478,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
 			{
 				// Translate back to local coordinates
-				PointD location = geometryHost.GeometryBoundingBox.Location;
+				PointD location = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location;
 				customPoint.Offset(-location.X, -location.Y);
 				return customPoint;
 			}
@@ -487,7 +487,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// This is used for center to center routing, so the potential point is the
 				// center of the shape. We need to see where a line through the center intersects
 				// the rectangle border and return relative coordinates.
-				RectangleD bounds = geometryHost.GeometryBoundingBox;
+				RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
 				PointD center = bounds.Center;
 				vectorEndPoint.Offset(-center.X, -center.Y);
 				bool negativeX = vectorEndPoint.X < 0;
