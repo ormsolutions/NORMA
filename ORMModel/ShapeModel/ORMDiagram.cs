@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -227,6 +228,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		# endregion // DragDrop overrides
+		#region Hack to block child shape moving twice
+		/// <summary>
+		/// Key used to add a DiagramItemCollection to the current top-level
+		/// transaction's ContextInfo when elements are being moved on the diagram.
+		/// </summary>
+		public static readonly string MovingDiagramItemsContextKey = Guid.NewGuid().ToString("B", CultureInfo.InvariantCulture);
+		/// <summary>
+		/// Hack override to handle MSBUG that moves child shapes twice on the diagram. Combined
+		/// with ORMBaseShape.CanMove to limit moving of child shapes during a transaction.
+		/// </summary>
+		public override void MoveByRepositioning(ElementGroupPrototype elementGroupPrototype, DiagramItemCollection topLevelItems, PointD moveDelta)
+		{
+			Store store = Store;
+			IDictionary contextInfo = null;
+			if (store.TransactionActive)
+			{
+				contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				contextInfo[MovingDiagramItemsContextKey] = topLevelItems;
+			}
+			try
+			{
+				base.MoveByRepositioning(elementGroupPrototype, topLevelItems, moveDelta);
+			}
+			finally
+			{
+				if (contextInfo != null)
+				{
+					contextInfo.Remove(MovingDiagramItemsContextKey);
+				}
+			}
+		}
+		#endregion // Hack to block child shape moving twice
 		#region Toolbox filter strings
 		/// <summary>
 		/// The filter string used for simple actions

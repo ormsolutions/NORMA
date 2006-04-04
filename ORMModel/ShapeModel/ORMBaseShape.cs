@@ -245,6 +245,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}
 		#endregion // Customize property display
+		#region Hack to block child shape moving twice
+		/// <summary>
+		/// Hack override to handle MSBUG that moves child shapes twice on the diagram. Combined
+		/// with ORMDiagram.MoveByRepositioning and ORMDiagram.MovingDiagramItemsContextKey to limit
+		/// to limit moving of child shapes during a transaction.
+		/// </summary>
+		public override bool CanMove
+		{
+			get
+			{
+				Store store = Store;
+				if (store.TransactionActive)
+				{
+					ShapeElement parentShape = ParentShape;
+					if (!(parentShape is ORMDiagram))
+					{
+						DiagramItemCollection movingItems = (DiagramItemCollection)store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMDiagram.MovingDiagramItemsContextKey];
+						if (movingItems != null &&
+							movingItems.Contains(new DiagramItem(parentShape)))
+						{
+							return false;
+						}
+					}
+				}
+				return base.CanMove;
+			}
+		}
+		#endregion // Hack to block child shape moving twice
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the class name as the accessible name
