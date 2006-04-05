@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using System.Drawing;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -26,14 +27,8 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 	{
 		private sealed partial class MainBranch
 		{
-			public sealed class OutputFormatBranch : BranchBase, IMultiColumnBranch
+			public sealed class OutputFormatBranch : BranchBase
 			{
-				private enum Column
-				{
-					GeneratorName = 0,
-					GeneratedFileName = 1
-				}
-
 				public OutputFormatBranch(MainBranch mainBranch)
 				{
 					this._mainBranch = mainBranch;
@@ -75,46 +70,64 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 				public override string GetText(int row, int column)
 				{
-					if (column == (int)Column.GeneratorName)
+					return this.ORMGenerators[row].DisplayName;
+				}
+				public override string GetTipText(int row, int column, ToolTipType tipType)
+				{
+					if (tipType == ToolTipType.StateIcon)
 					{
-						return this.ORMGenerators[row].DisplayName;
+						return _ormGenerators[row].DisplayDescription;
 					}
-					else if (column == (int)Column.GeneratedFileName)
-					{
-						IORMGenerator selectedORMGenerator = this.SelectedORMGenerator;
-						if (selectedORMGenerator == null)
-						{
-							// TODO: Localize this.
-							return "";
-						}
-						if (selectedORMGenerator == this.ORMGenerators[row])
-						{
-							return this.MainBranch.Parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName].FinalItemSpec;
-						}
-						else 
-						{
-							// TODO: Eventually we may want to allow the user to switch which generator is selected for an output format...
-							return null;
-						}
-					}
-					else
-					{
-						return base.GetText(row, column);
-					}
+					return base.GetTipText(row, column, tipType);
 				}
 				public override VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
-					if (this.SelectedORMGenerator != null)
+					VirtualTreeDisplayData displayData = VirtualTreeDisplayData.Empty;
+					displayData.BackColor = SystemColors.ControlLight;
+					bool currentGeneratorSelected = object.ReferenceEquals(_selectedORMGenerator, _ormGenerators[row]);
+					if (currentGeneratorSelected)
 					{
-						// If the user has already selected a generator for this output format, gray out this section...
-						VirtualTreeDisplayData displayData = VirtualTreeDisplayData.Empty;
-						displayData.GrayText = true;
-						return displayData;
+						displayData.Bold = true;
+					}
+					if (0 != (requiredData.Mask & VirtualTreeDisplayMasks.StateImage))
+					{
+						if (currentGeneratorSelected)
+						{
+							displayData.StateImageIndex = _mainBranch.CanRemoveGenerator(this) ? (short)StandardCheckBoxImage.Checked : (short)StandardCheckBoxImage.CheckedDisabled;
+						}
+						else
+						{
+							displayData.StateImageIndex = (short)StandardCheckBoxImage.Unchecked;
+						}
+					}
+					return displayData;
+				}
+				public override StateRefreshChanges ToggleState(int row, int column)
+				{
+					StateRefreshChanges retVal = StateRefreshChanges.None;
+					IORMGenerator selectedGenerator = _selectedORMGenerator;
+					if (selectedGenerator == null)
+					{
+						retVal = _mainBranch.ToggleOnRequiredBranches(this, row);
 					}
 					else
 					{
-						return base.GetDisplayData(row, column, requiredData);
+						IORMGenerator newGenerator = _ormGenerators[row];
+						if (object.ReferenceEquals(newGenerator, selectedGenerator))
+						{
+							retVal = _mainBranch.ToggleOnRequiredBranches(this, row, true);
+						}
+						else
+						{
+							_mainBranch.RemoveGenerator(this);
+							retVal = _mainBranch.ToggleOnRequiredBranches(this, row, false);
+						}
 					}
+					if (retVal != StateRefreshChanges.None && retVal != StateRefreshChanges.Entire)
+					{
+						retVal = StateRefreshChanges.ParentsChildren;
+					}
+					return retVal;
 				}
 				public override int VisibleItemCount
 				{
@@ -123,32 +136,13 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						return this.ORMGenerators.Count;
 					}
 				}
-
-				#region IMultiColumnBranch Members
-
-				public int ColumnCount
+				public override BranchFeatures Features
 				{
-					get { return 2; }
-				}
-
-				public SubItemCellStyles ColumnStyles(int column)
-				{
-					return SubItemCellStyles.Simple;
-				}
-
-				public int GetJaggedColumnCount(int row)
-				{
-					if (row == this.ORMGenerators.Count)
+					get
 					{
-						return 1;
-					}
-					else
-					{
-						return this.ColumnCount;
+						return BranchFeatures.StateChanges;
 					}
 				}
-
-				#endregion // IMultiColumnBranch Members
 			}
 		}
 	}

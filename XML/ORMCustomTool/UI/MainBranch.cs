@@ -16,15 +16,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Microsoft.Build.BuildEngine;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
 	partial class ORMGeneratorSelectionControl
 	{
-		private sealed partial class MainBranch : BranchBase
+		private sealed partial class MainBranch : BranchBase, IMultiColumnBranch
 		{
+			private static class ColumnNumber
+			{
+				public const int GeneratedFormat = 0;
+				public const int GeneratedFileName = 1;
+			}
 			public MainBranch(ORMGeneratorSelectionControl parent)
 			{
 				this._parent = parent;
@@ -64,7 +71,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			{
 				if (style == ObjectStyle.ExpandedBranch)
 				{
-					System.Diagnostics.Debug.Assert(row >= 0 && row < this._branches.Count);
 					return this._branches.Values[row];
 				}
 				return base.GetObject(row, column, style, ref options);
@@ -72,12 +78,27 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 			public override string GetText(int row, int column)
 			{
-				System.Diagnostics.Debug.Assert(row >= 0 && row < this._branches.Count);
-				return this._branches.Keys[row];
+				string retVal = null;
+				switch (column)
+				{
+					case ColumnNumber.GeneratedFormat:
+						retVal = _branches.Keys[row];
+						break;
+					case ColumnNumber.GeneratedFileName:
+						{
+							IORMGenerator selectedORMGenerator = this._branches.Values[row].SelectedORMGenerator;
+							if (selectedORMGenerator != null)
+							{
+								retVal = _parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName].FinalItemSpec;
+							}
+						}
+						break;
+				}
+				return retVal;
 			}
 			public override string GetTipText(int row, int column, ToolTipType tipType)
 			{
-				if (tipType == ToolTipType.StateIcon)
+				if (column == ColumnNumber.GeneratedFormat && tipType == ToolTipType.StateIcon)
 				{
 					OutputFormatBranch currentBranch = _branches.Values[row];
 					IORMGenerator useGenerator = currentBranch.SelectedORMGenerator;
@@ -92,18 +113,77 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			public override VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData displayData = VirtualTreeDisplayData.Empty;
-				displayData.BackColor = System.Drawing.SystemColors.ControlLight;
-				if (_branches.Values[row].SelectedORMGenerator != null)
+				IORMGenerator selectedGenerator = _branches.Values[row].SelectedORMGenerator;
+				switch (column)
 				{
-					displayData.StateImageIndex = (short)StandardCheckBoxImage.CheckedDisabled;
-				}
-				else
-				{
-					displayData.StateImageIndex = (short)StandardCheckBoxImage.Unchecked;
+					case ColumnNumber.GeneratedFormat:
+						if (selectedGenerator != null)
+						{
+							displayData.Bold = true;
+						}
+						if (0 != (requiredData.Mask & VirtualTreeDisplayMasks.StateImage))
+						{
+							if (selectedGenerator != null)
+							{
+								// Don't allow this to uncheck if another tool is using it
+								displayData.StateImageIndex = (short)(CanRemoveGenerator(row) ? StandardCheckBoxImage.Checked : StandardCheckBoxImage.CheckedDisabled);
+							}
+							else
+							{
+								displayData.StateImageIndex = (short)StandardCheckBoxImage.Unchecked;
+							}
+						}
+						break;
+					case ColumnNumber.GeneratedFileName:
+						displayData.GrayText = true;
+						break;
 				}
 				return displayData;
 			}
-
+			/// <summary>
+			/// Test if a generator for an item can be removed
+			/// </summary>
+			/// <param name="row">The row to test.</param>
+			/// <returns>true if the generator can be removed without removing a prerequisite for another generator</returns>
+			private bool CanRemoveGenerator(int row)
+			{
+				return CanRemoveGenerator(_branches.Values[row]);
+			}
+			/// <summary>
+			/// Test if a generator for an item can be removed
+			/// </summary>
+			/// <param name="branch">The branch to test.</param>
+			/// <returns>true if the generator can be removed without removing a prerequisite for another generator</returns>
+			private bool CanRemoveGenerator(OutputFormatBranch branch)
+			{
+				IList<OutputFormatBranch> branchValues = _branches.Values;
+				IORMGenerator selectedGenerator = branch.SelectedORMGenerator;
+				if (selectedGenerator != null)
+				{
+					// Don't allow this to uncheck if another tool is using it
+					int branchCount = branchValues.Count;
+					string outputFormat = selectedGenerator.ProvidesOutputFormat;
+					int i = 0;
+					for (; i < branchCount; ++i)
+					{
+						OutputFormatBranch currentBranch = branchValues[i];
+						if (!object.ReferenceEquals(currentBranch, branch))
+						{
+							IORMGenerator testGenerator = currentBranch.SelectedORMGenerator;
+							if (testGenerator != null &&
+								testGenerator.RequiresInputFormats.Contains(outputFormat))
+							{
+								return false;
+							}
+						}
+					}
+					if (i == branchCount)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
 			public override int VisibleItemCount
 			{
 				get
@@ -113,16 +193,22 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			}
 			public override StateRefreshChanges ToggleState(int row, int column)
 			{
-				return ToggleOnRequiredBranches(_branches.Values[row]);
+				return ToggleOnRequiredBranches(_branches.Values[row], 0);
 			}
-			private StateRefreshChanges ToggleOnRequiredBranches(OutputFormatBranch formatBranch)
+			private StateRefreshChanges ToggleOnRequiredBranches(OutputFormatBranch formatBranch, int branchGeneratorIndex)
+			{
+				return ToggleOnRequiredBranches(formatBranch, branchGeneratorIndex, true);
+			}
+			private StateRefreshChanges ToggleOnRequiredBranches(OutputFormatBranch formatBranch, int branchGeneratorIndex, bool testToggleOff)
 			{
 				StateRefreshChanges retVal = StateRefreshChanges.None;
 				if (formatBranch.SelectedORMGenerator == null)
 				{
 					retVal = StateRefreshChanges.Current | StateRefreshChanges.Children;
-					IORMGenerator useGenerator = formatBranch.ORMGenerators[0];
-					_parent.BuildItemsByGenerator[useGenerator.OfficialName] = useGenerator.AddGeneratedFileBuildItem(_parent._buildItemGroup, _parent._sourceFileName, null);
+					IORMGenerator useGenerator = formatBranch.ORMGenerators[branchGeneratorIndex];
+					BuildItem newBuildItem = useGenerator.AddGeneratedFileBuildItem(_parent._buildItemGroup, _parent._sourceFileName, null);
+					_parent.BuildItemsByGenerator[useGenerator.OfficialName] = newBuildItem;
+					_parent.RemoveRemovedItem(newBuildItem);
 					formatBranch.SelectedORMGenerator = useGenerator;
 					IList<string> requiredFormats = useGenerator.RequiresInputFormats;
 					int requiredFormatsCount = requiredFormats.Count;
@@ -131,14 +217,38 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						OutputFormatBranch requiredBranch;
 						if (_branches.TryGetValue(requiredFormats[i], out requiredBranch))
 						{
-							if (StateRefreshChanges.None != ToggleOnRequiredBranches(requiredBranch))
+							if (StateRefreshChanges.None != ToggleOnRequiredBranches(requiredBranch, 0, false))
 							{
 								retVal = StateRefreshChanges.Entire;
 							}
 						}
 					}
 				}
+				else if (testToggleOff && CanRemoveGenerator(formatBranch))
+				{
+					RemoveGenerator(formatBranch);
+					retVal = StateRefreshChanges.Current | StateRefreshChanges.Children;
+				}
 				return retVal;
+			}
+			/// <summary>
+			/// Remove the generator for this branch. Note that there is
+			/// not checking here as to whether or not the generator is required
+			/// in other places. Most uses will first call CanRemoveGenerator, but
+			/// switching generators for a format will want to remove this blindly
+			/// then toggle on the other format provider.
+			/// </summary>
+			/// <param name="formatBranch">The branch to remove from the generation process</param>
+			private void RemoveGenerator(OutputFormatBranch formatBranch)
+			{
+				IORMGenerator removeGenerator = formatBranch.SelectedORMGenerator;
+				IDictionary<string, BuildItem> buildItemsByGeneratorName = _parent.BuildItemsByGenerator;
+				string generatorKey = removeGenerator.OfficialName;
+				formatBranch.SelectedORMGenerator = null;
+				BuildItem removeBuildItem = buildItemsByGeneratorName[generatorKey];
+				buildItemsByGeneratorName.Remove(generatorKey);
+				_parent._buildItemGroup.RemoveItem(removeBuildItem);
+				_parent.AddRemovedItem(removeBuildItem);
 			}
 			public override BranchFeatures Features
 			{
@@ -152,6 +262,22 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			{
 				return true;
 			}
+			#region IMultiColumnBranch Members
+			int IMultiColumnBranch.ColumnCount
+			{
+				get { return 2; }
+			}
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+			{
+				return SubItemCellStyles.Simple;
+			}
+			int IMultiColumnBranch.GetJaggedColumnCount(int row)
+			{
+				Debug.Assert(false, "Should not be called, the JaggedColumns feature is not turned on");
+				return 2;
+			}
+
+			#endregion // IMultiColumnBranch Members
 		}
 	}
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,6 +25,9 @@ using Microsoft.Build.BuildEngine;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Designer.Interfaces;
+using System.CodeDom;
+using System.CodeDom.Compiler;
 using VSLangProj;
 
 using Debug = System.Diagnostics.Debug;
@@ -44,11 +48,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 	[Guid("977BD01E-F2B4-4341-9C47-459420624A21")]
 	public sealed partial class ORMCustomTool : IVsSingleFileGenerator, IObjectWithSite, IOleServiceProvider, IServiceProvider
 	{
-		private const string EXTENSION_OIAL = ".OIAL" + EXTENSION_XML;
+		#region Private Constants
+		private const string DEFAULT_EXTENSION_DECORATOR = ".ORMCustomToolReport.";
 		private const string EXTENSION_ORM = ".orm";
 		private const string EXTENSION_XML = ".xml";
 		private const string GENERATORS_REGISTRYROOT = @"Software\Neumont\ORM Architect for Visual Studio\Generators";
-		private const string GENERATOR_ORMTOOIAL = "ORMtoOIAL";
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
 		private const string ITEMMETADATA_ORMGENERATOR = "ORMGenerator";
 		private const string ITEMMETADATA_AUTOGEN = "AutoGen";
@@ -56,7 +60,24 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		private const string ITEMGROUP_CONDITIONSTART = "Exists('";
 		private const string ITEMGROUP_CONDITIONEND = "')";
 		private const string DEBUG_ERROR_CATEGORY = "ORMCustomTool";
-
+		#endregion // Private Constants
+		#region Member Variables
+		/// <summary>
+		/// A wrapper object to provide unified managed and unmanaged IServiceProvider implementations
+		/// </summary>
+		private readonly ServiceProvider _serviceProvider;
+		/// <summary>
+		/// The service provider handed us by the shell during IObjectWithSite.SetSite. This
+		/// service provider lets us retrieve the EnvDTE.ProjectItem and CodeDomProvider objects and very little else.
+		/// </summary>
+		private IOleServiceProvider _customToolServiceProvider;
+		/// <summary>
+		/// The full VS DTE service provider. We retrieve this on demand only
+		/// </summary>
+		private IOleServiceProvider _dteServiceProvider;
+		private CodeDomProvider _codeDomProvider;
+		#endregion // Member Variables
+		#region Constructors
 		/// <summary>
 		/// Instantiates a new instance of <see cref="ORMCustomTool"/>.
 		/// </summary>
@@ -64,24 +85,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		{
 			// NOTE: Attempting to use any of the ServiceProviders will cause us to go into an infinite loop
 			// unless SetSite has been called on us.
-			this._objectWithSite = this._serviceProvider = new ServiceProvider(this, true);
+			this._serviceProvider = new ServiceProvider(this, true);
 		}
-
-		private readonly ServiceProvider _serviceProvider;
-		private readonly IObjectWithSite _objectWithSite;
-		private IOleServiceProvider _customToolServiceProvider;
-		private IOleServiceProvider _dteServiceProvider;
-
-		/// <summary>
-		/// Returns a service instance of type <typeparamref name="T"/>, or <see langword="null"/> if no service instance of
-		/// type <typeparamref name="T"/> is available.
-		/// </summary>
-		/// <typeparam name="T">The type of the service instance being requested.</typeparam>
-		public T GetService<T>() where T : class
-		{
-			return this._serviceProvider.GetService(typeof(T)) as T;
-		}
-
+		#endregion // Constructors
 		#region Private Helper Methods
 		private static void ReportError(string message, Exception ex)
 		{
@@ -131,82 +137,122 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			ErrorHandler.ThrowOnFailure(textView.GetBuffer(out textLines));
 			return textLines;
 		}
-
+		private CodeDomProvider CodeDomProvider
+		{
+			get
+			{
+				CodeDomProvider retVal = _codeDomProvider;
+				if (retVal == null)
+				{
+					retVal = (CodeDomProvider)GetService<IVSMDCodeDomProvider>().CodeDomProvider;
+					_codeDomProvider = retVal;
+				}
+				return retVal;
+			}
+		}
 		#endregion // Private Helper Methods
-
 		#region ServiceProvider Interface Implementations
-
+		/// <summary>
+		/// Returns a service instance of type <typeparamref name="T"/>, or <see langword="null"/> if no service instance of
+		/// type <typeparamref name="T"/> is available.
+		/// </summary>
+		/// <typeparam name="T">The type of the service instance being requested.</typeparam>
+		public T GetService<T>() where T : class
+		{
+			return this._serviceProvider.GetService(typeof(T)) as T;
+		}
 		#region IObjectWithSite Members
-
 		void IObjectWithSite.GetSite(ref Guid riid, out IntPtr ppvSite)
 		{
-			this._objectWithSite.GetSite(ref riid, out ppvSite);
+			(_serviceProvider as IObjectWithSite).GetSite(ref riid, out ppvSite);
 		}
-
 		void IObjectWithSite.SetSite(object pUnkSite)
 		{
-			IOleServiceProvider customToolServiceProvider = pUnkSite as IOleServiceProvider;
-			if (customToolServiceProvider != null)
-			{
-				this._customToolServiceProvider = customToolServiceProvider;
-				EnvDTE.ProjectItem projectItem = this.GetService<EnvDTE.ProjectItem>();
-				IOleServiceProvider dteServiceProvider = null;
-				if (projectItem != null && (dteServiceProvider = projectItem.DTE as IOleServiceProvider) != null)
-				{
-					this._dteServiceProvider = dteServiceProvider;
-				}
-			}
+			_customToolServiceProvider = pUnkSite as IOleServiceProvider;
+			// Don't call SetSite on _serviceProvider, we want the site to call back to use to us
+			_dteServiceProvider = null;
+			_codeDomProvider = null;
 		}		
-
 		#endregion // IObjectWithSite Members
-
 		#region IOleServiceProvider Members
-
 		int IOleServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
 		{
 			IOleServiceProvider customToolServiceProvider = this._customToolServiceProvider;
-			IOleServiceProvider dteServiceProvider = this._dteServiceProvider;
 
 			if (customToolServiceProvider == null)
 			{
-				throw new InvalidOperationException();
+				ppvObject = IntPtr.Zero;
+				return VSConstants.E_NOINTERFACE;
 			}
 
 			// First try to service the request via the IOleServiceProvider we were given. If unsuccessful, try via DTE's
 			// IOleServiceProvider implementation (if we have it).
 			int errorCode = this._customToolServiceProvider.QueryService(ref guidService, ref riid, out ppvObject);
-			if (dteServiceProvider == null || (ErrorHandler.Succeeded(errorCode) && ppvObject != IntPtr.Zero))
+
+			if (ErrorHandler.Failed(errorCode) || ppvObject == IntPtr.Zero)
 			{
-				return errorCode;
+				// Fallback on the full environment service provider if necessary
+				IOleServiceProvider dteServiceProvider = this._dteServiceProvider;
+				if (dteServiceProvider == null)
+				{
+					_dteServiceProvider = customToolServiceProvider;
+					EnvDTE.ProjectItem projectItem = GetService<EnvDTE.ProjectItem>();
+					if (null != (projectItem = GetService<EnvDTE.ProjectItem>()) &&
+						null != (dteServiceProvider = projectItem.DTE as IOleServiceProvider))
+					{
+						_dteServiceProvider = dteServiceProvider;
+					}
+				}
+				if (dteServiceProvider != null &&
+					!object.ReferenceEquals(dteServiceProvider, customToolServiceProvider)) // Signal used to indicate failure to retrieve dte provider
+				{
+					errorCode = dteServiceProvider.QueryService(ref guidService, ref riid, out ppvObject);
+				}
 			}
-			else
-			{
-				return this._dteServiceProvider.QueryService(ref guidService, ref riid, out ppvObject);
-			}
+			return errorCode;
 		}
-
 		#endregion // IOleServiceProvider Members
-
 		#region IServiceProvider Members
-
 		object IServiceProvider.GetService(Type serviceType)
 		{
 			// Pass this on to our ServiceProvider which will pass it back to us via our implementation of IOleServiceProvider
 			return this._serviceProvider.GetService(serviceType);
 		}
-
 		#endregion // IServiceProvider Members
-
 		#endregion // ServiceProvider Interface Implementations
-
 		#region IVsSingleFileGenerator Members
-
+		/// <summary>
+		/// The types of reports to write during generation
+		/// </summary>
+		private enum ReportType
+		{
+			/// <summary>
+			/// Write a comment line
+			/// </summary>
+			Comment,
+			/// <summary>
+			/// Write an error report
+			/// </summary>
+			Error,
+			/// <summary>
+			/// Write a warning report
+			/// </summary>
+			Warning,
+		}
+		/// <summary>
+		/// A callback delegate for writing report contents during generation
+		/// </summary>
+		/// <param name="message">The message to write</param>
+		/// <param name="type">The type of the report</param>
+		/// <param name="ex">Exception information, used with an error report</param>
+		/// <param name="stream">Stream to write duplicate error information</param>
+		private delegate void WriteReportItem(string message, ReportType type, Exception ex, Stream stream);
 		int IVsSingleFileGenerator.DefaultExtension(out string pbstrDefaultExtension)
 		{
-			pbstrDefaultExtension = EXTENSION_OIAL;
+			CodeDomProvider codeProvider = CodeDomProvider;
+			pbstrDefaultExtension = DEFAULT_EXTENSION_DECORATOR + ((codeProvider != null) ? codeProvider.FileExtension : ".txt");
 			return VSConstants.S_OK;
 		}
-
 		int IVsSingleFileGenerator.Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
 		{
 			#region ParameterValidation
@@ -224,7 +270,139 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				}
 			}
 			#endregion
-
+			StringWriter outputWriter = new StringWriter();
+			CodeDomProvider codeProvider = CodeDomProvider;
+			GenerateCode(
+				bstrInputFileContents,
+				wszDefaultNamespace,
+				pGenerateProgress,
+				#region Report callback
+				delegate(string message, ReportType type, Exception ex, Stream stream)
+				{
+					switch (type)
+					{
+						case ReportType.Comment:
+							if (codeProvider != null)
+							{
+								codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
+							}
+							else
+							{
+								outputWriter.WriteLine(message);
+							}
+							break;
+						case ReportType.Error:
+						case ReportType.Warning:
+							StreamWriter alternateWriter = (stream != null) ? new StreamWriter(new UncloseableStream(stream), Encoding.UTF8) : null;
+							try
+							{
+								if (codeProvider != null)
+								{
+									CodeStatement statement;
+									if (type == ReportType.Warning)
+									{
+										statement = new CodeCommentStatement("WARNING: " + message);
+									}
+									else
+									{
+										statement = new CodeSnippetStatement("#error " + message);
+									}
+									codeProvider.GenerateCodeFromStatement(statement, outputWriter, null);
+								}
+								else
+								{
+									outputWriter.Write((type == ReportType.Warning) ? "WARNING: " : "ERROR: ");
+									outputWriter.WriteLine(message);
+								}
+								pGenerateProgress.GeneratorError((type == ReportType.Warning) ? 1 : 0, 0, message, uint.MaxValue, uint.MaxValue);
+								if (alternateWriter != null)
+								{
+									alternateWriter.WriteLine(message);
+								}
+								Exception currentException = ex;
+								while (currentException != null)
+								{
+									message = ex.Message;
+									string stackTrace = ex.StackTrace;
+									string exType = ex.GetType().FullName;
+									if (codeProvider != null)
+									{
+										codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(exType), outputWriter, null);
+										if (!string.IsNullOrEmpty(message))
+										{
+											codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
+										}
+										codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(stackTrace), outputWriter, null);
+									}
+									else
+									{
+										outputWriter.WriteLine(exType);
+										if (!string.IsNullOrEmpty(message))
+										{
+											outputWriter.WriteLine(message);
+										}
+										outputWriter.WriteLine(stackTrace);
+									}
+									if (alternateWriter != null)
+									{
+										alternateWriter.WriteLine(exType);
+										if (!string.IsNullOrEmpty(message))
+										{
+											alternateWriter.WriteLine(message);
+										}
+										alternateWriter.WriteLine(stackTrace);
+									}
+									currentException = currentException.InnerException;
+									if (currentException != null)
+									{
+										message = "Information from InnerException";
+										if (codeProvider != null)
+										{
+											codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
+										}
+										else
+										{
+											outputWriter.WriteLine(message);
+										}
+										if (alternateWriter != null)
+										{
+											alternateWriter.WriteLine(message);
+										}
+									}
+								}
+							}
+							finally
+							{
+								if (alternateWriter != null)
+								{
+									alternateWriter.Flush();
+									alternateWriter.Dispose();
+								}
+							}
+							break;
+					}
+				}
+				#endregion // Report callback
+			);
+			outputWriter.Flush();
+			byte[] bytes = Encoding.UTF8.GetBytes(outputWriter.ToString());
+			byte[] preamble = Encoding.UTF8.GetPreamble();
+			int bufferLength = bytes.Length + preamble.Length;
+			IntPtr pBuffer = Marshal.AllocCoTaskMem(bufferLength);
+			Marshal.Copy(preamble, 0, pBuffer, preamble.Length);
+			Marshal.Copy(bytes, 0, (IntPtr)((uint)pBuffer + preamble.Length), bytes.Length);
+			rgbOutputFileContents[0] = pBuffer;
+			pcbOutput = (uint)bufferLength;
+			return VSConstants.S_OK;
+		}
+		private void GenerateCode(string bstrInputFileContents, string wszDefaultNamespace, IVsGeneratorProgress pGenerateProgress, WriteReportItem report)
+		{
+			string message =
+@"Report file generated by ORMCustomTool.
+ Any generation errors will appear as #error lines in this file,
+ followed by the exception message and stack trace.";
+			report(message, ReportType.Comment, null, null);
+			
 			EnvDTE.ProjectItem projectItem = this.GetService<EnvDTE.ProjectItem>();
 			Debug.Assert(projectItem != null);
 			string projectItemName = projectItem.Name;
@@ -238,11 +416,10 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			string projectItemExtension = Path.GetExtension(projectItemName);
 			if (!String.Equals(projectItemExtension, EXTENSION_ORM, StringComparison.OrdinalIgnoreCase) && !String.Equals(projectItemExtension, EXTENSION_XML, StringComparison.OrdinalIgnoreCase))
 			{
-				// TODO: Localize message.
-				pGenerateProgress.GeneratorError(0, 0, "ORMCustomTool is only supported on Object-Role Modeling files, which must have the extension \"" + EXTENSION_ORM + "\" or \"" + EXTENSION_XML + "\".", uint.MaxValue, uint.MaxValue);
-				rgbOutputFileContents[0] = IntPtr.Zero;
-				pcbOutput = 0;
-				return VSConstants.E_FAIL;
+				// UNDONE: Localize message.
+				message = "ORMCustomTool is only supported on Object-Role Modeling files, which must have an '.orm' or '.xml' extension.";
+				report(message, ReportType.Error, null, null);
+				return;
 			}
 
 			// This is actually the full project path for the next couple of lines, and then it is changed to the project directory.
@@ -257,28 +434,20 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 			if (ormBuildItemGroup == null || ormBuildItemGroup.Count <= 0)
 			{
-				// TODO: Localize message.
-				pGenerateProgress.GeneratorError(1, 0, "No BuildItemGroup was found for this ORM file.", uint.MaxValue, uint.MaxValue);
-				pcbOutput = 0;
-				return VSConstants.S_OK;
+				// UNDONE: Localize message.
+				message = "No BuildItemGroup was found for this ORM file. Use the ORMGeneratorSettings dialog to add items to the group, or clear the CustomTool property.";
+				report(message, ReportType.Warning, null, null);
+				return;
 			}
 			else
 			{
-				BuildItem ormToOialItem = null;
 				List<BuildItem> ormBuildItems = new List<BuildItem>(ormBuildItemGroup.Count - 1);
 				foreach (BuildItem buildItem in ormBuildItemGroup)
 				{
 					string ormGeneratorName = buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR);
 					if (!String.IsNullOrEmpty(ormGeneratorName) && String.Equals(buildItem.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), projectItemName, StringComparison.OrdinalIgnoreCase))
 					{
-						if (String.Equals(ormGeneratorName, GENERATOR_ORMTOOIAL, StringComparison.OrdinalIgnoreCase))
-						{
-							ormToOialItem = buildItem;
-						}
-						else
-						{
-							ormBuildItems.Add(buildItem);
-						}
+						ormBuildItems.Add(buildItem);
 					}
 				}
 				pGenerateProgress.Progress(1, 5);
@@ -311,15 +480,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				// Null out bstrInputFileContents to prevent its usage beyond this point.
 				bstrInputFileContents = null;
 
-				// Execute the ORMtoOIAL generator first, since it should always be present,
-				// and almost everything else will depend on it...
-				MemoryStream oialStream = new MemoryStream();
-				IORMGenerator ormToOialGenerator = ORMCustomTool.ORMGenerators[GENERATOR_ORMTOOIAL];
-				ormToOialGenerator.GenerateOutput(ormToOialItem, oialStream, readonlyOutputFormatStreams, wszDefaultNamespace);
-				// Reset oialStream to the beginning of the stream...
-				oialStream.Seek(0, SeekOrigin.Begin);
-				outputFormatStreams.Add(ormToOialGenerator.ProvidesOutputFormat, new ReadOnlyStream(oialStream));
-
 				uint ormBuildItemsCount = (uint)ormBuildItems.Count;
 				uint progressCurrent = (uint)(ormBuildItemsCount * 0.25);
 				uint progressTotal = ormBuildItemsCount + progressCurrent + 3;
@@ -338,8 +498,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						IORMGenerator ormGenerator;
 						if (!ORMCustomTool.ORMGenerators.TryGetValue(buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR), out ormGenerator))
 						{
-							// TODO: Localize error message.
-							pGenerateProgress.GeneratorError(1, 0, String.Concat("Skipping generation of \"", buildItem.FinalItemSpec, "\" because IORMGenerator \"", buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR), "\" could not be found."),uint.MaxValue, uint.MaxValue);
+							// UNDONE: Localize error message.
+							message = string.Format(CultureInfo.InvariantCulture, "#error Skipping generation of '{0}' because IORMGenerator '{1}' could not be found.", buildItem.FinalItemSpec, buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR));
+							report(message, ReportType.Error, null, null);
 							ormBuildItems.Remove(buildItem);
 							pGenerateProgress.Progress(++progressCurrent, progressTotal);
 							// Because we removed buildItem, we need to restart the loop...
@@ -371,10 +532,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 								}
 								catch (Exception ex)
 								{
-									// TODO: Localize error messages.
-									pGenerateProgress.GeneratorError(1, 0, String.Concat("Error occurred while executing transform \"", ormGenerator.OfficialName, "\". See \"", buildItem.FinalItemSpec, "\" for more information."), uint.MaxValue, uint.MaxValue);
-									byte[] errorOutput = Encoding.UTF8.GetBytes(String.Concat("Error while executing transform: \"", ormGenerator.OfficialName, "\".", Environment.NewLine, Environment.NewLine, ex.ToString()));
-									outputStream.Write(errorOutput, 0, errorOutput.Length);
+									// UNDONE: Localize error messages.
+									message = string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'.", ormGenerator.OfficialName, buildItem.FinalItemSpec);
+									report(message, ReportType.Error, ex, outputStream);
 								}
 								Stream readonlyOutputStream = new ReadOnlyStream(outputStream);
 								outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, readonlyOutputStream);
@@ -444,10 +604,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						}
 						catch (Exception ex)
 						{
-							// TODO: Localize error message.
-							string errorMessage = String.Concat("Error occurred during generation of \"", buildItem.FinalItemSpec, "\" (via IORMGenerator \"", ormGenerator.OfficialName, "\"):", Environment.NewLine, Environment.NewLine, ex.ToString());
-							Debug.WriteLine(errorMessage, DEBUG_ERROR_CATEGORY);
-							pGenerateProgress.GeneratorError(1, 0, errorMessage, uint.MaxValue, uint.MaxValue);
+							// UNDONE: Localize error message.
+							message = string.Format(CultureInfo.InvariantCulture, "Error occurred during generation of '{0}' via IORMGenerator '{1}'.", buildItem.FinalItemSpec, ormGenerator.OfficialName);
+							report(message, ReportType.Error, ex, null);
 							ormBuildItems.Remove(buildItem);
 							pGenerateProgress.Progress(++progressCurrent, progressTotal);
 							// Because we removed buildItem, we need to restart the loop...
@@ -455,12 +614,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						}
 					}
 				}
-
-				int oialLength = (int)oialStream.Length;
-				IntPtr outputFileContents = Marshal.AllocCoTaskMem(oialLength);
-				Marshal.Copy(oialStream.GetBuffer(), 0, outputFileContents, oialLength);
-				rgbOutputFileContents[0] = outputFileContents;
-				pcbOutput = (uint)oialLength;
 
 				pGenerateProgress.Progress(++progressCurrent, progressTotal);
 
@@ -474,11 +627,8 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				}
 				
 				pGenerateProgress.Progress(progressTotal, progressTotal);
-
-				return VSConstants.S_OK;
 			}
 		}
-
 		#endregion // IVsSingleFileGenerator Members
 	}
 }

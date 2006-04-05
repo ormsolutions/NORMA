@@ -83,12 +83,13 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			this.virtualTreeControl.SetColumnHeaders(new VirtualTreeColumnHeader[]
 				{
 					// TODO: Localize these.
-					new VirtualTreeColumnHeader("Generator Name", 0.30f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled),
-					new VirtualTreeColumnHeader("Generated File Name", 0.70f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled)
+					new VirtualTreeColumnHeader("Generated Format", 0.30f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled),
+					new VirtualTreeColumnHeader("Generated File Name", 1f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled)
 				}, true);
 			MainBranch mainBranch;
 			tree.Root = mainBranch = this._mainBranch = new MainBranch(this);
 			this.virtualTreeControl.ShowToolTips = true;
+			this.virtualTreeControl.FullCellSelect = true;
 
 			Dictionary<string, BuildItem> buildItemsByGenerator = this._buildItemsByGenerator = new Dictionary<string, BuildItem>(buildItemGroup.Count, StringComparer.OrdinalIgnoreCase);
 			foreach (BuildItem buildItem in buildItemGroup)
@@ -131,11 +132,52 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				return this._buildItemsByGenerator;
 			}
 		}
-
+		private Dictionary<string, string> _removedItems;
+		private void RemoveRemovedItem(BuildItem buildItem)
+		{
+			if (_removedItems != null)
+			{
+				string key = buildItem.FinalItemSpec;
+				if (_removedItems.ContainsKey(key))
+				{
+					_removedItems.Remove(key);
+				}
+			}
+		}
+		private void AddRemovedItem(BuildItem buildItem)
+		{
+			Dictionary<string, string> items = _removedItems;
+			if (items == null)
+			{
+				items = new Dictionary<string, string>();
+				_removedItems = items;
+			}
+			string key = buildItem.FinalItemSpec;
+			items[key] = key;
+		}
 		protected override void OnClosed(EventArgs e)
 		{
 			if (_savedChanges)
 			{
+				if (_removedItems != null)
+				{
+					EnvDTE.ProjectItems subItems = _projectItem.ProjectItems;
+					foreach (string itemName in _removedItems.Keys)
+					{
+						try
+						{
+							EnvDTE.ProjectItem subItem = subItems.Item(itemName);
+							if (subItem != null)
+							{
+								subItem.Delete();
+							}
+						}
+						catch (ArgumentException)
+						{
+							// Swallow
+						}
+					}
+				}
 				if (_originalBuildItemGroup != null)
 				{
 					_project.RemoveItemGroup(_originalBuildItemGroup);
@@ -144,6 +186,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				if (vsProjectItem != null)
 				{
 					vsProjectItem.RunCustomTool();
+					if (DialogResult.Yes == MessageBox.Show(this, "The Neumont ORM Generator must save and reload your project for changes to take effect. Would you like to reload now?", "Neumont ORM Generator", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+					{
+						EnvDTE.DTE dte = _projectItem.DTE;
+						dte.ExecuteCommand("File.SaveAll", "");
+						string solutionPath = dte.Solution.FullName;
+						dte.ExecuteCommand("File.CloseSolution", "");
+						dte.Solution.Open(solutionPath);
+					}
 				}
 			}
 			else
