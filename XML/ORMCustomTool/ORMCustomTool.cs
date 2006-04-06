@@ -245,8 +245,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		/// <param name="message">The message to write</param>
 		/// <param name="type">The type of the report</param>
 		/// <param name="ex">Exception information, used with an error report</param>
-		/// <param name="stream">Stream to write duplicate error information</param>
-		private delegate void WriteReportItem(string message, ReportType type, Exception ex, Stream stream);
+		private delegate void WriteReportItem(string message, ReportType type, Exception ex);
 		int IVsSingleFileGenerator.DefaultExtension(out string pbstrDefaultExtension)
 		{
 			CodeDomProvider codeProvider = CodeDomProvider;
@@ -277,7 +276,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				wszDefaultNamespace,
 				pGenerateProgress,
 				#region Report callback
-				delegate(string message, ReportType type, Exception ex, Stream stream)
+				delegate(string message, ReportType type, Exception ex)
 				{
 					switch (type)
 					{
@@ -293,90 +292,61 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							break;
 						case ReportType.Error:
 						case ReportType.Warning:
-							StreamWriter alternateWriter = (stream != null) ? new StreamWriter(new UncloseableStream(stream), Encoding.UTF8) : null;
-							try
+							if (codeProvider != null)
 							{
-								if (codeProvider != null)
+								CodeStatement statement;
+								if (type == ReportType.Warning)
 								{
-									CodeStatement statement;
-									if (type == ReportType.Warning)
-									{
-										statement = new CodeCommentStatement("WARNING: " + message);
-									}
-									else
-									{
-										statement = new CodeSnippetStatement("#error " + message);
-									}
-									codeProvider.GenerateCodeFromStatement(statement, outputWriter, null);
+									statement = new CodeCommentStatement("WARNING: " + message);
 								}
 								else
 								{
-									outputWriter.Write((type == ReportType.Warning) ? "WARNING: " : "ERROR: ");
-									outputWriter.WriteLine(message);
+									statement = new CodeSnippetStatement("#error " + message);
 								}
-								pGenerateProgress.GeneratorError((type == ReportType.Warning) ? 1 : 0, 0, message, uint.MaxValue, uint.MaxValue);
-								if (alternateWriter != null)
+								codeProvider.GenerateCodeFromStatement(statement, outputWriter, null);
+							}
+							else
+							{
+								outputWriter.Write((type == ReportType.Warning) ? "WARNING: " : "ERROR: ");
+								outputWriter.WriteLine(message);
+							}
+							pGenerateProgress.GeneratorError((type == ReportType.Warning) ? 1 : 0, 0, message, uint.MaxValue, uint.MaxValue);
+							Exception currentException = ex;
+							while (currentException != null)
+							{
+								message = ex.Message;
+								string stackTrace = ex.StackTrace;
+								string exType = ex.GetType().FullName;
+								if (codeProvider != null)
 								{
-									alternateWriter.WriteLine(message);
+									codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(exType), outputWriter, null);
+									if (!string.IsNullOrEmpty(message))
+									{
+										codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
+									}
+									codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(stackTrace), outputWriter, null);
 								}
-								Exception currentException = ex;
-								while (currentException != null)
+								else
 								{
-									message = ex.Message;
-									string stackTrace = ex.StackTrace;
-									string exType = ex.GetType().FullName;
+									outputWriter.WriteLine(exType);
+									if (!string.IsNullOrEmpty(message))
+									{
+										outputWriter.WriteLine(message);
+									}
+									outputWriter.WriteLine(stackTrace);
+								}
+								currentException = currentException.InnerException;
+								if (currentException != null)
+								{
+									message = "Information from InnerException";
 									if (codeProvider != null)
 									{
-										codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(exType), outputWriter, null);
-										if (!string.IsNullOrEmpty(message))
-										{
-											codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
-										}
-										codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(stackTrace), outputWriter, null);
+										codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
 									}
 									else
 									{
-										outputWriter.WriteLine(exType);
-										if (!string.IsNullOrEmpty(message))
-										{
-											outputWriter.WriteLine(message);
-										}
-										outputWriter.WriteLine(stackTrace);
+										outputWriter.WriteLine(message);
 									}
-									if (alternateWriter != null)
-									{
-										alternateWriter.WriteLine(exType);
-										if (!string.IsNullOrEmpty(message))
-										{
-											alternateWriter.WriteLine(message);
-										}
-										alternateWriter.WriteLine(stackTrace);
-									}
-									currentException = currentException.InnerException;
-									if (currentException != null)
-									{
-										message = "Information from InnerException";
-										if (codeProvider != null)
-										{
-											codeProvider.GenerateCodeFromStatement(new CodeCommentStatement(message), outputWriter, null);
-										}
-										else
-										{
-											outputWriter.WriteLine(message);
-										}
-										if (alternateWriter != null)
-										{
-											alternateWriter.WriteLine(message);
-										}
-									}
-								}
-							}
-							finally
-							{
-								if (alternateWriter != null)
-								{
-									alternateWriter.Flush();
-									alternateWriter.Dispose();
 								}
 							}
 							break;
@@ -401,7 +371,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 @"Report file generated by ORMCustomTool.
  Any generation errors will appear as #error lines in this file,
  followed by the exception message and stack trace.";
-			report(message, ReportType.Comment, null, null);
+			report(message, ReportType.Comment, null);
 			
 			EnvDTE.ProjectItem projectItem = this.GetService<EnvDTE.ProjectItem>();
 			Debug.Assert(projectItem != null);
@@ -418,7 +388,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			{
 				// UNDONE: Localize message.
 				message = "ORMCustomTool is only supported on Object-Role Modeling files, which must have an '.orm' or '.xml' extension.";
-				report(message, ReportType.Error, null, null);
+				report(message, ReportType.Error, null);
 				return;
 			}
 
@@ -436,7 +406,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			{
 				// UNDONE: Localize message.
 				message = "No BuildItemGroup was found for this ORM file. Use the ORMGeneratorSettings dialog to add items to the group, or clear the CustomTool property.";
-				report(message, ReportType.Warning, null, null);
+				report(message, ReportType.Warning, null);
 				return;
 			}
 			else
@@ -500,7 +470,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						{
 							// UNDONE: Localize error message.
 							message = string.Format(CultureInfo.InvariantCulture, "#error Skipping generation of '{0}' because IORMGenerator '{1}' could not be found.", buildItem.FinalItemSpec, buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR));
-							report(message, ReportType.Error, null, null);
+							report(message, ReportType.Error, null);
 							ormBuildItems.Remove(buildItem);
 							pGenerateProgress.Progress(++progressCurrent, progressTotal);
 							// Because we removed buildItem, we need to restart the loop...
@@ -526,42 +496,71 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 							else
 							{
 								MemoryStream outputStream = new MemoryStream();
+								Stream readonlyOutputStream = null;
 								try
 								{
 									ormGenerator.GenerateOutput(buildItem, outputStream, readonlyOutputFormatStreams, wszDefaultNamespace);
+									readonlyOutputStream = new ReadOnlyStream(outputStream);
 								}
 								catch (Exception ex)
 								{
 									// UNDONE: Localize error messages.
-									message = string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'.", ormGenerator.OfficialName, buildItem.FinalItemSpec);
-									report(message, ReportType.Error, ex, outputStream);
+									message = string.Format(CultureInfo.InvariantCulture, "Exception occurred while executing transform '{0}'. The existing contents of '{1}' will not be modified.", ormGenerator.OfficialName, buildItem.FinalItemSpec);
+									report(message, ReportType.Error, ex);
 								}
-								Stream readonlyOutputStream = new ReadOnlyStream(outputStream);
-								outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, readonlyOutputStream);
 
-								// Write the result out to the appropriate file...
-								int outputStreamLength = (int)outputStream.Length;
 								string fullItemPath = Path.Combine(projectDirectory, buildItem.FinalItemSpec);
 								IVsTextView textView = this.GetTextViewForDocument(fullItemPath);
 								IVsTextLines textLines;
+								// Write the result out to the appropriate file...
+								int outputStreamLength = (int)outputStream.Length;
 								if (textView != null && (textLines = GetTextLinesForTextView(textView)) != null)
 								{
+									// Get edit points in the document to read the full file from
+									// the in-memory editor
 									object editPointStartObject;
 									ErrorHandler.ThrowOnFailure(textLines.CreateEditPoint(0, 0, out editPointStartObject));
 									EnvDTE.EditPoint editPointStart = editPointStartObject as EnvDTE.EditPoint;
 									Debug.Assert(editPointStart != null);
 									EnvDTE.EditPoint editPointEnd = editPointStart.CreateEditPoint();
 									editPointEnd.EndOfDocument();
+
 									// Reset outputStream to the beginning of the stream...
 									outputStream.Seek(0, SeekOrigin.Begin);
-									// We're using the readonlyOutputStream here so that the StreamReader can't close the real stream
-									using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, outputStreamLength))
+
+									if (readonlyOutputStream != null)
 									{
-										// We're not passing any flags to ReplaceText, because the output of the generators should
-										// be the same whether or not the user has the generated document open
-										editPointStart.ReplaceText(editPointEnd, streamReader.ReadToEnd(), 0);
+										// We're using the readonlyOutputStream here so that the StreamReader can't close the real stream
+										using (StreamReader streamReader = new StreamReader(readonlyOutputStream, Encoding.UTF8, true, (int)outputStream.Length))
+										{
+											// We're not passing any flags to ReplaceText, because the output of the generators should
+											// be the same whether or not the user has the generated document open
+											editPointStart.ReplaceText(editPointEnd, streamReader.ReadToEnd(), 0);
+										}
+										VsShellUtilities.SaveFileIfDirty(textView);
 									}
-									VsShellUtilities.SaveFileIfDirty(textView);
+									else
+									{
+										// The file did not generate, use what we had before if it already exists
+										using (StreamWriter writer = new StreamWriter(new UncloseableStream(outputStream), Encoding.UTF8))
+										{
+											writer.Write(editPointStart.GetText(editPointEnd));
+											writer.Flush();
+										}
+										outputStream.SetLength(outputStream.Position);
+										readonlyOutputStream = new ReadOnlyStream(outputStream);
+									}
+								}
+								else if (readonlyOutputStream == null)
+								{
+									// The transform failed and the file is not loaded in the
+									// environment. Attempt to load it from disk. The output
+									// stream is no longer needed, shut it down now.
+									outputStream.Close();
+									if (File.Exists(fullItemPath))
+									{
+										readonlyOutputStream = new ReadOnlyStream(new FileStream(fullItemPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+									}
 								}
 								else
 								{
@@ -571,7 +570,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 									try
 									{
 										fileStream = File.Create(fullItemPath, outputStreamLength, FileOptions.SequentialScan);
-										fileStream.Write(outputStream.GetBuffer(), 0, outputStreamLength);
+										fileStream.Write(outputStream.GetBuffer(), 0, (int)outputStream.Length);
 									}
 									catch (IOException)
 									{
@@ -594,8 +593,14 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 									}
 								}
 
-								// Reset outputStream to the beginning of the stream...
-								outputStream.Seek(0, SeekOrigin.Begin);
+								if (readonlyOutputStream != null)
+								{
+									// Save the stream for future use
+									outputFormatStreams.Add(ormGenerator.ProvidesOutputFormat, readonlyOutputStream);
+									// Reset outputStream to the beginning of the stream...
+									readonlyOutputStream.Seek(0, SeekOrigin.Begin);
+								}
+
 								ormBuildItems.Remove(buildItem);
 								pGenerateProgress.Progress(++progressCurrent, progressTotal);
 								// Because we removed buildItem, we need to restart the loop...
@@ -606,7 +611,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 						{
 							// UNDONE: Localize error message.
 							message = string.Format(CultureInfo.InvariantCulture, "Error occurred during generation of '{0}' via IORMGenerator '{1}'.", buildItem.FinalItemSpec, ormGenerator.OfficialName);
-							report(message, ReportType.Error, ex, null);
+							report(message, ReportType.Error, ex);
 							ormBuildItems.Remove(buildItem);
 							pGenerateProgress.Progress(++progressCurrent, progressTotal);
 							// Because we removed buildItem, we need to restart the loop...
