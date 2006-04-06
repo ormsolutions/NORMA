@@ -30,6 +30,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Microsoft.VisualStudio.EnterpriseTools.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region IStickyObject interface
@@ -375,9 +376,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return false;
 			}
-			else if (!isLink && (!this.AutoPopulateShapes && this.ActiveDiagramView == null))
+			else if (!isLink && !this.AutoPopulateShapes)
 			{
-				return false;
+				// Note that this used to be the following, but we can't rely on ActiveDiagramView
+				// to be null when the diagram is visible in an inactive window.
+				// MSBUG ActiveDiagramView should be null if the containing window is not active.
+				//else if (!isLink && (!this.AutoPopulateShapes && this.ActiveDiagramView == null))
+				DiagramView activeDiagramView = this.ActiveDiagramView;
+				if (activeDiagramView == null)
+				{
+					return false;
+				}
+				else
+				{
+					// If the diagram has an active view on it, then we
+					// need to make sure that the view belongs to the currently
+					// active document. Otherwise, with multiple windows open
+					// on the document and different diagrams open in each document,
+					// dropping on one document will also add the shape to the
+					// diagram in the non-active window.
+					IServiceProvider serviceProvider;
+					IMonitorSelectionService selectionService;
+					DiagramDocView currentView;
+					if (null == (serviceProvider = (Store as IORMToolServices).ServiceProvider) ||
+						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
+						null == (currentView = selectionService.CurrentDocumentView as DiagramDocView) ||
+						!object.ReferenceEquals(currentView.CurrentDesigner, activeDiagramView))
+					{
+						return false;
+					}
+				}
 			}
 			ObjectType objType;
 			FactType factType;

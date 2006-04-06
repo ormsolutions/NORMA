@@ -34,6 +34,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using System.Windows.Forms;
 using System.Globalization;
+using Microsoft.VisualStudio;
+using System.Runtime.InteropServices;
 namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerCommands enum
@@ -256,7 +258,7 @@ namespace Neumont.Tools.ORM.Shell
 					diagram.Associate((ModelElement)elements[0]);
 				}
 			}
-			base.Diagrams.Add(diagram, true);
+			// Note that adding the diagram to the view(s) is done in events on the docdata
 			return diagram;
 		}
 		/// <summary>
@@ -2110,10 +2112,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Move the selected role to the left.
 		/// </summary>
-		protected virtual void OnMenuMoveRoleLeft(ORMDesignerDocView docView)
+		protected virtual void OnMenuMoveRoleLeft()
 		{
 			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in docView.GetSelectedComponents())
+			foreach (ModelElement mel in GetSelectedComponents())
 			{
 				Role role = mel as Role;
 				if (role != null)
@@ -2133,10 +2135,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Move the selected role to the right.
 		/// </summary>
-		protected virtual void OnMenuMoveRoleRight(ORMDesignerDocView docView)
+		protected virtual void OnMenuMoveRoleRight()
 		{
 			ORMDiagram diagram = (ORMDiagram)CurrentDiagram;
-			foreach (ModelElement mel in docView.GetSelectedComponents())
+			foreach (ModelElement mel in GetSelectedComponents())
 			{
 				Role role = mel as Role;
 				if (role != null)
@@ -2149,6 +2151,65 @@ namespace Neumont.Tools.ORM.Shell
 							UpdateMoveRoleCommandStatus(factShape, role, ref myVisibleCommands, ref myEnabledCommands);
 						}
 						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Open a new window on this document
+		/// </summary>
+		protected virtual void OnMenuNewWindow()
+		{
+			IServiceProvider serviceProvider = ServiceProvider;
+			IVsUIShellOpenDocument openDoc;
+			IVsRunningDocumentTable rdt;
+			if (null != (openDoc = (IVsUIShellOpenDocument)serviceProvider.GetService(typeof(IVsUIShellOpenDocument))) &&
+				null != (rdt = (IVsRunningDocumentTable)serviceProvider.GetService(typeof(IVsRunningDocumentTable))))
+			{
+				IntPtr punkDocData = IntPtr.Zero;
+				try
+				{
+					uint grfRDTFlags;
+					uint dwReadLocks;
+					uint dwEditLocks;
+					string bstrMkDocument;
+					IVsHierarchy hier;
+					uint[] itemId = new uint[1];
+					ErrorHandler.ThrowOnFailure(rdt.GetDocumentInfo(
+						DocData.Cookie,
+						out grfRDTFlags,
+						out dwReadLocks,
+						out dwEditLocks,
+						out bstrMkDocument,
+						out hier,
+						out itemId[0],
+						out punkDocData));
+					Guid logicalView = Guid.Empty;
+					IVsUIHierarchy uiHier;
+					IVsWindowFrame pWindowFrame;
+					int fOpen;
+					ErrorHandler.ThrowOnFailure(openDoc.IsDocumentOpen(
+						hier as IVsUIHierarchy,
+						itemId[0],
+						bstrMkDocument,
+						ref logicalView,
+						(uint)__VSIDOFLAGS.IDO_IgnoreLogicalView, // Corresponds to GUID_NULL for logical view
+						out uiHier,
+						itemId,
+						out pWindowFrame,
+						out fOpen));
+					IVsWindowFrame pNewWindowFrame;
+					ErrorHandler.ThrowOnFailure(openDoc.OpenCopyOfStandardEditor(
+						pWindowFrame,
+						ref logicalView,
+						out pNewWindowFrame));
+					ErrorHandler.ThrowOnFailure(pNewWindowFrame.Show());
+				}
+				finally
+				{
+					if (punkDocData != IntPtr.Zero)
+					{
+						Marshal.Release(punkDocData);
 					}
 				}
 			}

@@ -28,6 +28,7 @@ using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.ObjectModel.Editors;
+using Microsoft.VisualStudio;
 
 namespace Neumont.Tools.ORM.Shell
 {	
@@ -211,6 +212,9 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusErrorList),
 				new EventHandler(OnMenuErrorList),
 				ORMDesignerCommandIds.ErrorList)
+				,new MenuCommand(
+				new EventHandler(OnMenuNewWindow),
+				new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -531,7 +535,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (docView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuMoveRoleLeft(docView);
+					docView.OnMenuMoveRoleLeft();
 				}
 			}
 			private void OnStatusMoveRoleRight(object sender, EventArgs e)
@@ -547,7 +551,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (docView != null)
 				{
 					// Defer to the doc view
-					docView.OnMenuMoveRoleRight(docView);
+					docView.OnMenuMoveRoleRight();
 				}
 			}
 			/// <summary>
@@ -608,6 +612,17 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuErrorList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuNewWindow(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					docView.OnMenuNewWindow();
 				}
 			}
 			#region External Constraint editing menu options

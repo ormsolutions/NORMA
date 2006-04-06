@@ -487,7 +487,8 @@ namespace Neumont.Tools.ORM.Shell
 		#region Tab Restoration Hack
 		private void AddTabRestoreEvents()
 		{
-			//Added events to cater for undo/redo
+			// Added events to cater for undo/redo and initial
+			// add when multiple windows are open
 			Store store = Store;
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
@@ -516,21 +517,21 @@ namespace Neumont.Tools.ORM.Shell
 		private void AddOrRemoveTabForEvent(Diagram diagram, bool add)
 		{
 			Store store = diagram.Store;
-			if (store.InUndo || store.InRedo)
+			IMonitorSelectionService monitorSelection = (IMonitorSelectionService)ServiceProvider.GetService(typeof(IMonitorSelectionService));
+			TabbedDiagramDocView activeView = (monitorSelection != null) ? (monitorSelection.CurrentDocumentView as TabbedDiagramDocView) : null;
+			foreach (DocView view in DocViews)
 			{
-				foreach (DocView view in DocViews)
+				TabbedDiagramDocView tabbedDocView = view as TabbedDiagramDocView;
+				if (tabbedDocView != null)
 				{
-					TabbedDiagramDocView tabbedDocView = view as TabbedDiagramDocView;
-					if (tabbedDocView != null)
+					if (add)
 					{
-						if (add)
-						{
-							tabbedDocView.Diagrams.Add(diagram, true);
-						}
-						else
-						{
-							tabbedDocView.Diagrams.Remove(diagram);
-						}
+						// Activate the tab if this is active window. Otherwise, just readd it.
+						tabbedDocView.Diagrams.Add(diagram, object.ReferenceEquals(tabbedDocView, activeView));
+					}
+					else
+					{
+						tabbedDocView.Diagrams.Remove(diagram);
 					}
 				}
 			}
