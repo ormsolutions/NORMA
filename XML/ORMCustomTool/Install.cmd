@@ -28,7 +28,7 @@ XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_Implementation.xslt" "%ORMTran
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".CoRef.orm" "ORM" "CoRefORM" "%ORMTransformsDir%\CoRefORM.xslt"
-CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms an ORM file to OIAL." ".OIAL.xml" "ORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt"
+CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt"
 CALL:_AddXslORMGenerator "OIALtoXSD" "OIAL to XSD" "Transforms an OIAL file to XML Schema." ".xsd" "OIAL" "XSD" "%ORMTransformsDir%\OIALtoXSD.xslt"
 CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to DCIL." ".DCIL.xml" "OIAL" "DCIL" "%ORMTransformsDir%\OIALtoDCIL.xslt"
 CALL:_AddXslORMGenerator "OIALtoPLiX" "OIAL to PLiX" "Transforms an OIAL file to PLiX." ".PLiX.xml" "OIAL" "PLiX" "%ORMTransformsDir%\OIALtoPLiX_Implementation.xslt"
@@ -108,15 +108,15 @@ REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Extenders\%~2\ORMCustomTool /f 
 GOTO:EOF
 
 :_AddXslORMGenerator
-REG QUERY "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /v "OfficialName" 1>NUL 2>&1
-IF NOT ERRORLEVEL 1 (GOTO:EOF)
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Type" /d "XSLT"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "OfficialName" /d "%~1"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "DisplayName" /d "%~2"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "DisplayDescription" /d "%~3"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "FileExtension" /d "%~4"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "SourceInputFormat" /d "%~5"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "ProvidesOutputFormat" /d "%~6"
-REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "TransformUri" /d "%~7"
-IF NOT "%~8"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Compilable" /t REG_DWORD /d "%~8")
+:: REG QUERY "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /v "OfficialName" 1>NUL 2>&1
+:: IF NOT ERRORLEVEL 1 (GOTO:EOF)
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Type" /d "XSLT" 1>NUL
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "OfficialName" /d "%~1" 1>NUL
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "DisplayName" /d "%~2" 1>NUL
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "DisplayDescription" /d "%~3" 1>NUL
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "FileExtension" /d "%~4" 1>NUL 2>&1
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "SourceInputFormat" /d "%~5" 1>NUL
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "ProvidesOutputFormat" /d "%~6" 1>NUL
+REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "TransformUri" /d "%~7" 1>NUL
+IF NOT "%~8"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Compilable" /t REG_DWORD /d "%~8") 1>NUL
 GOTO:EOF

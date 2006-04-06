@@ -264,9 +264,9 @@
 								<Registry Type="string" Name="Type" Value="XSLT"/>
 								<Registry Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
 								<Registry Type="string" Name="DisplayName" Value="ORM to OIAL"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms an ORM file to OIAL."/>
+								<Registry Type="string" Name="DisplayDescription" Value="Transforms a coreferenced ORM file to OIAL."/>
 								<Registry Type="string" Name="FileExtension" Value=".OIAL.xml"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="ORM"/>
+								<Registry Type="string" Name="SourceInputFormat" Value="CoRefORM"/>
 								<Registry Type="string" Name="ProvidesOutputFormat" Value="OIAL"/>
 								<Registry Type="string" Name="TransformUri" Value="[#ORMtoOIAL.xslt]"/>
 							</Registry>

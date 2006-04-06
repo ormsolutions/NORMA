@@ -29,6 +29,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup Condition="Exists('PersonCountryDemo.orm')">
+    <None Include="PersonCountryDemo.CoRef.orm">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>CoRefORM</ORMGenerator>
+    </None>
     <None Include="PersonCountryDemo.DB2.sql">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
@@ -104,6 +109,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup Condition="Exists('SampleModel.orm')">
+    <None Include="SampleModel.CoRef.orm">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>CoRefORM</ORMGenerator>
+    </None>
     <None Include="SampleModel.DB2.sql">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
