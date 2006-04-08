@@ -3519,10 +3519,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			RolePlayerRequiredError requireRolePlayer;
 			FactType fact;
 			ConstraintDuplicateNameError constraintNameError;
+			FactTypeDuplicateNameError factTypeNameError;
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
 			InternalUniquenessConstraint activateConstraint = null;
 			bool selectConstraintOnly = false;
+			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
 			if (null != (tooFew = error as TooFewReadingRolesError))
 			{
@@ -3567,6 +3569,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RoleConnectAction connectAction = ormDiagram.RoleConnectAction;
 				connectAction.ChainMouseAction(GetAbsoluteRoleAttachPoint(role), clientView, false);
 			}
+			else if (null != (factTypeNameError = error as FactTypeDuplicateNameError))
+			{
+				ActivateNameProperty(factTypeNameError.FactTypeCollection[0]);
+			}
 			else if (null != (constraintNameError = error as ConstraintDuplicateNameError))
 			{
 				// We'll get here if one of the constraints we own has a duplicate name
@@ -3583,9 +3589,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 							case ConstraintType.InternalUniqueness:
 								activateConstraint = (InternalUniquenessConstraint)ic;
 								selectConstraintOnly = true;
+								activateNamePropertyAfterSelect = true;
 								break;
 							case ConstraintType.SimpleMandatory:
 								Diagram.ActiveDiagramView.DiagramClientView.Selection.Set(new DiagramItem(this, RolesShape, new RoleSubField(ic.RoleCollection[0])));
+								ActivateNameProperty(ic);
 								break;
 						}
 						break;
@@ -3657,6 +3665,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						this.Invalidate(true);
 						connectAction.ChainMouseAction(this, activateConstraint, clientView);
+					}
+					else if (activateNamePropertyAfterSelect)
+					{
+						ActivateNameProperty(activateConstraint);
 					}
 				}
 			}

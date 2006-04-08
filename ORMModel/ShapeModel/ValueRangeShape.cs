@@ -14,16 +14,15 @@
 \**************************************************************************/
 #endregion
 
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
-#endregion
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -264,10 +263,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="error">Activated model error</param>
 		protected void ActivateModelError(ModelError error)
 		{
-			IModelErrorActivation parent = ParentShape as IModelErrorActivation;
-			if (parent != null)
+			MaxValueMismatchError maxValueMismatchError;
+			MinValueMismatchError minValueMismatchError;
+			ValueRangeOverlapError overlapError;
+			ConstraintDuplicateNameError duplicateName;
+			ValueConstraint errorValueConstraint = null;
+			if (null != (maxValueMismatchError = error as MaxValueMismatchError))
 			{
-				parent.ActivateModelError(error);
+				errorValueConstraint = maxValueMismatchError.ValueRange.ValueConstraint;
+			}
+			else if (null != (minValueMismatchError = error as MinValueMismatchError))
+			{
+				errorValueConstraint = minValueMismatchError.ValueRange.ValueConstraint;
+			}
+			else if (null != (overlapError = error as ValueRangeOverlapError))
+			{
+				errorValueConstraint = overlapError.ValueConstraint;
+			}
+			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
+			{
+				ActivateNameProperty((NamedElement)duplicateName.ConstraintCollection[0]);
+			}
+			if (errorValueConstraint != null)
+			{
+				Store store = Store;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					errorValueConstraint.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ValueConstraint.TextMetaAttributeGuid), this),
+					false);
 			}
 		}
 		void IModelErrorActivation.ActivateModelError(ModelError error)

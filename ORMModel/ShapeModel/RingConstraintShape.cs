@@ -26,9 +26,10 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public sealed partial class RingConstraintShape : ExternalConstraintShape
+	public partial class RingConstraintShape : ExternalConstraintShape, IModelErrorActivation
 	{
 		#region Customize appearance
 		/// <summary>
@@ -379,5 +380,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // RingConstraintAttributeChangeRule class
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError
+		/// </summary>
+		/// <param name="error">Activated model error</param>
+		protected new void ActivateModelError(ModelError error)
+		{
+			RingConstraintTypeNotSpecifiedError ringTypeError;
+			if (null != (ringTypeError = error as RingConstraintTypeNotSpecifiedError))
+			{
+				Store store = Store;
+				RingConstraint constraint = ringTypeError.RingConstraint;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					constraint.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(RingConstraint.RingTypeMetaAttributeGuid), this),
+					true);
+			}
+			else
+			{
+				base.ActivateModelError(error);
+			}
+		}
+		void IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
 	}
 }

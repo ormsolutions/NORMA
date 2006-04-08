@@ -23,8 +23,11 @@ using System.Drawing.Design;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio;
 namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	/// <summary>
@@ -525,6 +528,155 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			// Handle weird teardown scenarios where the Store is going away
 			return (retval != null && retval.Store != null) ? retval : null;
+		}
+		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
+		private static extern IntPtr GetFocus();
+		/// <summary>
+		/// Open the Properties Window, select the target property
+		/// descriptor, and activate the edit field.
+		/// </summary>
+		/// <param name="serviceProvider">The service provider to use</param>
+		/// <param name="targetDescriptor">The property descriptor to activate</param>
+		/// <param name="openDropdown">true to open the dropdown when the edit field is activated.</param>
+		public static void ActivatePropertyEditor(IServiceProvider serviceProvider, PropertyDescriptor targetDescriptor, bool openDropdown)
+		{
+			IVsUIShell shell;
+			if (null != serviceProvider &&
+				null != (shell = (IVsUIShell)serviceProvider.GetService(typeof(IVsUIShell))))
+			{
+				Guid windowGuid = new Guid(ToolWindowGuids.PropertyBrowser);
+				IVsWindowFrame frame;
+				ErrorHandler.ThrowOnFailure(shell.FindToolWindow((uint)(__VSFINDTOOLWIN.FTW_fForceCreate), ref windowGuid, out frame));
+				ErrorHandler.ThrowOnFailure(frame.Show());
+				SendKeys.Flush();
+				Control ctl = Control.FromHandle(GetFocus());
+				PropertyGrid propertyGrid = null;
+				while (ctl != null)
+				{
+					propertyGrid = ctl as PropertyGrid;
+					if (propertyGrid != null)
+					{
+						break;
+					}
+					ctl = ctl.Parent;
+				}
+				if (propertyGrid != null)
+				{
+					// Make sure any selection change has posted
+					shell.RefreshPropertyBrowser(-1); // DISPID_UNKNOWN
+					string targetCategory = targetDescriptor.Category;
+					string targetDisplayName = targetDescriptor.DisplayName;
+					GridItem activateItem = null;
+					GridItem selectedItem = propertyGrid.SelectedGridItem;
+					if (selectedItem.GridItemType == GridItemType.Property && selectedItem.Label == targetDisplayName)
+					{
+						activateItem = selectedItem;
+					}
+					else
+					{
+						GridItem currentItem = selectedItem;
+						bool moveDown = false;
+						switch (currentItem.GridItemType)
+						{
+							case GridItemType.Property:
+								if (currentItem.Label == targetDisplayName &&
+									currentItem.PropertyDescriptor.Category == targetCategory)
+								{
+									activateItem = currentItem;
+								}
+								break;
+							case GridItemType.Category:
+								if (currentItem.Label == targetCategory)
+								{
+									moveDown = true;
+								}
+								break;
+						}
+						while (activateItem == null && currentItem != null)
+						{
+							GridItemCollection items = null;
+							if (moveDown)
+							{
+								if (currentItem.Expandable && !currentItem.Expanded)
+								{
+									currentItem.Expanded = true;
+								}
+								items = currentItem.GridItems;
+							}
+							else
+							{
+								currentItem = currentItem.Parent;
+								while (!moveDown && currentItem != null)
+								{
+									switch (currentItem.GridItemType)
+									{
+										case GridItemType.Category:
+											if (currentItem.Label == targetCategory)
+											{
+												items = currentItem.GridItems;
+												moveDown = true;
+											}
+											break;
+										case GridItemType.Root:
+											items = currentItem.GridItems;
+											moveDown = true;
+											break;
+										default:
+											currentItem = currentItem.Parent;
+											break;
+
+									}
+								}
+								if (moveDown)
+								{
+									if (currentItem.Expandable && !currentItem.Expanded)
+									{
+										currentItem.Expanded = true;
+									}
+								}
+							}
+							if (activateItem == null && items != null)
+							{
+								currentItem = null;
+								foreach (GridItem item in items)
+								{
+									items = null;
+									GridItemType itemType = item.GridItemType;
+									if (itemType == GridItemType.Category)
+									{
+										if (item.Label == targetCategory)
+										{
+											if (item.Expandable && !item.Expanded)
+											{
+												item.Expanded = true;
+											}
+											items = item.GridItems;
+											break;
+										}
+									}
+									else if (itemType == GridItemType.Property)
+									{
+										if (item.Label == targetDisplayName)
+										{
+											activateItem = item;
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+					if (activateItem != null && activateItem.Select())
+					{
+						SendKeys.Flush();
+						SendKeys.SendWait("{TAB}");
+						if (openDropdown)
+						{
+							SendKeys.SendWait("%{DOWN}");
+						}
+					}
+				}
+			}
 		}
 		#endregion // EditorUtility Specific
 	}

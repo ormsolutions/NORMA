@@ -22,6 +22,7 @@ using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -397,6 +398,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Auto-invalidate tracking
+		#region DuplicateNameError Activation Helper
+		/// <summary>
+		/// Activate the Name property in the Properties Window
+		/// for the specified element
+		/// </summary>
+		/// <param name="targetElement">The underlying model element with a name property</param>
+		protected void ActivateNameProperty(NamedElement targetElement)
+		{
+			Store store = Store;
+			EditorUtility.ActivatePropertyEditor(
+				(store as IORMToolServices).ServiceProvider,
+				targetElement.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), this),
+				false);
+		}
+		#endregion // DuplicateNameError Activation Helper
 		#region Update shapes on ModelError added/removed
 		[RuleOn(typeof(ModelHasError))]
 		private class ModelErrorAdded : AddRule

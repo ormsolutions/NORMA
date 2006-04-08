@@ -682,7 +682,8 @@ namespace Neumont.Tools.ORM.Shell
 				command.Enabled = true;
 				command.Visible = true;
 				command.Supported = true;
-				command.Checked = !ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations;
+				ORMVerbalizationToolWindow window = ORMDesignerPackage.VerbalizationWindow;
+				command.Checked = (window != null) ? !window.ShowNegativeVerbalizations : false;
 			}
 			/// <summary>
 			/// Menu handler
@@ -700,8 +701,8 @@ namespace Neumont.Tools.ORM.Shell
 				command.Enabled = true;
 				command.Visible = true;
 				command.Supported = true;
-				command.Checked = ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations;
-				
+				ORMVerbalizationToolWindow window = ORMDesignerPackage.VerbalizationWindow;
+				command.Checked = (window != null) ? window.ShowNegativeVerbalizations : true;
 			}
 			/// <summary>
 			/// Menu handler

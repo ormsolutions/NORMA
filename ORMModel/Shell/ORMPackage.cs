@@ -473,7 +473,7 @@ namespace Neumont.Tools.ORM.Shell
 				return mySingleton.EnsureFactEditorToolWindow();
 			}
 		}
-
+		private static bool myRetrievingVerbalizationWindow;
 		/// <summary>
 		/// Verbalization output tool window.
 		/// </summary>
@@ -481,7 +481,22 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), true);
+				if (myRetrievingVerbalizationWindow)
+				{
+					// Handles error condition where the verbalization window retrieves
+					// itself during initialization. Occurs attempting to get the initial
+					// state of the positive/negative verbalization buttons.
+					return null;
+				}
+				try
+				{
+					myRetrievingVerbalizationWindow = true;
+					return (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), true);
+				}
+				finally
+				{
+					myRetrievingVerbalizationWindow = false;
+				}
 			}
 		}
 		/// <summary>

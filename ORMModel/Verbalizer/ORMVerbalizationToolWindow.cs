@@ -344,7 +344,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						mel = pel.ModelElement;
 					}
-					if (mel != null)
+					if (mel != null && !mel.IsRemoved)
 					{
 						VerbalizeElement(mel, snippetsDictionary, verbalized, showNegative, myStringWriter, ref firstCallPending);
 					}

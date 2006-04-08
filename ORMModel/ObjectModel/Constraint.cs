@@ -2367,9 +2367,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
-		// UNDONE: Delayed validation (EqualityConstraint)
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			base.DelayValidateErrors();
+			ORMMetaModel.DelayValidateElement(this, DelayValidateEqualityIsImpliedByMandatoryError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
 		#endregion // IModelErrorOwner Implementation
 		#region Error synchronization rules
+		// UNDONE: Delayed validation (EqualityConstraint.DelayValidateEqualityIsImpliedByMandatoryError not called by rules)
+		/// <summary>
+		/// Validator callback for EqualityIsImpliedByMandatoryError
+		/// </summary>
+		private static void DelayValidateEqualityIsImpliedByMandatoryError(ModelElement element)
+		{
+			(element as EqualityConstraint).VerifyNotImpliedByMandatoryConstraints(null);
+		}
 		/// <summary>
 		/// Verifies that the equality constraint is not implied by mandatory constraints. An equality
 		/// constraint is implied if it has a single column and all of the roles in that column have
@@ -3339,7 +3358,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
-		// UNDONE: Delayed validation (DisjunctiveMandatoryConstraint)
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			base.DelayValidateErrors();
+			ORMMetaModel.DelayValidateElement(this, DelayValidateDisjunctiveMandatoryImpliedByMandatoryError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
 		#endregion // IModelErrorOwner Implementation
 		#region Error Rules
 		/// <summary>
@@ -3560,24 +3590,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			base.ValidateErrors(notifyAdded);
-			VerifyMinMaxRule(notifyAdded);
-			VerifyContradictionErrorsWithFactTypeRule(notifyAdded);
+			VerifyMinMaxError(notifyAdded);
+			VerifyFactTypeContradictionErrors(notifyAdded);
 		}
-
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
 		}
-		// UNDONE: Delayed validation (Frequenceconstraint)
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			base.DelayValidateErrors();
+			ORMMetaModel.DelayValidateElement(this, DelayValidateFrequencyConstraintMinMaxError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateFrequencyConstraintContradictsInternalUniquenessConstraintError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
 		#endregion //IModelErrorOwner Implementation
-		#region VerifyContradictionErrorsWithFactTypeRule
+		#region VerifyFactTypeContradictionErrors
+		/// <summary>
+		/// Validator callback for FrequencyConstraintContradictsInternalUniquenessConstraintError
+		/// </summary>
+		private static void DelayValidateFrequencyConstraintContradictsInternalUniquenessConstraintError(ModelElement element)
+		{
+			(element as FrequencyConstraint).VerifyFactTypeContradictionErrors(null);
+		}
 		/// <summary>
 		/// Called when the model is loaded to verify that the 
 		/// FrequencyConstraintContradictsInternalUniquenessConstraintErrors
 		/// are still nessecary, or add any that are needed
 		/// </summary>
 		/// <param name="notifyAdded"></param>
-		private void VerifyContradictionErrorsWithFactTypeRule(INotifyElementAdded notifyAdded)
+		private void VerifyFactTypeContradictionErrors(INotifyElementAdded notifyAdded)
 		{
 			//create a list of the links between the constraint and the fact types it is attached to
 			//to preserve all information between the constraint and each fact type
@@ -3681,17 +3729,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}//end fact type collection foreach
 			}//end ftCount check
 			//method ends at this point
-		}		
-		#endregion //VerifyContradictionErrorsWithFactTypeRule
-
+		}
+		#endregion //VerifyFactTypeContradictionErrors
 		#region MinMaxError Validation
 		/// <summary>
-		/// Add, remove, and otherwise validate the current NMinusOne errors
+		/// Validator callback for FrequencyConstraintMinMaxError
+		/// </summary>
+		private static void DelayValidateFrequencyConstraintMinMaxError(ModelElement element)
+		{
+			(element as FrequencyConstraint).VerifyMinMaxError(null);
+		}
+		/// <summary>
+		/// Verify that the Min and Max values are consistent
 		/// </summary>
 		/// <param name="notifyAdded">If not null, this is being called during
 		/// load when rules are not in place. Any elements that are added
 		/// must be notified back to the caller.</param>
-		private void VerifyMinMaxRule(INotifyElementAdded notifyAdded)
+		private void VerifyMinMaxError(INotifyElementAdded notifyAdded)
 		{
 			if (IsRemoved)
 			{
@@ -3723,7 +3777,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // MinMaxError Validation
 		#region FrequencyConstraintMinMaxRule class
-		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FrequencyConstraint))]
 		private class FrequencyConstraintMinMaxRule : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
@@ -3735,26 +3789,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
 					if (!fc.IsRemoved)
 					{
-						fc.VerifyMinMaxRule(null);
+						ORMMetaModel.DelayValidateElement(fc, DelayValidateFrequencyConstraintMinMaxError);
 					}
 				}
 			}
 		}
 		#endregion // FrequencyConstraintMinMaxRule class
-		#region FrequencyConstraintMinMaxAddRule class
-		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class FrequencyConstraintMinMaxAddRule : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
-				if (!fc.IsRemoved)
-				{
-					fc.VerifyMinMaxRule(null);
-				}
-			}
-		}
-		#endregion // FrequencyConstraintMinMaxAddRule class
 		#region RemoveContradictionErrorsWithFactTypeRule class
 		/// <summary>
 		/// There is no automatic delete propagation when a role used by the
@@ -3832,9 +3872,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			this.ValidateErrors(notifyAdded);
 		}
-		// UNDONE: Delayed validation (RingConstraint)
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			base.DelayValidateErrors();
+			ORMMetaModel.DelayValidateElement(this, DelayValidateRingConstraintTypeNotSpecifiedError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
 		#endregion//Ring Constraint class
 		#region RingConstraintTypeNotSpecifiedError Rule
+		/// <summary>
+		/// Validator callback for RingConstraintTypeNotSpecifiedError
+		/// </summary>
+		private static void DelayValidateRingConstraintTypeNotSpecifiedError(ModelElement element)
+		{
+			(element as RingConstraint).VerifyTypeNotSpecifiedRule(null);
+		}
 		/// <summary>
 		/// Add, remove, and otherwise validate RingConstraintTypeNotSpecified error
 		/// </summary>
@@ -3871,7 +3929,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //Type Not Specified Error Rule
 		#region RingConstraintTypeChangeRule class
-		[RuleOn(typeof(RingConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(RingConstraint))]
 		private class RingConstraintTypeChangeRule : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
@@ -3882,7 +3940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					RingConstraint rc = e.ModelElement as RingConstraint;
 					if (!rc.IsRemoved)
 					{
-						rc.VerifyTypeNotSpecifiedRule(null);
+						ORMMetaModel.DelayValidateElement(rc, DelayValidateRingConstraintTypeNotSpecifiedError);
 					}
 				}
 			}

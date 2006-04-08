@@ -237,13 +237,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				#endregion
 				#region Ring
 				case ConstraintType.Ring:
-				{
-					if (((RingConstraint)constraint).RingType == RingConstraintType.Undefined)
-					{
-						goto default;
-					}
+					// Note: goto default here restores the frowny face. However,
+					// with the error feedback, we already have UI indicating there
+					// is a problem.
 					break;
-				}
 				#endregion
 				#region Equality
 				case ConstraintType.Equality:
@@ -334,6 +331,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				#region Fallback (default)
 				default:
 				{
+					// Draws a frowny face
 					float eyeY = boundsF.Y + (boundsF.Height / 3);
 					PointF leftEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.3f), eyeY);
 					PointF leftEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.4f), eyeY);
@@ -403,13 +401,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="error">Activated model error</param>
 		protected void ActivateModelError(ModelError error)
 		{
+			ConstraintDuplicateNameError duplicateName;
 			if (error is TooFewRoleSequencesError)
 			{
-				ORMDiagram diagram = Diagram as ORMDiagram;
-				// UNDONE: We may want to do something different here, like
-				// making this the sticky object instead of directly chaining
-				// the mouse action.
-				diagram.ExternalConstraintConnectAction.ChainMouseAction(this, diagram.ActiveDiagramView.DiagramClientView);
+				ActivateNewRoleSequenceAction(null);
+			}
+			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
+			{
+				ActivateNameProperty((NamedElement)duplicateName.ConstraintCollection[0]);
 			}
 		}
 		void IModelErrorActivation.ActivateModelError(ModelError error)
@@ -536,6 +535,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramPointEventArgs</param>
 		public override void OnDoubleClick(DiagramPointEventArgs e)
 		{
+			ActivateNewRoleSequenceAction(e.DiagramClientView);
+		}
+		private void ActivateNewRoleSequenceAction(DiagramClientView clientView)
+		{
 			ORMDiagram diagram;
 			IConstraint constraint;
 			if (null != (diagram = this.Diagram as ORMDiagram)
@@ -547,7 +550,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				switch (constraint.ConstraintStorageStyle)
 				{
 					case ConstraintStorageStyle.SingleColumnExternalConstraint:
-						Debug.Assert(this.AssociatedConstraint != null);
 						connectAction.ConstraintRoleSequenceToEdit = constraint as ConstraintRoleSequence;
 						break;
 					default:
@@ -556,7 +558,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				if (!connectAction.IsActive)
 				{
-					connectAction.ChainMouseAction(this, e.DiagramClientView);
+					if (clientView == null)
+					{
+						clientView = diagram.ActiveDiagramView.DiagramClientView;
+					}
+					connectAction.ChainMouseAction(this, clientView);
 				}
 			}
 		}

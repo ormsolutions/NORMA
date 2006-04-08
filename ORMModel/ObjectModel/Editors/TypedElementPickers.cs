@@ -299,27 +299,20 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
 			DataTypeMoveableCollection dataTypes = instance.Model.DataTypeCollection;
 			IList content = dataTypes;
-			// Let's use the order that the types appear in the DataType.PortableDataType enum.
-			// To change this, uncomment the lines in the region below.
-			#region Sort list
-//			int count = dataTypes.Count;
-//			if (count > 0)
-//			{
-//				DataType[] types = new DataType[count];
-//				for (int i = 0; i < count; ++i)
-//				{
-//					types[i] = dataTypes[i];
-//				}
-//				Array.Sort<DataType>(types, delegate(DataType type1, DataType type2)
-//				{
-//					return string.Compare(type1.ToString(), type2.ToString());
-//				});
-//				content = types;
-//			}
-			#endregion // Sort list
+			int count = dataTypes.Count;
+			if (count > 0)
+			{
+				DataType[] types = new DataType[count];
+				dataTypes.CopyTo(types, 0);
+				Array.Sort<DataType>(types, delegate(DataType type1, DataType type2)
+				{
+					return string.Compare(type1.ToString(), type2.ToString());
+				});
+				content = types;
+			}
 			return content;
 		}
-		private static Size myLastControlSize = Size.Empty;
+		private static Size myLastControlSize = new Size(192, 144);
 		/// <summary>
 		/// Manage control size independently
 		/// </summary>

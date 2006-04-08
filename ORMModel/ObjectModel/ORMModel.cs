@@ -1658,13 +1658,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			void ICollection.CopyTo(Array array, int index)
 			{
 				int baseIndex = index;
-				myList1.CopyTo(array, baseIndex);
-				baseIndex += myList1.Count;
-				myList2.CopyTo(array, baseIndex);
-				baseIndex += myList2.Count;
-				myList3.CopyTo(array, baseIndex);
-				baseIndex += myList3.Count;
-				myList4.CopyTo(array, baseIndex);
+				int nextCount = myList1.Count;
+				if (nextCount != 0)
+				{
+					myList1.CopyTo(array, baseIndex);
+					baseIndex += nextCount;
+				}
+				nextCount = myList2.Count;
+				if (nextCount != 0)
+				{
+					myList2.CopyTo(array, baseIndex);
+					baseIndex += nextCount;
+				}
+				nextCount = myList3.Count;
+				if (nextCount != 0)
+				{
+					myList3.CopyTo(array, baseIndex);
+					baseIndex += nextCount;
+				}
+				nextCount = myList4.Count;
+				if (nextCount != 0)
+				{
+					myList4.CopyTo(array, baseIndex);
+				}
 			}
 			int ICollection.Count
 			{

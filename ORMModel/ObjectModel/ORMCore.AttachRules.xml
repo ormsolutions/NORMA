@@ -38,7 +38,6 @@
 		<arg:Rule class="FactType.ModelHasInternalConstraintRemoveRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingRemoveRuleModelValidation"/>
-		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxAddRule"/>
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxRule"/>
 		<arg:Rule class="FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule"/>
 		<arg:Rule class="InternalConstraint.ConstraintRoleSequenceHasRoleAdded"/>

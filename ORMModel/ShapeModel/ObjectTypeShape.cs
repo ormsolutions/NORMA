@@ -25,8 +25,8 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Collections;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
@@ -37,20 +37,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected void ActivateModelError(ModelError error)
 		{
-			if (error is DataTypeNotSpecifiedError)
+			DataTypeNotSpecifiedError dataTypeError;
+			EntityTypeRequiresReferenceSchemeError requiresReferenceSchemeError;
+			ObjectTypeDuplicateNameError duplicateName;
+			if (null != (dataTypeError = error as DataTypeNotSpecifiedError))
 			{
-				IServiceProvider provider;
-				IVsUIShell shell;
-				if (null != (provider = (Store as IORMToolServices).ServiceProvider) &&
-					null != (shell = (IVsUIShell)provider.GetService(typeof(IVsUIShell))))
-				{
-					Guid windowGuid = new Guid(ToolWindowGuids.PropertyBrowser);
-					IVsWindowFrame frame;
-					ErrorHandler.ThrowOnFailure(shell.FindToolWindow((uint)(__VSFINDTOOLWIN.FTW_fForceCreate), ref windowGuid, out frame));
-					ErrorHandler.ThrowOnFailure(frame.Show());
-					// UNDONE: Keep going, select the DataType property, and open its dropdown. I've pinged MS on this one, I can't
-					// see any good way to get at the PropertyGrid reference, or to open the dropdown when I find it.
-				}
+				Store store = Store;
+				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueTypeCollection;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					valueType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.DataTypeDisplayMetaAttributeGuid), this),
+					true);
+			}
+			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
+			{
+				Store store = Store;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					requiresReferenceSchemeError.ObjectType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.ReferenceModeDisplayMetaAttributeGuid), this),
+					true);
+			}
+			else if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
+			{
+				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
 			}
 		}
 		void IModelErrorActivation.ActivateModelError(ModelError error)
