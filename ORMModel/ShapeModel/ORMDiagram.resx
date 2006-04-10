@@ -446,6 +446,14 @@
     <value xml:space="preserve">Combine Mandatory and Uniqueness Constraint</value>
     <comment xml:space="preserve">The display name of the Combine Mandatory And Unique Verbalization option.</comment>
   </data>
+  <data name="OptionsPage.Property.ShowDefaultConstraintVerbalization.Description">
+    <value xml:space="preserve">Should verbalization be shown for constraints implied by the lack of a constraint?</value>
+    <comment xml:space="preserve">The description of the Show Default Constraint Verbalization option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName">
+    <value xml:space="preserve">Verbalize Default Constraint</value>
+    <comment xml:space="preserve">The display name of the Show Default Constraint Verbalization option.</comment>
+  </data>
   <data name="OptionsPage.Property.DataType.Description">
     <value xml:space="preserve">The data type for objects. This will be the default data type used when creating new value types.</value>
     <comment xml:space="preserve">The data type property description.</comment>

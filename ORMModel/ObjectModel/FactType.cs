@@ -1349,7 +1349,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
 		{
-			if (!isNegative)
+			if (!isNegative && Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization)
 			{
 				RoleMoveableCollection factRoles = RoleCollection;
 				if (factRoles.Count == 2)

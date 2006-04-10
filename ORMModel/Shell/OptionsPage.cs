@@ -246,6 +246,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const bool CombineMandatoryAndUniqueVerbalization_Default = true;
 		private static bool myCurrentCombineMandatoryAndUniqueVerbalization = CombineMandatoryAndUniqueVerbalization_Default;
 		private bool myCombineMandatoryAndUniqueVerbalization = CombineMandatoryAndUniqueVerbalization_Default;
+
+		private const bool ShowDefaultConstraintVerbalization_Default = true;
+		private static bool myCurrentShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
+		private bool myShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -264,6 +268,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
+			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -281,6 +286,7 @@ namespace Neumont.Tools.ORM.Shell
 			myPrimaryDeleteBehavior = myCurrentPrimaryDeleteBehavior;
 			myFinalShapeDeleteBehavior = myCurrentFinalShapeDeleteBehavior;
 			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
+			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
 		}
 
 		/// <summary>
@@ -289,7 +295,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="e"></param>
 		protected override void OnApply(DialogPage.PageApplyEventArgs e)
 		{
-			bool updateVerbalizer = myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization;
+			bool updateVerbalizer =
+				myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization ||
+				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization;
 			// Get out early if none of the settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
@@ -302,6 +310,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
 				myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
+				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 				if (updateVerbalizer)
 				{
 					ORMDesignerPackage.VerbalizationWindowSettingsChanged();
@@ -323,6 +332,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
+			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -623,6 +633,27 @@ namespace Neumont.Tools.ORM.Shell
 		public static bool CurrentCombineMandatoryAndUniqueVerbalization
 		{
 			get { return myCurrentCombineMandatoryAndUniqueVerbalization; }
+		}
+
+		/// <summary>
+		/// Current setting for ShowDefaultConstraintVerbalization
+		/// </summary>
+		[DefaultValue(CombineMandatoryAndUniqueVerbalization_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyShowDefaultConstraintVerbalizationDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId)]
+		public bool ShowDefaultConstraintVerbalization
+		{
+			get { return myShowDefaultConstraintVerbalization; }
+			set { myShowDefaultConstraintVerbalization = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for ShowDefaultConstraintVerbalization
+		/// </summary>
+		public static bool CurrentShowDefaultConstraintVerbalization
+		{
+			get { return myCurrentShowDefaultConstraintVerbalization; }
 		}
 		#endregion // Accessor properties
 	}

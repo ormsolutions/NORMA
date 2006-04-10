@@ -319,9 +319,17 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPagePropertyCombineMandatoryAndUniqueVerbalizationDescriptionId = "OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.Description";
 		/// <summary>
-		/// Name of the Combine Mandatory And Unique Verbalization option
+		/// Display Name of the Combine Mandatory And Unique Verbalization option
 		/// </summary>
 		public const string OptionsPagePropertyCombineMandatoryAndUniqueVerbalizationDisplayNameId = "OptionsPage.Property.CombineMandatoryAndUniqueVerbalization.DisplayName";
+		/// <summary>
+		/// Description of the Show Default Constraint Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyShowDefaultConstraintVerbalizationDescriptionId = "OptionsPage.Property.ShowDefaultConstraintVerbalization.Description";
+		/// <summary>
+		/// Display Name of the Show Default Constraint Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId = "OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName";
 		/// <summary>
 		/// Display Name of the Object Name color
 		/// </summary>
