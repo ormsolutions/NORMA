@@ -346,6 +346,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 		}
 		/// <summary>
+		/// Returns the active label edit control, or null
+		/// </summary>
+		public Control LabelEditControl
+		{
+			get
+			{
+				return vtrReadings.LabelEditControl;
+			}
+		}
+		/// <summary>
 		/// Returns true if the reading pane is active
 		/// </summary>
 		public bool IsReadingPaneActive

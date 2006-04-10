@@ -370,7 +370,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 		}
-
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
 		/// <summary>
 		/// Provides a first chance to handle any command that MSOLE.IOleCommandTarget.QueryStatus
 		/// informed the shell to pass to this window. Implements IOleCommandTarget.Exec
@@ -396,6 +397,18 @@ namespace Neumont.Tools.ORM.Shell
 								if (myReadingEditor.IsReadingPaneActive && myReadingEditor.CurrentReading != null)
 								{
 									myForm.DeleteSelectedReading();
+								}
+							}
+							else
+							{
+								Control editControl = myReadingEditor.LabelEditControl;
+								if (editControl != null)
+								{
+									IntPtr editHandle = editControl.Handle;
+									// WM_KEYDOWN == 0x100
+									SendMessage(editHandle, 0x100, (int)Keys.Delete, 1);
+									// WM_KEYUP == 0x101
+									SendMessage(editHandle, 0x101, (int)Keys.Delete, 0x40000001);
 								}
 							}
 							// We enabled the command, so we say we handled it regardless of the further conditions

@@ -253,7 +253,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// in the diagram
 		/// </summary>
 		/// <param name="error">The error being activated</param>
-		void ActivateModelError(ModelError error);
+		/// <returns>true if additional work was done to activate the error</returns>
+		bool ActivateModelError(ModelError error);
 	}
 	#endregion // IModelErrorActivation interface
 	#region IProxyDisplayProvider

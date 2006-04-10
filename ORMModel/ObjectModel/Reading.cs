@@ -353,14 +353,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (0 != (filter & ModelErrorUses.BlockVerbalization))
 			{
 				TooFewReadingRolesError tooFew;
-				TooManyReadingRolesError tooMany;
 				if (null != (tooFew = TooFewRolesError))
 				{
 					yield return new ModelErrorUsage(tooFew, ModelErrorUses.BlockVerbalization);
 				}
+			}
+			if (0 != (filter & ModelErrorUses.Verbalize))
+			{
+				TooManyReadingRolesError tooMany;
 				if (null != (tooMany = TooManyRolesError))
 				{
-					yield return new ModelErrorUsage(tooMany, ModelErrorUses.BlockVerbalization);
+					yield return new ModelErrorUsage(tooMany, ModelErrorUses.Verbalize);
 				}
 			}
 			// Get errors off the base

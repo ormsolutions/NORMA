@@ -31,45 +31,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
 	{
-		#region IModelErrorActivation Implementation
-		/// <summary>
-		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
-		/// </summary>
-		protected void ActivateModelError(ModelError error)
-		{
-			DataTypeNotSpecifiedError dataTypeError;
-			EntityTypeRequiresReferenceSchemeError requiresReferenceSchemeError;
-			ObjectTypeDuplicateNameError duplicateName;
-			if (null != (dataTypeError = error as DataTypeNotSpecifiedError))
-			{
-				Store store = Store;
-				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueTypeCollection;
-				EditorUtility.ActivatePropertyEditor(
-					(store as IORMToolServices).ServiceProvider,
-					valueType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.DataTypeDisplayMetaAttributeGuid), this),
-					true);
-			}
-			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
-			{
-				Store store = Store;
-				EditorUtility.ActivatePropertyEditor(
-					(store as IORMToolServices).ServiceProvider,
-					requiresReferenceSchemeError.ObjectType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.ReferenceModeDisplayMetaAttributeGuid), this),
-					true);
-			}
-			else if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
-			{
-				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
-			}
-		}
-		void IModelErrorActivation.ActivateModelError(ModelError error)
-		{
-			ActivateModelError(error);
-		}
-		#endregion // IModelErrorActivation Implementation
-	}
-	public partial class ObjectTypeShape
-	{
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
 		private static AutoSizeTextField myReferenceModeShapeField;
@@ -321,6 +282,58 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		#endregion // ObjectTypeShape specific
+		#region Mouse handling
+		/// <summary>
+		/// Attempt model error activation
+		/// </summary>
+		public override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			ORMBaseShape.AttemptErrorActivation(e);
+			base.OnDoubleClick(e);
+		}
+		#endregion // Mouse handling
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
+		/// </summary>
+		protected bool ActivateModelError(ModelError error)
+		{
+			DataTypeNotSpecifiedError dataTypeError;
+			EntityTypeRequiresReferenceSchemeError requiresReferenceSchemeError;
+			ObjectTypeDuplicateNameError duplicateName;
+			bool retVal = true;
+			if (null != (dataTypeError = error as DataTypeNotSpecifiedError))
+			{
+				Store store = Store;
+				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueTypeCollection;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					valueType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.DataTypeDisplayMetaAttributeGuid), this),
+					true);
+			}
+			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
+			{
+				Store store = Store;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					requiresReferenceSchemeError.ObjectType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.ReferenceModeDisplayMetaAttributeGuid), this),
+					true);
+			}
+			else if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
+			{
+				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
+			}
+			else
+			{
+				retVal = false;
+			}
+			return retVal;
+		}
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			return ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
 		#region Shape display update rules
 		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class ShapeChangeRule : ChangeRule

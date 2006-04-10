@@ -384,10 +384,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError
 		/// </summary>
-		/// <param name="error">Activated model error</param>
-		protected new void ActivateModelError(ModelError error)
+		protected new bool ActivateModelError(ModelError error)
 		{
 			RingConstraintTypeNotSpecifiedError ringTypeError;
+			bool retVal = true;
 			if (null != (ringTypeError = error as RingConstraintTypeNotSpecifiedError))
 			{
 				Store store = Store;
@@ -399,12 +399,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else
 			{
-				base.ActivateModelError(error);
+				retVal = base.ActivateModelError(error);
 			}
+			return retVal;
 		}
-		void IModelErrorActivation.ActivateModelError(ModelError error)
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{
-			ActivateModelError(error);
+			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
 	}

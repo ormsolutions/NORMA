@@ -28,7 +28,7 @@ using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink
+	public partial class SubtypeLink : IModelErrorActivation
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -302,6 +302,68 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
+		#region Mouse handling
+		/// <summary>
+		/// Attempt model error activation
+		/// </summary>
+		public override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			ORMBaseShape.AttemptErrorActivation(e);
+			base.OnDoubleClick(e);
+		}
+		#endregion // Mouse handling
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError
+		/// </summary>
+		protected bool ActivateModelError(ModelError error)
+		{
+			TooFewReadingRolesError tooFew;
+			TooManyReadingRolesError tooMany;
+			FactTypeRequiresReadingError noReading;
+			FactType fact;
+			FactTypeDuplicateNameError factTypeNameError;
+			Reading reading = null;
+			bool retVal = true;
+			if (null != (tooFew = error as TooFewReadingRolesError))
+			{
+				reading = tooFew.Reading;
+			}
+			else if (null != (tooMany = error as TooManyReadingRolesError))
+			{
+				reading = tooMany.Reading;
+			}
+			else if (null != (noReading = error as FactTypeRequiresReadingError))
+			{
+				fact = noReading.FactType;
+				Debug.Assert(fact != null);
+				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+				window.Show();
+				window.ActivateReading(fact);
+			}
+			else if (null != (factTypeNameError = error as FactTypeDuplicateNameError))
+			{
+				ActivateNameProperty(factTypeNameError.FactTypeCollection[0]);
+			}
+			else
+			{
+				retVal = false;
+			}
+
+			if (reading != null)
+			{
+				// Open the reading editor window and activate the reading  
+				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+				window.Show();
+				window.ActivateReading(reading);
+			}
+			return retVal;
+		}
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			return ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
 		#region SubtypeLink specific
 		/// <summary>
 		/// Get the ObjectTypePlaysRole link associated with this link shape

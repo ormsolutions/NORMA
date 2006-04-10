@@ -21,6 +21,8 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
+using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -90,6 +92,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="diagram">The parent diagram</param>
 		public abstract void ConfiguringAsChildOf(ORMDiagram diagram);
 		#endregion Customize appearance
+		#region DuplicateNameError Activation Helper
+		/// <summary>
+		/// Activate the Name property in the Properties Window
+		/// for the specified element
+		/// </summary>
+		/// <param name="targetElement">The underlying model element with a name property</param>
+		protected void ActivateNameProperty(NamedElement targetElement)
+		{
+			Store store = Store;
+			EditorUtility.ActivatePropertyEditor(
+				(store as IORMToolServices).ServiceProvider,
+				targetElement.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), this),
+				false);
+		}
+		#endregion // DuplicateNameError Activation Helper
 		#region Luminosity Modification
 		/// <summary>
 		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity

@@ -642,19 +642,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Implements IModelErrorActivation.ActivateModelError. Forwards errors to
 		/// associated fact type
 		/// </summary>
-		/// <param name="error">Activated model error</param>
-		protected void ActivateModelError(ModelError error)
+		protected bool ActivateModelError(ModelError error)
 		{
 			IModelErrorActivation parent = ParentShape as IModelErrorActivation;
 			if (parent != null)
 			{
-				parent.ActivateModelError(error);
+				return parent.ActivateModelError(error);
 			}
+			return false;
 		}
-		void IModelErrorActivation.ActivateModelError(ModelError error)
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{
-			ActivateModelError(error);
+			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region Mouse handling
+		/// <summary>
+		/// Attempt model error activation
+		/// </summary>
+		public override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			ORMBaseShape.AttemptErrorActivation(e);
+			base.OnDoubleClick(e);
+		}
+		#endregion // Mouse handling
 	}
 }

@@ -475,7 +475,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						break;
 					}
 				}
-				retVal = string.Format(CultureInfo.CurrentUICulture, reading.Text, useReplacements);
+				try
+				{
+					retVal = string.Format(CultureInfo.InvariantCulture, reading.Text, useReplacements);
+				}
+				catch (FormatException ex)
+				{
+					// UNDONE: Localize
+					retVal = string.Format(CultureInfo.InvariantCulture, "{0} ({1})", reading.Text, ex.Message);
+				}
 			}
 			return retVal;
 		}

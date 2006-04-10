@@ -274,6 +274,62 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Hack to block child shape moving twice
+		#region Auto-activate associated errors
+		/// <summary>
+		/// Attempt to activate an activatable error.
+		/// </summary>
+		/// <param name="e">DiagramPointEventArgs. Indicates the element to activate.</param>
+		/// <returns>true if an error was activated</returns>
+		public static bool AttemptErrorActivation(DiagramPointEventArgs e)
+		{
+			bool retVal = false;
+			if (!e.Handled)
+			{
+				DiagramClientView clientView = e.DiagramClientView;
+				MouseAction action = clientView.ActiveMouseAction;
+				if ((action == null || !(action is ConnectAction || action is ToolboxAction)) &&
+					clientView.Selection.Count == 1)
+				{
+					DiagramItem diagramItem = e.DiagramHitTestInfo.HitDiagramItem;
+					IModelErrorActivation activator = diagramItem.Shape as IModelErrorActivation;
+					if (activator != null)
+					{
+						IModelErrorOwner errorOwner = null;
+						foreach (ModelElement mel in diagramItem.RepresentedElements)
+						{
+							errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
+							break;
+						}
+						if (errorOwner != null)
+						{
+							// UNDONE: ModelErrorUses filter
+							foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.None))
+							{
+								if (activator.ActivateModelError(error))
+								{
+									// UNDONE: MSBUG Report Microsoft bug DiagramClientView.OnDoubleClick is checking
+									// for an active mouse action after the double click and clearing it if it is set.
+									// This may be appropriate if the mouse action was set before the subfield double
+									// click and did not change during the callback, but is definitely not appropriate
+									// if the double click activated the mouse action.
+									// Note that this bug makes it impossible to override OnDoubleClick and OnSubFieldDoubleClick
+									// because e.Handled cannot be reliably checked, so there is no way to call base.OnDoubleClick
+									// of base.OnSubFieldDoubleClick from a more derived class without attempting error activation
+									// twice. If this is fixed, then any OnDoubleClick/OnSubFieldDoubleClick implementation
+									// that simply defers to this method then calls the base can be eliminated in favor
+									// of the same methods here.
+									//e.Handled = true;
+									retVal = true;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			return retVal;
+		}
+		#endregion // Auto-activate associated errors
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the class name as the accessible name

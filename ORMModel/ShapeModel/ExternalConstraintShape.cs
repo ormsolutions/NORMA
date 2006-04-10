@@ -398,9 +398,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError
 		/// </summary>
-		/// <param name="error">Activated model error</param>
-		protected void ActivateModelError(ModelError error)
+		protected bool ActivateModelError(ModelError error)
 		{
+			bool retVal = true;
 			ConstraintDuplicateNameError duplicateName;
 			if (error is TooFewRoleSequencesError)
 			{
@@ -410,10 +410,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				ActivateNameProperty((NamedElement)duplicateName.ConstraintCollection[0]);
 			}
+			else
+			{
+				retVal = false;
+			}
+			return retVal;
 		}
-		void IModelErrorActivation.ActivateModelError(ModelError error)
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{
-			ActivateModelError(error);
+			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
 		#region IStickyObject implementation
@@ -535,7 +540,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramPointEventArgs</param>
 		public override void OnDoubleClick(DiagramPointEventArgs e)
 		{
-			ActivateNewRoleSequenceAction(e.DiagramClientView);
+			if (!ORMBaseShape.AttemptErrorActivation(e))
+			{
+				ActivateNewRoleSequenceAction(e.DiagramClientView);
+			}
+			base.OnDoubleClick(e);
 		}
 		private void ActivateNewRoleSequenceAction(DiagramClientView clientView)
 		{

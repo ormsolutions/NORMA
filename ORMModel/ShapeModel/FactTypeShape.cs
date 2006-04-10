@@ -1681,6 +1681,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			#region Mouse handling
 			public override void OnDoubleClick(DiagramPointEventArgs e)
 			{
+				if (ORMBaseShape.AttemptErrorActivation(e))
+				{
+					base.OnDoubleClick(e);
+					return;
+				}
 				DiagramClientView clientView = e.DiagramClientView;
 				ORMDiagram diagram = clientView.Diagram as ORMDiagram;
 				InternalUniquenessConstraint iuc = AssociatedConstraint as InternalUniquenessConstraint;
@@ -1705,7 +1710,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// UNDONE: MSBUG Report Microsoft bug DiagramClientView.OnDoubleClick is checking
 				// for an active mouse action after the double click and clearing it if it is set.
 				// This may be appropriate if the mouse action was set before the subfield double
-				// click and did not change during the callback, then it may be appropriate to clear it.
+				// click and did not change during the callback, but is definitely not appropriate
+				// if the double click activated the mouse action.
 				//e.Handled = true;
 				base.OnDoubleClick(e);
 			}
@@ -2210,6 +2216,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return retVal;
 			}
 			#endregion // Required ShapeSubField
+			#region Mouse handling
+			public override void OnDoubleClick(DiagramPointEventArgs e)
+			{
+				ORMBaseShape.AttemptErrorActivation(e);
+				base.OnDoubleClick(e);
+			}
+			#endregion // Mouse handling
 			#region DragDrop support
 			public override MouseAction GetPotentialMouseAction(MouseButtons mouseButtons, PointD point, DiagramHitTestInfo hitTestInfo)
 			{
@@ -3508,8 +3521,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError
 		/// </summary>
-		/// <param name="error">Activated model error</param>
-		protected void ActivateModelError(ModelError error)
+		protected bool ActivateModelError(ModelError error)
 		{
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
@@ -3526,6 +3538,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool selectConstraintOnly = false;
 			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
+			bool retVal = true;
 			if (null != (tooFew = error as TooFewReadingRolesError))
 			{
 				reading = tooFew.Reading;
@@ -3619,6 +3632,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			else
+			{
+				retVal = false;
+			}
 
 			if (reading != null)
 			{
@@ -3672,12 +3689,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			return retVal;
 		}
-		void IModelErrorActivation.ActivateModelError(ModelError error)
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{
-			ActivateModelError(error);
+			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region Mouse handling
+		/// <summary>
+		/// Attempt model error activation
+		/// </summary>
+		public override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			ORMBaseShape.AttemptErrorActivation(e);
+			base.OnDoubleClick(e);
+		}
+		#endregion // Mouse handling
 		#region FactTypeShape specific
 		/// <summary>
 		/// Get the FactType associated with this shape
@@ -4487,7 +4515,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// A specialized display of the nesting type as a relative
 	/// child element of an objectified fact type
 	/// </summary>
-	public partial class ObjectifiedFactTypeNameShape
+	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation
 	{
 		private static AutoSizeTextField myTextShapeField;
 		/// <summary>
@@ -4531,6 +4559,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SizeD size = Size;
 			Location = new PointD(0, -1.5 * size.Height);
 		}
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
+		/// </summary>
+		protected bool ActivateModelError(ModelError error)
+		{
+			ObjectTypeDuplicateNameError duplicateName;
+			bool retVal = true;
+			if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
+			{
+				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
+			}
+			else
+			{
+				retVal = false;
+			}
+			return retVal;
+		}
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			return ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
+		#region Mouse handling
+		/// <summary>
+		/// Attempt model error activation
+		/// </summary>
+		public override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			ORMBaseShape.AttemptErrorActivation(e);
+			base.OnDoubleClick(e);
+		}
+		#endregion // Mouse handling
 		#region ObjectNameTextField class
 		/// <summary>
 		/// Create a text field that will correctly display objectified type names

@@ -257,17 +257,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // change rules
 		#region IModelErrorActivation Implementation
 		/// <summary>
-		/// Implements IModelErrorActivation.ActivateModelError. Forwards errors to
-		/// associated fact type
+		/// Implements IModelErrorActivation.ActivateModelError.
 		/// </summary>
-		/// <param name="error">Activated model error</param>
-		protected void ActivateModelError(ModelError error)
+		protected bool ActivateModelError(ModelError error)
 		{
 			MaxValueMismatchError maxValueMismatchError;
 			MinValueMismatchError minValueMismatchError;
 			ValueRangeOverlapError overlapError;
 			ConstraintDuplicateNameError duplicateName;
 			ValueConstraint errorValueConstraint = null;
+			bool retVal = true;
 			if (null != (maxValueMismatchError = error as MaxValueMismatchError))
 			{
 				errorValueConstraint = maxValueMismatchError.ValueRange.ValueConstraint;
@@ -284,6 +283,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				ActivateNameProperty((NamedElement)duplicateName.ConstraintCollection[0]);
 			}
+			else
+			{
+				retVal = false;
+			}
 			if (errorValueConstraint != null)
 			{
 				Store store = Store;
@@ -292,55 +295,66 @@ namespace Neumont.Tools.ORM.ShapeModel
 					errorValueConstraint.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ValueConstraint.TextMetaAttributeGuid), this),
 					false);
 			}
+			return retVal;
 		}
-		void IModelErrorActivation.ActivateModelError(ModelError error)
+		bool IModelErrorActivation.ActivateModelError(ModelError error)
 		{
-			ActivateModelError(error);
+			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
-	}
-	#region ValueRangeAutoSizeTextField class
-	/// <summary>
-	/// Contains code to create a value range text field.
-	/// </summary>
-	public class ValueRangeAutoSizeTextField : AutoSizeTextField
-	{
+		#region Mouse handling
 		/// <summary>
-		/// Code that handles retrieval of the text to display in ValueConstraintShape.
+		/// Attempt model error activation
 		/// </summary>
-		public override string GetDisplayText(ShapeElement parentShape)
+		public override void OnDoubleClick(DiagramPointEventArgs e)
 		{
-			string retval = null;
-			ValueConstraintShape parentValueConstraintShape = parentShape as ValueConstraintShape;
-			if (parentShape is ObjectTypeShape)
+			ORMBaseShape.AttemptErrorActivation(e);
+			base.OnDoubleClick(e);
+		}
+		#endregion // Mouse handling
+		#region ValueRangeAutoSizeTextField class
+		/// <summary>
+		/// Contains code to create a value range text field.
+		/// </summary>
+		private class ValueRangeAutoSizeTextField : AutoSizeTextField
+		{
+			/// <summary>
+			/// Code that handles retrieval of the text to display in ValueConstraintShape.
+			/// </summary>
+			public override string GetDisplayText(ShapeElement parentShape)
 			{
-				PresentationElementMoveableCollection pelList = parentShape.PresentationRolePlayers;
-				foreach (ShapeElement pel in pelList)
+				string retval = null;
+				ValueConstraintShape parentValueConstraintShape = parentShape as ValueConstraintShape;
+				if (parentShape is ObjectTypeShape)
 				{
-					ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
-					if (valueConstraintShape != null)
+					PresentationElementMoveableCollection pelList = parentShape.PresentationRolePlayers;
+					foreach (ShapeElement pel in pelList)
 					{
-						parentValueConstraintShape = valueConstraintShape;
+						ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
+						if (valueConstraintShape != null)
+						{
+							parentValueConstraintShape = valueConstraintShape;
+						}
 					}
 				}
+				if (parentValueConstraintShape == null)
+				{
+					retval = base.GetDisplayText(parentShape);
+				}
+				else
+				{
+					retval = parentValueConstraintShape.DisplayText;
+				}
+				return retval;
 			}
-			if (parentValueConstraintShape == null)
+			/// <summary>
+			/// Changed to return true to get multiple line support.
+			/// </summary>
+			public override bool GetMultipleLine(ShapeElement parentShape)
 			{
-				retval = base.GetDisplayText(parentShape);
+				return true;
 			}
-			else
-			{
-				retval = parentValueConstraintShape.DisplayText;
-			}
-			return retval;
 		}
-		/// <summary>
-		/// Changed to return true to get multiple line support.
-		/// </summary>
-		public override bool GetMultipleLine(ShapeElement parentShape)
-		{
-			return true;
-		}
+		#endregion // ValueRangeAutoSizeTextField class
 	}
-	#endregion // ValueRangeAutoSizeTextField class
 }

@@ -573,7 +573,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			if (0 == (filter & (ModelErrorUses.Verbalize | ModelErrorUses.BlockVerbalization)))
+			if (0 == (filter & (ModelErrorUses.Verbalize | ModelErrorUses.BlockVerbalization)) || filter == (ModelErrorUses)(-1))
 			{
 				// The fact name is used in the generated error text, it needs to be an owner
 				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError frequencyContradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
@@ -593,34 +593,52 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize)) // Roles don't verbalize, we need to show these here
+			if (0 == (filter & ModelErrorUses.BlockVerbalization) || filter == (ModelErrorUses)(-1)) // Roles don't verbalize, we need to show these here
 			{
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
 				// we do not validate this error on the fact type, it is done on the role.
 				foreach (Role role in RoleCollection)
 				{
-					foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
+					if (0 != (filter & ModelErrorUses.Verbalize))
 					{
-						yield return new ModelErrorUsage(roleError, ModelErrorUses.None);
-					}
-					IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
-					if (valueErrors != null)
-					{
-						// Get errors off the base
-						foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
+						foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
 						{
-							yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
+							yield return new ModelErrorUsage(roleError, ModelErrorUses.Verbalize);
+						}
+					}
+					if (0 == (filter & ModelErrorUses.Verbalize) || filter == (ModelErrorUses)(-1))
+					{
+						IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
+						if (valueErrors != null)
+						{
+							foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
+							{
+								yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
+							}
 						}
 					}
 				}
+			}
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.Verbalize)))
+			{
 				foreach (ReadingOrder readingOrder in ReadingOrderCollection)
 				{
 					foreach (Reading reading in readingOrder.ReadingCollection)
 					{
 						foreach (ModelError readingError in (reading as IModelErrorOwner).GetErrorCollection(filter))
 						{
-							yield return new ModelErrorUsage(readingError, ModelErrorUses.None);
+							if (readingError is TooFewReadingRolesError)
+							{
+								if (0 != (filter & ModelErrorUses.BlockVerbalization))
+								{
+									yield return new ModelErrorUsage(readingError, ModelErrorUses.BlockVerbalization);
+								}
+							}
+							else if (0 != (filter & ModelErrorUses.Verbalize))
+							{
+								yield return new ModelErrorUsage(readingError, ModelErrorUses.Verbalize);
+							}
 						}
 					}
 				}
