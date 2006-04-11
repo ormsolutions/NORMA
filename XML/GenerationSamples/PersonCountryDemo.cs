@@ -9,6 +9,8 @@ using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessage
 namespace System
 {
 	#region Tuple Support
+	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public abstract partial class Tuple
 	{
 		protected static int RotateRight(int value, int places)
@@ -23,7 +25,7 @@ namespace System
 		}
 	}
 	#endregion // Tuple Support
-	#region 2-ary Tuple
+	#region Binary (2-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2> CreateTuple<T1, T2>(T1 item1, T2 item2)
@@ -35,7 +37,7 @@ namespace System
 			return new Tuple<T1, T2>(item1, item2);
 		}
 	}
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2> : Tuple, System.IEquatable<Tuple<T1, T2>>
 	{
 		private readonly T1 item1;
@@ -69,7 +71,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || !(this.item2.Equals(other.item2))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || !(this.item2.Equals(other.item2))))
 			{
 				return false;
 			}
@@ -89,19 +91,68 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2> tuple1, Tuple<T1, T2> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2> tuple1, Tuple<T1, T2> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
+		public static implicit operator System.Collections.Generic.KeyValuePair<T1, T2>(Tuple<T1, T2> tuple)
+		{
+			if ((object)tuple == null)
+			{
+				return default(System.Collections.Generic.KeyValuePair<T1, T2>);
+			}
+			else
+			{
+				return new System.Collections.Generic.KeyValuePair<T1, T2>(tuple.item1, tuple.item2);
+			}
+		}
+		public static explicit operator Tuple<T1, T2>(System.Collections.Generic.KeyValuePair<T1, T2> keyValuePair)
+		{
+			if ((keyValuePair.Key == null) || (keyValuePair.Value == null))
+			{
+				throw new System.InvalidCastException();
+			}
+			else
+			{
+				return new Tuple<T1, T2>(keyValuePair.Key, keyValuePair.Value);
+			}
+		}
+		public static implicit operator System.Collections.DictionaryEntry(Tuple<T1, T2> tuple)
+		{
+			if ((object)tuple == null)
+			{
+				return default(System.Collections.DictionaryEntry);
+			}
+			else
+			{
+				return new System.Collections.DictionaryEntry(tuple.item1, tuple.item2);
+			}
+		}
+		public static explicit operator Tuple<T1, T2>(System.Collections.DictionaryEntry dictionaryEntry)
+		{
+			object key = dictionaryEntry.Key;
+			object value = dictionaryEntry.Value;
+			if (((key == null) || (value == null)) || !((key is T1) && (value is T2)))
+			{
+				throw new System.InvalidCastException();
+			}
+			else
+			{
+				return new Tuple<T1, T2>((T1)key, (T2)value);
+			}
+		}
 	}
-	#endregion // 2-ary Tuple
-	#region 3-ary Tuple
+	#endregion // Binary (2-ary) Tuple
+	#region Ternary (3-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3> CreateTuple<T1, T2, T3>(T1 item1, T2 item2, T3 item3)
@@ -114,7 +165,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3> : Tuple, System.IEquatable<Tuple<T1, T2, T3>>
 	{
 		private readonly T1 item1;
@@ -157,7 +208,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || !(this.item3.Equals(other.item3)))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || !(this.item3.Equals(other.item3)))))
 			{
 				return false;
 			}
@@ -177,19 +228,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3> tuple1, Tuple<T1, T2, T3> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3> tuple1, Tuple<T1, T2, T3> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 3-ary Tuple
-	#region 4-ary Tuple
+	#endregion // Ternary (3-ary) Tuple
+	#region Quaternary (4-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4> CreateTuple<T1, T2, T3, T4>(T1 item1, T2 item2, T3 item3, T4 item4)
@@ -202,7 +256,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4>>
 	{
 		private readonly T1 item1;
@@ -254,7 +308,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || !(this.item4.Equals(other.item4))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || !(this.item4.Equals(other.item4))))))
 			{
 				return false;
 			}
@@ -274,19 +328,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4> tuple1, Tuple<T1, T2, T3, T4> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4> tuple1, Tuple<T1, T2, T3, T4> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 4-ary Tuple
-	#region 5-ary Tuple
+	#endregion // Quaternary (4-ary) Tuple
+	#region Quinary (5-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4, T5> CreateTuple<T1, T2, T3, T4, T5>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5)
@@ -299,7 +356,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4, T5> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5>>
 	{
 		private readonly T1 item1;
@@ -360,7 +417,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || !(this.item5.Equals(other.item5)))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || !(this.item5.Equals(other.item5)))))))
 			{
 				return false;
 			}
@@ -380,19 +437,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5> tuple1, Tuple<T1, T2, T3, T4, T5> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5> tuple1, Tuple<T1, T2, T3, T4, T5> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 5-ary Tuple
-	#region 6-ary Tuple
+	#endregion // Quinary (5-ary) Tuple
+	#region Senary (6-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6> CreateTuple<T1, T2, T3, T4, T5, T6>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6)
@@ -405,7 +465,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6>>
 	{
 		private readonly T1 item1;
@@ -475,7 +535,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || !(this.item6.Equals(other.item6))))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || !(this.item6.Equals(other.item6))))))))
 			{
 				return false;
 			}
@@ -495,19 +555,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6> tuple1, Tuple<T1, T2, T3, T4, T5, T6> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6> tuple1, Tuple<T1, T2, T3, T4, T5, T6> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 6-ary Tuple
-	#region 7-ary Tuple
+	#endregion // Senary (6-ary) Tuple
+	#region Septenary (7-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7> CreateTuple<T1, T2, T3, T4, T5, T6, T7>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7)
@@ -520,7 +583,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7>>
 	{
 		private readonly T1 item1;
@@ -599,7 +662,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || !(this.item7.Equals(other.item7)))))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || !(this.item7.Equals(other.item7)))))))))
 			{
 				return false;
 			}
@@ -619,19 +682,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 7-ary Tuple
-	#region 8-ary Tuple
+	#endregion // Septenary (7-ary) Tuple
+	#region Octonary (8-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7, T8> CreateTuple<T1, T2, T3, T4, T5, T6, T7, T8>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8)
@@ -644,7 +710,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>>
 	{
 		private readonly T1 item1;
@@ -732,7 +798,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || !(this.item8.Equals(other.item8))))))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || !(this.item8.Equals(other.item8))))))))))
 			{
 				return false;
 			}
@@ -752,19 +818,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 8-ary Tuple
-	#region 9-ary Tuple
+	#endregion // Octonary (8-ary) Tuple
+	#region Nonary (9-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> CreateTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9)
@@ -777,7 +846,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>>
 	{
 		private readonly T1 item1;
@@ -874,7 +943,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || (!(this.item8.Equals(other.item8)) || !(this.item9.Equals(other.item9)))))))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || (!(this.item8.Equals(other.item8)) || !(this.item9.Equals(other.item9)))))))))))
 			{
 				return false;
 			}
@@ -894,19 +963,22 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 9-ary Tuple
-	#region 10-ary Tuple
+	#endregion // Nonary (9-ary) Tuple
+	#region Denary (10-ary) Tuple
 	public abstract partial class Tuple
 	{
 		public static Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> CreateTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9, T10 item10)
@@ -919,7 +991,7 @@ namespace System
 		}
 	}
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[System.Serializable()]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>
 	{
 		private readonly T1 item1;
@@ -1025,7 +1097,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> other)
 		{
-			if ((other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || (!(this.item8.Equals(other.item8)) || (!(this.item9.Equals(other.item9)) || !(this.item10.Equals(other.item10))))))))))))
+			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || (!(this.item8.Equals(other.item8)) || (!(this.item9.Equals(other.item9)) || !(this.item10.Equals(other.item10))))))))))))
 			{
 				return false;
 			}
@@ -1045,21 +1117,28 @@ namespace System
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple2)
 		{
-			if (!(object.ReferenceEquals(tuple1, null)))
+			if ((object)tuple1 == null)
+			{
+				return (object)tuple2 == null;
+			}
+			else
 			{
 				return tuple1.Equals(tuple2);
 			}
-			return object.ReferenceEquals(tuple2, null);
 		}
 		public static bool operator !=(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple2)
 		{
 			return !(tuple1 == tuple2);
 		}
 	}
-	#endregion // 10-ary Tuple
+	#endregion // Denary (10-ary) Tuple
 	#region Property Change Event Support
-	public interface IPropertyChangeEventArgs<TProperty>
+	public interface IPropertyChangeEventArgs<TClass, TProperty>
 	{
+		TClass Instance
+		{
+			get;
+		}
 		TProperty OldValue
 		{
 			get;
@@ -1069,14 +1148,28 @@ namespace System
 			get;
 		}
 	}
-	public sealed class PropertyChangingEventArgs<TProperty> : CancelEventArgs, IPropertyChangeEventArgs<TProperty>
+	[Serializable()]
+	public sealed class PropertyChangingEventArgs<TClass, TProperty> : CancelEventArgs, IPropertyChangeEventArgs<TClass, TProperty>
 	{
+		private readonly TClass instance;
 		private readonly TProperty oldValue;
 		private readonly TProperty newValue;
-		public PropertyChangingEventArgs(TProperty oldValue, TProperty newValue)
+		public PropertyChangingEventArgs(TClass instance, TProperty oldValue, TProperty newValue)
 		{
+			if (instance == null)
+			{
+				throw new ArgumentNullException("instance");
+			}
+			this.instance = instance;
 			this.oldValue = oldValue;
 			this.newValue = newValue;
+		}
+		public TClass Instance
+		{
+			get
+			{
+				return this.instance;
+			}
 		}
 		public TProperty OldValue
 		{
@@ -1093,14 +1186,28 @@ namespace System
 			}
 		}
 	}
-	public sealed class PropertyChangedEventArgs<TProperty> : EventArgs, IPropertyChangeEventArgs<TProperty>
+	[Serializable()]
+	public sealed class PropertyChangedEventArgs<TClass, TProperty> : EventArgs, IPropertyChangeEventArgs<TClass, TProperty>
 	{
+		private readonly TClass instance;
 		private readonly TProperty oldValue;
 		private readonly TProperty newValue;
-		public PropertyChangedEventArgs(TProperty oldValue, TProperty newValue)
+		public PropertyChangedEventArgs(TClass instance, TProperty oldValue, TProperty newValue)
 		{
+			if (instance == null)
+			{
+				throw new ArgumentNullException("instance");
+			}
+			this.instance = instance;
 			this.oldValue = oldValue;
 			this.newValue = newValue;
+		}
+		public TClass Instance
+		{
+			get
+			{
+				return this.instance;
+			}
 		}
 		public TProperty OldValue
 		{
@@ -1165,7 +1272,7 @@ namespace PersonCountryDemo
 		{
 			get;
 		}
-		public event EventHandler<PropertyChangingEventArgs<string>> LastNameChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, string>> LastNameChanging
 		{
 			add
 			{
@@ -1179,16 +1286,16 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected bool RaiseLastNameChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Person, string>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.LastName, newValue);
+				PropertyChangingEventArgs<Person, string> eventArgs = new PropertyChangingEventArgs<Person, string>(this, this.LastName, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<string>> LastNameChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, string>> LastNameChanged
 		{
 			add
 			{
@@ -1202,14 +1309,14 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected void RaiseLastNameChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Person, string>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.LastName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.LastName), new System.AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("LastName");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<string>> FirstNameChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, string>> FirstNameChanging
 		{
 			add
 			{
@@ -1223,16 +1330,16 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected bool RaiseFirstNameChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person, string>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.FirstName, newValue);
+				PropertyChangingEventArgs<Person, string> eventArgs = new PropertyChangingEventArgs<Person, string>(this, this.FirstName, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<string>> FirstNameChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, string>> FirstNameChanged
 		{
 			add
 			{
@@ -1246,14 +1353,14 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected void RaiseFirstNameChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person, string>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.FirstName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.FirstName), new System.AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("FirstName");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<string>> TitleChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, string>> TitleChanging
 		{
 			add
 			{
@@ -1267,16 +1374,16 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected bool RaiseTitleChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<string>>;
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Person, string>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Title, newValue);
+				PropertyChangingEventArgs<Person, string> eventArgs = new PropertyChangingEventArgs<Person, string>(this, this.Title, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<string>> TitleChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, string>> TitleChanged
 		{
 			add
 			{
@@ -1290,14 +1397,14 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected void RaiseTitleChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<string>>;
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<Person, string>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Title), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.Title), new System.AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Title");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Country>> CountryChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Country>> CountryChanging
 		{
 			add
 			{
@@ -1311,16 +1418,16 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected bool RaiseCountryChangingEvent(Country newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Country>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<Country>>;
+			EventHandler<PropertyChangingEventArgs<Person, Country>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<Person, Country>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<Country> eventArgs = new PropertyChangingEventArgs<Country>(this.Country, newValue);
+				PropertyChangingEventArgs<Person, Country> eventArgs = new PropertyChangingEventArgs<Person, Country>(this, this.Country, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Country>> CountryChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Country>> CountryChanged
 		{
 			add
 			{
@@ -1334,10 +1441,10 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected void RaiseCountryChangedEvent(Country oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Country>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Country>>;
+			EventHandler<PropertyChangedEventArgs<Person, Country>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Person, Country>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country>(oldValue, this.Country), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, Country>(this, oldValue, this.Country), new System.AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Country");
 			}
 		}
@@ -1414,7 +1521,7 @@ namespace PersonCountryDemo
 		{
 			get;
 		}
-		public event EventHandler<PropertyChangingEventArgs<string>> Country_nameChanging
+		public event EventHandler<PropertyChangingEventArgs<Country, string>> Country_nameChanging
 		{
 			add
 			{
@@ -1428,16 +1535,16 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected bool RaiseCountry_nameChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<string>>;
+			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Country, string>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Country_name, newValue);
+				PropertyChangingEventArgs<Country, string> eventArgs = new PropertyChangingEventArgs<Country, string>(this, this.Country_name, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<string>> Country_nameChanged
+		public event EventHandler<PropertyChangedEventArgs<Country, string>> Country_nameChanged
 		{
 			add
 			{
@@ -1451,14 +1558,14 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected void RaiseCountry_nameChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<string>>;
+			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Country, string>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Country_name), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country, string>(this, oldValue, this.Country_name), new System.AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Country_name");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<string>> Region_Region_codeChanging
+		public event EventHandler<PropertyChangingEventArgs<Country, string>> Region_Region_codeChanging
 		{
 			add
 			{
@@ -1472,16 +1579,16 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected bool RaiseRegion_Region_codeChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<string>>;
+			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Country, string>>;
 			if (eventHandler != null)
 			{
-				PropertyChangingEventArgs<string> eventArgs = new PropertyChangingEventArgs<string>(this.Region_Region_code, newValue);
+				PropertyChangingEventArgs<Country, string> eventArgs = new PropertyChangingEventArgs<Country, string>(this, this.Region_Region_code, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<string>> Region_Region_codeChanged
+		public event EventHandler<PropertyChangedEventArgs<Country, string>> Region_Region_codeChanged
 		{
 			add
 			{
@@ -1495,10 +1602,10 @@ namespace PersonCountryDemo
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
 		protected void RaiseRegion_Region_codeChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<string>>;
+			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Country, string>>;
 			if (eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<string>(oldValue, this.Region_Region_code), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country, string>(this, oldValue, this.Region_Region_code), new System.AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Region_Region_code");
 			}
 		}

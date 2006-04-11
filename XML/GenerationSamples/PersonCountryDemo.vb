@@ -8,6 +8,8 @@ Imports SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessa
 #Region "Global Support Classes"
 Namespace System
 	#Region "Tuple Support"
+	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public MustInherit Partial Class Tuple
 		Protected Shared Function RotateRight(ByVal value As Integer, ByVal places As Integer) As Integer
 			places = places And &H1F
@@ -19,7 +21,7 @@ Namespace System
 		End Function
 	End Class
 	#End Region
-	#Region "2-ary Tuple"
+	#Region "Binary (2-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2)(ByVal item1 As T1, ByVal item2 As T2) As Tuple(Of T1, T2)
 			If (item1 Is Nothing) OrElse (item2 Is Nothing) Then
@@ -28,7 +30,7 @@ Namespace System
 			Return New Tuple(Of T1, T2)(item1, item2)
 		End Function
 	End Class
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2))
@@ -56,7 +58,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse Not (Me.item2.Equals(other.item2))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse Not (Me.item2.Equals(other.item2))) Then
 				Return False
 			End If
 			Return True
@@ -71,17 +73,48 @@ Namespace System
 			Return String.Format(provider, "({1}, {2})", Me.item1, Me.item2)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2), ByVal tuple2 As Tuple(Of T1, T2)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2), ByVal tuple2 As Tuple(Of T1, T2)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
+		Public Overloads Shared Widening Operator CType(ByVal tuple As Tuple(Of T1, T2)) As System.Collections.Generic.KeyValuePair(Of T1, T2)
+			If CObj(tuple) Is Nothing Then
+				Return Nothing
+			Else
+				Return New System.Collections.Generic.KeyValuePair(Of T1, T2)(tuple.item1, tuple.item2)
+			End If
+		End Operator
+		Public Overloads Shared Narrowing Operator CType(ByVal keyValuePair As System.Collections.Generic.KeyValuePair(Of T1, T2)) As Tuple(Of T1, T2)
+			If (keyValuePair.Key Is Nothing) OrElse (keyValuePair.Value Is Nothing) Then
+				Throw New System.InvalidCastException()
+			Else
+				Return New Tuple(Of T1, T2)(keyValuePair.Key, keyValuePair.Value)
+			End If
+		End Operator
+		Public Overloads Shared Widening Operator CType(ByVal tuple As Tuple(Of T1, T2)) As System.Collections.DictionaryEntry
+			If CObj(tuple) Is Nothing Then
+				Return Nothing
+			Else
+				Return New System.Collections.DictionaryEntry(tuple.item1, tuple.item2)
+			End If
+		End Operator
+		Public Overloads Shared Narrowing Operator CType(ByVal dictionaryEntry As System.Collections.DictionaryEntry) As Tuple(Of T1, T2)
+			Dim key As Object = dictionaryEntry.Key
+			Dim value As Object = dictionaryEntry.Value
+			If ((key Is Nothing) OrElse (value Is Nothing)) OrElse Not ((TypeOf key Is T1) AndAlso (TypeOf value Is T2)) Then
+				Throw New System.InvalidCastException()
+			Else
+				Return New Tuple(Of T1, T2)(CType(key, T1), CType(value, T2))
+			End If
+		End Operator
 	End Class
 	#End Region
-	#Region "3-ary Tuple"
+	#Region "Ternary (3-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3) As Tuple(Of T1, T2, T3)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse (item3 Is Nothing)) Then
@@ -91,7 +124,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3))
@@ -126,7 +159,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse Not (Me.item3.Equals(other.item3)))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse Not (Me.item3.Equals(other.item3)))) Then
 				Return False
 			End If
 			Return True
@@ -141,17 +174,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3})", Me.item1, Me.item2, Me.item3)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3), ByVal tuple2 As Tuple(Of T1, T2, T3)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3), ByVal tuple2 As Tuple(Of T1, T2, T3)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "4-ary Tuple"
+	#Region "Quaternary (4-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4) As Tuple(Of T1, T2, T3, T4)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse (item4 Is Nothing))) Then
@@ -161,7 +195,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4))
@@ -203,7 +237,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse Not (Me.item4.Equals(other.item4))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse Not (Me.item4.Equals(other.item4))))) Then
 				Return False
 			End If
 			Return True
@@ -218,17 +252,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4})", Me.item1, Me.item2, Me.item3, Me.item4)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4), ByVal tuple2 As Tuple(Of T1, T2, T3, T4)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4), ByVal tuple2 As Tuple(Of T1, T2, T3, T4)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "5-ary Tuple"
+	#Region "Quinary (5-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5) As Tuple(Of T1, T2, T3, T4, T5)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse (item5 Is Nothing)))) Then
@@ -238,7 +273,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5))
@@ -287,7 +322,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse Not (Me.item5.Equals(other.item5)))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse Not (Me.item5.Equals(other.item5)))))) Then
 				Return False
 			End If
 			Return True
@@ -302,17 +337,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "6-ary Tuple"
+	#Region "Senary (6-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6) As Tuple(Of T1, T2, T3, T4, T5, T6)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse (item6 Is Nothing))))) Then
@@ -322,7 +358,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6))
@@ -378,7 +414,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse Not (Me.item6.Equals(other.item6))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse Not (Me.item6.Equals(other.item6))))))) Then
 				Return False
 			End If
 			Return True
@@ -393,17 +429,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "7-ary Tuple"
+	#Region "Septenary (7-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7) As Tuple(Of T1, T2, T3, T4, T5, T6, T7)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse (item7 Is Nothing)))))) Then
@@ -413,7 +450,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7))
@@ -476,7 +513,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse Not (Me.item7.Equals(other.item7)))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse Not (Me.item7.Equals(other.item7)))))))) Then
 				Return False
 			End If
 			Return True
@@ -491,17 +528,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "8-ary Tuple"
+	#Region "Octonary (8-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7, T8)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7, ByVal item8 As T8) As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse ((item7 Is Nothing) OrElse (item8 Is Nothing))))))) Then
@@ -511,7 +549,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8))
@@ -581,7 +619,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse Not (Me.item8.Equals(other.item8))))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse Not (Me.item8.Equals(other.item8))))))))) Then
 				Return False
 			End If
 			Return True
@@ -596,17 +634,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7, Me.item8)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "9-ary Tuple"
+	#Region "Nonary (9-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7, ByVal item8 As T8, ByVal item9 As T9) As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse ((item7 Is Nothing) OrElse ((item8 Is Nothing) OrElse (item9 Is Nothing)))))))) Then
@@ -616,7 +655,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9))
@@ -693,7 +732,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse Not (Me.item9.Equals(other.item9)))))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse Not (Me.item9.Equals(other.item9)))))))))) Then
 				Return False
 			End If
 			Return True
@@ -708,17 +747,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7, Me.item8, Me.item9)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "10-ary Tuple"
+	#Region "Denary (10-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7, ByVal item8 As T8, ByVal item9 As T9, ByVal item10 As T10) As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse ((item7 Is Nothing) OrElse ((item8 Is Nothing) OrElse ((item9 Is Nothing) OrElse (item10 Is Nothing))))))))) Then
@@ -728,7 +768,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10))
@@ -812,7 +852,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse (Not (Me.item9.Equals(other.item9)) OrElse Not (Me.item10.Equals(other.item10))))))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse (Not (Me.item9.Equals(other.item9)) OrElse Not (Me.item10.Equals(other.item10))))))))))) Then
 				Return False
 			End If
 			Return True
@@ -827,10 +867,11 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7, Me.item8, Me.item9, Me.item10)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)) As Boolean
 			Return Not (tuple1 = tuple2)
@@ -838,19 +879,32 @@ Namespace System
 	End Class
 	#End Region
 	#Region "Property Change Event Support"
-	Public Interface IPropertyChangeEventArgs(Of TProperty)
+	Public Interface IPropertyChangeEventArgs(Of TClass, TProperty)
+		ReadOnly Property Instance() As TClass
 		ReadOnly Property OldValue() As TProperty
 		ReadOnly Property NewValue() As TProperty
 	End Interface
-	Public NotInheritable Class PropertyChangingEventArgs(Of TProperty)
+	<Serializable()> _
+	Public NotInheritable Class PropertyChangingEventArgs(Of TClass, TProperty)
 		Inherits CancelEventArgs
-		Implements IPropertyChangeEventArgs(Of TProperty)
+		Implements IPropertyChangeEventArgs(Of TClass, TProperty)
+		Private ReadOnly instance As TClass
 		Private ReadOnly oldValue As TProperty
 		Private ReadOnly newValue As TProperty
-		Public Sub New(ByVal oldValue As TProperty, ByVal newValue As TProperty)
+		Public Sub New(ByVal instance As TClass, ByVal oldValue As TProperty, ByVal newValue As TProperty)
+			If instance Is Nothing Then
+				Throw New ArgumentNullException("instance")
+			End If
+			Me.instance = instance
 			Me.oldValue = oldValue
 			Me.newValue = newValue
 		End Sub
+		Public ReadOnly Property Instance() As TClass Implements _
+			IPropertyChangeEventArgs.Instance
+			Get
+				Return Me.instance
+			End Get
+		End Property
 		Public ReadOnly Property OldValue() As TProperty Implements _
 			IPropertyChangeEventArgs.OldValue
 			Get
@@ -864,15 +918,27 @@ Namespace System
 			End Get
 		End Property
 	End Class
-	Public NotInheritable Class PropertyChangedEventArgs(Of TProperty)
+	<Serializable()> _
+	Public NotInheritable Class PropertyChangedEventArgs(Of TClass, TProperty)
 		Inherits EventArgs
-		Implements IPropertyChangeEventArgs(Of TProperty)
+		Implements IPropertyChangeEventArgs(Of TClass, TProperty)
+		Private ReadOnly instance As TClass
 		Private ReadOnly oldValue As TProperty
 		Private ReadOnly newValue As TProperty
-		Public Sub New(ByVal oldValue As TProperty, ByVal newValue As TProperty)
+		Public Sub New(ByVal instance As TClass, ByVal oldValue As TProperty, ByVal newValue As TProperty)
+			If instance Is Nothing Then
+				Throw New ArgumentNullException("instance")
+			End If
+			Me.instance = instance
 			Me.oldValue = oldValue
 			Me.newValue = newValue
 		End Sub
+		Public ReadOnly Property Instance() As TClass Implements _
+			IPropertyChangeEventArgs.Instance
+			Get
+				Return Me.instance
+			End Get
+		End Property
 		Public ReadOnly Property OldValue() As TProperty Implements _
 			IPropertyChangeEventArgs.OldValue
 			Get
@@ -924,9 +990,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseLastNameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.LastName, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.LastName, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -942,9 +1008,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseLastNameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.LastName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.LastName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("LastName")
 			End If
 		End Sub
@@ -958,9 +1024,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseFirstNameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.FirstName, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.FirstName, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -976,9 +1042,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseFirstNameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.FirstName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.FirstName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("FirstName")
 			End If
 		End Sub
@@ -992,9 +1058,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseTitleChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Title, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.Title, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1010,9 +1076,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseTitleChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Title), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.Title), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Title")
 			End If
 		End Sub
@@ -1026,9 +1092,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseCountryChangingEvent(ByVal newValue As Country) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Country)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of Country)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Country)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of Person, Country)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Country) = New PropertyChangingEventArgs(Of Country)(Me.Country, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Country) = New PropertyChangingEventArgs(Of Person, Country)(Me, Me.Country, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1044,9 +1110,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseCountryChangedEvent(ByVal oldValue As Country)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Country)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of Country)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Country)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of Person, Country)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Country)(oldValue, Me.Country), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Country)(Me, oldValue, Me.Country), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Country")
 			End If
 		End Sub
@@ -1096,9 +1162,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseCountry_nameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Country, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Country, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Country_name, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Country, String) = New PropertyChangingEventArgs(Of Country, String)(Me, Me.Country_name, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1114,9 +1180,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseCountry_nameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Country, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Country, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Country_name), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Country, String)(Me, oldValue, Me.Country_name), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Country_name")
 			End If
 		End Sub
@@ -1130,9 +1196,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseRegion_Region_codeChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Country, String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Country, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Region_Region_code, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Country, String) = New PropertyChangingEventArgs(Of Country, String)(Me, Me.Region_Region_code, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1148,9 +1214,9 @@ Namespace PersonCountryDemo
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseRegion_Region_codeChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Country, String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Country, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Region_Region_code), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Country, String)(Me, oldValue, Me.Region_Region_code), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Region_Region_code")
 			End If
 		End Sub

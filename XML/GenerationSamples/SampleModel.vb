@@ -8,6 +8,8 @@ Imports SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessa
 #Region "Global Support Classes"
 Namespace System
 	#Region "Tuple Support"
+	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public MustInherit Partial Class Tuple
 		Protected Shared Function RotateRight(ByVal value As Integer, ByVal places As Integer) As Integer
 			places = places And &H1F
@@ -19,7 +21,7 @@ Namespace System
 		End Function
 	End Class
 	#End Region
-	#Region "2-ary Tuple"
+	#Region "Binary (2-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2)(ByVal item1 As T1, ByVal item2 As T2) As Tuple(Of T1, T2)
 			If (item1 Is Nothing) OrElse (item2 Is Nothing) Then
@@ -28,7 +30,7 @@ Namespace System
 			Return New Tuple(Of T1, T2)(item1, item2)
 		End Function
 	End Class
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2))
@@ -56,7 +58,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse Not (Me.item2.Equals(other.item2))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse Not (Me.item2.Equals(other.item2))) Then
 				Return False
 			End If
 			Return True
@@ -71,17 +73,48 @@ Namespace System
 			Return String.Format(provider, "({1}, {2})", Me.item1, Me.item2)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2), ByVal tuple2 As Tuple(Of T1, T2)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2), ByVal tuple2 As Tuple(Of T1, T2)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
+		Public Overloads Shared Widening Operator CType(ByVal tuple As Tuple(Of T1, T2)) As System.Collections.Generic.KeyValuePair(Of T1, T2)
+			If CObj(tuple) Is Nothing Then
+				Return Nothing
+			Else
+				Return New System.Collections.Generic.KeyValuePair(Of T1, T2)(tuple.item1, tuple.item2)
+			End If
+		End Operator
+		Public Overloads Shared Narrowing Operator CType(ByVal keyValuePair As System.Collections.Generic.KeyValuePair(Of T1, T2)) As Tuple(Of T1, T2)
+			If (keyValuePair.Key Is Nothing) OrElse (keyValuePair.Value Is Nothing) Then
+				Throw New System.InvalidCastException()
+			Else
+				Return New Tuple(Of T1, T2)(keyValuePair.Key, keyValuePair.Value)
+			End If
+		End Operator
+		Public Overloads Shared Widening Operator CType(ByVal tuple As Tuple(Of T1, T2)) As System.Collections.DictionaryEntry
+			If CObj(tuple) Is Nothing Then
+				Return Nothing
+			Else
+				Return New System.Collections.DictionaryEntry(tuple.item1, tuple.item2)
+			End If
+		End Operator
+		Public Overloads Shared Narrowing Operator CType(ByVal dictionaryEntry As System.Collections.DictionaryEntry) As Tuple(Of T1, T2)
+			Dim key As Object = dictionaryEntry.Key
+			Dim value As Object = dictionaryEntry.Value
+			If ((key Is Nothing) OrElse (value Is Nothing)) OrElse Not ((TypeOf key Is T1) AndAlso (TypeOf value Is T2)) Then
+				Throw New System.InvalidCastException()
+			Else
+				Return New Tuple(Of T1, T2)(CType(key, T1), CType(value, T2))
+			End If
+		End Operator
 	End Class
 	#End Region
-	#Region "3-ary Tuple"
+	#Region "Ternary (3-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3) As Tuple(Of T1, T2, T3)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse (item3 Is Nothing)) Then
@@ -91,7 +124,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3))
@@ -126,7 +159,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse Not (Me.item3.Equals(other.item3)))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse Not (Me.item3.Equals(other.item3)))) Then
 				Return False
 			End If
 			Return True
@@ -141,17 +174,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3})", Me.item1, Me.item2, Me.item3)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3), ByVal tuple2 As Tuple(Of T1, T2, T3)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3), ByVal tuple2 As Tuple(Of T1, T2, T3)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "4-ary Tuple"
+	#Region "Quaternary (4-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4) As Tuple(Of T1, T2, T3, T4)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse (item4 Is Nothing))) Then
@@ -161,7 +195,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4))
@@ -203,7 +237,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse Not (Me.item4.Equals(other.item4))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse Not (Me.item4.Equals(other.item4))))) Then
 				Return False
 			End If
 			Return True
@@ -218,17 +252,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4})", Me.item1, Me.item2, Me.item3, Me.item4)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4), ByVal tuple2 As Tuple(Of T1, T2, T3, T4)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4), ByVal tuple2 As Tuple(Of T1, T2, T3, T4)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "5-ary Tuple"
+	#Region "Quinary (5-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5) As Tuple(Of T1, T2, T3, T4, T5)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse (item5 Is Nothing)))) Then
@@ -238,7 +273,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5))
@@ -287,7 +322,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse Not (Me.item5.Equals(other.item5)))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse Not (Me.item5.Equals(other.item5)))))) Then
 				Return False
 			End If
 			Return True
@@ -302,17 +337,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "6-ary Tuple"
+	#Region "Senary (6-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6) As Tuple(Of T1, T2, T3, T4, T5, T6)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse (item6 Is Nothing))))) Then
@@ -322,7 +358,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6))
@@ -378,7 +414,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse Not (Me.item6.Equals(other.item6))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse Not (Me.item6.Equals(other.item6))))))) Then
 				Return False
 			End If
 			Return True
@@ -393,17 +429,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "7-ary Tuple"
+	#Region "Septenary (7-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7) As Tuple(Of T1, T2, T3, T4, T5, T6, T7)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse (item7 Is Nothing)))))) Then
@@ -413,7 +450,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7))
@@ -476,7 +513,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse Not (Me.item7.Equals(other.item7)))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse Not (Me.item7.Equals(other.item7)))))))) Then
 				Return False
 			End If
 			Return True
@@ -491,17 +528,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "8-ary Tuple"
+	#Region "Octonary (8-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7, T8)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7, ByVal item8 As T8) As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse ((item7 Is Nothing) OrElse (item8 Is Nothing))))))) Then
@@ -511,7 +549,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8))
@@ -581,7 +619,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse Not (Me.item8.Equals(other.item8))))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse Not (Me.item8.Equals(other.item8))))))))) Then
 				Return False
 			End If
 			Return True
@@ -596,17 +634,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7, Me.item8)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "9-ary Tuple"
+	#Region "Nonary (9-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7, ByVal item8 As T8, ByVal item9 As T9) As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse ((item7 Is Nothing) OrElse ((item8 Is Nothing) OrElse (item9 Is Nothing)))))))) Then
@@ -616,7 +655,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9))
@@ -693,7 +732,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse Not (Me.item9.Equals(other.item9)))))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse Not (Me.item9.Equals(other.item9)))))))))) Then
 				Return False
 			End If
 			Return True
@@ -708,17 +747,18 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7, Me.item8, Me.item9)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)) As Boolean
 			Return Not (tuple1 = tuple2)
 		End Operator
 	End Class
 	#End Region
-	#Region "10-ary Tuple"
+	#Region "Denary (10-ary) Tuple"
 	Public MustInherit Partial Class Tuple
 		Public Overloads Shared Function CreateTuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)(ByVal item1 As T1, ByVal item2 As T2, ByVal item3 As T3, ByVal item4 As T4, ByVal item5 As T5, ByVal item6 As T6, ByVal item7 As T7, ByVal item8 As T8, ByVal item9 As T9, ByVal item10 As T10) As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
 			If (item1 Is Nothing) OrElse ((item2 Is Nothing) OrElse ((item3 Is Nothing) OrElse ((item4 Is Nothing) OrElse ((item5 Is Nothing) OrElse ((item6 Is Nothing) OrElse ((item7 Is Nothing) OrElse ((item8 Is Nothing) OrElse ((item9 Is Nothing) OrElse (item10 Is Nothing))))))))) Then
@@ -728,7 +768,7 @@ Namespace System
 		End Function
 	End Class
 	<System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")> _
-	<System.ComponentModel.ImmutableObjectAttribute(True)> _
+	<System.Serializable()> _
 	Public NotInheritable Class Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
 		Inherits Tuple
 		Implements System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10))
@@ -812,7 +852,7 @@ Namespace System
 		End Function
 		Public Overloads Function Equals(ByVal other As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)) As Boolean Implements _
 			System.IEquatable(Of Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)).Equals
-			If (other Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse (Not (Me.item9.Equals(other.item9)) OrElse Not (Me.item10.Equals(other.item10))))))))))) Then
+			If (CObj(other) Is Nothing) OrElse (Not (Me.item1.Equals(other.item1)) OrElse (Not (Me.item2.Equals(other.item2)) OrElse (Not (Me.item3.Equals(other.item3)) OrElse (Not (Me.item4.Equals(other.item4)) OrElse (Not (Me.item5.Equals(other.item5)) OrElse (Not (Me.item6.Equals(other.item6)) OrElse (Not (Me.item7.Equals(other.item7)) OrElse (Not (Me.item8.Equals(other.item8)) OrElse (Not (Me.item9.Equals(other.item9)) OrElse Not (Me.item10.Equals(other.item10))))))))))) Then
 				Return False
 			End If
 			Return True
@@ -827,10 +867,11 @@ Namespace System
 			Return String.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})", Me.item1, Me.item2, Me.item3, Me.item4, Me.item5, Me.item6, Me.item7, Me.item8, Me.item9, Me.item10)
 		End Function
 		Public Shared Operator =(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)) As Boolean
-			If Not (Object.ReferenceEquals(tuple1, Nothing)) Then
+			If CObj(tuple1) Is Nothing Then
+				Return CObj(tuple2) Is Nothing
+			Else
 				Return tuple1.Equals(tuple2)
 			End If
-			Return Object.ReferenceEquals(tuple2, Nothing)
 		End Operator
 		Public Shared Operator <>(ByVal tuple1 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), ByVal tuple2 As Tuple(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)) As Boolean
 			Return Not (tuple1 = tuple2)
@@ -838,19 +879,32 @@ Namespace System
 	End Class
 	#End Region
 	#Region "Property Change Event Support"
-	Public Interface IPropertyChangeEventArgs(Of TProperty)
+	Public Interface IPropertyChangeEventArgs(Of TClass, TProperty)
+		ReadOnly Property Instance() As TClass
 		ReadOnly Property OldValue() As TProperty
 		ReadOnly Property NewValue() As TProperty
 	End Interface
-	Public NotInheritable Class PropertyChangingEventArgs(Of TProperty)
+	<Serializable()> _
+	Public NotInheritable Class PropertyChangingEventArgs(Of TClass, TProperty)
 		Inherits CancelEventArgs
-		Implements IPropertyChangeEventArgs(Of TProperty)
+		Implements IPropertyChangeEventArgs(Of TClass, TProperty)
+		Private ReadOnly instance As TClass
 		Private ReadOnly oldValue As TProperty
 		Private ReadOnly newValue As TProperty
-		Public Sub New(ByVal oldValue As TProperty, ByVal newValue As TProperty)
+		Public Sub New(ByVal instance As TClass, ByVal oldValue As TProperty, ByVal newValue As TProperty)
+			If instance Is Nothing Then
+				Throw New ArgumentNullException("instance")
+			End If
+			Me.instance = instance
 			Me.oldValue = oldValue
 			Me.newValue = newValue
 		End Sub
+		Public ReadOnly Property Instance() As TClass Implements _
+			IPropertyChangeEventArgs.Instance
+			Get
+				Return Me.instance
+			End Get
+		End Property
 		Public ReadOnly Property OldValue() As TProperty Implements _
 			IPropertyChangeEventArgs.OldValue
 			Get
@@ -864,15 +918,27 @@ Namespace System
 			End Get
 		End Property
 	End Class
-	Public NotInheritable Class PropertyChangedEventArgs(Of TProperty)
+	<Serializable()> _
+	Public NotInheritable Class PropertyChangedEventArgs(Of TClass, TProperty)
 		Inherits EventArgs
-		Implements IPropertyChangeEventArgs(Of TProperty)
+		Implements IPropertyChangeEventArgs(Of TClass, TProperty)
+		Private ReadOnly instance As TClass
 		Private ReadOnly oldValue As TProperty
 		Private ReadOnly newValue As TProperty
-		Public Sub New(ByVal oldValue As TProperty, ByVal newValue As TProperty)
+		Public Sub New(ByVal instance As TClass, ByVal oldValue As TProperty, ByVal newValue As TProperty)
+			If instance Is Nothing Then
+				Throw New ArgumentNullException("instance")
+			End If
+			Me.instance = instance
 			Me.oldValue = oldValue
 			Me.newValue = newValue
 		End Sub
+		Public ReadOnly Property Instance() As TClass Implements _
+			IPropertyChangeEventArgs.Instance
+			Get
+				Return Me.instance
+			End Get
+		End Property
 		Public ReadOnly Property OldValue() As TProperty Implements _
 			IPropertyChangeEventArgs.OldValue
 			Get
@@ -924,9 +990,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDrivesCar_vinChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonDrivesCar, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of PersonDrivesCar, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.DrivesCar_vin, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonDrivesCar, Integer) = New PropertyChangingEventArgs(Of PersonDrivesCar, Integer)(Me, Me.DrivesCar_vin, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -942,9 +1008,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDrivesCar_vinChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonDrivesCar, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of PersonDrivesCar, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.DrivesCar_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonDrivesCar, Integer)(Me, oldValue, Me.DrivesCar_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("DrivesCar_vin")
 			End If
 		End Sub
@@ -958,9 +1024,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDrivenByPersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonDrivesCar, Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of PersonDrivesCar, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.DrivenByPerson, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonDrivesCar, Person) = New PropertyChangingEventArgs(Of PersonDrivesCar, Person)(Me, Me.DrivenByPerson, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -976,9 +1042,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDrivenByPersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonDrivesCar, Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of PersonDrivesCar, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.DrivenByPerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonDrivesCar, Person)(Me, oldValue, Me.DrivenByPerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("DrivenByPerson")
 			End If
 		End Sub
@@ -1026,9 +1092,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseCarSold_vinChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.CarSold_vin, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer) = New PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)(Me, Me.CarSold_vin, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1044,9 +1110,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseCarSold_vinChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.CarSold_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)(Me, oldValue, Me.CarSold_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("CarSold_vin")
 			End If
 		End Sub
@@ -1060,9 +1126,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseSaleDate_YMDChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.SaleDate_YMD, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer) = New PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)(Me, Me.SaleDate_YMD, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1078,9 +1144,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseSaleDate_YMDChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.SaleDate_YMD), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer)(Me, oldValue, Me.SaleDate_YMD), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("SaleDate_YMD")
 			End If
 		End Sub
@@ -1094,9 +1160,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseBuyerChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Buyer, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person) = New PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)(Me, Me.Buyer, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1112,9 +1178,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseBuyerChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Buyer), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)(Me, oldValue, Me.Buyer), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Buyer")
 			End If
 		End Sub
@@ -1128,9 +1194,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseSellerChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Seller, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person) = New PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)(Me, Me.Seller, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1146,9 +1212,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseSellerChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Seller), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person)(Me, oldValue, Me.Seller), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Seller")
 			End If
 		End Sub
@@ -1198,9 +1264,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseCar_vinChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Review, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Review, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.Car_vin, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Review, Integer) = New PropertyChangingEventArgs(Of Review, Integer)(Me, Me.Car_vin, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1216,9 +1282,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseCar_vinChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Review, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Review, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.Car_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Review, Integer)(Me, oldValue, Me.Car_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Car_vin")
 			End If
 		End Sub
@@ -1232,9 +1298,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseRating_Nr_IntegerChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Review, Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Review, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.Rating_Nr_Integer, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Review, Integer) = New PropertyChangingEventArgs(Of Review, Integer)(Me, Me.Rating_Nr_Integer, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1250,9 +1316,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseRating_Nr_IntegerChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Review, Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Review, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.Rating_Nr_Integer), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Review, Integer)(Me, oldValue, Me.Rating_Nr_Integer), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Rating_Nr_Integer")
 			End If
 		End Sub
@@ -1266,9 +1332,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseCriterion_NameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Review, String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of Review, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Criterion_Name, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Review, String) = New PropertyChangingEventArgs(Of Review, String)(Me, Me.Criterion_Name, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1284,9 +1350,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseCriterion_NameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Review, String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of Review, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Criterion_Name), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Review, String)(Me, oldValue, Me.Criterion_Name), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Criterion_Name")
 			End If
 		End Sub
@@ -1335,9 +1401,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseNickNameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonHasNickName, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of PersonHasNickName, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.NickName, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonHasNickName, String) = New PropertyChangingEventArgs(Of PersonHasNickName, String)(Me, Me.NickName, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1353,9 +1419,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseNickNameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonHasNickName, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of PersonHasNickName, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.NickName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonHasNickName, String)(Me, oldValue, Me.NickName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("NickName")
 			End If
 		End Sub
@@ -1369,9 +1435,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of PersonHasNickName, Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of PersonHasNickName, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Person, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of PersonHasNickName, Person) = New PropertyChangingEventArgs(Of PersonHasNickName, Person)(Me, Me.Person, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1387,9 +1453,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of PersonHasNickName, Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of PersonHasNickName, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of PersonHasNickName, Person)(Me, oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Person")
 			End If
 		End Sub
@@ -1437,9 +1503,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseFirstNameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.FirstName, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.FirstName, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1455,9 +1521,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseFirstNameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.FirstName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.FirstName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("FirstName")
 			End If
 		End Sub
@@ -1471,9 +1537,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDate_YMDChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Person, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.Date_YMD, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Integer) = New PropertyChangingEventArgs(Of Person, Integer)(Me, Me.Date_YMD, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1489,9 +1555,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDate_YMDChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Integer)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Person, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.Date_YMD), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Integer)(Me, oldValue, Me.Date_YMD), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Date_YMD")
 			End If
 		End Sub
@@ -1505,9 +1571,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseLastNameChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.LastName, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.LastName, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1523,9 +1589,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseLastNameChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.LastName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.LastName), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("LastName")
 			End If
 		End Sub
@@ -1539,9 +1605,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseSocialSecurityNumberChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.SocialSecurityNumber, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.SocialSecurityNumber, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1557,9 +1623,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseSocialSecurityNumberChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.SocialSecurityNumber), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.SocialSecurityNumber), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("SocialSecurityNumber")
 			End If
 		End Sub
@@ -1573,9 +1639,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseHatType_ColorARGBChangingEvent(ByVal newValue As Nullable(Of Integer)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Integer))) = TryCast(Me.Events(5), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Integer))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer))) = TryCast(Me.Events(5), EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Integer)) = New PropertyChangingEventArgs(Of Nullable(Of Integer))(Me.HatType_ColorARGB, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Nullable(Of Integer)) = New PropertyChangingEventArgs(Of Person, Nullable(Of Integer))(Me, Me.HatType_ColorARGB, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1591,9 +1657,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseHatType_ColorARGBChangedEvent(ByVal oldValue As Nullable(Of Integer))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Integer))) = TryCast(Me.Events(5), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Integer))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer))) = TryCast(Me.Events(5), EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Integer))(oldValue, Me.HatType_ColorARGB), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Nullable(Of Integer))(Me, oldValue, Me.HatType_ColorARGB), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("HatType_ColorARGB")
 			End If
 		End Sub
@@ -1607,9 +1673,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseHatType_HatTypeStyle_HatTypeStyle_DescriptionChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(6), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(6), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.HatType_HatTypeStyle_HatTypeStyle_Description, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.HatType_HatTypeStyle_HatTypeStyle_Description, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1625,9 +1691,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseHatType_HatTypeStyle_HatTypeStyle_DescriptionChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(6), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(6), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.HatType_HatTypeStyle_HatTypeStyle_Description), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.HatType_HatTypeStyle_HatTypeStyle_Description), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("HatType_HatTypeStyle_HatTypeStyle_Description")
 			End If
 		End Sub
@@ -1641,9 +1707,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseOwnsCar_vinChangingEvent(ByVal newValue As Nullable(Of Integer)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Integer))) = TryCast(Me.Events(7), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Integer))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer))) = TryCast(Me.Events(7), EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Integer)) = New PropertyChangingEventArgs(Of Nullable(Of Integer))(Me.OwnsCar_vin, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Nullable(Of Integer)) = New PropertyChangingEventArgs(Of Person, Nullable(Of Integer))(Me, Me.OwnsCar_vin, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1659,9 +1725,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseOwnsCar_vinChangedEvent(ByVal oldValue As Nullable(Of Integer))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Integer))) = TryCast(Me.Events(7), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Integer))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer))) = TryCast(Me.Events(7), EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Integer))(oldValue, Me.OwnsCar_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Nullable(Of Integer))(Me, oldValue, Me.OwnsCar_vin), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("OwnsCar_vin")
 			End If
 		End Sub
@@ -1675,9 +1741,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseGender_Gender_CodeChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(8), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, String)) = TryCast(Me.Events(8), EventHandler(Of PropertyChangingEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.Gender_Gender_Code, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, String) = New PropertyChangingEventArgs(Of Person, String)(Me, Me.Gender_Gender_Code, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1693,9 +1759,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseGender_Gender_CodeChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(8), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, String)) = TryCast(Me.Events(8), EventHandler(Of PropertyChangedEventArgs(Of Person, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.Gender_Gender_Code), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, String)(Me, oldValue, Me.Gender_Gender_Code), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Gender_Gender_Code")
 			End If
 		End Sub
@@ -1709,9 +1775,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonHasParentsChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(9), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))) = TryCast(Me.Events(9), EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Nullable(Of Boolean))(Me.PersonHasParents, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))(Me, Me.PersonHasParents, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1727,9 +1793,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonHasParentsChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(9), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))) = TryCast(Me.Events(9), EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Boolean))(oldValue, Me.PersonHasParents), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))(Me, oldValue, Me.PersonHasParents), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("PersonHasParents")
 			End If
 		End Sub
@@ -1743,9 +1809,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseValueType1DoesSomethingElseWithChangingEvent(ByVal newValue As ValueType1) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ValueType1)) = TryCast(Me.Events(10), EventHandler(Of PropertyChangingEventArgs(Of ValueType1)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1)) = TryCast(Me.Events(10), EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of ValueType1) = New PropertyChangingEventArgs(Of ValueType1)(Me.ValueType1DoesSomethingElseWith, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, ValueType1) = New PropertyChangingEventArgs(Of Person, ValueType1)(Me, Me.ValueType1DoesSomethingElseWith, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1761,9 +1827,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseValueType1DoesSomethingElseWithChangedEvent(ByVal oldValue As ValueType1)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ValueType1)) = TryCast(Me.Events(10), EventHandler(Of PropertyChangedEventArgs(Of ValueType1)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1)) = TryCast(Me.Events(10), EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ValueType1)(oldValue, Me.ValueType1DoesSomethingElseWith), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, ValueType1)(Me, oldValue, Me.ValueType1DoesSomethingElseWith), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("ValueType1DoesSomethingElseWith")
 			End If
 		End Sub
@@ -1777,9 +1843,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseMalePersonChangingEvent(ByVal newValue As MalePerson) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of MalePerson)) = TryCast(Me.Events(11), EventHandler(Of PropertyChangingEventArgs(Of MalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson)) = TryCast(Me.Events(11), EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of MalePerson) = New PropertyChangingEventArgs(Of MalePerson)(Me.MalePerson, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, MalePerson) = New PropertyChangingEventArgs(Of Person, MalePerson)(Me, Me.MalePerson, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1795,9 +1861,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseMalePersonChangedEvent(ByVal oldValue As MalePerson)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of MalePerson)) = TryCast(Me.Events(11), EventHandler(Of PropertyChangedEventArgs(Of MalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson)) = TryCast(Me.Events(11), EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of MalePerson)(oldValue, Me.MalePerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, MalePerson)(Me, oldValue, Me.MalePerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("MalePerson")
 			End If
 		End Sub
@@ -1811,9 +1877,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseFemalePersonChangingEvent(ByVal newValue As FemalePerson) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of FemalePerson)) = TryCast(Me.Events(12), EventHandler(Of PropertyChangingEventArgs(Of FemalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson)) = TryCast(Me.Events(12), EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of FemalePerson) = New PropertyChangingEventArgs(Of FemalePerson)(Me.FemalePerson, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, FemalePerson) = New PropertyChangingEventArgs(Of Person, FemalePerson)(Me, Me.FemalePerson, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1829,9 +1895,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseFemalePersonChangedEvent(ByVal oldValue As FemalePerson)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of FemalePerson)) = TryCast(Me.Events(12), EventHandler(Of PropertyChangedEventArgs(Of FemalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson)) = TryCast(Me.Events(12), EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of FemalePerson)(oldValue, Me.FemalePerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, FemalePerson)(Me, oldValue, Me.FemalePerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("FemalePerson")
 			End If
 		End Sub
@@ -1845,9 +1911,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseChildPersonChangingEvent(ByVal newValue As ChildPerson) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson)) = TryCast(Me.Events(13), EventHandler(Of PropertyChangingEventArgs(Of ChildPerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, ChildPerson)) = TryCast(Me.Events(13), EventHandler(Of PropertyChangingEventArgs(Of Person, ChildPerson)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of ChildPerson) = New PropertyChangingEventArgs(Of ChildPerson)(Me.ChildPerson, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, ChildPerson) = New PropertyChangingEventArgs(Of Person, ChildPerson)(Me, Me.ChildPerson, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1863,9 +1929,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseChildPersonChangedEvent(ByVal oldValue As ChildPerson)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson)) = TryCast(Me.Events(13), EventHandler(Of PropertyChangedEventArgs(Of ChildPerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, ChildPerson)) = TryCast(Me.Events(13), EventHandler(Of PropertyChangedEventArgs(Of Person, ChildPerson)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ChildPerson)(oldValue, Me.ChildPerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, ChildPerson)(Me, oldValue, Me.ChildPerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("ChildPerson")
 			End If
 		End Sub
@@ -1879,9 +1945,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDeathChangingEvent(ByVal newValue As Death) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death)) = TryCast(Me.Events(14), EventHandler(Of PropertyChangingEventArgs(Of Death)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Death)) = TryCast(Me.Events(14), EventHandler(Of PropertyChangingEventArgs(Of Person, Death)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Death) = New PropertyChangingEventArgs(Of Death)(Me.Death, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Death) = New PropertyChangingEventArgs(Of Person, Death)(Me, Me.Death, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -1897,9 +1963,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDeathChangedEvent(ByVal oldValue As Death)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death)) = TryCast(Me.Events(14), EventHandler(Of PropertyChangedEventArgs(Of Death)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Death)) = TryCast(Me.Events(14), EventHandler(Of PropertyChangedEventArgs(Of Person, Death)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death)(oldValue, Me.Death), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Death)(Me, oldValue, Me.Death), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Death")
 			End If
 		End Sub
@@ -2015,9 +2081,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of MalePerson, Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of MalePerson, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Person, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of MalePerson, Person) = New PropertyChangingEventArgs(Of MalePerson, Person)(Me, Me.Person, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -2033,9 +2099,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of MalePerson, Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of MalePerson, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of MalePerson, Person)(Me, oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Person")
 			End If
 		End Sub
@@ -2408,9 +2474,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of FemalePerson, Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of FemalePerson, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Person, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of FemalePerson, Person) = New PropertyChangingEventArgs(Of FemalePerson, Person)(Me, Me.Person, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -2426,9 +2492,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of FemalePerson, Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of FemalePerson, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of FemalePerson, Person)(Me, oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Person")
 			End If
 		End Sub
@@ -2801,9 +2867,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseBirthOrder_BirthOrder_NrChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.BirthOrder_BirthOrder_Nr, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of ChildPerson, Integer) = New PropertyChangingEventArgs(Of ChildPerson, Integer)(Me, Me.BirthOrder_BirthOrder_Nr, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -2819,9 +2885,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseBirthOrder_BirthOrder_NrChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.BirthOrder_BirthOrder_Nr), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ChildPerson, Integer)(Me, oldValue, Me.BirthOrder_BirthOrder_Nr), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("BirthOrder_BirthOrder_Nr")
 			End If
 		End Sub
@@ -2835,9 +2901,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseFatherChangingEvent(ByVal newValue As MalePerson) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of MalePerson)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of MalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, MalePerson)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, MalePerson)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of MalePerson) = New PropertyChangingEventArgs(Of MalePerson)(Me.Father, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of ChildPerson, MalePerson) = New PropertyChangingEventArgs(Of ChildPerson, MalePerson)(Me, Me.Father, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -2853,9 +2919,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseFatherChangedEvent(ByVal oldValue As MalePerson)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of MalePerson)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of MalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, MalePerson)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, MalePerson)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of MalePerson)(oldValue, Me.Father), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ChildPerson, MalePerson)(Me, oldValue, Me.Father), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Father")
 			End If
 		End Sub
@@ -2869,9 +2935,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseMotherChangingEvent(ByVal newValue As FemalePerson) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of FemalePerson)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of FemalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, FemalePerson)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, FemalePerson)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of FemalePerson) = New PropertyChangingEventArgs(Of FemalePerson)(Me.Mother, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of ChildPerson, FemalePerson) = New PropertyChangingEventArgs(Of ChildPerson, FemalePerson)(Me, Me.Mother, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -2887,9 +2953,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseMotherChangedEvent(ByVal oldValue As FemalePerson)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of FemalePerson)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of FemalePerson)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, FemalePerson)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, FemalePerson)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of FemalePerson)(oldValue, Me.Mother), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ChildPerson, FemalePerson)(Me, oldValue, Me.Mother), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Mother")
 			End If
 		End Sub
@@ -2903,9 +2969,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Person, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of ChildPerson, Person) = New PropertyChangingEventArgs(Of ChildPerson, Person)(Me, Me.Person, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -2921,9 +2987,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, Person)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ChildPerson, Person)(Me, oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Person")
 			End If
 		End Sub
@@ -3322,9 +3388,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDate_YMDChangingEvent(ByVal newValue As Nullable(Of Integer)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Integer))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Integer))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death, Nullable(Of Integer))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Death, Nullable(Of Integer))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Integer)) = New PropertyChangingEventArgs(Of Nullable(Of Integer))(Me.Date_YMD, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Death, Nullable(Of Integer)) = New PropertyChangingEventArgs(Of Death, Nullable(Of Integer))(Me, Me.Date_YMD, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3340,9 +3406,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDate_YMDChangedEvent(ByVal oldValue As Nullable(Of Integer))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Integer))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Integer))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death, Nullable(Of Integer))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Death, Nullable(Of Integer))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Integer))(oldValue, Me.Date_YMD), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death, Nullable(Of Integer))(Me, oldValue, Me.Date_YMD), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Date_YMD")
 			End If
 		End Sub
@@ -3356,9 +3422,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDeathCause_DeathCause_TypeChangingEvent(ByVal newValue As String) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death, String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Death, String)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of String) = New PropertyChangingEventArgs(Of String)(Me.DeathCause_DeathCause_Type, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Death, String) = New PropertyChangingEventArgs(Of Death, String)(Me, Me.DeathCause_DeathCause_Type, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3374,9 +3440,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDeathCause_DeathCause_TypeChangedEvent(ByVal oldValue As String)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of String)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death, String)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Death, String)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of String)(oldValue, Me.DeathCause_DeathCause_Type), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death, String)(Me, oldValue, Me.DeathCause_DeathCause_Type), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("DeathCause_DeathCause_Type")
 			End If
 		End Sub
@@ -3390,9 +3456,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseNaturalDeathChangingEvent(ByVal newValue As NaturalDeath) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death, NaturalDeath)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of Death, NaturalDeath)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath) = New PropertyChangingEventArgs(Of NaturalDeath)(Me.NaturalDeath, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Death, NaturalDeath) = New PropertyChangingEventArgs(Of Death, NaturalDeath)(Me, Me.NaturalDeath, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3408,9 +3474,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseNaturalDeathChangedEvent(ByVal oldValue As NaturalDeath)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death, NaturalDeath)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of Death, NaturalDeath)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath)(oldValue, Me.NaturalDeath), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death, NaturalDeath)(Me, oldValue, Me.NaturalDeath), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("NaturalDeath")
 			End If
 		End Sub
@@ -3424,9 +3490,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseUnnaturalDeathChangingEvent(ByVal newValue As UnnaturalDeath) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death, UnnaturalDeath)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangingEventArgs(Of Death, UnnaturalDeath)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath) = New PropertyChangingEventArgs(Of UnnaturalDeath)(Me.UnnaturalDeath, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Death, UnnaturalDeath) = New PropertyChangingEventArgs(Of Death, UnnaturalDeath)(Me, Me.UnnaturalDeath, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3442,9 +3508,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseUnnaturalDeathChangedEvent(ByVal oldValue As UnnaturalDeath)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death, UnnaturalDeath)) = TryCast(Me.Events(4), EventHandler(Of PropertyChangedEventArgs(Of Death, UnnaturalDeath)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath)(oldValue, Me.UnnaturalDeath), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death, UnnaturalDeath)(Me, oldValue, Me.UnnaturalDeath), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("UnnaturalDeath")
 			End If
 		End Sub
@@ -3458,9 +3524,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(5), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death, Person)) = TryCast(Me.Events(5), EventHandler(Of PropertyChangingEventArgs(Of Death, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Person, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Death, Person) = New PropertyChangingEventArgs(Of Death, Person)(Me, Me.Person, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3476,9 +3542,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(5), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death, Person)) = TryCast(Me.Events(5), EventHandler(Of PropertyChangedEventArgs(Of Death, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death, Person)(Me, oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Person")
 			End If
 		End Sub
@@ -3872,9 +3938,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseNaturalDeathIsFromProstateCancerChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Nullable(Of Boolean))(Me.NaturalDeathIsFromProstateCancer, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, Me.NaturalDeathIsFromProstateCancer, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3890,9 +3956,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseNaturalDeathIsFromProstateCancerChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Boolean))(oldValue, Me.NaturalDeathIsFromProstateCancer), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.NaturalDeathIsFromProstateCancer), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("NaturalDeathIsFromProstateCancer")
 			End If
 		End Sub
@@ -3906,9 +3972,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDeathChangingEvent(ByVal newValue As Death) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Death)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Death)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Death)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Death) = New PropertyChangingEventArgs(Of Death)(Me.Death, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath, Death) = New PropertyChangingEventArgs(Of NaturalDeath, Death)(Me, Me.Death, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -3924,9 +3990,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDeathChangedEvent(ByVal oldValue As Death)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Death)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Death)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Death)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death)(oldValue, Me.Death), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath, Death)(Me, oldValue, Me.Death), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Death")
 			End If
 		End Sub
@@ -4402,9 +4468,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseUnnaturalDeathIsViolentChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Nullable(Of Boolean))(Me.UnnaturalDeathIsViolent, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.UnnaturalDeathIsViolent, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -4420,9 +4486,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseUnnaturalDeathIsViolentChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Boolean))(oldValue, Me.UnnaturalDeathIsViolent), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.UnnaturalDeathIsViolent), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("UnnaturalDeathIsViolent")
 			End If
 		End Sub
@@ -4436,9 +4502,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseUnnaturalDeathIsBloodyChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Nullable(Of Boolean))(Me.UnnaturalDeathIsBloody, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.UnnaturalDeathIsBloody, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -4454,9 +4520,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseUnnaturalDeathIsBloodyChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Nullable(Of Boolean))))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Nullable(Of Boolean))(oldValue, Me.UnnaturalDeathIsBloody), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.UnnaturalDeathIsBloody), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("UnnaturalDeathIsBloody")
 			End If
 		End Sub
@@ -4470,9 +4536,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDeathChangingEvent(ByVal newValue As Death) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Death)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of Death)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Death)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Death)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Death) = New PropertyChangingEventArgs(Of Death)(Me.Death, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Death) = New PropertyChangingEventArgs(Of UnnaturalDeath, Death)(Me, Me.Death, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -4488,9 +4554,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDeathChangedEvent(ByVal oldValue As Death)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Death)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of Death)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Death)) = TryCast(Me.Events(3), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Death)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Death)(oldValue, Me.Death), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Death)(Me, oldValue, Me.Death), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Death")
 			End If
 		End Sub
@@ -4967,9 +5033,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaisePersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Task, Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Task, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.Person, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Task, Person) = New PropertyChangingEventArgs(Of Task, Person)(Me, Me.Person, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -4985,9 +5051,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaisePersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Task, Person)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Task, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Task, Person)(Me, oldValue, Me.Person), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("Person")
 			End If
 		End Sub
@@ -5034,9 +5100,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseValueType1ValueChangingEvent(ByVal newValue As Integer) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ValueType1, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of ValueType1, Integer)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Integer) = New PropertyChangingEventArgs(Of Integer)(Me.ValueType1Value, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of ValueType1, Integer) = New PropertyChangingEventArgs(Of ValueType1, Integer)(Me, Me.ValueType1Value, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -5052,9 +5118,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseValueType1ValueChangedEvent(ByVal oldValue As Integer)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of Integer)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ValueType1, Integer)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of ValueType1, Integer)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Integer)(oldValue, Me.ValueType1Value), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ValueType1, Integer)(Me, oldValue, Me.ValueType1Value), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("ValueType1Value")
 			End If
 		End Sub
@@ -5068,9 +5134,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Function RaiseDoesSomethingWithPersonChangingEvent(ByVal newValue As Person) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of ValueType1, Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangingEventArgs(Of ValueType1, Person)))
 			If eventHandler IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person) = New PropertyChangingEventArgs(Of Person)(Me.DoesSomethingWithPerson, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of ValueType1, Person) = New PropertyChangingEventArgs(Of ValueType1, Person)(Me, Me.DoesSomethingWithPerson, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
@@ -5086,9 +5152,9 @@ Namespace SampleModel
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030")> _
 		Protected Sub RaiseDoesSomethingWithPersonChangedEvent(ByVal oldValue As Person)
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of Person)))
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of ValueType1, Person)) = TryCast(Me.Events(2), EventHandler(Of PropertyChangedEventArgs(Of ValueType1, Person)))
 			If eventHandler IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person)(oldValue, Me.DoesSomethingWithPerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of ValueType1, Person)(Me, oldValue, Me.DoesSomethingWithPerson), New System.AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("DoesSomethingWithPerson")
 			End If
 		End Sub

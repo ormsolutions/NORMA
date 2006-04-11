@@ -84,6 +84,10 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
+	<xsl:template match="ddt:boolean">
+		<xsl:text>BIT</xsl:text>
+	</xsl:template>
+	
 	<xsl:template match="ddt:characterString">
 		<xsl:choose>
 			<xsl:when test="@type='CHARACTER' or @type='CHARACTER VARYING'">

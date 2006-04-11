@@ -534,7 +534,9 @@
 				<plx:returns dataTypeName="{$ModelContextName}"/>
 				<plx:get/>
 			</plx:property>
-			<xsl:apply-templates select="$eventProperties" mode="GeneratePropertyChangeEvents"/>
+			<xsl:apply-templates select="$eventProperties" mode="GeneratePropertyChangeEvents">
+				<xsl:with-param name="ClassName" select="$className"/>
+			</xsl:apply-templates>
 			<xsl:apply-templates select="$Properties" mode="GenerateAbstractProperty"/>
 			<xsl:call-template name="GenerateToString">
 				<xsl:with-param name="ClassName" select="$className"/>
@@ -716,6 +718,7 @@
 		<xsl:param name="AllProperties"/>
 		<xsl:param name="ParentProperties"/>
 		<xsl:param name="PropertyCallObject"/>
+		<xsl:variable name="thisParentConceptTypeName" select="@name"/>
 		<xsl:for-each select="$ParentProperties">
 			<plx:property visibility="public" modifier="virtual" name="{@name}">
 				<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
@@ -754,6 +757,7 @@
 					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 					<plx:explicitDelegateType dataTypeName="EventHandler"/>
 					<plx:passTypeParam  dataTypeName="PropertyChangingEventArgs">
+						<plx:passTypeParam dataTypeName="{$thisParentConceptTypeName}"/>
 						<plx:passTypeParam>
 							<xsl:copy-of select="prop:DataType/@*"/>
 							<xsl:copy-of select="prop:DataType/child::*"/>
@@ -792,6 +796,7 @@
 					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 					<plx:explicitDelegateType dataTypeName="EventHandler"/>
 					<plx:passTypeParam  dataTypeName="PropertyChangedEventArgs">
+						<plx:passTypeParam dataTypeName="{$thisParentConceptTypeName}"/>
 						<plx:passTypeParam>
 							<xsl:copy-of select="prop:DataType/@*"/>
 							<xsl:copy-of select="prop:DataType/child::*"/>
@@ -861,25 +866,31 @@
 	</xsl:template>
 
 	<xsl:template match="prop:Property" mode="GeneratePropertyChangeEvents">
+		<xsl:param name="ClassName"/>
 		<xsl:variable name="EventIndex" select="position()"/>
 		<xsl:call-template name="GeneratePropertyChangeEvent">
+			<xsl:with-param name="ClassName" select="$ClassName"/>
 			<xsl:with-param name="ChangeType" select="'Changing'"/>
 			<xsl:with-param name="EventIndex" select="$EventIndex"/>
 		</xsl:call-template>
 		<xsl:call-template name="GeneratePropertyChangeEventRaiseMethod">
+			<xsl:with-param name="ClassName" select="$ClassName"/>
 			<xsl:with-param name="ChangeType" select="'Changing'"/>
 			<xsl:with-param name="EventIndex" select="$EventIndex"/>
 		</xsl:call-template>
 		<xsl:call-template name="GeneratePropertyChangeEvent">
+			<xsl:with-param name="ClassName" select="$ClassName"/>
 			<xsl:with-param name="ChangeType" select="'Changed'"/>
 			<xsl:with-param name="EventIndex" select="$EventIndex"/>
 		</xsl:call-template>
 		<xsl:call-template name="GeneratePropertyChangeEventRaiseMethod">
+			<xsl:with-param name="ClassName" select="$ClassName"/>
 			<xsl:with-param name="ChangeType" select="'Changed'"/>
 			<xsl:with-param name="EventIndex" select="$EventIndex"/>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template name="GeneratePropertyChangeEvent">
+		<xsl:param name="ClassName"/>
 		<xsl:param name="ChangeType"/>
 		<xsl:param name="EventIndex"/>
 		<xsl:param name="IsPropertyChangedEvent" select="false()"/>
@@ -899,6 +910,7 @@
 				<xsl:otherwise>
 					<plx:explicitDelegateType dataTypeName="EventHandler"/>
 					<plx:passTypeParam  dataTypeName="Property{$ChangeType}EventArgs">
+						<plx:passTypeParam dataTypeName="{$ClassName}"/>
 						<plx:passTypeParam>
 							<xsl:copy-of select="prop:DataType/@*"/>
 							<xsl:copy-of select="prop:DataType/child::*"/>
@@ -955,6 +967,7 @@
 		</plx:assign>
 	</xsl:template>
 	<xsl:template name="GeneratePropertyChangeEventRaiseMethod">
+		<xsl:param name="ClassName"/>
 		<xsl:param name="ChangeType"/>
 		<xsl:param name="EventIndex"/>
 		<xsl:variable name="isChanging" select="$ChangeType='Changing'"/>
@@ -982,6 +995,7 @@
 			</xsl:choose>
 			<plx:local name="eventHandler" dataTypeName="EventHandler">
 				<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
+					<plx:passTypeParam dataTypeName="{$ClassName}"/>
 					<plx:passTypeParam>
 						<xsl:copy-of select="prop:DataType/@*"/>
 						<xsl:copy-of select="prop:DataType/child::*"/>
@@ -990,6 +1004,7 @@
 				<plx:initialize>
 					<plx:cast type="testCast" dataTypeName="EventHandler">
 						<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
+							<plx:passTypeParam dataTypeName="{$ClassName}"/>
 							<plx:passTypeParam>
 								<xsl:copy-of select="prop:DataType/@*"/>
 								<xsl:copy-of select="prop:DataType/child::*"/>
@@ -997,7 +1012,7 @@
 						</plx:passTypeParam>
 						<plx:callInstance type="arrayIndexer" name=".implied">
 							<plx:callObject>
-								<plx:callThis name="Events" type="field"/>
+								<plx:callThis accessor="this" type="field" name="Events"/>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:value type="i4" data="{$EventIndex}"/>
@@ -1010,7 +1025,7 @@
 				<plx:condition>
 					<plx:binaryOperator type="identityInequality">
 						<plx:left>
-							<plx:nameRef name="eventHandler"/>
+							<plx:nameRef type="local" name="eventHandler"/>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
@@ -1019,13 +1034,17 @@
 				</plx:condition>
 				<xsl:variable name="CreateNewEventArgs">
 					<xsl:variable name="CurrentValue">
-						<plx:callThis type="property"  name="{@name}"/>
+						<plx:callThis accessor="this" type="property"  name="{@name}"/>
 					</xsl:variable>
 					<plx:callNew dataTypeName="Property{$ChangeType}EventArgs">
+						<plx:passTypeParam dataTypeName="{$ClassName}"/>
 						<plx:passTypeParam>
 							<xsl:copy-of select="prop:DataType/@*"/>
 							<xsl:copy-of select="prop:DataType/child::*"/>
 						</plx:passTypeParam>
+						<plx:passParam>
+							<plx:thisKeyword/>
+						</plx:passParam>
 						<plx:passParam>
 							<xsl:choose>
 								<xsl:when test="$isChanging">
@@ -1050,6 +1069,7 @@
 				</xsl:variable>
 				<xsl:if test="$isChanging">
 					<plx:local name="eventArgs" dataTypeName="PropertyChangingEventArgs">
+						<plx:passTypeParam dataTypeName="{$ClassName}"/>
 						<plx:passTypeParam>
 							<xsl:copy-of select="prop:DataType/@*"/>
 							<xsl:copy-of select="prop:DataType/child::*"/>
