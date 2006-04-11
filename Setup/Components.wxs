@@ -214,241 +214,263 @@
 			</Directory>
 			
 			<Directory Id="$(var.CommonFilesFolder)">
-				
-				<Directory Id="ORMCOMMONFILESDIR" Name="ORM">
-					<Directory Id="ORMCOMMONSCHEMASDIR" Name="Schemas">
-						<Component Id="ORMSchemasLocalCatalogComponent" Guid="CA6158D1-A87F-413B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="ORMcatalog.xml" Name="catalog.xml" src="..\catalog.xml"
-								DefaultLanguage="0" CompanionFile="ORMSchemaCatalog.xml"/>
-						</Component>
-						<Component Id="ORMSchemasComponent" Guid="55B51F55-EB34-4AC4-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="ORM2Core.xsd" Name="ORM2Core.xsd" src="..\ORMModel\ObjectModel\ORM2Core.xsd"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<File Id="ORM2Diagram.xsd" Name="ORM2Diag.xsd" LongName="ORM2Diagram.xsd" src="..\ORMModel\ShapeModel\ORM2Diagram.xsd"
-								DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
-							<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" src="..\ORMModel\Shell\ORM2Root.xsd"
-								DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
-						</Component>
-						<Component Id="OIALSchemasComponent" Guid="D5543428-F53D-42D3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="OIAL.xsd" Name="OIAL.xsd" src="..\XML\OIAL\OIAL.xsd"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<File Id="ORMDataTypes.xsd" Name="ORMDT.xsd" LongName="ORMDataTypes.xsd" src="..\XML\OIAL\ORMDataTypes.xsd"
-								DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
-							<File Id="ORMDataTypes_Temporal.xsd" Name="ORMDT-T.xsd" LongName="ORMDataTypes-Temporal.xsd" src="..\XML\OIAL\ORMDataTypes-Temporal.xsd"
-								DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
-						</Component>
-						<Component Id="ORMClassModelSchemasComponent" Guid="9C7D3F0F-0EC5-4933-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="OIALtoPLiX_Properties.xsd" Name="O2P_Prop.xsd" LongName="OIALtoPLiX_Properties.xsd" src="..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-						</Component>
+				<Directory Id="NEUMONTCOMMONFILESDIR" Name="Neumont">
+					<Directory Id="ORMCOMMONFILESDIR" Name="ORM">
+						<Directory Id="ORMCOMMONSCHEMASDIR" Name="Schemas">
+							<Component Id="ORMSchemasLocalCatalogComponent" Guid="CA6158D1-A87F-413B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="ORMcatalog.xml" Name="catalog.xml" src="..\catalog.xml"
+									DefaultLanguage="0" CompanionFile="ORMSchemaCatalog.xml"/>
+							</Component>
+							<Component Id="ORMSchemasComponent" Guid="55B51F55-EB34-4AC4-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="ORM2Core.xsd" Name="ORM2Core.xsd" src="..\ORMModel\ObjectModel\ORM2Core.xsd"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<File Id="ORM2Diagram.xsd" Name="ORM2Diag.xsd" LongName="ORM2Diagram.xsd" src="..\ORMModel\ShapeModel\ORM2Diagram.xsd"
+									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
+								<File Id="ORM2Root.xsd" Name="ORM2Root.xsd" src="..\ORMModel\Shell\ORM2Root.xsd"
+									DefaultLanguage="0" CompanionFile="ORM2Core.xsd"/>
+							</Component>
+							<Component Id="OIALSchemasComponent" Guid="D5543428-F53D-42D3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="OIAL.xsd" Name="OIAL.xsd" src="..\XML\OIAL\OIAL.xsd"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<File Id="ORMDataTypes.xsd" Name="ORMDT.xsd" LongName="ORMDataTypes.xsd" src="..\XML\OIAL\ORMDataTypes.xsd"
+									DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
+								<File Id="ORMDataTypes_Temporal.xsd" Name="ORMDT-T.xsd" LongName="ORMDataTypes-Temporal.xsd" src="..\XML\OIAL\ORMDataTypes-Temporal.xsd"
+									DefaultLanguage="0" CompanionFile="OIAL.xsd"/>
+							</Component>
+							<Component Id="ORMClassModelSchemasComponent" Guid="9C7D3F0F-0EC5-4933-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="OIALtoPLiX_Properties.xsd" Name="O2P_Prop.xsd" LongName="OIALtoPLiX_Properties.xsd" src="..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+							</Component>
+						</Directory>
+						<Directory Id="ORMCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
+							<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="CoRefORM.xslt" Name="CoRefORM.xsl" LongName="CoRefORM.xslt" src="..\XML\OIAL\CoRefORM.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="CoRefORM"/>
+									<Registry Type="string" Name="DisplayName" Value="ORM Co-Referencer"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Co-references (binarizes) an ORM file."/>
+									<Registry Type="string" Name="FileExtension" Value=".CoRef.orm"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="ORM"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="CoRefORM"/>
+									<Registry Type="string" Name="TransformUri" Value="[#CoRefORM.xslt]"/>
+								</Registry>
+							</Component>
+							<Component Id="OIALTransformsComponent" Guid="165ED455-31BE-4E30-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="ORMtoOIAL.xslt" Name="ORM2OIAL.xsl" LongName="ORMtoOIAL.xslt" src="..\XML\OIAL\ORMtoOIAL.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
+									<Registry Type="string" Name="DisplayName" Value="ORM to OIAL"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms a coreferenced ORM file to OIAL."/>
+									<Registry Type="string" Name="FileExtension" Value=".OIAL.xml"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="CoRefORM"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="OIAL"/>
+									<Registry Type="string" Name="TransformUri" Value="[#ORMtoOIAL.xslt]"/>
+								</Registry>
+							</Component>
+							<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="OIALtoPLiX.xslt" Name="OIAL2PLX.xsl" LongName="OIALtoPLiX.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<File Id="OIALtoPLiX_Implementation.xslt" Name="OIL2PLXi.xsl" LongName="OIALtoPLiX_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_Implementation.xslt"
+									DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
+								<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Name="O2P_GGSC.xsl" LongName="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
+									DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
+								<File Id="OIALtoPLiX_GenerateTuple.xslt" Name="O2P_GT.xsl" LongName="OIALtoPLiX_GenerateTuple.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt"
+									DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="OIALtoPLiX"/>
+									<Registry Type="string" Name="DisplayName" Value="OIAL to PLiX"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to PLiX."/>
+									<Registry Type="string" Name="FileExtension" Value=".PLiX.xml"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX"/>
+									<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_Implementation.xslt]"/>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXtoCSharp">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="PLiXtoCSharp"/>
+									<Registry Type="string" Name="DisplayName" Value="PLiX to C#"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to C#."/>
+									<Registry Type="string" Name="FileExtension" Value=".cs"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="PLiX"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="CSharp"/>
+									<Registry Type="string" Name="TransformUri" Value="$(var.PLIXFormatters)\PLiXCS.xslt"/>
+									<Registry Type="integer" Name="Compilable" Value="1"/>
+								</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXtoVisualBasic">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="PLiXtoVisualBasic"/>
+									<Registry Type="string" Name="DisplayName" Value="PLiX to Visual Basic"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to Visual Basic."/>
+									<Registry Type="string" Name="FileExtension" Value=".vb"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="PLiX"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="VisualBasic"/>
+									<Registry Type="string" Name="TransformUri" Value="$(var.PLIXFormatters)\PLiXVB.xslt"/>
+									<Registry Type="integer" Name="Compilable" Value="1"/>
+								</Registry>
+							</Component>
+							<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="OIALtoXSD.xslt" Name="OIAL2XSD.xsl" LongName="OIALtoXSD.xslt" src="..\XML\OIALtoXSD\OIALtoXSD.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="OIALtoXSD"/>
+									<Registry Type="string" Name="DisplayName" Value="OIAL to XSD"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to XML Schema."/>
+									<Registry Type="string" Name="FileExtension" Value=".xsd"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="XSD"/>
+									<Registry Type="string" Name="TransformUri" Value="[#OIALtoXSD.xslt]"/>
+								</Registry>
+							</Component>
+							<Component Id="ORMRelationalSchemaTransformsComponent" Guid="2A455908-5BB2-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="OIALtoDCIL.xslt" Name="OIL2DCIL.xsl" LongName="OIALtoDCIL.xslt" src="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="OIALtoDCIL"/>
+									<Registry Type="string" Name="DisplayName" Value="OIAL to DCIL"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to DCIL."/>
+									<Registry Type="string" Name="FileExtension" Value=".DCIL.xml"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
+									<Registry Type="string" Name="TransformUri" Value="[#OIALtoDCIL.xslt]"/>
+								</Registry>
+							</Component>
+						</Directory>
 					</Directory>
-					<Directory Id="ORMCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
-						<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="CoRefORM.xslt" Name="CoRefORM.xsl" LongName="CoRefORM.xslt" src="..\XML\OIAL\CoRefORM.xslt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="CoRefORM"/>
-								<Registry Type="string" Name="DisplayName" Value="ORM Co-Referencer"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Co-references (binarizes) an ORM file."/>
-								<Registry Type="string" Name="FileExtension" Value=".CoRef.orm"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="ORM"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="CoRefORM"/>
-								<Registry Type="string" Name="TransformUri" Value="[#CoRefORM.xslt]"/>
-							</Registry>
-						</Component>
-						<Component Id="OIALTransformsComponent" Guid="165ED455-31BE-4E30-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="ORMtoOIAL.xslt" Name="ORM2OIAL.xsl" LongName="ORMtoOIAL.xslt" src="..\XML\OIAL\ORMtoOIAL.xslt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
-								<Registry Type="string" Name="DisplayName" Value="ORM to OIAL"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms a coreferenced ORM file to OIAL."/>
-								<Registry Type="string" Name="FileExtension" Value=".OIAL.xml"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="CoRefORM"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="OIAL"/>
-								<Registry Type="string" Name="TransformUri" Value="[#ORMtoOIAL.xslt]"/>
-							</Registry>
-						</Component>
-						<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="OIALtoPLiX.xslt" Name="OIAL2PLX.xsl" LongName="OIALtoPLiX.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX.xslt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<File Id="OIALtoPLiX_Implementation.xslt" Name="OIL2PLXi.xsl" LongName="OIALtoPLiX_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_Implementation.xslt"
-								DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
-							<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Name="O2P_GGSC.xsl" LongName="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
-								DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
-							<File Id="OIALtoPLiX_GenerateTuple.xslt" Name="O2P_GT.xsl" LongName="OIALtoPLiX_GenerateTuple.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt"
-								DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="OIALtoPLiX"/>
-								<Registry Type="string" Name="DisplayName" Value="OIAL to PLiX"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to PLiX."/>
-								<Registry Type="string" Name="FileExtension" Value=".PLiX.xml"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="PLiX"/>
-								<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_Implementation.xslt]"/>
-							</Registry>
-						</Component>
-						<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="OIALtoXSD.xslt" Name="OIAL2XSD.xsl" LongName="OIALtoXSD.xslt" src="..\XML\OIALtoXSD\OIALtoXSD.xslt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="OIALtoXSD"/>
-								<Registry Type="string" Name="DisplayName" Value="OIAL to XSD"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to XML Schema."/>
-								<Registry Type="string" Name="FileExtension" Value=".xsd"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="XSD"/>
-								<Registry Type="string" Name="TransformUri" Value="[#OIALtoXSD.xslt]"/>
-							</Registry>
-						</Component>
-						<Component Id="ORMRelationalSchemaTransformsComponent" Guid="2A455908-5BB2-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="OIALtoDCIL.xslt" Name="OIL2DCIL.xsl" LongName="OIALtoDCIL.xslt" src="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="OIALtoDCIL"/>
-								<Registry Type="string" Name="DisplayName" Value="OIAL to DCIL"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to DCIL."/>
-								<Registry Type="string" Name="FileExtension" Value=".DCIL.xml"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="OIAL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="DCIL"/>
-								<Registry Type="string" Name="TransformUri" Value="[#OIALtoDCIL.xslt]"/>
-							</Registry>
-						</Component>
+					
+					<Directory Id="DILCOMMONFILESDIR" Name="DIL">
+						<Directory Id="DILCOMMONSCHEMASDIR" Name="Schemas">
+							<Component Id="DILSchemasComponent" Guid="BC36206D-B106-42E0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="DILcatalog.xml" Name="catalog.xml" src="..\XML\DIL\catalog.xml"
+									DefaultLanguage="0" CompanionFile="DILSchemaCatalog.xml"/>
+								<File Id="DIL.xsd" Name="DIL.xsd" src="..\XML\DIL\DIL.xsd"
+									DefaultLanguage="0" CompanionFile="DILcatalog.xml"/>
+								<File Id="DCIL.xsd" Name="DCIL.xsd" src="..\XML\DIL\DCIL.xsd"
+									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
+								<File Id="DDIL.xsd" Name="DDIL.xsd" src="..\XML\DIL\DDIL.xsd"
+									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
+								<File Id="DMIL.xsd" Name="DMIL.xsd" src="..\XML\DIL\DMIL.xsd"
+									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
+								<File Id="DILDT.xsd" Name="DILDT.xsd" src="..\XML\DIL\DILDT.xsd"
+									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
+								<File Id="DILEP.xsd" Name="DILEP.xsd" src="..\XML\DIL\DILEP.xsd"
+									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
+								<File Id="DILMS.xsd" Name="DILMS.xsd" src="..\XML\DIL\DILMS.xsd"
+									DefaultLanguage="0" CompanionFile="DIL.xsd"/>
+							</Component>
+						</Directory>
+						<Directory Id="DILCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
+							<Component Id="DILTransformsComponent" Guid="E0653834-4F4F-426B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+								<File Id="DILSupportFunctions.xslt" Name="DILSF.xsl" LongName="DILSupportFunctions.xslt" src="..\XML\DIL\DILSupportFunctions.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								<File Id="DDILtoSQLStandard.xslt" Name="DIL2Stnd.xsl" LongName="DDILtoSQLStandard.xslt" src="..\XML\DILtoSQL\DDILtoSQLStandard.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DDILtoSQLStandard"/>
+									<Registry Type="string" Name="DisplayName" Value="DDIL to SQL Standard"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to Standard-dialect SQL."/>
+									<Registry Type="string" Name="FileExtension" Value=".SQLStandard.sql"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLStandard"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DDILtoSQLStandard.xslt]"/>
+								</Registry>
+								<File Id="DDILtoDB2.xslt" Name="DIL2DB2.xsl" LongName="DDILtoDB2.xslt" src="..\XML\DILtoSQL\DDILtoDB2.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoDB2">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DDILtoDB2"/>
+									<Registry Type="string" Name="DisplayName" Value="DDIL to DB2"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to DB2-dialect SQL."/>
+									<Registry Type="string" Name="FileExtension" Value=".DB2.sql"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_DB2"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DDILtoDB2.xslt]"/>
+								</Registry>
+								<File Id="DDILtoPostgreSQL.xslt" Name="DIL2Post.xsl" LongName="DDILtoPostgreSQL.xslt" src="..\XML\DILtoSQL\DDILtoPostgreSQL.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoPostgreSQL">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DDILtoPostgreSQL"/>
+									<Registry Type="string" Name="DisplayName" Value="DDIL to PostgreSQL"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to PostgreSQL-dialect SQL."/>
+									<Registry Type="string" Name="FileExtension" Value=".PostgreSQL.sql"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_PostgreSQL"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DDILtoPostgreSQL.xslt]"/>
+								</Registry>
+								<File Id="DDILtoSQLServer.xslt" Name="DIL2MS.xsl" LongName="DDILtoSQLServer.xslt" src="..\XML\DILtoSQL\DDILtoSQLServer.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServer">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DDILtoSQLServer"/>
+									<Registry Type="string" Name="DisplayName" Value="DDIL to SQL Server"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to SQL Server-dialect SQL."/>
+									<Registry Type="string" Name="FileExtension" Value=".SQLServer.sql"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLServer"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DDILtoSQLServer.xslt]"/>
+								</Registry>
+								<File Id="DDILtoOracle.xslt" Name="DIL2Orac.xsl" LongName="DDILtoOracle.xslt" src="..\XML\DILtoSQL\DDILtoOracle.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DDILtoOracle"/>
+									<Registry Type="string" Name="DisplayName" Value="DDIL to Oracle"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to Oracle-dialect SQL."/>
+									<Registry Type="string" Name="FileExtension" Value=".Oracle.sql"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_Oracle"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DDILtoOracle.xslt]"/>
+								</Registry>
+								<File Id="DomainInliner.xslt" Name="DmnInlnr.xsl" LongName="DomainInliner.xslt" src="..\XML\DILtoSQL\DomainInliner.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<File Id="DCILtoDDIL.xslt" Name="DCIL2DDL.xsl" LongName="DCILtoDDIL.xslt" src="..\XML\DILtoSQL\DCILtoDDIL.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DCILtoDDIL"/>
+									<Registry Type="string" Name="DisplayName" Value="DCIL to DDIL"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to DDIL."/>
+									<Registry Type="string" Name="FileExtension" Value=".DDIL.xml"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="DDIL"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DCILtoDDIL.xslt]"/>
+								</Registry>
+								<File Id="DCILtoTV.xslt" Name="DCIL2TV.xsl" LongName="DCILtoTV.xslt" src="..\XML\DCILtoHTML\DCILtoTV.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="DCILtoTV"/>
+									<Registry Type="string" Name="DisplayName" Value="DCIL to TableView"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to TableView."/>
+									<Registry Type="string" Name="FileExtension" Value=".TableView.xml"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="TV"/>
+									<Registry Type="string" Name="TransformUri" Value="[#DCILtoTV.xslt]"/>
+								</Registry>
+								<File Id="TVtoHTML.xslt" Name="TV2HTML.xsl" LongName="TVtoHTML.xslt" src="..\XML\DCILtoHTML\TVtoHTML.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
+									<Registry Type="string" Name="Type" Value="XSLT"/>
+									<Registry Type="string" Name="OfficialName" Value="TVtoHTML"/>
+									<Registry Type="string" Name="DisplayName" Value="TableView to HTML"/>
+									<Registry Type="string" Name="DisplayDescription" Value="Transforms TableView to HTML."/>
+									<Registry Type="string" Name="FileExtension" Value=".TableView.html"/>
+									<Registry Type="string" Name="SourceInputFormat" Value="TV"/>
+									<Registry Type="string" Name="ProvidesOutputFormat" Value="TableViewHTML"/>
+									<Registry Type="string" Name="TransformUri" Value="[#TVtoHTML.xslt]"/>
+								</Registry>
+							</Component>
+						</Directory>
 					</Directory>
 				</Directory>
-				
-				<Directory Id="DILCOMMONFILESDIR" Name="DIL">
-					<Directory Id="DILCOMMONSCHEMASDIR" Name="Schemas">
-						<Component Id="DILSchemasComponent" Guid="BC36206D-B106-42E0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="DILcatalog.xml" Name="catalog.xml" src="..\XML\DIL\catalog.xml"
-								DefaultLanguage="0" CompanionFile="DILSchemaCatalog.xml"/>
-							<File Id="DIL.xsd" Name="DIL.xsd" src="..\XML\DIL\DIL.xsd"
-								DefaultLanguage="0" CompanionFile="DILcatalog.xml"/>
-							<File Id="DCIL.xsd" Name="DCIL.xsd" src="..\XML\DIL\DCIL.xsd"
-								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-							<File Id="DDIL.xsd" Name="DDIL.xsd" src="..\XML\DIL\DDIL.xsd"
-								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-							<File Id="DMIL.xsd" Name="DMIL.xsd" src="..\XML\DIL\DMIL.xsd"
-								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-							<File Id="DILDT.xsd" Name="DILDT.xsd" src="..\XML\DIL\DILDT.xsd"
-								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-							<File Id="DILEP.xsd" Name="DILEP.xsd" src="..\XML\DIL\DILEP.xsd"
-								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-							<File Id="DILMS.xsd" Name="DILMS.xsd" src="..\XML\DIL\DILMS.xsd"
-								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
-						</Component>
-					</Directory>
-					<Directory Id="DILCOMMONTRANSFORMSDIR" Name="Trnsfrms" LongName="Transforms">
-						<Component Id="DILTransformsComponent" Guid="E0653834-4F4F-426B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-							<File Id="DILSupportFunctions.xslt" Name="DILSF.xsl" LongName="DILSupportFunctions.xslt" src="..\XML\DIL\DILSupportFunctions.xslt"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-							<File Id="DDILtoSQLStandard.xslt" Name="DIL2Stnd.xsl" LongName="DDILtoSQLStandard.xslt" src="..\XML\DILtoSQL\DDILtoSQLStandard.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DDILtoSQLStandard"/>
-								<Registry Type="string" Name="DisplayName" Value="DDIL to SQL Standard"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to Standard-dialect SQL."/>
-								<Registry Type="string" Name="FileExtension" Value=".SQLStandard.sql"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLStandard"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DDILtoSQLStandard.xslt]"/>
-							</Registry>
-							<File Id="DDILtoDB2.xslt" Name="DIL2DB2.xsl" LongName="DDILtoDB2.xslt" src="..\XML\DILtoSQL\DDILtoDB2.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoDB2">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DDILtoDB2"/>
-								<Registry Type="string" Name="DisplayName" Value="DDIL to DB2"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to DB2-dialect SQL."/>
-								<Registry Type="string" Name="FileExtension" Value=".DB2.sql"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_DB2"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DDILtoDB2.xslt]"/>
-							</Registry>
-							<File Id="DDILtoPostgreSQL.xslt" Name="DIL2Post.xsl" LongName="DDILtoPostgreSQL.xslt" src="..\XML\DILtoSQL\DDILtoPostgreSQL.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoPostgreSQL">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DDILtoPostgreSQL"/>
-								<Registry Type="string" Name="DisplayName" Value="DDIL to PostgreSQL"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to PostgreSQL-dialect SQL."/>
-								<Registry Type="string" Name="FileExtension" Value=".PostgreSQL.sql"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_PostgreSQL"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DDILtoPostgreSQL.xslt]"/>
-							</Registry>
-							<File Id="DDILtoSQLServer.xslt" Name="DIL2MS.xsl" LongName="DDILtoSQLServer.xslt" src="..\XML\DILtoSQL\DDILtoSQLServer.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServer">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DDILtoSQLServer"/>
-								<Registry Type="string" Name="DisplayName" Value="DDIL to SQL Server"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to SQL Server-dialect SQL."/>
-								<Registry Type="string" Name="FileExtension" Value=".SQLServer.sql"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLServer"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DDILtoSQLServer.xslt]"/>
-							</Registry>
-							<File Id="DDILtoOracle.xslt" Name="DIL2Orac.xsl" LongName="DDILtoOracle.xslt" src="..\XML\DILtoSQL\DDILtoOracle.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DDILtoOracle"/>
-								<Registry Type="string" Name="DisplayName" Value="DDIL to Oracle"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DDIL to Oracle-dialect SQL."/>
-								<Registry Type="string" Name="FileExtension" Value=".Oracle.sql"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DDIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="SQL_Oracle"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DDILtoOracle.xslt]"/>
-							</Registry>
-							<File Id="DomainInliner.xslt" Name="DmnInlnr.xsl" LongName="DomainInliner.xslt" src="..\XML\DILtoSQL\DomainInliner.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<File Id="DCILtoDDIL.xslt" Name="DCIL2DDL.xsl" LongName="DCILtoDDIL.xslt" src="..\XML\DILtoSQL\DCILtoDDIL.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DCILtoDDIL"/>
-								<Registry Type="string" Name="DisplayName" Value="DCIL to DDIL"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to DDIL."/>
-								<Registry Type="string" Name="FileExtension" Value=".DDIL.xml"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="DDIL"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DCILtoDDIL.xslt]"/>
-							</Registry>
-							<File Id="DCILtoTV.xslt" Name="DCIL2TV.xsl" LongName="DCILtoTV.xslt" src="..\XML\DCILtoHTML\DCILtoTV.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="DCILtoTV"/>
-								<Registry Type="string" Name="DisplayName" Value="DCIL to TableView"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms DCIL to TableView."/>
-								<Registry Type="string" Name="FileExtension" Value=".TableView.xml"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="DCIL"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="TV"/>
-								<Registry Type="string" Name="TransformUri" Value="[#DCILtoTV.xslt]"/>
-							</Registry>
-							<File Id="TVtoHTML.xslt" Name="TV2HTML.xsl" LongName="TVtoHTML.xslt" src="..\XML\DCILtoHTML\TVtoHTML.xslt"
-								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-							<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
-								<Registry Type="string" Name="Type" Value="XSLT"/>
-								<Registry Type="string" Name="OfficialName" Value="TVtoHTML"/>
-								<Registry Type="string" Name="DisplayName" Value="TableView to HTML"/>
-								<Registry Type="string" Name="DisplayDescription" Value="Transforms TableView to HTML."/>
-								<Registry Type="string" Name="FileExtension" Value=".TableView.html"/>
-								<Registry Type="string" Name="SourceInputFormat" Value="TV"/>
-								<Registry Type="string" Name="ProvidesOutputFormat" Value="TableViewHTML"/>
-								<Registry Type="string" Name="TransformUri" Value="[#TVtoHTML.xslt]"/>
-							</Registry>
-						</Component>
-					</Directory>
-				</Directory>
-				
 			</Directory>
 
 			<Directory Id="VSTEMPLATEITEMDIR">

@@ -4,8 +4,8 @@ IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1)
 SET RootDir=%~dp0.
 SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
-SET ORMDir=%CommonProgramFiles%\ORM
-SET DILDir=%CommonProgramFiles%\DIL
+SET ORMDir=%CommonProgramFiles%\Neumont\ORM
+SET DILDir=%CommonProgramFiles%\Neumont\DIL
 
 FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0" /v "InstallDir"`) DO SET VSIPDir=%%B
 SET RegPkg="%VSIPDir%\VisualStudioIntegration\Tools\Bin\regpkg.exe"
@@ -19,8 +19,10 @@ CALL:_MakeDir "%NORMADir%\Help"
 CALL:_MakeDir "%NORMADir%\Xml\Schemas"
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
 CALL:_MakeDir "%NORMADir%\ORMProjectItems"
+CALL:_RemoveDir "%ORMDir%\..\..\ORM"
 CALL:_MakeDir "%ORMDir%\Schemas"
 CALL:_MakeDir "%ORMDir%\Transforms"
+CALL:_RemoveDir "%DILDir%\..\..\DIL"
 CALL:_MakeDir "%DILDir%\Schemas"
 CALL:_MakeDir "%DILDir%\Transforms"
 
@@ -91,6 +93,10 @@ GOTO:EOF
 
 :_MakeDir
 IF NOT EXIST "%~1" (MKDIR "%~1")
+GOTO:EOF
+
+:_RemoveDir
+IF EXIST "%~1" (RD /s /q "%~1")
 GOTO:EOF
 
 :_Cleanup

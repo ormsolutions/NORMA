@@ -339,7 +339,6 @@
       <LastGenOutput>VerbalizationGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="ObjectModel\VerbalizationGenerator.xslt" />
-    <None Include="Resources\Image1.bmp" />
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>

@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
-	<Catalog href="%CommonProgramFiles%/ORM/Schemas/catalog.xml"/>
+	<Catalog href="%CommonProgramFiles%/Neumont/ORM/Schemas/catalog.xml"/>
 </SchemaCatalog>

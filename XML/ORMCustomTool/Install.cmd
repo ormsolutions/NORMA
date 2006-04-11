@@ -3,9 +3,9 @@ SETLOCAL
 
 SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
-SET ORMTransformsDir=%CommonProgramFiles%\ORM\Transforms
-SET DILTransformsDir=%CommonProgramFiles%\DIL\Transforms
-SET PLiXDir=%VSDir%\Neumont\CodeGeneration\PLiX
+SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
+SET DILTransformsDir=%CommonProgramFiles%\Neumont\DIL\Transforms
+SET PLiXDir=%CommonProgramFiles%\Neumont\PLiX
 
 :: Install Custom Tool DLL
 DEL /F /Q "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.ORMCustomTool.*" 1>NUL 2>&1
