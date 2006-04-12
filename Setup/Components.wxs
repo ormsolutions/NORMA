@@ -298,7 +298,7 @@
 									<Registry Type="string" Name="FileExtension" Value=".cs"/>
 									<Registry Type="string" Name="SourceInputFormat" Value="PLiX"/>
 									<Registry Type="string" Name="ProvidesOutputFormat" Value="CSharp"/>
-									<Registry Type="string" Name="TransformUri" Value="$(var.PLIXFormatters)\PLiXCS.xslt"/>
+									<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]PLiX\Formatters\PLiXCS.xslt"/>
 									<Registry Type="integer" Name="Compilable" Value="1"/>
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXtoVisualBasic">
@@ -309,7 +309,7 @@
 									<Registry Type="string" Name="FileExtension" Value=".vb"/>
 									<Registry Type="string" Name="SourceInputFormat" Value="PLiX"/>
 									<Registry Type="string" Name="ProvidesOutputFormat" Value="VisualBasic"/>
-									<Registry Type="string" Name="TransformUri" Value="$(var.PLIXFormatters)\PLiXVB.xslt"/>
+									<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]PLiX\Formatters\PLiXVB.xslt"/>
 									<Registry Type="integer" Name="Compilable" Value="1"/>
 								</Registry>
 							</Component>
