@@ -209,7 +209,7 @@
 				</orm:ValueConstraint>
 			</orm:ValueRestriction>
 		</orm:ValueType>
-		<orm:EntityType id="_FA76F159-1799-4D93-BA27-0FB3A1853415" Name="Gender" IsExternal="false" IsIndependent="false" _ReferenceMode="Gender_Code">
+		<orm:EntityType id="_FA76F159-1799-4D93-BA27-0FB3A1853415" Name="Gender" IsExternal="false" IsIndependent="false" _ReferenceMode="Code">
 			<orm:PlayedRoles>
 				<orm:Role ref="_64B9B775-0F9D-463A-AB84-20E751118B53" />
 				<orm:Role ref="_49F9204D-9900-4662-80D3-CC05BCBAAE8C" />
@@ -236,7 +236,7 @@
 			</orm:PlayedRoles>
 			<orm:PreferredIdentifier ref="_40F44B0D-F023-4FC1-AB41-C5E6E53EB845" />
 		</orm:EntityType>
-		<orm:EntityType id="_B920FB79-BCAF-472D-9D1D-5625E804AEAC" Name="BirthOrder" IsExternal="false" IsIndependent="false" _ReferenceMode="BirthOrder_Nr">
+		<orm:EntityType id="_B920FB79-BCAF-472D-9D1D-5625E804AEAC" Name="BirthOrder" IsExternal="false" IsIndependent="false" _ReferenceMode="Nr">
 			<orm:PlayedRoles>
 				<orm:Role ref="_1992B705-0659-4ED1-BB2D-491D502848C7" />
 				<orm:Role ref="_AFC60756-6AA3-4CD0-90B1-3717BC6359C5" />

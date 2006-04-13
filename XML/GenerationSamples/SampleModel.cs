@@ -1238,7 +1238,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -1247,17 +1247,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -1389,7 +1378,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[5];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -1398,17 +1387,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -1638,7 +1616,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[4];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -1647,17 +1625,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -1838,7 +1805,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -1847,17 +1814,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -1989,7 +1945,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[15];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -1998,17 +1954,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -2834,7 +2779,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -2843,17 +2788,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -3389,7 +3323,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -3398,17 +3332,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -3944,7 +3867,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[5];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -3953,17 +3876,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -4675,7 +4587,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[6];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -4684,17 +4596,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -5452,7 +5353,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -5461,17 +5362,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -6195,7 +6085,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[4];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -6204,17 +6094,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -6987,7 +6866,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[2];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -6996,17 +6875,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -7089,7 +6957,7 @@ namespace SampleModel
 		}
 		private readonly System.Delegate[] Events = new System.Delegate[3];
 		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
-		private event PropertyChangedEventHandler PropertyChanged
+		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
@@ -7098,17 +6966,6 @@ namespace SampleModel
 			remove
 			{
 				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
-			}
-		}
-		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-		{
-			add
-			{
-				this.PropertyChanged += value;
-			}
-			remove
-			{
-				this.PropertyChanged -= value;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
@@ -7423,10 +7280,6 @@ namespace SampleModel
 				{
 					this.myRemoved(this.myInstance, value);
 				}
-			}
-			private System.Collections.IEnumerator GetEnumerator()
-			{
-				return this.GetEnumerator();
 			}
 			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 			{
