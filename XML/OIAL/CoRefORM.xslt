@@ -273,7 +273,7 @@
 									</orm:Role>
 								</xsl:when>
 								<xsl:otherwise>
-									<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="" _IsMandatory="true">
+									<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="{@Name}" _IsMandatory="true">
 										<orm:RolePlayer ref="{$factId}"/>
 									</orm:Role>
 								</xsl:otherwise>
