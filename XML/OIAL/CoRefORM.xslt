@@ -140,6 +140,18 @@
 				<xsl:with-param name="ObjectifiedFacts" select="$ObjectifiedFacts"/>
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
+			<xsl:if test="not(orm:ExternalConstraints) and $BinarizableFacts">
+				<orm:ExternalConstraints>
+					<xsl:for-each select="$BinarizableFacts/orm:InternalConstraints/orm:InternalUniquenessConstraint">
+						<orm:ExternalUniquenessConstraint>
+							<xsl:copy-of select="@id"/>
+							<xsl:copy-of select="@Name"/>
+							<xsl:copy-of select="@Modality"/>
+							<xsl:copy-of select="orm:RoleSequence"/>
+						</orm:ExternalUniquenessConstraint>
+					</xsl:for-each>
+				</orm:ExternalConstraints>
+			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
 	<xsl:template match="orm:ImpliedFact" mode="CoRefORM">
