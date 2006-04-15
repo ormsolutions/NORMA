@@ -38,6 +38,7 @@ using ErrorHandler = Microsoft.VisualStudio.ErrorHandler;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using IVsTextLines = Microsoft.VisualStudio.TextManager.Interop.IVsTextLines;
 using IVsTextView = Microsoft.VisualStudio.TextManager.Interop.IVsTextView;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace Neumont.Tools.ORM.ORMCustomTool
 {
@@ -116,27 +117,95 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			return null;
 		}
 
-		private IVsTextView GetTextViewForDocument(string fullPath)
+		/// <summary>
+		/// Get the IVsTextLines from the DocData for the current document.
+		/// </summary>
+		/// <param name="fullPath">The full file path to the document</param>
+		/// <param name="reloadRequired">If this returns true, then the text lines for the
+		/// document are different than the text lines for the displayed document view. The
+		/// textlines should be reloaded to force the view to update</param>
+		/// <returns>IVsTextLines, or null</returns>
+		private IVsTextLines GetTextLinesForDocument(string fullPath, out bool reloadRequired)
 		{
-			IVsUIHierarchy uiHierarchy;
-			uint itemId;
-			IVsWindowFrame windowFrame;
-			if (VsShellUtilities.IsDocumentOpen(this, fullPath, Guid.Empty, out uiHierarchy, out itemId, out windowFrame))
+			IVsTextLines textLines = null;
+			IVsRunningDocumentTable rdt = GetService<IVsRunningDocumentTable>();
+			reloadRequired = false;
+			if (rdt != null)
 			{
-				return VsShellUtilities.GetTextView(windowFrame);
+				IntPtr punkDocData = IntPtr.Zero;
+				try
+				{
+					uint itemId;
+					uint docCookie;
+					IVsHierarchy hierarchy;
+					if (ErrorHandler.Succeeded(rdt.FindAndLockDocument(0, fullPath, out hierarchy, out itemId, out punkDocData, out docCookie)) &&
+						punkDocData != IntPtr.Zero)
+					{
+						object docData = Marshal.GetObjectForIUnknown(punkDocData);
+						textLines = docData as IVsTextLines;
+						if (textLines == null)
+						{
+							IVsTextBufferProvider bufferProvider = docData as IVsTextBufferProvider;
+							if (null != bufferProvider)
+							{
+								bufferProvider.GetTextBuffer(out textLines);
+							}
+						}
+
+						// See if the docview gives us the same text lines
+						reloadRequired = true;
+						IVsUIShellOpenDocument shellDoc;
+						Guid logicalView = Guid.Empty;
+						IVsUIHierarchy uiHierarchy;
+						IVsWindowFrame windowFrame;
+						object viewObject;
+						uint[] itemIdOpen = new uint[]{itemId};
+						int fOpen;
+						if (null != textLines &&
+							null != (shellDoc = GetService<IVsUIShellOpenDocument>()) &&
+							ErrorHandler.Succeeded(shellDoc.IsDocumentOpen((IVsUIHierarchy)hierarchy, itemId, fullPath, ref logicalView, (uint)__VSIDOFLAGS.IDO_IgnoreLogicalView, out uiHierarchy, itemIdOpen, out windowFrame, out fOpen)) &&
+							null != windowFrame &&
+							ErrorHandler.Succeeded(windowFrame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out viewObject)) &&
+							viewObject != null)
+						{
+							IVsTextLines docViewTextLines = null;
+							IVsTextView textView = viewObject as IVsTextView;
+							if (textView == null || ErrorHandler.Failed(textView.GetBuffer(out docViewTextLines)) || docViewTextLines == null)
+							{
+								IVsCodeWindow codeWindow = viewObject as IVsCodeWindow;
+								if (codeWindow != null)
+								{
+									if (ErrorHandler.Failed(codeWindow.GetBuffer(out docViewTextLines)) || docViewTextLines == null)
+									{
+										if (ErrorHandler.Failed(codeWindow.GetPrimaryView(out textView)) ||
+											textView == null ||
+											ErrorHandler.Failed(textView.GetBuffer(out docViewTextLines)) ||
+											docViewTextLines == null)
+										{
+											if (ErrorHandler.Succeeded(codeWindow.GetSecondaryView(out textView)) &&
+												textView != null)
+											{
+												textView.GetBuffer(out docViewTextLines);
+											}
+										}
+									}
+								}
+							}
+							reloadRequired = !object.ReferenceEquals(textLines, docViewTextLines);
+						}
+					}
+				}
+				finally
+				{
+					if (punkDocData != IntPtr.Zero)
+					{
+						Marshal.Release(punkDocData);
+					}
+				}
 			}
-			return null;
-		}
-		private static IVsTextLines GetTextLinesForTextView(IVsTextView textView)
-		{
-			if (textView == null)
-			{
-				throw new ArgumentNullException("textView");
-			}
-			IVsTextLines textLines;
-			ErrorHandler.ThrowOnFailure(textView.GetBuffer(out textLines));
 			return textLines;
 		}
+
 		private CodeDomProvider CodeDomProvider
 		{
 			get
@@ -510,11 +579,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 								}
 
 								string fullItemPath = Path.Combine(projectDirectory, buildItem.FinalItemSpec);
-								IVsTextView textView = this.GetTextViewForDocument(fullItemPath);
-								IVsTextLines textLines;
+								bool textLinesReloadRequired;
+								IVsTextLines textLines = GetTextLinesForDocument(fullItemPath, out textLinesReloadRequired);
 								// Write the result out to the appropriate file...
 								int outputStreamLength = (int)outputStream.Length;
-								if (textView != null && (textLines = GetTextLinesForTextView(textView)) != null)
+								if (textLines != null)
 								{
 									// Get edit points in the document to read the full file from
 									// the in-memory editor
@@ -536,8 +605,28 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 											// We're not passing any flags to ReplaceText, because the output of the generators should
 											// be the same whether or not the user has the generated document open
 											editPointStart.ReplaceText(editPointEnd, streamReader.ReadToEnd(), 0);
+											if (textLinesReloadRequired)
+											{
+												// If a textlines is available from the DocData but not the
+												// DocView, then the view may not refresh if we simply update
+												// the text lines, so we force a reload at this point.
+												// This works with the xml schema editors (the default view
+												// for an xsd file), which is the only case we've hit
+												// so far that causes problems.
+												ErrorHandler.ThrowOnFailure(textLines.Reload(1));
+											}
 										}
-										VsShellUtilities.SaveFileIfDirty(textView);
+										IVsPersistDocData2 persist = textLines as IVsPersistDocData2;
+										if (persist != null)
+										{
+											int dirtyFlag;
+											if (ErrorHandler.Succeeded(persist.IsDocDataDirty(out dirtyFlag)) && dirtyFlag != 0)
+											{
+												string bstrMkDocumentNew;
+												int fSaveCanceled;
+												persist.SaveDocData(VSSAVEFLAGS.VSSAVE_Save, out bstrMkDocumentNew, out fSaveCanceled);
+											}
+										}
 									}
 									else
 									{
