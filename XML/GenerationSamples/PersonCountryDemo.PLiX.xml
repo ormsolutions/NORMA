@@ -10584,8 +10584,7 @@
 					<plx:pragma type="closeRegion" data="Lookup and External Constraint Enforcement" />
 					<plx:pragma type="region" data="ConstraintEnforcementCollection" />
 				</plx:leadingInfo>
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -10594,8 +10593,7 @@
 				<plx:returns dataTypeName=".boolean" />
 			</plx:delegate>
 			<plx:delegate visibility="private" name="CommittedCollectionModificationCallback">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -10618,8 +10616,7 @@
 						</plx:binaryOperator>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -10860,8 +10857,7 @@
 				<plx:passTypeParam dataTypeName=".object" />
 			</plx:field>
 			<plx:function visibility="private" overload="true" name="OnAdding">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -10923,8 +10919,7 @@
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnAdding">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -10994,8 +10989,7 @@
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnAdded">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11051,8 +11045,7 @@
 				</plx:branch>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnAdded">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11116,8 +11109,7 @@
 				</plx:branch>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnRemoving">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11179,8 +11171,7 @@
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnRemoving">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11250,8 +11241,7 @@
 				</plx:return>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnRemoved">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11307,8 +11297,7 @@
 				</plx:branch>
 			</plx:function>
 			<plx:function visibility="private" overload="true" name="OnRemoved">
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11387,8 +11376,7 @@
 						</plx:binaryOperator>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />
@@ -11708,8 +11696,7 @@
 						</plx:binaryOperator>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:typeParam name="TClass">
-					<plx:typeConstraint dataTypeName="class" />
+				<plx:typeParam requireReferenceType="true" name="TClass">
 					<plx:typeConstraint dataTypeName="IHasPersonCountryDemoContext" />
 				</plx:typeParam>
 				<plx:typeParam name="TProperty" />

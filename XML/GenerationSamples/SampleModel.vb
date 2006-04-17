@@ -1015,7 +1015,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event DrivesCar_vinChanging As EventHandler
+		Public Custom Event DrivesCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonDrivesCar, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1033,7 +1033,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DrivesCar_vinChanged As EventHandler
+		Public Custom Event DrivesCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonDrivesCar, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1049,7 +1049,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("DrivesCar_vin")
 			End If
 		End Sub
-		Public Custom Event DrivenByPersonChanging As EventHandler
+		Public Custom Event DrivenByPersonChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonDrivesCar, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1067,7 +1067,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DrivenByPersonChanged As EventHandler
+		Public Custom Event DrivenByPersonChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonDrivesCar, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1132,7 +1132,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event CarSold_vinChanging As EventHandler
+		Public Custom Event CarSold_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1150,7 +1150,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event CarSold_vinChanged As EventHandler
+		Public Custom Event CarSold_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1166,7 +1166,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("CarSold_vin")
 			End If
 		End Sub
-		Public Custom Event SaleDate_YMDChanging As EventHandler
+		Public Custom Event SaleDate_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1184,7 +1184,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event SaleDate_YMDChanged As EventHandler
+		Public Custom Event SaleDate_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1200,7 +1200,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("SaleDate_YMD")
 			End If
 		End Sub
-		Public Custom Event BuyerChanging As EventHandler
+		Public Custom Event BuyerChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1218,7 +1218,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event BuyerChanged As EventHandler
+		Public Custom Event BuyerChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1234,7 +1234,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Buyer")
 			End If
 		End Sub
-		Public Custom Event SellerChanging As EventHandler
+		Public Custom Event SellerChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonBoughtCarFromPersonOnDate, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1252,7 +1252,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event SellerChanged As EventHandler
+		Public Custom Event SellerChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonBoughtCarFromPersonOnDate, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1321,7 +1321,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event Car_vinChanging As EventHandler
+		Public Custom Event Car_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Review, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1339,7 +1339,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event Car_vinChanged As EventHandler
+		Public Custom Event Car_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Review, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1355,7 +1355,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Car_vin")
 			End If
 		End Sub
-		Public Custom Event Rating_Nr_IntegerChanging As EventHandler
+		Public Custom Event Rating_Nr_IntegerChanging As EventHandler(Of PropertyChangingEventArgs(Of Review, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1373,7 +1373,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event Rating_Nr_IntegerChanged As EventHandler
+		Public Custom Event Rating_Nr_IntegerChanged As EventHandler(Of PropertyChangedEventArgs(Of Review, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1389,7 +1389,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Rating_Nr_Integer")
 			End If
 		End Sub
-		Public Custom Event Criterion_NameChanging As EventHandler
+		Public Custom Event Criterion_NameChanging As EventHandler(Of PropertyChangingEventArgs(Of Review, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1407,7 +1407,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event Criterion_NameChanged As EventHandler
+		Public Custom Event Criterion_NameChanged As EventHandler(Of PropertyChangedEventArgs(Of Review, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1474,7 +1474,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event NickNameChanging As EventHandler
+		Public Custom Event NickNameChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonHasNickName, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1492,7 +1492,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event NickNameChanged As EventHandler
+		Public Custom Event NickNameChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonHasNickName, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1508,7 +1508,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("NickName")
 			End If
 		End Sub
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of PersonHasNickName, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1526,7 +1526,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of PersonHasNickName, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1591,7 +1591,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1609,7 +1609,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1625,7 +1625,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("FirstName")
 			End If
 		End Sub
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1643,7 +1643,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1659,7 +1659,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Date_YMD")
 			End If
 		End Sub
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1677,7 +1677,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1693,7 +1693,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("LastName")
 			End If
 		End Sub
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1711,7 +1711,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1727,7 +1727,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("OptionalUniqueString")
 			End If
 		End Sub
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
@@ -1745,7 +1745,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
@@ -1761,7 +1761,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("HatType_ColorARGB")
 			End If
 		End Sub
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(5) = System.Delegate.Combine(Me.Events(5), Value)
 			End AddHandler
@@ -1779,7 +1779,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(5) = System.Delegate.Combine(Me.Events(5), Value)
 			End AddHandler
@@ -1795,7 +1795,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("HatType_HatTypeStyle_HatTypeStyle_Description")
 			End If
 		End Sub
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(6) = System.Delegate.Combine(Me.Events(6), Value)
 			End AddHandler
@@ -1813,7 +1813,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(6) = System.Delegate.Combine(Me.Events(6), Value)
 			End AddHandler
@@ -1829,7 +1829,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("OwnsCar_vin")
 			End If
 		End Sub
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(7) = System.Delegate.Combine(Me.Events(7), Value)
 			End AddHandler
@@ -1847,7 +1847,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(7) = System.Delegate.Combine(Me.Events(7), Value)
 			End AddHandler
@@ -1863,7 +1863,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Gender_Gender_Code")
 			End If
 		End Sub
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
@@ -1881,7 +1881,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
@@ -1897,7 +1897,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("PersonHasParents")
 			End If
 		End Sub
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(9) = System.Delegate.Combine(Me.Events(9), Value)
 			End AddHandler
@@ -1915,7 +1915,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(9) = System.Delegate.Combine(Me.Events(9), Value)
 			End AddHandler
@@ -1931,7 +1931,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("OptionalUniqueDecimal")
 			End If
 		End Sub
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(10) = System.Delegate.Combine(Me.Events(10), Value)
 			End AddHandler
@@ -1949,7 +1949,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(10) = System.Delegate.Combine(Me.Events(10), Value)
 			End AddHandler
@@ -1965,7 +1965,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("MandatoryUniqueDecimal")
 			End If
 		End Sub
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(11) = System.Delegate.Combine(Me.Events(11), Value)
 			End AddHandler
@@ -1983,7 +1983,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(11) = System.Delegate.Combine(Me.Events(11), Value)
 			End AddHandler
@@ -1999,7 +1999,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("MandatoryUniqueString")
 			End If
 		End Sub
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(12) = System.Delegate.Combine(Me.Events(12), Value)
 			End AddHandler
@@ -2017,7 +2017,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(12) = System.Delegate.Combine(Me.Events(12), Value)
 			End AddHandler
@@ -2033,7 +2033,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("ValueType1DoesSomethingElseWith")
 			End If
 		End Sub
-		Public Custom Event MalePersonChanging As EventHandler
+		Public Custom Event MalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(13) = System.Delegate.Combine(Me.Events(13), Value)
 			End AddHandler
@@ -2051,7 +2051,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event MalePersonChanged As EventHandler
+		Public Custom Event MalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(13) = System.Delegate.Combine(Me.Events(13), Value)
 			End AddHandler
@@ -2067,7 +2067,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("MalePerson")
 			End If
 		End Sub
-		Public Custom Event FemalePersonChanging As EventHandler
+		Public Custom Event FemalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(14) = System.Delegate.Combine(Me.Events(14), Value)
 			End AddHandler
@@ -2085,7 +2085,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event FemalePersonChanged As EventHandler
+		Public Custom Event FemalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(14) = System.Delegate.Combine(Me.Events(14), Value)
 			End AddHandler
@@ -2101,7 +2101,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("FemalePerson")
 			End If
 		End Sub
-		Public Custom Event ChildPersonChanging As EventHandler
+		Public Custom Event ChildPersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(15) = System.Delegate.Combine(Me.Events(15), Value)
 			End AddHandler
@@ -2119,7 +2119,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event ChildPersonChanged As EventHandler
+		Public Custom Event ChildPersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(15) = System.Delegate.Combine(Me.Events(15), Value)
 			End AddHandler
@@ -2135,7 +2135,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("ChildPerson")
 			End If
 		End Sub
-		Public Custom Event DeathChanging As EventHandler
+		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(16) = System.Delegate.Combine(Me.Events(16), Value)
 			End AddHandler
@@ -2153,7 +2153,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DeathChanged As EventHandler
+		Public Custom Event DeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(16) = System.Delegate.Combine(Me.Events(16), Value)
 			End AddHandler
@@ -2310,7 +2310,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of MalePerson, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -2328,7 +2328,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of MalePerson, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -2369,7 +2369,7 @@ Namespace SampleModel
 				Me.Person.FirstName = Value
 			End Set
 		End Property
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
@@ -2377,7 +2377,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
@@ -2393,7 +2393,7 @@ Namespace SampleModel
 				Me.Person.Date_YMD = Value
 			End Set
 		End Property
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Date_YMDChanging, Value
 			End AddHandler
@@ -2401,7 +2401,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Date_YMDChanged, Value
 			End AddHandler
@@ -2417,7 +2417,7 @@ Namespace SampleModel
 				Me.Person.LastName = Value
 			End Set
 		End Property
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
@@ -2425,7 +2425,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
@@ -2441,7 +2441,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanging, Value
 			End AddHandler
@@ -2449,7 +2449,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanged, Value
 			End AddHandler
@@ -2465,7 +2465,7 @@ Namespace SampleModel
 				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
@@ -2473,7 +2473,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
@@ -2489,7 +2489,7 @@ Namespace SampleModel
 				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
@@ -2497,7 +2497,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
@@ -2513,7 +2513,7 @@ Namespace SampleModel
 				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
@@ -2521,7 +2521,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
@@ -2537,7 +2537,7 @@ Namespace SampleModel
 				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
@@ -2545,7 +2545,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
@@ -2561,7 +2561,7 @@ Namespace SampleModel
 				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
@@ -2569,7 +2569,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
@@ -2585,7 +2585,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End AddHandler
@@ -2593,7 +2593,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanged, Value
 			End AddHandler
@@ -2609,7 +2609,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End AddHandler
@@ -2617,7 +2617,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanged, Value
 			End AddHandler
@@ -2633,7 +2633,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End AddHandler
@@ -2641,7 +2641,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanged, Value
 			End AddHandler
@@ -2657,7 +2657,7 @@ Namespace SampleModel
 				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
@@ -2665,7 +2665,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
@@ -2681,7 +2681,7 @@ Namespace SampleModel
 				Me.Person.FemalePerson = Value
 			End Set
 		End Property
-		Public Custom Event FemalePersonChanging As EventHandler
+		Public Custom Event FemalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FemalePersonChanging, Value
 			End AddHandler
@@ -2689,7 +2689,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FemalePersonChanged As EventHandler
+		Public Custom Event FemalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FemalePersonChanged, Value
 			End AddHandler
@@ -2705,7 +2705,7 @@ Namespace SampleModel
 				Me.Person.Death = Value
 			End Set
 		End Property
-		Public Custom Event DeathChanging As EventHandler
+		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.DeathChanging, Value
 			End AddHandler
@@ -2713,7 +2713,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.DeathChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event DeathChanged As EventHandler
+		Public Custom Event DeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.DeathChanged, Value
 			End AddHandler
@@ -2790,7 +2790,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of FemalePerson, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -2808,7 +2808,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of FemalePerson, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -2849,7 +2849,7 @@ Namespace SampleModel
 				Me.Person.FirstName = Value
 			End Set
 		End Property
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
@@ -2857,7 +2857,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
@@ -2873,7 +2873,7 @@ Namespace SampleModel
 				Me.Person.Date_YMD = Value
 			End Set
 		End Property
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Date_YMDChanging, Value
 			End AddHandler
@@ -2881,7 +2881,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Date_YMDChanged, Value
 			End AddHandler
@@ -2897,7 +2897,7 @@ Namespace SampleModel
 				Me.Person.LastName = Value
 			End Set
 		End Property
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
@@ -2905,7 +2905,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
@@ -2921,7 +2921,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanging, Value
 			End AddHandler
@@ -2929,7 +2929,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanged, Value
 			End AddHandler
@@ -2945,7 +2945,7 @@ Namespace SampleModel
 				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
@@ -2953,7 +2953,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
@@ -2969,7 +2969,7 @@ Namespace SampleModel
 				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
@@ -2977,7 +2977,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
@@ -2993,7 +2993,7 @@ Namespace SampleModel
 				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
@@ -3001,7 +3001,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
@@ -3017,7 +3017,7 @@ Namespace SampleModel
 				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
@@ -3025,7 +3025,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
@@ -3041,7 +3041,7 @@ Namespace SampleModel
 				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
@@ -3049,7 +3049,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
@@ -3065,7 +3065,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End AddHandler
@@ -3073,7 +3073,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanged, Value
 			End AddHandler
@@ -3089,7 +3089,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End AddHandler
@@ -3097,7 +3097,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanged, Value
 			End AddHandler
@@ -3113,7 +3113,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End AddHandler
@@ -3121,7 +3121,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanged, Value
 			End AddHandler
@@ -3137,7 +3137,7 @@ Namespace SampleModel
 				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
@@ -3145,7 +3145,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
@@ -3161,7 +3161,7 @@ Namespace SampleModel
 				Me.Person.MalePerson = Value
 			End Set
 		End Property
-		Public Custom Event MalePersonChanging As EventHandler
+		Public Custom Event MalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MalePersonChanging, Value
 			End AddHandler
@@ -3169,7 +3169,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MalePersonChanged As EventHandler
+		Public Custom Event MalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MalePersonChanged, Value
 			End AddHandler
@@ -3185,7 +3185,7 @@ Namespace SampleModel
 				Me.Person.Death = Value
 			End Set
 		End Property
-		Public Custom Event DeathChanging As EventHandler
+		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.DeathChanging, Value
 			End AddHandler
@@ -3193,7 +3193,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.DeathChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event DeathChanged As EventHandler
+		Public Custom Event DeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.DeathChanged, Value
 			End AddHandler
@@ -3270,7 +3270,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event BirthOrder_BirthOrder_NrChanging As EventHandler
+		Public Custom Event BirthOrder_BirthOrder_NrChanging As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -3288,7 +3288,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event BirthOrder_BirthOrder_NrChanged As EventHandler
+		Public Custom Event BirthOrder_BirthOrder_NrChanged As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -3304,7 +3304,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("BirthOrder_BirthOrder_Nr")
 			End If
 		End Sub
-		Public Custom Event FatherChanging As EventHandler
+		Public Custom Event FatherChanging As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -3322,7 +3322,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event FatherChanged As EventHandler
+		Public Custom Event FatherChanged As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -3338,7 +3338,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Father")
 			End If
 		End Sub
-		Public Custom Event MotherChanging As EventHandler
+		Public Custom Event MotherChanging As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -3356,7 +3356,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event MotherChanged As EventHandler
+		Public Custom Event MotherChanged As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -3372,7 +3372,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Mother")
 			End If
 		End Sub
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of ChildPerson, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -3390,7 +3390,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of ChildPerson, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -3435,7 +3435,7 @@ Namespace SampleModel
 				Me.Person.FirstName = Value
 			End Set
 		End Property
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
@@ -3443,7 +3443,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
@@ -3459,7 +3459,7 @@ Namespace SampleModel
 				Me.Person.Date_YMD = Value
 			End Set
 		End Property
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Date_YMDChanging, Value
 			End AddHandler
@@ -3467,7 +3467,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Date_YMDChanged, Value
 			End AddHandler
@@ -3483,7 +3483,7 @@ Namespace SampleModel
 				Me.Person.LastName = Value
 			End Set
 		End Property
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
@@ -3491,7 +3491,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
@@ -3507,7 +3507,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanging, Value
 			End AddHandler
@@ -3515,7 +3515,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanged, Value
 			End AddHandler
@@ -3531,7 +3531,7 @@ Namespace SampleModel
 				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
@@ -3539,7 +3539,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
@@ -3555,7 +3555,7 @@ Namespace SampleModel
 				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
@@ -3563,7 +3563,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
@@ -3579,7 +3579,7 @@ Namespace SampleModel
 				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
@@ -3587,7 +3587,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
@@ -3603,7 +3603,7 @@ Namespace SampleModel
 				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
@@ -3611,7 +3611,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
@@ -3627,7 +3627,7 @@ Namespace SampleModel
 				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
@@ -3635,7 +3635,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
@@ -3651,7 +3651,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End AddHandler
@@ -3659,7 +3659,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanged, Value
 			End AddHandler
@@ -3675,7 +3675,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End AddHandler
@@ -3683,7 +3683,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanged, Value
 			End AddHandler
@@ -3699,7 +3699,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End AddHandler
@@ -3707,7 +3707,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanged, Value
 			End AddHandler
@@ -3723,7 +3723,7 @@ Namespace SampleModel
 				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
@@ -3731,7 +3731,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
@@ -3747,7 +3747,7 @@ Namespace SampleModel
 				Me.Person.MalePerson = Value
 			End Set
 		End Property
-		Public Custom Event MalePersonChanging As EventHandler
+		Public Custom Event MalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MalePersonChanging, Value
 			End AddHandler
@@ -3755,7 +3755,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MalePersonChanged As EventHandler
+		Public Custom Event MalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MalePersonChanged, Value
 			End AddHandler
@@ -3771,7 +3771,7 @@ Namespace SampleModel
 				Me.Person.FemalePerson = Value
 			End Set
 		End Property
-		Public Custom Event FemalePersonChanging As EventHandler
+		Public Custom Event FemalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FemalePersonChanging, Value
 			End AddHandler
@@ -3779,7 +3779,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FemalePersonChanged As EventHandler
+		Public Custom Event FemalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FemalePersonChanged, Value
 			End AddHandler
@@ -3795,7 +3795,7 @@ Namespace SampleModel
 				Me.Person.Death = Value
 			End Set
 		End Property
-		Public Custom Event DeathChanging As EventHandler
+		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.DeathChanging, Value
 			End AddHandler
@@ -3803,7 +3803,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.DeathChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event DeathChanged As EventHandler
+		Public Custom Event DeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Death))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.DeathChanged, Value
 			End AddHandler
@@ -3880,7 +3880,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -3898,7 +3898,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -3914,7 +3914,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Date_YMD")
 			End If
 		End Sub
-		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler
+		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -3932,7 +3932,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler
+		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -3948,7 +3948,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("DeathCause_DeathCause_Type")
 			End If
 		End Sub
-		Public Custom Event NaturalDeathChanging As EventHandler
+		Public Custom Event NaturalDeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, NaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -3966,7 +3966,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event NaturalDeathChanged As EventHandler
+		Public Custom Event NaturalDeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, NaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -3982,7 +3982,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("NaturalDeath")
 			End If
 		End Sub
-		Public Custom Event UnnaturalDeathChanging As EventHandler
+		Public Custom Event UnnaturalDeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, UnnaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -4000,7 +4000,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event UnnaturalDeathChanged As EventHandler
+		Public Custom Event UnnaturalDeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, UnnaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -4016,7 +4016,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("UnnaturalDeath")
 			End If
 		End Sub
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
@@ -4034,7 +4034,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(4) = System.Delegate.Combine(Me.Events(4), Value)
 			End AddHandler
@@ -4081,7 +4081,7 @@ Namespace SampleModel
 				Me.Person.FirstName = Value
 			End Set
 		End Property
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanging, Value
 			End AddHandler
@@ -4089,7 +4089,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FirstNameChanged, Value
 			End AddHandler
@@ -4105,7 +4105,7 @@ Namespace SampleModel
 				Me.Person.LastName = Value
 			End Set
 		End Property
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanging, Value
 			End AddHandler
@@ -4113,7 +4113,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.LastNameChanged, Value
 			End AddHandler
@@ -4129,7 +4129,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanging, Value
 			End AddHandler
@@ -4137,7 +4137,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueStringChanged, Value
 			End AddHandler
@@ -4153,7 +4153,7 @@ Namespace SampleModel
 				Me.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
@@ -4161,7 +4161,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
@@ -4177,7 +4177,7 @@ Namespace SampleModel
 				Me.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
@@ -4185,7 +4185,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
@@ -4201,7 +4201,7 @@ Namespace SampleModel
 				Me.Person.OwnsCar_vin = Value
 			End Set
 		End Property
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanging, Value
 			End AddHandler
@@ -4209,7 +4209,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OwnsCar_vinChanged, Value
 			End AddHandler
@@ -4225,7 +4225,7 @@ Namespace SampleModel
 				Me.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
@@ -4233,7 +4233,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
@@ -4249,7 +4249,7 @@ Namespace SampleModel
 				Me.Person.PersonHasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanging, Value
 			End AddHandler
@@ -4257,7 +4257,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.PersonHasParentsChanged, Value
 			End AddHandler
@@ -4273,7 +4273,7 @@ Namespace SampleModel
 				Me.Person.OptionalUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End AddHandler
@@ -4281,7 +4281,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.OptionalUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.OptionalUniqueDecimalChanged, Value
 			End AddHandler
@@ -4297,7 +4297,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End AddHandler
@@ -4305,7 +4305,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueDecimalChanged, Value
 			End AddHandler
@@ -4321,7 +4321,7 @@ Namespace SampleModel
 				Me.Person.MandatoryUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End AddHandler
@@ -4329,7 +4329,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MandatoryUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MandatoryUniqueStringChanged, Value
 			End AddHandler
@@ -4345,7 +4345,7 @@ Namespace SampleModel
 				Me.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
@@ -4353,7 +4353,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
@@ -4369,7 +4369,7 @@ Namespace SampleModel
 				Me.Person.MalePerson = Value
 			End Set
 		End Property
-		Public Custom Event MalePersonChanging As EventHandler
+		Public Custom Event MalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MalePersonChanging, Value
 			End AddHandler
@@ -4377,7 +4377,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MalePersonChanged As EventHandler
+		Public Custom Event MalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.MalePersonChanged, Value
 			End AddHandler
@@ -4393,7 +4393,7 @@ Namespace SampleModel
 				Me.Person.FemalePerson = Value
 			End Set
 		End Property
-		Public Custom Event FemalePersonChanging As EventHandler
+		Public Custom Event FemalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FemalePersonChanging, Value
 			End AddHandler
@@ -4401,7 +4401,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FemalePersonChanged As EventHandler
+		Public Custom Event FemalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.FemalePersonChanged, Value
 			End AddHandler
@@ -4417,7 +4417,7 @@ Namespace SampleModel
 				Me.Person.ChildPerson = Value
 			End Set
 		End Property
-		Public Custom Event ChildPersonChanging As EventHandler
+		Public Custom Event ChildPersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ChildPersonChanging, Value
 			End AddHandler
@@ -4425,7 +4425,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.ChildPersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ChildPersonChanged As EventHandler
+		Public Custom Event ChildPersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.ChildPersonChanged, Value
 			End AddHandler
@@ -4520,7 +4520,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event NaturalDeathIsFromProstateCancerChanging As EventHandler
+		Public Custom Event NaturalDeathIsFromProstateCancerChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -4538,7 +4538,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event NaturalDeathIsFromProstateCancerChanged As EventHandler
+		Public Custom Event NaturalDeathIsFromProstateCancerChanged As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -4554,7 +4554,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("NaturalDeathIsFromProstateCancer")
 			End If
 		End Sub
-		Public Custom Event DeathChanging As EventHandler
+		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Death))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -4572,7 +4572,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DeathChanged As EventHandler
+		Public Custom Event DeathChanged As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Death))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -4620,7 +4620,7 @@ Namespace SampleModel
 				Me.Death.Date_YMD = Value
 			End Set
 		End Property
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Date_YMDChanging, Value
 			End AddHandler
@@ -4628,7 +4628,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Date_YMDChanged, Value
 			End AddHandler
@@ -4644,7 +4644,7 @@ Namespace SampleModel
 				Me.Death.DeathCause_DeathCause_Type = Value
 			End Set
 		End Property
-		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler
+		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End AddHandler
@@ -4652,7 +4652,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler
+		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.DeathCause_DeathCause_TypeChanged, Value
 			End AddHandler
@@ -4668,7 +4668,7 @@ Namespace SampleModel
 				Me.Death.UnnaturalDeath = Value
 			End Set
 		End Property
-		Public Custom Event UnnaturalDeathChanging As EventHandler
+		Public Custom Event UnnaturalDeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, UnnaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.UnnaturalDeathChanging, Value
 			End AddHandler
@@ -4676,7 +4676,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.UnnaturalDeathChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event UnnaturalDeathChanged As EventHandler
+		Public Custom Event UnnaturalDeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, UnnaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.UnnaturalDeathChanged, Value
 			End AddHandler
@@ -4692,7 +4692,7 @@ Namespace SampleModel
 				Me.Death.Person = Value
 			End Set
 		End Property
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, Person))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.PersonChanging, Value
 			End AddHandler
@@ -4700,7 +4700,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.PersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, Person))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.PersonChanged, Value
 			End AddHandler
@@ -4716,7 +4716,7 @@ Namespace SampleModel
 				Me.Death.Person.FirstName = Value
 			End Set
 		End Property
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FirstNameChanging, Value
 			End AddHandler
@@ -4724,7 +4724,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FirstNameChanged, Value
 			End AddHandler
@@ -4740,7 +4740,7 @@ Namespace SampleModel
 				Me.Death.Person.LastName = Value
 			End Set
 		End Property
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.LastNameChanging, Value
 			End AddHandler
@@ -4748,7 +4748,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.LastNameChanged, Value
 			End AddHandler
@@ -4764,7 +4764,7 @@ Namespace SampleModel
 				Me.Death.Person.OptionalUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueStringChanging, Value
 			End AddHandler
@@ -4772,7 +4772,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.OptionalUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueStringChanged, Value
 			End AddHandler
@@ -4788,7 +4788,7 @@ Namespace SampleModel
 				Me.Death.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
@@ -4796,7 +4796,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
@@ -4812,7 +4812,7 @@ Namespace SampleModel
 				Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
@@ -4820,7 +4820,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
@@ -4836,7 +4836,7 @@ Namespace SampleModel
 				Me.Death.Person.OwnsCar_vin = Value
 			End Set
 		End Property
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End AddHandler
@@ -4844,7 +4844,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OwnsCar_vinChanged, Value
 			End AddHandler
@@ -4860,7 +4860,7 @@ Namespace SampleModel
 				Me.Death.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
@@ -4868,7 +4868,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
@@ -4884,7 +4884,7 @@ Namespace SampleModel
 				Me.Death.Person.PersonHasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End AddHandler
@@ -4892,7 +4892,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.PersonHasParentsChanged, Value
 			End AddHandler
@@ -4908,7 +4908,7 @@ Namespace SampleModel
 				Me.Death.Person.OptionalUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueDecimalChanging, Value
 			End AddHandler
@@ -4916,7 +4916,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.OptionalUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueDecimalChanged, Value
 			End AddHandler
@@ -4932,7 +4932,7 @@ Namespace SampleModel
 				Me.Death.Person.MandatoryUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueDecimalChanging, Value
 			End AddHandler
@@ -4940,7 +4940,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.MandatoryUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueDecimalChanged, Value
 			End AddHandler
@@ -4956,7 +4956,7 @@ Namespace SampleModel
 				Me.Death.Person.MandatoryUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueStringChanging, Value
 			End AddHandler
@@ -4964,7 +4964,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.MandatoryUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueStringChanged, Value
 			End AddHandler
@@ -4980,7 +4980,7 @@ Namespace SampleModel
 				Me.Death.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
@@ -4988,7 +4988,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
@@ -5004,7 +5004,7 @@ Namespace SampleModel
 				Me.Death.Person.MalePerson = Value
 			End Set
 		End Property
-		Public Custom Event MalePersonChanging As EventHandler
+		Public Custom Event MalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MalePersonChanging, Value
 			End AddHandler
@@ -5012,7 +5012,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MalePersonChanged As EventHandler
+		Public Custom Event MalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MalePersonChanged, Value
 			End AddHandler
@@ -5028,7 +5028,7 @@ Namespace SampleModel
 				Me.Death.Person.FemalePerson = Value
 			End Set
 		End Property
-		Public Custom Event FemalePersonChanging As EventHandler
+		Public Custom Event FemalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FemalePersonChanging, Value
 			End AddHandler
@@ -5036,7 +5036,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FemalePersonChanged As EventHandler
+		Public Custom Event FemalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FemalePersonChanged, Value
 			End AddHandler
@@ -5052,7 +5052,7 @@ Namespace SampleModel
 				Me.Death.Person.ChildPerson = Value
 			End Set
 		End Property
-		Public Custom Event ChildPersonChanging As EventHandler
+		Public Custom Event ChildPersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ChildPersonChanging, Value
 			End AddHandler
@@ -5060,7 +5060,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.ChildPersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ChildPersonChanged As EventHandler
+		Public Custom Event ChildPersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ChildPersonChanged, Value
 			End AddHandler
@@ -5137,7 +5137,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event UnnaturalDeathIsViolentChanging As EventHandler
+		Public Custom Event UnnaturalDeathIsViolentChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5155,7 +5155,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event UnnaturalDeathIsViolentChanged As EventHandler
+		Public Custom Event UnnaturalDeathIsViolentChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5171,7 +5171,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("UnnaturalDeathIsViolent")
 			End If
 		End Sub
-		Public Custom Event UnnaturalDeathIsBloodyChanging As EventHandler
+		Public Custom Event UnnaturalDeathIsBloodyChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5189,7 +5189,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event UnnaturalDeathIsBloodyChanged As EventHandler
+		Public Custom Event UnnaturalDeathIsBloodyChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5205,7 +5205,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("UnnaturalDeathIsBloody")
 			End If
 		End Sub
-		Public Custom Event DeathChanging As EventHandler
+		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Death))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -5223,7 +5223,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DeathChanged As EventHandler
+		Public Custom Event DeathChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Death))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -5273,7 +5273,7 @@ Namespace SampleModel
 				Me.Death.Date_YMD = Value
 			End Set
 		End Property
-		Public Custom Event Date_YMDChanging As EventHandler
+		Public Custom Event Date_YMDChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Date_YMDChanging, Value
 			End AddHandler
@@ -5281,7 +5281,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Date_YMDChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Date_YMDChanged As EventHandler
+		Public Custom Event Date_YMDChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Date_YMDChanged, Value
 			End AddHandler
@@ -5297,7 +5297,7 @@ Namespace SampleModel
 				Me.Death.DeathCause_DeathCause_Type = Value
 			End Set
 		End Property
-		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler
+		Public Custom Event DeathCause_DeathCause_TypeChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End AddHandler
@@ -5305,7 +5305,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.DeathCause_DeathCause_TypeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler
+		Public Custom Event DeathCause_DeathCause_TypeChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.DeathCause_DeathCause_TypeChanged, Value
 			End AddHandler
@@ -5321,7 +5321,7 @@ Namespace SampleModel
 				Me.Death.NaturalDeath = Value
 			End Set
 		End Property
-		Public Custom Event NaturalDeathChanging As EventHandler
+		Public Custom Event NaturalDeathChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, NaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.NaturalDeathChanging, Value
 			End AddHandler
@@ -5329,7 +5329,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.NaturalDeathChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event NaturalDeathChanged As EventHandler
+		Public Custom Event NaturalDeathChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, NaturalDeath))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.NaturalDeathChanged, Value
 			End AddHandler
@@ -5345,7 +5345,7 @@ Namespace SampleModel
 				Me.Death.Person = Value
 			End Set
 		End Property
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Death, Person))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.PersonChanging, Value
 			End AddHandler
@@ -5353,7 +5353,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.PersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Death, Person))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.PersonChanged, Value
 			End AddHandler
@@ -5369,7 +5369,7 @@ Namespace SampleModel
 				Me.Death.Person.FirstName = Value
 			End Set
 		End Property
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FirstNameChanging, Value
 			End AddHandler
@@ -5377,7 +5377,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.FirstNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FirstNameChanged, Value
 			End AddHandler
@@ -5393,7 +5393,7 @@ Namespace SampleModel
 				Me.Death.Person.LastName = Value
 			End Set
 		End Property
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.LastNameChanging, Value
 			End AddHandler
@@ -5401,7 +5401,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.LastNameChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.LastNameChanged, Value
 			End AddHandler
@@ -5417,7 +5417,7 @@ Namespace SampleModel
 				Me.Death.Person.OptionalUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueStringChanging As EventHandler
+		Public Custom Event OptionalUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueStringChanging, Value
 			End AddHandler
@@ -5425,7 +5425,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.OptionalUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueStringChanged As EventHandler
+		Public Custom Event OptionalUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueStringChanged, Value
 			End AddHandler
@@ -5441,7 +5441,7 @@ Namespace SampleModel
 				Me.Death.Person.HatType_ColorARGB = Value
 			End Set
 		End Property
-		Public Custom Event HatType_ColorARGBChanging As EventHandler
+		Public Custom Event HatType_ColorARGBChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End AddHandler
@@ -5449,7 +5449,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.HatType_ColorARGBChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_ColorARGBChanged As EventHandler
+		Public Custom Event HatType_ColorARGBChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_ColorARGBChanged, Value
 			End AddHandler
@@ -5465,7 +5465,7 @@ Namespace SampleModel
 				Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_Description = Value
 			End Set
 		End Property
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End AddHandler
@@ -5473,7 +5473,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler
+		Public Custom Event HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.HatType_HatTypeStyle_HatTypeStyle_DescriptionChanged, Value
 			End AddHandler
@@ -5489,7 +5489,7 @@ Namespace SampleModel
 				Me.Death.Person.OwnsCar_vin = Value
 			End Set
 		End Property
-		Public Custom Event OwnsCar_vinChanging As EventHandler
+		Public Custom Event OwnsCar_vinChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End AddHandler
@@ -5497,7 +5497,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.OwnsCar_vinChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OwnsCar_vinChanged As EventHandler
+		Public Custom Event OwnsCar_vinChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Integer)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OwnsCar_vinChanged, Value
 			End AddHandler
@@ -5513,7 +5513,7 @@ Namespace SampleModel
 				Me.Death.Person.Gender_Gender_Code = Value
 			End Set
 		End Property
-		Public Custom Event Gender_Gender_CodeChanging As EventHandler
+		Public Custom Event Gender_Gender_CodeChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End AddHandler
@@ -5521,7 +5521,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event Gender_Gender_CodeChanged As EventHandler
+		Public Custom Event Gender_Gender_CodeChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End AddHandler
@@ -5537,7 +5537,7 @@ Namespace SampleModel
 				Me.Death.Person.PersonHasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler
+		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End AddHandler
@@ -5545,7 +5545,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.PersonHasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler
+		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.PersonHasParentsChanged, Value
 			End AddHandler
@@ -5561,7 +5561,7 @@ Namespace SampleModel
 				Me.Death.Person.OptionalUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event OptionalUniqueDecimalChanging As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueDecimalChanging, Value
 			End AddHandler
@@ -5569,7 +5569,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.OptionalUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event OptionalUniqueDecimalChanged As EventHandler
+		Public Custom Event OptionalUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Decimal)))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.OptionalUniqueDecimalChanged, Value
 			End AddHandler
@@ -5585,7 +5585,7 @@ Namespace SampleModel
 				Me.Death.Person.MandatoryUniqueDecimal = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueDecimalChanging, Value
 			End AddHandler
@@ -5593,7 +5593,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.MandatoryUniqueDecimalChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler
+		Public Custom Event MandatoryUniqueDecimalChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Decimal))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueDecimalChanged, Value
 			End AddHandler
@@ -5609,7 +5609,7 @@ Namespace SampleModel
 				Me.Death.Person.MandatoryUniqueString = Value
 			End Set
 		End Property
-		Public Custom Event MandatoryUniqueStringChanging As EventHandler
+		Public Custom Event MandatoryUniqueStringChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueStringChanging, Value
 			End AddHandler
@@ -5617,7 +5617,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.MandatoryUniqueStringChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MandatoryUniqueStringChanged As EventHandler
+		Public Custom Event MandatoryUniqueStringChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MandatoryUniqueStringChanged, Value
 			End AddHandler
@@ -5633,7 +5633,7 @@ Namespace SampleModel
 				Me.Death.Person.ValueType1DoesSomethingElseWith = Value
 			End Set
 		End Property
-		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End AddHandler
@@ -5641,7 +5641,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler
+		Public Custom Event ValueType1DoesSomethingElseWithChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ValueType1))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ValueType1DoesSomethingElseWithChanged, Value
 			End AddHandler
@@ -5657,7 +5657,7 @@ Namespace SampleModel
 				Me.Death.Person.MalePerson = Value
 			End Set
 		End Property
-		Public Custom Event MalePersonChanging As EventHandler
+		Public Custom Event MalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MalePersonChanging, Value
 			End AddHandler
@@ -5665,7 +5665,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.MalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event MalePersonChanged As EventHandler
+		Public Custom Event MalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, MalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.MalePersonChanged, Value
 			End AddHandler
@@ -5681,7 +5681,7 @@ Namespace SampleModel
 				Me.Death.Person.FemalePerson = Value
 			End Set
 		End Property
-		Public Custom Event FemalePersonChanging As EventHandler
+		Public Custom Event FemalePersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FemalePersonChanging, Value
 			End AddHandler
@@ -5689,7 +5689,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.FemalePersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event FemalePersonChanged As EventHandler
+		Public Custom Event FemalePersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, FemalePerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.FemalePersonChanged, Value
 			End AddHandler
@@ -5705,7 +5705,7 @@ Namespace SampleModel
 				Me.Death.Person.ChildPerson = Value
 			End Set
 		End Property
-		Public Custom Event ChildPersonChanging As EventHandler
+		Public Custom Event ChildPersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ChildPersonChanging, Value
 			End AddHandler
@@ -5713,7 +5713,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.ChildPersonChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event ChildPersonChanged As EventHandler
+		Public Custom Event ChildPersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, ChildPerson))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.ChildPersonChanged, Value
 			End AddHandler
@@ -5790,7 +5790,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event PersonChanging As EventHandler
+		Public Custom Event PersonChanging As EventHandler(Of PropertyChangingEventArgs(Of Task, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5808,7 +5808,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonChanged As EventHandler
+		Public Custom Event PersonChanged As EventHandler(Of PropertyChangedEventArgs(Of Task, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5871,7 +5871,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event ValueType1ValueChanging As EventHandler
+		Public Custom Event ValueType1ValueChanging As EventHandler(Of PropertyChangingEventArgs(Of ValueType1, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5889,7 +5889,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event ValueType1ValueChanged As EventHandler
+		Public Custom Event ValueType1ValueChanged As EventHandler(Of PropertyChangedEventArgs(Of ValueType1, Integer))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5905,7 +5905,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("ValueType1Value")
 			End If
 		End Sub
-		Public Custom Event DoesSomethingWithPersonChanging As EventHandler
+		Public Custom Event DoesSomethingWithPersonChanging As EventHandler(Of PropertyChangingEventArgs(Of ValueType1, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5923,7 +5923,7 @@ Namespace SampleModel
 			End If
 			Return True
 		End Function
-		Public Custom Event DoesSomethingWithPersonChanged As EventHandler
+		Public Custom Event DoesSomethingWithPersonChanged As EventHandler(Of PropertyChangedEventArgs(Of ValueType1, Person))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -6379,10 +6379,10 @@ Namespace SampleModel
 		End Function
 		#End Region
 		#Region "ConstraintEnforcementCollection"
-		Private Delegate Function PotentialCollectionModificationCallback(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
-		Private Delegate Sub CommittedCollectionModificationCallback(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
+		Private Delegate Function PotentialCollectionModificationCallback(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Delegate Sub CommittedCollectionModificationCallback(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
-		Private NotInheritable Class ConstraintEnforcementCollectionCallbacks(Of TClass As {class, IHasSampleModelContext}, TProperty)
+		Private NotInheritable Class ConstraintEnforcementCollectionCallbacks(Of TClass As {IHasSampleModelContext, Class}, TProperty)
 			Public Sub New(ByVal adding As PotentialCollectionModificationCallback(Of TClass, TProperty), ByVal added As CommittedCollectionModificationCallback(Of TClass, TProperty), ByVal removing As PotentialCollectionModificationCallback(Of TClass, TProperty), ByVal removed As CommittedCollectionModificationCallback(Of TClass, TProperty))
 				Me.Adding = adding
 				Me.Added = added
@@ -6422,60 +6422,60 @@ Namespace SampleModel
 		End Structure
 		Private ReadOnly _ContraintEnforcementCollectionCallbacksByTypeDictionary As Dictionary(Of Type, Object)
 		Private ReadOnly _ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary As Dictionary(Of ConstraintEnforcementCollectionTypeAndPropertyNameKey, Object)
-		Private Overloads Function OnAdding(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnAdding(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim adding As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Adding
 			If adding IsNot Nothing Then
 				Return adding(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Function OnAdding(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnAdding(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim adding As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Adding
 			If adding IsNot Nothing Then
 				Return adding(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Sub OnAdded(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnAdded(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
 			Dim added As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Added
 			If added IsNot Nothing Then
 				added(instance, value)
 			End If
 		End Sub
-		Private Overloads Sub OnAdded(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnAdded(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
 			Dim added As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Added
 			If added IsNot Nothing Then
 				added(instance, value)
 			End If
 		End Sub
-		Private Overloads Function OnRemoving(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnRemoving(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim removing As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removing
 			If removing IsNot Nothing Then
 				Return removing(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Function OnRemoving(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnRemoving(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim removing As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removing
 			If removing IsNot Nothing Then
 				Return removing(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Sub OnRemoved(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnRemoved(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
 			Dim removed As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removed
 			If removed IsNot Nothing Then
 				removed(instance, value)
 			End If
 		End Sub
-		Private Overloads Sub OnRemoved(Of TClass As {class, IHasSampleModelContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnRemoved(Of TClass As {IHasSampleModelContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
 			Dim removed As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removed
 			If removed IsNot Nothing Then
 				removed(instance, value)
 			End If
 		End Sub
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
-		Private NotInheritable Class ConstraintEnforcementCollection(Of TClass As {class, IHasSampleModelContext}, TProperty)
+		Private NotInheritable Class ConstraintEnforcementCollection(Of TClass As {IHasSampleModelContext, Class}, TProperty)
 			Implements ICollection(Of TProperty)
 			Private ReadOnly _instance As TClass
 			Private ReadOnly _list As List(Of TProperty) = New List(Of TProperty)()
@@ -6543,7 +6543,7 @@ Namespace SampleModel
 			End Property
 		End Class
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
-		Private NotInheritable Class ConstraintEnforcementCollectionWithPropertyName(Of TClass As {class, IHasSampleModelContext}, TProperty)
+		Private NotInheritable Class ConstraintEnforcementCollectionWithPropertyName(Of TClass As {IHasSampleModelContext, Class}, TProperty)
 			Implements ICollection(Of TProperty)
 			Private ReadOnly _instance As TClass
 			Private ReadOnly _PropertyName As String

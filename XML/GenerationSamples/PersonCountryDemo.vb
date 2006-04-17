@@ -1015,7 +1015,7 @@ Namespace PersonCountryDemo
 		End Sub
 		Public MustOverride ReadOnly Property Context() As PersonCountryDemoContext Implements _
 			IHasPersonCountryDemoContext.Context
-		Public Custom Event LastNameChanging As EventHandler
+		Public Custom Event LastNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1033,7 +1033,7 @@ Namespace PersonCountryDemo
 			End If
 			Return True
 		End Function
-		Public Custom Event LastNameChanged As EventHandler
+		Public Custom Event LastNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1049,7 +1049,7 @@ Namespace PersonCountryDemo
 				Me.RaisePropertyChangedEvent("LastName")
 			End If
 		End Sub
-		Public Custom Event FirstNameChanging As EventHandler
+		Public Custom Event FirstNameChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1067,7 +1067,7 @@ Namespace PersonCountryDemo
 			End If
 			Return True
 		End Function
-		Public Custom Event FirstNameChanged As EventHandler
+		Public Custom Event FirstNameChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1083,7 +1083,7 @@ Namespace PersonCountryDemo
 				Me.RaisePropertyChangedEvent("FirstName")
 			End If
 		End Sub
-		Public Custom Event TitleChanging As EventHandler
+		Public Custom Event TitleChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1101,7 +1101,7 @@ Namespace PersonCountryDemo
 			End If
 			Return True
 		End Function
-		Public Custom Event TitleChanged As EventHandler
+		Public Custom Event TitleChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(2) = System.Delegate.Combine(Me.Events(2), Value)
 			End AddHandler
@@ -1117,7 +1117,7 @@ Namespace PersonCountryDemo
 				Me.RaisePropertyChangedEvent("Title")
 			End If
 		End Sub
-		Public Custom Event CountryChanging As EventHandler
+		Public Custom Event CountryChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Country))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1135,7 +1135,7 @@ Namespace PersonCountryDemo
 			End If
 			Return True
 		End Function
-		Public Custom Event CountryChanged As EventHandler
+		Public Custom Event CountryChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Country))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(3) = System.Delegate.Combine(Me.Events(3), Value)
 			End AddHandler
@@ -1204,7 +1204,7 @@ Namespace PersonCountryDemo
 		End Sub
 		Public MustOverride ReadOnly Property Context() As PersonCountryDemoContext Implements _
 			IHasPersonCountryDemoContext.Context
-		Public Custom Event Country_nameChanging As EventHandler
+		Public Custom Event Country_nameChanging As EventHandler(Of PropertyChangingEventArgs(Of Country, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1222,7 +1222,7 @@ Namespace PersonCountryDemo
 			End If
 			Return True
 		End Function
-		Public Custom Event Country_nameChanged As EventHandler
+		Public Custom Event Country_nameChanged As EventHandler(Of PropertyChangedEventArgs(Of Country, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -1238,7 +1238,7 @@ Namespace PersonCountryDemo
 				Me.RaisePropertyChangedEvent("Country_name")
 			End If
 		End Sub
-		Public Custom Event Region_Region_codeChanging As EventHandler
+		Public Custom Event Region_Region_codeChanging As EventHandler(Of PropertyChangingEventArgs(Of Country, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1256,7 +1256,7 @@ Namespace PersonCountryDemo
 			End If
 			Return True
 		End Function
-		Public Custom Event Region_Region_codeChanged As EventHandler
+		Public Custom Event Region_Region_codeChanged As EventHandler(Of PropertyChangedEventArgs(Of Country, String))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -1342,10 +1342,10 @@ Namespace PersonCountryDemo
 		End Function
 		#End Region
 		#Region "ConstraintEnforcementCollection"
-		Private Delegate Function PotentialCollectionModificationCallback(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
-		Private Delegate Sub CommittedCollectionModificationCallback(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
+		Private Delegate Function PotentialCollectionModificationCallback(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Delegate Sub CommittedCollectionModificationCallback(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
-		Private NotInheritable Class ConstraintEnforcementCollectionCallbacks(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)
+		Private NotInheritable Class ConstraintEnforcementCollectionCallbacks(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)
 			Public Sub New(ByVal adding As PotentialCollectionModificationCallback(Of TClass, TProperty), ByVal added As CommittedCollectionModificationCallback(Of TClass, TProperty), ByVal removing As PotentialCollectionModificationCallback(Of TClass, TProperty), ByVal removed As CommittedCollectionModificationCallback(Of TClass, TProperty))
 				Me.Adding = adding
 				Me.Added = added
@@ -1385,60 +1385,60 @@ Namespace PersonCountryDemo
 		End Structure
 		Private ReadOnly _ContraintEnforcementCollectionCallbacksByTypeDictionary As Dictionary(Of Type, Object)
 		Private ReadOnly _ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary As Dictionary(Of ConstraintEnforcementCollectionTypeAndPropertyNameKey, Object)
-		Private Overloads Function OnAdding(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnAdding(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim adding As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Adding
 			If adding IsNot Nothing Then
 				Return adding(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Function OnAdding(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnAdding(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim adding As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Adding
 			If adding IsNot Nothing Then
 				Return adding(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Sub OnAdded(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnAdded(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
 			Dim added As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Added
 			If added IsNot Nothing Then
 				added(instance, value)
 			End If
 		End Sub
-		Private Overloads Sub OnAdded(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnAdded(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
 			Dim added As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Added
 			If added IsNot Nothing Then
 				added(instance, value)
 			End If
 		End Sub
-		Private Overloads Function OnRemoving(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnRemoving(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim removing As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removing
 			If removing IsNot Nothing Then
 				Return removing(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Function OnRemoving(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
+		Private Overloads Function OnRemoving(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty) As Boolean
 			Dim removing As PotentialCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removing
 			If removing IsNot Nothing Then
 				Return removing(instance, value)
 			End If
 			Return True
 		End Function
-		Private Overloads Sub OnRemoved(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnRemoved(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal instance As TClass, ByVal value As TProperty)
 			Dim removed As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeDictionary(GetType(ConstraintEnforcementCollection(Of TClass, TProperty))), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removed
 			If removed IsNot Nothing Then
 				removed(instance, value)
 			End If
 		End Sub
-		Private Overloads Sub OnRemoved(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
+		Private Overloads Sub OnRemoved(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)(ByVal propertyName As String, ByVal instance As TClass, ByVal value As TProperty)
 			Dim removed As CommittedCollectionModificationCallback(Of TClass, TProperty) = (CType(Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of TClass, TProperty)), propertyName)), ConstraintEnforcementCollectionCallbacks(Of TClass, TProperty))).Removed
 			If removed IsNot Nothing Then
 				removed(instance, value)
 			End If
 		End Sub
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
-		Private NotInheritable Class ConstraintEnforcementCollection(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)
+		Private NotInheritable Class ConstraintEnforcementCollection(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)
 			Implements ICollection(Of TProperty)
 			Private ReadOnly _instance As TClass
 			Private ReadOnly _list As List(Of TProperty) = New List(Of TProperty)()
@@ -1506,7 +1506,7 @@ Namespace PersonCountryDemo
 			End Property
 		End Class
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
-		Private NotInheritable Class ConstraintEnforcementCollectionWithPropertyName(Of TClass As {class, IHasPersonCountryDemoContext}, TProperty)
+		Private NotInheritable Class ConstraintEnforcementCollectionWithPropertyName(Of TClass As {IHasPersonCountryDemoContext, Class}, TProperty)
 			Implements ICollection(Of TProperty)
 			Private ReadOnly _instance As TClass
 			Private ReadOnly _PropertyName As String

@@ -617,9 +617,7 @@
 		</xsl:variable>
 		<xsl:variable name="actions" select="exsl:node-set($actionsFragment)/child::*"/>
 		<xsl:variable name="typeParamsFragment">
-			<!-- PLIX_TODO: Once PLiX correctly renders requireReferenceType in the presence of typeConstraint elements, fix this. -->
-			<plx:typeParam name="TClass">
-				<plx:typeConstraint dataTypeName="class"/>
+			<plx:typeParam requireReferenceType="true" name="TClass">
 				<plx:typeConstraint dataTypeName="IHas{$ModelContextName}"/>
 			</plx:typeParam>
 			<plx:typeParam name="TProperty"/>
