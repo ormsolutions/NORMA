@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP">
-	<dcl:domainDataType name="SclScrtyNmbr">
+	<dcl:domainDataType name="OptnlUnqStrng">
 		<dcl:predefinedDataType name="CHARACTER" precision="11" />
-		<dcl:checkConstraint name="SclScrtyNmbr_Chk">
+		<dcl:checkConstraint name="OptnlUnqStrng_Chk">
 			<dep:comparisonPredicate operator="greaterThanOrEquals">
 				<dep:parenthesizedValueExpression>
 					<dep:charLengthExpression>
@@ -59,6 +59,23 @@
 					<ddt:characterStringLiteral value="F" />
 				</dep:inPredicate>
 			</dep:and>
+		</dcl:checkConstraint>
+	</dcl:domainDataType>
+	<dcl:domainDataType name="MndtryUnqStrng">
+		<dcl:predefinedDataType name="CHARACTER" precision="11" />
+		<dcl:checkConstraint name="MndtryUnqStrng_Chk">
+			<dep:comparisonPredicate operator="greaterThanOrEquals">
+				<dep:parenthesizedValueExpression>
+					<dep:charLengthExpression>
+						<dep:trimFunction specification="BOTH">
+							<dep:trimSource>
+								<dep:valueKeyword />
+							</dep:trimSource>
+						</dep:trimFunction>
+					</dep:charLengthExpression>
+				</dep:parenthesizedValueExpression>
+				<ddt:exactNumericLiteral value="11" />
+			</dep:comparisonPredicate>
 		</dcl:checkConstraint>
 	</dcl:domainDataType>
 	<dcl:table name="PersonDrivesCar">
@@ -157,11 +174,11 @@
 		<dcl:column name="LastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
 		</dcl:column>
-		<dcl:column name="SclScrtyNmbr" isNullable="true" isIdentity="false">
-			<dcl:domainDataTypeRef name="SclScrtyNmbr" />
+		<dcl:column name="OptnlUnqStrng" isNullable="true" isIdentity="false">
+			<dcl:domainDataTypeRef name="OptnlUnqStrng" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="IUC9" isPrimary="false">
-			<dcl:columnRef name="SclScrtyNmbr" />
+			<dcl:columnRef name="OptnlUnqStrng" />
 		</dcl:uniquenessConstraint>
 		<dcl:column name="HatType_ColorARGB" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BIGINT" />
@@ -181,6 +198,24 @@
 		<dcl:column name="PersonHasParents" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
+		<dcl:column name="OptnlUnqDcml" isNullable="true" isIdentity="false">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="IUC65" isPrimary="false">
+			<dcl:columnRef name="OptnlUnqDcml" />
+		</dcl:uniquenessConstraint>
+		<dcl:column name="MndtryUnqDcml" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="DECIMAL" precision="9" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="IUC69" isPrimary="false">
+			<dcl:columnRef name="MndtryUnqDcml" />
+		</dcl:uniquenessConstraint>
+		<dcl:column name="MndtryUnqStrng" isNullable="false" isIdentity="false">
+			<dcl:domainDataTypeRef name="MndtryUnqStrng" />
+		</dcl:column>
+		<dcl:uniquenessConstraint name="IUC67" isPrimary="false">
+			<dcl:columnRef name="MndtryUnqStrng" />
+		</dcl:uniquenessConstraint>
 		<dcl:column isNullable="true" isIdentity="false" name="VT1DSEWVT1V">
 			<dcl:predefinedDataType name="BIGINT" />
 		</dcl:column>

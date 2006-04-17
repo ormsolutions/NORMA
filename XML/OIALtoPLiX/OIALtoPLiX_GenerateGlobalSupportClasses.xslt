@@ -15,20 +15,21 @@
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	extension-element-prefixes="exsl">
 
-	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
+	<xsl:import href="OIALtoPLiX_GenerateTuple.xslt"/>
 	
-	<xsl:include href="OIALtoPLiX_GenerateTuple.xslt"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<!-- TODO: Determine if these classes are already available in the solution (or anything referenced by it) prior to generating them. -->
 	<xsl:template name="GenerateGlobalSupportClasses">
+		<xsl:param name="StructLayoutAttribute"/>
 		<xsl:variable name="propertyChangeEventArgsClassBodyFragment">
 			<plx:implementsInterface dataTypeName="IPropertyChangeEventArgs">
 				<plx:passTypeParam dataTypeName="TClass"/>
 				<plx:passTypeParam dataTypeName="TProperty"/>
 			</plx:implementsInterface>
-			<plx:field visibility="private" readOnly="true" name="instance" dataTypeName="TClass"/>
-			<plx:field visibility="private" readOnly="true" name="oldValue" dataTypeName="TProperty"/>
-			<plx:field visibility="private" readOnly="true" name="newValue" dataTypeName="TProperty"/>
+			<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass"/>
+			<plx:field visibility="private" readOnly="true" name="_oldValue" dataTypeName="TProperty"/>
+			<plx:field visibility="private" readOnly="true" name="_newValue" dataTypeName="TProperty"/>
 			<plx:function visibility="public" name=".construct">
 				<plx:param name="instance" dataTypeName="TClass"/>
 				<plx:param name="oldValue" dataTypeName="TProperty"/>
@@ -56,7 +57,7 @@
 				</plx:branch>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="instance"/>
+						<plx:callThis accessor="this" type="field" name="_instance"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="instance"/>
@@ -64,7 +65,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="oldValue"/>
+						<plx:callThis accessor="this" type="field" name="_oldValue"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="oldValue"/>
@@ -72,7 +73,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="newValue"/>
+						<plx:callThis accessor="this" type="field" name="_newValue"/>
 					</plx:left>
 					<plx:right>
 						<plx:nameRef type="parameter" name="newValue"/>
@@ -80,29 +81,38 @@
 				</plx:assign>
 			</plx:function>
 			<plx:property visibility="public" name="Instance">
-				<plx:interfaceMember memberName="Instance" dataTypeName="IPropertyChangeEventArgs"/>
+				<plx:interfaceMember memberName="Instance" dataTypeName="IPropertyChangeEventArgs">
+					<plx:passTypeParam dataTypeName="TClass"/>
+					<plx:passTypeParam dataTypeName="TProperty"/>
+				</plx:interfaceMember>
 				<plx:returns dataTypeName="TClass"/>
 				<plx:get>
 					<plx:return>
-						<plx:callThis accessor="this" type="field" name="instance"/>
+						<plx:callThis accessor="this" type="field" name="_instance"/>
 					</plx:return>
 				</plx:get>
 			</plx:property>
 			<plx:property visibility="public" name="OldValue">
-				<plx:interfaceMember memberName="OldValue" dataTypeName="IPropertyChangeEventArgs"/>
+				<plx:interfaceMember memberName="OldValue" dataTypeName="IPropertyChangeEventArgs">
+					<plx:passTypeParam dataTypeName="TClass"/>
+					<plx:passTypeParam dataTypeName="TProperty"/>
+				</plx:interfaceMember>
 				<plx:returns dataTypeName="TProperty"/>
 				<plx:get>
 					<plx:return>
-						<plx:callThis accessor="this" type="field" name="oldValue"/>
+						<plx:callThis accessor="this" type="field" name="_oldValue"/>
 					</plx:return>
 				</plx:get>
 			</plx:property>
 			<plx:property visibility="public" name="NewValue">
-				<plx:interfaceMember memberName="NewValue" dataTypeName="IPropertyChangeEventArgs"/>
+				<plx:interfaceMember memberName="NewValue" dataTypeName="IPropertyChangeEventArgs">
+					<plx:passTypeParam dataTypeName="TClass"/>
+					<plx:passTypeParam dataTypeName="TProperty"/>
+				</plx:interfaceMember>
 				<plx:returns dataTypeName="TProperty"/>
 				<plx:get>
 					<plx:return>
-						<plx:callThis accessor="this" type="field" name="newValue"/>
+						<plx:callThis accessor="this" type="field" name="_newValue"/>
 					</plx:return>
 				</plx:get>
 			</plx:property>
@@ -120,6 +130,18 @@
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="Property Change Event Support"/>
 				</plx:leadingInfo>
+				<plx:attribute dataTypeName="SuppressMessageAttribute">
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="'Microsoft.Naming'"/>
+						</plx:string>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="'CA1711:IdentifiersShouldNotHaveIncorrectSuffix'"/>
+						</plx:string>
+					</plx:passParam>
+				</plx:attribute>
 				<plx:typeParam name="TClass"/>
 				<plx:typeParam name="TProperty"/>
 				<plx:property visibility="public" modifier="abstract" name="Instance">
@@ -137,6 +159,7 @@
 			</plx:interface>
 			<plx:class visibility="public" modifier="sealed" name="PropertyChangingEventArgs">
 				<plx:attribute dataTypeName="Serializable"/>
+				<xsl:copy-of select="$StructLayoutAttribute"/>
 				<plx:typeParam name="TClass"/>
 				<plx:typeParam name="TProperty"/>
 				<plx:derivesFromClass dataTypeName="CancelEventArgs"/>
@@ -147,6 +170,7 @@
 					<plx:pragma type="closeRegion" data="Property Change Event Support"/>
 				</plx:trailingInfo>
 				<plx:attribute dataTypeName="Serializable"/>
+				<xsl:copy-of select="$StructLayoutAttribute"/>
 				<plx:typeParam name="TClass"/>
 				<plx:typeParam name="TProperty"/>
 				<plx:derivesFromClass dataTypeName="EventArgs"/>

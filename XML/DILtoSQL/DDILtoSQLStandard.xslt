@@ -227,15 +227,14 @@
 
 	<xsl:template match="ddt:exactNumeric">
 		<xsl:value-of select="@type"/>
-		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
-		<xsl:apply-templates select="@scale" mode="ForExactNumeric"/>
+		<xsl:apply-templates select="@precision" mode="ForNumeric"/>
+		<xsl:apply-templates select="@scale" mode="ForNumeric"/>
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:approximateNumeric">
 		<xsl:value-of select="@type"/>
-		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
-		<xsl:value-of select="$RightParen"/>
+		<xsl:apply-templates select="@precision" mode="ForNumeric"/>
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
@@ -328,12 +327,15 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="@precision" mode="ForExactNumeric">
+	<xsl:template match="@precision" mode="ForNumeric">
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="."/>
+		<xsl:if test="not(string-length(parent::*/@scale))">
+			<xsl:value-of select="$RightParen"/>
+		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="@scale" mode="ForExactNumeric">
+	<xsl:template match="@scale" mode="ForNumeric">
 		<xsl:text>, </xsl:text>
 		<xsl:value-of select="."/>
 		<xsl:value-of select="$RightParen"/>

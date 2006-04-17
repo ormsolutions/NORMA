@@ -44,7 +44,7 @@
 	<xsl:template name="TransformORMtoOIAL">
 		<xsl:param name="SourceModel"/>
 		<xsl:variable name="ModelFragment">
-			<!-- Make sure the model has been co-referened... -->
+			<!-- Make sure the model has been co-referenced... -->
 			<xsl:apply-templates select="$SourceModel" mode="CoRefORMModel"/>
 		</xsl:variable>
 		<xsl:variable name="Model" select="exsl:node-set($ModelFragment)/child::*"/>
@@ -98,8 +98,6 @@
 							<xsl:variable name="nonMandatoryRolePlayer" select="$rolePlayers[not(@id=$mandatoryRolePlayerId)]"/>
 							<xsl:choose>
 								<!-- See if the potential absorber object type plays any functional roles (other than the current one) that are not part of its preferred identifier... -->
-								<!-- TODO: How do we handle Value Types here? Do we even need to? -->
-								<!--<xsl:when test="not(local-name($nonMandatoryRolePlayer)='ValueType') and count($nonMandatoryRolePlayer/functionalNonPreferredIdentifierDirectFacts/child::*) > 1">-->
 								<xsl:when test="$nonMandatoryRolePlayer/functionalNonPreferredIdentifierDirectFacts/child::*[not(@id=current()/@id)]">
 									<xsl:attribute name="towards">
 										<xsl:value-of select="$nonMandatoryRolePlayer/@id"/>
@@ -142,8 +140,6 @@
 							<xsl:variable name="secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts" select="count($secondRolePlayer/nonDependentFunctionalNonPreferredIdentifierDirectFacts/child::*)"/>
 							<xsl:variable name="towardsId">
 								<xsl:choose>
-									<!-- TODO: How do we handle Value Types here? Do we even need to? -->
-									<!--<xsl:when test="not(local-name($firstRolePlayer)='ValueType') and $firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts >= $secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts">-->
 									<xsl:when test="$firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts >= $secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts">
 										<xsl:value-of select="$firstRolePlayer/@id"/>
 									</xsl:when>
@@ -187,7 +183,6 @@
 
 		<xsl:variable name="ObjectTypeAbsorptionsFragment">
 			<xsl:for-each select="$NonIndependentSubtypeObjectTypes">
-				<!-- TODO: The next line should be selecting the PRIMARY supertype, not the FIRST supertype. -->
 				<xsl:variable name="absorbingSupertypeId" select="subtypeMetaFacts/child::*[@IsPrimary='true']/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref"/>
 				<AbsorbObjectType ref="{@id}" towards="{$absorbingSupertypeId}">
 					<xsl:if test="$OutputDebugInformation">

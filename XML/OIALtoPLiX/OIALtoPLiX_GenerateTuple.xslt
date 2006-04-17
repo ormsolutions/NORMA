@@ -26,6 +26,25 @@
 	
 	<xsl:param name="SpecifyParamNameForArgumentNullException" select="false()"/>
 
+	<xsl:param name="StructLayoutAttributeFragment">
+		<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
+			<plx:passParam>
+				<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind" dataTypeQualifier="System.Runtime.InteropServices"/>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:binaryOperator type="assignNamed">
+					<plx:left>
+						<plx:nameRef type="namedParameter" name="CharSet"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic type="field" name="Auto" dataTypeName="CharSet" dataTypeQualifier="System.Runtime.InteropServices"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:passParam>
+		</plx:attribute>
+	</xsl:param>
+	<xsl:param name="StructLayoutAttribute" select="exsl:node-set($StructLayoutAttributeFragment)/child::*"/>
+
 	<xsl:template name="GetNodeSetOfCount">
 		<xsl:param name="count"/>
 		<PlaceHolder/>
@@ -75,13 +94,28 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Tuple Support"/>
 			</plx:trailingInfo>
+			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System"/>
 			<plx:attribute dataTypeName="ImmutableObjectAttribute" dataTypeQualifier="System.ComponentModel">
 				<plx:passParam>
 					<plx:trueKeyword/>
 				</plx:passParam>
 			</plx:attribute>
-			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System"/>
+			<xsl:copy-of select="$StructLayoutAttribute"/>
+			<plx:function visibility="protected" name=".construct"/>
 			<plx:function visibility="protected" modifier="static" name="RotateRight">
+				<!-- Suppress the 'OperationsShouldNotOverflow' FxCop warning -->
+				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="'Microsoft.Usage'"/>
+						</plx:string>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="'CA2233:OperationsShouldNotOverflow'"/>
+						</plx:string>
+					</plx:passParam>
+				</plx:attribute>
 				<plx:param type="in" name="value" dataTypeName=".i4"/>
 				<plx:param type="in" name="places" dataTypeName=".i4"/>
 				<plx:returns dataTypeName=".i4"/>
@@ -184,16 +218,23 @@
 					</plx:binaryOperator>
 				</plx:return>
 			</plx:function>
+			<plx:function visibility="public" modifier="abstractOverride" overload="true" name="ToString">
+				<plx:returns dataTypeName=".string"/>
+			</plx:function>
+			<plx:function visibility="public" modifier="abstract" overload="true" name="ToString">
+				<plx:param name="provider" dataTypeName="IFormatProvider" dataTypeQualifier="System"/>
+				<plx:returns dataTypeName=".string"/>
+			</plx:function>
 		</plx:class>
 	</xsl:template>
 
 	<!--
 	NOTE: For a variety of reasons, Tuples are NOT generated as structs (that is, sealed classes that inherit
 	from System.ValueType). These reasons include:
-		Structs cannot be null without being wrapped as a Nullable<>, and Tuples need to be able to be null-propogating.
-		The contents of a struct should NOT be greater than or equal to 16 bytes in size. Since Tuples will usually
-			contain references to other objects, this means that Tuples with an arity greater than 3 should be classes
-			anyway. (On 64-bit platforms, all Tuples should be classes.)
+		Structs cannot be null without being wrapped as a Nullable<>, and Tuples need to be able to be null-propagating.
+		The contents of a struct should generally not be greater than or equal to 16 bytes in size. Since Tuples will
+			usually contain references to other objects, this means that Tuples with an arity greater than 3 should be
+			classes anyway. (On 64-bit platforms, all Tuples should be classes.)
 		Structs can be initialized by the runtime without any constructor being called. (Incidently, this is why some
 			CLI languages, including C#, do not allow the user to create a default (i.e. parameter-less) constructor on
 			a struct, since in most cases it will never be called.) When this occurs, all bits are set to zero. This means
@@ -223,12 +264,12 @@
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($tempNodeSetsFragment)/child::*">
-						<Item name="Item{position()}" localName="item{position()}"  dataTypeName="T{position()}"/>
+						<Item name="Item{position()}" fieldName="_item{position()}" paramName="item{position()}" dataTypeName="T{position()}"/>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:for-each select="exsl:node-set($arityNodeSet)/child::*">
-						<Item name="Item{position()}" localName="item{position()}"  dataTypeName="T{position()}"/>
+						<Item name="Item{position()}" fieldName="_item{position()}" paramName="item{position()}" dataTypeName="T{position()}"/>
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -300,7 +341,7 @@
 		
 		<xsl:variable name="paramsFragment">
 			<xsl:for-each select="$items">
-				<plx:param name="{@localName}" dataTypeName="{@dataTypeName}"/>
+				<plx:param name="{@paramName}" dataTypeName="{@dataTypeName}"/>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="params" select="exsl:node-set($paramsFragment)/child::*"/>
@@ -348,7 +389,7 @@
 						<xsl:copy-of select="$passTypeParams"/>
 						<xsl:for-each select="$items">
 							<plx:passParam>
-								<plx:nameRef type="parameter" name="{@localName}"/>
+								<plx:nameRef type="parameter" name="{@paramName}"/>
 							</plx:passParam>
 						</xsl:for-each>
 					</plx:callNew>
@@ -361,7 +402,7 @@
 				<plx:pragma type="closeRegion" data="{$arityText} Tuple"/>
 			</plx:trailingInfo>
 			<xsl:if test="$arity > 2">
-				<!-- Suppress the 'don't have more than two generic type parameters' FxCop warning -->
+				<!-- Suppress the 'AvoidExcessiveParametersOnGenericTypes' FxCop warning -->
 				<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
 					<plx:passParam>
 						<plx:string>
@@ -370,12 +411,13 @@
 					</plx:passParam>
 					<plx:passParam>
 						<plx:string>
-							<xsl:value-of select="'CA10005'"/>
+							<xsl:value-of select="'CA1005:AvoidExcessiveParametersOnGenericTypes'"/>
 						</plx:string>
 					</plx:passParam>
 				</plx:attribute>
 			</xsl:if>
 			<plx:attribute dataTypeName="Serializable" dataTypeQualifier="System"/>
+			<xsl:copy-of select="$StructLayoutAttribute"/>
 			<xsl:copy-of select="$typeParams"/>
 			<plx:derivesFromClass dataTypeName="Tuple"/>
 			<plx:implementsInterface dataTypeName="IEquatable" dataTypeQualifier="System">
@@ -385,12 +427,12 @@
 			</plx:implementsInterface>
 
 			<xsl:for-each select="$items">
-				<plx:field visibility="private" readOnly="true" name="{@localName}" dataTypeName="{@dataTypeName}"/>
+				<plx:field visibility="private" readOnly="true" name="{@fieldName}" dataTypeName="{@dataTypeName}"/>
 				<plx:property visibility="public" name="{@name}">
 					<plx:returns dataTypeName="{@dataTypeName}"/>
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="{@localName}"/>
+							<plx:callThis accessor="this" type="field" name="{@fieldName}"/>
 						</plx:return>
 					</plx:get>
 				</plx:property>
@@ -405,7 +447,7 @@
 								<plx:condition>
 									<plx:binaryOperator type="identityEquality">
 										<plx:left>
-											<plx:nameRef type="parameter" name="{@localName}"/>
+											<plx:nameRef type="parameter" name="{@paramName}"/>
 										</plx:left>
 										<plx:right>
 											<plx:nullKeyword/>
@@ -416,7 +458,7 @@
 									<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System">
 										<plx:passParam>
 											<plx:string>
-												<xsl:value-of select="@localName"/>
+												<xsl:value-of select="@paramName"/>
 											</plx:string>
 										</plx:passParam>
 									</plx:callNew>
@@ -444,10 +486,10 @@
 				<xsl:for-each select="$items">
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="{@localName}"/>
+							<plx:callThis accessor="this" type="field" name="{@fieldName}"/>
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="{@localName}"/>
+							<plx:nameRef type="parameter" name="{@paramName}"/>
 						</plx:right>
 					</plx:assign>
 				</xsl:for-each>
@@ -520,7 +562,7 @@
 						<plx:left>
 							<plx:callInstance type="methodCall" name="GetHashCode">
 								<plx:callObject>
-									<plx:callThis accessor="this" type="field" name="{$items[1]/@localName}"/>
+									<plx:callThis accessor="this" type="field" name="{$items[1]/@fieldName}"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:left>
@@ -547,7 +589,7 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="public" overload="true" name="ToString">
+			<plx:function visibility="public" modifier="override" overload="true" name="ToString">
 				<plx:param name="provider" dataTypeName="IFormatProvider" dataTypeQualifier="System"/>
 				<plx:returns dataTypeName=".string"/>
 				<plx:return>
@@ -569,7 +611,7 @@
 						</plx:passParam>
 						<xsl:for-each select="$items">
 							<plx:passParam>
-								<plx:callThis accessor="this" type="field" name="{@localName}"/>
+								<plx:callThis accessor="this" type="field" name="{@fieldName}"/>
 							</plx:passParam>
 						</xsl:for-each>
 					</plx:callStatic>
@@ -679,7 +721,7 @@
 								<xsl:copy-of select="$passTypeParams"/>
 								<xsl:for-each select="$items">
 									<plx:passParam>
-										<plx:callInstance type="field" name="{@localName}">
+										<plx:callInstance type="field" name="{@fieldName}">
 											<plx:callObject>
 												<plx:nameRef type="parameter" name="tuple"/>
 											</plx:callObject>
@@ -783,7 +825,7 @@
 							<plx:callNew dataTypeName="DictionaryEntry" dataTypeQualifier="System.Collections">
 								<xsl:for-each select="$items">
 									<plx:passParam>
-										<plx:callInstance type="field" name="{@localName}">
+										<plx:callInstance type="field" name="{@fieldName}">
 											<plx:callObject>
 												<plx:nameRef type="parameter" name="tuple"/>
 											</plx:callObject>
@@ -914,7 +956,7 @@
 						<plx:passParam>
 							<plx:callInstance type="methodCall" name="GetHashCode">
 								<plx:callObject>
-									<plx:callThis accessor="this" type="field" name="{$currentItem/@localName}"/>
+									<plx:callThis accessor="this" type="field" name="{$currentItem/@fieldName}"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:passParam>
@@ -926,7 +968,7 @@
 				<xsl:when test="$codeChoice='checkNullCode'">
 					<plx:binaryOperator type="identityEquality">
 						<plx:left>
-							<plx:nameRef type="parameter" name="{$currentItem/@localName}"/>
+							<plx:nameRef type="parameter" name="{$currentItem/@paramName}"/>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
@@ -937,10 +979,10 @@
 					<plx:unaryOperator type="booleanNot">
 						<plx:callInstance type="methodCall" name="Equals">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$currentItem/@localName}"/>
+								<plx:callThis accessor="this" type="field" name="{$currentItem/@fieldName}"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:callInstance type="field" name="{$currentItem/@localName}">
+								<plx:callInstance type="field" name="{$currentItem/@fieldName}">
 									<plx:callObject>
 										<plx:nameRef type="parameter" name="other"/>
 									</plx:callObject>

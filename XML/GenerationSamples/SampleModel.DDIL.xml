@@ -5,10 +5,10 @@
 	<dms:setSchemaStatement>
 		<ddt:characterStringLiteral value="SAMPLEMODEL" />
 	</dms:setSchemaStatement>
-	<ddl:domainDefinition name="SclScrtyNmbr" schema="SampleModel">
+	<ddl:domainDefinition name="OptnlUnqStrng" schema="SampleModel">
 		<ddt:characterString type="CHARACTER" length="11" />
 		<ddl:domainConstraint>
-			<dep:constraintNameDefinition name="SclScrtyNmbr_Chk" />
+			<dep:constraintNameDefinition name="OptnlUnqStrng_Chk" />
 			<ddl:checkConstraintDefinition>
 				<dep:comparisonPredicate operator="greaterThanOrEquals">
 					<dep:parenthesizedValueExpression>
@@ -75,6 +75,26 @@
 						<ddt:characterStringLiteral value="F" />
 					</dep:inPredicate>
 				</dep:and>
+			</ddl:checkConstraintDefinition>
+		</ddl:domainConstraint>
+	</ddl:domainDefinition>
+	<ddl:domainDefinition name="MndtryUnqStrng" schema="SampleModel">
+		<ddt:characterString type="CHARACTER" length="11" />
+		<ddl:domainConstraint>
+			<dep:constraintNameDefinition name="MndtryUnqStrng_Chk" />
+			<ddl:checkConstraintDefinition>
+				<dep:comparisonPredicate operator="greaterThanOrEquals">
+					<dep:parenthesizedValueExpression>
+						<dep:charLengthExpression>
+							<dep:trimFunction specification="BOTH">
+								<dep:trimSource>
+									<dep:valueKeyword />
+								</dep:trimSource>
+							</dep:trimFunction>
+						</dep:charLengthExpression>
+					</dep:parenthesizedValueExpression>
+					<ddt:exactNumericLiteral value="11" />
+				</dep:comparisonPredicate>
 			</ddl:checkConstraintDefinition>
 		</ddl:domainConstraint>
 	</ddl:domainDefinition>
@@ -230,8 +250,8 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="SclScrtyNmbr">
-			<ddt:domain name="SclScrtyNmbr" schema="SampleModel" />
+		<ddl:columnDefinition name="OptnlUnqStrng">
+			<ddt:domain name="OptnlUnqStrng" schema="SampleModel" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="HatType_ColorARGB">
 			<ddt:exactNumeric type="BIGINT" />
@@ -250,6 +270,21 @@
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="PersonHasParents">
 			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="OptnlUnqDcml">
+			<ddt:exactNumeric type="DECIMAL" precision="9" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="MndtryUnqDcml">
+			<ddt:exactNumeric type="DECIMAL" precision="9" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="MndtryUnqStrng">
+			<ddt:domain name="MndtryUnqStrng" schema="SampleModel" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="VT1DSEWVT1V">
 			<ddt:exactNumeric type="BIGINT" />
@@ -293,13 +328,31 @@
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC9" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
-				<ddl:column name="SclScrtyNmbr" />
+				<ddl:column name="OptnlUnqStrng" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="IUC22" />
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="OwnsCar_vin" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="IUC65" />
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<ddl:column name="OptnlUnqDcml" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="IUC69" />
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<ddl:column name="MndtryUnqDcml" />
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+		<ddl:tableConstraintDefinition>
+			<dep:constraintNameDefinition name="IUC67" />
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
+				<ddl:column name="MndtryUnqStrng" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>

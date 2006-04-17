@@ -12,7 +12,7 @@
       <xs:maxLength value="64" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:simpleType name="SocialSecurityNumber">
+  <xs:simpleType name="OptionalUniqueString">
     <xs:restriction base="xs:string">
       <xs:minLength value="11" />
       <xs:maxLength value="11" />
@@ -53,6 +53,24 @@
       <xs:maxLength value="1" />
       <xs:enumeration value="M" />
       <xs:enumeration value="F" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OptionalUniqueDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="" />
+      <xs:totalDigits value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MandatoryUniqueDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="" />
+      <xs:totalDigits value="9" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MandatoryUniqueString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="11" />
+      <xs:maxLength value="11" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="NaturalDeathIsFromProstateCancer">
@@ -180,12 +198,15 @@
         <xs:attribute name="FirstName" type="oxs:FirstName" use="required" />
         <xs:attribute name="YMD" type="xs:integer" use="required" />
         <xs:attribute name="LastName" type="oxs:LastName" use="required" />
-        <xs:attribute name="SocialSecurityNumber" type="oxs:SocialSecurityNumber" use="optional" />
+        <xs:attribute name="OptionalUniqueString" type="oxs:OptionalUniqueString" use="optional" />
         <xs:attribute name="ColorARGB" type="xs:integer" use="optional" />
         <xs:attribute name="HatTypeStyle_Description" type="oxs:HatTypeStyle_Description" use="optional" />
         <xs:attribute name="vin" type="xs:integer" use="optional" />
         <xs:attribute name="Gender_Code" type="oxs:Gender_Code" use="required" />
         <xs:attribute name="PersonHasParents" type="oxs:true" use="optional" />
+        <xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
+        <xs:attribute name="MandatoryUniqueDecimal" type="oxs:MandatoryUniqueDecimal" use="required" />
+        <xs:attribute name="MandatoryUniqueString" type="oxs:MandatoryUniqueString" use="required" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -288,13 +309,25 @@
       <xs:field xpath="@ValueType1Value" />
     </xs:key>
     <!--Uniqueness Constraints-->
-    <xs:unique name="SocialSecurityNumberUnique">
+    <xs:unique name="OptionalUniqueStringUnique">
       <xs:selector xpath="oxs:SampleModel/oxs:Person" />
-      <xs:field xpath="oxs:SocialSecurityNumber" />
+      <xs:field xpath="oxs:OptionalUniqueString" />
     </xs:unique>
     <xs:unique name="OwnsCar_vinUnique">
       <xs:selector xpath="oxs:SampleModel/oxs:Person" />
       <xs:field xpath="oxs:OwnsCar_vin" />
+    </xs:unique>
+    <xs:unique name="OptionalUniqueDecimalUnique">
+      <xs:selector xpath="oxs:SampleModel/oxs:Person" />
+      <xs:field xpath="oxs:OptionalUniqueDecimal" />
+    </xs:unique>
+    <xs:unique name="MandatoryUniqueDecimalUnique">
+      <xs:selector xpath="oxs:SampleModel/oxs:Person" />
+      <xs:field xpath="oxs:MandatoryUniqueDecimal" />
+    </xs:unique>
+    <xs:unique name="MandatoryUniqueStringUnique">
+      <xs:selector xpath="oxs:SampleModel/oxs:Person" />
+      <xs:field xpath="oxs:MandatoryUniqueString" />
     </xs:unique>
     <!--KeyRefs between Major Object Type groupings-->
     <xs:keyref name="PersonDrivesCarDrivenByPersonRef" refer="PersonKey">

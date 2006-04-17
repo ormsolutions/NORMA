@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml;
-using GeneratedCodeAttribute = System.CodeDom.Compiler.GeneratedCodeAttribute;
 using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
+using AccessedThroughPropertyAttribute = System.Runtime.CompilerServices.AccessedThroughPropertyAttribute;
+using GeneratedCodeAttribute = System.CodeDom.Compiler.GeneratedCodeAttribute;
+using StructLayoutAttribute = System.Runtime.InteropServices.StructLayoutAttribute;
+using LayoutKind = System.Runtime.InteropServices.LayoutKind;
+using CharSet = System.Runtime.InteropServices.CharSet;
 #region Global Support Classes
 namespace System
 {
 	#region Tuple Support
-	[System.ComponentModel.ImmutableObjectAttribute(true)]
 	[System.Serializable()]
+	[System.ComponentModel.ImmutableObjectAttribute(true)]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public abstract partial class Tuple
 	{
+		protected Tuple()
+		{
+		}
+		[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow")]
 		protected static int RotateRight(int value, int places)
 		{
 			places = places & 0x1F;
@@ -23,6 +32,8 @@ namespace System
 			int mask = ~0x7FFFFFF >> (places - 1);
 			return ((value >> places) & ~mask) | ((value << (32 - places)) & mask);
 		}
+		public abstract override string ToString();
+		public abstract string ToString(System.IFormatProvider provider);
 	}
 	#endregion // Tuple Support
 	#region Binary (2-ary) Tuple
@@ -38,22 +49,23 @@ namespace System
 		}
 	}
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2> : Tuple, System.IEquatable<Tuple<T1, T2>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
 		public Tuple(T1 item1, T2 item2)
@@ -62,8 +74,8 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
+			this._item1 = item1;
+			this._item2 = item2;
 		}
 		public override bool Equals(object obj)
 		{
@@ -71,7 +83,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || !(this.item2.Equals(other.item2))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || !(this._item2.Equals(other._item2))))
 			{
 				return false;
 			}
@@ -79,15 +91,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ Tuple.RotateRight(this.item2.GetHashCode(), 1);
+			return this._item1.GetHashCode() ^ Tuple.RotateRight(this._item2.GetHashCode(), 1);
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2})", this.item1, this.item2);
+			return string.Format(provider, "({1}, {2})", this._item1, this._item2);
 		}
 		public static bool operator ==(Tuple<T1, T2> tuple1, Tuple<T1, T2> tuple2)
 		{
@@ -112,7 +124,7 @@ namespace System
 			}
 			else
 			{
-				return new System.Collections.Generic.KeyValuePair<T1, T2>(tuple.item1, tuple.item2);
+				return new System.Collections.Generic.KeyValuePair<T1, T2>(tuple._item1, tuple._item2);
 			}
 		}
 		public static explicit operator Tuple<T1, T2>(System.Collections.Generic.KeyValuePair<T1, T2> keyValuePair)
@@ -134,7 +146,7 @@ namespace System
 			}
 			else
 			{
-				return new System.Collections.DictionaryEntry(tuple.item1, tuple.item2);
+				return new System.Collections.DictionaryEntry(tuple._item1, tuple._item2);
 			}
 		}
 		public static explicit operator Tuple<T1, T2>(System.Collections.DictionaryEntry dictionaryEntry)
@@ -164,32 +176,33 @@ namespace System
 			return new Tuple<T1, T2, T3>(item1, item2, item3);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3> : Tuple, System.IEquatable<Tuple<T1, T2, T3>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3)
@@ -198,9 +211,9 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
 		}
 		public override bool Equals(object obj)
 		{
@@ -208,7 +221,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || !(this.item3.Equals(other.item3)))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || !(this._item3.Equals(other._item3)))))
 			{
 				return false;
 			}
@@ -216,15 +229,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ Tuple.RotateRight(this.item3.GetHashCode(), 2));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ Tuple.RotateRight(this._item3.GetHashCode(), 2));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3})", this.item1, this.item2, this.item3);
+			return string.Format(provider, "({1}, {2}, {3})", this._item1, this._item2, this._item3);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3> tuple1, Tuple<T1, T2, T3> tuple2)
 		{
@@ -255,40 +268,41 @@ namespace System
 			return new Tuple<T1, T2, T3, T4>(item1, item2, item3, item4);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4)
@@ -297,10 +311,10 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
 		}
 		public override bool Equals(object obj)
 		{
@@ -308,7 +322,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || !(this.item4.Equals(other.item4))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || !(this._item4.Equals(other._item4))))))
 			{
 				return false;
 			}
@@ -316,15 +330,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ Tuple.RotateRight(this.item4.GetHashCode(), 3)));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ Tuple.RotateRight(this._item4.GetHashCode(), 3)));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4})", this.item1, this.item2, this.item3, this.item4);
+			return string.Format(provider, "({1}, {2}, {3}, {4})", this._item1, this._item2, this._item3, this._item4);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4> tuple1, Tuple<T1, T2, T3, T4> tuple2)
 		{
@@ -355,48 +369,49 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
-		private readonly T5 item5;
+		private readonly T5 _item5;
 		public T5 Item5
 		{
 			get
 			{
-				return this.item5;
+				return this._item5;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5)
@@ -405,11 +420,11 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
-			this.item5 = item5;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
 		}
 		public override bool Equals(object obj)
 		{
@@ -417,7 +432,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || !(this.item5.Equals(other.item5)))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || (!(this._item4.Equals(other._item4)) || !(this._item5.Equals(other._item5)))))))
 			{
 				return false;
 			}
@@ -425,15 +440,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this.item4.GetHashCode(), 3) ^ Tuple.RotateRight(this.item5.GetHashCode(), 4))));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ Tuple.RotateRight(this._item5.GetHashCode(), 4))));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4}, {5})", this.item1, this.item2, this.item3, this.item4, this.item5);
+			return string.Format(provider, "({1}, {2}, {3}, {4}, {5})", this._item1, this._item2, this._item3, this._item4, this._item5);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5> tuple1, Tuple<T1, T2, T3, T4, T5> tuple2)
 		{
@@ -464,56 +479,57 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
-		private readonly T5 item5;
+		private readonly T5 _item5;
 		public T5 Item5
 		{
 			get
 			{
-				return this.item5;
+				return this._item5;
 			}
 		}
-		private readonly T6 item6;
+		private readonly T6 _item6;
 		public T6 Item6
 		{
 			get
 			{
-				return this.item6;
+				return this._item6;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6)
@@ -522,12 +538,12 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
-			this.item5 = item5;
-			this.item6 = item6;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
+			this._item6 = item6;
 		}
 		public override bool Equals(object obj)
 		{
@@ -535,7 +551,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || !(this.item6.Equals(other.item6))))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || (!(this._item4.Equals(other._item4)) || (!(this._item5.Equals(other._item5)) || !(this._item6.Equals(other._item6))))))))
 			{
 				return false;
 			}
@@ -543,15 +559,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this.item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this.item5.GetHashCode(), 4) ^ Tuple.RotateRight(this.item6.GetHashCode(), 5)))));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ Tuple.RotateRight(this._item6.GetHashCode(), 5)))));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6})", this.item1, this.item2, this.item3, this.item4, this.item5, this.item6);
+			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6> tuple1, Tuple<T1, T2, T3, T4, T5, T6> tuple2)
 		{
@@ -582,64 +598,65 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
-		private readonly T5 item5;
+		private readonly T5 _item5;
 		public T5 Item5
 		{
 			get
 			{
-				return this.item5;
+				return this._item5;
 			}
 		}
-		private readonly T6 item6;
+		private readonly T6 _item6;
 		public T6 Item6
 		{
 			get
 			{
-				return this.item6;
+				return this._item6;
 			}
 		}
-		private readonly T7 item7;
+		private readonly T7 _item7;
 		public T7 Item7
 		{
 			get
 			{
-				return this.item7;
+				return this._item7;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7)
@@ -648,13 +665,13 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
-			this.item5 = item5;
-			this.item6 = item6;
-			this.item7 = item7;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
+			this._item6 = item6;
+			this._item7 = item7;
 		}
 		public override bool Equals(object obj)
 		{
@@ -662,7 +679,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || !(this.item7.Equals(other.item7)))))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || (!(this._item4.Equals(other._item4)) || (!(this._item5.Equals(other._item5)) || (!(this._item6.Equals(other._item6)) || !(this._item7.Equals(other._item7)))))))))
 			{
 				return false;
 			}
@@ -670,15 +687,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this.item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this.item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this.item6.GetHashCode(), 5) ^ Tuple.RotateRight(this.item7.GetHashCode(), 6))))));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ Tuple.RotateRight(this._item7.GetHashCode(), 6))))));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7})", this.item1, this.item2, this.item3, this.item4, this.item5, this.item6, this.item7);
+			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7> tuple2)
 		{
@@ -709,72 +726,73 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7, T8>(item1, item2, item3, item4, item5, item6, item7, item8);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
-		private readonly T5 item5;
+		private readonly T5 _item5;
 		public T5 Item5
 		{
 			get
 			{
-				return this.item5;
+				return this._item5;
 			}
 		}
-		private readonly T6 item6;
+		private readonly T6 _item6;
 		public T6 Item6
 		{
 			get
 			{
-				return this.item6;
+				return this._item6;
 			}
 		}
-		private readonly T7 item7;
+		private readonly T7 _item7;
 		public T7 Item7
 		{
 			get
 			{
-				return this.item7;
+				return this._item7;
 			}
 		}
-		private readonly T8 item8;
+		private readonly T8 _item8;
 		public T8 Item8
 		{
 			get
 			{
-				return this.item8;
+				return this._item8;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8)
@@ -783,14 +801,14 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
-			this.item5 = item5;
-			this.item6 = item6;
-			this.item7 = item7;
-			this.item8 = item8;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
+			this._item6 = item6;
+			this._item7 = item7;
+			this._item8 = item8;
 		}
 		public override bool Equals(object obj)
 		{
@@ -798,7 +816,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || !(this.item8.Equals(other.item8))))))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || (!(this._item4.Equals(other._item4)) || (!(this._item5.Equals(other._item5)) || (!(this._item6.Equals(other._item6)) || (!(this._item7.Equals(other._item7)) || !(this._item8.Equals(other._item8))))))))))
 			{
 				return false;
 			}
@@ -806,15 +824,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this.item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this.item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this.item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this.item7.GetHashCode(), 6) ^ Tuple.RotateRight(this.item8.GetHashCode(), 7)))))));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ Tuple.RotateRight(this._item8.GetHashCode(), 7)))))));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", this.item1, this.item2, this.item3, this.item4, this.item5, this.item6, this.item7, this.item8);
+			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7, this._item8);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8> tuple2)
 		{
@@ -845,80 +863,81 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(item1, item2, item3, item4, item5, item6, item7, item8, item9);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
-		private readonly T5 item5;
+		private readonly T5 _item5;
 		public T5 Item5
 		{
 			get
 			{
-				return this.item5;
+				return this._item5;
 			}
 		}
-		private readonly T6 item6;
+		private readonly T6 _item6;
 		public T6 Item6
 		{
 			get
 			{
-				return this.item6;
+				return this._item6;
 			}
 		}
-		private readonly T7 item7;
+		private readonly T7 _item7;
 		public T7 Item7
 		{
 			get
 			{
-				return this.item7;
+				return this._item7;
 			}
 		}
-		private readonly T8 item8;
+		private readonly T8 _item8;
 		public T8 Item8
 		{
 			get
 			{
-				return this.item8;
+				return this._item8;
 			}
 		}
-		private readonly T9 item9;
+		private readonly T9 _item9;
 		public T9 Item9
 		{
 			get
 			{
-				return this.item9;
+				return this._item9;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9)
@@ -927,15 +946,15 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
-			this.item5 = item5;
-			this.item6 = item6;
-			this.item7 = item7;
-			this.item8 = item8;
-			this.item9 = item9;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
+			this._item6 = item6;
+			this._item7 = item7;
+			this._item8 = item8;
+			this._item9 = item9;
 		}
 		public override bool Equals(object obj)
 		{
@@ -943,7 +962,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || (!(this.item8.Equals(other.item8)) || !(this.item9.Equals(other.item9)))))))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || (!(this._item4.Equals(other._item4)) || (!(this._item5.Equals(other._item5)) || (!(this._item6.Equals(other._item6)) || (!(this._item7.Equals(other._item7)) || (!(this._item8.Equals(other._item8)) || !(this._item9.Equals(other._item9)))))))))))
 			{
 				return false;
 			}
@@ -951,15 +970,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this.item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this.item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this.item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this.item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this.item8.GetHashCode(), 7) ^ Tuple.RotateRight(this.item9.GetHashCode(), 8))))))));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ Tuple.RotateRight(this._item9.GetHashCode(), 8))))))));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})", this.item1, this.item2, this.item3, this.item4, this.item5, this.item6, this.item7, this.item8, this.item9);
+			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7, this._item8, this._item9);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple2)
 		{
@@ -990,88 +1009,89 @@ namespace System
 			return new Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(item1, item2, item3, item4, item5, item6, item7, item8, item9, item10);
 		}
 	}
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA10005")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
 	[System.Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Tuple, System.IEquatable<Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>
 	{
-		private readonly T1 item1;
+		private readonly T1 _item1;
 		public T1 Item1
 		{
 			get
 			{
-				return this.item1;
+				return this._item1;
 			}
 		}
-		private readonly T2 item2;
+		private readonly T2 _item2;
 		public T2 Item2
 		{
 			get
 			{
-				return this.item2;
+				return this._item2;
 			}
 		}
-		private readonly T3 item3;
+		private readonly T3 _item3;
 		public T3 Item3
 		{
 			get
 			{
-				return this.item3;
+				return this._item3;
 			}
 		}
-		private readonly T4 item4;
+		private readonly T4 _item4;
 		public T4 Item4
 		{
 			get
 			{
-				return this.item4;
+				return this._item4;
 			}
 		}
-		private readonly T5 item5;
+		private readonly T5 _item5;
 		public T5 Item5
 		{
 			get
 			{
-				return this.item5;
+				return this._item5;
 			}
 		}
-		private readonly T6 item6;
+		private readonly T6 _item6;
 		public T6 Item6
 		{
 			get
 			{
-				return this.item6;
+				return this._item6;
 			}
 		}
-		private readonly T7 item7;
+		private readonly T7 _item7;
 		public T7 Item7
 		{
 			get
 			{
-				return this.item7;
+				return this._item7;
 			}
 		}
-		private readonly T8 item8;
+		private readonly T8 _item8;
 		public T8 Item8
 		{
 			get
 			{
-				return this.item8;
+				return this._item8;
 			}
 		}
-		private readonly T9 item9;
+		private readonly T9 _item9;
 		public T9 Item9
 		{
 			get
 			{
-				return this.item9;
+				return this._item9;
 			}
 		}
-		private readonly T10 item10;
+		private readonly T10 _item10;
 		public T10 Item10
 		{
 			get
 			{
-				return this.item10;
+				return this._item10;
 			}
 		}
 		public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8, T9 item9, T10 item10)
@@ -1080,16 +1100,16 @@ namespace System
 			{
 				throw new System.ArgumentNullException();
 			}
-			this.item1 = item1;
-			this.item2 = item2;
-			this.item3 = item3;
-			this.item4 = item4;
-			this.item5 = item5;
-			this.item6 = item6;
-			this.item7 = item7;
-			this.item8 = item8;
-			this.item9 = item9;
-			this.item10 = item10;
+			this._item1 = item1;
+			this._item2 = item2;
+			this._item3 = item3;
+			this._item4 = item4;
+			this._item5 = item5;
+			this._item6 = item6;
+			this._item7 = item7;
+			this._item8 = item8;
+			this._item9 = item9;
+			this._item10 = item10;
 		}
 		public override bool Equals(object obj)
 		{
@@ -1097,7 +1117,7 @@ namespace System
 		}
 		public bool Equals(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> other)
 		{
-			if (((object)other == null) || (!(this.item1.Equals(other.item1)) || (!(this.item2.Equals(other.item2)) || (!(this.item3.Equals(other.item3)) || (!(this.item4.Equals(other.item4)) || (!(this.item5.Equals(other.item5)) || (!(this.item6.Equals(other.item6)) || (!(this.item7.Equals(other.item7)) || (!(this.item8.Equals(other.item8)) || (!(this.item9.Equals(other.item9)) || !(this.item10.Equals(other.item10))))))))))))
+			if (((object)other == null) || (!(this._item1.Equals(other._item1)) || (!(this._item2.Equals(other._item2)) || (!(this._item3.Equals(other._item3)) || (!(this._item4.Equals(other._item4)) || (!(this._item5.Equals(other._item5)) || (!(this._item6.Equals(other._item6)) || (!(this._item7.Equals(other._item7)) || (!(this._item8.Equals(other._item8)) || (!(this._item9.Equals(other._item9)) || !(this._item10.Equals(other._item10))))))))))))
 			{
 				return false;
 			}
@@ -1105,15 +1125,15 @@ namespace System
 		}
 		public override int GetHashCode()
 		{
-			return this.item1.GetHashCode() ^ (Tuple.RotateRight(this.item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this.item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this.item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this.item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this.item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this.item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this.item8.GetHashCode(), 7) ^ (Tuple.RotateRight(this.item9.GetHashCode(), 8) ^ Tuple.RotateRight(this.item10.GetHashCode(), 9)))))))));
+			return this._item1.GetHashCode() ^ (Tuple.RotateRight(this._item2.GetHashCode(), 1) ^ (Tuple.RotateRight(this._item3.GetHashCode(), 2) ^ (Tuple.RotateRight(this._item4.GetHashCode(), 3) ^ (Tuple.RotateRight(this._item5.GetHashCode(), 4) ^ (Tuple.RotateRight(this._item6.GetHashCode(), 5) ^ (Tuple.RotateRight(this._item7.GetHashCode(), 6) ^ (Tuple.RotateRight(this._item8.GetHashCode(), 7) ^ (Tuple.RotateRight(this._item9.GetHashCode(), 8) ^ Tuple.RotateRight(this._item10.GetHashCode(), 9)))))))));
 		}
 		public override string ToString()
 		{
 			return this.ToString(null);
 		}
-		public string ToString(System.IFormatProvider provider)
+		public override string ToString(System.IFormatProvider provider)
 		{
-			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})", this.item1, this.item2, this.item3, this.item4, this.item5, this.item6, this.item7, this.item8, this.item9, this.item10);
+			return string.Format(provider, "({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})", this._item1, this._item2, this._item3, this._item4, this._item5, this._item6, this._item7, this._item8, this._item9, this._item10);
 		}
 		public static bool operator ==(Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple1, Tuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> tuple2)
 		{
@@ -1133,6 +1153,7 @@ namespace System
 	}
 	#endregion // Denary (10-ary) Tuple
 	#region Property Change Event Support
+	[SuppressMessageAttribute("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
 	public interface IPropertyChangeEventArgs<TClass, TProperty>
 	{
 		TClass Instance
@@ -1149,78 +1170,80 @@ namespace System
 		}
 	}
 	[Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class PropertyChangingEventArgs<TClass, TProperty> : CancelEventArgs, IPropertyChangeEventArgs<TClass, TProperty>
 	{
-		private readonly TClass instance;
-		private readonly TProperty oldValue;
-		private readonly TProperty newValue;
+		private readonly TClass _instance;
+		private readonly TProperty _oldValue;
+		private readonly TProperty _newValue;
 		public PropertyChangingEventArgs(TClass instance, TProperty oldValue, TProperty newValue)
 		{
 			if (instance == null)
 			{
 				throw new ArgumentNullException("instance");
 			}
-			this.instance = instance;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
+			this._instance = instance;
+			this._oldValue = oldValue;
+			this._newValue = newValue;
 		}
 		public TClass Instance
 		{
 			get
 			{
-				return this.instance;
+				return this._instance;
 			}
 		}
 		public TProperty OldValue
 		{
 			get
 			{
-				return this.oldValue;
+				return this._oldValue;
 			}
 		}
 		public TProperty NewValue
 		{
 			get
 			{
-				return this.newValue;
+				return this._newValue;
 			}
 		}
 	}
 	[Serializable()]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class PropertyChangedEventArgs<TClass, TProperty> : EventArgs, IPropertyChangeEventArgs<TClass, TProperty>
 	{
-		private readonly TClass instance;
-		private readonly TProperty oldValue;
-		private readonly TProperty newValue;
+		private readonly TClass _instance;
+		private readonly TProperty _oldValue;
+		private readonly TProperty _newValue;
 		public PropertyChangedEventArgs(TClass instance, TProperty oldValue, TProperty newValue)
 		{
 			if (instance == null)
 			{
 				throw new ArgumentNullException("instance");
 			}
-			this.instance = instance;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
+			this._instance = instance;
+			this._oldValue = oldValue;
+			this._newValue = newValue;
 		}
 		public TClass Instance
 		{
 			get
 			{
-				return this.instance;
+				return this._instance;
 			}
 		}
 		public TProperty OldValue
 		{
 			get
 			{
-				return this.oldValue;
+				return this._oldValue;
 			}
 		}
 		public TProperty NewValue
 		{
 			get
 			{
-				return this.newValue;
+				return this._newValue;
 			}
 		}
 	}
@@ -1230,29 +1253,43 @@ namespace System
 namespace PersonCountryDemo
 {
 	#region Person
+	[DataObjectAttribute()]
 	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	public abstract partial class Person : INotifyPropertyChanged
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
+	public abstract partial class Person : INotifyPropertyChanged, IHasPersonCountryDemoContext
 	{
 		protected Person()
 		{
 		}
-		private readonly System.Delegate[] Events = new System.Delegate[5];
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
+		private System.Delegate[] _events;
+		private System.Delegate[] Events
+		{
+			get
+			{
+				if ((object)this._events == null)
+				{
+					this._events = new System.Delegate[4];
+				}
+				return this._events;
+			}
+		}
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
+				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 			remove
 			{
-				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
+				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
 		{
-			PropertyChangedEventHandler eventHandler = this.Events[0] as PropertyChangedEventHandler;
-			if (eventHandler != null)
+			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
+			if ((object)eventHandler != null)
 			{
 				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs(propertyName), new AsyncCallback(eventHandler.EndInvoke), null);
 			}
@@ -1265,18 +1302,18 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected bool RaiseLastNameChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<Person, string>>;
+			if ((object)eventHandler != null)
 			{
 				PropertyChangingEventArgs<Person, string> eventArgs = new PropertyChangingEventArgs<Person, string>(this, this.LastName, newValue);
 				eventHandler(this, eventArgs);
@@ -1288,20 +1325,20 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected void RaiseLastNameChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<Person, string>>;
+			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.LastName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.LastName), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("LastName");
 			}
 		}
@@ -1309,18 +1346,18 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected bool RaiseFirstNameChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Person, string>>;
+			if ((object)eventHandler != null)
 			{
 				PropertyChangingEventArgs<Person, string> eventArgs = new PropertyChangingEventArgs<Person, string>(this, this.FirstName, newValue);
 				eventHandler(this, eventArgs);
@@ -1332,20 +1369,20 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected void RaiseFirstNameChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Person, string>>;
+			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.FirstName), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.FirstName), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("FirstName");
 			}
 		}
@@ -1353,18 +1390,18 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected bool RaiseTitleChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Person, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangingEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Person, string>>;
+			if ((object)eventHandler != null)
 			{
 				PropertyChangingEventArgs<Person, string> eventArgs = new PropertyChangingEventArgs<Person, string>(this, this.Title, newValue);
 				eventHandler(this, eventArgs);
@@ -1376,20 +1413,20 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
+				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
 			}
 			remove
 			{
-				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
+				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected void RaiseTitleChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<Person, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangedEventArgs<Person, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Person, string>>;
+			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.Title), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, string>(this, oldValue, this.Title), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Title");
 			}
 		}
@@ -1397,18 +1434,18 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected bool RaiseCountryChangingEvent(Country newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Country>> eventHandler = this.Events[4] as EventHandler<PropertyChangingEventArgs<Person, Country>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangingEventArgs<Person, Country>> eventHandler = this.Events[3] as EventHandler<PropertyChangingEventArgs<Person, Country>>;
+			if ((object)eventHandler != null)
 			{
 				PropertyChangingEventArgs<Person, Country> eventArgs = new PropertyChangingEventArgs<Person, Country>(this, this.Country, newValue);
 				eventHandler(this, eventArgs);
@@ -1420,38 +1457,42 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[4] = System.Delegate.Combine(this.Events[4], value);
+				this.Events[3] = System.Delegate.Combine(this.Events[3], value);
 			}
 			remove
 			{
-				this.Events[4] = System.Delegate.Remove(this.Events[4], value);
+				this.Events[3] = System.Delegate.Remove(this.Events[3], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected void RaiseCountryChangedEvent(Country oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Country>> eventHandler = this.Events[4] as EventHandler<PropertyChangedEventArgs<Person, Country>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangedEventArgs<Person, Country>> eventHandler = this.Events[3] as EventHandler<PropertyChangedEventArgs<Person, Country>>;
+			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, Country>(this, oldValue, this.Country), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, Country>(this, oldValue, this.Country), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Country");
 			}
 		}
+		[DataObjectFieldAttribute(false, false, false)]
 		public abstract string LastName
 		{
 			get;
 			set;
 		}
+		[DataObjectFieldAttribute(false, false, false)]
 		public abstract string FirstName
 		{
 			get;
 			set;
 		}
+		[DataObjectFieldAttribute(false, false, true)]
 		public abstract string Title
 		{
 			get;
 			set;
 		}
+		[DataObjectFieldAttribute(false, false, true)]
 		public abstract Country Country
 		{
 			get;
@@ -1468,29 +1509,43 @@ namespace PersonCountryDemo
 	}
 	#endregion // Person
 	#region Country
+	[DataObjectAttribute()]
 	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
-	public abstract partial class Country : INotifyPropertyChanged
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
+	public abstract partial class Country : INotifyPropertyChanged, IHasPersonCountryDemoContext
 	{
 		protected Country()
 		{
 		}
-		private readonly System.Delegate[] Events = new System.Delegate[3];
-		[SuppressMessageAttribute("Microsoft.Design", "CA1033")]
+		private System.Delegate[] _events;
+		private System.Delegate[] Events
+		{
+			get
+			{
+				if ((object)this._events == null)
+				{
+					this._events = new System.Delegate[2];
+				}
+				return this._events;
+			}
+		}
+		private PropertyChangedEventHandler _propertyChangedEventHandler;
+		[SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
 		event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
 		{
 			add
 			{
-				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
+				this._propertyChangedEventHandler = System.Delegate.Combine(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 			remove
 			{
-				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
+				this._propertyChangedEventHandler = System.Delegate.Remove(this._propertyChangedEventHandler, value) as PropertyChangedEventHandler;
 			}
 		}
 		private void RaisePropertyChangedEvent(string propertyName)
 		{
-			PropertyChangedEventHandler eventHandler = this.Events[0] as PropertyChangedEventHandler;
-			if (eventHandler != null)
+			PropertyChangedEventHandler eventHandler = this._propertyChangedEventHandler;
+			if ((object)eventHandler != null)
 			{
 				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs(propertyName), new AsyncCallback(eventHandler.EndInvoke), null);
 			}
@@ -1503,18 +1558,18 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected bool RaiseCountry_nameChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Country, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<Country, string>>;
+			if ((object)eventHandler != null)
 			{
 				PropertyChangingEventArgs<Country, string> eventArgs = new PropertyChangingEventArgs<Country, string>(this, this.Country_name, newValue);
 				eventHandler(this, eventArgs);
@@ -1526,20 +1581,20 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
+				this.Events[0] = System.Delegate.Combine(this.Events[0], value);
 			}
 			remove
 			{
-				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
+				this.Events[0] = System.Delegate.Remove(this.Events[0], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected void RaiseCountry_nameChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Country, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<Country, string>>;
+			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country, string>(this, oldValue, this.Country_name), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country, string>(this, oldValue, this.Country_name), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Country_name");
 			}
 		}
@@ -1547,18 +1602,18 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected bool RaiseRegion_Region_codeChangingEvent(string newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangingEventArgs<Country, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<Country, string>>;
+			if ((object)eventHandler != null)
 			{
 				PropertyChangingEventArgs<Country, string> eventArgs = new PropertyChangingEventArgs<Country, string>(this, this.Region_Region_code, newValue);
 				eventHandler(this, eventArgs);
@@ -1570,33 +1625,36 @@ namespace PersonCountryDemo
 		{
 			add
 			{
-				this.Events[2] = System.Delegate.Combine(this.Events[2], value);
+				this.Events[1] = System.Delegate.Combine(this.Events[1], value);
 			}
 			remove
 			{
-				this.Events[2] = System.Delegate.Remove(this.Events[2], value);
+				this.Events[1] = System.Delegate.Remove(this.Events[1], value);
 			}
 		}
-		[SuppressMessageAttribute("Microsoft.Design", "CA1030")]
+		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
 		protected void RaiseRegion_Region_codeChangedEvent(string oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler = this.Events[2] as EventHandler<PropertyChangedEventArgs<Country, string>>;
-			if (eventHandler != null)
+			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<Country, string>>;
+			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country, string>(this, oldValue, this.Region_Region_code), new System.AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Country, string>(this, oldValue, this.Region_Region_code), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("Region_Region_code");
 			}
 		}
+		[DataObjectFieldAttribute(false, false, false)]
 		public abstract string Country_name
 		{
 			get;
 			set;
 		}
+		[DataObjectFieldAttribute(false, false, true)]
 		public abstract string Region_Region_code
 		{
 			get;
 			set;
 		}
+		[DataObjectFieldAttribute(false, false, true)]
 		public abstract ICollection<Person> Person
 		{
 			get;
@@ -1611,15 +1669,22 @@ namespace PersonCountryDemo
 		}
 	}
 	#endregion // Country
+	#region IHasPersonCountryDemoContext
+	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
+	public interface IHasPersonCountryDemoContext
+	{
+		PersonCountryDemoContext Context
+		{
+			get;
+		}
+	}
+	#endregion // IHasPersonCountryDemoContext
 	#region IPersonCountryDemoContext
 	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
 	public interface IPersonCountryDemoContext
 	{
-		bool IsDeserializing
-		{
-			get;
-		}
 		Country GetCountryByCountry_name(string Country_name);
+		bool TryGetCountryByCountry_name(string Country_name, out Country Country);
 		Person CreatePerson(string LastName, string FirstName);
 		ReadOnlyCollection<Person> PersonCollection
 		{
@@ -1634,72 +1699,184 @@ namespace PersonCountryDemo
 	#endregion // IPersonCountryDemoContext
 	#region PersonCountryDemoContext
 	[GeneratedCodeAttribute("OIALtoPLiX", "1.0")]
+	[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 	public sealed class PersonCountryDemoContext : IPersonCountryDemoContext
 	{
 		public PersonCountryDemoContext()
 		{
+			Dictionary<Type, object> constraintEnforcementCollectionCallbacksByTypeDictionary = new Dictionary<Type, object>(1);
+			Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> constraintEnforcementCollectionCallbacksByTypeAndNameDictionary = new Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object>(0);
+			this._ContraintEnforcementCollectionCallbacksByTypeDictionary = constraintEnforcementCollectionCallbacksByTypeDictionary;
+			this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = constraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Country, Person>), new ConstraintEnforcementCollectionCallbacks<Country, Person>(new PotentialCollectionModificationCallback<Country, Person>(this.OnCountryPersonAdding), new CommittedCollectionModificationCallback<Country, Person>(this.OnCountryPersonAdded), null, new CommittedCollectionModificationCallback<Country, Person>(this.OnCountryPersonRemoved)));
 			List<Person> PersonList = new List<Person>();
-			this.myPersonList = PersonList;
-			this.myPersonReadOnlyCollection = new ReadOnlyCollection<Person>(PersonList);
+			this._PersonList = PersonList;
+			this._PersonReadOnlyCollection = new ReadOnlyCollection<Person>(PersonList);
 			List<Country> CountryList = new List<Country>();
-			this.myCountryList = CountryList;
-			this.myCountryReadOnlyCollection = new ReadOnlyCollection<Country>(CountryList);
+			this._CountryList = CountryList;
+			this._CountryReadOnlyCollection = new ReadOnlyCollection<Country>(CountryList);
 		}
+		#region Exception Helpers
+		[SuppressMessageAttribute("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
+		private static ArgumentException GetDifferentContextsException()
+		{
+			return new ArgumentException("All objects in a relationship must be part of the same Context.", "value");
+		}
+		private static ArgumentException GetConstraintEnforcementFailedException(string paramName)
+		{
+			return new ArgumentException("Argument failed constraint enforcement.", paramName);
+		}
+		#endregion // Exception Helpers
+		#region Lookup and External Constraint Enforcement
+		private readonly Dictionary<string, Country> _CountryCountry_nameDictionary = new Dictionary<string, Country>();
+		public Country GetCountryByCountry_name(string Country_name)
+		{
+			return this._CountryCountry_nameDictionary[Country_name];
+		}
+		public bool TryGetCountryByCountry_name(string Country_name, out Country Country)
+		{
+			return this._CountryCountry_nameDictionary.TryGetValue(Country_name, out Country);
+		}
+		#endregion // Lookup and External Constraint Enforcement
 		#region ConstraintEnforcementCollection
 		private delegate bool PotentialCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class;
+			where TClass : class, IHasPersonCountryDemoContext;
 		private delegate void CommittedCollectionModificationCallback<TClass, TProperty>(TClass instance, TProperty value)
-			where TClass : class;
-		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
-			where TClass : class
+			where TClass : class, IHasPersonCountryDemoContext;
+		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
+		private sealed class ConstraintEnforcementCollectionCallbacks<TClass, TProperty>
+			where TClass : class, IHasPersonCountryDemoContext
 		{
-			private readonly TClass myInstance;
-			private readonly List<TProperty> myList = new List<TProperty>();
-			public ConstraintEnforcementCollection(TClass instance, PotentialCollectionModificationCallback<TClass, TProperty> adding, CommittedCollectionModificationCallback<TClass, TProperty> added, PotentialCollectionModificationCallback<TClass, TProperty> removing, CommittedCollectionModificationCallback<TClass, TProperty> removed)
+			public ConstraintEnforcementCollectionCallbacks(PotentialCollectionModificationCallback<TClass, TProperty> adding, CommittedCollectionModificationCallback<TClass, TProperty> added, PotentialCollectionModificationCallback<TClass, TProperty> removing, CommittedCollectionModificationCallback<TClass, TProperty> removed)
 			{
-				if (instance == null)
-				{
-					throw new ArgumentNullException("instance");
-				}
-				this.myInstance = instance;
-				this.myAdding = adding;
-				this.myAdded = added;
-				this.myRemoving = removing;
-				this.myRemoved = removed;
+				this.Adding = adding;
+				this.Added = added;
+				this.Removing = removing;
+				this.Removed = removed;
 			}
-			private readonly PotentialCollectionModificationCallback<TClass, TProperty> myAdding;
-			private readonly CommittedCollectionModificationCallback<TClass, TProperty> myAdded;
-			private readonly PotentialCollectionModificationCallback<TClass, TProperty> myRemoving;
-			private readonly CommittedCollectionModificationCallback<TClass, TProperty> myRemoved;
-			private bool OnAdding(TProperty value)
+			public readonly PotentialCollectionModificationCallback<TClass, TProperty> Adding;
+			public readonly CommittedCollectionModificationCallback<TClass, TProperty> Added;
+			public readonly PotentialCollectionModificationCallback<TClass, TProperty> Removing;
+			public readonly CommittedCollectionModificationCallback<TClass, TProperty> Removed;
+		}
+		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
+		private struct ConstraintEnforcementCollectionTypeAndPropertyNameKey : IEquatable<ConstraintEnforcementCollectionTypeAndPropertyNameKey>
+		{
+			public ConstraintEnforcementCollectionTypeAndPropertyNameKey(Type type, string name)
 			{
-				if (this.myAdding != null)
-				{
-					return this.myAdding(this.myInstance, value);
-				}
-				return true;
+				this.Type = type;
+				this.Name = name;
 			}
-			private void OnAdded(TProperty value)
+			public readonly Type Type;
+			public readonly string Name;
+			public override int GetHashCode()
 			{
-				if (this.myAdded != null)
-				{
-					this.myAdded(this.myInstance, value);
-				}
+				return this.Type.GetHashCode() ^ this.Name.GetHashCode();
 			}
-			private bool OnRemoving(TProperty value)
+			public override bool Equals(object obj)
 			{
-				if (this.myRemoving != null)
-				{
-					return this.myRemoving(this.myInstance, value);
-				}
-				return true;
+				return (obj is ConstraintEnforcementCollectionTypeAndPropertyNameKey) && this.Equals((ConstraintEnforcementCollectionTypeAndPropertyNameKey)obj);
 			}
-			private void OnRemoved(TProperty value)
+			public bool Equals(ConstraintEnforcementCollectionTypeAndPropertyNameKey other)
 			{
-				if (this.myRemoved != null)
-				{
-					this.myRemoved(this.myInstance, value);
-				}
+				return this.Type.Equals(other.Type) && this.Name.Equals(other.Name);
+			}
+			public static bool operator ==(ConstraintEnforcementCollectionTypeAndPropertyNameKey left, ConstraintEnforcementCollectionTypeAndPropertyNameKey right)
+			{
+				return left.Equals(right);
+			}
+			public static bool operator !=(ConstraintEnforcementCollectionTypeAndPropertyNameKey left, ConstraintEnforcementCollectionTypeAndPropertyNameKey right)
+			{
+				return !(left.Equals(right));
+			}
+		}
+		private readonly Dictionary<Type, object> _ContraintEnforcementCollectionCallbacksByTypeDictionary;
+		private readonly Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> _ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
+		private bool OnAdding<TClass, TProperty>(TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			PotentialCollectionModificationCallback<TClass, TProperty> adding = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Adding;
+			if (adding != null)
+			{
+				return adding(instance, value);
+			}
+			return true;
+		}
+		private bool OnAdding<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			PotentialCollectionModificationCallback<TClass, TProperty> adding = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Adding;
+			if (adding != null)
+			{
+				return adding(instance, value);
+			}
+			return true;
+		}
+		private void OnAdded<TClass, TProperty>(TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			CommittedCollectionModificationCallback<TClass, TProperty> added = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Added;
+			if (added != null)
+			{
+				added(instance, value);
+			}
+		}
+		private void OnAdded<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			CommittedCollectionModificationCallback<TClass, TProperty> added = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Added;
+			if (added != null)
+			{
+				added(instance, value);
+			}
+		}
+		private bool OnRemoving<TClass, TProperty>(TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			PotentialCollectionModificationCallback<TClass, TProperty> removing = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Removing;
+			if (removing != null)
+			{
+				return removing(instance, value);
+			}
+			return true;
+		}
+		private bool OnRemoving<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			PotentialCollectionModificationCallback<TClass, TProperty> removing = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Removing;
+			if (removing != null)
+			{
+				return removing(instance, value);
+			}
+			return true;
+		}
+		private void OnRemoved<TClass, TProperty>(TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			CommittedCollectionModificationCallback<TClass, TProperty> removed = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeDictionary[typeof(ConstraintEnforcementCollection<TClass, TProperty>)]).Removed;
+			if (removed != null)
+			{
+				removed(instance, value);
+			}
+		}
+		private void OnRemoved<TClass, TProperty>(string propertyName, TClass instance, TProperty value)
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			CommittedCollectionModificationCallback<TClass, TProperty> removed = ((ConstraintEnforcementCollectionCallbacks<TClass, TProperty>)this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary[new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty>), propertyName)]).Removed;
+			if (removed != null)
+			{
+				removed(instance, value);
+			}
+		}
+		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
+		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			private readonly TClass _instance;
+			private readonly List<TProperty> _list = new List<TProperty>();
+			public ConstraintEnforcementCollection(TClass instance)
+			{
+				this._instance = instance;
 			}
 			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 			{
@@ -1707,23 +1884,31 @@ namespace PersonCountryDemo
 			}
 			public IEnumerator<TProperty> GetEnumerator()
 			{
-				return this.myList.GetEnumerator();
+				return this._list.GetEnumerator();
 			}
 			public void Add(TProperty item)
 			{
-				if (this.OnAdding(item))
+				if (item == null)
 				{
-					this.myList.Add(item);
-					this.OnAdded(item);
+					throw new ArgumentNullException("item");
+				}
+				if (this._instance.Context.OnAdding(this._instance, item))
+				{
+					this._list.Add(item);
+					this._instance.Context.OnAdded(this._instance, item);
 				}
 			}
 			public bool Remove(TProperty item)
 			{
-				if (this.OnRemoving(item))
+				if (item == null)
 				{
-					if (this.myList.Remove(item))
+					throw new ArgumentNullException("item");
+				}
+				if (this._instance.Context.OnRemoving(this._instance, item))
+				{
+					if (this._list.Remove(item))
 					{
-						this.OnRemoved(item);
+						this._instance.Context.OnRemoved(this._instance, item);
 						return true;
 					}
 				}
@@ -1731,24 +1916,102 @@ namespace PersonCountryDemo
 			}
 			public void Clear()
 			{
-				for (int i = 0; i < this.myList.Count; ++i)
+				for (int i = 0; i < this._list.Count; ++i)
 				{
-					this.Remove(this.myList[i]);
+					this.Remove(this._list[i]);
 				}
 			}
 			public bool Contains(TProperty item)
 			{
-				return this.myList.Contains(item);
+				return this._list.Contains(item);
 			}
 			public void CopyTo(TProperty[] array, int arrayIndex)
 			{
-				this.myList.CopyTo(array, arrayIndex);
+				this._list.CopyTo(array, arrayIndex);
 			}
 			public int Count
 			{
 				get
 				{
-					return this.myList.Count;
+					return this._list.Count;
+				}
+			}
+			public bool IsReadOnly
+			{
+				get
+				{
+					return false;
+				}
+			}
+		}
+		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
+		private sealed class ConstraintEnforcementCollectionWithPropertyName<TClass, TProperty> : ICollection<TProperty>
+			where TClass : class, IHasPersonCountryDemoContext
+		{
+			private readonly TClass _instance;
+			private readonly string _PropertyName;
+			private readonly List<TProperty> _list = new List<TProperty>();
+			public ConstraintEnforcementCollectionWithPropertyName(TClass instance, string propertyName)
+			{
+				this._instance = instance;
+				this._PropertyName = propertyName;
+			}
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return this.GetEnumerator();
+			}
+			public IEnumerator<TProperty> GetEnumerator()
+			{
+				return this._list.GetEnumerator();
+			}
+			public void Add(TProperty item)
+			{
+				if (item == null)
+				{
+					throw new ArgumentNullException("item");
+				}
+				if (this._instance.Context.OnAdding(this._PropertyName, this._instance, item))
+				{
+					this._list.Add(item);
+					this._instance.Context.OnAdded(this._PropertyName, this._instance, item);
+				}
+			}
+			public bool Remove(TProperty item)
+			{
+				if (item == null)
+				{
+					throw new ArgumentNullException("item");
+				}
+				if (this._instance.Context.OnRemoving(this._PropertyName, this._instance, item))
+				{
+					if (this._list.Remove(item))
+					{
+						this._instance.Context.OnRemoved(this._PropertyName, this._instance, item);
+						return true;
+					}
+				}
+				return false;
+			}
+			public void Clear()
+			{
+				for (int i = 0; i < this._list.Count; ++i)
+				{
+					this.Remove(this._list[i]);
+				}
+			}
+			public bool Contains(TProperty item)
+			{
+				return this._list.Contains(item);
+			}
+			public void CopyTo(TProperty[] array, int arrayIndex)
+			{
+				this._list.CopyTo(array, arrayIndex);
+			}
+			public int Count
+			{
+				get
+				{
+					return this._list.Count;
 				}
 			}
 			public bool IsReadOnly
@@ -1760,18 +2023,26 @@ namespace PersonCountryDemo
 			}
 		}
 		#endregion // ConstraintEnforcementCollection
-		private bool myIsDeserializing;
-		public bool IsDeserializing
+		#region Person
+		public Person CreatePerson(string LastName, string FirstName)
 		{
-			get
+			if ((object)LastName == null)
 			{
-				return this.myIsDeserializing;
+				throw new ArgumentNullException("LastName");
 			}
-		}
-		private readonly Dictionary<string, Country> myCountryCountry_nameDictionary = new Dictionary<string, Country>();
-		public Country GetCountryByCountry_name(string Country_name)
-		{
-			return this.myCountryCountry_nameDictionary[Country_name];
+			if ((object)FirstName == null)
+			{
+				throw new ArgumentNullException("FirstName");
+			}
+			if (!(this.OnPersonLastNameChanging(null, LastName)))
+			{
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("LastName");
+			}
+			if (!(this.OnPersonFirstNameChanging(null, FirstName)))
+			{
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("FirstName");
+			}
+			return new PersonCore(this, LastName, FirstName);
 		}
 		private bool OnPersonLastNameChanging(Person instance, string newValue)
 		{
@@ -1785,184 +2056,171 @@ namespace PersonCountryDemo
 		{
 			return true;
 		}
-		[SuppressMessageAttribute("Microsoft.Usage", "CA2208")]
-		[SuppressMessageAttribute("Microsoft.Globalization", "CA1303")]
 		private bool OnPersonCountryChanging(Person instance, Country newValue)
 		{
-			if (newValue != null)
+			if ((object)newValue != null)
 			{
-				if (this != newValue.Context)
+				if ((object)this != newValue.Context)
 				{
-					throw new ArgumentException("All objects in a relationship must be part of the same Context.", "value");
+					throw PersonCountryDemoContext.GetDifferentContextsException();
 				}
 			}
 			return true;
 		}
 		private void OnPersonCountryChanged(Person instance, Country oldValue)
 		{
-			if (instance.Country != null)
+			if ((object)instance.Country != null)
 			{
 				instance.Country.Person.Add(instance);
 			}
-			if (oldValue != null)
+			if ((object)oldValue != null)
 			{
 				oldValue.Person.Remove(instance);
 			}
-			else
-			{
-			}
 		}
-		public Person CreatePerson(string LastName, string FirstName)
-		{
-			if (!(this.IsDeserializing))
-			{
-				if (!(this.OnPersonLastNameChanging(null, LastName)))
-				{
-					throw new ArgumentException("Argument failed constraint enforcement.", "LastName");
-				}
-				if (!(this.OnPersonFirstNameChanging(null, FirstName)))
-				{
-					throw new ArgumentException("Argument failed constraint enforcement.", "FirstName");
-				}
-			}
-			return new PersonCore(this, LastName, FirstName);
-		}
-		private readonly List<Person> myPersonList;
-		private readonly ReadOnlyCollection<Person> myPersonReadOnlyCollection;
+		private readonly List<Person> _PersonList;
+		private readonly ReadOnlyCollection<Person> _PersonReadOnlyCollection;
 		public ReadOnlyCollection<Person> PersonCollection
 		{
 			get
 			{
-				return this.myPersonReadOnlyCollection;
+				return this._PersonReadOnlyCollection;
 			}
 		}
 		#region PersonCore
+		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 		private sealed class PersonCore : Person
 		{
 			public PersonCore(PersonCountryDemoContext context, string LastName, string FirstName)
 			{
-				this.myContext = context;
-				this.myLastName = LastName;
-				this.myFirstName = FirstName;
-				context.myPersonList.Add(this);
+				this._Context = context;
+				this._LastName = LastName;
+				this._FirstName = FirstName;
+				context._PersonList.Add(this);
 			}
-			private readonly PersonCountryDemoContext myContext;
+			private readonly PersonCountryDemoContext _Context;
 			public override PersonCountryDemoContext Context
 			{
 				get
 				{
-					return this.myContext;
+					return this._Context;
 				}
 			}
-			private string myLastName;
+			[AccessedThroughPropertyAttribute("LastName")]
+			private string _LastName;
 			public override string LastName
 			{
 				get
 				{
-					return this.myLastName;
+					return this._LastName;
 				}
 				set
 				{
-					if (value == null)
+					if ((object)value == null)
 					{
-						return;
+						throw new ArgumentNullException("value");
 					}
-					if (!(object.Equals(this.LastName, value)))
+					string oldValue = this._LastName;
+					if (!(object.Equals(oldValue, value)))
 					{
-						if (this.Context.OnPersonLastNameChanging(this, value))
+						if (this._Context.OnPersonLastNameChanging(this, value) && base.RaiseLastNameChangingEvent(value))
 						{
-							if (base.RaiseLastNameChangingEvent(value))
-							{
-								string oldValue = this.LastName;
-								this.myLastName = value;
-								base.RaiseLastNameChangedEvent(oldValue);
-							}
+							this._LastName = value;
+							base.RaiseLastNameChangedEvent(oldValue);
 						}
 					}
 				}
 			}
-			private string myFirstName;
+			[AccessedThroughPropertyAttribute("FirstName")]
+			private string _FirstName;
 			public override string FirstName
 			{
 				get
 				{
-					return this.myFirstName;
+					return this._FirstName;
 				}
 				set
 				{
-					if (value == null)
+					if ((object)value == null)
 					{
-						return;
+						throw new ArgumentNullException("value");
 					}
-					if (!(object.Equals(this.FirstName, value)))
+					string oldValue = this._FirstName;
+					if (!(object.Equals(oldValue, value)))
 					{
-						if (this.Context.OnPersonFirstNameChanging(this, value))
+						if (this._Context.OnPersonFirstNameChanging(this, value) && base.RaiseFirstNameChangingEvent(value))
 						{
-							if (base.RaiseFirstNameChangingEvent(value))
-							{
-								string oldValue = this.FirstName;
-								this.myFirstName = value;
-								base.RaiseFirstNameChangedEvent(oldValue);
-							}
+							this._FirstName = value;
+							base.RaiseFirstNameChangedEvent(oldValue);
 						}
 					}
 				}
 			}
-			private string myTitle;
+			[AccessedThroughPropertyAttribute("Title")]
+			private string _Title;
 			public override string Title
 			{
 				get
 				{
-					return this.myTitle;
+					return this._Title;
 				}
 				set
 				{
-					if (!(object.Equals(this.Title, value)))
+					string oldValue = this._Title;
+					if (!(object.Equals(oldValue, value)))
 					{
-						if (this.Context.OnPersonTitleChanging(this, value))
+						if (this._Context.OnPersonTitleChanging(this, value) && base.RaiseTitleChangingEvent(value))
 						{
-							if (base.RaiseTitleChangingEvent(value))
-							{
-								string oldValue = this.Title;
-								this.myTitle = value;
-								base.RaiseTitleChangedEvent(oldValue);
-							}
+							this._Title = value;
+							base.RaiseTitleChangedEvent(oldValue);
 						}
 					}
 				}
 			}
-			private Country myCountry;
+			[AccessedThroughPropertyAttribute("Country")]
+			private Country _Country;
 			public override Country Country
 			{
 				get
 				{
-					return this.myCountry;
+					return this._Country;
 				}
 				set
 				{
-					if (!(object.Equals(this.Country, value)))
+					Country oldValue = this._Country;
+					if ((object)oldValue != value)
 					{
-						if (this.Context.OnPersonCountryChanging(this, value))
+						if (this._Context.OnPersonCountryChanging(this, value) && base.RaiseCountryChangingEvent(value))
 						{
-							if (base.RaiseCountryChangingEvent(value))
-							{
-								Country oldValue = this.Country;
-								this.myCountry = value;
-								this.Context.OnPersonCountryChanged(this, oldValue);
-								base.RaiseCountryChangedEvent(oldValue);
-							}
+							this._Country = value;
+							this._Context.OnPersonCountryChanged(this, oldValue);
+							base.RaiseCountryChangedEvent(oldValue);
 						}
 					}
 				}
 			}
 		}
 		#endregion // PersonCore
+		#endregion // Person
+		#region Country
+		public Country CreateCountry(string Country_name)
+		{
+			if ((object)Country_name == null)
+			{
+				throw new ArgumentNullException("Country_name");
+			}
+			if (!(this.OnCountryCountry_nameChanging(null, Country_name)))
+			{
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("Country_name");
+			}
+			return new CountryCore(this, Country_name);
+		}
 		private bool OnCountryCountry_nameChanging(Country instance, string newValue)
 		{
-			Country currentInstance = instance;
-			if (this.myCountryCountry_nameDictionary.TryGetValue(newValue, out currentInstance))
+			Country currentInstance;
+			if (this._CountryCountry_nameDictionary.TryGetValue(newValue, out currentInstance))
 			{
-				if (!(object.Equals(currentInstance, instance)))
+				if ((object)currentInstance != instance)
 				{
 					return false;
 				}
@@ -1971,13 +2229,10 @@ namespace PersonCountryDemo
 		}
 		private void OnCountryCountry_nameChanged(Country instance, string oldValue)
 		{
-			this.myCountryCountry_nameDictionary.Add(instance.Country_name, instance);
-			if (oldValue != null)
+			this._CountryCountry_nameDictionary.Add(instance.Country_name, instance);
+			if ((object)oldValue != null)
 			{
-				this.myCountryCountry_nameDictionary.Remove(oldValue);
-			}
-			else
-			{
+				this._CountryCountry_nameDictionary.Remove(oldValue);
 			}
 		}
 		private bool OnCountryRegion_Region_codeChanging(Country instance, string newValue)
@@ -1986,126 +2241,108 @@ namespace PersonCountryDemo
 		}
 		private bool OnCountryPersonAdding(Country instance, Person value)
 		{
+			if ((object)this != value.Context)
+			{
+				throw PersonCountryDemoContext.GetDifferentContextsException();
+			}
 			return true;
 		}
 		private void OnCountryPersonAdded(Country instance, Person value)
 		{
-			if (value != null)
-			{
-				value.Country = instance;
-			}
-		}
-		private bool OnCountryPersonRemoving(Country instance, Person value)
-		{
-			return true;
+			value.Country = instance;
 		}
 		private void OnCountryPersonRemoved(Country instance, Person value)
 		{
-			if (value != null)
-			{
-				value.Country = null;
-			}
+			value.Country = null;
 		}
-		public Country CreateCountry(string Country_name)
-		{
-			if (!(this.IsDeserializing))
-			{
-				if (!(this.OnCountryCountry_nameChanging(null, Country_name)))
-				{
-					throw new ArgumentException("Argument failed constraint enforcement.", "Country_name");
-				}
-			}
-			return new CountryCore(this, Country_name);
-		}
-		private readonly List<Country> myCountryList;
-		private readonly ReadOnlyCollection<Country> myCountryReadOnlyCollection;
+		private readonly List<Country> _CountryList;
+		private readonly ReadOnlyCollection<Country> _CountryReadOnlyCollection;
 		public ReadOnlyCollection<Country> CountryCollection
 		{
 			get
 			{
-				return this.myCountryReadOnlyCollection;
+				return this._CountryReadOnlyCollection;
 			}
 		}
 		#region CountryCore
+		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 		private sealed class CountryCore : Country
 		{
 			public CountryCore(PersonCountryDemoContext context, string Country_name)
 			{
-				this.myContext = context;
-				this.myPerson = new ConstraintEnforcementCollection<Country, Person>(this, new PotentialCollectionModificationCallback<Country, Person>(context.OnCountryPersonAdding), new CommittedCollectionModificationCallback<Country, Person>(context.OnCountryPersonAdded), new PotentialCollectionModificationCallback<Country, Person>(context.OnCountryPersonRemoving), new CommittedCollectionModificationCallback<Country, Person>(context.OnCountryPersonRemoved));
-				this.myCountry_name = Country_name;
+				this._Context = context;
+				this._Person = new ConstraintEnforcementCollection<Country, Person>(this);
+				this._Country_name = Country_name;
 				context.OnCountryCountry_nameChanged(this, null);
-				context.myCountryList.Add(this);
+				context._CountryList.Add(this);
 			}
-			private readonly PersonCountryDemoContext myContext;
+			private readonly PersonCountryDemoContext _Context;
 			public override PersonCountryDemoContext Context
 			{
 				get
 				{
-					return this.myContext;
+					return this._Context;
 				}
 			}
-			private string myCountry_name;
+			[AccessedThroughPropertyAttribute("Country_name")]
+			private string _Country_name;
 			public override string Country_name
 			{
 				get
 				{
-					return this.myCountry_name;
+					return this._Country_name;
 				}
 				set
 				{
-					if (value == null)
+					if ((object)value == null)
 					{
-						return;
+						throw new ArgumentNullException("value");
 					}
-					if (!(object.Equals(this.Country_name, value)))
+					string oldValue = this._Country_name;
+					if (!(object.Equals(oldValue, value)))
 					{
-						if (this.Context.OnCountryCountry_nameChanging(this, value))
+						if (this._Context.OnCountryCountry_nameChanging(this, value) && base.RaiseCountry_nameChangingEvent(value))
 						{
-							if (base.RaiseCountry_nameChangingEvent(value))
-							{
-								string oldValue = this.Country_name;
-								this.myCountry_name = value;
-								this.Context.OnCountryCountry_nameChanged(this, oldValue);
-								base.RaiseCountry_nameChangedEvent(oldValue);
-							}
+							this._Country_name = value;
+							this._Context.OnCountryCountry_nameChanged(this, oldValue);
+							base.RaiseCountry_nameChangedEvent(oldValue);
 						}
 					}
 				}
 			}
-			private string myRegion_Region_code;
+			[AccessedThroughPropertyAttribute("Region_Region_code")]
+			private string _Region_Region_code;
 			public override string Region_Region_code
 			{
 				get
 				{
-					return this.myRegion_Region_code;
+					return this._Region_Region_code;
 				}
 				set
 				{
-					if (!(object.Equals(this.Region_Region_code, value)))
+					string oldValue = this._Region_Region_code;
+					if (!(object.Equals(oldValue, value)))
 					{
-						if (this.Context.OnCountryRegion_Region_codeChanging(this, value))
+						if (this._Context.OnCountryRegion_Region_codeChanging(this, value) && base.RaiseRegion_Region_codeChangingEvent(value))
 						{
-							if (base.RaiseRegion_Region_codeChangingEvent(value))
-							{
-								string oldValue = this.Region_Region_code;
-								this.myRegion_Region_code = value;
-								base.RaiseRegion_Region_codeChangedEvent(oldValue);
-							}
+							this._Region_Region_code = value;
+							base.RaiseRegion_Region_codeChangedEvent(oldValue);
 						}
 					}
 				}
 			}
-			private readonly ICollection<Person> myPerson;
+			[AccessedThroughPropertyAttribute("Person")]
+			private readonly ICollection<Person> _Person;
 			public override ICollection<Person> Person
 			{
 				get
 				{
-					return this.myPerson;
+					return this._Person;
 				}
 			}
 		}
 		#endregion // CountryCore
+		#endregion // Country
 	}
 	#endregion // PersonCountryDemoContext
 }

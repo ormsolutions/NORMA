@@ -5,7 +5,7 @@
     <odt:identity name="Person_id" />
     <odt:string name="FirstName" maxLength="64" />
     <odt:string name="LastName" maxLength="64" />
-    <odt:string name="SocialSecurityNumber" maxLength="11" minLength="11" />
+    <odt:string name="OptionalUniqueString" maxLength="11" minLength="11" />
     <odt:decimalNumber name="ColorARGB" fractionDigits="0" />
     <odt:identity name="Task_id" />
     <odt:decimalNumber name="vin" fractionDigits="0" />
@@ -30,6 +30,9 @@
       <odt:enumeration value="M" />
       <odt:enumeration value="F" />
     </odt:string>
+    <odt:decimalNumber name="OptionalUniqueDecimal" totalDigits="9" />
+    <odt:decimalNumber name="MandatoryUniqueDecimal" totalDigits="9" />
+    <odt:string name="MandatoryUniqueString" maxLength="11" minLength="11" />
     <odt:boolean name="NaturalDeathIsFromProstateCancer" fixed="true" />
     <odt:boolean name="UnnaturalDeathIsViolent" fixed="true" />
     <odt:boolean name="UnnaturalDeathIsBloody" fixed="true" />
@@ -120,7 +123,7 @@
     </oil:informationType>
     <oil:informationType name="Date_YMD" formatRef="YMD" mandatory="alethic" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_310FF4C1-DA3B-4C8D-8892-C43F6452245C" />
     <oil:informationType name="LastName" formatRef="LastName" mandatory="alethic" sourceRef="_732B2D1F-ECF0-4DE5-946D-9958F85289FB" sourceRoleRef="_AFA5D9D8-8EC4-460E-A2E0-66E8F2FF598D" />
-    <oil:informationType name="SocialSecurityNumber" formatRef="SocialSecurityNumber" mandatory="false" sourceRef="_70E8E5DC-6C5F-4B7B-A2BE-8878A9B6FB0F" sourceRoleRef="_AAE038F3-BF91-4319-854E-792C7041AE36">
+    <oil:informationType name="OptionalUniqueString" formatRef="OptionalUniqueString" mandatory="false" sourceRef="_70E8E5DC-6C5F-4B7B-A2BE-8878A9B6FB0F" sourceRoleRef="_AAE038F3-BF91-4319-854E-792C7041AE36">
       <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint9" sourceRef="_7DF19337-5A3F-4B20-A715-A16D775A40BE" modality="alethic" isPreferred="false" />
     </oil:informationType>
     <oil:informationType name="HatType_ColorARGB" formatRef="ColorARGB" mandatory="false" sourceRef="_FD5DCCD0-80E6-4A54-8FB5-BFED298E0F0E" sourceRoleRef="_AFD8D46E-1189-4B92-A7D3-3EAAC57AD629" />
@@ -150,6 +153,15 @@
     <oil:informationType name="Gender_Gender_Code" formatRef="Gender_Code" mandatory="alethic" sourceRef="_FF723148-C1AB-4835-84CD-996B28BC4027" sourceRoleRef="_94C9DD40-B34A-4BF7-A0B8-CAEA067FF7A0" />
     <oil:informationType name="PersonHasParents" formatRef="PersonHasParents" mandatory="false" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
     <oil:conceptTypeRef name="ValueType1DoesSomethingElseWith" target="ValueType1" oppositeName="DoesSomethingElseWithPerson" mandatory="false" sourceRoleRef="_37C4F90B-50F3-4655-9946-C6D796CA4FDB" />
+    <oil:informationType name="OptionalUniqueDecimal" formatRef="OptionalUniqueDecimal" mandatory="false" sourceRef="_2BD0D7D3-0B11-45F9-9D8F-1BA51BB7A138" sourceRoleRef="_42291EC4-DB35-459F-A7F9-A3517D1C709C">
+      <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint65" sourceRef="_30FE89A6-1F2E-416E-A6A0-0CC3021BFA4D" modality="alethic" isPreferred="false" />
+    </oil:informationType>
+    <oil:informationType name="MandatoryUniqueDecimal" formatRef="MandatoryUniqueDecimal" mandatory="alethic" sourceRef="_F879571B-3B2C-4D83-81D5-A3F22E0B1763" sourceRoleRef="_7772A382-6040-4313-B750-2A1E663D7A74">
+      <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint69" sourceRef="_237F71F7-7879-4969-9937-7DECDC4A8D4E" modality="alethic" isPreferred="false" />
+    </oil:informationType>
+    <oil:informationType name="MandatoryUniqueString" formatRef="MandatoryUniqueString" mandatory="alethic" sourceRef="_05B33E84-9567-412A-8ABF-DC395F52C220" sourceRoleRef="_36E5694F-1B3C-495C-ACBF-209DC6C2F4BD">
+      <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint67" sourceRef="_DBE5D226-1A64-4D1E-BC02-8E702E7560BC" modality="alethic" isPreferred="false" />
+    </oil:informationType>
     <oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_F40FEEF1-947A-453D-8B63-C791930EB876" isPreferred="false">
       <oil:roleSequence>
         <oil:typeRef targetConceptType="Person" targetChild="FirstName" />

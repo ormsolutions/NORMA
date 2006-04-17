@@ -399,11 +399,6 @@
 		<orm:VariableLengthTextDataType id="_AFA499D8-095D-49B9-A54C-F00BAC0A2B79" />
 		<orm:AutoCounterNumericDataType id="_D49DE794-FD77-42B7-8BDF-2A123884AEFA" />
 	</orm:DataTypes>
-	<orm:ModelErrors>
-		<ormExtension:FactTypeRequiresMeaningfulNameError id="_5BC7235A-D182-4989-83B4-BADBAF2EBA7D" Name="Fact 'FactType1' in model 'PersonCountryDemo' needs a meaningful name">
-			<ormExtension:Fact ref="_C9C8AA4D-9160-41E4-B050-4FE4271B2F56" />
-		</ormExtension:FactTypeRequiresMeaningfulNameError>
-	</orm:ModelErrors>
 	<orm:ReferenceModeKinds>
 		<orm:ReferenceModeKind id="_3ED2D2B6-687F-4A52-A2E8-2606955A5DDD" FormatString="{1}" ReferenceModeType="General" />
 		<orm:ReferenceModeKind id="_75DF4C50-2CDE-45F9-9477-18935BD673F3" FormatString="{0}_{1}" ReferenceModeType="Popular" />

@@ -29,9 +29,11 @@
 
 	<xsl:param name="GenerateGlobalSupportClasses" select="true()"/>
 	<xsl:param name="GenerateCodeAnalysisAttributes" select="true()"/>
+	<xsl:param name="GenerateAccessedThroughPropertyAttribute" select="true()"/>
+	<xsl:param name="GenerateObjectDataSourceSupport" select="true()"/>
 	<xsl:param name="RaiseEventsAsynchronously" select="true()"/>
 	<xsl:param name="DefaultNamespace" select="''"/>
-	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
+	<xsl:param name="PrivateMemberPrefix" select="'_'"/>
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
 	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'public'"/>
 
@@ -48,6 +50,25 @@
 		</plx:attribute>
 	</xsl:param>
 	<xsl:param name="GeneratedCodeAttribute" select="exsl:node-set($GeneratedCodeAttributeFragment)/child::*"/>
+	<xsl:param name="StructLayoutAttributeFragment">
+		<plx:attribute dataTypeName="StructLayoutAttribute">
+			<plx:passParam>
+				<plx:callStatic type="field" name="Auto" dataTypeName="LayoutKind"/>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:binaryOperator type="assignNamed">
+					<plx:left>
+						<plx:nameRef type="namedParameter" name="CharSet"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic type="field" name="Auto" dataTypeName="CharSet"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:passParam>
+		</plx:attribute>
+	</xsl:param>
+	<xsl:param name="StructLayoutAttribute" select="exsl:node-set($StructLayoutAttributeFragment)/child::*"/>
+
 
 	<xsl:template name="GenerateCLSCompliantAttributeIfNecessary">
 		<xsl:variable name="dataTypeFragment">
@@ -162,12 +183,20 @@
 			<plx:namespaceImport name="System.Collections.ObjectModel"/>
 			<plx:namespaceImport name="System.ComponentModel"/>
 			<plx:namespaceImport name="System.Xml"/>
-			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
 			<xsl:if test="$GenerateCodeAnalysisAttributes">
 				<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
 			</xsl:if>
-			<xsl:if test="$GenerateGlobalSupportClasses='true'">
-				<xsl:call-template name="GenerateGlobalSupportClasses"/>
+			<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
+				<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute"/>
+			</xsl:if>
+			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
+			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
+			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
+			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
+			<xsl:if test="$GenerateGlobalSupportClasses">
+				<xsl:call-template name="GenerateGlobalSupportClasses">
+					<xsl:with-param name="StructLayoutAttribute" select="$StructLayoutAttribute"/>
+				</xsl:call-template>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="$DefaultNamespace">
@@ -203,6 +232,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="AllProperties" select="exsl:node-set($AllPropertiesFragment)/child::*"/>
+		<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$Model//oil:roleSequenceUniquenessConstraint"/>
 
 		<plx:namespace name="{$ModelName}">
 
@@ -215,7 +245,20 @@
 					<xsl:with-param name="Properties" select="$AllProperties[@conceptTypeName=current()/@name]/prop:Property"/>
 				</xsl:apply-templates>
 			</xsl:for-each>
-			
+
+			<plx:interface visibility="public" name="IHas{$ModelContextName}">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="IHas{$ModelContextName}"/>
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="IHas{$ModelContextName}"/>
+				</plx:trailingInfo>
+				<xsl:copy-of select="$GeneratedCodeAttribute"/>
+				<plx:property visibility="public" modifier="abstract" name="Context">
+					<plx:returns dataTypeName="{$ModelContextName}"/>
+					<plx:get/>
+				</plx:property>
+			</plx:interface>
 			<plx:interface visibility="public" name="I{$ModelContextName}">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="I{$ModelContextName}"/>
@@ -224,9 +267,10 @@
 					<plx:pragma type="closeRegion" data="I{$ModelContextName}"/>
 				</plx:trailingInfo>
 				<xsl:copy-of select="$GeneratedCodeAttribute"/>
-				<xsl:call-template name="GenerateModelContextInterfaceMethods">
+				<xsl:call-template name="GenerateModelContextInterfaceLookupAndExternalConstraintEnforcementMembers">
 					<xsl:with-param name="Model" select="$Model"/>
 					<xsl:with-param name="AllProperties" select="$AllProperties"/>
+					<xsl:with-param name="AllRoleSequenceUniquenessConstraints" select="$AllRoleSequenceUniquenessConstraints"/>
 				</xsl:call-template>
 				<xsl:for-each select="$ConceptTypes">
 					<xsl:apply-templates select="." mode="GenerateModelContextInterfaceObjectMethods">
@@ -242,6 +286,7 @@
 				<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
 				<xsl:with-param name="InformationTypeFormatMappings" select="$InformationTypeFormatMappings"/>
 				<xsl:with-param name="AllProperties" select="$AllProperties"/>
+				<xsl:with-param name="AllRoleSequenceUniquenessConstraints" select="$AllRoleSequenceUniquenessConstraints"/>
 			</xsl:apply-templates>
 			
 		</plx:namespace>
@@ -388,9 +433,13 @@
 		</prop:FormatMapping>
 	</xsl:template>
 	<xsl:template match="*" mode="GenerateInformationTypeFormatMapping">
+		<xsl:variable name="warningMessage" select="concat('WARNING: Data type instance &quot;',@name,'&quot; is of unrecognized data type &quot;',name(),'&quot; from namespace &quot;',namespace-uri(),'&quot;.')"/>
 		<xsl:message terminate="no">
-			<xsl:text>WARNING: Unrecognized data type.</xsl:text>
+			<xsl:value-of select="$warningMessage"/>
 		</xsl:message>
+		<xsl:comment>
+			<xsl:value-of select="$warningMessage"/>
+		</xsl:comment>
 	</xsl:template>
 
 	<xsl:template name="GetLengthValidationCode">
@@ -515,22 +564,55 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$className}"/>
 			</plx:trailingInfo>
+			<xsl:if test="$GenerateObjectDataSourceSupport">
+				<plx:attribute dataTypeName="DataObjectAttribute"/>
+			</xsl:if>
 			<xsl:copy-of select="$GeneratedCodeAttribute"/>
+			<xsl:copy-of select="$StructLayoutAttribute"/>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged"/>
+			<plx:implementsInterface dataTypeName="IHas{$ModelContextName}"/>
 			<plx:function visibility="protected" name=".construct"/>
 			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-			<plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-				<plx:initialize>
-					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
-					<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
-						<plx:passParam>
-							<plx:value type="i4" data="{count($eventProperties)+1}"/>
-						</plx:passParam>
-					</plx:callNew>
-				</plx:initialize>
-			</plx:field>
+			<plx:field visibility="private" name="{$PrivateMemberPrefix}events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
+			<plx:property visibility="private" name="Events">
+				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+				<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
+				<plx:get>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:cast type="exceptionCast" dataTypeName=".object">
+										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+									</plx:cast>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+							</plx:left>
+							<plx:right>
+								<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+								<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+									<plx:passParam>
+										<plx:value type="i4" data="{count($eventProperties)}"/>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:return>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
+					</plx:return>
+				</plx:get>
+			</plx:property>
 			<xsl:call-template name="GenerateINotifyPropertyChangedImplementation"/>
 			<plx:property visibility="public" modifier="abstract" name="Context">
+				<plx:interfaceMember memberName="Context" dataTypeName="IHas{$ModelContextName}"/>
 				<plx:returns dataTypeName="{$ModelContextName}"/>
 				<plx:get/>
 			</plx:property>
@@ -854,6 +936,30 @@
 	<xsl:template match="prop:Property" mode="GenerateAbstractProperty">
 		<plx:property visibility="public" modifier="abstract" name="{@name}" >
 			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
+			<xsl:if test="$GenerateObjectDataSourceSupport">
+				<!--
+					TODO: Should we even be generating this for properties where @isCollection='true'?
+					If so, do we still handle the 'isNullable' parameter the same way?
+				-->
+				<plx:attribute dataTypeName="DataObjectFieldAttribute">
+					<plx:passParam>
+						<plx:falseKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:falseKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<xsl:choose>
+							<xsl:when test="@mandatory='alethic'">
+								<plx:falseKeyword/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:trueKeyword/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:passParam>
+				</plx:attribute>
+			</xsl:if>
 			<plx:returns>
 				<xsl:copy-of select="prop:DataType/@*"/>
 				<xsl:copy-of select="prop:DataType/child::*"/>
@@ -867,7 +973,7 @@
 
 	<xsl:template match="prop:Property" mode="GeneratePropertyChangeEvents">
 		<xsl:param name="ClassName"/>
-		<xsl:variable name="EventIndex" select="position()"/>
+		<xsl:variable name="EventIndex" select="position()-1"/>
 		<xsl:call-template name="GeneratePropertyChangeEvent">
 			<xsl:with-param name="ClassName" select="$ClassName"/>
 			<xsl:with-param name="ChangeType" select="'Changing'"/>
@@ -893,31 +999,16 @@
 		<xsl:param name="ClassName"/>
 		<xsl:param name="ChangeType"/>
 		<xsl:param name="EventIndex"/>
-		<xsl:param name="IsPropertyChangedEvent" select="false()"/>
 		<plx:event visibility="public" name="{@name}{$ChangeType}">
 			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
-			<xsl:choose>
-				<xsl:when test="$IsPropertyChangedEvent">
-					<xsl:attribute name="visibility">privateInterfaceMember</xsl:attribute>
-					<xsl:attribute name="name">PropertyChanged</xsl:attribute>
-					<xsl:call-template name="GenerateSuppressMessageAttribute">
-						<xsl:with-param name="category" select="'Microsoft.Design'"/>
-						<xsl:with-param name="checkId" select="'CA1033'"/>
-					</xsl:call-template>
-					<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged"/>
-					<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<plx:explicitDelegateType dataTypeName="EventHandler"/>
-					<plx:passTypeParam  dataTypeName="Property{$ChangeType}EventArgs">
-						<plx:passTypeParam dataTypeName="{$ClassName}"/>
-						<plx:passTypeParam>
-							<xsl:copy-of select="prop:DataType/@*"/>
-							<xsl:copy-of select="prop:DataType/child::*"/>
-						</plx:passTypeParam>
-					</plx:passTypeParam>
-				</xsl:otherwise>
-			</xsl:choose>
+			<plx:explicitDelegateType dataTypeName="EventHandler"/>
+			<plx:passTypeParam  dataTypeName="Property{$ChangeType}EventArgs">
+				<plx:passTypeParam dataTypeName="{$ClassName}"/>
+				<plx:passTypeParam>
+					<xsl:copy-of select="prop:DataType/@*"/>
+					<xsl:copy-of select="prop:DataType/child::*"/>
+				</plx:passTypeParam>
+			</plx:passTypeParam>
 			<plx:onAdd>
 				<xsl:call-template name="GetPropertyChangeEventOnAddRemoveCode">
 					<xsl:with-param name="EventIndex" select="$EventIndex"/>
@@ -939,7 +1030,7 @@
 			<plx:left>
 				<plx:callInstance type="arrayIndexer" name=".implied">
 					<plx:callObject>
-						<plx:callThis accessor="this" type="field" name="Events"/>
+						<plx:callThis accessor="this" type="property" name="Events"/>
 					</plx:callObject>
 					<plx:passParam>
 						<plx:value type="i4" data="{$EventIndex}"/>
@@ -952,7 +1043,7 @@
 					<plx:passParam>
 						<plx:callInstance type="arrayIndexer" name=".implied">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="Events"/>
+								<plx:callThis accessor="this" type="property" name="Events"/>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:value type="i4" data="{$EventIndex}"/>
@@ -976,7 +1067,7 @@
 			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 			<xsl:call-template name="GenerateSuppressMessageAttribute">
 				<xsl:with-param name="category" select="'Microsoft.Design'"/>
-				<xsl:with-param name="checkId" select="'CA1030'"/>
+				<xsl:with-param name="checkId" select="'CA1030:UseEventsWhereAppropriate'"/>
 			</xsl:call-template>
 			<xsl:choose>
 				<xsl:when test="$isChanging">
@@ -1012,7 +1103,7 @@
 						</plx:passTypeParam>
 						<plx:callInstance type="arrayIndexer" name=".implied">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="Events"/>
+								<plx:callThis accessor="this" type="property" name="Events"/>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:value type="i4" data="{$EventIndex}"/>
@@ -1025,7 +1116,9 @@
 				<plx:condition>
 					<plx:binaryOperator type="identityInequality">
 						<plx:left>
-							<plx:nameRef type="local" name="eventHandler"/>
+							<plx:cast type="exceptionCast" dataTypeName=".object">
+								<plx:nameRef type="local" name="eventHandler"/>
+							</plx:cast>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
@@ -1107,7 +1200,7 @@
 						<plx:callInstance type="methodCall" name="BeginInvoke">
 							<xsl:copy-of select="$commonCallCode"/>
 							<plx:passParam>
-								<plx:callNew type="newDelegate" dataTypeName="AsyncCallback" dataTypeQualifier="System">
+								<plx:callNew type="newDelegate" dataTypeName="AsyncCallback">
 									<plx:passParam>
 										<plx:callInstance type="methodReference" name="EndInvoke">
 											<plx:callObject>
@@ -1154,39 +1247,76 @@
 		</plx:function>
 	</xsl:template>
 	<xsl:template name="GenerateINotifyPropertyChangedImplementation">
-		<xsl:call-template name="GeneratePropertyChangeEvent">
-			<xsl:with-param name="ChangeType" select="'Changed'"/>
-			<xsl:with-param name="EventIndex" select="0"/>
-			<xsl:with-param name="IsPropertyChangedEvent" select="true()"/>
-		</xsl:call-template>
+		<plx:field visibility="private" name="{$PrivateMemberPrefix}propertyChangedEventHandler" dataTypeName="PropertyChangedEventHandler"/>
+		<plx:event visibility="privateInterfaceMember" name="PropertyChanged">
+			<xsl:call-template name="GenerateSuppressMessageAttribute">
+				<xsl:with-param name="category" select="'Microsoft.Design'"/>
+				<xsl:with-param name="checkId" select="'CA1033:InterfaceMethodsShouldBeCallableByChildTypes'"/>
+			</xsl:call-template>
+			<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged"/>
+			<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler"/>
+			<plx:onAdd>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+					</plx:left>
+					<plx:right>
+						<plx:cast type="testCast" dataTypeName="PropertyChangedEventHandler">
+							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+							<plx:callStatic type="methodCall" name="Combine" dataTypeName="Delegate" dataTypeQualifier="System">
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:valueKeyword/>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:cast>
+					</plx:right>
+				</plx:assign>
+			</plx:onAdd>
+			<plx:onRemove>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+					</plx:left>
+					<plx:right>
+						<plx:cast type="testCast" dataTypeName="PropertyChangedEventHandler">
+							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
+							<plx:callStatic type="methodCall" name="Remove" dataTypeName="Delegate" dataTypeQualifier="System">
+								<plx:passParam>
+									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:valueKeyword/>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:cast>
+					</plx:right>
+				</plx:assign>
+			</plx:onRemove>
+		</plx:event>
 		<plx:function visibility="private" name="RaisePropertyChangedEvent">
 			<plx:param name="propertyName" dataTypeName=".string"/>
 			<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
 				<plx:initialize>
-					<plx:cast type="testCast" dataTypeName="PropertyChangedEventHandler">
-						<plx:callInstance type="arrayIndexer" name=".implied">
-							<plx:callObject>
-								<plx:callThis name="Events" type="field"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:value type="i4" data="0"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:cast>
+					<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
 				</plx:initialize>
 			</plx:local>
 			<plx:branch>
 				<plx:condition>
 					<plx:binaryOperator type="identityInequality">
 						<plx:left>
-							<plx:nameRef type="local" name="eventHandler"/>
+							<plx:cast type="exceptionCast" dataTypeName=".object">
+								<plx:nameRef type="local" name="eventHandler"/>
+							</plx:cast>
 						</plx:left>
 						<plx:right>
 							<plx:nullKeyword/>
 						</plx:right>
 					</plx:binaryOperator>
 				</plx:condition>
-				<xsl:variable name="commonCallCode">
+				<xsl:variable name="commonCallCodeFragment">
 					<plx:callObject>
 						<plx:nameRef type="local" name="eventHandler"/>
 					</plx:callObject>
@@ -1201,6 +1331,7 @@
 						</plx:callNew>
 					</plx:passParam>
 				</xsl:variable>
+				<xsl:variable name="commonCallCode" select="exsl:node-set($commonCallCodeFragment)/child::*"/>
 				<xsl:choose>
 					<xsl:when test="$RaiseEventsAsynchronously">
 						<plx:callInstance type="methodCall" name="BeginInvoke">
@@ -1222,7 +1353,7 @@
 						</plx:callInstance>
 					</xsl:when>
 					<xsl:otherwise>
-						<plx:callInstance name=".implied" type="delegateCall">
+						<plx:callInstance type="delegateCall" name=".implied">
 							<xsl:copy-of select="$commonCallCode"/>
 						</plx:callInstance>
 					</xsl:otherwise>
@@ -1277,7 +1408,7 @@
 					</plx:passParam>
 					<plx:passParam>
 						<plx:string>
-							<xsl:text>&#x09;</xsl:text>
+							<xsl:text disable-output-escaping="yes">&amp;#x09;</xsl:text>
 						</plx:string>
 					</plx:passParam>
 					<xsl:for-each select="$nonCollectionProperties">
@@ -1297,44 +1428,68 @@
 		</plx:function>
 	</xsl:template>
 	
-	<xsl:template name="GenerateModelContextInterfaceMethods">
+	<xsl:template name="GenerateModelContextInterfaceLookupAndExternalConstraintEnforcementMembers">
 		<xsl:param name="Model"/>
 		<xsl:param name="AllProperties"/>
-		<plx:property visibility="public" modifier="abstract" name="IsDeserializing">
-			<plx:returns dataTypeName=".boolean"/>
-			<plx:get/>
-		</plx:property>
-		<xsl:call-template name="GenerateModelContextInterfaceLookupMethods">
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="AllProperties" select="$AllProperties"/>
-		</xsl:call-template>
-	</xsl:template>
-	<xsl:template name="GenerateModelContextInterfaceLookupMethods">
-		<xsl:param name="Model"/>
-		<xsl:param name="AllProperties"/>
+		<xsl:param name="AllRoleSequenceUniquenessConstraints"/>
 		<!-- TODO: This will break for oil:roleSequenceUniquenessConstraint elements that contain oil:typeRef elements with more than one oil:conceptType reference by @targetConceptType. -->
-		<xsl:for-each select="$Model//oil:roleSequenceUniquenessConstraint">
+		<xsl:for-each select="$AllRoleSequenceUniquenessConstraints">
 			<xsl:variable name="uniqueConceptTypeName" select="parent::oil:conceptType/@name"/>
-			<plx:function visibility="public" modifier="abstract" name="Get{$uniqueConceptTypeName}By{@name}">
+			<xsl:variable name="paramsFragment">
 				<xsl:for-each select="oil:roleSequence/oil:typeRef">
 					<plx:param name="{@targetChild}">
 						<xsl:variable name="targetProperty" select="$AllProperties[@conceptTypeName=$uniqueConceptTypeName]/prop:Property[@name=current()/@targetChild]"/>
-						<xsl:copy-of select="$targetProperty/prop:DataType/@*"/>
-						<xsl:copy-of select="$targetProperty/prop:DataType/child::*"/>
+						<xsl:choose>
+							<xsl:when test="$targetProperty/@isCustomType='false' and $targetProperty/@canBeNull='true' and $targetProperty/prop:DataType/@dataTypeName='Nullable'">
+								<xsl:copy-of select="$targetProperty/prop:DataType/plx:passTypeParam/@*"/>
+								<xsl:copy-of select="$targetProperty/prop:DataType/plx:passTypeParam/child::*"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="$targetProperty/prop:DataType/@*"/>
+								<xsl:copy-of select="$targetProperty/prop:DataType/child::*"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:param>
 				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="params" select="exsl:node-set($paramsFragment)/child::*"/>
+			<plx:function visibility="public" modifier="abstract" name="Get{$uniqueConceptTypeName}By{@name}">
+				<xsl:copy-of select="$params"/>
 				<plx:returns dataTypeName="{$uniqueConceptTypeName}"/>
+			</plx:function>
+			<plx:function visibility="public" modifier="abstract" name="TryGet{$uniqueConceptTypeName}By{@name}">
+				<xsl:copy-of select="$params"/>
+				<plx:param type="out" name="{$uniqueConceptTypeName}" dataTypeName="{$uniqueConceptTypeName}"/>
+				<plx:returns dataTypeName=".boolean"/>
 			</plx:function>
 		</xsl:for-each>
 		<xsl:for-each select="$AllProperties/prop:Property[@isUnique='true' and not(@isCustomType='true')]">
 			<xsl:variable name="uniqueConceptTypeName" select="parent::prop:Properties/@conceptTypeName"/>
+			<xsl:variable name="paramFragment">
+				<plx:param name="{@name}">
+					<xsl:choose>
+						<xsl:when test="@isCustomType='false' and @canBeNull='true' and prop:DataType/@dataTypeName='Nullable'">
+							<xsl:copy-of select="prop:DataType/plx:passTypeParam/@*"/>
+							<xsl:copy-of select="prop:DataType/plx:passTypeParam/child::*"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:copy-of select="prop:DataType/@*"/>
+							<xsl:copy-of select="prop:DataType/child::*"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:param>
+			</xsl:variable>
+			<xsl:variable name="param" select="exsl:node-set($paramFragment)/child::*"/>
 			<!-- TODO: In Get{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
 			<plx:function visibility="public" modifier="abstract" name="Get{$uniqueConceptTypeName}By{@name}">
-				<plx:param name="{@name}">
-					<xsl:copy-of select="prop:DataType/@*"/>
-					<xsl:copy-of select="prop:DataType/child::*"/>
-				</plx:param>
+				<xsl:copy-of select="$param"/>
 				<plx:returns dataTypeName="{$uniqueConceptTypeName}"/>
+			</plx:function>
+			<!-- TODO: In TryGet{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
+			<plx:function visibility="public" modifier="abstract" name="TryGet{$uniqueConceptTypeName}By{@name}">
+				<xsl:copy-of select="$param"/>
+				<plx:param type="out" name="{$uniqueConceptTypeName}" dataTypeName="{$uniqueConceptTypeName}"/>
+				<plx:returns dataTypeName=".boolean"/>
 			</plx:function>
 		</xsl:for-each>
 	</xsl:template>
@@ -1343,9 +1498,12 @@
 		<xsl:param name="Model"/>
 		<xsl:param name="Properties"/>
 		<plx:function visibility="public" modifier="abstract" name="Create{@name}">
-			<xsl:call-template name="GenerateMandatoryParameters">
-				<xsl:with-param name="Properties" select="$Properties"/>
-			</xsl:call-template>
+			<xsl:for-each select="$Properties[@mandatory='alethic']">
+				<plx:param name="{@name}">
+					<xsl:copy-of select="prop:DataType/@*"/>
+					<xsl:copy-of select="prop:DataType/child::*"/>
+				</plx:param>
+			</xsl:for-each>
 			<plx:returns dataTypeName="{@name}"/>
 		</plx:function>
 		<plx:property visibility="public" modifier="abstract" name="{@name}Collection">
@@ -1354,16 +1512,6 @@
 				</plx:returns>
 				<plx:get/>
 			</plx:property>
-	</xsl:template>
-
-	<xsl:template name="GenerateMandatoryParameters">
-		<xsl:param name="Properties"/>
-		<xsl:for-each select="$Properties[@mandatory='alethic']">
-			<plx:param name="{@name}">
-				<xsl:copy-of select="prop:DataType/@*"/>
-				<xsl:copy-of select="prop:DataType/child::*"/>
-			</plx:param>
-		</xsl:for-each>
 	</xsl:template>
 	
 </xsl:stylesheet>
