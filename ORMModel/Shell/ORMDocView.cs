@@ -1785,11 +1785,32 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				// Get the links for which both endpoints are in our selection
 				ArrayList selectedElements = this.SelectedElements.Clone() as ArrayList;
+				ArrayList elementsToDraw = new ArrayList(selectedElements.Count * 2);
 				for (int i = 0; i < selectedElements.Count; i++)
 				{
 					ShapeElement element = selectedElements[i] as ShapeElement;
-					if (element != null)
+					if (element == null)
 					{
+						// If it is not a shape, just pass it on...
+						elementsToDraw.Add(selectedElements[i]);
+					}
+					else
+					{
+						if (element.IsRemoved)
+						{
+							continue;
+						}
+
+						Diagram diagram = element as Diagram;
+						if (diagram != null)
+						{
+							// Add the children of the diagram (but not the diagram itself) to the elements to be processed
+							selectedElements.AddRange(diagram.NestedChildShapes);
+							selectedElements.AddRange(diagram.RelativeChildShapes);
+							continue;
+						}
+						elementsToDraw.Add(element);
+
 						foreach (ElementLink link in element.ModelElement.GetElementLinks())
 						{
 							ModelElement element1;
@@ -1815,7 +1836,7 @@ namespace Neumont.Tools.ORM.Shell
 									{
 										if (selectedElements.Contains(presentationElement2))
 										{
-											selectedElements.AddRange(link.PresentationRolePlayers);
+											elementsToDraw.AddRange(link.PresentationRolePlayers);
 											break;
 										}
 									}
@@ -1826,10 +1847,10 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 #if !CUSTOM_COPY_IMAGE
-				this.CurrentDiagram.CopyImageToClipboard(selectedElements);
+				this.CurrentDiagram.CopyImageToClipboard(elementsToDraw);
 #else
 #if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
-				System.Drawing.Imaging.Metafile createdMetafile = this.CurrentDiagram.CreateMetafile(selectedElements);
+				System.Drawing.Imaging.Metafile createdMetafile = this.CurrentDiagram.CreateMetafile(elementsToDraw);
 				
 				NativeMethods.MakeBackgroundTransparent(createdMetafile);
 				NativeMethods.CopyMetafileToClipboard(this.CurrentDiagram.ActiveDiagramView.Handle, createdMetafile);
@@ -1844,7 +1865,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 								
 				RectangleD rect = default(RectangleD);
-				object[] parameters = new object[] { selectedElements, rect };
+				object[] parameters = new object[] { elementsToDraw, rect };
 
 				ArrayList shapesToDraw = getShapesToDraw.Invoke(this.CurrentDiagram, parameters) as ArrayList;
 				rect = (RectangleD)parameters[1];
