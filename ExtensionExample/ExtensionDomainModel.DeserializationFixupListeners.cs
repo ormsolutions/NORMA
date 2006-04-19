@@ -43,7 +43,7 @@ namespace ExtensionExample
 			/// ExternalConstraintFixupListener constructor
 			/// </summary>
 			public MyCustomExtensionElementFixupListener()
-				: base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
 			/// <summary>

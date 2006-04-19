@@ -426,7 +426,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		VerbalizerDocumentFooter,
 		/// <summary>
-		/// The 'VerbalizerDocumentHeader' format string snippet. Contains 16 replacement fields.
+		/// The 'VerbalizerDocumentHeader' format string snippet. Contains 12 replacement fields.
 		/// </summary>
 		VerbalizerDocumentHeader,
 		/// <summary>

@@ -491,7 +491,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			protected override void ProcessElement(ModelHasFactType element, Store store, INotifyElementAdded notifyAdded)
 			{
 				SubtypeFact subTypeFact = element.FactTypeCollection as SubtypeFact;
-				if (subTypeFact != null)
+				if (subTypeFact != null && !subTypeFact.IsRemoved)
 				{
 					ORMModel model = subTypeFact.Model;
 					ObjectType rolePlayer = subTypeFact.Subtype;

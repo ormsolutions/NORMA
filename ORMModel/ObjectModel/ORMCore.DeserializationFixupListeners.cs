@@ -32,7 +32,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				yield return MultiColumnExternalConstraint.FixupListener;
 				yield return SingleColumnExternalConstraint.FixupListener;
-				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.AddImplicitElements);
+				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.ValidateElementNames);
+				yield return SubtypeFact.FixupListener;
 				yield return ModelError.FixupListener;
 				yield return ReferenceMode.FixupListener;
 				yield return ORMModel.DataTypesFixupListener;

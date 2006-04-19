@@ -497,6 +497,12 @@
 	<ResourceString name="ModelExceptionSubtypeConstraintAndRolePatternFixed" model="Model" resourceName="ModelException.SubtypeFact.ConstraintAndRolePatternFixed">
 		<comment type="summary">Exception message when an attempt is made to modify the roles collection or internal constraints of a SubtypeFact.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionSubtypeFactMustBeParentOfMetaRole" model="Model" resourceName="ModelException.SubtypeFact.MetaRolesMustBeUsedOnSubtypeFact">
+		<comment type="summary">Exception message when an attempt is made to attach SubtypeMetaRole or SuperTypeMetaRole objects to a FactType that is not a SubtypeFact.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionSubtypeRolePlayerTypesCannotBeMixed" model="Model" resourceName="ModelException.SubtypeFact.RolePlayersTypesNotMixed">
+		<comment type="summary">Exception message when an attempt is made to mix EntityType and ValueType role players on a SubtypeFact.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionSubtypeFactNotNested" model="Model" resourceName="ModelException.SubtypeFact.NotNested">
 		<comment type="summary">Exception message when an attempt is made to nest a SubtypeFact.</comment>
 	</ResourceString>

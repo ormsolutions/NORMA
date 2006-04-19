@@ -309,6 +309,14 @@
     <value xml:space="preserve">A cycle has been detected in a chain of subtype relationships. A subtype must not be the direct or indirect subtype of its supertype.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
   </data>
+  <data name="ModelException.SubtypeFact.MetaRolesMustBeUsedOnSubtypeFact">
+    <value xml:space="preserve">The SubtypeMetaRole and SupertypeMetaRole can only be used with a SubtypeFact.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to attach SubtypeMetaRole or SuperTypeMetaRole objects to a FactType that is not a SubtypeFact.</comment>
+  </data>
+  <data name="ModelException.SubtypeFact.RolePlayersTypesNotMixed">
+    <value xml:space="preserve">The Subtype and Supertype ObjectTypes of a SubtypeFact must either be EntityTypes or ValueTypes, not one of each.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to mix EntityType and ValueType role players on a SubtypeFact.</comment>
+  </data>
   <data name="ModelException.SubtypeFact.PrimaryMustBeTrue">
     <value xml:space="preserve">The SubtypeFact.IsPrimary property cannot be set to false.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to change the SubtypeFact.</comment>

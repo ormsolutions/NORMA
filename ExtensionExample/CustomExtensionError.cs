@@ -29,6 +29,7 @@ namespace ExtensionExample
 			FactType factType = element as FactType;
 			ValidateFactTypeName(factType, null);
 		}
+		private static Regex factTypeRegex = new Regex(@"FactType[\d+]{0,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 		/// <summary>
 		/// This method Validates a FactType name.
 		/// If the FactType name has "FactType" of "FactType"
@@ -40,7 +41,6 @@ namespace ExtensionExample
 			if (!factType.IsRemoved)
 			{
 				myFactType = factType;
-				Regex factTypeRegex = new Regex(@"FactType[\d+]{0,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 				Match regexMatch = factTypeRegex.Match(factType.Name);
 
 				ModelErrorMoveableCollection extensions = factType.ExtensionModelErrorCollection;
@@ -158,7 +158,7 @@ namespace ExtensionExample
 		private class FactTypeNameFixupListener : DeserializationFixupListener<FactType>
 		{
 			public FactTypeNameFixupListener()
-				: base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
 			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)

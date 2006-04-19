@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					(null != (targetObjectType = ObjectTypeFromShape(targetShapeElement))))
 				{
 					// UNDONE: Now be smarter here, or display message later on
-					return !object.ReferenceEquals(sourceObjectType, targetObjectType);
+					return !object.ReferenceEquals(sourceObjectType, targetObjectType) && ((sourceObjectType.DataType == null) == (targetObjectType.DataType == null));
 				}
 				return false;
 			}

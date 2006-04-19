@@ -123,7 +123,11 @@
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForRemove"/>
 		<arg:Rule class="SubtypeFact.BlockCircularSubtypesAddRule"/>
+		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesAddRule"/>
+		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesRemoveRule"/>
+		<arg:Rule class="SubtypeFact.EnsureConsistentRolePlayerTypesAddRule"/>
 		<arg:Rule class="SubtypeFact.InitializeSubtypeAddRule"/>
+		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintChangeRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesAddRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesRemoveRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintsAddRule"/>

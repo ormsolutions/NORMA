@@ -945,12 +945,12 @@
 		<!-- A quick and dirty routine to count the number of replacement fields
 			 in a format string. Used in documentation comments. -->
 		<xsl:param name="FormatString"/>
-		<xsl:variable name="total">
+		<xsl:variable name="replacements">
 			<xsl:call-template name="CountReplacementFields2">
 				<xsl:with-param name="FormatString" select="$FormatString"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:value-of select="string-length($total)"/>
+		<xsl:value-of select="count(exsl:node-set($replacements)/child::*[not(@value=following-sibling::*/@value)])"/>
 	</xsl:template>
 	<xsl:template name="CountReplacementFields2">
 		<xsl:param name="FormatString"/>
@@ -962,7 +962,7 @@
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:when test="substring($FormatString,1,1)='{'">
-					<xsl:text>x</xsl:text>
+					<replace value="{number(substring-before(substring($FormatString, 2),'}'))}"/>
 					<xsl:call-template name="CountReplacementFields2">
 						<xsl:with-param name="FormatString" select="substring($FormatString,2)"/>
 					</xsl:call-template>
@@ -978,7 +978,7 @@
 								</xsl:call-template>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:text>x</xsl:text>
+								<replace value="{number(substring-before($after,'}'))}"/>
 								<xsl:call-template name="CountReplacementFields2">
 									<xsl:with-param name="FormatString" select="$after"/>
 								</xsl:call-template>

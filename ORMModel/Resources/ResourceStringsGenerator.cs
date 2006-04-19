@@ -1441,6 +1441,26 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Exception message when an attempt is made to attach SubtypeMetaRole or SuperTypeMetaRole objects to a FactType that is not a SubtypeFact.
+		/// </summary>
+		public static string ModelExceptionSubtypeFactMustBeParentOfMetaRole
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.MetaRolesMustBeUsedOnSubtypeFact");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to mix EntityType and ValueType role players on a SubtypeFact.
+		/// </summary>
+		public static string ModelExceptionSubtypeRolePlayerTypesCannotBeMixed
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.RolePlayersTypesNotMixed");
+			}
+		}
+		/// <summary>
 		/// Exception message when an attempt is made to nest a SubtypeFact.
 		/// </summary>
 		public static string ModelExceptionSubtypeFactNotNested

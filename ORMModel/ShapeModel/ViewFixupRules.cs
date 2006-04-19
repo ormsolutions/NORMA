@@ -987,8 +987,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			ReadingOrder readingOrd = link.ReadingOrderCollection;
 			FactType fact = link.FactType;
-			Diagram.FixUpDiagram(fact.Model, fact); // Make sure the fact is already there
-			Diagram.FixUpDiagram(fact, readingOrd);
+			if (!fact.IsRemoved)
+			{
+				Diagram.FixUpDiagram(fact.Model, fact); // Make sure the fact is already there
+				Diagram.FixUpDiagram(fact, readingOrd);
+			}
 		}
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class ReadingOrderAdded : AddRule
@@ -1084,7 +1087,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected override void ProcessElement(Role role, Store store, INotifyElementAdded notifyAdded)
 			{
-				RoleNameShape.SetRoleNameDisplay(role.FactType);
+				if (!role.IsRemoved)
+				{
+					RoleNameShape.SetRoleNameDisplay(role.FactType);
+				}
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class

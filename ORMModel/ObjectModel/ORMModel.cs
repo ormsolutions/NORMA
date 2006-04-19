@@ -37,29 +37,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		AddIntrinsicElements = 100,
 		/// <summary>
+		/// Verify that any implied elements that are serialized with the model
+		/// but must follow a proscribed pattern based on another serialized element.
+		/// This stage may both add and remove elements.
+		/// </summary>
+		ValidateImplicitStoredElements = 200,
+		/// <summary>
 		/// Add implicit elements at this stage. An implicit element is
 		/// not serialized and is generally created by a rule once the model
 		/// is loaded.
 		/// </summary>
-		AddImplicitElements = 200,
+		AddImplicitElements = 300,
+		/// <summary>
+		/// Element names should be tracked and validated after
+		/// all intrinsic, implicitstored, and implicit elements are in place.
+		/// </summary>
+		ValidateElementNames = 400,
 		/// <summary>
 		/// Model errors are stored with the model, but are vulnerable
 		/// to the Notepad effect, which can cause errors to be added
 		/// or removed from the model. Validate errors after all other
 		/// explicit, intrinsic, and implicit elements are in place.
 		/// </summary>
-		ValidateErrors = 300,
+		ValidateErrors = 500,
 		/// <summary>
 		/// Add any presentation elements that are implicit and not
 		/// serialized with the model.
 		/// </summary>
-		AddImplicitPresentationElements = 400,
+		AddImplicitPresentationElements = 600,
 		/// <summary>
 		/// Remove any orphaned presentation elements, meaning any
 		/// PresentationElement where the ModelElement role property is null.
 		/// Orphaned pels are currently not supported.
 		/// </summary>
-		RemoveOrphanedPresentationElements = 500,
+		RemoveOrphanedPresentationElements = 700,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel

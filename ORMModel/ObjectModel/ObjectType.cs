@@ -246,7 +246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
 			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == IsValueTypeMetaAttributeGuid)
 			{
-				return NestedFactType != null || PreferredIdentifier != null;
+				return NestedFactType != null || PreferredIdentifier != null || IsSubtypeOrSupertype;
 			}
 			else if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
 			{
@@ -653,8 +653,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				foreach (Role role in PlayedRoleCollection)
+				RoleMoveableCollection playedRoles = PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				for (int i = 0; i < playedRoleCount; ++i)
 				{
+					Role role = playedRoles[i];
 					if (role is SupertypeMetaRole)
 					{
 						yield return (role.FactType as SubtypeFact).Subtype;
@@ -670,13 +673,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				foreach (Role role in PlayedRoleCollection)
+				RoleMoveableCollection playedRoles = PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				for (int i = 0; i < playedRoleCount; ++i)
 				{
+					Role role = playedRoles[i];
 					if (role is SubtypeMetaRole)
 					{
 						yield return (role.FactType as SubtypeFact).Supertype;
 					}
 				}
+			}
+		}
+		/// <summary>
+		/// Returns true if this ObjectType is the subtype or supertype of
+		/// at least one other Objectype
+		/// </summary>
+		public bool IsSubtypeOrSupertype
+		{
+			get
+			{
+				RoleMoveableCollection playedRoles = PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				for (int i = 0; i < playedRoleCount; ++i)
+				{
+					Role role = playedRoles[i];
+					if (role is SubtypeMetaRole || role is SupertypeMetaRole)
+					{
+						return true;
+					}
+				}
+				return false;
 			}
 		}
 		/// <summary>

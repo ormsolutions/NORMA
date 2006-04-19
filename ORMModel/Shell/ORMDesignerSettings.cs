@@ -142,7 +142,7 @@ namespace Neumont.Tools.ORM.Shell
 				ClassNameAttribute = Add(ORMDesignerSchema.ClassNameAttribute);
 			}
 		}
-		#endregion // PlixLoaderNameTable class
+		#endregion // ORMDesignerNameTable class
 		#endregion // Schema definition classes
 		#region Member Variables
 		private IServiceProvider myServiceProvider;
@@ -278,7 +278,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			myIsLoaded = false;
+			myIsLoaded = true;
 			string settingsFile = SettingsPath;
 			if (File.Exists(settingsFile))
 			{

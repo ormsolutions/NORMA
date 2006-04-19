@@ -16,6 +16,8 @@
 
 // Turn this on to block hiding of shapes implied by an objectification pattern
 //#define SHOW_IMPLIED_SHAPES
+// Turn this on to show a fact shape instead of a subtype link for all SubtypeFacts
+//#define SHOW_FACTSHAPE_FOR_SUBTYPE
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -429,15 +431,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
+#if SHOW_IMPLIED_SHAPES
+#if !SHOW_FACTSHAPE_FOR_SUBTYPE
 				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
-				if (fact is SubtypeFact
-#if !SHOW_IMPLIED_SHAPES
- || fact.ImpliedByObjectification != null
-#endif // !SHOW_IMPLIED_SHAPES
-)
+				if (fact is SubtypeFact)
 				{
 					return false;
 				}
+#endif // !SHOW_FACTSHAPE_FOR_SUBTYPE
+#elif SHOW_FACTSHAPE_FOR_SUBTYPE
+				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
+				if (fact.ImpliedByObjectification != null)
+				{
+					return false;
+				}
+#else
+				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
+				if (fact is SubtypeFact || fact.ImpliedByObjectification != null)
+				{
+					return false;
+				}
+#endif
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
 			}
 			else if (null != (equalityConstraint = element as EqualityConstraint))
@@ -610,6 +624,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return ChooseShapeTypeForObjectType((ObjectType)element, shapeTypes);
 			}
+#if SHOW_FACTSHAPE_FOR_SUBTYPE
+			if (classId == SubtypeFact.MetaClassGuid)
+			{
+				foreach (MetaClassInfo classInfo in shapeTypes)
+				{
+					if (classInfo.Id == FactTypeShape.MetaClassGuid)
+					{
+						return classInfo;
+					}
+				}
+			}
+#endif // SHOW_FACTSHAPE_FOR_SUBTYPE
 			Debug.Assert(false); // We're only expecting an ObjectType here
 			return base.ChooseShape(element, shapeTypes);
 		}
@@ -1431,4 +1457,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // IProxyDisplayProvider Implementation
 	}
+	#region Extra conditional attribute on FactTypeShape to show fact shape instead of subtype link
+#if SHOW_FACTSHAPE_FOR_SUBTYPE
+	// This forces a call to ORMDiagram.ChooseShape
+	[ShapeForAttribute(typeof(SubtypeFact))]
+	public partial class FactTypeShape
+	{
+	}
+#endif // SHOW_FACTSHAPE_FOR_SUBTYPE
+	#endregion // Extra conditional attribute on FactTypeShape to show fact shape instead of subtype link
 }

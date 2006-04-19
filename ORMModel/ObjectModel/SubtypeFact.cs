@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -182,8 +183,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roles.Add(superTypeMetaRole);
 			
 				// Add injection constraints
-				superTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
-				subTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
+				superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
+				subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
 
 				// Add forward reading
 				ReadingOrderMoveableCollection readingOrders = fact.ReadingOrderCollection;
@@ -283,6 +284,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						ThrowPatternModifiedException();
 					}
 				}
+				else
+				{
+					Role role = link.RoleCollection;
+					if (role is SubtypeMetaRole || role is SupertypeMetaRole)
+					{
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactMustBeParentOfMetaRole);
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -365,6 +374,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Block the modality from being changed on internal constraints
+		/// on subtype facts
+		/// </summary>
+		[RuleOn(typeof(InternalConstraint))]
+		private class LimitSubtypeConstraintChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Block internal attribute modification on implicit subtype constraints
+			/// </summary>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				if (e.MetaAttribute.Id == InternalConstraint.ModalityMetaAttributeGuid)
+				{
+					InternalConstraint ic = e.ModelElement as InternalConstraint;
+					SubtypeFact subtypeFact;
+					if (!ic.IsRemoved &&
+						null != (subtypeFact = ic.FactType as SubtypeFact))
+					{
+						// We never do this internally, so block any modification,
+						// not just those after the subtype fact is added to the model
+						ThrowPatternModifiedException();
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Ensure that a role player deletion on a subtype results in a deletion
 		/// of the subtype itself.
 		/// </summary>
@@ -386,11 +421,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 						subtypeFact.Remove();
 					}
 				}
-
 			}
-
 		}
 		#endregion // Role and constraint pattern locking rules
+		#region Mixed role player types rules
+		private static void ThrowMixedRolePlayerTypesException()
+		{
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeRolePlayerTypesCannotBeMixed);
+		}
+		/// <summary>
+		/// Ensure consistent types (EntityType or ValueType) for role
+		/// players in a subtyping relationship
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnsureConsistentRolePlayerTypesAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				SubtypeMetaRole subtypeRole;
+				SubtypeFact subtypeFact;
+				if (null != (subtypeRole = link.PlayedRoleCollection as SubtypeMetaRole) &&
+					null != (subtypeFact = subtypeRole.FactType as SubtypeFact))
+				{
+					ObjectType superType = subtypeFact.Supertype;
+					if (null == superType ||
+						((superType.DataType == null) != (link.RolePlayer.DataType == null)))
+					{
+						ThrowMixedRolePlayerTypesException();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Stop the ValueTypeHasDataType relationship from being
+		/// added if an ObjectType participates in a subtyping relationship
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))]
+		private class EnsureConsistentDataTypesAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+				ObjectType objectType = link.ValueTypeCollection;
+				RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				for (int i = 0; i < playedRoleCount; ++i)
+				{
+					Role testRole = playedRoles[i];
+					if (testRole is SubtypeMetaRole ||
+						testRole is SupertypeMetaRole)
+					{
+						if (null != testRole.FactType)
+						{
+							ThrowMixedRolePlayerTypesException();
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Stop the ValueTypeHasDataType relationship from being
+		/// removed if an ObjectType participates in a subtyping relationship
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))]
+		private class EnsureConsistentDataTypesRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+				ObjectType objectType = link.ValueTypeCollection;
+				if (!objectType.IsRemoved)
+				{
+					RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+					int playedRoleCount = playedRoles.Count;
+					for (int i = 0; i < playedRoleCount; ++i)
+					{
+						Role testRole = playedRoles[i];
+						if (testRole is SubtypeMetaRole ||
+							testRole is SupertypeMetaRole)
+						{
+							if (null != testRole.FactType)
+							{
+								ThrowMixedRolePlayerTypesException();
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Mixed role player types rules
 		#region Circular reference check rule
 		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.LocalCommit)]
 		private class BlockCircularSubtypesAddRule : AddRule
@@ -437,5 +557,130 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 		#endregion //property readOnly
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// validates all model errors and adds errors to the task provider.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new SubtypeFactFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener class to enforce valid subtype facts on load.
+		/// Invalid subtype patterns will either be fixed up or completely
+		/// removed.
+		/// </summary>
+		private class SubtypeFactFixupListener : DeserializationFixupListener<SubtypeFact>
+		{
+			/// <summary>
+			/// Create a new SubtypeFactFixupListener
+			/// </summary>
+			public SubtypeFactFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Make sure the subtype fact constraint pattern
+			/// and object types are appropriate.
+			/// </summary>
+			/// <param name="element">An SubtypeFact instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(SubtypeFact element, Store store, INotifyElementAdded notifyAdded)
+			{
+				// Note that the arity and types of the subtype/supertype roles are
+				// enforced by the schema.
+				Role superTypeMetaRole;
+				Role subTypeMetaRole;
+				ObjectType superType;
+				ObjectType subType;
+				if (null == (superTypeMetaRole = element.SupertypeRole) ||
+					null == (subTypeMetaRole = element.SubtypeRole) ||
+					null == (superType = superTypeMetaRole.RolePlayer) ||
+					null == (subType = subTypeMetaRole.RolePlayer) ||
+					// They must both be value types or object types, but can't switch
+					((superType.DataType == null) != (subType.DataType == null)))
+				{
+					element.Remove();
+				}
+				else
+				{
+					// Note that rules aren't on, so we can read the Multiplicity attributes,
+					// but we can't set them. All changes must be made explicitly.
+					if (superTypeMetaRole.Multiplicity != RoleMultiplicity.ExactlyOne)
+					{
+						EnsureSingleColumnUniqueAndMandatory(store, element, subTypeMetaRole, true, notifyAdded);
+					}
+					if (subTypeMetaRole.Multiplicity != RoleMultiplicity.ZeroToOne)
+					{
+						EnsureSingleColumnUniqueAndMandatory(store, element, superTypeMetaRole, false, notifyAdded);
+					}
+				}
+			}
+			private static void EnsureSingleColumnUniqueAndMandatory(Store store, FactType fact, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
+			{
+				ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+				int sequenceCount = sequences.Count;
+				bool haveUniqueness = false;
+				bool haveMandatory = !requireMandatory;
+				InternalConstraint ic;
+				for (int i = sequenceCount - 1; i >= 0; --i)
+				{
+					ic = sequences[i] as InternalConstraint;
+					if (ic != null)
+					{
+						if (ic.RoleCollection.Count == 1 && ic.Modality == ConstraintModality.Alethic)
+						{
+							switch (ic.Constraint.ConstraintType)
+							{
+								case ConstraintType.InternalUniqueness:
+									if (haveUniqueness)
+									{
+										ic.Remove();
+									}
+									else
+									{
+										haveUniqueness = true;
+									}
+									break;
+								case ConstraintType.SimpleMandatory:
+									if (haveMandatory)
+									{
+										ic.Remove();
+									}
+									else
+									{
+										haveMandatory = true;
+									}
+									break;
+							}
+						}
+						else
+						{
+							ic.Remove();
+						}
+						if (!haveUniqueness)
+						{
+							ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+							ic.FactType = fact;
+							ic.RoleCollection.Add(role);
+							notifyAdded.ElementAdded(ic, true);
+						}
+						if (!haveMandatory)
+						{
+							ic = SimpleMandatoryConstraint.CreateSimpleMandatoryConstraint(store);
+							ic.FactType = fact;
+							ic.RoleCollection.Add(role);
+							notifyAdded.ElementAdded(ic, true);
+						}
+					}
+				}
+			}
+		}
+		#endregion Deserialization Fixup
 	}
 }
