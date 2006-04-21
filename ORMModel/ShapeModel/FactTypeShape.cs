@@ -2328,6 +2328,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Always highlight
+		/// </summary>
+		public override bool HasHighlighting
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
 		/// The color to use when drawing constraint errors.
 		/// </summary>
 		protected Color ConstraintErrorForeColor
