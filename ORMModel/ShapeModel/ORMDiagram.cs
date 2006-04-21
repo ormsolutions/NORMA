@@ -774,8 +774,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return .0125;
+				return .05;
 			}
+		}
+		/// <summary>
+		/// Overrides the OnCreated to set the snaptogrid to false;
+		/// </summary>
+		public override void OnCreated()
+		{
+			base.OnCreated();
+			//turned snap to grid off because we are aligning the facttypes based
+			//on the center of the roles. Since the center of the roles is not necessarily
+			//going to be located in alignment on the grid we had to turn this off so facttypes
+			//would get properly aligned with other objects.
+			SnapToGrid = false;  
 		}
 		#endregion // Customize appearance
 		#region Toolbox initialization

@@ -740,6 +740,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				fullBounds = new RectangleD(0, 0, RoleBoxWidth, 0);
 			}
+			else
+			{
+				fullBounds.Inflate(StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width / -2, 0d);
+			}
 
 			// First, gather the various constraints that are associated with the parent FactTypeShape.
 			//
@@ -1171,6 +1175,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private const double NestedFactVerticalMargin = 0.056;
 		private const double ConstraintHeight = 0.07;
 		private const double ExternalConstraintBarCenterAdjust = ConstraintHeight / 5;
+		private const double BorderMargin = 0.05;
+		private const double FocusIndicatorInsideMargin = .019;
 		#endregion // Size Constants
 		#region SpacerShapeField : ShapeField
 		/// <summary>
@@ -1214,11 +1220,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				else
 				{
-					// UNDONE: At the moment the pen width is a constant
-					// value, so this should just return a constant.
-					StyleSet styleSet = parentShape.StyleSet;
-					Pen pen = styleSet.GetPen(InternalFactConstraintPen);
-					return (Double)(pen.Width / 2);
+					return BorderMargin / 2;
 				}
 			}
 
@@ -1851,7 +1853,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The width of this RolesShapeField.</returns>
 			public override double GetMinimumWidth(ShapeElement parentShape)
 			{
-				return FactTypeShape.RoleBoxWidth * Math.Max(1, (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count);
+				double margin = parentShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
+				return FactTypeShape.RoleBoxWidth * Math.Max(1, (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count) + margin;
 			}
 			/// <summary>
 			/// Get the minimum height of this RolesShapeField.
@@ -1860,7 +1863,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The height of this RolesShapeField.</returns>
 			public override double GetMinimumHeight(ShapeElement parentShape)
 			{
-				return FactTypeShape.RoleBoxHeight;
+				double margin = parentShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
+				return FactTypeShape.RoleBoxHeight + margin;
 			}
 			/// <summary>
 			/// Paint the RolesShapeField
@@ -1897,7 +1901,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 					}
-					RectangleD bounds = GetBounds(parentShape);
+					RectangleD bounds = this.GetBounds(parentShape);
+					double margin = parentShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width / 2;
+					bounds.Inflate(-margin, -margin);
+
 					Graphics g = e.Graphics;
 					double offsetBy = bounds.Width / roleCount;
 					float offsetByF = (float)offsetBy;
@@ -2376,7 +2383,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return true;
 			}
 		}
-
 		/// <summary>
 		/// Set the default size for this object. This value is basically
 		/// ignored because the size is ultimately based on the contained
@@ -2498,18 +2504,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Highlight region surrounding the roles box if
-		/// it is objectified
-		/// </summary>
-		/// <value>True if the fact type is nested</value>
-		public override bool HasHighlighting
-		{
-			get
-			{
-				return IsObjectified;
-			}
-		}
-		/// <summary>
 		/// Show an outline around the fact type only
 		/// if it is objectified.
 		/// </summary>
@@ -2528,19 +2522,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				// Margin is used to adjust the width and height of the content to incorporate the
-				// width of the pen being used and prevent the pen from being cropped at the edges
-				// of the content.
-				double margin = this.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
 				SizeD retVal = SizeD.Empty;
 				ShapeField rolesShape = RolesShape;
 				if (rolesShape != null)
 				{
 					double width, height;
-					width = rolesShape.GetMinimumWidth(this) + margin;
-					height = rolesShape.GetMinimumHeight(this) + margin;
+					width = rolesShape.GetMinimumWidth(this);
+					height = rolesShape.GetMinimumHeight(this);
 					height += myTopConstraintShapeField.GetMinimumHeight(this);
 					height += myBottomConstraintShapeField.GetMinimumHeight(this);
+					if (!IsObjectified)
+					{
+						width += BorderMargin;
+						height += BorderMargin;
+					}
 					retVal = new SizeD(width, height);
 				}
 				return retVal;
@@ -2585,12 +2580,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					newLocation.Offset(0, oldRolesPosition - newRolesPosition);
 					if (newSize.IsEmpty)
 					{
-						Location = newLocation;
+						newSize = Size;
 					}
-					else
-					{
-						AbsoluteBounds = new RectangleD(newLocation, newSize);
-					}
+					AbsoluteBounds = new RectangleD(newLocation, newSize);
 					retVal = true;
 				}
 			}
@@ -2710,7 +2702,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return retVal;
-		}		/// <summary>
+		}
+		/// <summary>
 		/// Return different shapes for objectified versus non-objectified fact types.
 		/// The actual shape is controlled by the tools options page.
 		/// </summary>
@@ -2738,7 +2731,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				else
 				{
 					// Just draw a rectangle if the fact IS NOT objectified
-					return CustomFoldRectangleShapeGeometry.ShapeGeometry;
+					return CustomFactTypeShapeGeometry.ShapeGeometry;
 				}
 			}
 		}
@@ -4508,6 +4501,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Store Event Handlers
+		#region CustomFactTypeShapeGeometry
+		/// <summary>
+		/// We're using a custom shape geometry to move the focus line in. The border
+		/// width has been adjusted to make it easier to select the fact shape, but we
+		/// don't want to add extra width for the normal selection outline.
+		/// </summary>
+		private class CustomFactTypeShapeGeometry : CustomFoldRectangleShapeGeometry
+		{
+			public new static readonly ShapeGeometry ShapeGeometry = new CustomFactTypeShapeGeometry();
+			protected override double GetFocusIndicatorInsideMargin(IGeometryHost geometryHost)
+			{
+				return FocusIndicatorInsideMargin;
+			}
+			/// <summary>
+			/// Override GetPerimeterBoundingBox to ignore outline pen when the outline is not displayed
+			/// UNDONE: MSBUG The framework should check HasOutline before using the outline pen
+			/// </summary>
+			protected override RectangleD GetPerimeterBoundingBox(IGeometryHost geometryHost)
+			{
+				if (geometryHost.GeometryHasOutline)
+				{
+					return base.GetPerimeterBoundingBox(geometryHost);
+				}
+				return geometryHost.GeometryBoundingBox;
+			}
+		}
+		#endregion // CustomFactTypeShapeGeometry
 	}
 	#endregion // FactTypeShape class
 	#region ObjectifiedFactTypeNameShape class
