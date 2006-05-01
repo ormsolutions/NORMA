@@ -18,6 +18,8 @@ CALL:_MakeDir "%NORMADir%\bin\1033"
 CALL:_MakeDir "%NORMADir%\Help"
 CALL:_MakeDir "%NORMADir%\Xml\Schemas"
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
+CALL:_MakeDir "%NORMADir%\Xml\Verbalization"
+CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Core"
 CALL:_MakeDir "%NORMADir%\ORMProjectItems"
 CALL:_RemoveDir "%ORMDir%\..\..\ORM"
 CALL:_MakeDir "%ORMDir%\Schemas"
@@ -49,6 +51,12 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\*.xslt" "%NORMADir%\Xml\Transforms\Converters\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd" "%NORMADir%\Xml\Verbalization\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\VerbalizationCoreSnippets\*.x??" "%NORMADir%\Xml\Verbalization\Core\"
+IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreSnippets.xml" (
+	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\_default.xml"
+	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreSnippets.xml" "_default.xml"
+)
 
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILDT.xsd" "%DILDir%\Schemas\"
@@ -68,7 +76,8 @@ XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\Neumont ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
 
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
-REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL

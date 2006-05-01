@@ -182,7 +182,7 @@
 			<orm:VariableLengthTextDataType id="_EF2CADF2-83B2-48CE-ACE5-C483A7548DBD" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
-			<orm:FrequencyConstraintMinMaxError id="_A8031F3A-3730-4029-B141-5901309D3BDC" Name="Maximum value for constraint 'FrequencyConstraint1' in model 'NewModel' cannot be less than the minimum value.">
+			<orm:FrequencyConstraintMinMaxError id="_839C7064-C848-449B-8B91-11FF6D5065BE" Name="Maximum value for constraint 'FrequencyConstraint1' in model 'NewModel' cannot be less than the minimum value.">
 				<orm:FrequencyConstraint ref="_B2E70067-5046-426F-BD02-D3ADFF8512B4" />
 			</orm:FrequencyConstraintMinMaxError>
 		</orm:ModelErrors>
@@ -194,15 +194,15 @@
 	</orm:ORMModel>
 	<ormDiagram:ORMDiagram id="_EF4B0B09-608E-4B8C-A957-538D8B66E54E" IsCompleteView="false" Name="" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
 		<ormDiagram:Shapes>
-			<ormDiagram:ObjectTypeShape id="_89A2A768-B60E-4AD4-BBC0-144E52392474" IsExpanded="true" AbsoluteBounds="0.70000000000000007, 1.3250000000000002, 0.76374041080474853, 0.37900605320930481" ExpandRefMode="false">
+			<ormDiagram:ObjectTypeShape id="_89A2A768-B60E-4AD4-BBC0-144E52392474" IsExpanded="true" AbsoluteBounds="0.70000000000000007, 1.3250000000000002, 0.68374041080474857, 0.37900605320930481" ExpandRefMode="false">
 				<ormDiagram:Subject ref="_B7F0A79A-511E-4050-90DC-9E40C7486D53" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:ObjectTypeShape id="_3AE40639-F4F0-4D6F-BB90-8E8784029B47" IsExpanded="true" AbsoluteBounds="3.1750000000000003, 1.4125, 0.81819050550460815, 0.37900605320930481" ExpandRefMode="false">
+			<ormDiagram:ObjectTypeShape id="_3AE40639-F4F0-4D6F-BB90-8E8784029B47" IsExpanded="true" AbsoluteBounds="3.1750000000000003, 1.4125, 0.73819050550460819, 0.37900605320930481" ExpandRefMode="false">
 				<ormDiagram:Subject ref="_2594A92F-7470-4627-BEA0-6D64F734987E" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:FactTypeShape id="_A8245160-46F9-468E-AE30-2E8B23115696" IsExpanded="true" AbsoluteBounds="2.375, 1.5625, 0.33388888899236918, 0.19388888899236917" ConstraintDisplayPosition="Top">
+			<ormDiagram:FactTypeShape id="_A8245160-46F9-468E-AE30-2E8B23115696" IsExpanded="true" AbsoluteBounds="2.375, 1.5625, 0.38388888899236917, 0.24388888899236916" ConstraintDisplayPosition="Top">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape id="_1D540EB2-1B5C-4F48-A5F6-904C96C61B33" IsExpanded="true" AbsoluteBounds="2.25, 1.95, 0.6625, 0.12500000000000006">
+					<ormDiagram:ReadingShape id="_1D540EB2-1B5C-4F48-A5F6-904C96C61B33" IsExpanded="true" AbsoluteBounds="2.25, 1.95, 0.66439932584762573, 0.12950302660465241">
 						<ormDiagram:Subject ref="_C2E9584C-5BDD-48F6-865D-05D60DCDAAA9" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>

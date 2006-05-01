@@ -183,6 +183,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // MergeContext functions
 	}
+	#region ORMMetaModel verbalization snippets
+	public partial class ORMMetaModel : IVerbalizationSnippetsProvider
+	{
+		#region IVerbalizationSnippetsProvider Implementation
+		/// <summary>
+		/// IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets
+		/// </summary>
+		protected VerbalizationSnippetsData[] ProvideVerbalizationSnippets()
+		{
+			return new VerbalizationSnippetsData[]
+			{
+	            new VerbalizationSnippetsData(
+					typeof(CoreVerbalizationSnippetType),
+	                CoreVerbalizationSets.Default,
+	                "Core",
+					ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
+					ResourceStrings.CoreVerbalizationSnippetsDefaultDescription)
+			};
+		}
+		VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
+		{
+			return ProvideVerbalizationSnippets();
+		}
+		#endregion // IVerbalizationSnippetsProvider Implementation
+	}
+	#endregion // ORMMetaModel verbalization snippets
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent
 	{

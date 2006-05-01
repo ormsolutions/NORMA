@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
+using System.Globalization;
 using CategoryAttribute = System.ComponentModel.CategoryAttribute;
 using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 namespace Neumont.Tools.ORM.Shell
@@ -250,6 +251,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const bool ShowDefaultConstraintVerbalization_Default = true;
 		private static bool myCurrentShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
 		private bool myShowDefaultConstraintVerbalization = ShowDefaultConstraintVerbalization_Default;
+
+		private const string CustomVerbalizationSnippets_Default = "";
+		private static string myCurrentCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
+		private string myCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -269,6 +274,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -287,6 +293,7 @@ namespace Neumont.Tools.ORM.Shell
 			myFinalShapeDeleteBehavior = myCurrentFinalShapeDeleteBehavior;
 			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
+			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 		}
 
 		/// <summary>
@@ -297,7 +304,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			bool updateVerbalizer =
 				myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization ||
-				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization;
+				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization ||
+				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets;
 			// Get out early if none of the settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
@@ -311,6 +319,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				if (updateVerbalizer)
 				{
 					ORMDesignerPackage.VerbalizationWindowSettingsChanged();
@@ -333,6 +342,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
+			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -638,7 +648,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Current setting for ShowDefaultConstraintVerbalization
 		/// </summary>
-		[DefaultValue(CombineMandatoryAndUniqueVerbalization_Default)]
+		[DefaultValue(ShowDefaultConstraintVerbalization_Default)]
 		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyShowDefaultConstraintVerbalizationDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId)]
@@ -654,6 +664,27 @@ namespace Neumont.Tools.ORM.Shell
 		public static bool CurrentShowDefaultConstraintVerbalization
 		{
 			get { return myCurrentShowDefaultConstraintVerbalization; }
+		}
+
+		/// <summary>
+		/// Current setting for CustomVerbalizationSnippets
+		/// </summary>
+		[DefaultValue(CustomVerbalizationSnippets_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDisplayNameId)]
+		public string CustomVerbalizationSnippets
+		{
+			get { return myCustomVerbalizationSnippets; }
+			set { myCustomVerbalizationSnippets = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for CustomVerbalizationSnippets
+		/// </summary>
+		public static string CurrentCustomVerbalizationSnippets
+		{
+			get { return myCurrentCustomVerbalizationSnippets; }
 		}
 		#endregion // Accessor properties
 	}

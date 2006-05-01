@@ -239,7 +239,7 @@
 			<orm:VariableLengthTextDataType id="_616B99E0-CF14-4A74-A0CE-285D6E118BD6" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
-			<orm:NMinusOneError id="_DEEDB96A-8DB1-491B-B7B9-BA6F6788B44E" Name="Uniqueness constraint 'InternalUniquenessConstraint7' on fact type 'FactType1' in model 'NewModel' must span at least 2 roles.">
+			<orm:NMinusOneError id="_1132F803-A82A-44D4-B08E-1A8A709B15C0" Name="Uniqueness constraint 'InternalUniquenessConstraint7' on fact type 'FactType1' in model 'NewModel' must span at least 2 roles.">
 				<orm:InternalUniquenessConstraint ref="_3CCAC4FA-F704-42D5-9E2D-E57931DF375F" />
 			</orm:NMinusOneError>
 		</orm:ModelErrors>
@@ -251,18 +251,18 @@
 	</orm:ORMModel>
 	<ormDiagram:ORMDiagram id="_D836F29D-D4EF-4A36-862C-63437CA72A78" IsCompleteView="false" Name="" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
 		<ormDiagram:Shapes>
-			<ormDiagram:ObjectTypeShape id="_562363B7-3CBD-4936-92EB-F61FC100C4EE" IsExpanded="true" AbsoluteBounds="0.5, 1.7000000000000002, 0.65540977358818053, 0.37900605320930481" ExpandRefMode="false">
+			<ormDiagram:ObjectTypeShape id="_562363B7-3CBD-4936-92EB-F61FC100C4EE" IsExpanded="true" AbsoluteBounds="0.5, 1.7000000000000002, 0.57540977358818057, 0.37900605320930481" ExpandRefMode="false">
 				<ormDiagram:Subject ref="_89C4A032-233E-45B4-8149-70D236152FDC" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:ObjectTypeShape id="_C1B058D8-E68C-42F5-8FE8-BF500233D933" IsExpanded="true" AbsoluteBounds="1.875, 0.625, 0.92875235319137572, 0.37900605320930481" ExpandRefMode="false">
+			<ormDiagram:ObjectTypeShape id="_C1B058D8-E68C-42F5-8FE8-BF500233D933" IsExpanded="true" AbsoluteBounds="1.875, 0.625, 0.84875235319137576, 0.37900605320930481" ExpandRefMode="false">
 				<ormDiagram:Subject ref="_F1D617AE-02F1-436A-9AF4-CAC8DF0A9429" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:ObjectTypeShape id="_6834DECA-F93C-4AA0-8D4F-78C0B248C7C3" IsExpanded="true" AbsoluteBounds="3.2625, 1.725, 1.0433491969108582, 0.37900605320930481" ExpandRefMode="false">
+			<ormDiagram:ObjectTypeShape id="_6834DECA-F93C-4AA0-8D4F-78C0B248C7C3" IsExpanded="true" AbsoluteBounds="3.2625, 1.725, 0.96334919691085819, 0.37900605320930481" ExpandRefMode="false">
 				<ormDiagram:Subject ref="_479C56FD-7440-4126-9D07-BF83CBDD90D9" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:FactTypeShape id="_CE23A438-DDA2-4D12-9523-06C5060C599E" IsExpanded="true" AbsoluteBounds="2.1875, 1.7875, 0.49388888899236916, 0.19388888899236917" ConstraintDisplayPosition="Top">
+			<ormDiagram:FactTypeShape id="_CE23A438-DDA2-4D12-9523-06C5060C599E" IsExpanded="true" AbsoluteBounds="2.1875, 1.7875, 0.5438888889923692, 0.24388888899236916" ConstraintDisplayPosition="Top">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape id="_D7FE3C29-C834-4E34-9AFD-9D0DA9070D99" IsExpanded="true" AbsoluteBounds="2.1875, 2.0500000000000003, 0.8125, 0.125">
+					<ormDiagram:ReadingShape id="_D7FE3C29-C834-4E34-9AFD-9D0DA9070D99" IsExpanded="true" AbsoluteBounds="2.1875, 2.0500000000000003, 0.81412529945373535, 0.12950302660465241">
 						<ormDiagram:Subject ref="_F950097E-AE89-41FB-A35F-290CA84963B8" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>

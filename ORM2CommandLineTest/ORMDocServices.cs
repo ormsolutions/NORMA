@@ -61,6 +61,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return this;
 				}
 			}
+			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+			{
+				get
+				{
+					return null;
+				}
+			}
 			#endregion // IORMToolServices Implementation
 			#region IORMFontAndColorService Implementation
 			Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)

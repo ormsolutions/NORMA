@@ -52,6 +52,13 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return myServices.ServiceProvider;
 				}
 			}
+			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+			{
+				get
+				{
+					return myServices.VerbalizationSnippetsDictionary;
+				}
+			}
 			#endregion // IORMToolServices Implementation
 		}
 	}

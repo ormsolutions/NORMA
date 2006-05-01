@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:redefine schemaLocation="../VerbalizationUntypedSnippets.xsd">
+		<xs:simpleType name="SnippetTypeEnum">
+			<xs:restriction base="SnippetTypeEnum">
+				<xs:enumeration value="NotesVerbalization">
+					<xs:annotation>
+						<xs:documentation>Notes: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectifiesFactTypeVerbalization">
+					<xs:annotation>
+						<xs:documentation>{0} objectifies "{1}"</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReferenceModeVerbalization">
+					<xs:annotation>
+						<xs:documentation>Reference Mode: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PortableDataTypeVerbalization">
+					<xs:annotation>
+						<xs:documentation>Portable data type: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="IndependentVerbalization">
+					<xs:annotation>
+						<xs:documentation>{0} is independent (it may have instances that play no other roles)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ReferenceSchemeVerbalization">
+					<xs:annotation>
+						<xs:documentation>Reference Scheme: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectType">
+					<xs:annotation>
+						<xs:documentation>{0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EntityTypeVerbalization">
+					<xs:annotation>
+						<xs:documentation>{0} is an entity type</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ValueTypeVerbalization">
+					<xs:annotation>
+						<xs:documentation>{0} is a value type</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeWithSubscript"/>
+				<xs:enumeration value="ObjectTypeMissing"/>
+				<xs:enumeration value="ImpersonalPronoun"/>
+				<xs:enumeration value="PersonalPronoun"/>
+				<xs:enumeration value="DefiniteArticle">
+					<xs:annotation>
+						<xs:documentation>
+							Used for 'that' before an object name. Different than ImpersonalPronoun
+							which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="UniversalQuantifier"/>
+				<xs:enumeration value="AtMostOneQuantifier"/>
+				<xs:enumeration value="ExactlyOneQuantifier"/>
+				<xs:enumeration value="EachInstanceQuantifier"/>
+				<xs:enumeration value="ForEachCompactQuantifier"/>
+				<xs:enumeration value="ForEachQuantifier"/>
+				<xs:enumeration value="ExistentialQuantifier"/>
+				<xs:enumeration value="IdentityReferenceQuantifier"/>
+				<xs:enumeration value="ImpliedModalNecessityOperator">
+					<xs:annotation>
+						<xs:documentation>No text for alethic, same as ModalNecessityOperator otherwise.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MoreThanOneQuantifier"/>
+				<xs:enumeration value="ModalPossibilityOperator"/>
+				<xs:enumeration value="ModalNecessityOperator"/>
+				<xs:enumeration value="NegativeReadingForUnaryOnlyDisjunctiveMandatory"/>
+
+				<xs:enumeration value="CompoundListOpen"/>
+				<xs:enumeration value="CompoundListPairSeparator"/>
+				<xs:enumeration value="CompoundListSeparator"/>
+				<xs:enumeration value="CompoundListFinalSeparator"/>
+				<xs:enumeration value="CompoundListClose"/>
+
+				<xs:enumeration value="IndentedCompoundListOpen"/>
+				<xs:enumeration value="IndentedCompoundListPairSeparator"/>
+				<xs:enumeration value="IndentedCompoundListSeparator"/>
+				<xs:enumeration value="IndentedCompoundListFinalSeparator"/>
+				<xs:enumeration value="IndentedCompoundListClose"/>
+				<xs:enumeration value="IndentedListOpen"/>
+				<xs:enumeration value="IndentedListPairSeparator"/>
+				<xs:enumeration value="IndentedListSeparator"/>
+				<xs:enumeration value="IndentedListFinalSeparator"/>
+				<xs:enumeration value="IndentedListClose"/>
+				<xs:enumeration value="IndentedLogicalAndListOpen"/>
+				<xs:enumeration value="IndentedLogicalAndListPairSeparator"/>
+				<xs:enumeration value="IndentedLogicalAndListSeparator"/>
+				<xs:enumeration value="IndentedLogicalAndListFinalSeparator"/>
+				<xs:enumeration value="IndentedLogicalAndListClose"/>
+				<xs:enumeration value="IndentedLogicalOrListOpen"/>
+				<xs:enumeration value="IndentedLogicalOrListPairSeparator"/>
+				<xs:enumeration value="IndentedLogicalOrListSeparator"/>
+				<xs:enumeration value="IndentedLogicalOrListFinalSeparator"/>
+				<xs:enumeration value="IndentedLogicalOrListClose"/>
+				<xs:enumeration value="ConstraintProvidesPreferredIdentifier"/>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListOpen"/>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListPairSeparator"/>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListSeparator"/>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListFinalSeparator"/>
+				<xs:enumeration value="TopLevelIndentedLogicalAndListClose"/>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListOpen"/>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListPairSeparator"/>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListSeparator"/>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListFinalSeparator"/>
+				<xs:enumeration value="TopLevelIndentedLogicalOrListClose"/>
+				<xs:enumeration value="SimpleListOpen"/>
+				<xs:enumeration value="SimpleListPairSeparator"/>
+				<xs:enumeration value="SimpleListSeparator"/>
+				<xs:enumeration value="SimpleListFinalSeparator"/>
+				<xs:enumeration value="SimpleListClose"/>
+				<xs:enumeration value="CompactSimpleListOpen"/>
+				<xs:enumeration value="CompactSimpleListPairSeparator"/>
+				<xs:enumeration value="CompactSimpleListSeparator"/>
+				<xs:enumeration value="CompactSimpleListFinalSeparator"/>
+				<xs:enumeration value="CompactSimpleListClose"/>
+				<xs:enumeration value="CloseVerbalizationSentence"/>
+				<xs:enumeration value="CombinationIdentifier"/>
+				<xs:enumeration value="OccursInPopulation"/>
+				<xs:enumeration value="OneQuantifier"/>
+				<xs:enumeration value="PeriodDelimiter">
+					<xs:annotation>
+						<xs:documentation>{0}.{1} :: Used to delimit two snippet replacements by a snippet.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NameWithRefMode">
+					<xs:annotation>
+						<xs:documentation>{0}({1}) :: Used to enclose the second snippet replacement in brackets.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SingleValueValueConstraint">
+					<xs:annotation>
+						<xs:documentation>the possible value of {0} is {1} :: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MultiValueValueConstraint">
+					<xs:annotation>
+						<xs:documentation>the possible values of {0} are {1} :: Used to verbalize a value range constraint with multiple values.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="SelfReference">
+					<xs:annotation>
+						<xs:documentation>{0} :: Allows the snippet replacement to verbalize itself.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinClosedMaxClosed">
+					<xs:annotation>
+						<xs:documentation>at least {0} to at most {1} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinClosedMaxOpen">
+					<xs:annotation>
+						<xs:documentation>at least {0} to below {1} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinClosedMaxUnbounded">
+					<xs:annotation>
+						<xs:documentation>at least {0} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinOpenMaxClosed">
+					<xs:annotation>
+						<xs:documentation>above {0} to at most {1} :: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinOpenMaxOpen">
+					<xs:annotation>
+						<xs:documentation>above {0} to below {1} :: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinOpenMaxUnbounded">
+					<xs:annotation>
+						<xs:documentation>above {0} :: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinUnboundedMaxClosed">
+					<xs:annotation>
+						<xs:documentation>at most {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="MinUnboundedMaxOpen">
+					<xs:annotation>
+						<xs:documentation>below {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="InSeparator">
+					<xs:annotation>
+						<xs:documentation>{0} in {1} :: Used to verbalize [RolePlayer in Fact] for role value constraints, e.g. Person in Person has Age.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ErrorOpenPrimaryReport">
+					<xs:annotation>
+						<xs:documentation>Used to open a primary error report. Primary error reports block further verbalization.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ErrorClosePrimaryReport">
+					<xs:annotation>
+						<xs:documentation>Close a primary error report opened with ErrorOpenPrimaryReport</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ErrorPrimary">
+					<xs:annotation>
+						<xs:documentation>Used to verbalize a single primary error. 1 replacement field.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ErrorOpenSecondaryReport">
+					<xs:annotation>
+						<xs:documentation>Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ErrorCloseSecondaryReport">
+					<xs:annotation>
+						<xs:documentation>Close a secondary error report opened with ErrorOpenSecondaryReport.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ErrorSecondary">
+					<xs:annotation>
+						<xs:documentation>Used to verbalize a single secondary error. 1 replacement field.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerNewLine">
+					<xs:annotation>
+						<xs:documentation>Used by the verbalizer to enter a new line</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerIncreaseIndent">
+					<xs:annotation>
+						<xs:documentation>Used by the verbalizer to indent a child verbalization</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerDecreaseIndent">
+					<xs:annotation>
+						<xs:documentation>Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerOpenVerbalization">
+					<xs:annotation>
+						<xs:documentation>Used by the verbalizer around a single verbalization</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerCloseVerbalization">
+					<xs:annotation>
+						<xs:documentation>Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerDocumentHeader">
+					<xs:annotation>
+						<xs:documentation>
+							Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
+							{0} font-family
+							{1} font-size
+							{2} predicate text color
+							{3} predicate text bold
+							{4} object name color
+							{5} object name bold
+							{6} formal item color
+							{7} formal item bold
+							{8} note color
+							{9} note bold
+							{10} reference mode color
+							{11} reference mode bold
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerDocumentFooter">
+					<xs:annotation>
+						<xs:documentation>Used by the verbalizer to close a document</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerFontWeightBold">
+					<xs:annotation>
+						<xs:documentation>The text to insert to indicate a bold font.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="VerbalizerFontWeightNormal">
+					<xs:annotation>
+						<xs:documentation>The text to insert to indicate a normal font weight.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:redefine>
+</xs:schema>

@@ -33,6 +33,8 @@
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevCSharpComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVWebDevJSharpComponent"/>
+			<ComponentRef Id="NORMAVSVerbalizationComponent"/>
+			<ComponentRef Id="NORMAVSVerbalizationCoreComponent"/>
 			<ComponentRef Id="ORMSchemaCatalogComponent"/>
 			<ComponentRef Id="ORMSchemasComponent"/>
 			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>

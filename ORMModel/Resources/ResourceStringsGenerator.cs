@@ -911,6 +911,26 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The description for the default verbalization snippets for the core model.
+		/// </summary>
+		public static string CoreVerbalizationSnippetsDefaultDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.SnippetsDefaultDescription");
+			}
+		}
+		/// <summary>
+		/// The description for the verbalization snippets associated with the core model.
+		/// </summary>
+		public static string CoreVerbalizationSnippetsTypeDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Verbalization.SnippetsTypeDescription");
+			}
+		}
+		/// <summary>
 		/// This text appears in the edit menu when fact types are selected in the diagram.
 		/// </summary>
 		public static string CommandDeleteFactTypeText

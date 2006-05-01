@@ -2,18 +2,19 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:cvg="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator"
 	xmlns:exsl="http://exslt.org/common"
-	extension-element-prefixes="exsl">
+	extension-element-prefixes="exsl"
+	exclude-result-prefixes="cvg">
 	
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
-	<xsl:preserve-space elements="ve:Snippet"/>
+	<xsl:preserve-space elements="cvg:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 
 	<!-- Names of the different classes we generate -->
-	<xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationTextSnippetType'"/>
+	<xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationSnippetType'"/>
 	<xsl:param name="VerbalizationSet" select="'VerbalizationSet'"/>
 	<xsl:param name="VerbalizationSets" select="'VerbalizationSets'"/>
 	<xsl:param name="CoreVerbalizationSets" select="'CoreVerbalizationSets'"/>
@@ -31,7 +32,7 @@
 
 	<!-- Include templates to generate the shared verbalization classes -->
 	<xsl:include href="VerbalizationGenerator.Sets.xslt"/>
-	<xsl:template match="ve:VerbalizationRoot">
+	<xsl:template match="cvg:VerbalizationRoot">
 		<plx:root>
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.IO"/>
@@ -62,12 +63,12 @@
 		</plx:root>
 	</xsl:template>
 	<xsl:template name="GenerateVerbalizationClasses">
-		<xsl:apply-templates select="ve:Constructs/child::*" mode="GenerateClasses"/>
+		<xsl:apply-templates select="cvg:Constructs/child::*" mode="GenerateClasses"/>
 	</xsl:template>
-	<xsl:template match="ve:Constraints" mode="GenerateClasses">
-		<xsl:apply-templates select="ve:Constraint" mode="ConstraintVerbalization"/>
+	<xsl:template match="cvg:Constraints" mode="GenerateClasses">
+		<xsl:apply-templates select="cvg:Constraint" mode="ConstraintVerbalization"/>
 	</xsl:template>
-	<xsl:template match="ve:NoteText" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:NoteText" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
 		<plx:assign>
@@ -79,7 +80,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:Note" mode="GenerateClasses">
+	<xsl:template match="cvg:Note" mode="GenerateClasses">
 		<xsl:variable name="className" select="name()"/>
 		<plx:class name="{$className}" visibility="public" partial="true">
 			<plx:leadingInfo>
@@ -130,10 +131,10 @@
 		</plx:class>
 	</xsl:template>
 	<xsl:template name="DeclareSnippetsLocal">
-		<plx:local name="snippets" dataTypeName="{$VerbalizationSets}">
+		<plx:local name="snippets" dataTypeName="I{$VerbalizationSets}">
 			<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
 			<plx:initialize>
-				<plx:cast dataTypeName="{$VerbalizationSets}">
+				<plx:cast dataTypeName="I{$VerbalizationSets}">
 					<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
 					<plx:callInstance type="indexerCall" name=".implied">
 						<plx:callObject>
@@ -147,7 +148,7 @@
 			</plx:initialize>
 		</plx:local>
 	</xsl:template>
-	<xsl:template match="ve:FactType" mode="GenerateClasses">
+	<xsl:template match="cvg:FactType" mode="GenerateClasses">
 		<plx:class name="FactType" visibility="public" partial="true">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="FactType verbalization"/>
@@ -206,7 +207,7 @@
 				<plx:local name="reading" dataTypeName="Reading"/>
 				<xsl:call-template name="PopulateBasicRoleReplacements"/>
 				<xsl:variable name="factMockup">
-					<ve:Fact/>
+					<cvg:Fact/>
 				</xsl:variable>
 				<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
@@ -221,7 +222,7 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
-	<xsl:template match="ve:ObjectType" mode="GenerateClasses">
+	<xsl:template match="cvg:ObjectType" mode="GenerateClasses">
 		<plx:class name="{name()}" partial="true" visibility="public">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{name()} verbalization"/>
@@ -272,7 +273,7 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
-	<xsl:template match="ve:Constraint" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:Constraint" mode="ConstraintVerbalization">
 		<xsl:variable name="patternGroup" select="@patternGroup"/>
 		<xsl:variable name="isValueTypeValueConstraint" select="$patternGroup='ValueTypeValueConstraint'"/>
 		<xsl:variable name="isRoleValue" select="$patternGroup='RoleValueConstraint'"/>
@@ -436,7 +437,7 @@
 						 altogether. We're basically just spitting an inline function. For now,
 						 keep the conditional checks in place so we don't lose the work. The TrueKeyword
 						 spit here will be compiled out and not appear in code. -->
-					<!--<xsl:apply-templates select="ve:EnableSubscripts" mode="SubscriptConditions"/>-->
+					<!--<xsl:apply-templates select="cvg:EnableSubscripts" mode="SubscriptConditions"/>-->
 					<plx:trueKeyword/>
 				</xsl:variable>
 				<xsl:variable name="subscriptConditions" select="exsl:node-set($subscriptConditionsFragment)/child::*"/>
@@ -894,7 +895,7 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<xsl:if test="descendant::ve:Fact">
+				<xsl:if test="descendant::cvg:Fact">
 					<plx:local name="reading" dataTypeName="Reading"/>
 				</xsl:if>
 				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint">
@@ -975,7 +976,7 @@
 			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:class>]]></xsl:text>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template match="ve:ConstrainedRoles" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ConstrainedRoles" mode="ConstraintVerbalization">
 		<xsl:param name="PatternGroup"/>
 		<xsl:call-template name="ConstraintConditions">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
@@ -1749,11 +1750,11 @@
 			<xsl:with-param name="TopLevel" select="true()"/>
 		</xsl:apply-templates>
 	</xsl:template>
-	<xsl:template match="ve:ConditionalReading" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ConditionalReading" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="PatternGroup"/>
-		<xsl:for-each select="ve:ReadingChoice">
+		<xsl:for-each select="cvg:ReadingChoice">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="ProcessConditionalReadingChoice">
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
@@ -1973,7 +1974,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="ve:MinValue" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:MinValue" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
 		<plx:assign>
@@ -1986,7 +1987,7 @@
 		</plx:assign>
 	</xsl:template>
 
-	<xsl:template match="ve:MaxValue" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:MaxValue" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
 		<plx:assign>
@@ -1999,7 +2000,7 @@
 		</plx:assign>
 	</xsl:template>
 
-	<xsl:template match="ve:ConditionalSnippet" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ConditionalSnippet" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
 		<xsl:param name="TopLevel" select="false()"/>
@@ -2010,7 +2011,7 @@
 			<xsl:call-template name="ConditionalMatchCondition"/>
 		</xsl:variable>
 		<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
-		<xsl:for-each select="child::ve:Snippet">
+		<xsl:for-each select="child::cvg:Snippet">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="ProcessSnippetConditions">
 					<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
@@ -2025,7 +2026,7 @@
 			<xsl:with-param name="TopLevel" select="$TopLevel"/>
 			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-			<xsl:with-param name="ReplacementContents" select="ve:SnippetReplacements/child::*"/>
+			<xsl:with-param name="ReplacementContents" select="cvg:SnippetReplacements/child::*"/>
 			<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
 		</xsl:call-template>
 	</xsl:template>
@@ -2080,7 +2081,7 @@
 								<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
 							</xsl:call-template>
 						</plx:branch>
-						<xsl:for-each select="following-sibling::ve:Snippet">
+						<xsl:for-each select="following-sibling::cvg:Snippet">
 							<xsl:call-template name="ProcessSnippetConditions">
 								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
@@ -2094,7 +2095,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="ve:ConditionalReplacement" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ConditionalReplacement" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'snippet'"/>
 		<xsl:param name="TopLevel" select="false()"/>
@@ -2172,7 +2173,7 @@
 								<xsl:with-param name="ConditionalMatch" select="''"/>
 							</xsl:apply-templates>
 						</plx:branch>
-						<xsl:for-each select="following-sibling::ve:Snippet">
+						<xsl:for-each select="following-sibling::cvg:Snippet">
 							<xsl:call-template name="ProcessConditionalReplacements">
 								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
@@ -2263,7 +2264,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="ve:Snippet" mode="ConstraintVerbalization" name="ProcessSnippet">
+	<xsl:template match="cvg:Snippet" mode="ConstraintVerbalization" name="ProcessSnippet">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'snippet'"/>
 		<xsl:param name="TopLevel" select="false()"/>
@@ -2389,7 +2390,7 @@
 			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:branch>]]></xsl:text>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template match="ve:PortableDataType" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:PortableDataType" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2405,7 +2406,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:ValueRangeValueTypeName" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ValueRangeValueTypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2421,7 +2422,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:ObjectTypeName" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ObjectTypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2433,7 +2434,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:ReferenceMode" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ReferenceMode" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2445,7 +2446,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:RoleName" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:RoleName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2461,7 +2462,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:ValueRangeValueTypeName" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:ValueRangeValueTypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2477,7 +2478,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:RolePlayerRefModeScheme" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:RolePlayerRefModeScheme" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<plx:assign>
@@ -2497,7 +2498,7 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
-	<xsl:template match="ve:Fact" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:Fact" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<xsl:param name="PatternGroup"/>
@@ -2526,7 +2527,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
-		<xsl:variable name="complexReplacement" select="0!=count(ve:PredicateReplacement)"/>
+		<xsl:variable name="complexReplacement" select="0!=count(cvg:PredicateReplacement)"/>
 		<xsl:call-template name="PopulateReadingOrder">
 			<xsl:with-param name="ReadingChoice" select="@readingChoice"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
@@ -2592,7 +2593,7 @@
 					</plx:local>
 
 					<!-- Do specialized replacement for different role matches -->
-					<xsl:for-each select="ve:PredicateReplacement">
+					<xsl:for-each select="cvg:PredicateReplacement">
 						<!-- The assumption is made here that predicate replacement quantifiers
 							 are single-valued. -->
 						<xsl:if test="position()=1">
@@ -2772,7 +2773,7 @@
 			<xsl:with-param name="MessageText">Unrecognized subscript condition iterator filter attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	<xsl:template match="ve:EnableSubscripts" mode="SubscriptConditions">
+	<xsl:template match="cvg:EnableSubscripts" mode="SubscriptConditions">
 		<xsl:variable name="conditionalsFragment">
 			<xsl:apply-templates select="@*" mode="SubscriptFilterOperators"/>
 		</xsl:variable>
@@ -2792,7 +2793,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="ve:EnableSubscripts" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:EnableSubscripts" mode="ConstraintVerbalization">
 		<!-- Don't do anything in this mode. We preprocess these directive elements -->
 	</xsl:template>
 	<xsl:template name="PredicateReplacementConditionTest">
@@ -2932,7 +2933,7 @@
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="PredicateReplacementBody">
-		<xsl:for-each select="ve:Snippet">
+		<xsl:for-each select="cvg:Snippet">
 			<plx:assign>
 				<plx:left>
 					<plx:nameRef name="roleReplacement"/>
@@ -3359,7 +3360,7 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ve:IterateValueRanges" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:IterateValueRanges" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="''"/>
@@ -3492,7 +3493,7 @@
 	<!-- An IterateRoles tag is used to walk a set of roles and combine verbalizations for
 		 the roles into a list. The type of verbalization depends on the match and filter attributes
 		 specified on the list. The list separators are determined by the contents of the listStyle attribute. -->
-	<xsl:template match="ve:IterateRoles" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:IterateRoles" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
@@ -3559,7 +3560,7 @@
 		<xsl:variable name="filterTest" select="exsl:node-set($filterTestFragment)/child::*"/>
 		<xsl:variable name="filteredCountVarName" select="concat($VariablePrefix,'FilteredCount',$VariableDecorator)"/>
 		<xsl:variable name="filteredIterVarName" select="concat($VariablePrefix,'FilteredIter',$VariableDecorator)"/>
-		<xsl:variable name="trackFirstPass" select="0!=count(descendant::ve:PredicateReplacement[@pass='first'])"/>
+		<xsl:variable name="trackFirstPass" select="0!=count(descendant::cvg:PredicateReplacement[@pass='first'])"/>
 		<xsl:variable name="trackFirstPassVarName" select="concat($VariablePrefix,'IsFirstPass',$VariableDecorator)"/>
 		<xsl:variable name="createList" select="not($ListStyle='null')"/>
 		<xsl:variable name="createListOrTrackFirstPass" select="$trackFirstPass or $createList"/>
@@ -3668,7 +3669,7 @@
 					<plx:nameRef name="{$iterVarName}"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<xsl:if test="$contextMatch='singleColumnConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::ve:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::ve:RoleName">
+			<xsl:if test="$contextMatch='singleColumnConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::cvg:RoleName">
 				<plx:local name="primaryRole" dataTypeName="Role">
 					<plx:initialize>
 						<plx:callInstance name=".implied" type="arrayIndexer">
@@ -4289,7 +4290,7 @@
 	<!-- An IterateContextRoles tag is used to walk elements within another iteration
 		 context. Pattern matching is very similar to predicate replacement except that
 		 the roles are listed instead of matched to replacement fields in the predicate text -->
-	<xsl:template match="ve:IterateContextRoles" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:IterateContextRoles" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'contextIterator'"/>
 		<xsl:param name="TopLevel" select="false()"/>
@@ -4307,7 +4308,7 @@
 	</xsl:template>
 	<!-- A CompositeList tag is used to combine one or more IterateRoles lists into
 		 a single list. The listStyle parameter is ignored on IterateRoles if this is set. -->
-	<xsl:template match="ve:CompositeList" mode="ConstraintVerbalization">
+	<xsl:template match="cvg:CompositeList" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'list'"/>
@@ -4479,7 +4480,7 @@
 			<xsl:with-param name="MessageText">Unrecognized role iterator filter attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	<xsl:template match="ve:IterateRoles" mode="CompositeOrFilteredListCount">
+	<xsl:template match="cvg:IterateRoles" mode="CompositeOrFilteredListCount">
 		<xsl:param name="TotalCountCollectorVariable"/>
 		<xsl:param name="IteratorVariableName"/>
 		<xsl:param name="PatternGroup"/>

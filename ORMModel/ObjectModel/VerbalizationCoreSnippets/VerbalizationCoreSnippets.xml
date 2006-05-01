@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Neumont Object-Role Modeling Architect for Visual Studio
+
+Copyright © Neumont University. All rights reserved.
+
+The use and distribution terms for this software are covered by the
+Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+can be found in the file CPL.txt at the root of this distribution.
+By using this software in any fashion, you are agreeing to be bound by
+the terms of this license.
+
+You must not remove this notice, or any other, from this software.
+-->
+<Languages xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.neumont.edu/ORM/SDK/Verbalization VerbalizationCoreSnippets.xsd">
+	<Language xml:lang="en-US">
+		<Snippets name="_default" description="Built-in verbalization snippets">
+			<Snippet type="IndependentVerbalization"><![CDATA[{0} <span class="quantifier">is independent (it may have instances that play no other roles)</span>]]></Snippet>
+			<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="quantifier">Portable data type:</span> {0}]]></Snippet>
+			<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span>]]></Snippet>
+			<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="quantifier">Reference Scheme:</span> {0}]]></Snippet>
+			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[{0} <span class="quantifier">objectifies</span> "{1}"]]></Snippet>
+			<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
+			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
+			<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> <span class="note">{0}</span>]]></Snippet>
+			<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}]]></Snippet>
+
+			<!-- All object type names are wrapped with this style automatically.
+					 The objectType class should not be used in other quantifiers because
+					 it will interfere with hyphen-binding and possible other features. -->
+			<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
+			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Snippet>
+			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
+			<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
+
+			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
+			<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span> {0}]]></Snippet>
+
+			<Snippet type="UniversalQuantifier" sign="positive"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
+			<Snippet type="UniversalQuantifier" sign="negative"><![CDATA[<span class="quantifier">any</span> {0}]]></Snippet>
+			<Snippet type="AtMostOneQuantifier"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
+			<Snippet type="EachInstanceQuantifier"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Snippet>
+			<Snippet type="ForEachCompactQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, {1}]]></Snippet>
+			<Snippet type="ForEachQuantifier"><![CDATA[<span class="quantifier">for each</span> {0},<br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ExistentialQuantifier" sign="positive"><![CDATA[<span class="quantifier">some</span> {0}]]></Snippet>
+			<Snippet type="ExistentialQuantifier" sign="negative"><![CDATA[<span class="quantifier">no</span> {0}]]></Snippet>
+			<Snippet type="ExactlyOneQuantifier"><![CDATA[<span class="quantifier">exactly one</span> {0}]]></Snippet>
+
+			<!-- UNDONE:
+					<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> {0}]]></Form>
+					<Form condition="PreVowel"><![CDATA[<span class="quantifier">an</span> {0}]]></Form>
+				-->
+			<Snippet type="IdentityReferenceQuantifier"><![CDATA[<span class="quantifier">the same</span> {0}]]></Snippet>
+			<Snippet type="MoreThanOneQuantifier"><![CDATA[<span class="quantifier">more than one</span> {0}]]></Snippet>
+
+			<Snippet type="CombinationIdentifier"><![CDATA[{0} <span class="quantifier">combination</span>]]></Snippet>
+			<Snippet type="OneQuantifier" sign="positive"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
+			<Snippet type="OneQuantifier" sign="negative"><![CDATA[<span class="quantifier">more than one</span> {0}]]></Snippet>
+
+
+			<Snippet type="OccursInPopulation" sign="positive"><![CDATA[{0} <span class="quantifier">occurs at most once in the population of</span> {1}]]></Snippet>
+			<Snippet type="OccursInPopulation" sign="negative"><![CDATA[{0} <span class="quantifier">occurs more than once in the population of</span> {1}]]></Snippet>
+
+			<Snippet type="ModalPossibilityOperator" modality="alethic" sign="positive"><![CDATA[<span class="quantifier">it is possible that</span> {0}]]></Snippet>
+			<Snippet type="ModalPossibilityOperator" modality="deontic" sign="positive"><![CDATA[<span class="quantifier">it is permitted that</span> {0}]]></Snippet>
+			<Snippet type="ModalPossibilityOperator" modality="alethic" sign="negative"><![CDATA[<span class="quantifier">it is impossible that</span> {0}]]></Snippet>
+			<Snippet type="ModalPossibilityOperator" modality="deontic" sign="negative"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Snippet>
+			<Snippet type="ModalNecessityOperator" modality="alethic"><![CDATA[<span class="quantifier">it is necessary that</span> {0}]]></Snippet>
+			<Snippet type="ModalNecessityOperator" modality="deontic"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Snippet>
+			<Snippet type="ImpliedModalNecessityOperator" modality="alethic" sign="positive"><![CDATA[{0}]]></Snippet>
+			<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="positive"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Snippet>
+			<Snippet type="ImpliedModalNecessityOperator" modality="alethic" sign="negative"><![CDATA[<span class="quantifier">it is impossible that</span> {0}]]></Snippet>
+			<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="negative"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Snippet>
+			<!-- Used inside a ModalOperator -->
+			<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>
+
+			<!-- Snippets related to value constraint verbalization -->
+			<Snippet type="NameWithRefMode"><![CDATA[{0}(<span class="objectType">{1}</span>)]]></Snippet>
+			<Snippet type="InSeparator"><![CDATA[<span class="objectType">{0}</span> in {1}]]></Snippet>
+			<Snippet type="PeriodDelimiter"><![CDATA[{0}.<span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="SelfReference"><![CDATA[{0}]]></Snippet>
+			<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of {0} is {1}</span>]]></Snippet>
+			<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of <span class="objectType">{0}</span> are {1}</span>]]></Snippet>
+			<Snippet type="MinClosedMaxClosed"><![CDATA[<span class="quantifier">at least <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span></span>]]></Snippet>
+			<Snippet type="MinClosedMaxOpen"><![CDATA[at least <span class="objectType">{0}</span> to below <span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="MinClosedMaxUnbounded"><![CDATA[at least <span class="objectType">{0}</span>]]></Snippet>
+			<Snippet type="MinOpenMaxClosed"><![CDATA[above <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="MinOpenMaxOpen"><![CDATA[above <span class="objectType">{0}</span> to below <span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="MinOpenMaxUnbounded"><![CDATA[above <span class="objectType">{0}</span>]]></Snippet>
+			<Snippet type="MinUnboundedMaxClosed"><![CDATA[at most <span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="MinUnboundedMaxOpen"><![CDATA[below <span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="IndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="IndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+			<Snippet type="IndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+			<Snippet type="IndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+			<Snippet type="IndentedCompoundListClose"><![CDATA[</span>]]></Snippet>				
+			<Snippet type="IndentedListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
+			<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
+			<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
+			<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="IndentedLogicalOrListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+			<Snippet type="IndentedLogicalOrListPairSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
+			<Snippet type="IndentedLogicalOrListSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
+			<Snippet type="IndentedLogicalOrListFinalSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
+			<Snippet type="IndentedLogicalOrListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalOrListOpen"><![CDATA[<span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalOrListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalOrListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalOrListOpen"><![CDATA[<span>]]></Snippet>
+			<Snippet type="IndentedLogicalAndListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+			<Snippet type="IndentedLogicalAndListPairSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
+			<Snippet type="IndentedLogicalAndListSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
+			<Snippet type="IndentedLogicalAndListFinalSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
+			<Snippet type="IndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalAndListOpen"><![CDATA[<span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalAndListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalAndListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalAndListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
+			<Snippet type="TopLevelIndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
+
+			<Snippet type="CompoundListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="CompoundListPairSeparator"><![CDATA[; ]]></Snippet>
+			<Snippet type="CompoundListSeparator"><![CDATA[; ]]></Snippet>
+			<Snippet type="CompoundListFinalSeparator"><![CDATA[; ]]></Snippet>
+			<Snippet type="CompoundListClose"><![CDATA[]]></Snippet>
+			
+			<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
+			<Snippet type="SimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="SimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, and </span>]]></Snippet>
+			<Snippet type="SimpleListClose"><![CDATA[]]></Snippet>
+			<Snippet type="CompactSimpleListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="CompactSimpleListPairSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="CompactSimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="CompactSimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
+			<Snippet type="CompactSimpleListClose"><![CDATA[]]></Snippet>
+			<Snippet type="ErrorOpenPrimaryReport"><![CDATA[<span class="primaryErrorReport">]]></Snippet>
+			<Snippet type="ErrorClosePrimaryReport"><![CDATA[</span>]]></Snippet>
+			<Snippet type="ErrorOpenSecondaryReport"><![CDATA[<span class="secondaryErrorReport">]]></Snippet>
+			<Snippet type="ErrorCloseSecondaryReport"><![CDATA[</span>]]></Snippet>
+			<Snippet type="ErrorPrimary"><![CDATA[Model Error: {0}]]></Snippet>
+			<Snippet type="ErrorSecondary"><![CDATA[Model Error: {0}]]></Snippet>
+			<Snippet type="CloseVerbalizationSentence"><![CDATA[<span class="listSeparator">.</span>]]></Snippet>
+			<Snippet type="VerbalizerNewLine"><![CDATA[<br/>\n]]></Snippet>
+			<Snippet type="VerbalizerIncreaseIndent"><![CDATA[<span class="indent">]]></Snippet>
+			<Snippet type="VerbalizerDecreaseIndent"><![CDATA[</span>]]></Snippet>
+			<Snippet type="VerbalizerOpenVerbalization"><![CDATA[<p class="verbalization">]]></Snippet>
+			<Snippet type="VerbalizerCloseVerbalization"><![CDATA[</p>]]></Snippet>
+			<Snippet type="VerbalizerDocumentHeader"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>ORM2 Verbalization</title>
+	<style type="text/css">
+		body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+		.objectType {{ color: {4}; {5} }}
+		.objectTypeMissing {{ color: {4}; {5} }}
+		.referenceMode {{ color: {10}; {11} }}
+		.predicateText {{ color: #0000ff; }}
+		.quantifier {{ color: {6}; {7} }}
+		.primaryErrorReport {{ color: red; font-weight: bolder; }}
+		.secondaryErrorReport {{ color: red; }}
+		.verbalization {{ }}
+		.indent {{ left: 20px; position: relative; }}
+		.smallIndent {{ left: 8px; position: relative;}}
+		.listSeparator {{ color: windowtext; font-weight: 200;}}
+		.logicalOperator {{ color: {6}; {7}}}
+		.note {{ color: {8}; font-style: italic; {9} }}
+		.notAvailable {{ font-style: italic; }}
+	</style>
+</head>
+<body>]]></Snippet>
+			<Snippet type="VerbalizerDocumentFooter"><![CDATA[</body></html>]]></Snippet>
+			<Snippet type="VerbalizerFontWeightBold"><![CDATA[font-weight: bold;]]></Snippet>
+			<Snippet type="VerbalizerFontWeightNormal"><![CDATA[font-weight: normal;]]></Snippet>
+		</Snippets>
+	</Language>
+</Languages>

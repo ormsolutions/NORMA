@@ -201,6 +201,21 @@
 									</Component>
 								</Directory>
 							</Directory>
+							<Directory Id="Verbalization" Name="Verbaliz" LongName="Verbalization">
+								<Component Id="NORMAVSVerbalizationComponent"  Guid="C39EDC6D-03BA-4519-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="VerbalizationUntypedSnippets.xsd" Name="VrbUnSnp.xsd" LongName="VerbalizationUntypedSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd"
+										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="VerbalizationDir" Value="[Verbalization]"/>
+								</Component>
+								<Directory Id="CoreVerbalization" Name="Core">
+									<Component Id="NORMAVSVerbalizationCoreComponent" Guid="45D2041A-3025-41E6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+										<File Id="_default.xml" Name="_default.xml" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="VerbalizationCoreSnippets.xsd" Name="VrbCrSnp.xsd" LongName="VerbalizationCoreSnippets.xsd" src="..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									</Component>
+								</Directory>
+							</Directory>
 						</Directory>
 
 						<Component Id="NORMAVSSettingsComponent" Guid="956063F7-13D9-4083-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">

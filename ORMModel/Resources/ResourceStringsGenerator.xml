@@ -338,6 +338,12 @@
 	<ResourceString name="ModelExceptionInternalConstraintInconsistentRoleOwners" model="Model" resourceName="ModelException.InternalConstraint.InconsistentRoleOwners">
 		<comment type="summary">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by an internal constraint.</comment>
 	</ResourceString>
+	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription">
+		<comment type="summary">The description for the default verbalization snippets for the core model.</comment>
+	</ResourceString>
+	<ResourceString name="CoreVerbalizationSnippetsTypeDescription" model="Model" resourceName="Verbalization.SnippetsTypeDescription">
+		<comment type="summary">The description for the verbalization snippets associated with the core model.</comment>
+	</ResourceString>
 	<ResourceString name="CommandDeleteFactTypeText" model="Diagram" resourceName="Command.DeleteFactType.Text">
 		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>
 	</ResourceString>

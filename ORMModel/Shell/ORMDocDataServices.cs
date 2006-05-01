@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
@@ -120,11 +121,31 @@ namespace Neumont.Tools.ORM.Shell
 					return ServiceProvider;
 				}
 			}
+			/// <summary>
+			/// Defer to VerbalizationSnippetsDictionary on the document. Implements
+			/// IORMToolServices.VerbalizationSnippetsDictionary
+			/// </summary>
+			protected IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary
+			{
+				get
+				{
+					return myServices.VerbalizationSnippetsDictionary;
+				}
+			}
+			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+			{
+				get
+				{
+					return VerbalizationSnippetsDictionary;
+				}
+			}
 			#endregion // IORMToolServices Implementation
 		}
 		#endregion // Store services passthrough
 		#region IORMToolServices Implementation
 		private IORMToolTaskProvider myTaskProvider;
+		private string myLastVerbalizationSnippetsOptions;
+		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
 		/// <summary>
 		/// Retrieve the task provider for this document. Created
 		/// on demand using the CreateTaskProvider method. Implements
@@ -173,6 +194,41 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return ServiceProvider;
+			}
+		}
+		/// <summary>
+		/// Implements IORMToolServices.VerbalizationSnippetsDictionary
+		/// </summary>
+		protected IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary
+		{
+			get
+			{
+				IDictionary<Type, IVerbalizationSets> retVal = myVerbalizationSnippets;
+				string currentSnippetsOptions = myLastVerbalizationSnippetsOptions;
+				string verbalizationOptions = OptionsPage.CurrentCustomVerbalizationSnippets;
+				if (verbalizationOptions == null)
+				{
+					verbalizationOptions = "";
+				}
+				if (retVal == null || (currentSnippetsOptions == null || currentSnippetsOptions != verbalizationOptions))
+				{
+					currentSnippetsOptions = verbalizationOptions;
+					// UNDONE: Directory should be configurable
+					retVal = VerbalizationSnippetSetsManager.LoadSnippetsDictionary(
+						Store,
+						ORMDesignerPackage.VerbalizationDirectory,
+						VerbalizationSnippetsIdentifier.ParseIdentifiers(verbalizationOptions));
+					myVerbalizationSnippets = retVal;
+					myLastVerbalizationSnippetsOptions = currentSnippetsOptions;
+				}
+				return retVal;
+			}
+		}
+		IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+		{
+			get
+			{
+				return VerbalizationSnippetsDictionary;
 			}
 		}
 		#endregion // IORMToolServices Implementation

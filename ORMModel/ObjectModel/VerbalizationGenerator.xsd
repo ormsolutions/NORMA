@@ -2,11 +2,11 @@
 <xs:schema
 	attributeFormDefault="unqualified"
 	elementFormDefault="qualified"
-	targetNamespace="http://schemas.neumont.edu/ORM/SDK/Verbalization"
-	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator"
+	xmlns:cvg="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:include schemaLocation="VerbalizationGeneratorSnippets.xsd"/>
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
 			Neumont Object-Role Modeling Architect for Visual Studio
@@ -22,6 +22,7 @@
 			You must not remove this notice, or any other, from this software.
 		</xs:appinfo>
 	</xs:annotation>
+	<xs:import namespace="http://schemas.neumont.edu/ORM/SDK/Verbalization" schemaLocation="VerbalizationCoreSnippets/VerbalizationCoreSnippets.xsd"/>
 	<xs:simpleType name="PassEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="first"/>
@@ -176,7 +177,7 @@
 	<xs:complexType name="SnippetLeafType">
 		<xs:attribute name="ref" use="required">
 			<xs:simpleType>
-				<xs:union memberTypes="SnippetTypeEnum">
+				<xs:union memberTypes="ve:SnippetTypeEnum">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
 							<xs:enumeration value="null"/>
@@ -695,7 +696,7 @@
 		<xs:sequence>
 			<xs:element name="Constraint" type="ConstraintType" minOccurs="1" maxOccurs="unbounded">
 				<xs:unique name="ConstrainedRolesFilter">
-					<xs:selector xpath="ve:ConstrainedRoles"/>
+					<xs:selector xpath="cvg:ConstrainedRoles"/>
 					<xs:field xpath="@span"/>
 					<xs:field xpath="@factArity"/>
 					<xs:field xpath="@minFactArity"/>
@@ -715,13 +716,13 @@
 						<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 						<xs:element name="ConditionalReading" type="ConditionalReadingType">
 							<xs:unique name="ConditionalReadingReadingChoice">
-								<xs:selector xpath="ve:ReadingChoice"/>
+								<xs:selector xpath="cvg:ReadingChoice"/>
 								<xs:field xpath="@match"/>
 							</xs:unique>
 						</xs:element>
 					</xs:choice>
 					<xs:attribute name="span" type="SpanEnum" use="optional"/>
-					<xs:attribute name="sign" type="SignEnum" use="optional"/>
+					<xs:attribute name="sign" type="ve:SignEnum" use="optional"/>
 					<xs:attributeGroup ref="FactArityAttributes"/>
 				</xs:complexType>
 			</xs:element>
@@ -746,7 +747,6 @@
 						</xs:simpleContent>
 					</xs:complexType>
 				</xs:element>
-				<xs:element ref="Languages" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="Constructs" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:all>
@@ -758,6 +758,11 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="snippetsLocation" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>The relative location of the file containing the snippets</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

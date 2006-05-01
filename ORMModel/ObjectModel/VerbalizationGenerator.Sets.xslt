@@ -4,7 +4,8 @@
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:exsl="http://exslt.org/common"
-	extension-element-prefixes="exsl">
+	extension-element-prefixes="exsl"
+	exclude-result-prefixes="ve">
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 
@@ -13,11 +14,13 @@
 			 this file and defined in the containing file. They are redefined here (along with a root template)
 			 to ease development and debugging of this file without the container. -->
 	<!--<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
-    <xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationTextSnippetType'"/>
+    <xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationSnippetType'"/>
     <xsl:param name="VerbalizationSet" select="'VerbalizationSet'"/>
     <xsl:param name="VerbalizationSets" select="'VerbalizationSets'"/>
     <xsl:param name="CoreVerbalizationSets" select="'CoreVerbalizationSets'"/>
-    <xsl:template match="ve:VerbalizationRoot">
+	<xsl:param name="ArrayVerbalizationSet" select="'ArrayVerbalizationSet'"/>
+	<xsl:param name="DictionaryVerbalizationSet" select="'DictionaryVerbalizationSet'"/>
+	<xsl:template match="cvg:VerbalizationRoot" xmlns:cvg="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator">
 		<plx:root>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<xsl:call-template name="GenerateVerbalizationSets"/>
@@ -28,7 +31,7 @@
 	<!-- Template to sort and normalize ve:Snippet templates for the default (en-US) language. Called from
 	     the ve:VerbalizationRoot node.-->
 	<xsl:template name="GenerateSortedSnippetsFragment">
-		<xsl:for-each select="ve:Languages/ve:Language[@xml:lang='en-US']/ve:Snippets/ve:Snippet">
+		<xsl:for-each select="exsl:node-set(document(@snippetsLocation))/ve:Languages/ve:Language[@xml:lang='en-US']/ve:Snippets/ve:Snippet">
 			<xsl:sort select="@type" data-type="text" order="ascending"/>
 			<xsl:sort select="@modality" data-type="text" order="ascending"/>
 			<!-- We want positive before negative so that we don't have to resort after explicitly adding the default values -->
@@ -237,15 +240,59 @@
 				<plx:pragma type="region" data="I{$VerbalizationSets} interface"/>
 				<plx:docComment>
 					<summary>
-						<xsl:text>A base class for the generic </xsl:text>
+						<xsl:text>A base interface for the generic </xsl:text>
 						<xsl:value-of select="$VerbalizationSets"/>
-						<xsl:text> class.</xsl:text>
+						<xsl:text> interface.</xsl:text>
 					</summary>
 				</plx:docComment>
 			</plx:leadingInfo>
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="I{$VerbalizationSets} interface"/>
 			</plx:trailingInfo>
+		</plx:interface>
+		<plx:interface name="I{$VerbalizationSets}"  visibility="public">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="I{$VerbalizationSets} interface"/>
+				<plx:docComment>
+					<summary>
+						<xsl:text>An interface representing generic verbalization sets.</xsl:text>
+					</summary>
+					<typeParam>An enumeration representing the verbalization sets</typeParam>
+				</plx:docComment>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Genereic I{$VerbalizationSets} interface"/>
+			</plx:trailingInfo>
+			<plx:typeParam name="EnumType" requireValueType="true"/>
+			<plx:implementsInterface dataTypeName="I{$VerbalizationSets}"/>
+			<plx:function name="GetSnippet" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieve a snippet for the specified type and criteria.</summary>
+						<param name="snippetType">A value from the EnumType enum.</param>
+						<param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
+						<param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
+						<returns>Snippet string</returns>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="snippetType" dataTypeName="EnumType"/>
+				<plx:param name="isDeontic" dataTypeName=".boolean"/>
+				<plx:param name="isNegative" dataTypeName=".boolean"/>
+				<plx:returns dataTypeName=".string"/>
+			</plx:function>
+			<plx:function name="GetSnippet" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieve a snippet for the specified type with default criteria.</summary>
+						<param name="snippetType">
+							<xsl:text>A value from the EnumType enum.</xsl:text>
+						</param>
+						<returns>Snippet string</returns>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="snippetType" dataTypeName="EnumType"/>
+				<plx:returns dataTypeName=".string"/>
+			</plx:function>
 		</plx:interface>
 		<plx:class name="{$VerbalizationSets}" modifier="abstract" visibility="public">
 			<plx:leadingInfo>
@@ -265,7 +312,9 @@
 				<plx:pragma type="closeRegion" data="Generic {$VerbalizationSets} class"/>
 			</plx:trailingInfo>
 			<plx:typeParam name="EnumType" requireValueType="1"/>
-			<plx:implementsInterface dataTypeName="I{$VerbalizationSets}"/>
+			<plx:implementsInterface dataTypeName="I{$VerbalizationSets}">
+				<plx:passTypeParam dataTypeName="EnumType"/>
+			</plx:implementsInterface>
 			<!-- Spit the VerbalizationSet structure -->
 			<plx:class name="{$VerbalizationSet}" visibility="protected" modifier="abstract">
 				<plx:leadingInfo>
@@ -281,31 +330,6 @@
 				<plx:trailingInfo>
 					<plx:pragma type="closeRegion" data="{$VerbalizationSet} class"/>
 				</plx:trailingInfo>
-				<!--<plx:field name="mySnippets" visibility="private" dataTypeName=".string" dataTypeIsSimpleArray="true"/>
-                <plx:function name=".construct"  visibility="public">
-                    <plx:leadingInfo>
-                        <plx:docComment>
-                            <summary>
-                                <xsl:value-of select="$VerbalizationSet"/>
-                                <xsl:text> constructor.</xsl:text>
-                            </summary>
-                            <param name="snippets">
-                                <xsl:text>An array of strings with one string for each value in the </xsl:text>
-                                <xsl:value-of select="$VerbalizationTextSnippetType"/>
-                                <xsl:text> enum.</xsl:text>
-                            </param>
-                        </plx:docComment>
-                    </plx:leadingInfo>
-                    <plx:param name="snippets" dataTypeName=".string" dataTypeIsSimpleArray="true"/>
-                    <plx:assign>
-                        <plx:left>
-                            <plx:callThis name="mySnippets" type="field"/>
-                        </plx:left>
-                        <plx:right>
-                            <plx:nameRef type="parameter" name="snippets"/>
-                        </plx:right>
-                    </plx:assign>
-                </plx:function>-->
 				<plx:function name="GetSnippet" visibility="public" modifier="abstract">
 					<plx:leadingInfo>
 						<plx:docComment>
@@ -326,29 +350,8 @@
 						<plx:passTypeParam dataTypeName="EnumType"/>
 					</plx:param>
 					<plx:returns dataTypeName=".string"/>
-					<!--<plx:return>
-                        <plx:callInstance name=".implied" type="arrayIndexer">
-                            <plx:callObject>
-                                <plx:callThis name="mySnippets" type="field"/>
-                            </plx:callObject>
-                            <plx:passParam>
-                                <plx:callInstance name="ValueToIndex">
-                                    <plx:callObject>
-                                        <plx:nameRef name="owner"/>
-                                    </plx:callObject>
-                                    <plx:passParam>
-                                        <plx:nameRef name="snippetType"/>
-                                    </plx:passParam>
-                                </plx:callInstance>
-                            </plx:passParam>
-                        </plx:callInstance>
-                    </plx:return>-->
 				</plx:function>
 			</plx:class>
-
-
-
-
 
 			<plx:class name="{$ArrayVerbalizationSet}" visibility="protected">
 				<plx:leadingInfo>
@@ -527,7 +530,7 @@
 				</plx:function>
 			</plx:class>
 			<plx:field name="mySets" visibility="private" dataTypeName="{$VerbalizationSet}" dataTypeIsSimpleArray="true"/>
-			<plx:function name="GetSnippet" visibility="public">
+			<plx:function name="GetSnippet" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Retrieve a snippet for the specified type with default criteria.</summary>
@@ -539,6 +542,9 @@
 						<returns>Snippet string</returns>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:interfaceMember dataTypeName="I{$VerbalizationSets}" memberName="GetSnippet">
+					<plx:passTypeParam dataTypeName="EnumType"/>
+				</plx:interfaceMember>
 				<plx:param name="snippetType" dataTypeName="EnumType"/>
 				<plx:returns dataTypeName=".string"/>
 				<plx:return>
@@ -555,7 +561,7 @@
 					</plx:callThis>
 				</plx:return>
 			</plx:function>
-			<plx:function name="GetSnippet" visibility="public">
+			<plx:function name="GetSnippet" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Retrieve a snippet for the specified type and criteria.</summary>
@@ -569,6 +575,9 @@
 						<returns>Snippet string</returns>
 					</plx:docComment>
 				</plx:leadingInfo>
+				<plx:interfaceMember dataTypeName="I{$VerbalizationSets}" memberName="GetSnippet">
+					<plx:passTypeParam dataTypeName="EnumType"/>
+				</plx:interfaceMember>
 				<plx:param name="snippetType" dataTypeName="EnumType"/>
 				<plx:param name="isDeontic" dataTypeName=".boolean"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
@@ -696,9 +705,13 @@
 						<param name="sets">
 							<xsl:text>The empty verbalization sets to be populated</xsl:text>
 						</param>
+						<param name="userData">
+							<xsl:text>User-defined data passed to the Create method</xsl:text>
+						</param>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="sets" dataTypeIsSimpleArray="true" dataTypeName="VerbalizationSet"/>
+				<plx:param name="userData" dataTypeName=".object"/>
 			</plx:function>
 			<plx:function modifier="abstract" name="ValueToIndex" visibility="protected">
 				<plx:leadingInfo>
@@ -719,10 +732,21 @@
 						<summary>
 							<xsl:text>Creates an instance of the </xsl:text>
 							<xsl:value-of select="$VerbalizationSets"/>
-							<xsl:text> class calling the PopulateVerbalizationSets method.</xsl:text>
+							<xsl:text> class and calls the PopulateVerbalizationSets method.</xsl:text>
 						</summary>
-						<typeparam name="DerivedType">Name of class to instantiate that derives from <xsl:value-of select="$VerbalizationSets"/>.</typeparam>
-						<returns>Returns a generic {$VerbalizationSets} object with snippet sets</returns>
+						<typeparam name="DerivedType">
+							<xsl:text>Name of class to instantiate that derives from </xsl:text>
+							<xsl:value-of select="$VerbalizationSets"/>
+							<xsl:text>.</xsl:text>
+						</typeparam>
+						<param name="userPopulationData">
+							<xsl:text>User-defined data passed forward to PopulateVerbalizationSets</xsl:text>
+						</param>
+						<returns>
+							<xsl:text>Returns a generic </xsl:text>
+							<xsl:value-of select="$VerbalizationSets"/>
+							<xsl:text>object with snippet sets</xsl:text>
+						</returns>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:typeParam name="DerivedType" requireDefaultConstructor="1">
@@ -730,6 +754,7 @@
 						<plx:passTypeParam dataTypeName="EnumType"/>
 					</plx:typeConstraint>
 				</plx:typeParam>
+				<plx:param name="userPopulationData" dataTypeName=".object"/>
 				<plx:returns dataTypeName="{$VerbalizationSets}">
 					<plx:passTypeParam dataTypeName="EnumType"/>
 				</plx:returns>
@@ -739,6 +764,43 @@
 						<plx:callNew dataTypeName="DerivedType"/>
 					</plx:initialize>
 				</plx:local>
+				<plx:callThis accessor="static" name="Initialize">
+					<plx:passParam>
+						<plx:nameRef name="retVal"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef name="userPopulationData"/>
+					</plx:passParam>
+				</plx:callThis>
+				<plx:return>
+					<plx:nameRef name="retVal"/>
+				</plx:return>
+			</plx:function>
+			<plx:function modifier="static" name="Initialize" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>
+							<xsl:text>Initializes an instance of the </xsl:text>
+							<xsl:value-of select="$VerbalizationSets"/>
+							<xsl:text> class and calls the PopulateVerbalizationSets method.</xsl:text>
+						</summary>
+						<param name="target">
+							<xsl:text>The newly created object to populate.</xsl:text>
+						</param>
+						<param name="userPopulationData">
+							<xsl:text>User-defined data passed forward to PopulateVerbalizationSets</xsl:text>
+						</param>
+						<returns>
+							<xsl:text>Returns a generic </xsl:text>
+							<xsl:value-of select="$VerbalizationSets"/>
+							<xsl:text> object with snippet sets</xsl:text>
+						</returns>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="target" dataTypeName="{$VerbalizationSets}">
+					<plx:passTypeParam dataTypeName="EnumType"/>
+				</plx:param>
+				<plx:param name="userPopulationData" dataTypeName=".object"/>
 				<plx:local name="newSets" dataTypeName="{$VerbalizationSet}" dataTypeIsSimpleArray="1">
 					<plx:initialize>
 						<plx:callNew dataTypeName="VerbalizationSet" dataTypeIsSimpleArray="1">
@@ -750,17 +812,20 @@
 				</plx:local>
 				<plx:callInstance name="PopulateVerbalizationSets" type="methodCall">
 					<plx:callObject>
-						<plx:nameRef name="retVal"/>
+						<plx:nameRef name="target"/>
 					</plx:callObject>
 					<plx:passParam>
 						<plx:nameRef name="newSets"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="userPopulationData"/>
 					</plx:passParam>
 				</plx:callInstance>
 				<plx:assign>
 					<plx:left>
 						<plx:callInstance name="mySets" type="property">
 							<plx:callObject>
-								<plx:nameRef name="retVal"/>
+								<plx:nameRef name="target"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:left>
@@ -768,9 +833,6 @@
 						<plx:nameRef name="newSets"/>
 					</plx:right>
 				</plx:assign>
-				<plx:return>
-					<plx:nameRef name="retVal"/>
-				</plx:return>
 			</plx:function>
 		</plx:class>
 		<!-- Spit the VerbalizationSets class -->
@@ -807,6 +869,9 @@
 						<plx:callStatic name="Create" dataTypeName="{$VerbalizationSets}">
 							<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
 							<plx:passMemberTypeParam dataTypeName="{$CoreVerbalizationSets}"/>
+							<plx:passParam>
+								<plx:nullKeyword/>
+							</plx:passParam>
 						</plx:callStatic>
 					</plx:cast>
 				</plx:initialize>
@@ -816,9 +881,11 @@
 					<plx:docComment>
 						<summary>Populates the snippet sets of the <xsl:value-of select="$CoreVerbalizationSets"/> object.</summary>
 						<param name="sets">The sets to be populated.</param>
+						<param name="userData">User-defined data passed to the Create method</param>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="sets" dataTypeName="VerbalizationSet" dataTypeIsSimpleArray="1"/>
+				<plx:param name="userData" dataTypeName=".object"/>
 				<plx:assign>
 					<plx:left>
 						<plx:callInstance name=".implied" type="arrayIndexer">

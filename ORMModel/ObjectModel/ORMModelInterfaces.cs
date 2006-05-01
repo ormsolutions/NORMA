@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Shell;
@@ -45,6 +46,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// such as when the model is being loaded outside the Visual Studio environment.
 		/// </summary>
 		IServiceProvider ServiceProvider { get;}
+		/// <summary>
+		/// Retrieve the VerbalizationSnippets dictionary for this store
+		/// </summary>
+		IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary { get;}
 	}
 	#endregion // IORMToolServices interface
 	#region IRepresentedModelElements interface

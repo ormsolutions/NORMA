@@ -90,6 +90,7 @@ namespace Neumont.Tools.ORM.Shell
 		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions\";
 		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
+		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
 		#endregion
 
 		#region Member variables
@@ -100,6 +101,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IVsWindowFrame myFactEditorToolWindow;
 		private ORMDesignerFontsAndColors myFontAndColorService;
 		private ORMDesignerSettings myDesignerSettings;
+		private string myVerbalizationDirectory;
 		private static ORMDesignerPackage mySingleton;
 		#endregion
 		#region Construction/destruction
@@ -156,7 +158,8 @@ namespace Neumont.Tools.ORM.Shell
 							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
 							string settingsPath = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSPATH, String.Empty);
 							string xmlConvertersDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_CONVERTERSDIR, String.Empty);
-							package.myDesignerSettings = new ORMDesignerSettings(package, settingsPath, xmlConvertersDir);
+							retVal = new ORMDesignerSettings(package, settingsPath, xmlConvertersDir);
+							package.myDesignerSettings = retVal;
 						}
 						finally
 						{
@@ -169,7 +172,46 @@ namespace Neumont.Tools.ORM.Shell
 								normaRegistryRoot.Close();
 							}
 						}
-						retVal = package.myDesignerSettings;
+					}
+					return retVal;
+				}
+				return null;
+			}
+		}
+		/// <summary>
+		/// Get the designer settings for this package
+		/// </summary>
+		public static string VerbalizationDirectory
+		{
+			get
+			{
+				ORMDesignerPackage package = mySingleton;
+				if (package != null)
+				{
+					string retVal = package.myVerbalizationDirectory;
+					if (retVal == null)
+					{
+						RegistryKey applicationRegistryRoot = null;
+						RegistryKey normaRegistryRoot = null;
+						try
+						{
+							applicationRegistryRoot = package.ApplicationRegistryRoot;
+							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
+							string settingsPath = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSPATH, String.Empty);
+							retVal = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, String.Empty);
+							package.myVerbalizationDirectory = retVal;
+						}
+						finally
+						{
+							if (applicationRegistryRoot != null)
+							{
+								applicationRegistryRoot.Close();
+							}
+							if (normaRegistryRoot != null)
+							{
+								normaRegistryRoot.Close();
+							}
+						}
 					}
 					return retVal;
 				}

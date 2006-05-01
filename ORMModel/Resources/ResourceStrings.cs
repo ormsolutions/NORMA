@@ -251,6 +251,14 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPageCategoryVerbalizationBehaviorId = "OptionsPage.Category.VerbalizationBehavior";
 		/// <summary>
+		/// Description of the Custom Verbalization Snippets option
+		/// </summary>
+		public const string OptionsPagePropertyCustomVerbalizationSnippetsDescriptionId = "OptionsPage.Property.CustomVerbalizationSnippets.Description";
+		/// <summary>
+		/// Display Name of the Custom Verbalization Snippets option
+		/// </summary>
+		public const string OptionsPagePropertyCustomVerbalizationSnippetsDisplayNameId = "OptionsPage.Property.CustomVerbalizationSnippets.DisplayName";
+		/// <summary>
 		/// Description of the default data type option
 		/// </summary>
 		public const string OptionsPagePropertyDataTypeDescriptionId = "OptionsPage.Property.DataType.Description";
