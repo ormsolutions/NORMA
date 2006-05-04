@@ -205,7 +205,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public ORMMetaModelRemoveClosure()
 		{
 			#region Initialize MetaData Table
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
@@ -260,6 +259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasRole.RoleCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasRole.RoleCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole.ProxyMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole.ProxyMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -391,8 +391,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ExclusionConstraintElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.SubsetConstraint),
 				typeof(Neumont.Tools.ORM.ObjectModel.SubsetConstraintElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.Expression),
-				typeof(Neumont.Tools.ORM.ObjectModel.ExpressionElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint),
 				typeof(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint),
@@ -484,6 +482,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.RoleValueConstraint),
 				typeof(Neumont.Tools.ORM.ObjectModel.RoleValueConstraintElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElement),
+				typeof(Neumont.Tools.ORM.ObjectModel.Expression),
+				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression),
+				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpressionElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.DataType),
 				typeof(Neumont.Tools.ORM.ObjectModel.UnspecifiedDataType),
 				typeof(Neumont.Tools.ORM.ObjectModel.UnspecifiedDataTypeElementFactoryCreator),
@@ -557,8 +558,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMElementLink),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataTypeElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation),
-				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.Objectification),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole),
@@ -700,6 +699,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasRoleElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole),
 				typeof(Neumont.Tools.ORM.ObjectModel.RoleProxyHasRoleElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression),
+				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpressionElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -733,10 +734,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "ValueRangeText", Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "IsPersonal", Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonalMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeIsPersonalFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactType), "NestingTypeDisplay", Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactType.FactTypeNestingTypeDisplayFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactType), "DerivationRuleDisplay", Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactType.FactTypeDerivationRuleDisplayFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactType), "DerivationStorageDisplay", Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactType.FactTypeDerivationStorageDisplayFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact), "IsPrimary", Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimaryMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact.SubtypeFactIsPrimaryFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MultiColumnExternalConstraintModalityFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Body", Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionBodyFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Language", Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionLanguageFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.InternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint.InternalConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint), "IsPreferred", Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.InternalUniquenessConstraintIsPreferredFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.SingleColumnExternalConstraintModalityFieldHandler)),
@@ -750,6 +751,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode), "KindDisplay", Neumont.Tools.ORM.ObjectModel.ReferenceMode.KindDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeKindDisplayFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.CustomReferenceMode), "CustomFormatString", Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatStringMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomReferenceModeCustomFormatStringFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint), "Text", Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueConstraintTextFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Body", Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionBodyFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Language", Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionLanguageFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression), "DerivationStorage", Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.DerivationStorageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.FactTypeDerivationExpressionDerivationStorageFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "Text", Neumont.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "IsPrimary", Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "Language", Neumont.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingLanguageFieldHandler)),
@@ -769,7 +773,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "Name", Neumont.Tools.ORM.ObjectModel.Role.NameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Scale", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ScaleMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeScaleFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Length", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.LengthMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeLengthFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation), "IsStored", Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStoredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.FactTypeDerivationIsStoredFieldHandler)),
 
 			};
 			return typeArray;
@@ -791,8 +794,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "DataType", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.DataTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "ValueTypeCollection", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation), "AssociatedFactType", Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation), "DerivationRule", Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), "NestedFactType", Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), "NestingType", Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), "RolePlayer", Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole.RolePlayerMetaRoleGuid),
@@ -931,6 +932,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasRole), "ReadingOrder", Neumont.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole), "TargetRole", Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole.TargetRoleMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole), "Proxy", Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole.ProxyMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), "DerivationRule", Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), "FactType", Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -3309,51 +3312,182 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region DerivationRule's Generated Accessor Code
+		#region DerivationRuleDisplay's Generated  Field Code
+		#region DerivationRuleDisplay's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String DerivationRuleDisplayMetaAttributeGuidString = "b0af5a04-cfb5-4f3f-9ef5-1df00c4a180f";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid DerivationRuleDisplayMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplayMetaAttributeGuidString);
+		#endregion
+
+		#region DerivationRuleDisplay's Generated Property Code
+
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.Expression DerivationRule
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, AllowNulls=true, FieldHandlerType=typeof(FactTypeDerivationRuleDisplayFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplayMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplay")]
+		public  System.String DerivationRuleDisplay
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.Expression;
+				return factTypeDerivationRuleDisplayFieldHandler.GetFieldValue(this);
 			}
+		
 			set
 			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuid);
-				if (links.Count > 0)
+				factTypeDerivationRuleDisplayFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FactTypeDerivationRuleDisplayFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FactType.DerivationRuleDisplay field
+		/// </summary>
+		private static FactTypeDerivationRuleDisplayFieldHandler	factTypeDerivationRuleDisplayFieldHandler	= FactTypeDerivationRuleDisplayFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FactType.DerivationRuleDisplay
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FactTypeDerivationRuleDisplayFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.FactType,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FactTypeDerivationRuleDisplayFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FactType.DerivationRuleDisplay field handler
+			/// </summary>
+			/// <value>FactTypeDerivationRuleDisplayFieldHandler</value>
+			public static FactTypeDerivationRuleDisplayFieldHandler Instance
+			{
+				get
 				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					if (Neumont.Tools.ORM.ObjectModel.FactType.factTypeDerivationRuleDisplayFieldHandler != null)
 					{
-						if (!link.IsRemoved)
-						{
-							Neumont.Tools.ORM.ObjectModel.Expression counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.Expression;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
+						return Neumont.Tools.ORM.ObjectModel.FactType.factTypeDerivationRuleDisplayFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FactType will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.FactType.factTypeDerivationRuleDisplayFieldHandler, so just instantiate one and return it
+						return new FactTypeDerivationRuleDisplayFieldHandler();
 					}
 				}
-				if ((!sameRolePlayer) && (value != null))
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FactType.DerivationRuleDisplay field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
 				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation), newRoles);
+					return Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplayMetaAttributeGuid;
 				}
 			}
 		}
 		#endregion
+		#endregion
+		
+		#region DerivationStorageDisplay's Generated  Field Code
+		#region DerivationStorageDisplay's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String DerivationStorageDisplayMetaAttributeGuidString = "e794eb0c-a7e6-4df7-826c-f021718747ed";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid DerivationStorageDisplayMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplayMetaAttributeGuidString);
+		#endregion
+
+		#region DerivationStorageDisplay's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.DerivationStorageType),DefaultEnumerationValueName="")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(FactTypeDerivationStorageDisplayFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplayMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplay")]
+		public  Neumont.Tools.ORM.ObjectModel.DerivationStorageType DerivationStorageDisplay
+		{
+			get
+			{
+				return factTypeDerivationStorageDisplayFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				factTypeDerivationStorageDisplayFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FactTypeDerivationStorageDisplayFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FactType.DerivationStorageDisplay field
+		/// </summary>
+		private static FactTypeDerivationStorageDisplayFieldHandler	factTypeDerivationStorageDisplayFieldHandler	= FactTypeDerivationStorageDisplayFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FactType.DerivationStorageDisplay
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FactTypeDerivationStorageDisplayFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.FactType,Neumont.Tools.ORM.ObjectModel.DerivationStorageType>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FactTypeDerivationStorageDisplayFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FactType.DerivationStorageDisplay field handler
+			/// </summary>
+			/// <value>FactTypeDerivationStorageDisplayFieldHandler</value>
+			public static FactTypeDerivationStorageDisplayFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.FactType.factTypeDerivationStorageDisplayFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.FactType.factTypeDerivationStorageDisplayFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FactType will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.FactType.factTypeDerivationStorageDisplayFieldHandler, so just instantiate one and return it
+						return new FactTypeDerivationStorageDisplayFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FactType.DerivationStorageDisplay field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplayMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 		#region NestingType's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -3721,6 +3855,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public Neumont.Tools.ORM.ObjectModel.RoleBaseMoveableCollection RoleCollection
 		{
 			get { return new Neumont.Tools.ORM.ObjectModel.RoleBaseMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.FactTypeHasRole.FactTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasRole.RoleCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region DerivationRule's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression DerivationRule
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), newRoles);
+				}
+			}
 		}
 		#endregion
 	}
@@ -5539,318 +5718,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new SubsetConstraintElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Expression.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.Expression")]
-	public  partial class Expression : Neumont.Tools.ORM.ObjectModel.ORMNamedElement
-	{
-		#region Expression's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "ddc5ef24-70bb-48aa-8481-2a76021581a3";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Expression.MetaClassGuidString);
-		#endregion
-
-		#region Body's Generated  Field Code
-		#region Body's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String BodyMetaAttributeGuidString = "75d72ae2-bc07-493b-a4d1-9b9b1f2e1dd1";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid BodyMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuidString);
-		#endregion
-
-		#region Body's Generated Property Code
-
-		private System.String bodyPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ExpressionBodyFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Expression.Body")]
-		public  System.String Body
-		{
-			get
-			{
-				return bodyPropertyStorage;
-			}
-		
-			set
-			{
-				expressionBodyFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ExpressionBodyFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for Expression.Body field
-		/// </summary>
-		private static ExpressionBodyFieldHandler	expressionBodyFieldHandler	= ExpressionBodyFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for Expression.Body
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ExpressionBodyFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.Expression,System.String>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ExpressionBodyFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the Expression.Body field handler
-			/// </summary>
-			/// <value>ExpressionBodyFieldHandler</value>
-			public static ExpressionBodyFieldHandler Instance
-			{
-				get
-				{
-					if (Neumont.Tools.ORM.ObjectModel.Expression.expressionBodyFieldHandler != null)
-					{
-						return Neumont.Tools.ORM.ObjectModel.Expression.expressionBodyFieldHandler;
-					}
-					else
-					{
-						// The static constructor in Expression will assign this value to
-						// Neumont.Tools.ORM.ObjectModel.Expression.expressionBodyFieldHandler, so just instantiate one and return it
-						return new ExpressionBodyFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the Expression.Body field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuid;
-				}
-			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the Expression</param>
-			protected sealed override System.String GetValue(Neumont.Tools.ORM.ObjectModel.Expression element)
-			{
-				return element.bodyPropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.Expression element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
-			{
-				oldValue = element.bodyPropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.bodyPropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
-		}
-		#endregion
-		#endregion
-		
-		#region Language's Generated  Field Code
-		#region Language's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String LanguageMetaAttributeGuidString = "a1dc9629-53d7-48fe-84e2-98423f1d292e";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid LanguageMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuidString);
-		#endregion
-
-		#region Language's Generated Property Code
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ExpressionLanguageFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Expression.Language")]
-		public  System.String Language
-		{
-			get
-			{
-				return expressionLanguageFieldHandler.GetFieldValue(this);
-			}
-		
-			set
-			{
-				expressionLanguageFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ExpressionLanguageFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for Expression.Language field
-		/// </summary>
-		private static ExpressionLanguageFieldHandler	expressionLanguageFieldHandler	= ExpressionLanguageFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for Expression.Language
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ExpressionLanguageFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.Expression,System.String>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ExpressionLanguageFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the Expression.Language field handler
-			/// </summary>
-			/// <value>ExpressionLanguageFieldHandler</value>
-			public static ExpressionLanguageFieldHandler Instance
-			{
-				get
-				{
-					if (Neumont.Tools.ORM.ObjectModel.Expression.expressionLanguageFieldHandler != null)
-					{
-						return Neumont.Tools.ORM.ObjectModel.Expression.expressionLanguageFieldHandler;
-					}
-					else
-					{
-						// The static constructor in Expression will assign this value to
-						// Neumont.Tools.ORM.ObjectModel.Expression.expressionLanguageFieldHandler, so just instantiate one and return it
-						return new ExpressionLanguageFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the Expression.Language field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid;
-				}
-			}
-		}
-		#endregion
-		#endregion
-		
-	}
-	#region Expression's Generated Constructor Code
-	public  partial class Expression
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Expression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Expression CreateExpression(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateExpression(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Expression CreateAndInitializeExpression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeExpression(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Expression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Expression CreateExpression(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (Expression)partition.ElementFactory.CreateElement(typeof(Expression));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Expression CreateAndInitializeExpression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (Expression)partition.ElementFactory.CreateElement(typeof(Expression), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for Expression
-	/// <summary>
-	/// Expression Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.Expression))]
-	public sealed class ExpressionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ExpressionElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Neumont.Tools.ORM.ObjectModel.Expression( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static ExpressionElementFactoryCreator Instance
-		{
-			get
-			{
-				return new ExpressionElementFactoryCreator();
 			}
 		}
 	}
@@ -18180,6 +18047,553 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Expression.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.Expression")]
+	public abstract partial class Expression : Neumont.Tools.ORM.ObjectModel.ORMModelElement
+	{
+		#region Expression's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "ddc5ef24-70bb-48aa-8481-2a76021581a3";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Expression.MetaClassGuidString);
+		#endregion
+
+		#region Body's Generated  Field Code
+		#region Body's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String BodyMetaAttributeGuidString = "75d72ae2-bc07-493b-a4d1-9b9b1f2e1dd1";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid BodyMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuidString);
+		#endregion
+
+		#region Body's Generated Property Code
+
+		private System.String bodyPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ExpressionBodyFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Expression.Body")]
+		public  System.String Body
+		{
+			get
+			{
+				return bodyPropertyStorage;
+			}
+		
+			set
+			{
+				expressionBodyFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ExpressionBodyFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Expression.Body field
+		/// </summary>
+		private static ExpressionBodyFieldHandler	expressionBodyFieldHandler	= ExpressionBodyFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Expression.Body
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ExpressionBodyFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.Expression,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ExpressionBodyFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Expression.Body field handler
+			/// </summary>
+			/// <value>ExpressionBodyFieldHandler</value>
+			public static ExpressionBodyFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Expression.expressionBodyFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Expression.expressionBodyFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Expression will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Expression.expressionBodyFieldHandler, so just instantiate one and return it
+						return new ExpressionBodyFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Expression.Body field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Expression</param>
+			protected sealed override System.String GetValue(Neumont.Tools.ORM.ObjectModel.Expression element)
+			{
+				return element.bodyPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.Expression element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.bodyPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.bodyPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region Language's Generated  Field Code
+		#region Language's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String LanguageMetaAttributeGuidString = "a1dc9629-53d7-48fe-84e2-98423f1d292e";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid LanguageMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuidString);
+		#endregion
+
+		#region Language's Generated Property Code
+
+		private System.String languagePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ExpressionLanguageFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Expression.Language")]
+		public  System.String Language
+		{
+			get
+			{
+				return languagePropertyStorage;
+			}
+		
+			set
+			{
+				expressionLanguageFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ExpressionLanguageFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Expression.Language field
+		/// </summary>
+		private static ExpressionLanguageFieldHandler	expressionLanguageFieldHandler	= ExpressionLanguageFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Expression.Language
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ExpressionLanguageFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.Expression,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ExpressionLanguageFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Expression.Language field handler
+			/// </summary>
+			/// <value>ExpressionLanguageFieldHandler</value>
+			public static ExpressionLanguageFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Expression.expressionLanguageFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Expression.expressionLanguageFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Expression will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Expression.expressionLanguageFieldHandler, so just instantiate one and return it
+						return new ExpressionLanguageFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Expression.Language field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Expression</param>
+			protected sealed override System.String GetValue(Neumont.Tools.ORM.ObjectModel.Expression element)
+			{
+				return element.languagePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.Expression element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.languagePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.languagePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+	}
+	#region Expression's Generated Constructor Code
+	public abstract partial class Expression
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected Expression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression")]
+	public  partial class FactTypeDerivationExpression : Neumont.Tools.ORM.ObjectModel.Expression
+	{
+		#region FactTypeDerivationExpression's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "5e6300e5-7172-407f-af82-a5f87fa94d9b";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.MetaClassGuidString);
+		#endregion
+
+		#region DerivationStorage's Generated  Field Code
+		#region DerivationStorage's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String DerivationStorageMetaAttributeGuidString = "61d3cbf3-575b-4248-83d9-f748892f98da";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid DerivationStorageMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.DerivationStorageMetaAttributeGuidString);
+		#endregion
+
+		#region DerivationStorage's Generated Property Code
+
+		private Neumont.Tools.ORM.ObjectModel.DerivationStorageType derivationStoragePropertyStorage = Neumont.Tools.ORM.ObjectModel.DerivationStorageType.Derived;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.DerivationStorageType),DefaultEnumerationValueName="Derived")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FactTypeDerivationExpressionDerivationStorageFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.DerivationStorageMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.DerivationStorage")]
+		public  Neumont.Tools.ORM.ObjectModel.DerivationStorageType DerivationStorage
+		{
+			get
+			{
+				return derivationStoragePropertyStorage;
+			}
+		
+			set
+			{
+				factTypeDerivationExpressionDerivationStorageFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FactTypeDerivationExpressionDerivationStorageFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FactTypeDerivationExpression.DerivationStorage field
+		/// </summary>
+		private static FactTypeDerivationExpressionDerivationStorageFieldHandler	factTypeDerivationExpressionDerivationStorageFieldHandler	= FactTypeDerivationExpressionDerivationStorageFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FactTypeDerivationExpression.DerivationStorage
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FactTypeDerivationExpressionDerivationStorageFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression,Neumont.Tools.ORM.ObjectModel.DerivationStorageType>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FactTypeDerivationExpressionDerivationStorageFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FactTypeDerivationExpression.DerivationStorage field handler
+			/// </summary>
+			/// <value>FactTypeDerivationExpressionDerivationStorageFieldHandler</value>
+			public static FactTypeDerivationExpressionDerivationStorageFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.factTypeDerivationExpressionDerivationStorageFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.factTypeDerivationExpressionDerivationStorageFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FactTypeDerivationExpression will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.factTypeDerivationExpressionDerivationStorageFieldHandler, so just instantiate one and return it
+						return new FactTypeDerivationExpressionDerivationStorageFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FactTypeDerivationExpression.DerivationStorage field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.DerivationStorageMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the FactTypeDerivationExpression</param>
+			protected sealed override Neumont.Tools.ORM.ObjectModel.DerivationStorageType GetValue(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression element)
+			{
+				return element.derivationStoragePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression element, Neumont.Tools.ORM.ObjectModel.DerivationStorageType value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Neumont.Tools.ORM.ObjectModel.DerivationStorageType oldValue)
+			{
+				oldValue = element.derivationStoragePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.derivationStoragePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.FactType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.FactType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.FactType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region FactTypeDerivationExpression's Generated Constructor Code
+	public  partial class FactTypeDerivationExpression
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeDerivationExpression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeDerivationExpression CreateFactTypeDerivationExpression(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateFactTypeDerivationExpression(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeDerivationExpression CreateAndInitializeFactTypeDerivationExpression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFactTypeDerivationExpression(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeDerivationExpression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeDerivationExpression CreateFactTypeDerivationExpression(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (FactTypeDerivationExpression)partition.ElementFactory.CreateElement(typeof(FactTypeDerivationExpression));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeDerivationExpression CreateAndInitializeFactTypeDerivationExpression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeDerivationExpression)partition.ElementFactory.CreateElement(typeof(FactTypeDerivationExpression), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeDerivationExpression
+	/// <summary>
+	/// FactTypeDerivationExpression Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression))]
+	public sealed class FactTypeDerivationExpressionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeDerivationExpressionElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FactTypeDerivationExpressionElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FactTypeDerivationExpressionElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DataType.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.DataType")]
 	public abstract partial class DataType : Neumont.Tools.ORM.ObjectModel.ORMModelElement
 	{
@@ -26764,281 +27178,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new ValueTypeHasDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivation")]
-	public  partial class FactTypeDerivation : Neumont.Tools.ORM.ObjectModel.ORMElementLink
-	{
-		#region FactTypeDerivation's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "20e02e70-ade6-4882-9db8-8792e880e19c";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.MetaClassGuidString);
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = FactTypeDerivation.MetaClassGuidString;
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = FactTypeDerivation.MetaClassGuid;
-		#endregion
-
-		#region IsStored's Generated  Field Code
-		#region IsStored's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String IsStoredMetaAttributeGuidString = "f5540418-e472-4b4c-af64-27aa6b41be29";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid IsStoredMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStoredMetaAttributeGuidString);
-		#endregion
-
-		#region IsStored's Generated Property Code
-
-		private System.Boolean isStoredPropertyStorage = false;
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FactTypeDerivationIsStoredFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStoredMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStored")]
-		public  System.Boolean IsStored
-		{
-			get
-			{
-				return isStoredPropertyStorage;
-			}
-		
-			set
-			{
-				factTypeDerivationIsStoredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region FactTypeDerivationIsStoredFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for FactTypeDerivation.IsStored field
-		/// </summary>
-		private static FactTypeDerivationIsStoredFieldHandler	factTypeDerivationIsStoredFieldHandler	= FactTypeDerivationIsStoredFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for FactTypeDerivation.IsStored
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class FactTypeDerivationIsStoredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.FactTypeDerivation,System.Boolean>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private FactTypeDerivationIsStoredFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the FactTypeDerivation.IsStored field handler
-			/// </summary>
-			/// <value>FactTypeDerivationIsStoredFieldHandler</value>
-			public static FactTypeDerivationIsStoredFieldHandler Instance
-			{
-				get
-				{
-					if (Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.factTypeDerivationIsStoredFieldHandler != null)
-					{
-						return Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.factTypeDerivationIsStoredFieldHandler;
-					}
-					else
-					{
-						// The static constructor in FactTypeDerivation will assign this value to
-						// Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.factTypeDerivationIsStoredFieldHandler, so just instantiate one and return it
-						return new FactTypeDerivationIsStoredFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the FactTypeDerivation.IsStored field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStoredMetaAttributeGuid;
-				}
-			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the FactTypeDerivation</param>
-			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation element)
-			{
-				return element.isStoredPropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
-			{
-				oldValue = element.isStoredPropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.isStoredPropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
-		}
-		#endregion
-		#endregion
-		
-		#region AssociatedFactType's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String AssociatedFactTypeMetaRoleGuidString = "cb2af830-7d0d-42b7-ae61-c4edb6bd5250";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid AssociatedFactTypeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[System.ComponentModel.Browsable(false)]
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=true, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactType")]
-		public  Neumont.Tools.ORM.ObjectModel.FactType AssociatedFactType
-		{
-			get { return (Neumont.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(AssociatedFactTypeMetaRoleGuid); }
-			set { this.SetRolePlayer(AssociatedFactTypeMetaRoleGuid, value); }
-		}
-		
-		#endregion
-		#region DerivationRule's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String DerivationRuleMetaRoleGuidString = "8fb08a4b-f809-4e37-a62b-28c082a28a54";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid DerivationRuleMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRuleMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.DerivationRule")]
-		public  Neumont.Tools.ORM.ObjectModel.Expression DerivationRule
-		{
-			get { return (Neumont.Tools.ORM.ObjectModel.Expression)this.GetRolePlayer(DerivationRuleMetaRoleGuid); }
-			set { this.SetRolePlayer(DerivationRuleMetaRoleGuid, value); }
-		}
-		
-		#endregion
-	}
-	#region FactTypeDerivation's Generated Constructor Code
-	public  partial class FactTypeDerivation
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FactTypeDerivation(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FactTypeDerivation CreateFactTypeDerivation(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return CreateFactTypeDerivation(store.DefaultPartition, rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FactTypeDerivation CreateAndInitializeFactTypeDerivation(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeFactTypeDerivation(store.DefaultPartition, rolePlayers, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FactTypeDerivation(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		    : base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FactTypeDerivation CreateFactTypeDerivation(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (FactTypeDerivation)partition.ElementFactory.CreateElementLink(typeof(FactTypeDerivation), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FactTypeDerivation CreateAndInitializeFactTypeDerivation(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FactTypeDerivation)partition.ElementFactory.CreateElementLink(typeof(FactTypeDerivation), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FactTypeDerivation
-	/// <summary>
-	/// FactTypeDerivation Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation))]
-	public sealed class FactTypeDerivationElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FactTypeDerivationElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Neumont.Tools.ORM.ObjectModel.FactTypeDerivation( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static FactTypeDerivationElementFactoryCreator Instance
-		{
-			get
-			{
-				return new FactTypeDerivationElementFactoryCreator();
 			}
 		}
 	}
@@ -38526,6 +38665,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new RoleProxyHasRoleElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression")]
+	public  partial class FactTypeHasDerivationExpression : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FactTypeHasDerivationExpression's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "69b620e6-25a8-443c-860b-4f51a5a77680";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = FactTypeHasDerivationExpression.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = FactTypeHasDerivationExpression.MetaClassGuid;
+		#endregion
+
+		#region DerivationRule's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DerivationRuleMetaRoleGuidString = "f81cc212-5dfe-4795-b783-26fb184ef946";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DerivationRuleMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRuleMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.DerivationRule")]
+		public  Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression DerivationRule
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression)this.GetRolePlayer(DerivationRuleMetaRoleGuid); }
+			set { this.SetRolePlayer(DerivationRuleMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "406596cf-1065-4192-8ace-f4a02754f3ad";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression.FactType")]
+		public  Neumont.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region FactTypeHasDerivationExpression's Generated Constructor Code
+	public  partial class FactTypeHasDerivationExpression
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDerivationExpression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDerivationExpression CreateFactTypeHasDerivationExpression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateFactTypeHasDerivationExpression(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDerivationExpression CreateAndInitializeFactTypeHasDerivationExpression(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFactTypeHasDerivationExpression(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDerivationExpression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDerivationExpression CreateFactTypeHasDerivationExpression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasDerivationExpression)partition.ElementFactory.CreateElementLink(typeof(FactTypeHasDerivationExpression), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDerivationExpression CreateAndInitializeFactTypeHasDerivationExpression(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasDerivationExpression)partition.ElementFactory.CreateElementLink(typeof(FactTypeHasDerivationExpression), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasDerivationExpression
+	/// <summary>
+	/// FactTypeHasDerivationExpression Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression))]
+	public sealed class FactTypeHasDerivationExpressionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDerivationExpressionElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FactTypeHasDerivationExpressionElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FactTypeHasDerivationExpressionElementFactoryCreator();
 			}
 		}
 	}

@@ -53,6 +53,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(FactType).GetNestedType("ModelHasInternalConstraintRemoveRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ReadingOrderHasReadingAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ReadingOrderHasReadingRemoveRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeDerivationExpression).GetNestedType("FactTypeDerivationExpressionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FrequencyConstraint).GetNestedType("FrequencyConstraintMinMaxRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FrequencyConstraint).GetNestedType("RemoveContradictionErrorsWithFactTypeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(InternalConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),

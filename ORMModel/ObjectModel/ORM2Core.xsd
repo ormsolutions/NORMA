@@ -383,11 +383,10 @@
 		<!-- These are duplicated in SubtypeFact without type extension -->
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="Notes" type="NotesType" minOccurs="0" />
-			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
 			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
-			<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
@@ -416,11 +415,10 @@
 		<!-- This is a straight copy from BaseFact with a change to FactRoles and an Extensions element-->
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="Notes" type="NotesType" minOccurs="0" />
-			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
 			<xs:element name="FactRoles" type="SubtypeRoles" minOccurs="1"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
-			<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
@@ -428,6 +426,27 @@
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 		<xs:attribute name="IsPrimary" type="xs:boolean" default="false"/>
 	</xs:complexType>
+	<!--Derived FactType-->
+	<xs:complexType name="DerivationRuleType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="DerivationExpression" type="DerivationExpressionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DerivationExpressionType">
+		<xs:sequence>
+			<xs:element name="Body" type="xs:string"/>
+		</xs:sequence>
+		<xs:attribute name="DerivationStorage" type="DerivationStorageType" use="required"/>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+	<xs:simpleType name="DerivationStorageType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Derived"/>
+			<xs:enumeration value="DerivedAndStored"/>
+			<xs:enumeration value="PartiallyDerived"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--End Derived FactType-->
 	<!-- End Facts -->
 	<!--Constraints-->
 	<!--ConstraintRef and  ConstraintRefs define references to constrains and collections of constraints-->

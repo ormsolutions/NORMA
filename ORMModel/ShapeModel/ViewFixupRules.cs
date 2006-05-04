@@ -1037,7 +1037,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == NamedElement.NameMetaAttributeGuid)
+				if (e.MetaAttribute.Id == Role.NameMetaAttributeGuid)
 				{
 						Role role = (Role)e.ModelElement;
 						if (!role.IsRemoved)

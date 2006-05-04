@@ -31,6 +31,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Type[] retVal = new Type[]{
 				typeof(ExternalConstraintLink).GetNestedType("RemoveDanglingConstraintShapeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeShape).GetNestedType("DerivationRuleChanged", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeShape).GetNestedType("DerivationRuleAdd", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeShape).GetNestedType("DerivationRuleRemove", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChanged", BindingFlags.Public | BindingFlags.NonPublic),

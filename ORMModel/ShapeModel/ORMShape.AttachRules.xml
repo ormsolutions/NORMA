@@ -16,6 +16,9 @@
 	<arg:Model class="ORMShapeModel">
 		<arg:Rule class="ExternalConstraintLink.RemoveDanglingConstraintShapeRule"/>
 		<arg:Rule class="FactTypeShape.ConstraintDisplayPositionChangeRule"/>
+		<arg:Rule class="FactTypeShape.DerivationRuleChanged"/>
+		<arg:Rule class="FactTypeShape.DerivationRuleAdd"/>
+		<arg:Rule class="FactTypeShape.DerivationRuleRemove"/>
 		<arg:Rule class="FactTypeShape.ExternalConstraintShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.FactTypeShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.RoleDisplayOrderChanged"/>

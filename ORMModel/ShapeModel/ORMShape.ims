@@ -116,7 +116,7 @@
 						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="RoleNameShape" identity="2cb7393c-4502-4c59-979d-94d6c89b4080" accessmodifier="public" category="" description="" doccomment="" localize="false">
 							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.Role)" />
 							<metaattributes>
-								<metaattribute name="RoleName" identity="5713319e-4003-4766-9ad3-143a048cb611" type="System.String" xpathexpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+								<metaattribute name="RoleName" identity="5713319e-4003-4766-9ad3-143a048cb611" type="System.String" xpathexpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Role/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
 									<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
 									<stringdomain default="" max="2147483647" />
 								</metaattribute>

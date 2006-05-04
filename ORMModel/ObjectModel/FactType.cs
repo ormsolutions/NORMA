@@ -56,6 +56,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
+	#region Derivation Storage Enum
+	/// <summary>
+	/// Derivation Storage Types, used to specify how/whether the contents of the fact should be stored in the database
+	/// </summary>
+	public enum DerivationStorageType
+	{
+		/// <summary>
+		/// Fact is derived but should not be stored
+		/// </summary>
+		Derived,
+		/// <summary>
+		/// Fact is derived and should be stored
+		/// </summary>
+		DerivedAndStored,
+		/// <summary>
+		/// Fact is paritally derived and should be stored
+		/// </summary>
+		PartiallyDerived,
+	}
+	#endregion
 	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, INamedElementDictionaryParent, IModelErrorOwner, IVerbalizeFilterChildren, IVerbalizeCustomChildren
 	{
 		#region ReadingOrder acquisition
@@ -376,6 +396,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return (NestingType == null) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
 		}
+		/// <summary>
+		/// Standard override. Stop the DerivationStorage property from
+		/// displaying if no derivation rule is specified
+		/// </summary>
+		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
+		{
+			if (metaAttrInfo.Id == DerivationStorageDisplayMetaAttributeGuid)
+			{
+				return DerivationRule != null;
+			}
+			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
+		}
 		#endregion // Customize property display
 		#region MergeContext functions
 		/// <summary>
@@ -421,7 +453,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
 		{
 			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid)
+			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid ||
+				attributeGuid == DerivationRuleDisplayMetaAttributeGuid ||
+				attributeGuid == DerivationStorageDisplayMetaAttributeGuid)
 			{
 				// Handled by FactTypeChangeRule
 				return;
@@ -439,6 +473,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid)
 			{
 				return NestingType;
+			}
+			else if (attributeGuid == DerivationRuleDisplayMetaAttributeGuid)
+			{
+				FactTypeDerivationExpression derivation = DerivationRule;
+
+				if (null == derivation || derivation.IsRemoved)
+				{
+					return string.Empty;
+				}
+				return derivation.Body;
+			}
+			else if (attributeGuid == DerivationStorageDisplayMetaAttributeGuid)
+			{
+				FactTypeDerivationExpression derivation = DerivationRule;
+				if (null == derivation || derivation.IsRemoved)
+				{
+					return DerivationStorageType.Derived;
+				}
+				return derivation.DerivationStorage;
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
@@ -527,6 +580,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (attributeGuid == FactType.NestingTypeDisplayMetaAttributeGuid)
 				{
 					(e.ModelElement as FactType).NestingType = e.NewValue as ObjectType;
+				}
+				else if (attributeGuid == FactType.DerivationRuleDisplayMetaAttributeGuid)
+				{
+					FactType ft = e.ModelElement as FactType;
+					string newVal = e.NewValue as string;
+					FactTypeDerivationExpression currentRule = ft.DerivationRule;
+					if (string.IsNullOrEmpty(newVal))
+					{
+						if (currentRule != null)
+						{
+							currentRule.Body = string.Empty;
+						}
+					}
+					else
+					{
+						if (null == currentRule)
+						{
+							currentRule = FactTypeDerivationExpression.CreateFactTypeDerivationExpression(ft.Store);
+							ft.DerivationRule = currentRule;
+						}
+						currentRule.Body = newVal;
+					}
+					//if (ft.ReadingOrderCollection.Count > 0)
+					//{
+					//    ShapeModel.ReadingShape rs = (ShapeModel.ReadingShape)ft.ReadingOrderCollection[0].PresentationRolePlayers[0];
+					//    rs.InvalidateRequired(true);
+					//    rs.AutoResize();
+					//}
+				}
+				else if (attributeGuid == FactType.DerivationStorageDisplayMetaAttributeGuid)
+				{
+					FactType ft = e.ModelElement as FactType;
+					if (ft.DerivationRule != null)
+					{
+						ft.DerivationRule.DerivationStorage = (DerivationStorageType)e.NewValue;
+					}
+					//if (ft.ReadingOrderCollection.Count > 0)
+					//{
+					//    ShapeModel.ReadingShape rs = (ShapeModel.ReadingShape)ft.ReadingOrderCollection[0].PresentationRolePlayers[0];
+					//    rs.InvalidateRequired(true);
+					//    rs.AutoResize();
+					//}
 				}
 			}
 		}
@@ -1580,4 +1675,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion //class NMinusOneError
 
 	#endregion // FactType Model Validation Errors
+
+	#region FactTypeDerivationExpression
+	public partial class FactTypeDerivationExpression
+	{
+		[RuleOn(typeof(FactTypeDerivationExpression))]
+		private class FactTypeDerivationExpressionChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
+			/// if Body is empty
+			/// </summary>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeGuid = e.MetaAttribute.Id;
+				if (attributeGuid == FactTypeDerivationExpression.BodyMetaAttributeGuid)
+				{
+					FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
+					if (!ftde.IsRemoved && string.IsNullOrEmpty(ftde.Body))
+					{
+						ftde.Remove();
+					}
+				}
+			}
+		}
+	}
+	#endregion
 }

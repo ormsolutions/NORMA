@@ -459,4 +459,19 @@
   <data name="Neumont.Tools.ORM.ObjectModel.Role.Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplay" xml:space="preserve">
+    <value>DerivationRule</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplay" xml:space="preserve">
+    <value>DerivationStorage</value>
+  </data>
+  <data name="DerivationStorageType.Derived" xml:space="preserve">
+    <value>Derived</value>
+  </data>
+  <data name="DerivationStorageType.DerivedAndStored" xml:space="preserve">
+    <value>Derived And Stored</value>
+  </data>
+  <data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
+    <value>Partially Derived</value>
+  </data>
 </root>

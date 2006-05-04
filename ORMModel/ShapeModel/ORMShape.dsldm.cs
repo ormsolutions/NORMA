@@ -3165,7 +3165,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Name", ProxyAttributeName="Name", FieldHandlerType=typeof(RoleNameShapeRoleNameFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/Role/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Name", ProxyAttributeName="Name", FieldHandlerType=typeof(RoleNameShapeRoleNameFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.RoleNameShape.RoleNameMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.RoleNameShape.RoleName")]
 		public  System.String RoleName
 		{

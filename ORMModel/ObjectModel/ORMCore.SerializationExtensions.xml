@@ -213,8 +213,6 @@
 	</se:Element>
 	<!--Facts-->
 	<se:Element Class="FactType" Name="Fact" SortChildElements="true" Override="true">
-		<!--TODO: FactNotes-->
-		<!--TODO: Derivation Rule-->
 		<se:ConditionalName Name="ImpliedFact">
 			<plx:binaryOperator type="identityInequality">
 				<plx:left>
@@ -234,6 +232,9 @@
 		<se:ChildElement Name="InternalConstraints">
 			<se:Link RelationshipName="FactTypeHasInternalConstraint" RoleName="InternalConstraintCollection"/>
 		</se:ChildElement>
+		<se:ChildElement Name="DerivationRule">
+			<se:Link RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
+		</se:ChildElement>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedByObjectification"/>
 		<se:Link RelationshipName="Objectification" RoleName="NestingType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
@@ -241,6 +242,12 @@
 		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="Expression" Override="true" HasMixedTypedAttributes="true">
+		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Body" WriteStyle="Element"/>
+	</se:Element>
+	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true">
 	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
 		<se:Attribute ID="IsPrimary">

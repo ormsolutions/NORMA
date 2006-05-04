@@ -324,11 +324,56 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private void InvalidateDisplayText()
 		{
-			myDisplayText = null;
+			BeforeInvalidate();
 			//this is triggering code that needs a transaction
 			if (Store.TransactionManager.InTransaction)
 			{
 				this.AutoResize();
+				InvalidateRequired(true);
+			}
+		}
+		/// <summary>
+		/// Clear the cached display text before invalidation
+		/// </summary>
+		protected override void BeforeInvalidate()
+		{
+			myDisplayText = null;
+		}
+		/// <summary>
+		/// Check to see if FactType Derivation symbols should be appended to the display text
+		/// </summary>
+		private void AppendDerivation(StringBuilder stringBuilder)
+		{
+			FactType ft = this.ParentShape.ModelElement as FactType;
+
+			if (ft != null)
+			{
+				FactTypeDerivationExpression derivation = ft.DerivationRule;
+				if (derivation != null && !derivation.IsRemoved)
+				{
+					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
+					string decorator = null;
+					DerivationStorageType storage = ft.DerivationStorageDisplay;
+					switch (storage)
+					{
+						case DerivationStorageType.Derived:
+							decorator = " *";
+							break;
+						case DerivationStorageType.DerivedAndStored:
+							decorator = " **";
+							break;
+						case DerivationStorageType.PartiallyDerived:
+							decorator = " *—";
+							break;
+						default:
+							Debug.Fail("Unknown derivation storage type");
+							break;
+					}
+					if (decorator != null)
+					{
+						stringBuilder.Append(decorator);
+					}
+				}
 			}
 		}
 		#endregion // Helper methods
@@ -428,6 +473,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						retval.Append(aReading);
 					}
+					AppendDerivation(retval);
 					myDisplayText = retval.ToString();
 				}
 				return myDisplayText;
