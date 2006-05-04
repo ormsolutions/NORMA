@@ -518,7 +518,7 @@ namespace Neumont.Tools.ORM.FactEditor
 			myEditFact = fact;
 			if (reading != null)
 			{
-				RoleMoveableCollection roles = readingOrder.RoleCollection;
+				RoleBaseMoveableCollection roles = readingOrder.RoleCollection;
 				int roleCount = roles.Count;
 				fullReading = regCountPlaces.Replace(
 					reading.Text,
@@ -529,7 +529,7 @@ namespace Neumont.Tools.ORM.FactEditor
 						int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
 						if (roleCount > rolePosition)
 						{
-							ObjectType player = roles[rolePosition].RolePlayer;
+							ObjectType player = roles[rolePosition].Role.RolePlayer;
 							if (player != null)
 							{
 								string refModeString = player.ReferenceModeString;

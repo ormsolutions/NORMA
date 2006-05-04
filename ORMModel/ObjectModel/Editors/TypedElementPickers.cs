@@ -124,14 +124,14 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 							// This is backed up in the metamodel rules and other pickers.
 							if (roleTypes == null)
 							{
-								RoleMoveableCollection roles = instance.RoleCollection;
+								RoleBaseMoveableCollection roles = instance.RoleCollection;
 								int roleCount = roles.Count;
 								if (roleCount > 0)
 								{
 									roleTypes = new ObjectType[roleCount];
 									for (int i = 0; i < roleCount; ++i)
 									{
-										roleTypes[i] = roles[i].RolePlayer;
+										roleTypes[i] = roles[i].Role.RolePlayer;
 									}
 								}
 								else

@@ -67,7 +67,7 @@ namespace TestSample
 			// Find the fact that that needs fixing and repair it
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
 			FactType fact = (FactType)model.FactTypesDictionary.GetElement("TestFact").SingleElement;
-			Role role = fact.RoleCollection[1];
+			Role role = fact.RoleCollection[1].Role;
 
 			// At this point, we either need to open a transaction on the store with
 			// using (Transaction t = store.TransactionManager.BeginTransaction("Transaction name"))

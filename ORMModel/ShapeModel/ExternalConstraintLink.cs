@@ -237,7 +237,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Debug.Assert(fromNode.Nodes is FactTypeShape); // expect connection to a FactTypeShape only
 						FactTypeShape factTypeShape = fromNode.Nodes as FactTypeShape;
 						FactType factType = factTypeShape.AssociatedFactType;
-						RoleMoveableCollection factTypeRoles = factType.RoleCollection;
+						RoleBaseMoveableCollection factTypeRoles = factType.RoleCollection;
 						MultiColumnExternalConstraintRoleSequenceMoveableCollection sequenceCollection = sConstraint.RoleSequenceCollection;
 						if (sequenceCollection.Count > 1)
 						{

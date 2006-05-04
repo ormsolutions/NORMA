@@ -191,7 +191,7 @@
 			<metaattributes />
 			<metaroles>
 				<metarole name="FactTypeShape" identity="30c6b725-2d74-47f7-852a-d02c644a447b" type="Neumont.Tools.ORM.ShapeModel.FactTypeShape" isoptional="false" isordered="false" isaggregate="false" isnavigablefrom="true" propagateremove="false" propagatecopy="false" cardinality="many" category="" description="" doccomment="" localize="false" generateaccessor="true" />
-				<metarole name="RoleDisplayOrderCollection" identity="4ca45c6e-0400-4976-af8c-0cad7c7bc2ee" type="Neumont.Tools.ORM.ObjectModel.Role" isoptional="false" isordered="true" isaggregate="false" isnavigablefrom="true" propagateremove="false" propagatecopy="false" cardinality="many" category="" description="" doccomment="" localize="false" generateaccessor="false" />
+				<metarole name="RoleDisplayOrderCollection" identity="4ca45c6e-0400-4976-af8c-0cad7c7bc2ee" type="Neumont.Tools.ORM.ObjectModel.RoleBase" isoptional="false" isordered="true" isaggregate="false" isnavigablefrom="true" propagateremove="false" propagatecopy="false" cardinality="many" category="" description="" doccomment="" localize="false" generateaccessor="false" />
 			</metaroles>
 			<derivedmetarelationships />
 		</metarelationship>

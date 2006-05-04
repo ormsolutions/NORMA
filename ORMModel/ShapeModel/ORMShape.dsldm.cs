@@ -1450,9 +1450,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.RoleMoveableCollection RoleDisplayOrderCollection
+		public Neumont.Tools.ORM.ObjectModel.RoleBaseMoveableCollection RoleDisplayOrderCollection
 		{
-			get { return new Neumont.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShapeMetaRoleGuid, Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid); }
+			get { return new Neumont.Tools.ORM.ObjectModel.RoleBaseMoveableCollection(this, Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShapeMetaRoleGuid, Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -4445,9 +4445,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollection")]
-		public  Neumont.Tools.ORM.ObjectModel.Role RoleDisplayOrderCollection
+		public  Neumont.Tools.ORM.ObjectModel.RoleBase RoleDisplayOrderCollection
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleDisplayOrderCollectionMetaRoleGuid); }
+			get { return (Neumont.Tools.ORM.ObjectModel.RoleBase)this.GetRolePlayer(RoleDisplayOrderCollectionMetaRoleGuid); }
 			set { this.SetRolePlayer(RoleDisplayOrderCollectionMetaRoleGuid, value); }
 		}
 		

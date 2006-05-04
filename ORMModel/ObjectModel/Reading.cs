@@ -44,12 +44,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			//as strings this will likely need to change.
 			if (IsValidReadingText())
 			{
-				RoleMoveableCollection roles = ReadingOrder.RoleCollection;
+				RoleBaseMoveableCollection roles = ReadingOrder.RoleCollection;
 				int roleCount = roles.Count;
 				string[] roleNames = new string[roleCount];
 				for (int i = 0; i < roleCount; ++i)
 				{
-					roleNames[i] = roles[i].Name;
+					roleNames[i] = roles[i].Role.Name;
 				}
 				return string.Format(CultureInfo.InvariantCulture, this.Text, roleNames);
 			}
@@ -101,7 +101,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public bool IsValidReadingText()
 		{
 			ReadingOrder readOrd = ReadingOrder;
-			RoleMoveableCollection roles = readOrd.RoleCollection;
+			RoleBaseMoveableCollection roles = readOrd.RoleCollection;
 //			Debug.Assert(readOrd.FactType.RoleCollection.Count == roles.Count);
 			return IsValidReadingText(Text, roles.Count);
 		}

@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 		}
 		private FactType myFactType;
-		private RoleMoveableCollection myDisplayOrder;
+		private RoleBaseMoveableCollection myDisplayOrder;
 		/// <summary>
 		/// Set the active fact type to just use the native role order for its display order
 		/// </summary>
@@ -67,7 +67,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// <param name="factType">A fact type. Can be null.</param>
 		/// <param name="displayOrder">A custom order representing
 		/// the display order for a graphical representation of the fact</param>
-		public ActiveFactType(FactType factType, RoleMoveableCollection displayOrder)
+		public ActiveFactType(FactType factType, RoleBaseMoveableCollection displayOrder)
 		{
 			if (factType != null)
 			{
@@ -93,7 +93,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// <summary>
 		/// Get the current display order
 		/// </summary>
-		public RoleMoveableCollection DisplayOrder
+		public RoleBaseMoveableCollection DisplayOrder
 		{
 			get
 			{
@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			return false;
 		}
-		private bool AreDisplayOrdersEqual(RoleMoveableCollection order1, RoleMoveableCollection order2)
+		private bool AreDisplayOrdersEqual(RoleBaseMoveableCollection order1, RoleBaseMoveableCollection order2)
 		{
 			if (object.ReferenceEquals(order1, order2))
 			{
@@ -186,7 +186,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			if (fact != null)
 			{
 				hashCode = fact.GetHashCode();
-				RoleMoveableCollection order = myDisplayOrder;
+				RoleBaseMoveableCollection order = myDisplayOrder;
 				int count = order.Count;
 				for (int i = 0; i < count; ++i)
 				{
@@ -242,10 +242,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// </summary>
 		public static bool IsParticipant(ObjectType objectType, ReadingOrder readingOrder)
 		{
-			RoleMoveableCollection roles = readingOrder.RoleCollection;
-			foreach (Role role in roles)
+			RoleBaseMoveableCollection roles = readingOrder.RoleCollection;
+			foreach (RoleBase role in roles)
 			{
-				if (object.ReferenceEquals(role.RolePlayer, objectType))
+				if (object.ReferenceEquals(role.Role.RolePlayer, objectType))
 				{
 					return true;
 				}
@@ -257,7 +257,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 
 		#region Member Variables
 		private FactType myFact;
-		private RoleMoveableCollection myDisplayRoleOrder;
+		private RoleBaseMoveableCollection myDisplayRoleOrder;
 		//private List<ReadingEntry> myReadingList;
 		private ImageList myImageList;
 		private static ReadingOrderBranch myReadingOrderBranch;
@@ -308,7 +308,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// <summary>
 		/// The role order we're using to display the current fact.
 		/// </summary>
-		public RoleMoveableCollection DisplayRoleOrder
+		public RoleBaseMoveableCollection DisplayRoleOrder
 		{
 			get
 			{
@@ -1010,12 +1010,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			private FactType myFact;
 			private ReadingOrderKeyedCollection myReadingOrderKeyedCollection;
 			private ReadingOrderKeyedCollection myReadingOrderPermutations;
-			private RoleMoveableCollection myRoleDisplayOrder;
+			private RoleBaseMoveableCollection myRoleDisplayOrder;
 			private string[] myRoleNames;
 			private int myInsertedRow = -1;
 
 			#region Construction
-			public ReadingOrderBranch(FactType fact, RoleMoveableCollection roleDisplayOrder)
+			public ReadingOrderBranch(FactType fact, RoleBaseMoveableCollection roleDisplayOrder)
 			{
 				myFact = fact;
 				ReadingOrderMoveableCollection readingOrders = fact.ReadingOrderCollection;
@@ -1030,7 +1030,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			#endregion
 
 			#region Branch Properties
-			private RoleMoveableCollection DisplayOrder
+			private RoleBaseMoveableCollection DisplayOrder
 			{
 				get
 				{
@@ -1055,7 +1055,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 						myReadingOrderPermutations = new ReadingOrderKeyedCollection();
 						for (int i = 0; i < arity; ++i)
 						{
-							tempRoleList.Add(myRoleDisplayOrder[i]);
+							tempRoleList.Add(myRoleDisplayOrder[i].Role);
 						}
 						List<List<Role>> myPerms;myPerms = this.BuildPermutations(tempRoleList);
 						int numPerms = myPerms.Count;
@@ -1104,7 +1104,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 						myInsertedRow = row;
 						using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 						{
-							ReadingOrder theOrder = FactType.GetReadingOrder(myFact, myReadingOrderKeyedCollection[row].RoleOrder as IList<Role>);
+							ReadingOrder theOrder = FactType.GetReadingOrder(myFact, myReadingOrderKeyedCollection[row].RoleOrder as IList<RoleBase>);
 							Debug.Assert(theOrder != null, "A ReadingOrder should have been found or created.");
 							theNewReading = Reading.CreateReading(theOrder.Store);
 							ReadingMoveableCollection readings = theOrder.ReadingCollection;
@@ -1437,26 +1437,26 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				string[] retVal = myRoleNames;
 				if (retVal == null)
 				{
-					RoleMoveableCollection factRoles = myFact.RoleCollection;
+					RoleBaseMoveableCollection factRoles = myFact.RoleCollection;
 					ObjectType rolePlayer;
 					int factArity = factRoles.Count;
 					if (factArity == 1)
 					{
-						rolePlayer = factRoles[0].RolePlayer;
+						rolePlayer = factRoles[0].Role.RolePlayer;
 						myRoleNames = new string[] { (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText };
 					}
 					else
 					{
-						RoleMoveableCollection roleDisplayOrder = myRoleDisplayOrder;
+						RoleBaseMoveableCollection roleDisplayOrder = myRoleDisplayOrder;
 						ObjectType[] rolePlayers = new ObjectType[factArity];
 						for (int i = 0; i < factArity; ++i)
 						{
-							rolePlayers[i] = roleDisplayOrder[i].RolePlayer;
+							rolePlayers[i] = roleDisplayOrder[i].Role.RolePlayer;
 						}
 						myRoleNames = new string[factArity];
 						for (int i = 0; i < factArity; ++i)
 						{
-							rolePlayer = roleDisplayOrder[i].RolePlayer;
+							rolePlayer = roleDisplayOrder[i].Role.RolePlayer;
 
 							int subscript = 0;
 							bool useSubscript = false;
@@ -1611,7 +1611,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				private string myText;
 				private ReadingBranch myReadingBranch;
 
-				public ReadingOrderInformation(ReadingOrderBranch parentBranch, Role[] roleOrder)
+				public ReadingOrderInformation(ReadingOrderBranch parentBranch, RoleBase[] roleOrder)
 				{
 					myParentBranch = parentBranch;
 					myRoleOrder = roleOrder;
@@ -1677,7 +1677,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 						if (retVal == null)
 						{
 							string[] roleNames = myParentBranch.GetRoleNames();
-							RoleMoveableCollection displayOrder = myParentBranch.DisplayOrder;
+							RoleBaseMoveableCollection displayOrder = myParentBranch.DisplayOrder;
 							int arity = roleNames.Length;
 							Debug.Assert(arity == displayOrder.Count);
 							IList roles = myRoleOrder;
@@ -1688,20 +1688,20 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 									break;
 								case 2:
 									retVal = new string[]{
-										roleNames[displayOrder.IndexOf((Role)roles[0])],
-										roleNames[displayOrder.IndexOf((Role)roles[1])]};
+										roleNames[displayOrder.IndexOf((RoleBase)roles[0])],
+										roleNames[displayOrder.IndexOf((RoleBase)roles[1])]};
 									break;
 								case 3:
 									retVal = new string[]{
-										roleNames[displayOrder.IndexOf((Role)roles[0])],
-										roleNames[displayOrder.IndexOf((Role)roles[1])],
-										roleNames[displayOrder.IndexOf((Role)roles[2])]};
+										roleNames[displayOrder.IndexOf((RoleBase)roles[0])],
+										roleNames[displayOrder.IndexOf((RoleBase)roles[1])],
+										roleNames[displayOrder.IndexOf((RoleBase)roles[2])]};
 									break;
 								default:
 									retVal = new string[arity];
 									for (int i = 0; i < arity; ++i)
 									{
-										retVal[i] = roleNames[displayOrder.IndexOf((Role)roles[i])];
+										retVal[i] = roleNames[displayOrder.IndexOf((RoleBase)roles[i])];
 									}
 									break;
 							}
@@ -1885,7 +1885,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					myFact = myReadingMC[0].ReadingOrder.FactType;
 					myReadingInformation = orderInformation;
 					int numReadings = myReadingMC.Count;
-					RoleMoveableCollection tempRoleCollection = myReadingOrder.RoleCollection;
+					RoleBaseMoveableCollection tempRoleCollection = myReadingOrder.RoleCollection;
 					myReadingDisplayText = new List<string>();
 					for (int i = 0; i < numReadings; ++i)
 					{

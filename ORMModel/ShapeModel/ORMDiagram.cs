@@ -890,7 +890,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (roleArity != 0)
 				{
 					FactType factType = FactType.CreateFactType(store);
-					RoleMoveableCollection roles = factType.RoleCollection;
+					RoleBaseMoveableCollection roles = factType.RoleCollection;
 					for (int i = 0; i < roleArity; ++i)
 					{
 						Role role = Role.CreateRole(store);

@@ -2057,13 +2057,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (constraintRoles.Count == 1) // Condition 1
 				{
 					Role role = constraintRoles[0];
-					RoleMoveableCollection factRoles = role.FactType.RoleCollection;
+					RoleBaseMoveableCollection factRoles = role.FactType.RoleCollection;
 					if (factRoles.Count == 2) // Condition 2
 					{
-						Role oppositeRole = factRoles[0];
+						Role oppositeRole = factRoles[0].Role;
 						if (object.ReferenceEquals(oppositeRole, role))
 						{
-							oppositeRole = factRoles[1];
+							oppositeRole = factRoles[1].Role;
 						}
 						ObjectType rolePlayer = oppositeRole.RolePlayer;
 						if ((rolePlayer != null) &&
@@ -2589,23 +2589,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 						ExternalUniquenessConstraint euc;
 						if (null != (iuc = constraint as InternalUniquenessConstraint))
 						{
-							RoleMoveableCollection roles;
+							RoleMoveableCollection constraintRoles;
+							RoleBaseMoveableCollection factRoles;
 							Role constraintRole;
 							FactType factType;
-							if (1 == (roles = iuc.RoleCollection).Count &&
-								!(constraintRole = roles[0]).IsRemoving &&
+							if (1 == (constraintRoles = iuc.RoleCollection).Count &&
+								!(constraintRole = constraintRoles[0]).IsRemoving &&
 								null != (factType = constraintRole.FactType) &&
 								!factType.IsRemoving &&
-								2 == (roles = factType.RoleCollection).Count)
+								2 == (factRoles = factType.RoleCollection).Count)
 							{
 								// Make sure we have exactly one additional single-roled internal
 								// uniqueness constraint on the opposite role, and that the
-								// opposite role is mandatatory, and that the role player is still
+								// opposite role is mandatory, and that the role player is still
 								// connected.
-								Role oppositeRole = roles[0];
+								Role oppositeRole = factRoles[0].Role;
 								if (object.ReferenceEquals(oppositeRole, constraintRole))
 								{
-									oppositeRole = roles[1];
+									oppositeRole = factRoles[1].Role;
 								}
 
 								// Test for attached object type. It is very common
@@ -2694,15 +2695,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 										if (!constraintRole.IsRemoving)
 										{
 											factType = constraintRole.FactType;
-											RoleMoveableCollection factRoles = factType.RoleCollection;
+											RoleBaseMoveableCollection factRoles = factType.RoleCollection;
 											if (factRoles.Count != 2)
 											{
 												break;
 											}
-											Role oppositeRole = factRoles[0];
+											Role oppositeRole = factRoles[0].Role;
 											if (object.ReferenceEquals(oppositeRole, constraintRole))
 											{
-												oppositeRole = factRoles[1];
+												oppositeRole = factRoles[1].Role;
 											}
 											ObjectType currentRolePlayer = null;
 											// Don't use oppositeRole.RolePlayer, this will pick up
@@ -2885,14 +2886,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 								FactType fact = iuc.FactType;
 								if (fact != null)
 								{
-									RoleMoveableCollection roles = fact.RoleCollection;
+									RoleBaseMoveableCollection roles = fact.RoleCollection;
 									if (roles.Count == 2)
 									{
-										Role oldRole = roles[0];
+										Role oldRole = roles[0].Role;
 										if (object.ReferenceEquals(oldRole, constraintLink.RoleCollection))
 										{
 											// Unlikely but possible (you'd need to insert instead of add)
-											oldRole = roles[1];
+											oldRole = roles[1].Role;
 										}
 										ObjectType oldRolePlayer;
 										IConstraint preferredIdentifier;
@@ -2946,13 +2947,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 										FactType factType = nearRole.FactType;
 										if (null != factType)
 										{
-											RoleMoveableCollection factRoles = factType.RoleCollection;
+											RoleBaseMoveableCollection factRoles = factType.RoleCollection;
 											if (factRoles.Count == 2)
 											{
-												Role oppositeRole = factRoles[0];
+												Role oppositeRole = factRoles[0].Role;
 												if (object.ReferenceEquals(oppositeRole, nearRole))
 												{
-													oppositeRole = factRoles[1];
+													oppositeRole = factRoles[1].Role;
 												}
 												ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
 												if (oppositeRolePlayer == null || object.ReferenceEquals(oppositeRolePlayer, identifierFor))
@@ -3227,13 +3228,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (; constraintRoleIndex < constraintRoleCount; ++constraintRoleIndex)
 					{
 						Role role = constraintRoles[constraintRoleIndex];
-						RoleMoveableCollection factRoles = role.FactType.RoleCollection;
+						RoleBaseMoveableCollection factRoles = role.FactType.RoleCollection;
 						if (factRoles.Count == 2) // Condition 3
 						{
-							Role oppositeRole = factRoles[0];
+							Role oppositeRole = factRoles[0].Role;
 							if (object.ReferenceEquals(oppositeRole, role))
 							{
-								oppositeRole = factRoles[1];
+								oppositeRole = factRoles[1].Role;
 							}
 							ObjectType rolePlayer = oppositeRole.RolePlayer;
 							if (rolePlayer != null)
@@ -3648,7 +3649,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					factType = factLink.FactTypeCollection;
 					roleLinks = factLink.ConstrainedRoleCollection;
 					//determine if an error is needed
-					RoleMoveableCollection factRoles = factType.RoleCollection;//localize the role collection
+					RoleBaseMoveableCollection factRoles = factType.RoleCollection;//localize the role collection
 					int iucCount = factType.GetInternalConstraintsCount(ConstraintType.InternalUniqueness);//count of the IUCs
 					if (iucCount >= 0)//not passing this means needError stays false
 					{

@@ -742,7 +742,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
-			RoleMoveableCollection roles = factShape.DisplayedRoleOrder;
+			RoleBaseMoveableCollection roles = factShape.DisplayedRoleOrder;
 			enabledCommands &= ~(ORMDesignerCommands.MoveRoleRight | ORMDesignerCommands.MoveRoleLeft);
 			visibleCommands |= ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight;
 			int roleIndex = roles.IndexOf(role);
@@ -1483,17 +1483,17 @@ namespace Neumont.Tools.ORM.Shell
 			ICollection components = GetSelectedComponents();
 			if (components.Count == 1)
 			{
-				Role role = null;
+				RoleBase role = null;
 				foreach (object component in components)
 				{
-					role = component as Role;
+					role = component as RoleBase;
 					break;
 				}
 				FactType factType;
 				if (role != null &&
 					null != (factType = role.FactType))
 				{
-					RoleMoveableCollection roles = factType.RoleCollection;
+					RoleBaseMoveableCollection roles = factType.RoleCollection;
 					int insertIndex = roles.IndexOf(role);
 					Store store = factType.Store;
 					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InsertRoleTransactionName))

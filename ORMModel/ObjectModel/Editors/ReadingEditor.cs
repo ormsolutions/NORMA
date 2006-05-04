@@ -75,10 +75,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// </summary>
 		public static bool IsParticipant(ObjectType objectType, ReadingOrder readingOrder)
 		{
-			RoleMoveableCollection roles = readingOrder.RoleCollection;
-			foreach (Role role in roles)
+			RoleBaseMoveableCollection roles = readingOrder.RoleCollection;
+			foreach (RoleBase role in roles)
 			{
-				if (object.ReferenceEquals(role.RolePlayer, objectType))
+				if (object.ReferenceEquals(role.Role.RolePlayer, objectType))
 				{
 					return true;
 				}
@@ -203,13 +203,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			lstReadings.Items.Clear();
 
 			tvwReadingOrder.Nodes.AddRange(CreateAutoFilledRootNodes());
-			RoleMoveableCollection roleSeq = myFact.RoleCollection;
+			RoleBaseMoveableCollection roleSeq = myFact.RoleCollection;
 			int numRoles = roleSeq.Count;
 
 			List<Role> roleList = new List<Role>(numRoles);
 			for (int i = 0; i < numRoles; ++i)
 			{
-				roleList.Add(roleSeq[i]);
+				roleList.Add(roleSeq[i].Role);
 			}
 
 			List<List<Role>> rolePerms = BuildPermutations(roleList);
@@ -350,11 +350,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 		}
 
-		private static bool IsMatchingReadingOrder(Role[] roleOrder, ReadingOrder readingOrder)
+		private static bool IsMatchingReadingOrder(RoleBase[] roleOrder, ReadingOrder readingOrder)
 		{
 			return IsMatchingReadingOrder(roleOrder, readingOrder.RoleCollection);
 		}
-		private static bool IsMatchingReadingOrder(Role[] roleOrder, RoleMoveableCollection readingOrderRoles)
+		private static bool IsMatchingReadingOrder(RoleBase[] roleOrder, RoleBaseMoveableCollection readingOrderRoles)
 		{
 			Debug.Assert(roleOrder.Length == readingOrderRoles.Count);
 			int numRoles = roleOrder.Length;
@@ -374,9 +374,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		{
 			return IsMatchingLeadRole(leadRole, readingOrder.RoleCollection);
 		}
-		private static bool IsMatchingLeadRole(Role leadRole, RoleMoveableCollection readingOrderRoles)
+		private static bool IsMatchingLeadRole(Role leadRole, RoleBaseMoveableCollection readingOrderRoles)
 		{
-			return object.ReferenceEquals(leadRole, readingOrderRoles[0]);
+			return object.ReferenceEquals(leadRole, readingOrderRoles[0].Role);
 		}
 		#endregion
 		#region Reading activation helper
@@ -387,7 +387,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// </summary>
 		/// <param name="readingOrderRoles">The role sequence to match against</param>
 		/// <returns>true if a selection was made, false otherwise</returns>
-		private bool SelectNode(RoleMoveableCollection readingOrderRoles)
+		private bool SelectNode(RoleBaseMoveableCollection readingOrderRoles)
 		{
 			bool retval = false;
 			TreeNodeCollection nodes = tvwReadingOrder.Nodes;
@@ -428,7 +428,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				null != (factType = order.FactType) &&
 				object.ReferenceEquals(factType, myFact))
 			{
-				RoleMoveableCollection readingOrderRoles = order.RoleCollection;
+				RoleBaseMoveableCollection readingOrderRoles = order.RoleCollection;
 
 				if (SelectNode(readingOrderRoles))
 				{
@@ -485,7 +485,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				&& null != (reading = order.PrimaryReading)
 				&& object.ReferenceEquals(fact, myFact))
 			{
-				RoleMoveableCollection readingOrderRoles = order.RoleCollection;
+				RoleBaseMoveableCollection readingOrderRoles = order.RoleCollection;
 				if (SelectNode(readingOrderRoles))
 				{
 					if (vtrReadings.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
@@ -496,7 +496,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			else
 			{
-				RoleMoveableCollection factRoles = fact.RoleCollection;
+				RoleBaseMoveableCollection factRoles = fact.RoleCollection;
 				if (SelectNode(factRoles))
 				{
 					if (vtrReadings.SelectObject(null, NewReadingEntry.Singleton, (int)ObjectStyle.TrackingObject, 0))
@@ -719,7 +719,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		private void ReadingOrderHasRoleAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-			Role role = link.RoleCollection;
+			RoleBase role = link.RoleCollection;
 			FactType roleFact = role.FactType;
 			if (myFact != null && object.ReferenceEquals(myFact, roleFact) && !myBranch.IsAdding)
 			{
@@ -1101,12 +1101,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			private string ReplacePlaceholders(Match m)
 			{
 				string retval = null;
-				RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
+				RoleBaseMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
 				string matchText = m.Value;
 				int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
 				if (roles.Count > rolePosition)
 				{
-					ObjectType player = roles[rolePosition].RolePlayer;
+					ObjectType player = roles[rolePosition].Role.RolePlayer;
 					if (player != null)
 					{
 						retval = player.Name;

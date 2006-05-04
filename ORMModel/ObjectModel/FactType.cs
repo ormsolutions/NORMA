@@ -64,8 +64,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// it will then create a new ReadingOrder. It operates under the assumption
 		/// that a transaction has already been started.
 		/// </summary>
-		/// <returns></returns>
-		public static ReadingOrder GetReadingOrder(FactType theFact, IList<Role> roleOrder)
+		public static ReadingOrder GetReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = FindMatchingReadingOrder(theFact, roleOrder);
 			if (retval == null)
@@ -80,14 +79,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// as the currently selected role order.
 		/// </summary>
 		/// <returns>The reading order if found, null if it was not.</returns>
-		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, IList<Role> roleOrder)
+		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
 			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
 			int roleOrderCount = roleOrder.Count;
 			foreach (ReadingOrder order in readingOrders)
 			{
-				RoleMoveableCollection roles = order.RoleCollection;
+				RoleBaseMoveableCollection roles = order.RoleCollection;
 				int numRoles = roles.Count;
 				if (numRoles == roleOrderCount)
 				{
@@ -117,8 +116,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
 		public static ReadingOrder FindMatchingReadingOrder(FactType theFact)
 		{
-			RoleMoveableCollection factRoles = theFact.RoleCollection;
-			Role[] roleOrder = new Role[factRoles.Count];
+			RoleBaseMoveableCollection factRoles = theFact.RoleCollection;
+			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
 			factRoles.CopyTo(roleOrder, 0);
 			return FindMatchingReadingOrder(theFact, roleOrder);
 		}
@@ -129,13 +128,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the assumption that a transaction has already been started.
 		/// </summary>
 		/// <returns>Should always return a value unless there was an error creating the ReadingOrder</returns>
-		public static ReadingOrder CreateReadingOrder(FactType theFact, IList<Role> roleOrder)
+		public static ReadingOrder CreateReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
 			if (roleOrder.Count > 0)
 			{
 				retval = ReadingOrder.CreateReadingOrder(theFact.Store);
-				RoleMoveableCollection readingRoles = retval.RoleCollection;
+				RoleBaseMoveableCollection readingRoles = retval.RoleCollection;
 				int numRoles = roleOrder.Count;
 				for (int i = 0; i < numRoles; ++i)
 				{
@@ -797,7 +796,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!IsRemoved && (null != (theModel = Model)))
 			{
 				Store theStore = Store;
-				RoleMoveableCollection factRoles = RoleCollection;
+				RoleBaseMoveableCollection factRoles = RoleCollection;
 				bool hasError = false;
 				int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
 				if (iucCount != 0)
@@ -1097,7 +1096,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.RemoveImpliedInternalUniquenessConstraintsTransactionName))
 			{
-				RoleMoveableCollection factRoles = RoleCollection;
+				RoleBaseMoveableCollection factRoles = RoleCollection;
 				InternalUniquenessConstraint[] iuc = new InternalUniquenessConstraint[iucCount];
 				const uint deonticBit = 1U << 31;
 				uint[] roleBits = new uint[iucCount];
@@ -1251,7 +1250,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				InternalConstraint constraint = childVerbalizer as InternalConstraint;
 				if (constraint != null)
 				{
-					RoleMoveableCollection factRoles = RoleCollection;
+					RoleBaseMoveableCollection factRoles = RoleCollection;
 					if (factRoles.Count == 2)
 					{
 						ConstraintModality modality = constraint.Modality;
@@ -1351,7 +1350,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!isNegative && Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization)
 			{
-				RoleMoveableCollection factRoles = RoleCollection;
+				RoleBaseMoveableCollection factRoles = RoleCollection;
 				if (factRoles.Count == 2)
 				{
 					foreach (InternalUniquenessConstraint contextIuc in GetInternalConstraints<InternalUniquenessConstraint>())
@@ -1364,14 +1363,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// We have an appropriate context role. See if there
 								// a single-role constraint opposite it. If not, then
 								// we provide the default verbalization.
-								Role oppositeRole = factRoles[0];
+								RoleBase oppositeRole = factRoles[0];
 								if (object.ReferenceEquals(oppositeRole, roles[0]))
 								{
 									oppositeRole = factRoles[1];
 								}
 
 								bool provideDefault = true;
-								foreach (ConstraintRoleSequence sequence in oppositeRole.ConstraintRoleSequenceCollection)
+								foreach (ConstraintRoleSequence sequence in oppositeRole.Role.ConstraintRoleSequenceCollection)
 								{
 									InternalUniquenessConstraint iucTest = sequence as InternalUniquenessConstraint;
 									if (iucTest != null && iucTest.RoleCollection.Count == 1 && iucTest.Modality == ConstraintModality.Alethic)

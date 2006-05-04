@@ -154,7 +154,7 @@ namespace Neumont.Tools.ORM.Shell
 				//selection could change between the shapes that are related to the fact
 				else if (!object.ReferenceEquals(theFact, currentFact))
 				{
-					RoleMoveableCollection displayOrder = null;
+					RoleBaseMoveableCollection displayOrder = null;
 					ORMDesignerDocView docView = CurrentORMSelectionContainer as ORMDesignerDocView;
 					if (docView != null)
 					{

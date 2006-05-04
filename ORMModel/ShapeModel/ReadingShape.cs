@@ -367,7 +367,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						ReadingOrder readingOrder = readingOrderCollection[i];
 						string aReading = readingOrder.ReadingText;
-						RoleMoveableCollection roleCollection = readingOrder.RoleCollection;
+						RoleBaseMoveableCollection roleCollection = readingOrder.RoleCollection;
 						int roleCount = roleCollection.Count;
 						if (roleCount <= 2 || (numReadingOrders > 1 && i == 0))
 						{
@@ -387,7 +387,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
-							RoleMoveableCollection factRoleCollection = factShape.DisplayedRoleOrder;
+							RoleBaseMoveableCollection factRoleCollection = factShape.DisplayedRoleOrder;
 							//RoleMoveableCollection factRoleCollection = factType.RoleCollection;
 							bool primaryOrder = object.ReferenceEquals(primaryReadingOrder, readingOrder);
 							//UNDONE: the roleCount should be factRoleCollection.Count. However, this causes
@@ -407,8 +407,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
 								{
-									Role currentRole = roleCollection[readRoleNum];
-									ObjectType rolePlayer = currentRole.RolePlayer;
+									RoleBase currentRole = roleCollection[readRoleNum];
+									ObjectType rolePlayer = currentRole.Role.RolePlayer;
 									string formatString;
 									string replacementField;
 									if (rolePlayer == null)

@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.FactEditor
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
 				{
 					IDictionary topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
-					RoleMoveableCollection factRoles = null;
+					RoleBaseMoveableCollection factRoles = null;
 					ReadingOrder readOrd;
 					Reading primaryReading = null;
 					FactType currentFact;

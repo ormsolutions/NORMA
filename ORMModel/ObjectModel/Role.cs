@@ -89,7 +89,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
-		private RoleMultiplicity GetReverseMultiplicity(FactType factType, RoleMoveableCollection roles)
+		private RoleMultiplicity GetReverseMultiplicity(FactType factType, RoleBaseMoveableCollection roles)
 		{
 			RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
 			bool haveMandatory = false;
@@ -134,10 +134,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if (!haveUniqueness)
 			{
 				bool haveOppositeUniqueness = false;
-				Role oppositeRole = roles[0];
+				Role oppositeRole = roles[0].Role;
 				if (object.ReferenceEquals(oppositeRole, this))
 				{
-					oppositeRole = roles[1];
+					oppositeRole = roles[1].Role;
 				}
 				foreach (ConstraintRoleSequence roleSet in oppositeRole.ConstraintRoleSequenceCollection)
 				{
@@ -210,15 +210,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType fact = FactType;
 				if (fact != null)
 				{
-					RoleMoveableCollection roles = fact.RoleCollection;
+					RoleBaseMoveableCollection roles = fact.RoleCollection;
 					if (roles.Count == 2)
 					{
-						Role oppositeRole = roles[0];
+						RoleBase oppositeRole = roles[0];
 						if (object.ReferenceEquals(oppositeRole, this))
 						{
 							oppositeRole = roles[1];
 						}
-						retVal = oppositeRole.GetReverseMultiplicity(fact, roles);
+						retVal = oppositeRole.Role.GetReverseMultiplicity(fact, roles);
 					}
 				}
 				return retVal;
@@ -365,13 +365,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Used as a shortcut to find the opposite role in a binary fact.
 		/// Returns null if the fact is not a binary
 		/// </summary>
-		/// <value></value>
-		public Role OppositeRole
+		public RoleBase OppositeRole
 		{
 			get
 			{
 				// Only do this if it's a binary fact
-				RoleMoveableCollection roles = this.FactType.RoleCollection;
+				RoleBaseMoveableCollection roles = this.FactType.RoleCollection;
 				if (roles.Count == 2)
 				{
 					// loop over the collection and get the other role
@@ -474,20 +473,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						Role role = e.ModelElement as Role;
 						FactType factType = role.FactType;
-						RoleMoveableCollection factRoles = factType.RoleCollection;
+						RoleBaseMoveableCollection factRoles = factType.RoleCollection;
 						if (factType == null || factRoles.Count != 2)
 						{
 							return; // Ignore the request
 						}
 
 						// We implemented this backwards, so switch to the opposite role
-						if (object.ReferenceEquals(role, factRoles[0]))
+						Role testRole = factRoles[0].Role;
+						if (object.ReferenceEquals(role, testRole))
 						{
-							role = factRoles[1];
+							role = factRoles[1].Role;
 						}
 						else
 						{
-							role = factRoles[0];
+							role = testRole;
 						}
 
 						// First take care of the mandatory setting. We
@@ -665,11 +665,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 										}
 									}
 								}
-								Role oppositeRole = factRoles[0];
-								if (object.ReferenceEquals(oppositeRole, role))
+								RoleBase oppositeBaseRole = factRoles[0];
+								if (object.ReferenceEquals(oppositeBaseRole.Role, role))
 								{
-									oppositeRole = factRoles[1];
+									oppositeBaseRole = factRoles[1];
 								}
+								Role oppositeRole = oppositeBaseRole.Role;
 								// Unspecified checks the opposite role before saying unspecified, no need to look
 								if (!wasUnspecified)
 								{
@@ -815,9 +816,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				Role addedRole = link.RoleCollection;
-				ORMMetaModel.DelayValidateElement(addedRole, DelayValidateRolePlayerRequiredError);
-				ORMMetaModel.DelayValidateElement(addedRole, DelayRenumberErrorsWithRoleNumbersAfterRole);
+				Role addedRole = link.RoleCollection as Role;
+				if (addedRole != null)
+				{
+					ORMMetaModel.DelayValidateElement(addedRole, DelayValidateRolePlayerRequiredError);
+					ORMMetaModel.DelayValidateElement(addedRole, DelayRenumberErrorsWithRoleNumbersAfterRole);
+				}
 			}
 		}
 		[RuleOn(typeof(FactTypeHasRole))]
@@ -858,17 +862,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="factType">The owning factType</param>
 		/// <param name="roleAdded">The added role, or null if a role was removed.</param>
-		private static void RenumberErrorsWithRoleNumbers(FactType factType, Role roleAdded)
+		private static void RenumberErrorsWithRoleNumbers(FactType factType, RoleBase roleAdded)
 		{
 			if (!factType.IsRemoved)
 			{
-				RoleMoveableCollection roles = factType.RoleCollection;
+				RoleBaseMoveableCollection roles = factType.RoleCollection;
 				bool regenerate = roleAdded == null;
 				int roleCount = roles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
-					Role currentRole = roles[i];
-					if (regenerate)
+					Role currentRole = roles[i] as Role;
+					if (regenerate && currentRole != null)
 					{
 						RolePlayerRequiredError error = currentRole.RolePlayerRequiredError;
 						if (error != null)
@@ -1027,6 +1031,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetNamedElementDictionaryLinkRoles();
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
+	}
+	public partial class RoleBase
+	{
+		/// <summary>
+		/// Convert a RoleBase to a Role, resolving a proxy as needed
+		/// </summary>
+		public Role Role
+		{
+			get
+			{
+				Role retVal = this as Role;
+				if (retVal == null)
+				{
+					RoleProxy proxy;
+					if (null != (proxy = this as RoleProxy))
+					{
+						retVal = proxy.TargetRole;
+					}
+				}
+				return retVal;
+			}
+		}
+	}
+	public partial class RoleBaseMoveableCollection
+	{
+		/// <summary>
+		/// Determines the index of a specific Role in the list, resolving
+		/// RoleProxy elements as needed
+		/// </summary>
+		/// <param name="value">The Role to locate in the list</param>
+		/// <returns>index of object</returns>
+		public int IndexOf(Role value)
+		{
+			int count = Count;
+			for (int i = 0; i < count; ++i)
+			{
+				if (object.ReferenceEquals(this[i].Role, value))
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
 	}
 	public partial class RolePlayerRequiredError : IRepresentModelElements
 	{

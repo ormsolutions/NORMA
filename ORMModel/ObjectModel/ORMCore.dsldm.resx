@@ -15,18 +15,18 @@
 			You must not remove this notice, or any other, from this software.
 		</value>
 	</metadata>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -41,40 +41,41 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -83,9 +84,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -100,9 +102,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -124,318 +127,336 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.Text">
-    <value xml:space="preserve">Logical</value>
+  <data name="Common Public License Copyright Notice" xml:space="preserve">
+    <value>
+			Neumont Object-Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text">
-    <value xml:space="preserve">Logical: True or False</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.Text" xml:space="preserve">
+    <value>Logical</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text">
-    <value xml:space="preserve">Logical: Yes or No</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text" xml:space="preserve">
+    <value>Logical: True or False</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text">
-    <value xml:space="preserve">Numeric: Auto Counter</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text" xml:space="preserve">
+    <value>Logical: Yes or No</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text">
-    <value xml:space="preserve">Numeric: Decimal</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text" xml:space="preserve">
+    <value>Numeric: Auto Counter</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text">
-    <value xml:space="preserve">Numeric: Floating Point</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text" xml:space="preserve">
+    <value>Numeric: Decimal</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text">
-    <value xml:space="preserve">Numeric: Money</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text" xml:space="preserve">
+    <value>Numeric: Floating Point</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text">
-    <value xml:space="preserve">Numeric: Signed Integer</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text" xml:space="preserve">
+    <value>Numeric: Money</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Text">
-    <value xml:space="preserve">Numeric</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text" xml:space="preserve">
+    <value>Numeric: Signed Integer</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text">
-    <value xml:space="preserve">Numeric: Unsigned Integer</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Text" xml:space="preserve">
+    <value>Numeric</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text">
-    <value xml:space="preserve">Other: Object ID</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text" xml:space="preserve">
+    <value>Numeric: Unsigned Integer</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text">
-    <value xml:space="preserve">Other: Row ID</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text" xml:space="preserve">
+    <value>Other: Object ID</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.Text">
-    <value xml:space="preserve">Other</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text" xml:space="preserve">
+    <value>Other: Row ID</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text">
-    <value xml:space="preserve">Raw Data: Fixed Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.Text" xml:space="preserve">
+    <value>Other</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text">
-    <value xml:space="preserve">Raw Data: Large Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text" xml:space="preserve">
+    <value>Raw Data: Fixed Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text">
-    <value xml:space="preserve">Raw Data: OLE Object</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text" xml:space="preserve">
+    <value>Raw Data: Large Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text">
-    <value xml:space="preserve">Raw Data: Picture</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text" xml:space="preserve">
+    <value>Raw Data: OLE Object</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Text">
-    <value xml:space="preserve">Raw Data</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text" xml:space="preserve">
+    <value>Raw Data: Picture</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text">
-    <value xml:space="preserve">Raw Data: Variable Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Text" xml:space="preserve">
+    <value>Raw Data</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text">
-    <value xml:space="preserve">Temporal: Auto Timestamp</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text" xml:space="preserve">
+    <value>Raw Data: Variable Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text">
-    <value xml:space="preserve">Temporal: Date</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text" xml:space="preserve">
+    <value>Temporal: Auto Timestamp</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text">
-    <value xml:space="preserve">Temporal: Date &amp; Time</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text" xml:space="preserve">
+    <value>Temporal: Date</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Text">
-    <value xml:space="preserve">Temporal</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text" xml:space="preserve">
+    <value>Temporal: Date &amp; Time</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text">
-    <value xml:space="preserve">Temporal: Time</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Text" xml:space="preserve">
+    <value>Temporal</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text">
-    <value xml:space="preserve">Text: Fixed Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text" xml:space="preserve">
+    <value>Temporal: Time</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text">
-    <value xml:space="preserve">Text: Large Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text" xml:space="preserve">
+    <value>Text: Fixed Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.Text">
-    <value xml:space="preserve">Text</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text" xml:space="preserve">
+    <value>Text: Large Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text">
-    <value xml:space="preserve">Text: Variable Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.Text" xml:space="preserve">
+    <value>Text</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text">
-    <value xml:space="preserve">&lt;Data Type Not Set&gt;</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text" xml:space="preserve">
+    <value>Text: Variable Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText">
-    <value xml:space="preserve">&lt;Nested Fact Type Not Set&gt;</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text" xml:space="preserve">
+    <value>&lt;Data Type Not Set&gt;</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText">
-    <value xml:space="preserve">&lt;Nested Type Not Set&gt;</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText" xml:space="preserve">
+    <value>&lt;Nested Fact Type Not Set&gt;</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText">
-    <value xml:space="preserve">&lt;Role Player Not Set&gt;</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText" xml:space="preserve">
+    <value>&lt;Nested Type Not Set&gt;</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EntityType">
-    <value xml:space="preserve">EntityType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText" xml:space="preserve">
+    <value>&lt;Role Player Not Set&gt;</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">
-    <value xml:space="preserve">EntityType{0}</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityType" xml:space="preserve">
+    <value>EntityType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraint">
-    <value xml:space="preserve">EqualityConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern" xml:space="preserve">
+    <value>EntityType{0}</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraint">
-    <value xml:space="preserve">ExclusionConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.EqualityConstraint" xml:space="preserve">
+    <value>EqualityConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionType">
-    <value xml:space="preserve">ExclusionType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraint" xml:space="preserve">
+    <value>ExclusionConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint">
-    <value xml:space="preserve">ExternalUniquenessConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionType" xml:space="preserve">
+    <value>ExclusionType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred">
-    <value xml:space="preserve">IsPreferredIdentifier</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint" xml:space="preserve">
+    <value>ExternalUniquenessConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.FactType">
-    <value xml:space="preserve">FactType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred" xml:space="preserve">
+    <value>IsPreferredIdentifier</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern">
-    <value xml:space="preserve">FactType{0}</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType" xml:space="preserve">
+    <value>FactType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplay">
-    <value xml:space="preserve">NestingType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern" xml:space="preserve">
+    <value>FactType{0}</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint">
-    <value xml:space="preserve">FrequencyConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplay" xml:space="preserve">
+    <value>NestingType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint">
-    <value xml:space="preserve">InternalUniquenessConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint" xml:space="preserve">
+    <value>FrequencyConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred">
-    <value xml:space="preserve">IsPreferredIdentifier</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint" xml:space="preserve">
+    <value>InternalUniquenessConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint">
-    <value xml:space="preserve">MandatoryConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred" xml:space="preserve">
+    <value>IsPreferredIdentifier</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType">
-    <value xml:space="preserve">ObjectifiedFactType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" xml:space="preserve">
+    <value>MandatoryConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeDisplay">
-    <value xml:space="preserve">DataType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType" xml:space="preserve">
+    <value>ObjectifiedFactType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent">
-    <value xml:space="preserve">IsIndependent</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeDisplay" xml:space="preserve">
+    <value>DataType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal">
-    <value xml:space="preserve">IsPersonal</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent" xml:space="preserve">
+    <value>IsIndependent</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueType">
-    <value xml:space="preserve">IsValueType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal" xml:space="preserve">
+    <value>IsPersonal</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.Length">
-    <value xml:space="preserve">Length</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueType" xml:space="preserve">
+    <value>IsValueType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactTypeDisplay">
-    <value xml:space="preserve">NestedFactType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.Length" xml:space="preserve">
+    <value>Length</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay">
-    <value xml:space="preserve">RefMode</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactTypeDisplay" xml:space="preserve">
+    <value>NestedFactType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.Scale">
-    <value xml:space="preserve">Scale</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay" xml:space="preserve">
+    <value>RefMode</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ORMMetaModel">
-    <value xml:space="preserve">ORMMetaModel</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.Scale" xml:space="preserve">
+    <value>Scale</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ORMModel">
-    <value xml:space="preserve">ORMModel</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMMetaModel" xml:space="preserve">
+    <value>ORMMetaModel</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Note">
-    <value xml:space="preserve">Note</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMModel" xml:space="preserve">
+    <value>ORMModel</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Reading">
-    <value xml:space="preserve">Reading</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Note" xml:space="preserve">
+    <value>Note</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Reading.IsPrimary">
-    <value xml:space="preserve">IsPrimary</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Reading" xml:space="preserve">
+    <value>Reading</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Reading.Text">
-    <value xml:space="preserve">Text</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Reading.IsPrimary" xml:space="preserve">
+    <value>IsPrimary</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceMode.KindDisplay">
-    <value xml:space="preserve">Kind</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Reading.Text" xml:space="preserve">
+    <value>Text</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraint">
-    <value xml:space="preserve">RingConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceMode.KindDisplay" xml:space="preserve">
+    <value>Kind</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraint.RingType">
-    <value xml:space="preserve">RingType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraint" xml:space="preserve">
+    <value>RingConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Role">
-    <value xml:space="preserve">Role</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraint.RingType" xml:space="preserve">
+    <value>RingType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Role.IsMandatory">
-    <value xml:space="preserve">IsMandatory</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role" xml:space="preserve">
+    <value>Role</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality">
-    <value xml:space="preserve">MandatoryConstraintModality</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.IsMandatory" xml:space="preserve">
+    <value>IsMandatory</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName">
-    <value xml:space="preserve">MandatoryConstraintName</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality" xml:space="preserve">
+    <value>MandatoryConstraintModality</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Role.Multiplicity">
-    <value xml:space="preserve">Multiplicity</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName" xml:space="preserve">
+    <value>MandatoryConstraintName</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Role.RolePlayerDisplay">
-    <value xml:space="preserve">RolePlayer</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.Multiplicity" xml:space="preserve">
+    <value>Multiplicity</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.RootType.IsExternal">
-    <value xml:space="preserve">IsExternal</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.RolePlayerDisplay" xml:space="preserve">
+    <value>RolePlayer</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.RootType.NoteText">
-    <value xml:space="preserve">Note</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.RootType.IsExternal" xml:space="preserve">
+    <value>IsExternal</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraint">
-    <value xml:space="preserve">SubsetConstraint</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.RootType.NoteText" xml:space="preserve">
+    <value>Note</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact">
-    <value xml:space="preserve">Subtype</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraint" xml:space="preserve">
+    <value>SubsetConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimary">
-    <value xml:space="preserve">IsPrimary</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact" xml:space="preserve">
+    <value>Subtype</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern">
-    <value xml:space="preserve">Subtype{0}</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimary" xml:space="preserve">
+    <value>IsPrimary</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern">
-    <value xml:space="preserve">[{0}]</value>
-    <comment xml:space="preserve">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern" xml:space="preserve">
+    <value>Subtype{0}</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
-    <value xml:space="preserve">{ {0} }</value>
-    <comment xml:space="preserve">Pattern showing left- and right-string to use for containing a value range definition.</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern" xml:space="preserve">
+    <value>[{0}]</value>
+    <comment>Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern">
-    <value xml:space="preserve">({0})</value>
-    <comment xml:space="preserve">Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern" xml:space="preserve">
+    <value>{ {0} }</value>
+    <comment>Pattern showing left- and right-string to use for containing a value range definition.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter">
-    <value xml:space="preserve">, </value>
-    <comment xml:space="preserve">String used to delimit sets of value ranges in a definition.</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern" xml:space="preserve">
+    <value>({0})</value>
+    <comment>Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern">
-    <value xml:space="preserve">'{0}'</value>
-    <comment xml:space="preserve">Pattern showing left- and right-string to use for containing a value range as a string.</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter" xml:space="preserve">
+    <value>, </value>
+    <comment>String used to delimit sets of value ranges in a definition.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter">
-    <value xml:space="preserve">..</value>
-    <comment xml:space="preserve">String used to delimit the min- and max-values of a value range.</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern" xml:space="preserve">
+    <value>'{0}'</value>
+    <comment>Pattern showing left- and right-string to use for containing a value range as a string.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueType">
-    <value xml:space="preserve">ValueType</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter" xml:space="preserve">
+    <value>..</value>
+    <comment>String used to delimit the min- and max-values of a value range.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
-    <value xml:space="preserve">ValueType{0}</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueType" xml:space="preserve">
+    <value>ValueType</value>
   </data>
-  <data name="RoleMultiplicity.ExactlyOne">
-    <value xml:space="preserve">1</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern" xml:space="preserve">
+    <value>ValueType{0}</value>
   </data>
-  <data name="RoleMultiplicity.Indeterminate">
-    <value xml:space="preserve">Indeterminate</value>
+  <data name="RoleMultiplicity.ExactlyOne" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="RoleMultiplicity.OneToMany">
-    <value xml:space="preserve">1..*</value>
+  <data name="RoleMultiplicity.Indeterminate" xml:space="preserve">
+    <value>Indeterminate</value>
   </data>
-  <data name="RoleMultiplicity.Unspecified">
-    <value xml:space="preserve">Unspecified</value>
+  <data name="RoleMultiplicity.OneToMany" xml:space="preserve">
+    <value>1..*</value>
   </data>
-  <data name="RoleMultiplicity.ZeroToMany">
-    <value xml:space="preserve">*</value>
+  <data name="RoleMultiplicity.Unspecified" xml:space="preserve">
+    <value>Unspecified</value>
   </data>
-  <data name="RoleMultiplicity.ZeroToOne">
-    <value xml:space="preserve">0..1</value>
+  <data name="RoleMultiplicity.ZeroToMany" xml:space="preserve">
+    <value>*</value>
   </data>
-  <data name="RingConstraintType.Undefined">
-    <value xml:space="preserve">Undefined</value>
+  <data name="RoleMultiplicity.ZeroToOne" xml:space="preserve">
+    <value>0..1</value>
   </data>
-  <data name="RingConstraintType.Irreflexive">
-    <value xml:space="preserve">Irreflexive</value>
+  <data name="RingConstraintType.Undefined" xml:space="preserve">
+    <value>Undefined</value>
   </data>
-  <data name="RingConstraintType.Acyclic">
-    <value xml:space="preserve">Acyclic</value>
+  <data name="RingConstraintType.Irreflexive" xml:space="preserve">
+    <value>Irreflexive</value>
   </data>
-  <data name="RingConstraintType.Intransitive">
-    <value xml:space="preserve">Intransitive</value>
+  <data name="RingConstraintType.Acyclic" xml:space="preserve">
+    <value>Acyclic</value>
   </data>
-  <data name="RingConstraintType.Symmetric">
-    <value xml:space="preserve">Symmetric</value>
+  <data name="RingConstraintType.Intransitive" xml:space="preserve">
+    <value>Intransitive</value>
   </data>
-  <data name="RingConstraintType.Asymmetric">
-    <value xml:space="preserve">Asymmetric</value>
+  <data name="RingConstraintType.Symmetric" xml:space="preserve">
+    <value>Symmetric</value>
   </data>
-  <data name="RingConstraintType.AntiSymmetric">
-    <value xml:space="preserve">AntiSymmetric</value>
+  <data name="RingConstraintType.Asymmetric" xml:space="preserve">
+    <value>Asymmetric</value>
   </data>
-  <data name="RingConstraintType.AcyclicIntransitive">
-    <value xml:space="preserve">Acyclic and Intransitive</value>
+  <data name="RingConstraintType.AntiSymmetric" xml:space="preserve">
+    <value>AntiSymmetric</value>
   </data>
-  <data name="RingConstraintType.SymmetricIrreflexive">
-    <value xml:space="preserve">Symmetric and Irreflexive</value>
+  <data name="RingConstraintType.AcyclicIntransitive" xml:space="preserve">
+    <value>Acyclic and Intransitive</value>
   </data>
-  <data name="RingConstraintType.SymmetricIntransitive">
-    <value xml:space="preserve">Symmetric and Intransitive</value>
+  <data name="RingConstraintType.SymmetricIrreflexive" xml:space="preserve">
+    <value>Symmetric and Irreflexive</value>
   </data>
-  <data name="RingConstraintType.AsymmetricIntransitive">
-    <value xml:space="preserve">Asymmetric and Intransitive</value>
+  <data name="RingConstraintType.SymmetricIntransitive" xml:space="preserve">
+    <value>Symmetric and Intransitive</value>
+  </data>
+  <data name="RingConstraintType.AsymmetricIntransitive" xml:space="preserve">
+    <value>Asymmetric and Intransitive</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.Name" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>

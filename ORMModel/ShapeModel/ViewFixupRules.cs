@@ -389,16 +389,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						//This part handles inserting the role in the correct location if the facttypeshape has 
 						//a different display order for the roles than the native one.
-						RoleMoveableCollection roles = shape.RoleDisplayOrderCollection;
+						RoleBaseMoveableCollection roles = shape.RoleDisplayOrderCollection;
 						if (roles.Count != 0)
 						{
 							Store store = shape.Store;
-							Role newRole = link.RoleCollection;
+							RoleBase newRole = link.RoleCollection;
 							IDictionary contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 							int insertIndex = -1;
 							if (contextInfo.Contains(FactTypeShape.InsertAfterRoleKey))
 							{
-								Role insertAfter = (Role)contextInfo[FactTypeShape.InsertAfterRoleKey];
+								RoleBase insertAfter = (RoleBase)contextInfo[FactTypeShape.InsertAfterRoleKey];
 								insertIndex = roles.IndexOf(insertAfter);
 								if (insertIndex != -1)
 								{
@@ -407,7 +407,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else if (contextInfo.Contains(FactTypeShape.InsertBeforeRoleKey))
 							{
-								Role insertBefore = (Role)contextInfo[FactTypeShape.InsertBeforeRoleKey];
+								RoleBase insertBefore = (RoleBase)contextInfo[FactTypeShape.InsertBeforeRoleKey];
 								insertIndex = roles.IndexOf(insertBefore);
 							}
 							if (insertIndex != -1)
@@ -856,7 +856,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								ReadingOrderMoveableCollection remainingOrders = fact.ReadingOrderCollection;
 								if (remainingOrders.Count != 0)
 								{
-									RoleMoveableCollection roles = fact.RoleCollection;
+									RoleBaseMoveableCollection roles = fact.RoleCollection;
 									Reading newReading = FactType.GetMatchingReading(remainingOrders, order, roles[0], null, false, false, roles, true);
 									if (newReading != null)
 									{

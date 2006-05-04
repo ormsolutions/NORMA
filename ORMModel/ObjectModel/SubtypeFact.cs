@@ -82,7 +82,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleMoveableCollection roles = RoleCollection;
+				RoleBaseMoveableCollection roles = RoleCollection;
 				SubtypeMetaRole retVal = null;
 				if (roles.Count == 2)
 				{
@@ -103,7 +103,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleMoveableCollection roles = RoleCollection;
+				RoleBaseMoveableCollection roles = RoleCollection;
 				// Start with checking role 1, not 0. This corresponds
 				// to the indices we set in the InitializeSubtypeAddRule.
 				// This is not guaranteed (the user can switch them in the xml),
@@ -176,7 +176,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Store store = fact.Store;
 			
 				// Establish role collecton
-				RoleMoveableCollection roles = fact.RoleCollection;
+				RoleBaseMoveableCollection roles = fact.RoleCollection;
 				SubtypeMetaRole subTypeMetaRole = SubtypeMetaRole.CreateSubtypeMetaRole(store);
 				SupertypeMetaRole superTypeMetaRole = SupertypeMetaRole.CreateSupertypeMetaRole(store);
 				roles.Add(subTypeMetaRole);
@@ -286,7 +286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					Role role = link.RoleCollection;
+					RoleBase role = link.RoleCollection;
 					if (role is SubtypeMetaRole || role is SupertypeMetaRole)
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactMustBeParentOfMetaRole);

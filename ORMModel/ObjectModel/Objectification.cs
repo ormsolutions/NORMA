@@ -80,7 +80,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				RoleMoveableCollection farSequenceRoles = farSequence.RoleCollection;
 				
 				// Add implied fact types, one for each role
-				RoleMoveableCollection roles = nestedFact.RoleCollection;
+				RoleBaseMoveableCollection roles = nestedFact.RoleCollection;
 				int roleCount = roles.Count;
 				if (roleCount != 0)
 				{
@@ -95,9 +95,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (int i = 0; i < roleCount; ++i)
 					{
-						Role nestedRole = roles[i];
+						Role nestedRole = roles[i].Role;
 						Role nearRole;
-						FactType impliedFact = CreateImpliedFactTypeForRole(model, nestingType, roles[i], out nearRole);
+						FactType impliedFact = CreateImpliedFactTypeForRole(model, nestingType, nestedRole, out nearRole);
 
 						// Attach the roles to equality constraint
 						nearSequenceRoles.Add(nestedRole);
@@ -271,7 +271,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										{
 											Role modifiedRole = sequenceRoleLink.RoleCollection;
 											FactTypeMoveableCollection impliedFacts = objectificationLink.ImpliedFactTypeCollection;
-											RoleMoveableCollection factRoles = fact.RoleCollection;
+											RoleBaseMoveableCollection factRoles = fact.RoleCollection;
 											RuleManager ruleManager = fact.Store.RuleManager;
 											try
 											{
@@ -285,7 +285,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 														continue;
 													}
 													FactType impliedFact = impliedFacts[factRoles.IndexOf(sequenceRole)];
-													ConstraintRoleSequenceMoveableCollection impliedSequences = impliedFact.RoleCollection[0].ConstraintRoleSequenceCollection;
+													ConstraintRoleSequenceMoveableCollection impliedSequences = impliedFact.RoleCollection[0].Role.ConstraintRoleSequenceCollection;
 													int sequencesCount = impliedSequences.Count;
 													for (int i = sequencesCount - 1; i >= 0; --i) // Go backwards so we can remove
 													{
@@ -355,7 +355,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (impliedEquality != null)
 						{
 							ObjectType nestingType = objectificationLink.NestingType;
-							Role nestedRole = factRoleLink.RoleCollection;
+							Role nestedRole = factRoleLink.RoleCollection.Role;
 							int roleIndex = fact.RoleCollection.IndexOf(nestedRole);
 
 							// Create and populate new fact type
@@ -454,7 +454,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											try
 											{
 												myAllowModification = true;
-												ConstraintRoleSequenceMoveableCollection impliedSequences = impliedFact.RoleCollection[0].ConstraintRoleSequenceCollection;
+												ConstraintRoleSequenceMoveableCollection impliedSequences = impliedFact.RoleCollection[0].Role.ConstraintRoleSequenceCollection;
 												int sequencesCount = impliedSequences.Count;
 												for (int i = sequencesCount - 1; i >= 0; --i) // Go backwards so we can remove
 												{
@@ -509,7 +509,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (!objectificationLink.IsRemoving)
 						{
-							Role nestedRole = factRoleLink.RoleCollection;
+							Role nestedRole = factRoleLink.RoleCollection.Role;
 							int roleIndex = fact.RoleCollection.IndexOf(nestedRole);
 							try
 							{
@@ -564,7 +564,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							myAllowModification = true;
 							// The role player on the near role of the implied fact must
 							// match the role player of the nested role
-							objectificationLink.ImpliedFactTypeCollection[roleIndex].RoleCollection[0].RolePlayer = link.RolePlayer;
+							objectificationLink.ImpliedFactTypeCollection[roleIndex].RoleCollection[0].Role.RolePlayer = link.RolePlayer;
 						}
 						finally
 						{
@@ -613,7 +613,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								myAllowModification = true;
 								// The role player on the near role of the implied fact must
 								// match the role player of the nested role
-								objectificationLink.ImpliedFactTypeCollection[roleIndex].RoleCollection[0].RolePlayer = null;
+								objectificationLink.ImpliedFactTypeCollection[roleIndex].RoleCollection[0].Role.RolePlayer = null;
 							}
 							finally
 							{
@@ -759,13 +759,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void BuildImpliedConstraints(FactType fact, Objectification objectificationLink, InternalUniquenessConstraint basedOnConstraint)
 		{
 			FactTypeMoveableCollection impliedFacts = objectificationLink.ImpliedFactTypeCollection;
-			RoleMoveableCollection factRoles = fact.RoleCollection;
+			RoleBaseMoveableCollection factRoles = fact.RoleCollection;
 			RoleMoveableCollection basedOnRoles = basedOnConstraint.RoleCollection;
 			int basedOnRoleCount = basedOnRoles.Count;
 			bool haveExistingConstraintMatch = false;
 			if (basedOnRoleCount == 1)
 			{
-				Role nearImpliedRole = impliedFacts[factRoles.IndexOf(basedOnRoles[0])].RoleCollection[0];
+				Role nearImpliedRole = impliedFacts[factRoles.IndexOf(basedOnRoles[0])].RoleCollection[0].Role;
 				ConstraintRoleSequenceMoveableCollection existingImpliedConstraints = nearImpliedRole.ConstraintRoleSequenceCollection;
 				int existingImpliedConstraintCount = existingImpliedConstraints.Count;
 				for (int i = 0; i < existingImpliedConstraintCount; ++i)
@@ -813,7 +813,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							for (j = 0; j < basedOnRoleCount; ++j)
 							{
-								if (!basedOnRoles.Contains(factRoles[impliedFacts.IndexOf(eucFacts[j])]))
+								if (!basedOnRoles.Contains(factRoles[impliedFacts.IndexOf(eucFacts[j])].Role))
 								{
 									break;
 								}
@@ -832,7 +832,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					RoleMoveableCollection eucRoles = euc.RoleCollection;
 					for (int i = 0; i < basedOnRoleCount; ++i)
 					{
-						eucRoles.Add(impliedFacts[factRoles.IndexOf(basedOnRoles[i])].RoleCollection[0]);
+						eucRoles.Add(impliedFacts[factRoles.IndexOf(basedOnRoles[i])].RoleCollection[0].Role);
 					}
 					euc.Model = fact.Model;
 					euc.ImpliedByObjectification = objectificationLink;
@@ -857,7 +857,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType impliedFact = FactType.CreateFactType(store);
 			nearRole = Role.CreateRole(store);
 			Role farRole = Role.CreateRole(store);
-			RoleMoveableCollection impliedRoles = impliedFact.RoleCollection;
+			RoleBaseMoveableCollection impliedRoles = impliedFact.RoleCollection;
 			impliedRoles.Add(nearRole);
 			impliedRoles.Add(farRole);
 
@@ -881,7 +881,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Add forward reading
 			ReadingOrderMoveableCollection readingOrders = impliedFact.ReadingOrderCollection;
 			ReadingOrder order = ReadingOrder.CreateReadingOrder(store);
-			RoleMoveableCollection orderRoles;
+			RoleBaseMoveableCollection orderRoles;
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
 			orderRoles.Add(nearRole);

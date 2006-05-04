@@ -1293,7 +1293,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
-			get { return RoleCollection; }
+			get { return RoleCollection as INamedElementDictionaryRemoteParent; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}

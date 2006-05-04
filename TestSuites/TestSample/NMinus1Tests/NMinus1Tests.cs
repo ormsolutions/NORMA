@@ -82,13 +82,13 @@ namespace TestSample.NMinus1Tests
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
 
 			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType1").SingleElement;
-			RoleMoveableCollection roles = fact.RoleCollection;
+			RoleBaseMoveableCollection roles = fact.RoleCollection;
 			InternalConstraintMoveableCollection constraints = fact.InternalConstraintCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
 				//Make the error
 				constraints[0].RoleCollection.Clear();
-				constraints[0].RoleCollection.Add(roles[0]);
+				constraints[0].RoleCollection.Add(roles[0].Role);
 				
 				t.Commit();
 			}
@@ -111,7 +111,7 @@ namespace TestSample.NMinus1Tests
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
 
 			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType1").SingleElement;
-			RoleMoveableCollection roles = fact.RoleCollection;
+			RoleBaseMoveableCollection roles = fact.RoleCollection;
 			InternalConstraintMoveableCollection constraints = fact.InternalConstraintCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
@@ -119,7 +119,7 @@ namespace TestSample.NMinus1Tests
 				constraints[0].RoleCollection.Clear();
 				for(int i=0;i<roles.Count;++i)
 				{
-					constraints[0].RoleCollection.Add(roles[i]);
+					constraints[0].RoleCollection.Add(roles[i].Role);
 				}
 
 				t.Commit();

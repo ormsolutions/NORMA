@@ -551,7 +551,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool moveOccured = false;
 				using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleOrderTransactionName))
 				{
-					RoleMoveableCollection roles = EnsureDisplayOrderCollection();
+					RoleBaseMoveableCollection roles = EnsureDisplayOrderCollection();
 					int index = roles.IndexOf(roleToMove);
 					if (index != 0 && movingLeft)
 					{
@@ -570,19 +570,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				return moveOccured;
 			}
-			private RoleMoveableCollection EnsureDisplayOrderCollection()
+			private RoleBaseMoveableCollection EnsureDisplayOrderCollection()
 			{
-				RoleMoveableCollection displayRoles = RoleDisplayOrderCollection;
+				RoleBaseMoveableCollection displayRoles = RoleDisplayOrderCollection;
 				if (displayRoles.Count == 0)
 				{
 					FactType fact = AssociatedFactType;
 					if (fact != null)
 					{
-						RoleMoveableCollection nativeRoles = fact.RoleCollection;
+						RoleBaseMoveableCollection nativeRoles = fact.RoleCollection;
 						int nativeRoleCount = nativeRoles.Count;
 						for (int i = 0; i < nativeRoleCount; ++i)
 						{
-							displayRoles.Add(nativeRoles[i]);
+							displayRoles.Add(nativeRoles[i].Role);
 						}
 					}
 				}
@@ -593,11 +593,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// If there is not a custom display order then it will return the default
 			/// role collection.
 			/// </summary>
-			public RoleMoveableCollection DisplayedRoleOrder
+			public RoleBaseMoveableCollection DisplayedRoleOrder
 			{
 				get
 				{
-					RoleMoveableCollection alternateOrder = RoleDisplayOrderCollection;
+					RoleBaseMoveableCollection alternateOrder = RoleDisplayOrderCollection;
 					return (alternateOrder.Count == 0) ? AssociatedFactType.RoleCollection : alternateOrder;
 				}
 			}
@@ -608,8 +608,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
 			public static ReadingOrder FindMatchingReadingOrder(FactTypeShape theFact)
 			{
-				RoleMoveableCollection factRoles = theFact.DisplayedRoleOrder;
-				Role[] roleOrder = new Role[factRoles.Count];
+				RoleBaseMoveableCollection factRoles = theFact.DisplayedRoleOrder;
+				RoleBase[] roleOrder = new RoleBase[factRoles.Count];
 				factRoles.CopyTo(roleOrder, 0);
 				return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
 			}
@@ -734,7 +734,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// initialize variables
 			FactType parentFact = AssociatedFactType;
-			RoleMoveableCollection factRoles = DisplayedRoleOrder;
+			RoleBaseMoveableCollection factRoles = DisplayedRoleOrder;
 			int factRoleCount = factRoles.Count;
 			if (fullBounds.IsEmpty)
 			{
@@ -1822,7 +1822,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (fullBounds.Contains(point))
 				{
 					FactTypeShape parentFactShape = parentShape as FactTypeShape;
-					RoleMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
+					RoleBaseMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
 					int roleCount = roles.Count;
 					if (roleCount != 0)
 					{
@@ -1875,7 +1875,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
 				FactType factType = parentFactShape.AssociatedFactType;
-				RoleMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
+				RoleBaseMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
 				int roleCount = roles.Count;
 				bool objectified = factType.NestingType != null;
 				if (roleCount > 0 || objectified)
@@ -1931,11 +1931,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 							float lastXF = (float)lastX;
 							RectangleF roleBounds = new RectangleF(lastXF, top, offsetByF, height);
 							highlightThisRole = (i == highlightRoleBox);
-							Role currentRole = roles[i];
+							RoleBase currentRole = roles[i];
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 							if ((activeExternalAction != null) &&
-								(-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole))))
+								(-1 != (activeRoleIndex = activeExternalAction.GetActiveRoleIndex(currentRole.Role))))
 							{
 								// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
@@ -1956,7 +1956,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								g.DrawString((activeRoleIndex + 1).ToString(CultureInfo.InvariantCulture), connectActionFont, connectActionBrush, roleBounds, stringFormat);
 							}
 							// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
-							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole)))
+							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole.Role)))
 							{
 								// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
 								DrawHighlight(g, styleSet, roleBounds, highlightThisRole);
@@ -1975,7 +1975,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									bool roleIsInStickyObject = false;
 
 									// Test to see if the diagram's StickyObject (which is an IConstraint) contains a reference to this role.
-									foreach (ConstraintRoleSequence c in currentRole.ConstraintRoleSequenceCollection)
+									foreach (ConstraintRoleSequence c in currentRole.Role.ConstraintRoleSequenceCollection)
 									{
 										if (object.ReferenceEquals(c.Constraint, stickyConstraint))
 										{
@@ -2002,7 +2002,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										}
 										else
 										{
-											if (activeExternalAction.InitialRoles.IndexOf(currentRole) < 0)
+											if (activeExternalAction.InitialRoles.IndexOf(currentRole.Role) < 0)
 											{
 												drawIndexNumbers = true;
 											}
@@ -2015,12 +2015,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 												int sequenceCollectionCount = sequenceCollection.Count;
 												for (int sequenceIndex = 0; sequenceIndex < sequenceCollectionCount; ++sequenceIndex)
 												{
-													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(currentRole);
+													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(currentRole.Role);
 													if (roleIndex >= 0)
 													{
 														for (int j = sequenceIndex + 1; j < sequenceCollectionCount; ++j)
 														{
-															if (sequenceCollection[j].RoleCollection.IndexOf(currentRole) >= 0)
+															if (sequenceCollection[j].RoleCollection.IndexOf(currentRole.Role) >= 0)
 															{
 																// Indicate overlapping role sequences
 																indexString = ResourceStrings.SetConstraintStickyRoleOverlapping;
@@ -2037,7 +2037,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											}
 											else if (null != (scec = stickyConstraint as SingleColumnExternalConstraint))
 											{
-												indexString = (scec.RoleCollection.IndexOf(currentRole) + 1).ToString();
+												indexString = (scec.RoleCollection.IndexOf(currentRole.Role) + 1).ToString();
 											}
 
 											if (stringFormat == null)
@@ -2151,13 +2151,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private class RoleSubField : ShapeSubField
 		{
 			#region Member variables
-			private Role myAssociatedRole;
+			private RoleBase myAssociatedRole;
 			#endregion // Member variables
 			#region Construction
 			public RoleSubField()
 			{
 			}
-			public RoleSubField(Role associatedRole)
+			public RoleSubField(RoleBase associatedRole)
 			{
 				Debug.Assert(associatedRole != null);
 				myAssociatedRole = associatedRole;
@@ -2213,7 +2213,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				RectangleD retVal = parentField.GetBounds(parentShape);
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
-				RoleMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
+				RoleBaseMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
 				retVal.Width /= roles.Count;
 				int roleIndex = roles.IndexOf(myAssociatedRole);
 				if (roleIndex > 0)
@@ -2244,7 +2244,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Get or set the Role element associated with this sub field
 			/// </summary>
-			public Role AssociatedRole
+			public RoleBase AssociatedRole
 			{
 				get
 				{
@@ -2678,7 +2678,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				IStickyObject stickyObject;
 				ExternalConstraintShape shape;
 				MultiColumnExternalConstraint mcec;
-				Role role;
+				RoleBase role;
 				if ((null != (stickyObject = ((ORMDiagram)Diagram).StickyObject)) &&
 					(null != (shape = stickyObject as ExternalConstraintShape)) &&
 					(null != (mcec = shape.AssociatedConstraint as MultiColumnExternalConstraint)) &&
@@ -2686,7 +2686,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
 					if ((activeExternalAction == null) ||
-						(-1 == activeExternalAction.GetActiveRoleIndex(role)))
+						(-1 == activeExternalAction.GetActiveRoleIndex(role.Role)))
 					{
 						MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = (mcec as MultiColumnExternalConstraint).RoleSequenceCollection;
 						int sequenceCount = sequences.Count;
@@ -2694,7 +2694,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						for (int i = 0; i < sequenceCount; ++i)
 						{
 							MultiColumnExternalConstraintRoleSequence sequence = sequences[i];
-							int roleIndex = sequence.RoleCollection.IndexOf(role);
+							int roleIndex = sequence.RoleCollection.IndexOf(role.Role);
 							if (roleIndex != -1)
 							{
 								string current = string.Format(CultureInfo.InvariantCulture, formatString, i + 1, roleIndex + 1);
@@ -3157,7 +3157,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (rangeShape = oppositeShape as ValueConstraintShape))
 			{
 				factType = AssociatedFactType;
-				RoleMoveableCollection factRoles = DisplayedRoleOrder;
+				RoleBaseMoveableCollection factRoles = DisplayedRoleOrder;
 				factRoleCount = factRoles.Count;
 				roleIndex = factRoles.IndexOf(((RoleValueConstraint)rangeShape.AssociatedValueConstraint).Role);
 			}
@@ -3200,7 +3200,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								RoleMoveableCollection factRoles;
+								RoleBaseMoveableCollection factRoles;
 								int roleCount = roles.Count;
 								int role1Index = 1;
 								switch (roleCount)
@@ -3288,9 +3288,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			if (factType != null && objectType != null)
 			{
-				RoleMoveableCollection roles = DisplayedRoleOrder;
+				RoleBaseMoveableCollection roles = DisplayedRoleOrder;
 				factRoleCount = roles.Count;
-				Role role = null;
+				RoleBase role = null;
 				ORMDiagram parentDiagram = (ORMDiagram)Diagram;
 				int firstIndex = -1;
 				int bestIndex = -1;
@@ -3874,7 +3874,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Debug.Assert(role.FactType == AssociatedFactType);
 			FactType factType = role.FactType;
-			RoleMoveableCollection roles = DisplayedRoleOrder;
+			RoleBaseMoveableCollection roles = DisplayedRoleOrder;
 			int roleCount = roles.Count;
 			if (roleCount != 0)
 			{
@@ -4261,7 +4261,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									{
 										ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
 										bool constraintBarVisible;
-										RoleMoveableCollection factRoles = null;
+										RoleBaseMoveableCollection factRoles = null;
 										switch (roles.Count)
 										{
 											case 0:

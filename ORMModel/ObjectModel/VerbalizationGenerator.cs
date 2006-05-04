@@ -1341,7 +1341,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			RoleMoveableCollection factRoles = this.RoleCollection;
+			RoleBaseMoveableCollection factRoles = this.RoleCollection;
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = this.ReadingOrderCollection;
 			const bool isDeontic = false;
@@ -1349,7 +1349,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] basicRoleReplacements = new string[factArity];
 			for (int i = 0; i < factArity; ++i)
 			{
-				ObjectType rolePlayer = factRoles[i].RolePlayer;
+				ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
@@ -1468,7 +1468,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			if (this.NestedFactType != null)
 			{
-				RoleMoveableCollection factRoles = null;
+				RoleBaseMoveableCollection factRoles = null;
 				int factArity = 0;
 				ReadingOrderMoveableCollection allReadingOrders = null;
 				Reading reading = null;
@@ -1479,7 +1479,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					ObjectType rolePlayer = factRoles[i].RolePlayer;
+					ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
@@ -1520,16 +1520,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int constraintRoleArity = includedRoles.Count;
 				for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 				{
-					Role primaryRole = includedRoles[RoleIter1];
+					RoleBase primaryRole = includedRoles[RoleIter1];
 					FactType parentFact = primaryRole.FactType;
-					RoleMoveableCollection factRoles = parentFact.RoleCollection;
+					RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
 					int factArity = factRoles.Count;
 					ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 					Reading reading = null;
 					string[] basicRoleReplacements = new string[factArity];
 					for (int i = 0; i < factArity; ++i)
 					{
-						ObjectType rolePlayer = factRoles[i].RolePlayer;
+						ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 						string basicReplacement;
 						if (rolePlayer != null)
 						{
@@ -1777,7 +1777,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
 			RoleMoveableCollection includedRoles = this.RoleCollection;
-			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 			int includedArity = includedRoles.Count;
@@ -1810,7 +1810,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] basicRoleReplacements = new string[factArity];
 			for (int i = 0; i < factArity; ++i)
 			{
-				ObjectType rolePlayer = factRoles[i].RolePlayer;
+				ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
@@ -1821,7 +1821,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 							{
 								useSubscript = true;
 								subscript = subscript + 1;
@@ -1829,7 +1829,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 							{
 								useSubscript = true;
 							}
@@ -1975,7 +1975,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < factArity; ++RoleIter1)
 				{
-					Role primaryRole = factRoles[RoleIter1];
+					RoleBase primaryRole = factRoles[RoleIter1];
 					CoreVerbalizationSnippetType listSnippet;
 					if (RoleIter1 == 0)
 					{
@@ -2002,7 +2002,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
-						Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 						string roleReplacement = null;
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 						if (primaryRole == currentRole)
@@ -2151,10 +2151,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
-						Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 						string roleReplacement = null;
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
-						if (includedRoles.Contains(currentRole))
+						if (includedRoles.Contains(currentRole.Role))
 						{
 							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
@@ -2224,10 +2224,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1Replace2ReplaceFactRoleIter1 = 0;
 						for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
-							Role currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 							string roleReplacement = null;
 							string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
-							if (includedRoles.Contains(currentRole))
+							if (includedRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -2275,7 +2275,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (int RoleIter2 = 0; RoleIter2 < factArity; ++RoleIter2)
 					{
-						if (includedRoles.IndexOf(factRoles[RoleIter2]) == -1)
+						if (includedRoles.IndexOf(factRoles[RoleIter2].Role) == -1)
 						{
 							sbTemp.Append(basicRoleReplacements[RoleIter2]);
 						}
@@ -2334,14 +2334,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace2ReplaceFactRoleIter1 = 0;
 				for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 				{
-					Role currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+					RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 					string roleReplacement = null;
 					string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
-					if (includedRoles.Contains(currentRole))
+					if (includedRoles.Contains(currentRole.Role))
 					{
 						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 					}
-					else if (!(includedRoles.Contains(currentRole)))
+					else if (!(includedRoles.Contains(currentRole.Role)))
 					{
 						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
 					}
@@ -2364,10 +2364,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1ReplaceFactRoleIter1 = 0;
 				for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 				{
-					Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+					RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 					string roleReplacement = null;
 					string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
-					if (includedRoles.Contains(currentRole))
+					if (includedRoles.Contains(currentRole.Role))
 					{
 						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
 					}
@@ -2434,14 +2434,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace2ReplaceFactRoleIter1 = 0;
 				for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 				{
-					Role currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+					RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 					string roleReplacement = null;
 					string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
-					if (includedRoles.Contains(currentRole))
+					if (includedRoles.Contains(currentRole.Role))
 					{
 						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 					}
-					else if (!(includedRoles.Contains(currentRole)))
+					else if (!(includedRoles.Contains(currentRole.Role)))
 					{
 						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.OneQuantifier, isDeontic, isNegative), basicReplacement);
 					}
@@ -2542,7 +2542,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
 			RoleMoveableCollection includedRoles = this.RoleCollection;
-			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 			int includedArity = includedRoles.Count;
@@ -2575,7 +2575,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] basicRoleReplacements = new string[factArity];
 			for (int i = 0; i < factArity; ++i)
 			{
-				ObjectType rolePlayer = factRoles[i].RolePlayer;
+				ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
@@ -2586,7 +2586,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 							{
 								useSubscript = true;
 								subscript = subscript + 1;
@@ -2594,7 +2594,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 							{
 								useSubscript = true;
 							}
@@ -2640,10 +2640,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
-						Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 						string roleReplacement = null;
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
-						if (includedRoles.Contains(currentRole))
+						if (includedRoles.Contains(currentRole.Role))
 						{
 							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
@@ -2713,10 +2713,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1Replace2ReplaceFactRoleIter1 = 0;
 						for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
-							Role currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 							string roleReplacement = null;
 							string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
-							if (includedRoles.Contains(currentRole))
+							if (includedRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -2747,10 +2747,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
-						Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 						string roleReplacement = null;
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
-						if (includedRoles.Contains(currentRole))
+						if (includedRoles.Contains(currentRole.Role))
 						{
 							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 						}
@@ -2820,10 +2820,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1Replace2ReplaceFactRoleIter1 = 0;
 						for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 						{
-							Role currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+							RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 							string roleReplacement = null;
 							string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
-							if (includedRoles.Contains(currentRole))
+							if (includedRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
@@ -2910,7 +2910,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				FactType parentFact = this.FactType;
 				RoleMoveableCollection includedRoles = this.RoleCollection;
-				RoleMoveableCollection factRoles = parentFact.RoleCollection;
+				RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
 				int factArity = factRoles.Count;
 				ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
@@ -2921,7 +2921,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					ObjectType rolePlayer = factRoles[i].RolePlayer;
+					ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
@@ -2932,7 +2932,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 									subscript = subscript + 1;
@@ -2940,7 +2940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 								}
@@ -2972,10 +2972,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
-						Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+						RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 						string roleReplacement = null;
 						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
-						if (includedRoles.Contains(currentRole))
+						if (includedRoles.Contains(currentRole.Role))
 						{
 							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
 						}
@@ -3039,7 +3039,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
 				RoleMoveableCollection includedRoles = this.RoleCollection;
-				RoleMoveableCollection factRoles = parentFact.RoleCollection;
+				RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
 				int factArity = factRoles.Count;
 				ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
@@ -3050,7 +3050,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					ObjectType rolePlayer = factRoles[i].RolePlayer;
+					ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
@@ -3061,7 +3061,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 									subscript = subscript + 1;
@@ -3069,7 +3069,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 								}
@@ -3103,10 +3103,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1ReplaceFactRoleIter1 = 0;
 						for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 						{
-							Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 							string roleReplacement = null;
 							string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
-							if (includedRoles.Contains(currentRole))
+							if (includedRoles.Contains(currentRole.Role))
 							{
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
 							}
@@ -3176,10 +3176,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int snippet1Replace2ReplaceFactRoleIter1 = 0;
 							for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 							{
-								Role currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
+								RoleBase currentRole = factRoles[snippet1Replace2ReplaceFactRoleIter1];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ReplaceFactRoleIter1];
-								if (includedRoles.Contains(currentRole))
+								if (includedRoles.Contains(currentRole.Role))
 								{
 									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
@@ -3264,7 +3264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
-			RoleMoveableCollection factRoles;
+			RoleBaseMoveableCollection factRoles;
 			int factArity;
 			ReadingOrderMoveableCollection allReadingOrders;
 			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
@@ -3342,7 +3342,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					ObjectType rolePlayer = factRoles[i].RolePlayer;
+					ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
@@ -3353,7 +3353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 									subscript = subscript + 1;
@@ -3361,7 +3361,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 								}
@@ -3405,7 +3405,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
 				{
-					Role primaryRole = allConstraintRoles[RoleIter1];
+					RoleBase primaryRole = allConstraintRoles[RoleIter1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					factArity = factRoles.Count;
@@ -3430,7 +3430,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 				{
-					Role primaryRole = allConstraintRoles[RoleIter2];
+					RoleBase primaryRole = allConstraintRoles[RoleIter2];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					factArity = factRoles.Count;
@@ -3485,7 +3485,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool factTextIsFirstPass1 = true;
 				for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 				{
-					Role primaryRole = allConstraintRoles[RoleIter1];
+					RoleBase primaryRole = allConstraintRoles[RoleIter1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					factArity = factRoles.Count;
@@ -3518,7 +3518,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int factTextFactRoleIter1 = 0;
 					for (; factTextFactRoleIter1 < factArity; ++factTextFactRoleIter1)
 					{
-						Role currentRole = factRoles[factTextFactRoleIter1];
+						RoleBase currentRole = factRoles[factTextFactRoleIter1];
 						string roleReplacement = null;
 						string basicReplacement = basicRoleReplacements[factTextFactRoleIter1];
 						if ((primaryRole == currentRole) && factTextIsFirstPass1)
@@ -3551,7 +3551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int readingMatchIndex1 = 0;
 				for (; !(missingReading1) && (readingMatchIndex1 < constraintRoleArity); ++readingMatchIndex1)
 				{
-					Role primaryRole = allConstraintRoles[readingMatchIndex1];
+					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					allReadingOrders = parentFact.ReadingOrderCollection;
@@ -3572,7 +3572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int listCompositeIterator1;
 					for (listCompositeIterator1 = 0; listCompositeIterator1 < constraintRoleArity; ++listCompositeIterator1)
 					{
-						Role primaryRole = allConstraintRoles[listCompositeIterator1];
+						RoleBase primaryRole = allConstraintRoles[listCompositeIterator1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3584,7 +3584,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (listCompositeIterator1 = 0; listCompositeIterator1 < constraintRoleArity; ++listCompositeIterator1)
 					{
-						Role primaryRole = allConstraintRoles[listCompositeIterator1];
+						RoleBase primaryRole = allConstraintRoles[listCompositeIterator1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3607,7 +3607,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					bool list1ItemIsFirstPass1 = true;
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter1];
+						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3642,7 +3642,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int list1ItemFactRoleIter1 = 0;
 							for (; list1ItemFactRoleIter1 < factArity; ++list1ItemFactRoleIter1)
 							{
-								Role currentRole = factRoles[list1ItemFactRoleIter1];
+								RoleBase currentRole = factRoles[list1ItemFactRoleIter1];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter1];
 								if ((primaryRole == currentRole) && list1ItemIsFirstPass1)
@@ -3676,7 +3676,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string list1Item2 = null;
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter2];
+						RoleBase primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3711,7 +3711,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int list1ItemFactRoleIter2 = 0;
 							for (; list1ItemFactRoleIter2 < factArity; ++list1ItemFactRoleIter2)
 							{
-								Role currentRole = factRoles[list1ItemFactRoleIter2];
+								RoleBase currentRole = factRoles[list1ItemFactRoleIter2];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter2];
 								roleReplacement = "";
@@ -3747,7 +3747,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter1];
+						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3766,7 +3766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippet1ReplaceCompositeIterator2;
 					for (snippet1ReplaceCompositeIterator2 = 0; snippet1ReplaceCompositeIterator2 < constraintRoleArity; ++snippet1ReplaceCompositeIterator2)
 					{
-						Role primaryRole = allConstraintRoles[snippet1ReplaceCompositeIterator2];
+						RoleBase primaryRole = allConstraintRoles[snippet1ReplaceCompositeIterator2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3778,7 +3778,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (snippet1ReplaceCompositeIterator2 = 0; snippet1ReplaceCompositeIterator2 < constraintRoleArity; ++snippet1ReplaceCompositeIterator2)
 					{
-						Role primaryRole = allConstraintRoles[snippet1ReplaceCompositeIterator2];
+						RoleBase primaryRole = allConstraintRoles[snippet1ReplaceCompositeIterator2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3800,7 +3800,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace2Item1 = null;
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter1];
+						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3835,7 +3835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int snippet1Replace2ItemFactRoleIter1 = 0;
 							for (; snippet1Replace2ItemFactRoleIter1 < factArity; ++snippet1Replace2ItemFactRoleIter1)
 							{
-								Role currentRole = factRoles[snippet1Replace2ItemFactRoleIter1];
+								RoleBase currentRole = factRoles[snippet1Replace2ItemFactRoleIter1];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ItemFactRoleIter1];
 								if (currentRole == primaryRole)
@@ -3864,7 +3864,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string snippet1Replace2Item2 = null;
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter2];
+						RoleBase primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -3899,7 +3899,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int snippet1Replace2ItemFactRoleIter2 = 0;
 							for (; snippet1Replace2ItemFactRoleIter2 < factArity; ++snippet1Replace2ItemFactRoleIter2)
 							{
-								Role currentRole = factRoles[snippet1Replace2ItemFactRoleIter2];
+								RoleBase currentRole = factRoles[snippet1Replace2ItemFactRoleIter2];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ItemFactRoleIter2];
 								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
@@ -4008,7 +4008,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
-			RoleMoveableCollection factRoles;
+			RoleBaseMoveableCollection factRoles;
 			int factArity;
 			ReadingOrderMoveableCollection allReadingOrders;
 			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
@@ -4086,7 +4086,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string[] basicRoleReplacements = new string[factArity];
 				for (int i = 0; i < factArity; ++i)
 				{
-					ObjectType rolePlayer = factRoles[i].RolePlayer;
+					ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
@@ -4097,7 +4097,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int j = 0;
 							for (; j < i; ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 									subscript = subscript + 1;
@@ -4105,7 +4105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 							{
-								if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+								if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 								{
 									useSubscript = true;
 								}
@@ -4138,7 +4138,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int readingMatchIndex1 = 0;
 				for (; !(missingReading1) && (readingMatchIndex1 < constraintRoleArity); ++readingMatchIndex1)
 				{
-					Role primaryRole = allConstraintRoles[readingMatchIndex1];
+					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					allReadingOrders = parentFact.ReadingOrderCollection;
@@ -4167,7 +4167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter1];
+						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -4214,7 +4214,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					bool snippet1ReplaceIsFirstPass2 = true;
 					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter2];
+						RoleBase primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -4247,7 +4247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1ReplaceFactRoleIter2 = 0;
 						for (; snippet1ReplaceFactRoleIter2 < factArity; ++snippet1ReplaceFactRoleIter2)
 						{
-							Role currentRole = factRoles[snippet1ReplaceFactRoleIter2];
+							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter2];
 							string roleReplacement = null;
 							string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter2];
 							if ((currentRole != primaryRole) && snippet1ReplaceIsFirstPass2)
@@ -4286,7 +4286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int readingMatchIndex1 = 0;
 				for (; !(missingReading1) && (readingMatchIndex1 < constraintRoleArity); ++readingMatchIndex1)
 				{
-					Role primaryRole = allConstraintRoles[readingMatchIndex1];
+					RoleBase primaryRole = allConstraintRoles[readingMatchIndex1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					allReadingOrders = parentFact.ReadingOrderCollection;
@@ -4316,7 +4316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					bool snippet1ReplaceIsFirstPass1 = true;
 					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[RoleIter1];
+						RoleBase primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -4349,7 +4349,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1ReplaceFactRoleIter1 = 0;
 						for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 						{
-							Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+							RoleBase currentRole = factRoles[snippet1ReplaceFactRoleIter1];
 							string roleReplacement = null;
 							string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
 							if ((currentRole != primaryRole) && snippet1ReplaceIsFirstPass1)
@@ -4471,7 +4471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType parentFact = valueRole.FactType;
 			IList<Role> includedRoles = new Role[]{
 				valueRole};
-			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 			int includedArity = includedRoles.Count;
@@ -4504,7 +4504,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] basicRoleReplacements = new string[factArity];
 			for (int i = 0; i < factArity; ++i)
 			{
-				ObjectType rolePlayer = factRoles[i].RolePlayer;
+				ObjectType rolePlayer = factRoles[i].Role.RolePlayer;
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
@@ -4515,7 +4515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 							{
 								useSubscript = true;
 								subscript = subscript + 1;
@@ -4523,7 +4523,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
 							{
 								useSubscript = true;
 							}
@@ -4572,13 +4572,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
-					Role primaryRole = includedRoles[RoleIter1];
+					RoleBase primaryRole = includedRoles[RoleIter1];
 					variableSnippet1Replace1 = null;
 					string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.PeriodDelimiter, isDeontic, isNegative);
 					string variableSnippet1Replace1Replace1;
 					variableSnippet1Replace1Replace1 = @"<span style=""font:smaller"">undone</span>";
 					string variableSnippet1Replace1Replace2;
-					if ((primaryRole.RolePlayer != null) && (0 != primaryRole.RolePlayer.ReferenceModeString.Length))
+					if ((primaryRole.Role.RolePlayer != null) && (0 != primaryRole.Role.RolePlayer.ReferenceModeString.Length))
 					{
 						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.NameWithRefMode, isDeontic, isNegative);
 						string variableSnippet1Replace1Replace2Replace1;

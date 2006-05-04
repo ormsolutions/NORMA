@@ -40,7 +40,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>The reading that was added.</returns>
 		public Reading AddReading(string readingText)
 		{
-			RoleMoveableCollection factRoles = RoleCollection;
+			RoleBaseMoveableCollection factRoles = RoleCollection;
 			int roleCount = factRoles.Count;
 			if (!Reading.IsValidReadingText(readingText, roleCount))
 			{
@@ -253,7 +253,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				Role linkRole = link.RoleCollection;
+				RoleBase linkRole = link.RoleCollection;
 				ReadingOrder linkReadingOrder = link.ReadingOrder;
 
 				if (linkReadingOrder.IsRemoving)
@@ -290,7 +290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ReadingOrederHasRoleRemoving rule class
+		#endregion // ReadingOrderHasRoleRemoving rule class
 		#region FactTypeHasRoleAddedRule
 		/// <summary>
 		/// Common place for code to deal with roles that exist in a fact
@@ -298,7 +298,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// This allows it to be used by both the rule and to be called
 		/// during post load model fixup.
 		/// </summary>
-		private static void ValidateReadingOrdersRoleCollection(FactType theFact, Role addedRole)
+		private static void ValidateReadingOrdersRoleCollection(FactType theFact, RoleBase addedRole)
 		{
 			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
 
@@ -309,7 +309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
 			foreach (ReadingOrder ord in readingOrders)
 			{
-				RoleMoveableCollection roles = ord.RoleCollection;
+				RoleBaseMoveableCollection roles = ord.RoleCollection;
 				if (!roles.Contains(addedRole))
 				{
 					ord.RoleCollection.Add(addedRole);

@@ -63,7 +63,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get { return RoleNameShape.RoleNameMetaAttributeGuid; }
 		}
-
+		/// <summary>
+		/// Returns the guid for the object model name attribute
+		/// </summary>
+		protected override Guid AssociatedModelMetaAttributeGuid
+		{
+			get
+			{
+				return Role.NameMetaAttributeGuid;
+			}
+		}
 		/// <summary>
 		/// Gets and sets the AutoSizeTextField shape for this object
 		/// </summary>
@@ -175,8 +184,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			double y = -0.2;
 			FactType factType = factShape.AssociatedFactType;
 			// Cascades RoleNameShapes for facts that contain more than one role
-			RoleMoveableCollection roles = factShape.DisplayedRoleOrder;
-			int roleIndex = roles.IndexOf((Role)ModelElement);
+			RoleBaseMoveableCollection roles = factShape.DisplayedRoleOrder;
+			int roleIndex = roles.IndexOf((RoleBase)ModelElement);
 			if (roleIndex != -1)
 			{
 				x += roleIndex * 0.15;

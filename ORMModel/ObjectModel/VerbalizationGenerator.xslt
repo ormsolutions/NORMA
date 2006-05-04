@@ -179,7 +179,7 @@
 				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<!-- Don't proceed with verbalization if blocking errors are present -->
 				<xsl:call-template name="CheckErrorConditions"/>
-				<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
+				<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
 					<plx:initialize>
 						<plx:callThis name="RoleCollection" type="property"/>
 					</plx:initialize>
@@ -543,7 +543,7 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="not($isValueTypeValueConstraint)">
-					<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
+					<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
 						<xsl:if test="$isInternal">
 							<plx:initialize>
 								<plx:callInstance name="RoleCollection" type="property">
@@ -1413,6 +1413,8 @@
 				<plx:initialize>
 					<plx:callInstance name="RolePlayer" type="property">
 						<plx:callObject>
+							<plx:callInstance name="Role" type="property">
+						<plx:callObject>
 							<plx:callInstance name=".implied" type="indexerCall">
 								<plx:callObject>
 									<plx:nameRef name="factRoles"/>
@@ -1420,6 +1422,8 @@
 								<plx:passParam>
 									<plx:nameRef name="i"/>
 								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
 							</plx:callInstance>
 						</plx:callObject>
 					</plx:callInstance>
@@ -1503,13 +1507,17 @@
 											<plx:passParam>
 												<plx:callInstance name="RolePlayer" type="property">
 													<plx:callObject>
-														<plx:callInstance name=".implied" type="indexerCall">
+														<plx:callInstance name="Role" type="property">
 															<plx:callObject>
-																<plx:nameRef name="factRoles"/>
+																<plx:callInstance name=".implied" type="indexerCall">
+																	<plx:callObject>
+																		<plx:nameRef name="factRoles"/>
+																	</plx:callObject>
+																	<plx:passParam>
+																		<plx:nameRef name="j"/>
+																	</plx:passParam>
+																</plx:callInstance>
 															</plx:callObject>
-															<plx:passParam>
-																<plx:nameRef name="j"/>
-															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
 												</plx:callInstance>
@@ -1592,13 +1600,17 @@
 											<plx:passParam>
 												<plx:callInstance name="RolePlayer" type="property">
 													<plx:callObject>
-														<plx:callInstance name=".implied" type="indexerCall">
+														<plx:callInstance name="Role" type="property">
 															<plx:callObject>
-																<plx:nameRef name="factRoles"/>
+																<plx:callInstance name=".implied" type="indexerCall">
+																	<plx:callObject>
+																		<plx:nameRef name="factRoles"/>
+																	</plx:callObject>
+																	<plx:passParam>
+																		<plx:nameRef name="j"/>
+																	</plx:passParam>
+																</plx:callInstance>
 															</plx:callObject>
-															<plx:passParam>
-																<plx:nameRef name="j"/>
-															</plx:passParam>
 														</plx:callInstance>
 													</plx:callObject>
 												</plx:callInstance>
@@ -1808,7 +1820,7 @@
 							<plx:nameRef name="readingMatchIndex{$VariableDecorator}"/>
 						</plx:increment>
 					</plx:beforeLoop>
-					<plx:local name="primaryRole" dataTypeName="Role">
+					<plx:local name="primaryRole" dataTypeName="RoleBase">
 						<plx:initialize>
 							<plx:callInstance name=".implied" type="indexerCall">
 								<plx:callObject>
@@ -2191,7 +2203,7 @@
 	</xsl:template>
 	<xsl:template name="DeclareVariablesForFact">
 		<xsl:param name="NestedFact" select="false()"/>
-		<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
+		<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
 			<plx:initialize>
 				<plx:nullKeyword/>
 			</plx:initialize>
@@ -2562,7 +2574,7 @@
 						</plx:increment>
 					</plx:beforeLoop>
 					<!-- Initialize variables used for all styles of predicate replacement -->
-					<plx:local name="currentRole" dataTypeName="Role">
+					<plx:local name="currentRole" dataTypeName="RoleBase">
 						<plx:initialize>
 							<plx:callInstance name=".implied" type="arrayIndexer">
 								<plx:callObject>
@@ -2832,7 +2844,11 @@
 										<plx:nameRef name="includedRoles"/>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:nameRef name="currentRole"/>
+										<plx:callInstance name="Role" type="property">
+											<plx:callObject>
+												<plx:nameRef name="currentRole"/>
+											</plx:callObject>
+										</plx:callInstance>
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:unaryOperator>
@@ -2851,7 +2867,11 @@
 									<plx:nameRef name="includedRoles"/>
 								</plx:callObject>
 								<plx:passParam>
-									<plx:nameRef name="currentRole"/>
+									<plx:callInstance name="Role" type="property">
+										<plx:callObject>
+											<plx:nameRef name="currentRole"/>
+										</plx:callObject>
+									</plx:callInstance>
 								</plx:passParam>
 							</plx:callInstance>
 						</xsl:when>
@@ -2886,7 +2906,11 @@
 									<plx:nameRef name="includedRoles"/>
 								</plx:callObject>
 								<plx:passParam>
-									<plx:nameRef name="currentRole"/>
+									<plx:callInstance name="Role" type="property">
+										<plx:callObject>
+											<plx:nameRef name="currentRole"/>
+										</plx:callObject>
+									</plx:callInstance>
 								</plx:passParam>
 							</plx:callInstance>
 						</xsl:otherwise>
@@ -2912,7 +2936,11 @@
 										<plx:nameRef name="includedRoles"/>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:nameRef name="currentRole"/>
+										<plx:callInstance name="Role" type="property">
+											<plx:callObject>
+												<plx:nameRef name="currentRole"/>
+											</plx:callObject>
+										</plx:callInstance>
 									</plx:passParam>
 								</plx:callInstance>
 							</plx:unaryOperator>
@@ -3294,7 +3322,11 @@
 								<plx:left>
 									<plx:callInstance name="RolePlayer" type="property">
 										<plx:callObject>
-											<plx:nameRef name="primaryRole"/>
+											<plx:callInstance name="Role" type="property">
+												<plx:callObject>
+													<plx:nameRef name="primaryRole"/>
+												</plx:callObject>
+											</plx:callInstance>
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:left>
@@ -3315,7 +3347,11 @@
 												<plx:callObject>
 													<plx:callInstance name="RolePlayer" type="property">
 														<plx:callObject>
-															<plx:nameRef name="primaryRole"/>
+															<plx:callInstance name="Role" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="primaryRole"/>
+																</plx:callObject>
+															</plx:callInstance>
 														</plx:callObject>
 													</plx:callInstance>
 												</plx:callObject>
@@ -3670,7 +3706,7 @@
 				</plx:increment>
 			</plx:beforeLoop>
 			<xsl:if test="$contextMatch='singleColumnConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::cvg:RoleName">
-				<plx:local name="primaryRole" dataTypeName="Role">
+				<plx:local name="primaryRole" dataTypeName="RoleBase">
 					<plx:initialize>
 						<plx:callInstance name=".implied" type="arrayIndexer">
 							<plx:callObject>
@@ -3713,7 +3749,7 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
-				<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
+				<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
 					<plx:initialize>
 						<plx:callInstance name="RoleCollection" type="property">
 							<plx:callObject>
@@ -4454,13 +4490,17 @@
 								<plx:nameRef name="includedRoles"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callInstance name="Role" type="property">
 									<plx:callObject>
-										<plx:nameRef name="factRoles"/>
+										<plx:callInstance name=".implied" type="indexerCall">
+											<plx:callObject>
+												<plx:nameRef name="factRoles"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="{$IteratorVariableName}"/>
+											</plx:passParam>
+										</plx:callInstance>
 									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="{$IteratorVariableName}"/>
-									</plx:passParam>
 								</plx:callInstance>
 							</plx:passParam>
 						</plx:callInstance>
@@ -4571,7 +4611,7 @@
 					</plx:beforeLoop>
 					<!-- UNDONE: We may not need this for all cases, it depends on the
 						 filters in place. -->
-					<plx:local name="primaryRole" dataTypeName="Role">
+					<plx:local name="primaryRole" dataTypeName="RoleBase">
 						<plx:initialize>
 							<plx:callInstance name=".implied" type="arrayIndexer">
 								<plx:callObject>

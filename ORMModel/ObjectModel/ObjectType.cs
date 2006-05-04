@@ -376,7 +376,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			Role objectTypeRole = Role.CreateRole(store);
 			objectTypeRole.RolePlayer = this;
-			RoleMoveableCollection roleCollection = refFact.RoleCollection;
+			RoleBaseMoveableCollection roleCollection = refFact.RoleCollection;
 			roleCollection.Add(objectTypeRole);
 
 			Role valueTypeRole = Role.CreateRole(store);
@@ -388,8 +388,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			this.PreferredIdentifier = ic;
 
 			ReadingOrder readingOrder1 = ReadingOrder.CreateReadingOrder(store);
-			RoleMoveableCollection roles = refFact.RoleCollection;
-			RoleMoveableCollection readingRoles = readingOrder1.RoleCollection;
+			RoleBaseMoveableCollection roles = refFact.RoleCollection;
+			RoleBaseMoveableCollection readingRoles = readingOrder1.RoleCollection;
 			readingRoles.Add(roles[0]);
 			readingRoles.Add(roles[1]);
 			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading);
@@ -1340,12 +1340,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int i = 0; hasError && i < constraintRoleCount; ++i)
 					{
 						Role constrainedRole = constraintRoles[i];
-						RoleMoveableCollection factRoles = constrainedRole.FactType.RoleCollection;
+						RoleBaseMoveableCollection factRoles = constrainedRole.FactType.RoleCollection;
 						Debug.Assert(factRoles.Count == 2); // Should not be a preferred identifier otherwise
-						Role oppositeRole = factRoles[0];
+						Role oppositeRole = factRoles[0].Role;
 						if (object.ReferenceEquals(oppositeRole, constrainedRole))
 						{
-							oppositeRole = factRoles[1];
+							oppositeRole = factRoles[1].Role;
 						}
 						ConstraintRoleSequenceMoveableCollection constraintRoleSequences = oppositeRole.ConstraintRoleSequenceCollection;
 						int roleSequenceCount = constraintRoleSequences.Count;
@@ -1371,15 +1371,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 											Role testRole = intersectingRoles[k];
 											if (!object.ReferenceEquals(oppositeRole, testRole))
 											{
-												RoleMoveableCollection testRoles = testRole.FactType.RoleCollection;
+												RoleBaseMoveableCollection testRoles = testRole.FactType.RoleCollection;
 												if (testRoles.Count != 2)
 												{
 													break;
 												}
-												Role testOppositeRole = testRoles[0];
+												Role testOppositeRole = testRoles[0].Role;
 												if (object.ReferenceEquals(testOppositeRole, testRole))
 												{
-													testOppositeRole = testRoles[1];
+													testOppositeRole = testRoles[1].Role;
 												}
 												if (!constraintRoles.Contains(testOppositeRole))
 												{
@@ -2008,7 +2008,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (null != (newRole = element as FactTypeHasRole))
 				{
-					ObjectType player = newRole.RoleCollection.RolePlayer;
+					ObjectType player = newRole.RoleCollection.Role.RolePlayer;
 					if (player != null)
 					{
 						incompatibleNestingAndRoleCombination = player == newRole.FactType.NestingType;
