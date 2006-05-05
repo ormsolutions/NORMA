@@ -99,7 +99,7 @@
 							<xsOut:element name="{@name}Elements">
 								<xsOut:complexType>
 									<xsOut:choice minOccurs="0" maxOccurs="unbounded">
-										<xsOut:element name="{@name}" type="oxs:{@name}_FACTS" />
+										<xsOut:element name="{@name}" type="oxs:{@name}Facts" />
 									</xsOut:choice>
 								</xsOut:complexType>
 							</xsOut:element>
