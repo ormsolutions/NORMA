@@ -4539,28 +4539,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // CustomFactTypeShapeGeometry
 		#region Helper Functions
-		/// <summary>
-		/// Causes the ReadingShape on a FactTypeShape to invalidate
-		/// </summary>
-		private static void InvalidateReadingShape(FactType factType)
-		{
-			foreach (ShapeElement se in factType.PresentationRolePlayers)
-			{
-				FactTypeShape factShape = se as FactTypeShape;
-				if (factShape != null)
-				{
-					foreach (ShapeElement se2 in se.RelativeChildShapes)
-					{
-						ReadingShape readShape = se2 as ReadingShape;
-						if (readShape != null)
-						{
-							readShape.InvalidateRequired(true);
-							readShape.AutoResize();
-						}
-					}
-				}
-			}
-		}
 		#endregion
 		#region Derivation Rules
 		[RuleOn(typeof(FactTypeDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
@@ -4576,7 +4554,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						FactType ft = ftde.FactType;
 						if (ft != null)
 						{
-							FactTypeShape.InvalidateReadingShape(ft);
+							ReadingShape.InvalidateReadingShape(ft);
 						}
 					}
 				}
@@ -4591,7 +4569,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
 				if (null != ftde)
 				{
-					FactTypeShape.InvalidateReadingShape(ftde.FactType);
+					ReadingShape.InvalidateReadingShape(ftde.FactType);
 				}
 			}
 		}
@@ -4608,7 +4586,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					FactType ft = ftde.FactType;
 					if (!ft.IsRemoved)
 					{
-						FactTypeShape.InvalidateReadingShape(ft);
+						ReadingShape.InvalidateReadingShape(ft);
 					}
 				}
 			}

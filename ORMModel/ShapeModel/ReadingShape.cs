@@ -376,6 +376,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+
+		/// <summary>
+		/// Causes the ReadingShape on a FactTypeShape to invalidate
+		/// </summary>
+		public static void InvalidateReadingShape(FactType factType)
+		{
+			foreach (ShapeElement se in factType.PresentationRolePlayers)
+			{
+				FactTypeShape factShape = se as FactTypeShape;
+				if (factShape != null)
+				{
+					foreach (ShapeElement se2 in se.RelativeChildShapes)
+					{
+						ReadingShape readShape = se2 as ReadingShape;
+						if (readShape != null)
+						{
+							readShape.myDisplayText = null;
+							readShape.InvalidateRequired(true);
+							readShape.AutoResize();
+						}
+					}
+				}
+			}
+		}
 		#endregion // Helper methods
 		#region properties
 		/// <summary>
