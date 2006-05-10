@@ -509,7 +509,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				{
 					if (internalConstraint.Constraint.ConstraintIsInternal)
 					{
-						retval = internalConstraint.FactTypeCollection[0];
+						FactTypeMoveableCollection facts = internalConstraint.FactTypeCollection;
+						if (facts.Count == 1)
+						{
+							retval = facts[0];
+						}
 					}
 				}
 				else if (null != (reading = elem as Reading))

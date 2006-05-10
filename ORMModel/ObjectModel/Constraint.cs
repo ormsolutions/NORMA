@@ -261,6 +261,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Ensure that an internal constraint always goes away with its fact
+		/// </summary>
+		[RuleOn(typeof(FactSetConstraint))]
+		private class FactSetConstraintRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactSetConstraint link = e.ModelElement as FactSetConstraint;
+				SetConstraint constraint = link.SetConstraintCollection;
+				if (!constraint.IsRemoved && constraint.Constraint.ConstraintIsInternal)
+				{
+					constraint.Remove();
+				}
+			}
+		}
+		/// <summary>
 		/// Ensure that a newly added fact that is already attached to constraints
 		/// has a consistent model for the constraints
 		/// </summary>

@@ -144,7 +144,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) || classInfo.IsDerivedFrom(SetComparisonConstraint.MetaClassGuid) || classInfo.IsDerivedFrom(SetConstraint.MetaClassGuid);
+			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) ||
+				classInfo.IsDerivedFrom(SetComparisonConstraint.MetaClassGuid) ||
+				(classInfo.IsDerivedFrom(SetConstraint.MetaClassGuid) && !("INTERNALUNIQUENESSCONSTRAINT" == (string)elementGroupPrototype.UserData));
 		}
 		/// <summary>
 		/// Attach a deserialized ObjectType, FactType, or external constraint to the model.

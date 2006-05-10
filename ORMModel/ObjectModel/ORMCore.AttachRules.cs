@@ -130,6 +130,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(SetConstraint).GetNestedType("EnforceRoleSequenceValidityForRemove", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SetConstraint).GetNestedType("FactAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SetConstraint).GetNestedType("FactSetConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(SetConstraint).GetNestedType("FactSetConstraintRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SubtypeFact).GetNestedType("BlockCircularSubtypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SubtypeFact).GetNestedType("EnsureConsistentDataTypesRemoveRule", BindingFlags.Public | BindingFlags.NonPublic),
