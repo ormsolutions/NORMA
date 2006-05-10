@@ -123,17 +123,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 					(null != (selectedRoles = action.SelectedRoleCollection)) &&
 					(0 != (rolesCount = selectedRoles.Count)))
 				{
-					MultiColumnExternalConstraint mcConstraint;
-					SingleColumnExternalConstraint scConstraint;
+					SetComparisonConstraint mcConstraint;
+					SetConstraint scConstraint;
 					ConstraintRoleSequence modifyRoleSequence = null;
-					if (null != (mcConstraint = constraint as MultiColumnExternalConstraint))
+					if (null != (mcConstraint = constraint as SetComparisonConstraint))
 					{
 						ConstraintRoleSequence constraintRoleSequenceBeingEdited = action.ConstraintRoleSequenceToEdit;
 						// Add a new role set
 						if (null == constraintRoleSequenceBeingEdited)
 						{
-							MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
-							MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(mcConstraint.Store);
+							SetComparisonConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
+							SetComparisonConstraintRoleSequence roleSequence = SetComparisonConstraintRoleSequence.CreateSetComparisonConstraintRoleSequence(mcConstraint.Store);
 							RoleMoveableCollection roles = roleSequence.RoleCollection;
 							for (int i = 0; i < rolesCount; ++i)
 							{
@@ -147,7 +147,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							modifyRoleSequence = constraintRoleSequenceBeingEdited;
 						}
 					}
-					else if (null != (scConstraint = constraint as SingleColumnExternalConstraint))
+					else if (null != (scConstraint = constraint as SetConstraint))
 					{
 						// The single-column constraint is its own role set, just add the roles.
 						modifyRoleSequence = scConstraint;
@@ -481,7 +481,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				IConstraint constraint = chainOnShape.AssociatedConstraint;
 				switch (constraint.ConstraintStorageStyle)
 				{
-					case ConstraintStorageStyle.MultiColumnExternalConstraint:
+					case ConstraintStorageStyle.SetComparisonConstraint:
 						ChainMouseAction(chainOnShape, e.DiagramClientView);
 						break;
 					default:

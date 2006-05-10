@@ -165,7 +165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Retrieve the mandatory constraint associated with this role, if any
 		/// </summary>
-		private SimpleMandatoryConstraint SimpleMandatoryConstraint
+		private MandatoryConstraint SimpleMandatoryConstraint
 		{
 			get
 			{
@@ -177,7 +177,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IConstraint constraint = roleSequence.Constraint;
 					if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
 					{
-						return (SimpleMandatoryConstraint)constraint;
+						return (MandatoryConstraint)constraint;
 					}
 				}
 				return null;
@@ -201,7 +201,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid)
 			{
-				SimpleMandatoryConstraint smc = SimpleMandatoryConstraint;
+				MandatoryConstraint smc = SimpleMandatoryConstraint;
 				return (smc != null) ? smc.Name : "";
 			}
 			else if (attributeGuid == MultiplicityMetaAttributeGuid)
@@ -231,7 +231,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#region MandatoryConstraintModality
 			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
 			{
-				SimpleMandatoryConstraint smc = SimpleMandatoryConstraint;
+				MandatoryConstraint smc = SimpleMandatoryConstraint;
 				return (smc != null) ? smc.Modality : ConstraintModality.Alethic;
 			}
 			#endregion // MandatoryConstraintModality
@@ -374,14 +374,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (roles.Count == 2)
 				{
 					// loop over the collection and get the other role
-					Role oppositeRole = null;
-					foreach (Role r in roles)
+					Role oppositeRole = roles[0].Role;
+					if (object.ReferenceEquals(oppositeRole, this))
 					{
-						if (!r.Equals(this))
-						{
-							oppositeRole = r;
-							break;
-						}
+						oppositeRole = roles[1].Role;
 					}
 					return oppositeRole;
 				}
@@ -431,8 +427,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							throw new InvalidOperationException(ResourceStrings.ModelExceptionIsMandatoryRequiresAttachedFactType);
 						}
-						InternalConstraint constraint = SimpleMandatoryConstraint.CreateSimpleMandatoryConstraint(store);
-						constraint.RoleCollection.Add(role); // Automatically sets FactType, setting it again will remove and delete the new constraint
+						MandatoryConstraint.CreateSimpleMandatoryConstraint(role);
 					}
 					else
 					{
@@ -456,7 +451,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (attributeGuid == Role.MandatoryConstraintNameMetaAttributeGuid)
 				{
 					Role role = e.ModelElement as Role;
-					SimpleMandatoryConstraint smc = role.SimpleMandatoryConstraint;
+					MandatoryConstraint smc = role.SimpleMandatoryConstraint;
 					if (smc != null)
 					{
 						smc.Name = (string)e.NewValue;
@@ -580,7 +575,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										keepRoleMultiplicity = currentMultiplicity;
 										if (currentMultiplicity == 1)
 										{
-											keepCandidateIsPreferred = (constraint as InternalUniquenessConstraint).IsPreferred;
+											keepCandidateIsPreferred = (constraint as UniquenessConstraint).IsPreferred;
 										}
 									}
 									else if (currentMultiplicity < keepRoleMultiplicity)
@@ -595,7 +590,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										// constraints always have a single role.
 										if (!keepCandidateIsPreferred &&
 											currentMultiplicity == 1 &&
-											(constraint as InternalUniquenessConstraint).IsPreferred)
+											(constraint as UniquenessConstraint).IsPreferred)
 										{
 											(keepCandidate as ModelElement).Remove();
 											keepCandidate = constraint;
@@ -641,8 +636,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 
 								// Now create a new uniqueness constraint containing only this role
-								InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								iuc.RoleCollection.Add(role);  // Automatically sets FactType, setting it again will remove and delete the new constraint
+								UniquenessConstraint.CreateInternalUniquenessConstraint(store).RoleCollection.Add(role);
 							}
 							else
 							{
@@ -686,9 +680,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (!oppositeHasUnique)
 								{
 									// Now create a new uniqueness constraint containing both roles
-									InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-									iuc.FactType = factType;
-									RoleMoveableCollection constraintRoles = iuc.RoleCollection;
+									RoleMoveableCollection constraintRoles = UniquenessConstraint.CreateInternalUniquenessConstraint(factType).RoleCollection;
 									constraintRoles.Add(role);
 									constraintRoles.Add(oppositeRole);
 								}
@@ -701,7 +693,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (attributeGuid == Role.MandatoryConstraintModalityMetaAttributeGuid)
 				{
 					Role role = e.ModelElement as Role;
-					SimpleMandatoryConstraint smc = role.SimpleMandatoryConstraint;
+					MandatoryConstraint smc = role.SimpleMandatoryConstraint;
 					if (smc != null)
 					{
 						smc.Modality = (ConstraintModality)e.NewValue;

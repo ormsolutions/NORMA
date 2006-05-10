@@ -560,6 +560,7 @@ namespace Neumont.Tools.ORM.Shell
 			Role role;
 			ObjectType objectType;
 			NodeShape nodeShape;
+			SetConstraint setConstraint;
 			bool otherShape = false;
 			if (element is FactType)
 			{
@@ -598,7 +599,15 @@ namespace Neumont.Tools.ORM.Shell
 					otherShape = true;
 				}
 			}
-			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
+			else if (null != (setConstraint = element as SetConstraint) && setConstraint.Constraint.ConstraintIsInternal)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
+				if (presentationElement != null)
+				{
+					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+				}
+			}
+			else if (setConstraint != null || element is SetComparisonConstraint)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
 				if (presentationElement is ExternalConstraintShape)
@@ -609,14 +618,6 @@ namespace Neumont.Tools.ORM.Shell
 				else if (null != presentationElement)
 				{
 					otherShape = true;
-				}
-			}
-			else if (element is InternalConstraint)
-			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
-				if (presentationElement != null)
-				{
-					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
 				}
 			}
 			else if (element is ValueConstraint)
@@ -673,8 +674,8 @@ namespace Neumont.Tools.ORM.Shell
 						bool thisRoleInConstraint = false;
 						switch (constraint.ConstraintStorageStyle)
 						{
-							case ConstraintStorageStyle.SingleColumnExternalConstraint:
-								SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
+							case ConstraintStorageStyle.SetConstraint:
+								SetConstraint scec = constraint as SetConstraint;
 								if (scec.RoleCollection.IndexOf(role) >= 0)
 								{
 									thisRoleInConstraint = true;
@@ -682,11 +683,11 @@ namespace Neumont.Tools.ORM.Shell
 									enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
 								}
 								break;
-							case ConstraintStorageStyle.MultiColumnExternalConstraint:
-								MultiColumnExternalConstraint mcec = constraint as MultiColumnExternalConstraint;
+							case ConstraintStorageStyle.SetComparisonConstraint:
+								SetComparisonConstraint mcec = constraint as SetComparisonConstraint;
 								int indexOfRole = -1;
 								RoleMoveableCollection currentRoleSequence = null;
-								foreach (MultiColumnExternalConstraintRoleSequence rs in mcec.RoleSequenceCollection)
+								foreach (SetComparisonConstraintRoleSequence rs in mcec.RoleSequenceCollection)
 								{
 									currentRoleSequence = rs.RoleCollection;
 									indexOfRole = currentRoleSequence.IndexOf(role);
@@ -897,7 +898,7 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						if (currentRoleIndex == selCount && fact != null)
 						{
-							foreach (InternalUniquenessConstraint iuc in fact.GetInternalConstraints<InternalUniquenessConstraint>())
+							foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
 							{
 								RoleMoveableCollection factRoles = iuc.RoleCollection;
 								if (factRoles.Count == selCount)
@@ -1122,11 +1123,14 @@ namespace Neumont.Tools.ORM.Shell
 							ModelElement shapeAssociatedMel = null;
 							if (complexSelection)
 							{
-								InternalConstraint ic;
+								SetConstraint ic;
+								FactTypeMoveableCollection facts;
 								Role role;
-								if (null != (ic = selectedObject as InternalConstraint))
+								if (null != (ic = selectedObject as SetConstraint) &&
+									ic.Constraint.ConstraintIsInternal &&
+									1 == (facts = ic.FactTypeCollection).Count)
 								{
-									shapeAssociatedMel = ic.FactType;
+									shapeAssociatedMel = facts[0];
 								}
 								else if (null != (role = selectedObject as Role))
 								{
@@ -1141,7 +1145,16 @@ namespace Neumont.Tools.ORM.Shell
 										shapeAssociatedMel = (selectedObject as Role).FactType;
 										break;
 									case ORMDesignerCommands.DeleteConstraint:
-										shapeAssociatedMel = (selectedObject as InternalConstraint).FactType;
+										{
+											SetConstraint setConstraint;
+											FactTypeMoveableCollection facts;
+											if (null != (setConstraint = selectedObject as SetConstraint) &&
+												setConstraint.Constraint.ConstraintIsInternal &&
+												1 == (facts = setConstraint.FactTypeCollection).Count)
+											{
+												shapeAssociatedMel = facts[0];
+											}
+										}
 										break;
 								}
 							}
@@ -1564,8 +1577,7 @@ namespace Neumont.Tools.ORM.Shell
 							if (parentFact == null)
 							{
 								parentFact = testFact;
-								InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								iuc.FactType = parentFact;
+								UniquenessConstraint iuc = UniquenessConstraint.CreateInternalUniquenessConstraint(parentFact);
 								constraintRoles = iuc.RoleCollection;
 							}
 							else if (!object.ReferenceEquals(testFact, parentFact))
@@ -1602,13 +1614,13 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					IConstraint constraint = ecs.AssociatedConstraint;
 					ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
-					SingleColumnExternalConstraint scec;
-					//MultiColumnExternalConstraint mcec;
-					if (null != (scec = constraint as SingleColumnExternalConstraint))
+					SetConstraint scec;
+					//SetComparisonConstraint mcec;
+					if (null != (scec = constraint as SetConstraint))
 					{
 						connectAction.ConstraintRoleSequenceToEdit = scec;
 					}
-					//else if (null != (mcec = constraint as MultiColumnExternalConstraint))
+					//else if (null != (mcec = constraint as SetComparisonConstraint))
 					//{
 					//}
 					if (!connectAction.IsActive)
@@ -1944,11 +1956,11 @@ namespace Neumont.Tools.ORM.Shell
 				Role role;
 				ORMDiagram ormDiagram;
 				ExternalConstraintShape ecs;
-				MultiColumnExternalConstraint mcec;
+				SetComparisonConstraint mcec;
 				if (null != (role = SelectedElements[0] as Role)
 					&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
 					&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
-					&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
+					&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
 				{
 					// TODO:  It is theoretically possible to have one role playing a part in multiple
 					// RoleSequences for a constraint.  At some point it would probably be nice to
@@ -2002,18 +2014,18 @@ namespace Neumont.Tools.ORM.Shell
 			Role role;
 			ORMDiagram ormDiagram;
 			ExternalConstraintShape ecs;
-			MultiColumnExternalConstraint mcec;
+			SetComparisonConstraint mcec;
 			if (null != (role = SelectedElements[0] as Role)
 				&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
 				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
-				&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
+				&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
 			{
-				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
-				MultiColumnExternalConstraintRoleSequence sequenceToMove = null;
+				SetComparisonConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
+				SetComparisonConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
 				int sequenceNewPosition = -1;
 				int lastPosition = roleSequences.Count - 1;
-				foreach (MultiColumnExternalConstraintRoleSequence sequence in roleSequences)
+				foreach (SetComparisonConstraintRoleSequence sequence in roleSequences)
 				{
 					if (sequence.RoleCollection.IndexOf(role) >= 0)
 					{
@@ -2061,19 +2073,19 @@ namespace Neumont.Tools.ORM.Shell
 			Role role;
 			ORMDiagram ormDiagram;
 			ExternalConstraintShape ecs;
-			MultiColumnExternalConstraint mcec;
+			SetComparisonConstraint mcec;
 			if (null != (role = SelectedElements[0] as Role)
 				&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
 				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
-				&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
+				&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
 			{
 
-				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
-				MultiColumnExternalConstraintRoleSequence sequenceToMove = null;
+				SetComparisonConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
+				SetComparisonConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
 				int sequenceNewPosition = -1;
 				int lastPosition = roleSequences.Count - 1;
-				foreach (MultiColumnExternalConstraintRoleSequence sequence in roleSequences)
+				foreach (SetComparisonConstraintRoleSequence sequence in roleSequences)
 				{
 					if (sequence.RoleCollection.IndexOf(role) >= 0)
 					{

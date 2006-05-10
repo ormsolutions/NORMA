@@ -218,7 +218,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block internal constraints from being added to a subtype
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint))]
+		[RuleOn(typeof(FactSetConstraint))]
 		private class LimitSubtypeConstraintsAddRule : AddRule
 		{
 			/// <summary>
@@ -226,14 +226,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-				if (subtypeFact != null)
+				FactSetConstraint link = e.ModelElement as FactSetConstraint;
+				if (link.SetConstraintCollection.Constraint.ConstraintIsInternal)
 				{
-					if (subtypeFact.Model != null)
+					SubtypeFact subtypeFact = link.FactTypeCollection as SubtypeFact;
+					if (subtypeFact != null)
 					{
-						// Allow before adding to model, not afterwards
-						ThrowPatternModifiedException();
+						if (subtypeFact.Model != null)
+						{
+							// Allow before adding to model, not afterwards
+							ThrowPatternModifiedException();
+						}
 					}
 				}
 			}
@@ -242,7 +245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block internal constraints from being removed from a subtype
 		/// after it is included in a model.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactSetConstraint), FireTime = TimeToFire.LocalCommit)]
 		private class LimitSubtypeConstraintsRemoveRule : RemoveRule
 		{
 			/// <summary>
@@ -250,14 +253,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-				if (subtypeFact != null && !subtypeFact.IsRemoved)
+				FactSetConstraint link = e.ModelElement as FactSetConstraint;
+				if (link.SetConstraintCollection.Constraint.ConstraintIsInternal)
 				{
-					if (subtypeFact.Model != null)
+					SubtypeFact subtypeFact = link.FactTypeCollection as SubtypeFact;
+					if (subtypeFact != null && !subtypeFact.IsRemoved)
 					{
-						// Allow before adding to model, not afterwards
-						ThrowPatternModifiedException();
+						if (subtypeFact.Model != null)
+						{
+							// Allow before adding to model, not afterwards
+							ThrowPatternModifiedException();
+						}
 					}
 				}
 			}
@@ -330,10 +336,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				InternalConstraint ic = link.ConstraintRoleSequenceCollection as InternalConstraint;
-				if (ic != null)
+				SetConstraint ic = link.ConstraintRoleSequenceCollection as SetConstraint;
+				FactTypeMoveableCollection facts;
+				if (ic != null &&
+					ic.Constraint.ConstraintIsInternal &&
+					1 == (facts = ic.FactTypeCollection).Count)
 				{
-					SubtypeFact subtypeFact = ic.FactType as SubtypeFact;
+					SubtypeFact subtypeFact = facts[0] as SubtypeFact;
 					if (subtypeFact != null)
 					{
 						if (subtypeFact.Model != null)
@@ -358,10 +367,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				InternalConstraint ic = link.ConstraintRoleSequenceCollection as InternalConstraint;
-				if (ic != null && !ic.IsRemoved)
+				SetConstraint ic = link.ConstraintRoleSequenceCollection as SetConstraint;
+				FactTypeMoveableCollection facts;
+				if (ic != null &&
+					!ic.IsRemoved &&
+					ic.Constraint.ConstraintIsInternal &&
+					1 == (facts = ic.FactTypeCollection).Count)
 				{
-					SubtypeFact subtypeFact = ic.FactType as SubtypeFact;
+					SubtypeFact subtypeFact = facts[0] as SubtypeFact;
 					if (subtypeFact != null && !subtypeFact.IsRemoved)
 					{
 						if (subtypeFact.Model != null)
@@ -377,7 +390,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block the modality from being changed on internal constraints
 		/// on subtype facts
 		/// </summary>
-		[RuleOn(typeof(InternalConstraint))]
+		[RuleOn(typeof(SetConstraint))]
 		private class LimitSubtypeConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -385,16 +398,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == InternalConstraint.ModalityMetaAttributeGuid)
+				Guid attributeId = e.MetaAttribute.Id;
+				SetConstraint constraint = e.ModelElement as SetConstraint;
+				if (!constraint.IsRemoved)
 				{
-					InternalConstraint ic = e.ModelElement as InternalConstraint;
-					SubtypeFact subtypeFact;
-					if (!ic.IsRemoved &&
-						null != (subtypeFact = ic.FactType as SubtypeFact))
+					FactTypeMoveableCollection testFacts = null;
+					if (attributeId == UniquenessConstraint.IsInternalMetaAttributeGuid ||
+						attributeId == MandatoryConstraint.IsSimpleMetaAttributeGuid)
 					{
-						// We never do this internally, so block any modification,
-						// not just those after the subtype fact is added to the model
-						ThrowPatternModifiedException();
+						testFacts = constraint.FactTypeCollection;
+					}
+					else if (attributeId == SetConstraint.ModalityMetaAttributeGuid)
+					{
+						if (constraint.Constraint.ConstraintIsInternal)
+						{
+							testFacts = constraint.FactTypeCollection;
+						}
+					}
+					if (testFacts != null)
+					{
+						int testFactsCount = testFacts.Count;
+						for (int i = 0; i < testFactsCount; ++i)
+						{
+							if (testFacts[i] is SubtypeFact)
+							{
+								// We never do this internally, so block any modification,
+								// not just those after the subtype fact is added to the model
+								ThrowPatternModifiedException();
+							}
+						}
 					}
 				}
 			}
@@ -627,11 +659,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int sequenceCount = sequences.Count;
 				bool haveUniqueness = false;
 				bool haveMandatory = !requireMandatory;
-				InternalConstraint ic;
+				SetConstraint ic;
 				for (int i = sequenceCount - 1; i >= 0; --i)
 				{
-					ic = sequences[i] as InternalConstraint;
-					if (ic != null)
+					ic = sequences[i] as SetConstraint;
+					if (ic != null && ic.Constraint.ConstraintIsInternal)
 					{
 						if (ic.RoleCollection.Count == 1 && ic.Modality == ConstraintModality.Alethic)
 						{
@@ -665,15 +697,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (!haveUniqueness)
 						{
-							ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-							ic.FactType = fact;
+							ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
 							ic.RoleCollection.Add(role);
 							notifyAdded.ElementAdded(ic, true);
 						}
 						if (!haveMandatory)
 						{
-							ic = SimpleMandatoryConstraint.CreateSimpleMandatoryConstraint(store);
-							ic.FactType = fact;
+							ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
 							ic.RoleCollection.Add(role);
 							notifyAdded.ElementAdded(ic, true);
 						}

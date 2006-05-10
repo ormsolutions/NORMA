@@ -1895,8 +1895,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))]
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
@@ -3678,7 +3678,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ExternalFactConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]

@@ -29,7 +29,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// A constraint is defined such that it can have
 	/// roles that span multiple fact types. The core
 	/// model makes it difficult to determine which roles
-	/// on a fact are used by a given constraint. ExternalFactConstraint
+	/// on a fact are used by a given constraint. FactConstraint
 	/// and InternalFactConstraint relationships are generated
 	/// automatically, but these have significantly different
 	/// mechanisms for getting from the fact type to the constraint
@@ -76,7 +76,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		PartiallyDerived,
 	}
 	#endregion
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, INamedElementDictionaryParent, IModelErrorOwner, IVerbalizeFilterChildren, IVerbalizeCustomChildren
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeFilterChildren, IVerbalizeCustomChildren
 	{
 		#region ReadingOrder acquisition
 		/// <summary>
@@ -167,18 +167,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region FactType Specific
 		/// <summary>
-		/// Get a read-only collection of FactConstraint links. Use the
-		/// appropriate methods on IFactConstraint to get to the Constraint
-		/// and RoleCollection values for each returned constraint.
-		/// </summary>
-		public ICollection<IFactConstraint> ExternalFactConstraintCollection
-		{
-			get
-			{
-				return new FactConstraintCollectionImpl(this, false, true);
-			}
-		}
-		/// <summary>
 		/// Get a collection of all constraints associated with this fact,
 		/// along with the roles on this fact that are used by each fact
 		/// constraint.
@@ -188,7 +176,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return new FactConstraintCollectionImpl(this, true, true);
+				return new FactConstraintCollectionImpl(this);
 			}
 		}
 		/// <summary>
@@ -196,17 +184,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="filterType">The type of constraint to return</param>
 		/// <returns>IEnumerable</returns>
-		public IEnumerable<InternalConstraint> GetInternalConstraints(ConstraintType filterType)
+		public IEnumerable<SetConstraint> GetInternalConstraints(ConstraintType filterType)
 		{
-			IList constraints = InternalConstraintCollection;
-			int constraintCount = constraints.Count;
-			for (int i = 0; i < constraintCount; ++i)
+			switch (filterType)
 			{
-				InternalConstraint ic = (InternalConstraint)constraints[i];
-				if (ic.Constraint.ConstraintType == filterType)
-				{
-					yield return ic;
-				}
+				case ConstraintType.InternalUniqueness:
+				case ConstraintType.SimpleMandatory:
+					IList constraints = SetConstraintCollection;
+					int constraintCount = constraints.Count;
+					for (int i = 0; i < constraintCount; ++i)
+					{
+						IConstraint ic = (IConstraint)constraints[i];
+						if (ic.ConstraintType == filterType)
+						{
+							yield return (SetConstraint)ic;
+						}
+					}
+					break;
 			}
 		}
 		/// <summary>
@@ -214,14 +208,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <typeparam name="T">An internal constraint type</typeparam>
 		/// <returns>IEnumerable</returns>
-		public IEnumerable<T> GetInternalConstraints<T>() where T : InternalConstraint
+		public IEnumerable<T> GetInternalConstraints<T>() where T : SetConstraint, IConstraint
 		{
-			IList constraints = InternalConstraintCollection;
+			IList constraints = SetConstraintCollection;
 			int constraintCount = constraints.Count;
 			for (int i = 0; i < constraintCount; ++i)
 			{
 				T ic = constraints[i] as T;
-				if (ic != null)
+				if (ic != null && (ic as IConstraint).ConstraintIsInternal)
 				{
 					yield return ic;
 				}
@@ -236,7 +230,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			int retVal = 0;
 			// Count the enumerator without foreach to satisfy FxCop
-			IEnumerator<InternalConstraint> ienum = GetInternalConstraints(filterType).GetEnumerator();
+			IEnumerator<SetConstraint> ienum = GetInternalConstraints(filterType).GetEnumerator();
 			while (ienum.MoveNext())
 			{
 				++retVal;
@@ -273,32 +267,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// come from multiple links, this puts them all together.
 			/// </summary>
 			/// <param name="factType">The parent fact type</param>
-			/// <param name="includeInternalConstraints">true to include internal fact constraints</param>
-			/// <param name="includeExternalConstraints">true to include external fact constraints</param>
-			public FactConstraintCollectionImpl(FactType factType, bool includeInternalConstraints, bool includeExternalConstraints)
+			public FactConstraintCollectionImpl(FactType factType)
 			{
-				Debug.Assert(includeExternalConstraints || includeExternalConstraints);
-				int total = 0;
-				if (includeInternalConstraints)
-				{
-					++total;
-				}
-				if (includeExternalConstraints)
-				{
-					total += 2;
-				}
-				myLists = new IList[total];
-				int externalIndex = 0;
-				if (includeInternalConstraints)
-				{
-					myLists[0] = factType.InternalConstraintCollection;
-					++externalIndex;
-				}
-				if (includeExternalConstraints)
-				{
-					myLists[externalIndex] = factType.GetElementLinks(SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
-					myLists[externalIndex + 1] = factType.GetElementLinks(MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
-				}
+				myLists = new IList[]{
+					factType.GetElementLinks(FactSetConstraint.FactTypeCollectionMetaRoleGuid),
+					factType.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid)};
 			}
 			#endregion // Constructors
 			#region ICollection<IFactConstraint> Implementation
@@ -421,7 +394,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (protoElement != null)
 			{
 				MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-				return (classInfo.IsDerivedFrom(InternalUniquenessConstraint.MetaClassGuid));
+				if (classInfo.IsDerivedFrom(UniquenessConstraint.MetaClassGuid))
+				{
+					return "INTERNALUNIQUENESSCONSTRAINT" == (string)elementGroupPrototype.UserData;
+				}
 			}
 			return false;
 		}
@@ -436,10 +412,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
 		{
 			base.MergeRelate(sourceElement, elementGroup);
-			InternalUniquenessConstraint internalConstraint;
-			if (null != (internalConstraint = sourceElement as InternalUniquenessConstraint))
+			UniquenessConstraint internalConstraint;
+			if (null != (internalConstraint = sourceElement as UniquenessConstraint))
 			{
-				internalConstraint.FactType = this;
+				ORMModel model;
+				if (internalConstraint.IsInternal)
+				{
+					internalConstraint.FactTypeCollection.Add(this);
+				}
+				else if (null != (model = Model))
+				{
+					model.MergeRelate(sourceElement, elementGroup);
+				}
 			}
 		}
 		#endregion // MergeContext functions
@@ -514,7 +498,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasInternalConstraint.FactTypeMetaRoleGuid };
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasRole.FactTypeMetaRoleGuid };
 		/// <summary>
 		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set.
@@ -529,42 +513,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetNamedElementDictionaryLinkRoles();
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
-		#region INamedElementDictionaryParent implementation
-		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
-		{
-			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
-		}
-		/// <summary>
-		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
-		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		/// <returns>Model-owned dictionary for constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
-		{
-			if (parentMetaRoleGuid == FactTypeHasInternalConstraint.FactTypeMetaRoleGuid)
-			{
-				ORMModel model = Model;
-				if (model != null)
-				{
-					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
-				}
-			}
-			return null;
-		}
-		/// <summary>
-		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
-		/// </summary>
-		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
-		{
-			// Use the default settings (allow duplicates during load time only)
-			return null;
-		}
-		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
-		{
-			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
-		}
-		#endregion // INamedElementDictionaryParent implementation
 		#region RoleChangeRule class
 		[RuleOn(typeof(FactType))]
 		private class FactTypeChangeRule : ChangeRule
@@ -678,7 +626,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// NMinusOneError is parented off InternalConstraint. The constraint has a name,
 				// but the name is often arbitrary. Including the fact name as well makes the
 				// error message much more meaningful.
-				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+				foreach (UniquenessConstraint ic in GetInternalConstraints<UniquenessConstraint>())
 				{
 					NMinusOneError nMinusOneError = ic.NMinusOneError;
 					if (nMinusOneError != null)
@@ -692,23 +640,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
 				// we do not validate this error on the fact type, it is done on the role.
-				foreach (Role role in RoleCollection)
+				foreach (RoleBase roleBase in RoleCollection)
 				{
-					if (0 != (filter & ModelErrorUses.Verbalize))
+					Role role = roleBase as Role;
+					if (role != null)
 					{
-						foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
+						if (0 != (filter & ModelErrorUses.Verbalize))
 						{
-							yield return new ModelErrorUsage(roleError, ModelErrorUses.Verbalize);
-						}
-					}
-					if (0 == (filter & ModelErrorUses.Verbalize) || filter == (ModelErrorUses)(-1))
-					{
-						IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
-						if (valueErrors != null)
-						{
-							foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
+							foreach (ModelErrorUsage roleError in (role as IModelErrorOwner).GetErrorCollection(filter))
 							{
-								yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
+								yield return new ModelErrorUsage(roleError, ModelErrorUses.Verbalize);
+							}
+						}
+						if (0 == (filter & ModelErrorUses.Verbalize) || filter == (ModelErrorUses)(-1))
+						{
+							IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
+							if (valueErrors != null)
+							{
+								foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
+								{
+									yield return new ModelErrorUsage(valueError, ModelErrorUses.None);
+								}
 							}
 						}
 					}
@@ -845,7 +797,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (hasError)
 				{
-					foreach (InternalUniquenessConstraint iuc in GetInternalConstraints<InternalUniquenessConstraint>())
+					foreach (UniquenessConstraint iuc in GetInternalConstraints<UniquenessConstraint>())
 					{
 						if (iuc.Modality == ConstraintModality.Alethic)
 						{
@@ -899,7 +851,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					uint[] roleBits = new uint[iucCount];
 					const uint deonticBit = 1U << 31;
 					int index = 0;
-					foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+					foreach (UniquenessConstraint ic in GetInternalConstraints<UniquenessConstraint>())
 					{
 						uint bits = 0;
 						RoleMoveableCollection constraintRoles = ic.RoleCollection;
@@ -1002,15 +954,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint))]
+		[RuleOn(typeof(FactSetConstraint))]
 		private class ModelHasInternalConstraintAddRuleModelValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				if (link.InternalConstraintCollection is InternalUniquenessConstraint)
+				FactSetConstraint link = e.ModelElement as FactSetConstraint;
+				if (link.SetConstraintCollection.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 				{
-					FactType fact = link.FactType;
+					FactType fact = link.FactTypeCollection;
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
@@ -1019,33 +971,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint))]
+		[RuleOn(typeof(FactSetConstraint))]
 		private class ModelHasInternalConstraintRemoveRuleModelValidation : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				FactType fact = link.FactType;
-				if (!fact.IsRemoved && (link.InternalConstraintCollection is InternalUniquenessConstraint))
+				FactSetConstraint link = e.ModelElement as FactSetConstraint;
+				FactType fact = link.FactTypeCollection;
+				if (!fact.IsRemoved &&
+					link.SetConstraintCollection.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 				{
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
-		[RuleOn(typeof(InternalUniquenessConstraint))]
+		[RuleOn(typeof(UniquenessConstraint))]
 		private class InternalUniquenessConstraintChangeRule : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == InternalUniquenessConstraint.ModalityMetaAttributeGuid)
+				if (attributeId == UniquenessConstraint.ModalityMetaAttributeGuid)
 				{
-					InternalUniquenessConstraint constraint = e.ModelElement as InternalUniquenessConstraint;
-					FactType fact;
+					UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
+					FactTypeMoveableCollection facts;
 					if (!constraint.IsRemoved &&
-						null != (fact = constraint.FactType))
+						constraint.IsInternal &&
+						1 == (facts = constraint.FactTypeCollection).Count)
 					{
+						FactType fact = facts[0];
 						ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 						ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 					}
@@ -1058,15 +1013,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				InternalUniquenessConstraint constr = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
-				if (constr != null)
+				UniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as UniquenessConstraint;
+				FactTypeMoveableCollection facts;
+				if (constraint != null &&
+					constraint.IsInternal &&
+					1 == (facts = constraint.FactTypeCollection).Count)
 				{
-					FactType fact = constr.FactType;
-					if (fact != null && !fact.IsRemoved)
-					{
-						ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
-					}
-					
+					ORMMetaModel.DelayValidateElement(facts[0], DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
@@ -1077,14 +1030,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				InternalUniquenessConstraint constr = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
-				if (constr != null)
+				UniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as UniquenessConstraint;
+				FactTypeMoveableCollection facts;
+				FactType fact;
+				if (constraint != null &&
+					!constraint.IsRemoved &&
+					constraint.IsInternal &&
+					1 == (facts = constraint.FactTypeCollection).Count &&
+					!(fact = facts[0]).IsRemoved)
 				{
-					FactType fact = constr.FactType;
-					if (fact != null && !fact.IsRemoved)
-					{
-						ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
-					}
+					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
@@ -1192,11 +1147,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.RemoveImpliedInternalUniquenessConstraintsTransactionName))
 			{
 				RoleBaseMoveableCollection factRoles = RoleCollection;
-				InternalUniquenessConstraint[] iuc = new InternalUniquenessConstraint[iucCount];
+				UniquenessConstraint[] iuc = new UniquenessConstraint[iucCount];
 				const uint deonticBit = 1U << 31;
 				uint[] roleBits = new uint[iucCount];
 				int index = 0;
-				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+				foreach (UniquenessConstraint ic in GetInternalConstraints<UniquenessConstraint>())
 				{
 					iuc[index] = ic;
 					uint bits = 0;
@@ -1215,8 +1170,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				int rbLength = roleBits.Length;
 				uint left, right, compare;
-				InternalUniquenessConstraint leftIUC;
-				InternalUniquenessConstraint rightIUC;
+				UniquenessConstraint leftIUC;
+				UniquenessConstraint rightIUC;
 				for (int i = 0; i < rbLength - 1; ++i)
 				{
 					leftIUC = iuc[i];
@@ -1342,22 +1297,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization)
 			{
-				InternalConstraint constraint = childVerbalizer as InternalConstraint;
-				if (constraint != null)
+				IConstraint constraint = childVerbalizer as IConstraint;
+				if (constraint != null && constraint.ConstraintIsInternal)
 				{
 					RoleBaseMoveableCollection factRoles = RoleCollection;
 					if (factRoles.Count == 2)
 					{
 						ConstraintModality modality = constraint.Modality;
 						// See if we want to do an 'exactly one' instead of 'at most one'/'some'
-						SimpleMandatoryConstraint mandatory;
-						InternalUniquenessConstraint iuc;
-						if (null != (mandatory = constraint as SimpleMandatoryConstraint))
+						MandatoryConstraint mandatory;
+						UniquenessConstraint iuc;
+						if (null != (mandatory = constraint as MandatoryConstraint))
 						{
 							foreach (ConstraintRoleSequence testConstraint in mandatory.RoleCollection[0].ConstraintRoleSequenceCollection)
 							{
-								InternalUniquenessConstraint testIuc = testConstraint as InternalUniquenessConstraint;
+								UniquenessConstraint testIuc = testConstraint as UniquenessConstraint;
 								if (testIuc != null &&
+									testIuc.IsInternal &&
 									testIuc.Modality == modality &&
 									testIuc.RoleCollection.Count == 1)
 								{
@@ -1366,15 +1322,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 							}
 						}
-						else if (null != (iuc = constraint as InternalUniquenessConstraint))
+						else if (null != (iuc = constraint as UniquenessConstraint) && iuc.IsInternal)
 						{
 							RoleMoveableCollection roles = iuc.RoleCollection;
 							if (roles.Count == 1)
 							{
 								foreach (ConstraintRoleSequence testConstraint in roles[0].ConstraintRoleSequenceCollection)
 								{
-									SimpleMandatoryConstraint testMandatory = testConstraint as SimpleMandatoryConstraint;
+									MandatoryConstraint testMandatory = testConstraint as MandatoryConstraint;
 									if (testMandatory != null &&
+										testMandatory.IsSimple &&
 										testMandatory.Modality == modality)
 									{
 										// Fold the verbalizations into one
@@ -1398,13 +1355,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region CombinedMandatoryUniqueVerbalizer class
 		/// <summary>
 		/// Non-generated portions of verbalization helper used to verbalize a
-		/// combined internal uniqueness constraint and mandatory constraint.
+		/// combined internal uniqueness constraint and simple mandatory constraint.
 		/// </summary>
 		private partial class CombinedMandatoryUniqueVerbalizer
 		{
 			private FactType myFact;
-			private InternalUniquenessConstraint myConstraint;
-			public void Initialize(FactType fact, InternalUniquenessConstraint constraint)
+			private UniquenessConstraint myConstraint;
+			public void Initialize(FactType fact, UniquenessConstraint constraint)
 			{
 				myFact = fact;
 				myConstraint = constraint;
@@ -1448,7 +1405,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				RoleBaseMoveableCollection factRoles = RoleCollection;
 				if (factRoles.Count == 2)
 				{
-					foreach (InternalUniquenessConstraint contextIuc in GetInternalConstraints<InternalUniquenessConstraint>())
+					foreach (UniquenessConstraint contextIuc in GetInternalConstraints<UniquenessConstraint>())
 					{
 						if (contextIuc.Modality == ConstraintModality.Alethic)
 						{
@@ -1467,8 +1424,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 								bool provideDefault = true;
 								foreach (ConstraintRoleSequence sequence in oppositeRole.Role.ConstraintRoleSequenceCollection)
 								{
-									InternalUniquenessConstraint iucTest = sequence as InternalUniquenessConstraint;
-									if (iucTest != null && iucTest.RoleCollection.Count == 1 && iucTest.Modality == ConstraintModality.Alethic)
+									UniquenessConstraint iucTest = sequence as UniquenessConstraint;
+									if (iucTest != null && iucTest.IsInternal && iucTest.RoleCollection.Count == 1 && iucTest.Modality == ConstraintModality.Alethic)
 									{
 										provideDefault = false;
 										break;
@@ -1496,8 +1453,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class DefaultBinaryMissingUniquenessVerbalizer
 		{
 			private FactType myFact;
-			private InternalUniquenessConstraint myConstraint;
-			public void Initialize(FactType fact, InternalUniquenessConstraint constraint)
+			private UniquenessConstraint myConstraint;
+			public void Initialize(FactType fact, UniquenessConstraint constraint)
 			{
 				myFact = fact;
 				myConstraint = constraint;
@@ -1638,8 +1595,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			InternalUniquenessConstraint iuc = Constraint;
-			FactType factType = iuc.FactType;
+			UniquenessConstraint iuc = Constraint;
+			FactType factType = iuc.FactTypeCollection[0];
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, iuc.Name, factType.Name, factType.Model.Name, factType.RoleCollection.Count - 1);
 			if (Name != newText)
 			{

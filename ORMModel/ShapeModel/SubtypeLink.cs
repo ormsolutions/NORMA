@@ -149,11 +149,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 						FactTypeMoveableCollection facts = null;
 						switch (testConstraint.ConstraintStorageStyle)
 						{
-							case ConstraintStorageStyle.SingleColumnExternalConstraint:
-								facts = ((SingleColumnExternalConstraint)testConstraint).FactTypeCollection;
+							case ConstraintStorageStyle.SetConstraint:
+								facts = ((SetConstraint)testConstraint).FactTypeCollection;
 								break;
-							case ConstraintStorageStyle.MultiColumnExternalConstraint:
-								facts = ((MultiColumnExternalConstraint)testConstraint).FactTypeCollection;
+							case ConstraintStorageStyle.SetComparisonConstraint:
+								facts = ((SetComparisonConstraint)testConstraint).FactTypeCollection;
 								break;
 						}
 						if (facts != null && facts.Contains(AssociatedSubtypeFact))

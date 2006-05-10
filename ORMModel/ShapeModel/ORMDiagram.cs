@@ -74,8 +74,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			string[] dataFormats = e.Data.GetFormats();
 			if (Array.IndexOf(dataFormats, typeof(ObjectType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(FactType).FullName) >= 0 ||
-				Array.IndexOf(dataFormats, typeof(MultiColumnExternalConstraint).FullName) >= 0 ||
-				Array.IndexOf(dataFormats, typeof(SingleColumnExternalConstraint).FullName) >= 0)
+				Array.IndexOf(dataFormats, typeof(SetComparisonConstraint).FullName) >= 0 ||
+				Array.IndexOf(dataFormats, typeof(SetConstraint).FullName) >= 0)
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -95,8 +95,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			ObjectType objectType = null;
 			FactType factType = null;
-			MultiColumnExternalConstraint multiCol = null;
-			SingleColumnExternalConstraint singleCol = null;
+			SetComparisonConstraint multiCol = null;
+			SetConstraint singleCol = null;
 			ModelElement element = null;
 			bool[] factsContained;
 			int factsRemaining;
@@ -108,7 +108,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				element = factType;
 			}
-			else if (null != (multiCol = dataObject.GetData(typeof(MultiColumnExternalConstraint)) as MultiColumnExternalConstraint))
+			else if (null != (multiCol = dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
 			{
 				FactTypeMoveableCollection factTypeList = multiCol.FactTypeCollection;
 				factsContained = new bool[factTypeList.Count];
@@ -135,7 +135,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			else if (null != (singleCol = dataObject.GetData(typeof(SingleColumnExternalConstraint)) as SingleColumnExternalConstraint))
+			else if (null != (singleCol = dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
 			{
 				FactTypeMoveableCollection factTypeList = singleCol.FactTypeCollection;
 				factsContained = new bool[factTypeList.Count];
@@ -173,11 +173,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Diagram.FixUpDiagram(droppedOnElement, element);
 					if (factType != null)
 					{
-						foreach (Role role in factType.RoleCollection)
+						foreach (RoleBase roleBase in factType.RoleCollection)
 						{
+							Role role = roleBase.Role;
 							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid));
-							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid));
-							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid));
+							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(FactSetConstraint.FactTypeCollectionMetaRoleGuid));
+							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid));
 						}
 					}
 					else if (objectType != null)
@@ -211,11 +212,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else if (singleCol != null)
 					{
-						FixupRelatedLinks(droppedOnElement, singleCol.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid));
+						FixupRelatedLinks(droppedOnElement, singleCol.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid));
 					}
 					else if (multiCol != null)
 					{
-						FixupRelatedLinks(droppedOnElement, multiCol.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid));
+						FixupRelatedLinks(droppedOnElement, multiCol.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid));
 					}
 					transaction.Commit();
 				}
@@ -412,9 +413,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ObjectType objType;
 			FactType factType;
 			ObjectTypePlaysRole objectTypePlaysRole;
-			EqualityConstraint equalityConstraint;
-			ExternalUniquenessConstraint externalUniquenessConstraint;
-			ExternalFactConstraint factConstraint;
+			SetConstraint setConstraint;
+			FactConstraint factConstraint;
 			if (null != (factType = element as FactType))
 			{
 				if (factType is SubtypeFact)
@@ -454,46 +454,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 #endif
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
 			}
-			else if (null != (equalityConstraint = element as EqualityConstraint))
+			else if (null != (factConstraint = element as FactConstraint))
 			{
-#if SHOW_IMPLIED_SHAPES
-				return true;
-#else
-				return equalityConstraint.ImpliedByObjectification == null;
-#endif // SHOW_IMPLIED_SHAPES
-			}
-			else if (null != (externalUniquenessConstraint = element as ExternalUniquenessConstraint))
-			{
-#if SHOW_IMPLIED_SHAPES
-				return true;
-#else
-				return externalUniquenessConstraint.ImpliedByObjectification == null;
-#endif // SHOW_IMPLIED_SHAPES
-			}
-			else if (null != (factConstraint = element as ExternalFactConstraint))
-			{
-#if !SHOW_IMPLIED_SHAPES
-				IConstraint constraint = ((IFactConstraint)factConstraint).Constraint;
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.ExternalUniqueness:
-						if (((ExternalUniquenessConstraint)constraint).ImpliedByObjectification != null)
-						{
-							return false;
-						}
-						break;
-					case ConstraintType.Equality:
-						if (((EqualityConstraint)constraint).ImpliedByObjectification != null)
-						{
-							return false;
-						}
-						break;
-				}
-#endif // !SHOW_IMPLIED_SHAPES
 				return true;
 			}
-			else if (element is SingleColumnExternalConstraint ||
-					 element is MultiColumnExternalConstraint ||
+			else if (null != (setConstraint = element as SetConstraint))
+			{
+				return !setConstraint.Constraint.ConstraintIsInternal;
+			}
+			else if (element is SetComparisonConstraint ||
 					 element is RoleHasValueConstraint)
 			{
 				return true;
@@ -527,9 +496,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private bool ShouldDisplayPartOfReferenceMode(FactType factType)
 		{
-			foreach (InternalUniquenessConstraint constraint in factType.GetInternalConstraints<InternalUniquenessConstraint>())
+			foreach (UniquenessConstraint constraint in factType.GetInternalConstraints<UniquenessConstraint>())
 			{
-				ObjectType entity = (constraint as IConstraint).PreferredIdentifierFor;
+				ObjectType entity = constraint.PreferredIdentifierFor;
 				// We only consider this to be a collapsible ref mode if its roleplayer is a value type
 				if (entity != null && constraint.RoleCollection[0].RolePlayer.IsValueType)
 				{
@@ -834,12 +803,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					roleArity = 3;
 					break;
 				case ResourceStrings.ToolboxInternalUniquenessConstraintItemId:
-					InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+					UniquenessConstraint iuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
 					group.AddGraph(iuc);
+					// Add this here so that we can distinguish between internal and external uniqueness
+					// constraints without unpacking the model. We want to merge internals into a fact
+					// and externals into the model.
+					group.UserData = "INTERNALUNIQUENESSCONSTRAINT";
 					retVal = group.CreatePrototype(iuc);
 					break;
 				case ResourceStrings.ToolboxExternalUniquenessConstraintItemId:
-					ExternalUniquenessConstraint euc = ExternalUniquenessConstraint.CreateExternalUniquenessConstraint(store);
+					UniquenessConstraint euc = UniquenessConstraint.CreateUniquenessConstraint(store);
 					group.AddGraph(euc);
 					retVal = group.CreatePrototype(euc);
 					break;
@@ -854,7 +827,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					retVal = group.CreatePrototype(exc);
 					break;
 				case ResourceStrings.ToolboxInclusiveOrConstraintItemId:
-					DisjunctiveMandatoryConstraint dmc = DisjunctiveMandatoryConstraint.CreateDisjunctiveMandatoryConstraint(store);
+					MandatoryConstraint dmc = MandatoryConstraint.CreateMandatoryConstraint(store);
 					group.AddGraph(dmc);
 					retVal = group.CreatePrototype(dmc);
 					break;
@@ -1116,7 +1089,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						InternalUniquenessConstraintAction action = sender as InternalUniquenessConstraintAction;
 						if (action.ActionCompleted)
 						{
-							InternalUniquenessConstraint constraint = action.AddedConstraint;
+							UniquenessConstraint constraint = action.AddedConstraint;
 							FactTypeShape addedToShape = action.DropTargetShape;
 							DiagramClientView view = e.DiagramClientView;
 							Debug.Assert(constraint != null); // ActionCompleted should be false otherwise
@@ -1426,7 +1399,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected ModelElement ElementDisplayedAs(ModelElement element)
 		{
 			ObjectType objectElement;
-			EqualityConstraint equalityElement;
 			if (null != (objectElement = element as ObjectType))
 			{
 				if (!ShouldDisplayObjectType(objectElement))
@@ -1441,24 +1413,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// find the corresponding object type.
 					foreach (ConstraintRoleSequence constraintSequence in objectElement.PlayedRoleCollection[0].ConstraintRoleSequenceCollection)
 					{
-						InternalUniquenessConstraint iuc = constraintSequence as InternalUniquenessConstraint;
-						if (iuc != null)
+						UniquenessConstraint iuc = constraintSequence as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
 						{
-							ObjectType displayedType = (iuc as IConstraint).PreferredIdentifierFor;
+							ObjectType displayedType = iuc.PreferredIdentifierFor;
 							if (displayedType != null)
 							{
 								return displayedType;
 							}
 						}
 					}
-				}
-			}
-			else if (null != (equalityElement = element as EqualityConstraint))
-			{
-				Objectification objectificationLink = equalityElement.ImpliedByObjectification;
-				if (objectificationLink != null)
-				{
-					return objectificationLink.NestedFactType;
 				}
 			}
 			return null;

@@ -1638,12 +1638,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>CompatibleRolePlayerTypeError.MultiColumnExternalConstraint:MultiColumnExternalConstraint</Item>
+               <Item>CompatibleRolePlayerTypeError.SetComparisonConstraint:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -1783,12 +1783,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollection">
+           <Member Name="SetComparisonConstraintCollection">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ConstraintDuplicateNameError.MultiColumnExternalConstraintCollection:MultiColumnExternalConstraintMoveableCollection</Item>
+               <Item>ConstraintDuplicateNameError.SetComparisonConstraintCollection:SetComparisonConstraintMoveableCollection</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -1886,12 +1886,12 @@
          </Type>
          <Type Name="ConstraintStorageStyle">
           <Members>
-           <Member Name="MultiColumnExternalConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ConstraintStorageStyle.MultiColumnExternalConstraint</Item>
+               <Item>ConstraintStorageStyle.SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -2688,13 +2688,13 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DisjunctiveMandatoryConstraint">
+         <Type Name="MandatoryConstraint">
           <Members>
            <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.VerbalizationSets,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
             <Messages>
              <Message TypeName="AvoidExcessiveLocals" Category="Microsoft.Performance" CheckId="CA1809" Created="2005-10-25 17:48:07Z">
               <Issue Name="Compiler">
-               <Item>DisjunctiveMandatoryConstraint.GetVerbalization(TextWriter, VerbalizationSets, NotifyBeginVerbalization, Boolean):Boolean</Item>
+               <Item>MandatoryConstraint.GetVerbalization(TextWriter, VerbalizationSets, NotifyBeginVerbalization, Boolean):Boolean</Item>
                <Item>69</Item>
                <Item>4</Item>
               </Issue>
@@ -2703,11 +2703,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleAdd">
+         <Type Name="MandatoryConstraint+VerifyImpliedMandatoryRoleAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-28 20:27:31Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.MandatoryConstraint+VerifyImpliedMandatoryRoleAdd</Item>
             </Issue>
             <Notes>
              <User Name="ashumway">
@@ -2717,11 +2717,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleRemoved">
+         <Type Name="MandatoryConstraint+VerifyImpliedMandatoryRoleRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-28 20:27:31Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleRemoved</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.MandatoryConstraint+VerifyImpliedMandatoryRoleRemoved</Item>
             </Issue>
             <Notes>
              <User Name="ashumway">
@@ -2731,13 +2731,13 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="DisjunctiveMandatoryConstraintElementFactoryCreator">
+         <Type Name="MandatoryConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>DisjunctiveMandatoryConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>MandatoryConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -3180,11 +3180,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalFactConstraintMoveableCollection">
+         <Type Name="FactConstraintMoveableCollection">
           <Messages>
            <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>ExternalFactConstraintMoveableCollection</Item>
+             <Item>FactConstraintMoveableCollection</Item>
              <Item>IList</Item>
             </Issue>
             <Notes>
@@ -3213,7 +3213,7 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalUniquenessConstraint">
+         <Type Name="UniquenessConstraint">
           <Members>
            <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
             <Messages>
@@ -3231,7 +3231,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>ExternalUniquenessConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>UniquenessConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -3243,11 +3243,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalUniquenessConstraint+ExternalUniquenessConstraintChangeRule">
+         <Type Name="UniquenessConstraint+UniquenessConstraintChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint+ExternalUniquenessConstraintChangeRule</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.UniquenessConstraint+UniquenessConstraintChangeRule</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -3257,11 +3257,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ExternalUniquenessConstraint+ExternalUniquenessConstraintIsPreferredFieldHandler">
+         <Type Name="UniquenessConstraint+UniquenessConstraintIsPreferredFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint+ExternalUniquenessConstraintIsPreferredFieldHandler</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.UniquenessConstraint+UniquenessConstraintIsPreferredFieldHandler</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -3271,13 +3271,13 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ExternalUniquenessConstraintElementFactoryCreator">
+         <Type Name="UniquenessConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>ExternalUniquenessConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>UniquenessConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -3289,11 +3289,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalUniquenessConstraintMoveableCollection">
+         <Type Name="UniquenessConstraintMoveableCollection">
           <Messages>
            <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-08-11 20:45:47Z">
             <Issue>
-             <Item>ExternalUniquenessConstraintMoveableCollection</Item>
+             <Item>UniquenessConstraintMoveableCollection</Item>
              <Item>IList</Item>
             </Issue>
             <Notes>
@@ -3463,12 +3463,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollection">
+           <Member Name="SetComparisonConstraintCollection">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>FactType.MultiColumnExternalConstraintCollection:MultiColumnExternalConstraintMoveableCollection</Item>
+               <Item>FactType.SetComparisonConstraintCollection:SetComparisonConstraintMoveableCollection</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -4678,237 +4678,6 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="InternalUniquenessConstraint">
-          <Members>
-           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-05-27 18:50:05Z">
-              <Issue>
-               <Item>rolePlayedInfo</Item>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>InternalUniquenessConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
-            <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>InternalUniquenessConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>InternalUniquenessConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="33" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SupportedCustomSerializedOperations">
-            <Accessors>
-             <Accessor Name="get_SupportedCustomSerializedOperations():Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
-              <Messages>
-               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-                <Issue>
-                 <Item>InternalUniquenessConstraint.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
-                </Issue>
-                <Notes>
-                 <User Name="mcurland">
-                  <Note Id="37" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+InternalUniquenessConstraintChangeRule">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+InternalUniquenessConstraintChangeRule</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+InternalUniquenessConstraintIsPreferredFieldHandler">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+InternalUniquenessConstraintIsPreferredFieldHandler</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+NMinusOneAddRuleModelConstraintAddValidation">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneAddRuleModelConstraintAddValidation</Item>
-            </Issue>
-            <Notes>
-             <User Name="bfrank">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+NMinusOneAddRuleModelFactAddValidation">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneAddRuleModelFactAddValidation</Item>
-            </Issue>
-            <Notes>
-             <User Name="bfrank">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+NMinusOneAddRuleModelValidation">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneAddRuleModelValidation</Item>
-            </Issue>
-            <Notes>
-             <User Name="bfrank">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+NMinusOneRemoveRuleModelConstraintRemoveValidation">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneRemoveRuleModelConstraintRemoveValidation</Item>
-            </Issue>
-            <Notes>
-             <User Name="bfrank">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+NMinusOneRemoveRuleModelFactRemoveValidation">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneRemoveRuleModelFactRemoveValidation</Item>
-            </Issue>
-            <Notes>
-             <User Name="bfrank">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraint+NMinusOneRemoveRuleModelValidation">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneRemoveRuleModelValidation</Item>
-            </Issue>
-            <Notes>
-             <User Name="bfrank">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="InternalUniquenessConstraintElementFactoryCreator">
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>InternalUniquenessConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="InternalUniquenessConstraintHasNMinusOneErrorElementFactoryCreator">
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>InternalUniquenessConstraintHasNMinusOneErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="IntrinsicReferenceMode">
           <Members>
            <Member Name="CompareTo(Neumont.Tools.ORM.ObjectModel.IntrinsicReferenceMode):System.Int32">
@@ -5381,12 +5150,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ModelHasMultiColumnExternalConstraint">
+         <Type Name="ModelHasSetComparisonConstraint">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5396,12 +5165,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint">
+           <Member Name="CreateAndInitializeModelHasSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.CreateAndInitializeModelHasMultiColumnExternalConstraint(Partition, RoleAssignment[], AttributeAssignment[]):ModelHasMultiColumnExternalConstraint</Item>
+               <Item>ModelHasSetComparisonConstraint.CreateAndInitializeModelHasSetComparisonConstraint(Partition, RoleAssignment[], AttributeAssignment[]):ModelHasSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5411,12 +5180,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint">
+           <Member Name="CreateAndInitializeModelHasSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.CreateAndInitializeModelHasMultiColumnExternalConstraint(Store, RoleAssignment[], AttributeAssignment[]):ModelHasMultiColumnExternalConstraint</Item>
+               <Item>ModelHasSetComparisonConstraint.CreateAndInitializeModelHasSetComparisonConstraint(Store, RoleAssignment[], AttributeAssignment[]):ModelHasSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5426,12 +5195,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint">
+           <Member Name="CreateModelHasSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.CreateModelHasMultiColumnExternalConstraint(Partition, RoleAssignment[]):ModelHasMultiColumnExternalConstraint</Item>
+               <Item>ModelHasSetComparisonConstraint.CreateModelHasSetComparisonConstraint(Partition, RoleAssignment[]):ModelHasSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5441,12 +5210,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint">
+           <Member Name="CreateModelHasSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.CreateModelHasMultiColumnExternalConstraint(Store, RoleAssignment[]):ModelHasMultiColumnExternalConstraint</Item>
+               <Item>ModelHasSetComparisonConstraint.CreateModelHasSetComparisonConstraint(Store, RoleAssignment[]):ModelHasSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5456,12 +5225,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollection">
+           <Member Name="SetComparisonConstraintCollection">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollection:MultiColumnExternalConstraint</Item>
+               <Item>ModelHasSetComparisonConstraint.SetComparisonConstraintCollection:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5471,12 +5240,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollectionMetaRoleGuid">
+           <Member Name="SetComparisonConstraintCollectionMetaRoleGuid">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid</Item>
+               <Item>ModelHasSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5486,12 +5255,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollectionMetaRoleGuidString">
+           <Member Name="SetComparisonConstraintCollectionMetaRoleGuidString">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuidString</Item>
+               <Item>ModelHasSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuidString</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5503,12 +5272,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ModelHasMultiColumnExternalConstraintElementFactoryCreator">
+         <Type Name="ModelHasSetComparisonConstraintElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraintElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraintElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5522,7 +5291,7 @@
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>ModelHasMultiColumnExternalConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>ModelHasSetComparisonConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5588,13 +5357,13 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ModelHasSingleColumnExternalConstraintElementFactoryCreator">
+         <Type Name="ModelHasSetConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>ModelHasSingleColumnExternalConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>ModelHasSetConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5624,12 +5393,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraint">
+         <Type Name="SetComparisonConstraint">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5645,7 +5414,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>MultiColumnExternalConstraint.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                 <Item>SetComparisonConstraint.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -5661,7 +5430,7 @@
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>MultiColumnExternalConstraint.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+               <Item>SetComparisonConstraint.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5676,7 +5445,7 @@
              <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-29 21:52:14Z">
               <Issue>
                <Item>rolePlayedInfo</Item>
-               <Item>MultiColumnExternalConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetComparisonConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
               </Issue>
@@ -5688,7 +5457,7 @@
              </Message>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>MultiColumnExternalConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetComparisonConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5698,7 +5467,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>MultiColumnExternalConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetComparisonConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5726,7 +5495,7 @@
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>MultiColumnExternalConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>SetComparisonConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5736,7 +5505,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>MultiColumnExternalConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>SetComparisonConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5752,7 +5521,7 @@
               <Messages>
                <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
                 <Issue>
-                 <Item>MultiColumnExternalConstraint</Item>
+                 <Item>SetComparisonConstraint</Item>
                  <Item>IConstraint.get_ConstraintType():ConstraintType</Item>
                 </Issue>
                </Message>
@@ -5766,7 +5535,7 @@
               <Messages>
                <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
                 <Issue>
-                 <Item>MultiColumnExternalConstraint</Item>
+                 <Item>SetComparisonConstraint</Item>
                  <Item>IConstraint.get_RoleSequenceStyles():RoleSequenceStyles</Item>
                 </Issue>
                </Message>
@@ -5780,7 +5549,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>MultiColumnExternalConstraint.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                 <Item>SetComparisonConstraint.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -5794,11 +5563,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+ConstraintHasRoleSequenceAdded">
+         <Type Name="SetComparisonConstraint+ConstraintHasRoleSequenceAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+ConstraintHasRoleSequenceAdded</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+ConstraintHasRoleSequenceAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5808,11 +5577,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+ConstraintRoleSequenceHasRoleAdded">
+         <Type Name="SetComparisonConstraint+ConstraintRoleSequenceHasRoleAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+ConstraintRoleSequenceHasRoleAdded</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+ConstraintRoleSequenceHasRoleAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5822,11 +5591,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForAdd">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceCardinalityForAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceCardinalityForAdd</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5836,11 +5605,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForConstraintAdd">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceCardinalityForConstraintAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForConstraintAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceCardinalityForConstraintAdd</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5850,11 +5619,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForRemove">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceCardinalityForRemove">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForRemove</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceCardinalityForRemove</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5864,11 +5633,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForAdd">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceValidityForAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceValidityForAdd</Item>
             </Issue>
             <Notes>
              <User Name="bfrank">
@@ -5878,11 +5647,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceValidityForFactTypeAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceValidityForFactTypeAdd</Item>
             </Issue>
             <Notes>
              <User Name="bfrank">
@@ -5892,11 +5661,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceValidityForFactTypeRemove">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceValidityForFactTypeRemove</Item>
             </Issue>
             <Notes>
              <User Name="bfrank">
@@ -5906,11 +5675,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForRemove">
+         <Type Name="SetComparisonConstraint+EnforceRoleSequenceValidityForRemove">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForRemove</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+EnforceRoleSequenceValidityForRemove</Item>
             </Issue>
             <Notes>
              <User Name="bfrank">
@@ -5920,11 +5689,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+ExternalRoleConstraintRemoved">
+         <Type Name="SetComparisonConstraint+ExternalRoleConstraintRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+ExternalRoleConstraintRemoved</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+ExternalRoleConstraintRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5934,12 +5703,12 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraint+MultiColumnExternalConstraintModalityFieldHandler">
+         <Type Name="SetComparisonConstraint+SetComparisonConstraintModalityFieldHandler">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-10-18 22:46:31Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+MultiColumnExternalConstraintModalityFieldHandler</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+SetComparisonConstraintModalityFieldHandler</Item>
             </Issue>
             <Notes>
              <User Name="anhernandez">
@@ -5949,7 +5718,7 @@
            </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-10-18 22:46:31Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+MultiColumnExternalConstraintModalityFieldHandler</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint+SetComparisonConstraintModalityFieldHandler</Item>
             </Issue>
             <Notes>
              <User Name="anhernandez">
@@ -5959,12 +5728,12 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+         <Type Name="SetComparisonConstraintHasCompatibleRolePlayerTypeError">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -5974,12 +5743,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.CreateAndInitializeSetComparisonConstraintHasCompatibleRolePlayerTypeError(Partition, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasCompatibleRolePlayerTypeError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -5989,12 +5758,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.CreateAndInitializeSetComparisonConstraintHasCompatibleRolePlayerTypeError(Store, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasCompatibleRolePlayerTypeError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6004,12 +5773,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+           <Member Name="CreateSetComparisonConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.CreateSetComparisonConstraintHasCompatibleRolePlayerTypeError(Partition, RoleAssignment[]):SetComparisonConstraintHasCompatibleRolePlayerTypeError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6019,12 +5788,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+           <Member Name="CreateSetComparisonConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.CreateSetComparisonConstraintHasCompatibleRolePlayerTypeError(Store, RoleAssignment[]):SetComparisonConstraintHasCompatibleRolePlayerTypeError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6034,12 +5803,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraint:MultiColumnExternalConstraint</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraint:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6049,12 +5818,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintMetaRoleGuid">
+           <Member Name="SetComparisonConstraintMetaRoleGuid">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuid</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraintMetaRoleGuid</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6064,12 +5833,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintMetaRoleGuidString">
+           <Member Name="SetComparisonConstraintMetaRoleGuidString">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuidString</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraintMetaRoleGuidString</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6081,165 +5850,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator">
+         <Type Name="SetComparisonConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="36" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MultiColumnExternalConstraintHasDuplicateNameError">
-          <Messages>
-           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-            <Issue Name="Type">
-             <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="36" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.CreateAndInitializeMultiColumnExternalConstraintHasDuplicateNameError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasDuplicateNameError</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.CreateAndInitializeMultiColumnExternalConstraintHasDuplicateNameError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasDuplicateNameError</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.CreateMultiColumnExternalConstraintHasDuplicateNameError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasDuplicateNameError</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.CreateMultiColumnExternalConstraintHasDuplicateNameError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasDuplicateNameError</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="MultiColumnExternalConstraintCollection">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollection:MultiColumnExternalConstraint</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="MultiColumnExternalConstraintCollectionMetaRoleGuid">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="MultiColumnExternalConstraintCollectionMetaRoleGuidString">
-            <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue Name="Member">
-               <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuidString</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MultiColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator">
-          <Messages>
-           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
-            <Issue Name="Type">
-             <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6253,7 +5869,7 @@
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>MultiColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>SetComparisonConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6265,12 +5881,165 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
+         <Type Name="SetComparisonConstraintHasDuplicateNameError">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="36" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.CreateAndInitializeSetComparisonConstraintHasDuplicateNameError(Partition, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasDuplicateNameError</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.CreateAndInitializeSetComparisonConstraintHasDuplicateNameError(Store, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasDuplicateNameError</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateSetComparisonConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.CreateSetComparisonConstraintHasDuplicateNameError(Partition, RoleAssignment[]):SetComparisonConstraintHasDuplicateNameError</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateSetComparisonConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.CreateSetComparisonConstraintHasDuplicateNameError(Store, RoleAssignment[]):SetComparisonConstraintHasDuplicateNameError</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SetComparisonConstraintCollection">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.SetComparisonConstraintCollection:SetComparisonConstraint</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SetComparisonConstraintCollectionMetaRoleGuid">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.SetComparisonConstraintCollectionMetaRoleGuid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SetComparisonConstraintCollectionMetaRoleGuidString">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>SetComparisonConstraintHasDuplicateNameError.SetComparisonConstraintCollectionMetaRoleGuidString</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="36" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SetComparisonConstraintHasDuplicateNameErrorElementFactoryCreator">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameErrorElementFactoryCreator</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="36" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
+            <Messages>
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue>
+               <Item>SetComparisonConstraintHasDuplicateNameErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="34" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6280,12 +6049,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
+               <Item>SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateAndInitializeSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Partition, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6295,12 +6064,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
+               <Item>SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateAndInitializeSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Store, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6310,12 +6079,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
+           <Member Name="CreateSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
+               <Item>SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Partition, RoleAssignment[]):SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6325,12 +6094,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
+           <Member Name="CreateSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
+               <Item>SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateSetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError(Store, RoleAssignment[]):SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6342,12 +6111,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator">
+         <Type Name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6361,7 +6130,7 @@
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6373,12 +6142,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasRoleSequence">
+         <Type Name="SetComparisonConstraintHasRoleSequence">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6388,12 +6157,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasRoleSequence.CreateAndInitializeMultiColumnExternalConstraintHasRoleSequence(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasRoleSequence</Item>
+               <Item>SetComparisonConstraintHasRoleSequence.CreateAndInitializeSetComparisonConstraintHasRoleSequence(Partition, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6403,12 +6172,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasRoleSequence.CreateAndInitializeMultiColumnExternalConstraintHasRoleSequence(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasRoleSequence</Item>
+               <Item>SetComparisonConstraintHasRoleSequence.CreateAndInitializeSetComparisonConstraintHasRoleSequence(Store, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6418,12 +6187,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence">
+           <Member Name="CreateSetComparisonConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasRoleSequence.CreateMultiColumnExternalConstraintHasRoleSequence(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasRoleSequence</Item>
+               <Item>SetComparisonConstraintHasRoleSequence.CreateSetComparisonConstraintHasRoleSequence(Partition, RoleAssignment[]):SetComparisonConstraintHasRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6433,12 +6202,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence">
+           <Member Name="CreateSetComparisonConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasRoleSequence.CreateMultiColumnExternalConstraintHasRoleSequence(Store, RoleAssignment[]):MultiColumnExternalConstraintHasRoleSequence</Item>
+               <Item>SetComparisonConstraintHasRoleSequence.CreateSetComparisonConstraintHasRoleSequence(Store, RoleAssignment[]):SetComparisonConstraintHasRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6450,12 +6219,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasRoleSequenceElementFactoryCreator">
+         <Type Name="SetComparisonConstraintHasRoleSequenceElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequenceElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequenceElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6469,7 +6238,7 @@
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>MultiColumnExternalConstraintHasRoleSequenceElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>SetComparisonConstraintHasRoleSequenceElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6481,12 +6250,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+         <Type Name="SetComparisonConstraintHasTooFewRoleSequencesError">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -6496,12 +6265,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.CreateAndInitializeSetComparisonConstraintHasTooFewRoleSequencesError(Partition, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasTooFewRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6511,12 +6280,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.CreateAndInitializeSetComparisonConstraintHasTooFewRoleSequencesError(Store, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasTooFewRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6526,12 +6295,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+           <Member Name="CreateSetComparisonConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.CreateSetComparisonConstraintHasTooFewRoleSequencesError(Partition, RoleAssignment[]):SetComparisonConstraintHasTooFewRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6541,12 +6310,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+           <Member Name="CreateSetComparisonConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.CreateSetComparisonConstraintHasTooFewRoleSequencesError(Store, RoleAssignment[]):SetComparisonConstraintHasTooFewRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6556,12 +6325,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.SetComparisonConstraint:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6571,12 +6340,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraintMetaRoleGuid">
+           <Member Name="SetComparisonConstraintMetaRoleGuid">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.SetComparisonConstraintMetaRoleGuid</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6586,12 +6355,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraintMetaRoleGuidString">
+           <Member Name="SetComparisonConstraintMetaRoleGuidString">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuidString</Item>
+               <Item>SetComparisonConstraintHasTooFewRoleSequencesError.SetComparisonConstraintMetaRoleGuidString</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6603,12 +6372,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator">
+         <Type Name="SetComparisonConstraintHasTooFewRoleSequencesErrorElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesErrorElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -6618,12 +6387,12 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+         <Type Name="SetComparisonConstraintHasTooManyRoleSequencesError">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -6633,12 +6402,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.CreateAndInitializeSetComparisonConstraintHasTooManyRoleSequencesError(Partition, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasTooManyRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6648,12 +6417,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+           <Member Name="CreateAndInitializeSetComparisonConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.CreateAndInitializeSetComparisonConstraintHasTooManyRoleSequencesError(Store, RoleAssignment[], AttributeAssignment[]):SetComparisonConstraintHasTooManyRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6663,12 +6432,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+           <Member Name="CreateSetComparisonConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.CreateSetComparisonConstraintHasTooManyRoleSequencesError(Partition, RoleAssignment[]):SetComparisonConstraintHasTooManyRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6678,12 +6447,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+           <Member Name="CreateSetComparisonConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.CreateSetComparisonConstraintHasTooManyRoleSequencesError(Store, RoleAssignment[]):SetComparisonConstraintHasTooManyRoleSequencesError</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6693,12 +6462,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.SetComparisonConstraint:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6708,12 +6477,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraintMetaRoleGuid">
+           <Member Name="SetComparisonConstraintMetaRoleGuid">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.SetComparisonConstraintMetaRoleGuid</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6723,12 +6492,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraintMetaRoleGuidString">
+           <Member Name="SetComparisonConstraintMetaRoleGuidString">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuidString</Item>
+               <Item>SetComparisonConstraintHasTooManyRoleSequencesError.SetComparisonConstraintMetaRoleGuidString</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -6740,12 +6509,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator">
+         <Type Name="SetComparisonConstraintHasTooManyRoleSequencesErrorElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesErrorElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -6755,11 +6524,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraintMoveableCollection">
+         <Type Name="SetComparisonConstraintMoveableCollection">
           <Messages>
            <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>MultiColumnExternalConstraintMoveableCollection</Item>
+             <Item>SetComparisonConstraintMoveableCollection</Item>
              <Item>IList</Item>
             </Issue>
             <Notes>
@@ -6771,7 +6540,7 @@
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintMoveableCollection</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6781,12 +6550,12 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalConstraintRoleSequence">
+         <Type Name="SetComparisonConstraintRoleSequence">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequence</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6796,12 +6565,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence">
+           <Member Name="CreateAndInitializeSetComparisonConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintRoleSequence.CreateAndInitializeMultiColumnExternalConstraintRoleSequence(Partition, AttributeAssignment[]):MultiColumnExternalConstraintRoleSequence</Item>
+               <Item>SetComparisonConstraintRoleSequence.CreateAndInitializeSetComparisonConstraintRoleSequence(Partition, AttributeAssignment[]):SetComparisonConstraintRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6811,12 +6580,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence">
+           <Member Name="CreateAndInitializeSetComparisonConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintRoleSequence.CreateAndInitializeMultiColumnExternalConstraintRoleSequence(Store, AttributeAssignment[]):MultiColumnExternalConstraintRoleSequence</Item>
+               <Item>SetComparisonConstraintRoleSequence.CreateAndInitializeSetComparisonConstraintRoleSequence(Store, AttributeAssignment[]):SetComparisonConstraintRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6826,12 +6595,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Partition):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence">
+           <Member Name="CreateSetComparisonConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Partition):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(Partition):MultiColumnExternalConstraintRoleSequence</Item>
+               <Item>SetComparisonConstraintRoleSequence.CreateSetComparisonConstraintRoleSequence(Partition):SetComparisonConstraintRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6841,12 +6610,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence">
+           <Member Name="CreateSetComparisonConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store):Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequence">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(Store):MultiColumnExternalConstraintRoleSequence</Item>
+               <Item>SetComparisonConstraintRoleSequence.CreateSetComparisonConstraintRoleSequence(Store):SetComparisonConstraintRoleSequence</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6862,7 +6631,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>MultiColumnExternalConstraintRoleSequence.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                 <Item>SetComparisonConstraintRoleSequence.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -6880,7 +6649,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>MultiColumnExternalConstraintRoleSequence.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
+                 <Item>SetComparisonConstraintRoleSequence.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -6897,7 +6666,7 @@
              <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-05-27 18:50:05Z">
               <Issue>
                <Item>rolePlayedInfo</Item>
-               <Item>MultiColumnExternalConstraintRoleSequence.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetComparisonConstraintRoleSequence.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
               </Issue>
@@ -6909,7 +6678,7 @@
              </Message>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>MultiColumnExternalConstraintRoleSequence.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetComparisonConstraintRoleSequence.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6919,7 +6688,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>MultiColumnExternalConstraintRoleSequence.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetComparisonConstraintRoleSequence.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6933,7 +6702,7 @@
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>MultiColumnExternalConstraintRoleSequence.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>SetComparisonConstraintRoleSequence.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6943,7 +6712,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>MultiColumnExternalConstraintRoleSequence.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>SetComparisonConstraintRoleSequence.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -6959,7 +6728,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>MultiColumnExternalConstraintRoleSequence.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                 <Item>SetComparisonConstraintRoleSequence.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -6973,12 +6742,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintRoleSequenceElementFactoryCreator">
+         <Type Name="SetComparisonConstraintRoleSequenceElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequenceElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequenceElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -6992,7 +6761,7 @@
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>MultiColumnExternalConstraintRoleSequenceElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>SetComparisonConstraintRoleSequenceElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7004,11 +6773,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintRoleSequenceMoveableCollection">
+         <Type Name="SetComparisonConstraintRoleSequenceMoveableCollection">
           <Messages>
            <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>MultiColumnExternalConstraintRoleSequenceMoveableCollection</Item>
+             <Item>SetComparisonConstraintRoleSequenceMoveableCollection</Item>
              <Item>IList</Item>
             </Issue>
             <Notes>
@@ -7020,7 +6789,7 @@
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequenceMoveableCollection</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequenceMoveableCollection</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -7030,12 +6799,12 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="MultiColumnExternalFactConstraint">
+         <Type Name="FactSetComparisonConstraint">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -7045,12 +6814,12 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint">
+           <Member Name="CreateAndInitializeFactSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.CreateAndInitializeMultiColumnExternalFactConstraint(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalFactConstraint</Item>
+               <Item>FactSetComparisonConstraint.CreateAndInitializeFactSetComparisonConstraint(Partition, RoleAssignment[], AttributeAssignment[]):FactSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7060,12 +6829,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint">
+           <Member Name="CreateAndInitializeFactSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.CreateAndInitializeMultiColumnExternalFactConstraint(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalFactConstraint</Item>
+               <Item>FactSetComparisonConstraint.CreateAndInitializeFactSetComparisonConstraint(Store, RoleAssignment[], AttributeAssignment[]):FactSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7075,12 +6844,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint">
+           <Member Name="CreateFactSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.CreateMultiColumnExternalFactConstraint(Partition, RoleAssignment[]):MultiColumnExternalFactConstraint</Item>
+               <Item>FactSetComparisonConstraint.CreateFactSetComparisonConstraint(Partition, RoleAssignment[]):FactSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7090,12 +6859,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint">
+           <Member Name="CreateFactSetComparisonConstraint(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.CreateMultiColumnExternalFactConstraint(Store, RoleAssignment[]):MultiColumnExternalFactConstraint</Item>
+               <Item>FactSetComparisonConstraint.CreateFactSetComparisonConstraint(Store, RoleAssignment[]):FactSetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7105,12 +6874,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollection">
+           <Member Name="SetComparisonConstraintCollection">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollection:MultiColumnExternalConstraint</Item>
+               <Item>FactSetComparisonConstraint.SetComparisonConstraintCollection:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7120,12 +6889,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollectionMetaRoleGuid">
+           <Member Name="SetComparisonConstraintCollectionMetaRoleGuid">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid</Item>
+               <Item>FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7135,12 +6904,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollectionMetaRoleGuidString">
+           <Member Name="SetComparisonConstraintCollectionMetaRoleGuidString">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuidString</Item>
+               <Item>FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuidString</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7152,12 +6921,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalFactConstraintElementFactoryCreator">
+         <Type Name="FactSetComparisonConstraintElementFactoryCreator">
           <Messages>
            <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraintElementFactoryCreator</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraintElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -7171,7 +6940,7 @@
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>MultiColumnExternalFactConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>FactSetComparisonConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -7545,11 +7314,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="Objectification+ExternalUniquenessConstraintChangeRule">
+         <Type Name="Objectification+UniquenessConstraintChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-10-28 08:38:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+ExternalUniquenessConstraintChangeRule</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+UniquenessConstraintChangeRule</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -8679,12 +8448,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnExternalConstraintCollection">
+           <Member Name="SetComparisonConstraintCollection">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>ORMModel.MultiColumnExternalConstraintCollection:MultiColumnExternalConstraintMoveableCollection</Item>
+               <Item>ORMModel.SetComparisonConstraintCollection:SetComparisonConstraintMoveableCollection</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -11950,7 +11719,7 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="SingleColumnExternalConstraint">
+         <Type Name="SetConstraint">
           <Members>
            <Member Name="CustomSerializedChildRoleComparer">
             <Accessors>
@@ -11958,7 +11727,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>SingleColumnExternalConstraint.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                 <Item>SetConstraint.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -11974,7 +11743,7 @@
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>SingleColumnExternalConstraint.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+               <Item>SetConstraint.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -11989,7 +11758,7 @@
              <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-29 21:52:14Z">
               <Issue>
                <Item>rolePlayedInfo</Item>
-               <Item>SingleColumnExternalConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
               </Issue>
@@ -12001,7 +11770,7 @@
              </Message>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>SingleColumnExternalConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12011,7 +11780,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>SingleColumnExternalConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>SetConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12039,7 +11808,7 @@
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
-               <Item>SingleColumnExternalConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>SetConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12049,7 +11818,7 @@
              </Message>
              <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
-               <Item>SingleColumnExternalConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>SetConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12065,7 +11834,7 @@
               <Messages>
                <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
                 <Issue>
-                 <Item>SingleColumnExternalConstraint</Item>
+                 <Item>SetConstraint</Item>
                  <Item>IConstraint.get_ConstraintType():ConstraintType</Item>
                 </Issue>
                </Message>
@@ -12079,7 +11848,7 @@
               <Messages>
                <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
                 <Issue>
-                 <Item>SingleColumnExternalConstraint</Item>
+                 <Item>SetConstraint</Item>
                  <Item>IConstraint.get_RoleSequenceStyles():RoleSequenceStyles</Item>
                 </Issue>
                </Message>
@@ -12093,7 +11862,7 @@
               <Messages>
                <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>SingleColumnExternalConstraint.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                 <Item>SetConstraint.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
@@ -12107,11 +11876,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+ConstraintHasRoleSequenceAdded">
+         <Type Name="SetConstraint+ConstraintHasRoleSequenceAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+ConstraintHasRoleSequenceAdded</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+ConstraintHasRoleSequenceAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -12121,11 +11890,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+ConstraintHasRoleSequenceAddedLocalCommit">
+         <Type Name="SetConstraint+ConstraintHasRoleSequenceAddedLocalCommit">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+ConstraintHasRoleSequenceAddedLocalCommit</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+ConstraintHasRoleSequenceAddedLocalCommit</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -12135,11 +11904,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+ConstraintRoleSequenceHasRoleAdded">
+         <Type Name="SetConstraint+ConstraintRoleSequenceHasRoleAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+ConstraintRoleSequenceHasRoleAdded</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+ConstraintRoleSequenceHasRoleAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -12149,11 +11918,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForAdd">
+         <Type Name="SetConstraint+EnforceRoleSequenceValidityForAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+EnforceRoleSequenceValidityForAdd</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -12163,11 +11932,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd">
+         <Type Name="SetConstraint+EnforceRoleSequenceValidityForFactTypeAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+EnforceRoleSequenceValidityForFactTypeAdd</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -12177,11 +11946,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove">
+         <Type Name="SetConstraint+EnforceRoleSequenceValidityForFactTypeRemove">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+EnforceRoleSequenceValidityForFactTypeRemove</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -12191,11 +11960,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForRemove">
+         <Type Name="SetConstraint+EnforceRoleSequenceValidityForRemove">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-17 22:28:49Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForRemove</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+EnforceRoleSequenceValidityForRemove</Item>
             </Issue>
             <Notes>
              <User Name="obuhler">
@@ -12205,11 +11974,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraint+SingleColumnExternalConstraintModalityFieldHandler">
+         <Type Name="SetConstraint+SetConstraintModalityFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-10-18 22:46:31Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+SingleColumnExternalConstraintModalityFieldHandler</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.SetConstraint+SetConstraintModalityFieldHandler</Item>
             </Issue>
             <Notes>
              <User Name="anhernandez">
@@ -12219,13 +11988,13 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator">
+         <Type Name="SetConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>SingleColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>SetConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12237,13 +12006,13 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="SingleColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator">
+         <Type Name="SetConstraintHasDuplicateNameErrorElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>SingleColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>SetConstraintHasDuplicateNameErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12255,11 +12024,11 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="SingleColumnExternalConstraintMoveableCollection">
+         <Type Name="SetConstraintMoveableCollection">
           <Messages>
            <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>SingleColumnExternalConstraintMoveableCollection</Item>
+             <Item>SetConstraintMoveableCollection</Item>
              <Item>IList</Item>
             </Issue>
             <Notes>
@@ -12270,13 +12039,13 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="SingleColumnExternalFactConstraintElementFactoryCreator">
+         <Type Name="FactSetConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
-               <Item>SingleColumnExternalFactConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>FactSetConstraintElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -12654,12 +12423,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>TooFewRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+               <Item>TooFewRoleSequencesError.SetComparisonConstraint:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -12871,12 +12640,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="MultiColumnConstraint">
+           <Member Name="SetComparisonConstraint">
             <Messages>
              <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>TooManyRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+               <Item>TooManyRoleSequencesError.SetComparisonConstraint:SetComparisonConstraint</Item>
               </Issue>
               <Notes>
                <User Name="obuhler">
@@ -16834,11 +16603,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMShapeModel+ExternalFactConstraintAdded">
+         <Type Name="ORMShapeModel+FactConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+ExternalFactConstraintAdded</Item>
+             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+FactConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -16848,11 +16617,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMShapeModel+ExternalFactConstraintRemoved">
+         <Type Name="ORMShapeModel+FactConstraintRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+ExternalFactConstraintRemoved</Item>
+             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+FactConstraintRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -16904,11 +16673,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMShapeModel+MultiColumnExternalConstraintAdded">
+         <Type Name="ORMShapeModel+SetComparisonConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+MultiColumnExternalConstraintAdded</Item>
+             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+SetComparisonConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -17072,11 +16841,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMShapeModel+SingleColumnExternalConstraintAdded">
+         <Type Name="ORMShapeModel+SetConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+SingleColumnExternalConstraintAdded</Item>
+             <Item>Neumont.Tools.ORM.ShapeModel.ORMShapeModel+SetConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">

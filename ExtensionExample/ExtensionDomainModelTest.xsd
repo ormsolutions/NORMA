@@ -6,8 +6,8 @@
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/ExtensionExample"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore">
-	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-01/ORMCore"/>
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore">
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
 			Neumont Object-Role Modeling Architect for Visual Studio

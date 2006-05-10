@@ -165,9 +165,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			foreach (Role role in fact.RoleCollection)
+			foreach (RoleBase roleBase in fact.RoleCollection)
 			{
-				if (!string.IsNullOrEmpty(role.Name))
+				Role role = roleBase as Role;
+				if (role != null && !string.IsNullOrEmpty(role.Name))
 				{
 					SetRoleNameDisplay(role, shouldDisplay, shouldRemove);
 				}

@@ -3,8 +3,8 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
 	xmlns:nsu="urn:schemas-neumont-edu:ORM:NamespacesUtility"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 	extension-element-prefixes="exsl nsu">
 
 	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
@@ -32,7 +32,7 @@
 
 	<xsl:template match="ormRoot:ORM2">
 		<ormRoot:ORM2>
-			<xsl:for-each select="namespace::node()[not(local-name()='xml') and not(.='http://schemas.neumont.edu/ORM/2006-01/ORMDiagram') and not(.='http://schemas.neumont.edu/ORM/2006-01/ORMCore') and not(.='http://schemas.neumont.edu/ORM/2006-01/ORMRoot')]">
+			<xsl:for-each select="namespace::node()[not(local-name()='xml') and not(.='http://schemas.neumont.edu/ORM/2006-04/ORMDiagram') and not(.='http://schemas.neumont.edu/ORM/2006-04/ORMCore') and not(.='http://schemas.neumont.edu/ORM/2006-04/ORMRoot')]">
 				<xsl:if test="nsu:isNamespaceSelected(.)">
 					<xsl:copy-of select="."/>
 					<xsl:if test="nsu:addedNamespace(.)"/>
@@ -61,7 +61,7 @@
 
 	<xsl:template match="*">
 		<xsl:variable name="namespace" select="namespace-uri()"/>
-		<xsl:if test="nsu:isNamespaceSelected($namespace) or $namespace='http://schemas.neumont.edu/ORM/2006-01/ORMDiagram' or $namespace='http://schemas.neumont.edu/ORM/2006-01/ORMCore' or $namespace='http://schemas.neumont.edu/ORM/2006-01/ORMRoot'">
+		<xsl:if test="nsu:isNamespaceSelected($namespace) or $namespace='http://schemas.neumont.edu/ORM/2006-04/ORMDiagram' or $namespace='http://schemas.neumont.edu/ORM/2006-04/ORMCore' or $namespace='http://schemas.neumont.edu/ORM/2006-04/ORMRoot'">
 			<xsl:copy>
 				<xsl:apply-templates select="@*|*|text()|comment()"/>
 			</xsl:copy>

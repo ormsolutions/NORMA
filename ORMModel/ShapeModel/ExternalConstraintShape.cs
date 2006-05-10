@@ -257,7 +257,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					break;
 				}
 				#endregion
-				#region DisjunctiveMandatory
+				#region Mandatory
 				case ConstraintType.DisjunctiveMandatory:
 				{
 					// Draw the dot
@@ -281,12 +281,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 					break;
 				}
 				#endregion
-				#region ExternalUniqueness
+				#region Uniqueness
 				case ConstraintType.ExternalUniqueness:
 				{
 					// Draw a single line for a uniqueness constraint and a double
 					// line for preferred uniqueness
-					ExternalUniquenessConstraint euc = constraint as ExternalUniquenessConstraint;
+					UniquenessConstraint euc = constraint as UniquenessConstraint;
 					double widthAdjust = (double)pen.Width / 2;
 					float xLeft = (float)(bounds.Left + widthAdjust);
 					float xRight = (float)(bounds.Right - widthAdjust);
@@ -449,11 +449,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				switch (constraint.ConstraintStorageStyle)
 				{
-					case ConstraintStorageStyle.SingleColumnExternalConstraint:
-						rVal = (constraint as SingleColumnExternalConstraint).RoleCollection.Contains(r);
+					case ConstraintStorageStyle.SetConstraint:
+						rVal = (constraint as SetConstraint).RoleCollection.Contains(r);
 						break;
-					case ConstraintStorageStyle.MultiColumnExternalConstraint:
-						foreach (MultiColumnExternalConstraintRoleSequence roleSequence in (constraint as MultiColumnExternalConstraint).RoleSequenceCollection)
+					case ConstraintStorageStyle.SetComparisonConstraint:
+						foreach (SetComparisonConstraintRoleSequence roleSequence in (constraint as SetComparisonConstraint).RoleSequenceCollection)
 						{
 							if (roleSequence.RoleCollection.Contains(r))
 							{
@@ -489,9 +489,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Diagram diagram = this.Diagram;
 				switch (constraint.ConstraintStorageStyle)
 				{
-					case ConstraintStorageStyle.SingleColumnExternalConstraint:
-						SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
-						foreach (SingleColumnExternalFactConstraint factConstraint in scec.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid))
+					case ConstraintStorageStyle.SetConstraint:
+						SetConstraint scec = constraint as SetConstraint;
+						foreach (FactSetConstraint factConstraint in scec.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid))
 						{
 							// Redraw the line
 							RedrawPelsOnDiagram(factConstraint, diagram);
@@ -502,9 +502,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 						break;
-					case ConstraintStorageStyle.MultiColumnExternalConstraint:
-						MultiColumnExternalConstraint mcec = constraint as MultiColumnExternalConstraint;
-						foreach (MultiColumnExternalFactConstraint factConstraint in mcec.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid))
+					case ConstraintStorageStyle.SetComparisonConstraint:
+						SetComparisonConstraint mcec = constraint as SetComparisonConstraint;
+						foreach (FactSetComparisonConstraint factConstraint in mcec.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid))
 						{
 							// Redraw the line
 							RedrawPelsOnDiagram(factConstraint, diagram);
@@ -558,7 +558,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				switch (constraint.ConstraintStorageStyle)
 				{
-					case ConstraintStorageStyle.SingleColumnExternalConstraint:
+					case ConstraintStorageStyle.SetConstraint:
 						connectAction.ConstraintRoleSequenceToEdit = constraint as ConstraintRoleSequence;
 						break;
 					default:
@@ -585,12 +585,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(SetComparisonConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 			eventDirectory.RolePlayerOrderChanged.Add(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MultiColumnExternalConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(MultiColumnConstraintChangedEvent));
-			attributeInfo = dataDirectory.FindMetaAttribute(SingleColumnExternalConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SingleColumnConstraintChangedEvent));
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SetComparisonConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SetComparisonConstraintChangedEvent));
+			attributeInfo = dataDirectory.FindMetaAttribute(SetConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SetConstraintChangedEvent));
 
 			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
@@ -604,12 +604,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(SetComparisonConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 			eventDirectory.RolePlayerOrderChanged.Remove(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MultiColumnExternalConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(MultiColumnConstraintChangedEvent));
-			attributeInfo = dataDirectory.FindMetaAttribute(SingleColumnExternalConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SingleColumnConstraintChangedEvent));
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SetComparisonConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SetComparisonConstraintChangedEvent));
+			attributeInfo = dataDirectory.FindMetaAttribute(SetConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SetConstraintChangedEvent));
 
 			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
@@ -617,10 +617,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
-			MultiColumnExternalConstraint constraint;
+			SetComparisonConstraint constraint;
 			ExternalConstraintShape ecs;
 			ORMDiagram ormDiagram;
-			if (null != (constraint = e.SourceElement as MultiColumnExternalConstraint))
+			if (null != (constraint = e.SourceElement as SetComparisonConstraint))
 			{
 				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
@@ -634,12 +634,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		private static void MultiColumnConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void SetComparisonConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
-			MultiColumnExternalConstraint constraint;
+			SetComparisonConstraint constraint;
 			ExternalConstraintShape ecs;
 			ORMDiagram ormDiagram;
-			if (null != (constraint = e.ModelElement as MultiColumnExternalConstraint))
+			if (null != (constraint = e.ModelElement as SetComparisonConstraint))
 			{
 				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
@@ -653,12 +653,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		private static void SingleColumnConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void SetConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
-			SingleColumnExternalConstraint constraint;
+			SetConstraint constraint;
 			ExternalConstraintShape ecs;
 			ORMDiagram ormDiagram;
-			if (null != (constraint = e.ModelElement as SingleColumnExternalConstraint))
+			if (null != (constraint = e.ModelElement as SetConstraint))
 			{
 				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
@@ -678,8 +678,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			ExternalUniquenessConstraint constraint;
-			if (null != (constraint = link.PreferredIdentifier as ExternalUniquenessConstraint))
+			UniquenessConstraint constraint = link.PreferredIdentifier;
+			if (!constraint.IsInternal)
 			{
 				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
 				{
@@ -697,8 +697,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public static void PreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			ExternalUniquenessConstraint constraint;
-			if (null != (constraint = link.PreferredIdentifier as ExternalUniquenessConstraint) &&
+			UniquenessConstraint constraint = link.PreferredIdentifier;
+			if (!constraint.IsInternal &&
 				!constraint.IsRemoved)
 			{
 				foreach (PresentationElement pel in constraint.PresentationRolePlayers)

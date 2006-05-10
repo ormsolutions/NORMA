@@ -28,7 +28,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The default XmlNamespace associated with the 'ORMShapeModel' extension model
 		/// </summary>
-		public const string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/ORMDiagram";
+		public const string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram";
 		/// <summary>
 		/// Implements IORMCustomSerializedMetaModel.DefaultElementPrefix
 		/// </summary>
@@ -53,7 +53,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "ormDiagram";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/2006-01/ORMDiagram";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram";
 			ret[0, 2] = "ORM2Diagram.xsd";
 			return ret;
 		}
@@ -110,7 +110,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "ORMDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"))
+			if ((elementName == "ORMDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"))
 			{
 				return ORMDiagram.MetaClassGuid;
 			}
@@ -130,7 +130,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram");
 				ORMShapeModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -321,9 +321,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Subject", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Subject", match);
 				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Shapes||", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Shapes||", match);
 				ORMDiagram.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -524,11 +524,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Subject", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Subject", match);
 				match.InitializeRoles(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|RelativeShapes||", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|RelativeShapes||", match);
 				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|NestedShapes||", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|NestedShapes||", match);
 				ORMBaseShape.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -973,7 +973,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|RoleDisplayOrder|http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Role", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|RoleDisplayOrder|http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Role", match);
 				FactTypeShape.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;

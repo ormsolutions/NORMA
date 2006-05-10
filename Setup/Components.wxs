@@ -195,6 +195,10 @@
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="RootUpgradeTo2006_01.xslt" Name="RUTo0601.xsl" LongName="RootUpgradeTo2006-01.xslt" src="..\ORMModel\Shell\Converters\RootUpgradeTo2006-01.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="CoreUpgradeTo2006_04.xslt" Name="CUTo0604.xsl" LongName="CoreUpgradeTo2006-04.xslt" src="..\ORMModel\Shell\Converters\CoreUpgradeTo2006-04.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+										<File Id="RootUpgradeTo2006_04.xslt" Name="RUTo0604.xsl" LongName="RootUpgradeTo2006-04.xslt" src="..\ORMModel\Shell\Converters\RootUpgradeTo2006-04.xslt"
+											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<File Id="VisioToCoreModelImport.xslt" Name="VsCrMdl.xsl" LongName="VisioToCoreModelImport.xslt" src="..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt"
 											DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 										<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="ConvertersDir" Value="[Converters]"/>

@@ -36,15 +36,13 @@
 		<arg:Rule class="ORMBaseShape.ModelErrorRemoving"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleAdded"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleRemoved"/>
-		<arg:Rule class="ORMShapeModel.ExternalFactConstraintAdded"/>
-		<arg:Rule class="ORMShapeModel.ExternalFactConstraintRemoved"/>
+		<arg:Rule class="ORMShapeModel.FactConstraintAdded"/>
+		<arg:Rule class="ORMShapeModel.FactConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.ExternalRoleConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.FactTypedAdded"/>
 		<arg:Rule class="ORMShapeModel.FactTypeShapeChanged"/>
-		<arg:Rule class="ORMShapeModel.FactTypeHasInternalConstraintAdded"/>
-		<arg:Rule class="ORMShapeModel.FactTypeHasInternalConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.LinkConnectsToNodeRemoved"/>
-		<arg:Rule class="ORMShapeModel.MultiColumnExternalConstraintAdded"/>
+		<arg:Rule class="ORMShapeModel.SetComparisonConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypedAdded"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypeShapeChangeRule"/>
@@ -58,7 +56,7 @@
 		<arg:Rule class="ORMShapeModel.RoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintRemoved"/>
-		<arg:Rule class="ORMShapeModel.SingleColumnExternalConstraintAdded"/>
+		<arg:Rule class="ORMShapeModel.SetConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintRemoved"/>
 		<arg:Rule class="ReadingShape.ReadingOrderReadingTextChanged"/>

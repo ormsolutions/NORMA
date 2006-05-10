@@ -362,20 +362,20 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
+			<Constraint type="MandatoryConstraint" patternGroup="SetConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="negative" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
-							<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
-							<IterateRoles listStyle="IndentedCompoundList" match="singleColumnConstraintRoles">
+							<IterateRoles listStyle="SimpleList" match="setConstraintRoles" pass="first"/>
+							<IterateRoles listStyle="IndentedCompoundList" match="setConstraintRoles">
 								<Fact/>
 							</IterateRoles>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive" maxFactArity="1">
-					<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="singleColumnConstraintRoles">
+					<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="setConstraintRoles">
 						<Fact>
 							<PredicateReplacement match="primary" pass="first">
 								<Snippet ref="UniversalQuantifier"/>
@@ -390,7 +390,7 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllLeadReading">
 							<CompositeList listStyle="TopLevelIndentedLogicalOrList">
-								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
+								<IterateRoles minFactArity="2" match="setConstraintRoles">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement match="primary" pass="first">
 											<Snippet ref="UniversalQuantifier"/>
@@ -403,7 +403,7 @@
 										</PredicateReplacement>
 									</Fact>
 								</IterateRoles>
-								<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+								<IterateRoles factArity="1" match="setConstraintRoles">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement>
 											<!-- UNDONE: Needs conditional snippet catering for forward text-->
@@ -415,9 +415,9 @@
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ForEachQuantifier">
-								<IterateRoles match="singleColumnConstraintRoles" pass="first" listStyle="SimpleList"/>
+								<IterateRoles match="setConstraintRoles" pass="first" listStyle="SimpleList"/>
 								<CompositeList listStyle="IndentedLogicalOrList">
-									<IterateRoles match="singleColumnConstraintRoles" minFactArity="2">
+									<IterateRoles match="setConstraintRoles" minFactArity="2">
 										<Fact readingChoice="PreferPrimaryLeadReadingNoForwardText">
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
@@ -427,7 +427,7 @@
 											</PredicateReplacement>
 										</Fact>
 									</IterateRoles>
-									<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+									<IterateRoles factArity="1" match="setConstraintRoles">
 										<Fact>
 											<PredicateReplacement>
 												<Snippet ref="DefiniteArticle"/>
@@ -441,14 +441,14 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- Start External Uniqueness Constraint-->
-			<Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
+			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint">
 				<!-- Positive Reading -->
 				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList" />
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
+								<IterateRoles match="setConstraintRoles" listStyle="SimpleList" />
+								<IterateRoles match="setConstraintRoles" listStyle="IndentedList">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement match="excluded" pass="first">
 											<Snippet ref="AtMostOneQuantifier" />
@@ -470,7 +470,7 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
 							<Snippet ref="ModalPossibilityOperator">
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList">
+								<IterateRoles match="setConstraintRoles" listStyle="SimpleList">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement match="excluded" pass="first">
 											<Snippet ref="MoreThanOneQuantifier" />

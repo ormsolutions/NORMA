@@ -491,7 +491,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			{
 				FactType fact;
 				Role role;
-				InternalConstraint internalConstraint;
+				SetConstraint internalConstraint;
 				Reading reading;
 				ReadingOrder readingOrder;
 				ObjectType objType;
@@ -505,9 +505,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					//and returning here.
 					retval = role.FactType;
 				}
-				else if (null != (internalConstraint = elem as InternalConstraint))
+				else if (null != (internalConstraint = elem as SetConstraint))
 				{
-					retval = internalConstraint.FactType;
+					if (internalConstraint.Constraint.ConstraintIsInternal)
+					{
+						retval = internalConstraint.FactTypeCollection[0];
+					}
 				}
 				else if (null != (reading = elem as Reading))
 				{

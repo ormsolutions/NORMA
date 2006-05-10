@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Todo: Is external on object type?  What am I supposed to do with object shapes and data types? -->
-<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/2006-01/ORMCore" 
+<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
-	xmlns="http://schemas.neumont.edu/ORM/2006-01/ORMCore" 
+	xmlns="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
@@ -26,7 +26,7 @@
 		<xs:all>
 			<xs:element name="Objects" type="Objects" minOccurs="0"/>
 			<xs:element name="Facts" type="Facts" minOccurs="0"/>
-			<xs:element name="ExternalConstraints" type="ExternalConstraints" minOccurs="0"/>
+			<xs:element name="Constraints" type="Constraints" minOccurs="0"/>
 			<xs:element name="DataTypes" type="DataTypes" minOccurs="0"/>
 			<xs:element name="CustomReferenceModes" type="CustomReferenceModes" minOccurs="0"/>
 			<xs:element name="ModelErrors" type="ModelErrors" minOccurs="0"/>
@@ -317,9 +317,10 @@
 	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
 	<xs:complexType name="Roles">
-		<xs:sequence>
-			<xs:element name="Role" type="Role" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Role" type="Role"/>
+			<xs:element name="RoleProxy" type="RoleProxy"/>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="SubtypeRoles">
 		<xs:all>
@@ -339,6 +340,13 @@
 		<xs:attribute name="_IsMandatory" type="xs:boolean" default="false"/>
 		<!--Derived-->
 		<xs:attribute name="_Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
+	</xs:complexType>
+	<xs:complexType name="RoleProxy">
+		<xs:sequence>
+			<xs:element name="Role" type="RoleRef"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<!--Look up enum values.-->
 	<xs:simpleType name="MultiplicityEnum">
@@ -461,7 +469,7 @@
 	<xs:complexType name="EqualityConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
-	<xs:complexType name="DisjunctiveMandatoryConstraintRef">
+	<xs:complexType name="MandatoryConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintRef">
@@ -471,16 +479,14 @@
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
-	<xs:complexType name="ExternalConstraints">
+	<xs:complexType name="Constraints">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="EqualityConstraint" type="EqualityConstraint"/>
-			<xs:element name="ImpliedEqualityConstraint" type="ImpliedEqualityConstraint"/>
 			<xs:element name="ExclusionConstraint" type="ExclusionConstraint"/>
 			<xs:element name="SubsetConstraint" type="SubsetConstraint"/>
 			<xs:element name="FrequencyConstraint" type="FrequencyConstraint"/>
-			<xs:element name="DisjunctiveMandatoryConstraint" type="DisjunctiveMandatoryConstraint"/>
-			<xs:element name="ExternalUniquenessConstraint" type="ExternalUniquenessConstraint"/>
-			<xs:element name="ImpliedExternalUniquenessConstraint" type="ImpliedExternalUniquenessConstraint"/>
+			<xs:element name="MandatoryConstraint" type="MandatoryConstraint"/>
+			<xs:element name="UniquenessConstraint" type="UniquenessConstraint"/>
 			<xs:element name="RingConstraint" type="RingConstraint"/>
 		</xs:choice>
 	</xs:complexType>
@@ -492,8 +498,8 @@
 		<xs:attribute name="Name" type="xs:string"/>
 		<xs:attribute name="Modality" type="ConstraintModality" default="Alethic"/>
 	</xs:complexType>
-	<!--Multicolumn constraints-->
-	<xs:complexType name="MultiColumnExternalConstraint" abstract="true">
+	<!-- SetComparison constraints-->
+	<xs:complexType name="SetComparisonConstraint" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="Constraint">
 				<xs:sequence>
@@ -502,25 +508,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="BaseEqualityConstraint" abstract="true">
-		<xs:complexContent>
-			<xs:extension base="MultiColumnExternalConstraint"/>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="EqualityConstraint">
 		<xs:complexContent>
-			<xs:extension base="BaseEqualityConstraint">
+			<xs:extension base="SetComparisonConstraint">
 				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="ImpliedEqualityConstraint">
-		<xs:complexContent>
-			<xs:extension base="BaseEqualityConstraint">
-				<xs:sequence>
-					<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
@@ -528,7 +519,7 @@
 	</xs:complexType>
 	<xs:complexType name="ExclusionConstraint">
 		<xs:complexContent>
-			<xs:extension base="MultiColumnExternalConstraint">
+			<xs:extension base="SetComparisonConstraint">
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
@@ -537,7 +528,7 @@
 	</xs:complexType>
 	<xs:complexType name="SubsetConstraint">
 		<xs:complexContent>
-			<xs:extension base="MultiColumnExternalConstraint">
+			<xs:extension base="SetComparisonConstraint">
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
@@ -548,10 +539,10 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="MultiColumnConstraintRef">
+	<xs:complexType name="SetComparisonConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
-	<xs:complexType name="SingleColumnConstraintRef">
+	<xs:complexType name="SetConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
 	<xs:complexType name="InternalConstraintRef">
@@ -560,9 +551,9 @@
 	<xs:complexType name="ValueConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
-	<!-- end Multicolumn constraints-->
-	<!--Singlecolumn constraints-->
-	<xs:complexType name="SingleColumnExternalConstraint">
+	<!-- end SetComparison constraints-->
+	<!--Set constraints-->
+	<xs:complexType name="SetConstraint">
 		<xs:complexContent>
 			<xs:extension base="Constraint">
 				<xs:sequence>
@@ -573,7 +564,7 @@
 	</xs:complexType>
 	<xs:complexType name="FrequencyConstraint">
 		<xs:complexContent>
-			<xs:extension base="SingleColumnExternalConstraint">
+			<xs:extension base="SetConstraint">
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
@@ -582,46 +573,30 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DisjunctiveMandatoryConstraint">
+	<xs:complexType name="MandatoryConstraint">
 		<xs:complexContent>
-			<xs:extension base="SingleColumnExternalConstraint">
+			<xs:extension base="SetConstraint">
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
+				<xs:attribute name="IsSimple" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="BaseExternalUniquenessConstraint" abstract="true">
+	<xs:complexType name="UniquenessConstraint">
 		<xs:complexContent>
-			<xs:extension base="SingleColumnExternalConstraint">
+			<xs:extension base="SetConstraint">
 				<xs:sequence>
 					<xs:element name="PreferredIdentifierFor" type="ObjectRef" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="ExternalUniquenessConstraint">
-		<xs:complexContent>
-			<xs:extension base="BaseExternalUniquenessConstraint">
-				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="ImpliedExternalUniquenessConstraint">
-		<xs:complexContent>
-			<xs:extension base="BaseExternalUniquenessConstraint">
-				<xs:sequence>
-					<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
+				<xs:attribute name="IsInternal" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RingConstraint">
 		<xs:complexContent>
-			<xs:extension base="SingleColumnExternalConstraint">
+			<xs:extension base="SetConstraint">
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
@@ -644,44 +619,16 @@
 			<xs:enumeration value="AsymmetricIntransitive"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<!--End Singlecolumn constraints-->
-	<!--InternalConstraint-note these are owned by FactTypes not the model -->
+	<!--End Set constraints-->
+	<!--InternalConstraint -->
 	<xs:complexType name="InternalConstraints">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint"/>
-			<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint"/>
+			<xs:element name="UniquenessConstraint" type="UniquenessConstraintRef"/>
+			<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="InternalConstraint">
-		<xs:complexContent>
-			<xs:extension base="Constraint">
-				<xs:sequence>
-					<xs:element name="RoleSequence" type="RoleContainer" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="InternalUniquenessConstraint">
-		<xs:complexContent>
-			<xs:extension base="InternalConstraint">
-				<xs:sequence>
-					<xs:element name="PreferredIdentifierFor" type="ObjectRef" minOccurs="0"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="InternalUniquenessConstraintRef">
+	<xs:complexType name="UniquenessConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
-	</xs:complexType>
-	<xs:complexType name="SimpleMandatoryConstraint">
-		<xs:complexContent>
-			<xs:extension base="InternalConstraint">
-				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
 	</xs:complexType>
 	<!--End InternalConstraint-->
 	<!--End Constraints-->
@@ -734,7 +681,7 @@
 			<xs:element name="NMinusOneError" type="NMinusOneError"/>
 			<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
 			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
-			<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
+			<xs:element name="EqualityImpliedByMandatoryError" type="EqualityImpliedByMandatoryError"/>
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
 			<xs:element name="FrequencyConstraintContradictsInternalUniquenessConstraintError" type="FrequencyConstraintContradictsInternalUniquenessConstraintError"/>
@@ -742,7 +689,7 @@
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapError"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
-			<xs:element name="DisjunctiveMandatoryImpliedByMandatoryError" type="DisjunctiveMandatoryImpliedByMandatoryError"/>
+			<xs:element name="MandatoryImpliedByMandatoryError" type="MandatoryImpliedByMandatoryError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
 			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
@@ -761,8 +708,8 @@
 					<xs:element name="Constraints">
 						<xs:complexType>
 							<xs:choice minOccurs="2" maxOccurs="unbounded">
-								<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
-								<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+								<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+								<xs:element name="SetConstraint" type="SetConstraintRef"/>
 								<xs:element name="InternalConstraint" type="InternalConstraintRef"/>
 								<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
 							</xs:choice>
@@ -840,8 +787,8 @@
 			<xs:extension base="ModelError">
 				<xs:sequence minOccurs="1" maxOccurs="1">
 					<xs:choice>
-						<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
-						<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+						<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+						<xs:element name="SetConstraint" type="SetConstraintRef"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
@@ -956,11 +903,11 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DisjunctiveMandatoryImpliedByMandatoryError">
+	<xs:complexType name="MandatoryImpliedByMandatoryError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="DisjunctiveMandatoryConstraint" type="DisjunctiveMandatoryConstraintRef"/>
+					<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -970,8 +917,8 @@
 			<xs:extension base="ModelError">
 				<xs:sequence minOccurs="1" maxOccurs="1">
 					<xs:choice>
-						<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
-						<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+						<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+						<xs:element name="SetConstraint" type="SetConstraintRef"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
@@ -981,8 +928,8 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
-					<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
-					<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+					<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
+					<xs:element name="SetConstraint" type="SetConstraintRef"/>
 				</xs:choice>
 				<xs:attribute name="Column" type="xs:int" use="optional"/>
 			</xs:extension >
@@ -997,7 +944,7 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="EqualityIsImpliedByMandatoryError">
+	<xs:complexType name="EqualityImpliedByMandatoryError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
@@ -1010,7 +957,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraintRef"/>
+					<xs:element name="UniquenessConstraint" type="UniquenessConstraintRef"/>
 				</xs:sequence>
 			</xs:extension >
 		</xs:complexContent>

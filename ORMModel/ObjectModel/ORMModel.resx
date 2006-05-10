@@ -144,11 +144,11 @@
     <value>{{deleted}}</value>
     <comment>Text used to replace a role place holder when the role is deleted</comment>
   </data>
-  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text" xml:space="preserve">
+  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text" xml:space="preserve">
     <value>Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
     <comment>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>
-  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text" xml:space="preserve">
+  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text" xml:space="preserve">
     <value>Constraint '{0}' in model '{1}' has role players in column '{2}' with incompatible types.</value>
     <comment>The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
   </data>
@@ -156,11 +156,11 @@
     <value>Constraint '{0}' has role sequences with different numbers of roles.</value>
     <comment>Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
   </data>
-  <data name="ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text" xml:space="preserve">
+  <data name="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text" xml:space="preserve">
     <value>Constraint '{0}' in Model '{1}' is implied by mandatory constraint(s).</value>
     <comment>Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory.</comment>
   </data>
-  <data name="ModelError.Constraint.ExternalUniquenessImpliedByUniquenessError.Text" xml:space="preserve">
+  <data name="ModelError.Constraint.UniquenessImpliedByUniquenessError.Text" xml:space="preserve">
     <value>Constraint '{0}' in model '{1}' is implied by an intersecting uniqueness constraint.</value>
     <comment>Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.</comment>
   </data>
@@ -236,9 +236,13 @@
     <value>A data type must be specified for value type '{0}' in model '{1}'.</value>
     <comment>Text displayed for an unspecified data type</comment>
   </data>
-  <data name="ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint" xml:space="preserve">
-    <value>A preferred identifier must have a ConstraintType of InternalUniqueness or ExternalUniqueness.</value>
-    <comment>Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.</comment>
+  <data name="ModelException.Constraint.EnforceNoForeignFacts" xml:space="preserve">
+    <value>A constraint must be attached to a fact in the same model as the constraint.</value>
+    <comment>Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
+  </data>
+  <data name="ModelException.Constraint.EnforceSingleFactForInternalConstraint" xml:space="preserve">
+    <value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
+    <comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
   </data>
   <data name="ModelException.Fact.AddReading.InvalidReadingText" xml:space="preserve">
     <value>Reading text is not in a valid format.</value>
@@ -252,15 +256,7 @@
     <value>Facts and constraints implied by an Objectification relationship cannot be directly modified.</value>
     <comment>Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
   </data>
-  <data name="ModelException.InternalConstraint.InconsistentRoleOwners" xml:space="preserve">
-    <value>All roles in an internal constraint must be owned by the same fact type.</value>
-    <comment>Exception message when an attempt is made to add roles from different fact types to a role sequence owned by an internal constraint.</comment>
-  </data>
-  <data name="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
-    <value>Conditions of the internal uniqueness constraint, other constraints on the owning fact type, or the types of attached role players are incompatible with making it the preferred uniqueness constraint.</value>
-    <comment>Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
-  </data>
-  <data name="ModelException.ExternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
+  <data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
     <value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>
     <comment>Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
   </data>
@@ -476,7 +472,7 @@
     <value>Entity type '{0}' in model '{1}' requires a primary reference scheme.</value>
     <comment>An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
   </data>
-  <data name="ModelError.Constraint.DisjunctiveMandatoryImpliedByMandatoryError.Message" xml:space="preserve">
+  <data name="ModelError.Constraint.MandatoryImpliedByMandatoryError.Message" xml:space="preserve">
     <value>Constraint '{0}' in model '{1}' is implied by at least one mandatory constraint attached to a subset of the same roles.</value>
     <comment>The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>

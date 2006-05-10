@@ -278,7 +278,7 @@
 		<xsl:variable name="isValueTypeValueConstraint" select="$patternGroup='ValueTypeValueConstraint'"/>
 		<xsl:variable name="isRoleValue" select="$patternGroup='RoleValueConstraint'"/>
 		<xsl:variable name="isInternal" select="$patternGroup='InternalConstraint' or $isRoleValue"/>
-		<xsl:variable name="isSingleColumn" select="$patternGroup='SingleColumnExternalConstraint'"/>
+		<xsl:variable name="isSingleColumn" select="$patternGroup='SetConstraint'"/>
 		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
 		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
 		<xsl:if test="$isChildHelper">
@@ -1938,7 +1938,7 @@
 					</plx:fallbackBranch>
 				</xsl:if>
 			</xsl:when>
-			<xsl:when test="$PatternGroup='SingleColumnExternalConstraint'">
+			<xsl:when test="$PatternGroup='SetConstraint'">
 				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
@@ -2544,7 +2544,7 @@
 			<xsl:with-param name="ReadingChoice" select="@readingChoice"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="ConditionalReadingOrderIndex">
-				<xsl:if test="$IteratorContext='singleColumnConstraintRoles'">
+				<xsl:if test="$IteratorContext='setConstraintRoles'">
 					<xsl:value-of select="concat($RoleIterVariablePart,$VariableDecorator)"/>
 				</xsl:if>
 			</xsl:with-param>
@@ -2889,7 +2889,7 @@
 				</xsl:when>
 				<xsl:when test="$Match='included'">
 					<xsl:choose>
-						<xsl:when test="$IteratorContext='singleColumnConstraintRoles'">
+						<xsl:when test="$IteratorContext='setConstraintRoles'">
 							<!-- For the single column case, the included role is always a set consisting of the primary role only -->
 							<plx:binaryOperator type="identityEquality">
 								<plx:left>
@@ -2918,7 +2918,7 @@
 				</xsl:when>
 				<xsl:when test="$Match='excluded'">
 					<xsl:choose>
-						<xsl:when test="$IteratorContext='singleColumnConstraintRoles'">
+						<xsl:when test="$IteratorContext='setConstraintRoles'">
 							<!-- For the single column case, the included role is always a set consisting of the primary role only -->
 							<plx:binaryOperator type="identityInequality">
 								<plx:left>
@@ -3683,7 +3683,7 @@
 											<xsl:when test="$contextMatch='included'">
 												<xsl:text>includedArity</xsl:text>
 											</xsl:when>
-											<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+											<xsl:when test="$contextMatch='setConstraintRoles'">
 												<xsl:text>constraintRoleArity</xsl:text>
 											</xsl:when>
 											<xsl:when test="$contextMatch='excluded'">
@@ -3705,7 +3705,7 @@
 					<plx:nameRef name="{$iterVarName}"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<xsl:if test="$contextMatch='singleColumnConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::cvg:RoleName">
+			<xsl:if test="$contextMatch='setConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::cvg:RoleName">
 				<plx:local name="primaryRole" dataTypeName="RoleBase">
 					<plx:initialize>
 						<plx:callInstance name=".implied" type="arrayIndexer">
@@ -3719,7 +3719,7 @@
 											<xsl:when test="$contextMatch='included'">
 												<xsl:text>includedRoles</xsl:text>
 											</xsl:when>
-											<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+											<xsl:when test="$contextMatch='setConstraintRoles'">
 												<xsl:text>allConstraintRoles</xsl:text>
 											</xsl:when>
 											<xsl:when test="$contextMatch='excluded'">
@@ -3794,7 +3794,7 @@
 					</plx:initialize>
 				</plx:local>-->
 			</xsl:if>
-			<xsl:if test="$contextMatch='singleColumnConstraintRoles' ">
+			<xsl:if test="$contextMatch='setConstraintRoles' ">
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="parentFact"/>
@@ -4082,7 +4082,7 @@
 													<xsl:when test="$contextMatch='included'">
 														<xsl:text>includedArity</xsl:text>
 													</xsl:when>
-													<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+													<xsl:when test="$contextMatch='setConstraintRoles'">
 														<xsl:text>constraintRoleArity</xsl:text>
 													</xsl:when>
 													<xsl:when test="$contextMatch='rangeCount'">
@@ -4212,7 +4212,7 @@
 							</plx:callObject>
 							<plx:passParam>
 								<xsl:choose>
-									<xsl:when test="@match='included' or @match='singleColumnConstraintRoles'">
+									<xsl:when test="@match='included' or @match='setConstraintRoles'">
 										<!-- The role index needs to be retrieved from the all roles list -->
 										<plx:callInstance name="IndexOf">
 											<plx:callObject>
@@ -4222,7 +4222,7 @@
 												<plx:callInstance name=".implied" type="arrayIndexer">
 													<plx:callObject>
 														<plx:nameRef name="includedRoles">
-															<xsl:if test="@match='singleColumnConstraintRoles'">
+															<xsl:if test="@match='setConstraintRoles'">
 																<xsl:attribute name="name">
 																	<xsl:text>allConstraintRoles</xsl:text>
 																</xsl:attribute>
@@ -4285,7 +4285,7 @@
 													<xsl:when test="$contextMatch='included'">
 														<xsl:text>includedArity</xsl:text>
 													</xsl:when>
-													<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+													<xsl:when test="$contextMatch='setConstraintRoles'">
 														<xsl:text>constraintRoleArity</xsl:text>
 													</xsl:when>
 													<xsl:when test="$contextMatch='excluded'">
@@ -4568,7 +4568,7 @@
 								<xsl:when test="$contextMatch='included'">
 									<xsl:text>includedArity</xsl:text>
 								</xsl:when>
-								<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+								<xsl:when test="$contextMatch='setConstraintRoles'">
 									<xsl:text>constraintRoleArity</xsl:text>
 								</xsl:when>
 								<xsl:when test="$contextMatch='excluded'">
@@ -4624,7 +4624,7 @@
 												<xsl:when test="$contextMatch='included'">
 													<xsl:text>includedRoles</xsl:text>
 												</xsl:when>
-												<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+												<xsl:when test="$contextMatch='setConstraintRoles'">
 													<xsl:text>allConstraintRoles</xsl:text>
 												</xsl:when>
 												<xsl:when test="$contextMatch='excluded'">
@@ -4640,7 +4640,7 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<xsl:if test="$contextMatch='singleColumnConstraintRoles' or $contextMatch='preferredIdentifier'">
+					<xsl:if test="$contextMatch='setConstraintRoles' or $contextMatch='preferredIdentifier'">
 						<plx:assign>
 							<plx:left>
 								<plx:nameRef name="parentFact"/>
@@ -4824,7 +4824,7 @@
 		<xsl:param name="PatternGroup"/>
 		<xsl:param name="ConditionalReadingOrderIndex"/>
 		<xsl:choose>
-			<xsl:when test="$ReadingChoice='Conditional' and $PatternGroup='SingleColumnExternalConstraint'">
+			<xsl:when test="$ReadingChoice='Conditional' and $PatternGroup='SetConstraint'">
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="reading"/>
@@ -4865,7 +4865,7 @@
 									<xsl:when test="contains($ReadingChoice, 'LeadReading')">
 										<!-- LeadReading and PrimaryLeadReading should be treated the same for single column external constraints -->
 										<xsl:choose>
-											<xsl:when test="$PatternGroup='SingleColumnExternalConstraint'">
+											<xsl:when test="$PatternGroup='SetConstraint'">
 												<plx:nameRef name="primaryRole"/>
 											</xsl:when>
 											<xsl:otherwise>
@@ -4888,7 +4888,7 @@
 							<plx:passParam>
 								<!-- The matchAnyLeadRole param -->
 								<xsl:choose>
-									<xsl:when test="not($PatternGroup='SingleColumnExternalConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
+									<xsl:when test="not($PatternGroup='SetConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
 										<plx:nameRef name="includedRoles"/>
 									</xsl:when>
 									<xsl:otherwise>

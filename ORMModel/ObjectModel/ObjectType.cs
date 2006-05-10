@@ -258,9 +258,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region PreferredIdentifier Property
 		/// <summary>
 		/// Get the preferred identifier for this object. The preferred identifier is
-		/// either and InternalUniquenessConstraint or an ExternalUniquenessConstraint.
+		/// either and InternalUniquenessConstraint or an UniquenessConstraint.
 		/// </summary>
-		public IConstraint PreferredIdentifier
+		public UniquenessConstraint PreferredIdentifier
 		{
 			// Note that this is all based on spit code. However, the internal and external
 			// uniqueness constraints do not share a useful base class (ORMNamedElement is the
@@ -270,7 +270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// code spit by hand.
 			get
 			{
-				return GetCounterpartRolePlayer(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, false) as IConstraint;
+				return GetCounterpartRolePlayer(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, false) as UniquenessConstraint;
 			}
 			set
 			{
@@ -383,8 +383,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			valueTypeRole.RolePlayer = valueType;
 			roleCollection.Add(valueTypeRole);
 
-			InternalUniquenessConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-			ic.RoleCollection.Add(valueTypeRole); // Automatically sets FactType, setting it again will remove and delete the new constraint
+			UniquenessConstraint ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+			ic.RoleCollection.Add(valueTypeRole); // Automatically sets FactType
 			this.PreferredIdentifier = ic;
 
 			ReadingOrder readingOrder1 = ReadingOrder.CreateReadingOrder(store);
@@ -408,13 +408,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return objModel.ObjectTypesDictionary.GetElement(name).FirstElement as ObjectType;
 		}
 		/// <summary>
-		///  Utility function to cahnge the name of an existing reference mode.
+		///  Utility function to change the name of an existing reference mode.
 		/// </summary>
 		/// <param name="valueTypeName"></param>
 		public void RenameReferenceMode(string valueTypeName)
 		{
 			ORMModel model = this.Model;
-			InternalUniquenessConstraint preferredConstraint = this.PreferredIdentifier as InternalUniquenessConstraint;
+			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			if (!IsValueTypeShared(preferredConstraint) && valueType == null)
 			{
@@ -451,16 +451,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="aggressivelyKillValueType">Allow removing the value type along with the reference mode predicate</param>
 		private void KillReferenceMode(bool aggressivelyKillValueType)
 		{
-			InternalUniquenessConstraint preferredConstraint = this.PreferredIdentifier as InternalUniquenessConstraint;
-			ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
-			if (valueType.IsValueType)
+			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
+			if (preferredConstraint.IsInternal)
 			{
-				FactType refFact = preferredConstraint.RoleCollection[0].FactType;
-				if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
+				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
+				if (valueType.IsValueType)
 				{
-					valueType.Remove();
+					FactType refFact = preferredConstraint.RoleCollection[0].FactType;
+					if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
+					{
+						valueType.Remove();
+					}
+					refFact.Remove();
 				}
-				refFact.Remove();
 			}
 		}
 		/// <summary>
@@ -471,13 +474,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				InternalUniquenessConstraint preferredConstraint = PreferredIdentifier as InternalUniquenessConstraint;
-				return (preferredConstraint != null) ? IsValueTypeShared(preferredConstraint) : false;
+				UniquenessConstraint preferredConstraint = PreferredIdentifier;
+				return (preferredConstraint != null && preferredConstraint.IsInternal) ? IsValueTypeShared(preferredConstraint) : false;
 			}
 		}
-		private static bool IsValueTypeShared(InternalUniquenessConstraint preferredConstraint)
+		private static bool IsValueTypeShared(UniquenessConstraint preferredConstraint)
 		{
-			if (preferredConstraint != null)
+			if (preferredConstraint != null && preferredConstraint.IsInternal)
 			{
 				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
@@ -527,11 +530,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>The role player as an ObjectType if it exists; otherwise, null.</returns>
 		private ObjectType GetObjectTypeForPreferredConstraint()
 		{
-			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
+			UniquenessConstraint prefConstraint = this.PreferredIdentifier;
 
 			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
 			// player is a value type then return the value type.
-			if (prefConstraint != null)
+			if (prefConstraint != null && prefConstraint.IsInternal)
 			{
 				return prefConstraint.RoleCollection[0].RolePlayer;
 			}
@@ -623,8 +626,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (HasReferenceMode)
 			{
-				InternalUniquenessConstraint sequence = PreferredIdentifier as InternalUniquenessConstraint;
-				RoleMoveableCollection roleCollection = sequence.RoleCollection;
+				RoleMoveableCollection roleCollection = PreferredIdentifier.RoleCollection;
 				if (roleCollection.Count == 1)
 				{
 					Role role = roleCollection[0];
@@ -853,9 +855,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (attributeGuid == ObjectType.NameMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+					UniquenessConstraint prefConstraint = objectType.PreferredIdentifier;
 
-					if (prefConstraint != null)
+					if (prefConstraint != null && prefConstraint.IsInternal)
 					{
 						string newValue = (string)e.NewValue;
 						string oldValue = (string)e.OldValue;
@@ -1331,8 +1333,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!IsRemoved)
 			{
 				bool hasError = false;
-				ExternalUniquenessConstraint pid = PreferredIdentifier as ExternalUniquenessConstraint;
-				if (pid != null)
+				UniquenessConstraint pid = PreferredIdentifier;
+				if (pid != null && !pid.IsInternal)
 				{
 					hasError = true;
 					RoleMoveableCollection constraintRoles = pid.RoleCollection;
@@ -1531,7 +1533,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType objectType = link.PreferredIdentifierFor;
 				ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-				if (link.PreferredIdentifier is ExternalUniquenessConstraint)
+				if (!link.PreferredIdentifier.IsInternal)
 				{
 					ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 				}
@@ -1547,7 +1549,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!objectType.IsRemoved)
 				{
 					ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-					if (link.PreferredIdentifier is ExternalUniquenessConstraint)
+					if (!link.PreferredIdentifier.IsInternal)
 					{
 						ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
 					}
@@ -1729,7 +1731,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
-				if (sequence is MultiColumnExternalConstraintRoleSequence)
+				if (sequence is SetComparisonConstraintRoleSequence)
 				{
 					return;
 				}
@@ -1744,9 +1746,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							Role role = roles[i];
 							ObjectType objectType;
-							ExternalUniquenessConstraint pid;
+							UniquenessConstraint pid;
 							if (null != (objectType = role.RolePlayer) &&
-								null != (pid = objectType.PreferredIdentifier as ExternalUniquenessConstraint) &&
+								null != (pid = objectType.PreferredIdentifier) &&
+								!pid.IsInternal &&
 								pid.FactTypeCollection.Contains(role.FactType))
 							{
 								ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
@@ -1763,7 +1766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
-				if (sequence is MultiColumnExternalConstraintRoleSequence)
+				if (sequence is SetComparisonConstraintRoleSequence)
 				{
 					return;
 				}
@@ -1778,11 +1781,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							Role role = roles[i];
 							ObjectType objectType;
-							ExternalUniquenessConstraint pid;
+							UniquenessConstraint pid;
 							if (null != (objectType = role.RolePlayer) &&
 								!objectType.IsRemoving &&
-								null != (pid = objectType.PreferredIdentifier as ExternalUniquenessConstraint) &&
+								null != (pid = objectType.PreferredIdentifier) &&
 								!pid.IsRemoving &&
+								!pid.IsInternal &&
 								pid.FactTypeCollection.Contains(role.FactType))
 							{
 								ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
@@ -1980,9 +1984,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (!(incompatibleValueTypeCombination = nestingType.IsValueType) &&
 							!(incompatiblePreferredIdentifierCombination = null != nestingType.PreferredIdentifier))
 						{
-							foreach (Role role in nester.NestedFactType.RoleCollection)
+							foreach (RoleBase role in nester.NestedFactType.RoleCollection)
 							{
-								if (role.RolePlayer == nestingType)
+								if (role.Role.RolePlayer == nestingType)
 								{
 									incompatibleNestingAndRoleCombination = true;
 									break;

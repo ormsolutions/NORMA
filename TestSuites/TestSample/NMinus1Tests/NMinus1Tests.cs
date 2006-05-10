@@ -83,12 +83,15 @@ namespace TestSample.NMinus1Tests
 
 			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType1").SingleElement;
 			RoleBaseMoveableCollection roles = fact.RoleCollection;
-			InternalConstraintMoveableCollection constraints = fact.InternalConstraintCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
-				//Make the error
-				constraints[0].RoleCollection.Clear();
-				constraints[0].RoleCollection.Add(roles[0].Role);
+				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
+				{
+					//Make the error
+					constraint.RoleCollection.Clear();
+					constraint.RoleCollection.Add(roles[0].Role);
+					break;
+				}
 				
 				t.Commit();
 			}
@@ -112,14 +115,17 @@ namespace TestSample.NMinus1Tests
 
 			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType1").SingleElement;
 			RoleBaseMoveableCollection roles = fact.RoleCollection;
-			InternalConstraintMoveableCollection constraints = fact.InternalConstraintCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
-				//do the fixing
-				constraints[0].RoleCollection.Clear();
-				for(int i=0;i<roles.Count;++i)
+				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
 				{
-					constraints[0].RoleCollection.Add(roles[i].Role);
+					//do the fixing
+					constraint.RoleCollection.Clear();
+					for (int i = 0; i < roles.Count; ++i)
+					{
+						constraint.RoleCollection.Add(roles[i].Role);
+					}
+					break;
 				}
 
 				t.Commit();

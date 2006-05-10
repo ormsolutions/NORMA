@@ -239,8 +239,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				Role roleInDefn = roleDefn.Role;
 				FactType factType = roleInDefn.FactType;
-				foreach (Role r in factType.RoleCollection)
+				foreach (RoleBase rBase in factType.RoleCollection)
 				{
+					Role r = rBase.Role;
 					if (!object.ReferenceEquals(roleInDefn, r))
 					{
 						if (object.ReferenceEquals(r.RolePlayer, AssociatedObjectType))
@@ -432,7 +433,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="constraint">The constraint providing a preferred identifier</param>
 		/// <param name="preferredIdentifierFor">The ObjectType from the core model</param>
-		private static void EnsureRefModeExpanded(InternalUniquenessConstraint constraint, ObjectType preferredIdentifierFor)
+		private static void EnsureRefModeExpanded(UniquenessConstraint constraint, ObjectType preferredIdentifierFor)
 		{
 			Debug.Assert(constraint != null); // Check before call
 			Debug.Assert(preferredIdentifierFor != null); // Check before call
@@ -444,7 +445,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					//If there is a fact shape and it is visible then we need to 
 					//set ExpandRefMode to true, otherwise set it to false.
-					FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactType);
+					FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactTypeCollection[0]);
 					objectShape.ExpandRefMode = factShape != null && factShape.IsVisible;
 				}
 			}
@@ -457,9 +458,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectType rolePlayer;
 				RoleMoveableCollection roles;
 				EntityTypeHasPreferredIdentifier link;
-				InternalUniquenessConstraint constraint;
+				UniquenessConstraint constraint;
 				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
-					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint) &&
+					null != (constraint = link.PreferredIdentifier) &&
+					constraint.IsInternal &&
 					0 != (roles = constraint.RoleCollection).Count &&
 					null != (rolePlayer = roles[0].RolePlayer) &&
 					rolePlayer.IsValueType)
@@ -490,10 +492,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						int constraintsCount = sequences.Count;
 						for (int j = 0; j < constraintsCount; ++j)
 						{
-							InternalUniquenessConstraint iuc = sequences[j] as InternalUniquenessConstraint;
-							if (iuc != null)
+							UniquenessConstraint iuc = sequences[j] as UniquenessConstraint;
+							if (iuc != null && iuc.IsInternal)
 							{
-								ObjectType preferredFor = (iuc as IConstraint).PreferredIdentifierFor;
+								ObjectType preferredFor = iuc.PreferredIdentifierFor;
 								if (preferredFor != null)
 								{
 									EnsureRefModeExpanded(iuc, preferredFor);
@@ -521,10 +523,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					int constraintsCount = sequences.Count;
 					for (int i = 0; i < constraintsCount; ++i)
 					{
-						InternalUniquenessConstraint iuc = sequences[i] as InternalUniquenessConstraint;
-						if (iuc != null)
+						UniquenessConstraint iuc = sequences[i] as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
 						{
-							ObjectType preferredFor = (iuc as IConstraint).PreferredIdentifierFor;
+							ObjectType preferredFor = iuc.PreferredIdentifierFor;
 							if (preferredFor != null)
 							{
 								EnsureRefModeExpanded(iuc, preferredFor);
@@ -550,10 +552,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 					{
-						InternalUniquenessConstraint iuc = sequence as InternalUniquenessConstraint;
-						if (iuc != null)
+						UniquenessConstraint iuc = sequence as UniquenessConstraint;
+						if (iuc != null && iuc.IsInternal)
 						{
-							ObjectType objectType = (iuc as IConstraint).PreferredIdentifierFor;
+							ObjectType objectType = iuc.PreferredIdentifierFor;
 							if (objectType != null)
 							{
 								foreach (PresentationElement pel in objectType.PresentationRolePlayers)

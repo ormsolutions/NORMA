@@ -17,14 +17,13 @@
 	</se:Copyright>
 	<se:MetaModel Class="ORMMetaModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-01/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
+			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-04/ORMCore" SchemaFile="ORM2Core.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
 		</se:RootElements>
 		<se:OmittedMetaElements>
-			<se:OmitRelationship Class="MultiColumnExternalFactConstraint"/>
-			<se:OmitRelationship Class="SingleColumnExternalFactConstraint"/>
+			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<se:OmitRelationship Class="SubjectHasPresentation" Namespace="Microsoft.VisualStudio.Modeling"/>
@@ -48,9 +47,9 @@
 		<se:ChildElement Name="Facts">
 			<se:Link RelationshipName="ModelHasFactType" RoleName="FactTypeCollection"/>
 		</se:ChildElement>
-		<se:ChildElement Name="ExternalConstraints">
-			<se:Link RelationshipName="ModelHasMultiColumnExternalConstraint" RoleName="MultiColumnExternalConstraintCollection"/>
-			<se:Link RelationshipName="ModelHasSingleColumnExternalConstraint" RoleName="SingleColumnExternalConstraintCollection"/>
+		<se:ChildElement Name="Constraints">
+			<se:Link RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraintCollection"/>
+			<se:Link RelationshipName="ModelHasSetConstraint" RoleName="SetConstraintCollection"/>
 		</se:ChildElement>
 		<se:ChildElement Name="DataTypes">
 			<se:Link RelationshipName="ModelHasDataType" RoleName="DataTypeCollection"/>
@@ -230,11 +229,59 @@
 			<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
 		</se:ChildElement>
 		<se:ChildElement Name="InternalConstraints">
-			<se:Link RelationshipName="FactTypeHasInternalConstraint" RoleName="InternalConstraintCollection"/>
+			<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraintCollection"/>
 		</se:ChildElement>
 		<se:ChildElement Name="DerivationRule">
 			<se:Link RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
 		</se:ChildElement>
+		<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraintCollection" WriteStyle="NotWritten">
+			<se:ConditionalName Name="UniquenessConstraint" WriteStyle="Element">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic dataTypeName="ConstraintType" name="InternalUniqueness" type="field"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="ConstraintType" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="IConstraint">
+									<plx:callInstance name="GetRolePlayer" type="methodCall">
+										<plx:callObject>
+											<plx:nameRef name="elementLink" type="parameter"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic dataTypeName="FactSetConstraint" name="SetConstraintCollectionMetaRoleGuid" type="property"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+			<se:ConditionalName Name="MandatoryConstraint" WriteStyle="Element">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic dataTypeName="ConstraintType" name="SimpleMandatory" type="field"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="ConstraintType" type="property">
+							<plx:callObject>
+								<plx:cast dataTypeName="IConstraint">
+									<plx:callInstance name="GetRolePlayer" type="methodCall">
+										<plx:callObject>
+											<plx:nameRef name="elementLink" type="parameter"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic dataTypeName="FactSetConstraint" name="SetConstraintCollectionMetaRoleGuid" type="property"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:cast>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedByObjectification"/>
 		<se:Link RelationshipName="Objectification" RoleName="NestingType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
@@ -260,8 +307,6 @@
 	</se:Element>
 	<se:Element Class="Objectification">
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactTypeCollection" WriteStyle="NotWritten"/>
-		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedEqualityConstraint" WriteStyle="NotWritten"/>
-		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedExternalUniquenessConstraintCollection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Readings-->
 	<se:Element Class="ReadingOrder" SortChildElements="true" Override="true">
@@ -287,14 +332,18 @@
 		<se:ChildElement Name="ValueRestriction">
 			<se:Link RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
-		<!--Need to add this attribute as custom storage.-->
-		<!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
+		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
+	<!--RoleProxy-->
+	<se:Element Class="RoleProxy" Override="true">
+		<se:Link RelationshipName="RoleProxyHasRole" RoleName="TargetRole" Name="Role"/>
+		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten" />
+	</se:Element>
 	<!--Constraints-->
-	<se:Element Class="MultiColumnExternalConstraint" SortChildElements="true" Override="true">
+	<se:Element Class="SetComparisonConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Modality">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">
@@ -308,18 +357,18 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:ChildElement Name="RoleSequences">
-			<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
+			<se:Link RelationshipName="SetComparisonConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="ArityMismatchError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="ArityMismatchError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
+	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
-	<se:Element Class="SingleColumnExternalConstraint" SortChildElements="true" Override="true">
+	<se:Element Class="SetConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Modality">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">
@@ -336,67 +385,38 @@
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactSetConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="DisjunctiveMandatoryConstraint" Override="true">
-		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError" RoleName="ImpliedByMandatoryError" WriteStyle="NotWritten"/>
+	<se:Element Class="MandatoryConstraint" Override="true">
+		<se:Attribute ID="IsSimple">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsSimple" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Link RelationshipName="MandatoryConstraintHasMandatoryImpliedByMandatoryError" RoleName="ImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
-		<se:ConditionalName Name="ImpliedExternalUniquenessConstraint">
-			<plx:binaryOperator type="identityInequality">
-				<plx:left>
-					<plx:callThis name="ImpliedByObjectification" type="property"/>
-				</plx:left>
-				<plx:right>
-					<plx:nullKeyword/>
-				</plx:right>
-			</plx:binaryOperator>
-		</se:ConditionalName>
-		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
-		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
-	</se:Element>
-	<se:Element Class="InternalConstraint" SortChildElements="true" Override="true">
-		<se:Attribute ID="Modality">
+	<se:Element Class="UniquenessConstraint" Override="true" SortChildElements="true">
+		<se:Attribute ID="IsInternal">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="equality">
-					<plx:left>
-						<plx:callStatic name="Alethic" type="field" dataTypeName="ConstraintModality"/>
-					</plx:left>
-					<plx:right>
-						<plx:callThis name="Modality" type="property"/>
-					</plx:right>
-				</plx:binaryOperator>
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsInternal" type="property"/>
+				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:ChildElement Name="RoleSequence">
-			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
-		</se:ChildElement>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-		<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true" Override="true">
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
-		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="UniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
-		<se:ConditionalName Name="ImpliedEqualityConstraint">
-			<plx:binaryOperator type="identityInequality">
-				<plx:left>
-					<plx:callThis name="ImpliedByObjectification" type="property"/>
-				</plx:left>
-				<plx:right>
-					<plx:nullKeyword/>
-				</plx:right>
-			</plx:binaryOperator>
-		</se:ConditionalName>
-		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedByObjectification"/>
-		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityIsImpliedByMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EqualityConstraintHasEqualityImpliedByMandatoryError" RoleName="EqualityImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RingConstraint" Override="true">
 		<se:Attribute ID="RingType" Name="Type"/>
@@ -405,14 +425,12 @@
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
 		<se:ChildElement Name="Constraints">
-			<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection"/>
-			<se:Link RelationshipName="SingleColumnExternalConstraintHasDuplicateNameError" RoleName="SingleColumnExternalConstraintCollection"/>
-			<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="InternalConstraintCollection"/>
+			<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraintCollection"/>
+			<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraintCollection"/>
 			<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraintCollection"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection" Name="MultiColumnConstraint"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasDuplicateNameError" RoleName="SingleColumnExternalConstraintCollection" Name="SingleColumnConstraint"/>
-		<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="InternalConstraintCollection" Name="InternalConstraint"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraintCollection" Name="SetComparisonConstraint"/>
+		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraintCollection" Name="SetConstraint"/>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraintCollection" Name="ValueConstraint"/>
 	</se:Element>
 	<se:Element Class="FactTypeDuplicateNameError" Override="true">
@@ -431,7 +449,7 @@
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>
 	</se:Element>
 	<se:Element Class="ExternalConstraintRoleSequenceArityMismatchError" Override="true">
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>
 	</se:Element>
 	<se:Element Class="ImpliedInternalUniquenessConstraintError" Override="true">
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
@@ -461,27 +479,27 @@
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
 	<se:Element Class="TooFewRoleSequencesError" Override="true">
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="MultiColumnConstraint" Name="MultiColumnConstraint"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="SingleColumnConstraint" Name="SingleColumnConstraint"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasTooFewRoleSequencesError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
+		<se:Link RelationshipName="SetConstraintHasTooFewRoleSequencesError" RoleName="SetConstraint" Name="SetConstraint"/>
 	</se:Element>
 	<se:Element Class="TooManyReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
 	<se:Element Class="TooManyRoleSequencesError" Override="true">
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="MultiColumnConstraint" Name="MultiColumnConstraint"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="SingleColumnConstraint" Name="SingleColumnConstraint"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasTooManyRoleSequencesError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
+		<se:Link RelationshipName="SetConstraintHasTooManyRoleSequencesError" RoleName="SetConstraint" Name="SetConstraint"/>
 	</se:Element>
 	<se:Element Class="DataTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>
 	</se:Element>
-	<se:Element Class="EqualityIsImpliedByMandatoryError" Override="true">
-		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityConstraint" Name="EqualityConstraint"/>
+	<se:Element Class="EqualityImpliedByMandatoryError" Override="true">
+		<se:Link RelationshipName="EqualityConstraintHasEqualityImpliedByMandatoryError" RoleName="EqualityConstraint" Name="EqualityConstraint"/>
 	</se:Element>
 	<se:Element Class="NMinusOneError" Override="true">
-		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
+		<se:Link RelationshipName="UniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="UniquenessConstraint"/>
 	</se:Element>
-	<se:Element Class="DisjunctiveMandatoryImpliedByMandatoryError" Override="true">
-		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError" RoleName="DisjunctiveMandatoryConstraint" Name="DisjunctiveMandatoryConstraint"/>
+	<se:Element Class="MandatoryImpliedByMandatoryError" Override="true">
+		<se:Link RelationshipName="MandatoryConstraintHasMandatoryImpliedByMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectType" Name="ObjectType"/>
@@ -497,7 +515,7 @@
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="identityInequality">
 					<plx:left>
-						<plx:callThis name="SingleColumnExternalConstraint" type="property"/>
+						<plx:callThis name="SetConstraint" type="property"/>
 					</plx:left>
 					<plx:right>
 						<plx:nullKeyword/>
@@ -505,8 +523,8 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="MultiColumnConstraint"/>
-		<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="SingleColumnExternalConstraint" Name="SingleColumnConstraint"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
+		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="SetConstraint" Name="SetConstraint"/>
 	</se:Element>
 	<se:Element Class="RolePlayerRequiredError" Override="true">
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="Role" Name="Role"/>

@@ -177,15 +177,15 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalFactConstraint" identity="6de34bee-23ca-4503-b451-0bf4f9623e88" namespace="Neumont.Tools.ORM.ObjectModel" id="i6de34beez23caz4503zb451z0bf4f9623e88" isLoaded="true" isAbstract="false">
+      <relationship name="FactSetComparisonConstraint" identity="6de34bee-23ca-4503-b451-0bf4f9623e88" namespace="Neumont.Tools.ORM.ObjectModel" id="i6de34beez23caz4503zb451z0bf4f9623e88" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</superType>
         <roles>
-          <role name="MultiColumnExternalConstraintCollection" identity="00ab3368-d142-4d99-8457-afd56e639f5a" id="i00ab3368zd142z4d99z8457zafd56e639f5a" min="1" max="0" isUnbounded="true" accepts="none">
+          <role name="SetComparisonConstraintCollection" identity="00ab3368-d142-4d99-8457-afd56e639f5a" id="i00ab3368zd142z4d99z8457zafd56e639f5a" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="MultiColumnExternalConstraintCollection" identity="9e3b2218-9284-4318-9b0e-bb7371b35fbb">
+            <generatedProperty name="SetComparisonConstraintCollection" identity="9e3b2218-9284-4318-9b0e-bb7371b35fbb">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -199,15 +199,15 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="SingleColumnExternalFactConstraint" identity="786eebce-120b-43c0-9622-e799943f4021" namespace="Neumont.Tools.ORM.ObjectModel" id="i786eebcez120bz43c0z9622ze799943f4021" isLoaded="true" isAbstract="false">
+      <relationship name="FactSetConstraint" identity="786eebce-120b-43c0-9622-e799943f4021" namespace="Neumont.Tools.ORM.ObjectModel" id="i786eebcez120bz43c0z9622ze799943f4021" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</superType>
         <roles>
-          <role name="SingleColumnExternalConstraintCollection" identity="6045259d-a85e-40f6-bac3-744f03cef430" id="i6045259dza85ez40f6zbac3z744f03cef430" min="1" max="0" isUnbounded="true" accepts="none">
+          <role name="SetConstraintCollection" identity="6045259d-a85e-40f6-bac3-744f03cef430" id="i6045259dza85ez40f6zbac3z744f03cef430" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</type>
-            <generatedProperty name="SingleColumnExternalConstraintCollection" identity="00f2344d-becf-460c-bd84-35a9837c78be">
+            <generatedProperty name="SetConstraintCollection" identity="00f2344d-becf-460c-bd84-35a9837c78be">
               <referenceType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</referenceType>
             </generatedProperty>
           </role>
@@ -221,7 +221,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="ExternalFactConstraint" identity="2ccd6a09-46be-4d7c-9d8b-b77679074f17" namespace="Neumont.Tools.ORM.ObjectModel" id="i2ccd6a09z46bez4d7cz9d8bzb77679074f17" isLoaded="true" isAbstract="false">
+      <relationship name="FactConstraint" identity="2ccd6a09-46be-4d7c-9d8b-b77679074f17" namespace="Neumont.Tools.ORM.ObjectModel" id="i2ccd6a09z46bez4d7cz9d8bzb77679074f17" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles />
@@ -248,7 +248,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalConstraintHasRoleSequence" identity="4d952086-d820-4023-9207-14302e77b703" namespace="Neumont.Tools.ORM.ObjectModel" id="i4d952086zd820z4023z9207z14302e77b703" isLoaded="true" isAbstract="false">
+      <relationship name="SetComparisonConstraintHasRoleSequence" identity="4d952086-d820-4023-9207-14302e77b703" namespace="Neumont.Tools.ORM.ObjectModel" id="i4d952086zd820z4023z9207z14302e77b703" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -311,7 +311,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalConstraintHasTooFewRoleSequencesError" identity="dcf38e2c-fe6e-4f89-8cb2-44bb1e512856" namespace="Neumont.Tools.ORM.ObjectModel" id="idcf38e2czfe6ez4f89z8cb2z44bb1e512856" isLoaded="true" isAbstract="false">
+      <relationship name="SetComparisonConstraintHasTooFewRoleSequencesError" identity="dcf38e2c-fe6e-4f89-8cb2-44bb1e512856" namespace="Neumont.Tools.ORM.ObjectModel" id="idcf38e2czfe6ez4f89z8cb2z44bb1e512856" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -323,17 +323,17 @@
               <referenceType>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</referenceType>
             </generatedProperty>
           </role>
-          <role name="MultiColumnConstraint" identity="fcb1aaae-a4fb-4eac-943b-af02468061d3" id="ifcb1aaaeza4fbz4eacz943bzaf02468061d3" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="SetComparisonConstraint" identity="fcb1aaae-a4fb-4eac-943b-af02468061d3" id="ifcb1aaaeza4fbz4eacz943bzaf02468061d3" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="MultiColumnConstraint" identity="003a215e-6330-434d-b1c3-69a943e519ac">
+            <generatedProperty name="SetComparisonConstraint" identity="003a215e-6330-434d-b1c3-69a943e519ac">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalConstraintHasTooManyRoleSequencesError" identity="5aec6871-993f-4373-8627-fb5eba073edd" namespace="Neumont.Tools.ORM.ObjectModel" id="i5aec6871z993fz4373z8627zfb5eba073edd" isLoaded="true" isAbstract="false">
+      <relationship name="SetComparisonConstraintHasTooManyRoleSequencesError" identity="5aec6871-993f-4373-8627-fb5eba073edd" namespace="Neumont.Tools.ORM.ObjectModel" id="i5aec6871z993fz4373z8627zfb5eba073edd" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -345,11 +345,11 @@
               <referenceType>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</referenceType>
             </generatedProperty>
           </role>
-          <role name="MultiColumnConstraint" identity="943eb43b-956e-4d97-9917-773386b53025" id="i943eb43bz956ez4d97z9917z773386b53025" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="SetComparisonConstraint" identity="943eb43b-956e-4d97-9917-773386b53025" id="i943eb43bz956ez4d97z9917z773386b53025" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="MultiColumnConstraint" identity="f9bcc5db-3b7b-4cab-b710-8bbc5ee9ff99">
+            <generatedProperty name="SetComparisonConstraint" identity="f9bcc5db-3b7b-4cab-b710-8bbc5ee9ff99">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -506,15 +506,15 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="ModelHasSingleColumnExternalConstraint" identity="c39ab93e-10fd-4629-a27a-b5560039f36c" namespace="Neumont.Tools.ORM.ObjectModel" id="ic39ab93ez10fdz4629za27azb5560039f36c" isLoaded="true" isAbstract="false">
+      <relationship name="ModelHasSetConstraint" identity="c39ab93e-10fd-4629-a27a-b5560039f36c" namespace="Neumont.Tools.ORM.ObjectModel" id="ic39ab93ez10fdz4629za27azb5560039f36c" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
-          <role name="SingleColumnExternalConstraintCollection" identity="e5a1060b-13ab-4ab1-8a12-c6aeeef6f8bf" id="ie5a1060bz13abz4ab1z8a12zc6aeeef6f8bf" min="1" max="0" isUnbounded="true" accepts="none">
+          <role name="SetConstraintCollection" identity="e5a1060b-13ab-4ab1-8a12-c6aeeef6f8bf" id="ie5a1060bz13abz4ab1z8a12zc6aeeef6f8bf" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
             <type>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</type>
-            <generatedProperty name="SingleColumnExternalConstraintCollection" identity="4bbc86e0-fcd3-4de7-9a95-979aea07ced4">
+            <generatedProperty name="SetConstraintCollection" identity="4bbc86e0-fcd3-4de7-9a95-979aea07ced4">
               <referenceType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</referenceType>
             </generatedProperty>
           </role>
@@ -528,15 +528,15 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="ModelHasMultiColumnExternalConstraint" identity="b4dc9ac8-f3f3-4280-bf70-32bd74695ea3" namespace="Neumont.Tools.ORM.ObjectModel" id="ib4dc9ac8zf3f3z4280zbf70z32bd74695ea3" isLoaded="true" isAbstract="false">
+      <relationship name="ModelHasSetComparisonConstraint" identity="b4dc9ac8-f3f3-4280-bf70-32bd74695ea3" namespace="Neumont.Tools.ORM.ObjectModel" id="ib4dc9ac8zf3f3z4280zbf70z32bd74695ea3" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
-          <role name="MultiColumnExternalConstraintCollection" identity="d1aac147-a429-4d57-a8c7-e658130e1e74" id="id1aac147za429z4d57za8c7ze658130e1e74" min="1" max="0" isUnbounded="true" accepts="none">
+          <role name="SetComparisonConstraintCollection" identity="d1aac147-a429-4d57-a8c7-e658130e1e74" id="id1aac147za429z4d57za8c7ze658130e1e74" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="MultiColumnExternalConstraintCollection" identity="fb420bd9-91f1-4c5d-9003-686e1a1d793a">
+            <generatedProperty name="SetComparisonConstraintCollection" identity="fb420bd9-91f1-4c5d-9003-686e1a1d793a">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -550,29 +550,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="FactTypeHasInternalConstraint" identity="c2f9b082-f991-4fbd-9945-d55032e7ce27" namespace="Neumont.Tools.ORM.ObjectModel" id="ic2f9b082zf991z4fbdz9945zd55032e7ce27" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
-        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-        <roles>
-          <role name="InternalConstraintCollection" identity="bee9d250-53f3-48b5-b63b-337f545bf988" id="ibee9d250z53f3z48b5zb63bz337f545bf988" min="1" max="0" isUnbounded="true" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
-            <type>ie17dcd50zeefez4960zb425zb87f246c6ea0</type>
-            <generatedProperty name="InternalConstraintCollection" identity="b05ad178-2583-4940-b213-81d1b1c52d0c">
-              <referenceType>ie17dcd50zeefez4960zb425zb87f246c6ea0</referenceType>
-            </generatedProperty>
-          </role>
-          <role name="FactType" identity="95904280-42fc-47ce-8ed3-40f58b2deec9" id="i95904280z42fcz47cez8ed3z40f58b2deec9" min="1" max="1" isUnbounded="false" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>ie17dcd50zeefez4960zb425zb87f246c6ea0</source>
-            <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactType" identity="8a9ab8b9-060c-4d6c-84d9-de1bb04eba14">
-              <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
-            </generatedProperty>
-          </role>
-        </roles>
-      </relationship>
-      <relationship name="SingleColumnExternalConstraintHasDuplicateNameError" identity="36e3a440-8e08-4b01-91cb-9182ec03f621" namespace="Neumont.Tools.ORM.ObjectModel" id="i36e3a440z8e08z4b01z91cbz9182ec03f621" isLoaded="true" isAbstract="false">
+      <relationship name="SetConstraintHasDuplicateNameError" identity="36e3a440-8e08-4b01-91cb-9182ec03f621" namespace="Neumont.Tools.ORM.ObjectModel" id="i36e3a440z8e08z4b01z91cbz9182ec03f621" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -584,17 +562,17 @@
               <referenceType>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</referenceType>
             </generatedProperty>
           </role>
-          <role name="SingleColumnExternalConstraintCollection" identity="2c19092d-87b2-4b01-90c3-ffac3a8b4828" id="i2c19092dz87b2z4b01z90c3zffac3a8b4828" min="1" max="0" isUnbounded="true" accepts="none">
+          <role name="SetConstraintCollection" identity="2c19092d-87b2-4b01-90c3-ffac3a8b4828" id="i2c19092dz87b2z4b01z90c3zffac3a8b4828" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</source>
             <type>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</type>
-            <generatedProperty name="SingleColumnExternalConstraintCollection" identity="35724324-b363-46b0-bf2f-69429b2ba9ed">
+            <generatedProperty name="SetConstraintCollection" identity="7a253fc8-3bc0-4643-8caa-570645d3c079">
               <referenceType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</referenceType>
             </generatedProperty>
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalConstraintHasDuplicateNameError" identity="ed53d70d-b151-45bb-a0dd-13f50dc475c1" namespace="Neumont.Tools.ORM.ObjectModel" id="ied53d70dzb151z45bbza0ddz13f50dc475c1" isLoaded="true" isAbstract="false">
+      <relationship name="SetComparisonConstraintHasDuplicateNameError" identity="ed53d70d-b151-45bb-a0dd-13f50dc475c1" namespace="Neumont.Tools.ORM.ObjectModel" id="ied53d70dzb151z45bbza0ddz13f50dc475c1" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -606,11 +584,11 @@
               <referenceType>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</referenceType>
             </generatedProperty>
           </role>
-          <role name="MultiColumnExternalConstraintCollection" identity="f2ee7a71-9202-4dc3-9843-ea3a7c1585e3" id="if2ee7a71z9202z4dc3z9843zea3a7c1585e3" min="1" max="0" isUnbounded="true" accepts="none">
+          <role name="SetComparisonConstraintCollection" identity="f2ee7a71-9202-4dc3-9843-ea3a7c1585e3" id="if2ee7a71z9202z4dc3z9843zea3a7c1585e3" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="MultiColumnExternalConstraintCollection" identity="6f1df3e4-c6de-4268-9cee-66571f150886">
+            <generatedProperty name="SetComparisonConstraintCollection" identity="580080d9-590a-4b88-9a31-c2d69c01053b">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -623,11 +601,11 @@
           <role name="PreferredIdentifier" identity="6d26f6c2-85d7-47e5-8bba-54824fbd5ee2" id="i6d26f6c2z85d7z47e5z8bbaz54824fbd5ee2" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
-            <type>id9ab8420z8604z4016z8827z0d59c77b47f8</type>
+            <type>ic50782dez5fd3z4076za062zdd8983367363</type>
           </role>
           <role name="PreferredIdentifierFor" identity="2f929a15-e1d5-4486-81de-d43e7df45405" id="i2f929a15ze1d5z4486z81dezd43e7df45405" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>id9ab8420z8604z4016z8827z0d59c77b47f8</source>
+            <source>ic50782dez5fd3z4076za062zdd8983367363</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
           </role>
         </roles>
@@ -676,7 +654,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" identity="4d0d1805-bcf9-4026-91cc-e6d21b81bf3a" namespace="Neumont.Tools.ORM.ObjectModel" id="i4d0d1805zbcf9z4026z91ccze6d21b81bf3a" isLoaded="true" isAbstract="false">
+      <relationship name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" identity="4d0d1805-bcf9-4026-91cc-e6d21b81bf3a" namespace="Neumont.Tools.ORM.ObjectModel" id="i4d0d1805zbcf9z4026z91ccze6d21b81bf3a" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -852,7 +830,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" identity="f9f003bb-7296-4ae9-9dde-08d0018f8aed" namespace="Neumont.Tools.ORM.ObjectModel" id="if9f003bbz7296z4ae9z9ddez08d0018f8aed" isLoaded="true" isAbstract="false">
+      <relationship name="SetComparisonConstraintHasCompatibleRolePlayerTypeError" identity="f9f003bb-7296-4ae9-9dde-08d0018f8aed" namespace="Neumont.Tools.ORM.ObjectModel" id="if9f003bbz7296z4ae9z9ddez08d0018f8aed" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -864,17 +842,17 @@
               <referenceType>iedfc4b63z9538z4ae4z9dc3z0e8d0594bf35</referenceType>
             </generatedProperty>
           </role>
-          <role name="MultiColumnExternalConstraint" identity="0730fc3b-4254-4546-b607-0cd96a428a3e" id="i0730fc3bz4254z4546zb607z0cd96a428a3e" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="SetComparisonConstraint" identity="0730fc3b-4254-4546-b607-0cd96a428a3e" id="i0730fc3bz4254z4546zb607z0cd96a428a3e" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>iedfc4b63z9538z4ae4z9dc3z0e8d0594bf35</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="MultiColumnExternalConstraint" identity="718e988d-b90e-40fb-bef5-316eb382608c">
+            <generatedProperty name="SetComparisonConstraint" identity="4af7465a-78a9-4396-9d86-5ec4126a145d">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
         </roles>
       </relationship>
-      <relationship name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" identity="be96de91-b789-468a-8140-fc083adc13b7" namespace="Neumont.Tools.ORM.ObjectModel" id="ibe96de91zb789z468az8140zfc083adc13b7" isLoaded="true" isAbstract="false">
+      <relationship name="SetConstraintHasCompatibleRolePlayerTypeError" identity="be96de91-b789-468a-8140-fc083adc13b7" namespace="Neumont.Tools.ORM.ObjectModel" id="ibe96de91zb789z468az8140zfc083adc13b7" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -886,23 +864,23 @@
               <referenceType>iedfc4b63z9538z4ae4z9dc3z0e8d0594bf35</referenceType>
             </generatedProperty>
           </role>
-          <role name="SingleColumnExternalConstraint" identity="d8a3c296-8f3f-4a14-b198-ade11de6a48a" id="id8a3c296z8f3fz4a14zb198zade11de6a48a" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="SetConstraint" identity="d8a3c296-8f3f-4a14-b198-ade11de6a48a" id="id8a3c296z8f3fz4a14zb198zade11de6a48a" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>iedfc4b63z9538z4ae4z9dc3z0e8d0594bf35</source>
             <type>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</type>
-            <generatedProperty name="SingleColumnExternalConstraint" identity="87886780-d5e9-4de1-8343-2f6e1220cb11">
+            <generatedProperty name="SetConstraint" identity="5be26cd6-39e9-4fde-9fa8-95970f9b1c2a">
               <referenceType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</referenceType>
             </generatedProperty>
           </role>
         </roles>
       </relationship>
-      <relationship name="InternalUniquenessConstraintHasNMinusOneError" identity="3813d2d2-a6cc-4f26-a5ff-24b6c05e0cc5" namespace="Neumont.Tools.ORM.ObjectModel" id="i3813d2d2za6ccz4f26za5ffz24b6c05e0cc5" isLoaded="true" isAbstract="false">
+      <relationship name="UniquenessConstraintHasNMinusOneError" identity="3813d2d2-a6cc-4f26-a5ff-24b6c05e0cc5" namespace="Neumont.Tools.ORM.ObjectModel" id="i3813d2d2za6ccz4f26za5ffz24b6c05e0cc5" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
           <role name="NMinusOneError" identity="c5b85dae-aaba-40b1-b300-a9c2cf03e91e" id="ic5b85daezaabaz40b1zb300za9c2cf03e91e" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>i9480cf96zadfdz45b6z967ez018dddf27b94</source>
+            <source>ic50782dez5fd3z4076za062zdd8983367363</source>
             <type>ic47f58f9z5d4dz442fzad88zfefc94d63250</type>
             <generatedProperty name="NMinusOneError" identity="4d7efb51-54ae-47c5-a518-29bed34770d2">
               <referenceType>ic47f58f9z5d4dz442fzad88zfefc94d63250</referenceType>
@@ -911,9 +889,9 @@
           <role name="Constraint" identity="df179dfc-8827-46b7-a19a-b3428ceb09ce" id="idf179dfcz8827z46b7za19azb3428ceb09ce" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ic47f58f9z5d4dz442fzad88zfefc94d63250</source>
-            <type>i9480cf96zadfdz45b6z967ez018dddf27b94</type>
+            <type>ic50782dez5fd3z4076za062zdd8983367363</type>
             <generatedProperty name="Constraint" identity="d3b0c09a-ab47-48c3-9294-173f0f2021bb">
-              <referenceType>i9480cf96zadfdz45b6z967ez018dddf27b94</referenceType>
+              <referenceType>ic50782dez5fd3z4076za062zdd8983367363</referenceType>
             </generatedProperty>
           </role>
         </roles>
@@ -940,15 +918,15 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="EqualityConstraintHasEqualityIsImpliedByMandatoryError" identity="80308cb5-fdf0-44dd-8a03-d8bb64dde146" namespace="Neumont.Tools.ORM.ObjectModel" id="i80308cb5zfdf0z44ddz8a03zd8bb64dde146" isLoaded="true" isAbstract="false">
+      <relationship name="EqualityConstraintHasEqualityImpliedByMandatoryError" identity="80308cb5-fdf0-44dd-8a03-d8bb64dde146" namespace="Neumont.Tools.ORM.ObjectModel" id="i80308cb5zfdf0z44ddz8a03zd8bb64dde146" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
-          <role name="EqualityIsImpliedByMandatoryError" identity="4108fc75-346e-4ebc-a012-2e3e7692a6af" id="i4108fc75z346ez4ebcza012z2e3e7692a6af" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="EqualityImpliedByMandatoryError" identity="4108fc75-346e-4ebc-a012-2e3e7692a6af" id="i4108fc75z346ez4ebcza012z2e3e7692a6af" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i1bee2436zcd79z45bezb484z9c1dc5cb81ab</source>
             <type>i47f92ff5z0183z4a60z96eez8528565f4b67</type>
-            <generatedProperty name="EqualityIsImpliedByMandatoryError" identity="aa95dc34-2c97-4bea-adc4-0d47670e609d">
+            <generatedProperty name="EqualityImpliedByMandatoryError" identity="4882b762-d70c-4766-837f-12b38861626e">
               <referenceType>i47f92ff5z0183z4a60z96eez8528565f4b67</referenceType>
             </generatedProperty>
           </role>
@@ -984,7 +962,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError" identity="24765452-d1f9-48e5-b2d2-c222703a93cd" namespace="Neumont.Tools.ORM.ObjectModel" id="i24765452zd1f9z48e5zb2d2zc222703a93cd" isLoaded="true" isAbstract="false">
+      <relationship name="MandatoryConstraintHasMandatoryImpliedByMandatoryError" identity="24765452-d1f9-48e5-b2d2-c222703a93cd" namespace="Neumont.Tools.ORM.ObjectModel" id="i24765452zd1f9z48e5zb2d2zc222703a93cd" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -996,11 +974,11 @@
               <referenceType>i35071ae7z35b9z462dz91afz8d19e4bf6c30</referenceType>
             </generatedProperty>
           </role>
-          <role name="DisjunctiveMandatoryConstraint" identity="cf3b1ba2-1ae9-4481-b437-12939e2df798" id="icf3b1ba2z1ae9z4481zb437z12939e2df798" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="MandatoryConstraint" identity="cf3b1ba2-1ae9-4481-b437-12939e2df798" id="icf3b1ba2z1ae9z4481zb437z12939e2df798" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i35071ae7z35b9z462dz91afz8d19e4bf6c30</source>
             <type>i749901acz66bbz4d86za42cz127456eb5451</type>
-            <generatedProperty name="DisjunctiveMandatoryConstraint" identity="4672c579-f077-4af3-93da-8be60dd32e54">
+            <generatedProperty name="MandatoryConstraint" identity="883d098e-d473-4724-912c-6cc78e230d28">
               <referenceType>i749901acz66bbz4d86za42cz127456eb5451</referenceType>
             </generatedProperty>
           </role>
@@ -1103,71 +1081,6 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="ObjectificationImpliesEqualityConstraint" identity="71920485-cd18-433e-92b1-5999efca75a3" namespace="Neumont.Tools.ORM.ObjectModel" id="i71920485zcd18z433ez92b1z5999efca75a3" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
-        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-        <roles>
-          <role name="ImpliedEqualityConstraint" identity="f5068697-685c-45ba-a00f-f97b106b2120" id="if5068697z685cz45baza00fzf97b106b2120" min="1" max="1" isUnbounded="false" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>i542e780fz0bd0z4617z9715z935beb73cee9</source>
-            <type>i1bee2436zcd79z45bezb484z9c1dc5cb81ab</type>
-            <generatedProperty name="ImpliedEqualityConstraint" identity="dedddcae-9e51-4da2-885f-2b7b64679393">
-              <referenceType>i1bee2436zcd79z45bezb484z9c1dc5cb81ab</referenceType>
-            </generatedProperty>
-          </role>
-          <role name="ImpliedByObjectification" identity="ced10a6a-f2c2-48e8-adc0-a6ec3047b518" id="iced10a6azf2c2z48e8zadc0za6ec3047b518" min="1" max="1" isUnbounded="false" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>i1bee2436zcd79z45bezb484z9c1dc5cb81ab</source>
-            <type>i542e780fz0bd0z4617z9715z935beb73cee9</type>
-            <generatedProperty name="ImpliedByObjectification" identity="a8caf78b-5eda-4e4a-b656-1861983a09e2">
-              <referenceType>i542e780fz0bd0z4617z9715z935beb73cee9</referenceType>
-            </generatedProperty>
-          </role>
-        </roles>
-      </relationship>
-      <relationship name="ObjectificationImpliesExternalUniquenessConstraint" identity="f3af8af0-b779-4e1c-b25c-6a02b25d836b" namespace="Neumont.Tools.ORM.ObjectModel" id="if3af8af0zb779z4e1czb25cz6a02b25d836b" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
-        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-        <roles>
-          <role name="ImpliedExternalUniquenessConstraintCollection" identity="6281ff66-c834-4fd6-9953-cec88ead8fed" id="i6281ff66zc834z4fd6z9953zcec88ead8fed" min="1" max="0" isUnbounded="true" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>i542e780fz0bd0z4617z9715z935beb73cee9</source>
-            <type>ic50782dez5fd3z4076za062zdd8983367363</type>
-            <generatedProperty name="ImpliedExternalUniquenessConstraintCollection" identity="62e0cf73-1fd9-4428-8fc6-89bb2c826df5">
-              <referenceType>ic50782dez5fd3z4076za062zdd8983367363</referenceType>
-            </generatedProperty>
-          </role>
-          <role name="ImpliedByObjectification" identity="5cb4d4d4-6854-4b51-92d5-65fe1a4afe87" id="i5cb4d4d4z6854z4b51z92d5z65fe1a4afe87" min="1" max="1" isUnbounded="false" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>ic50782dez5fd3z4076za062zdd8983367363</source>
-            <type>i542e780fz0bd0z4617z9715z935beb73cee9</type>
-            <generatedProperty name="ImpliedByObjectification" identity="e77f012e-b870-4e98-9acb-808d4b26dd6c">
-              <referenceType>i542e780fz0bd0z4617z9715z935beb73cee9</referenceType>
-            </generatedProperty>
-          </role>
-        </roles>
-      </relationship>
-      <relationship name="InternalConstraintHasDuplicateNameError" identity="d0409804-f205-47fe-88b9-5b402bec89c8" namespace="Neumont.Tools.ORM.ObjectModel" id="id0409804zf205z47fez88b9z5b402bec89c8" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
-        <roles>
-          <role name="DuplicateNameError" identity="59433a81-84bc-486e-a960-ea6e0a26bcea" id="i59433a81z84bcz486eza960zea6e0a26bcea" min="1" max="1" isUnbounded="false" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>ie17dcd50zeefez4960zb425zb87f246c6ea0</source>
-            <type>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</type>
-            <generatedProperty name="DuplicateNameError" identity="8e125725-4616-43cf-bf36-93585e40d43d">
-              <referenceType>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</referenceType>
-            </generatedProperty>
-          </role>
-          <role name="InternalConstraintCollection" identity="32360264-7de9-46ba-aa18-0c66d37e0bb2" id="i32360264z7de9z46bazaa18z0c66d37e0bb2" min="1" max="0" isUnbounded="true" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</source>
-            <type>ie17dcd50zeefez4960zb425zb87f246c6ea0</type>
-            <generatedProperty name="InternalConstraintCollection" identity="eac0043f-0dab-4115-bd77-c846c9ccec72">
-              <referenceType>ie17dcd50zeefez4960zb425zb87f246c6ea0</referenceType>
-            </generatedProperty>
-          </role>
-        </roles>
-      </relationship>
       <relationship name="ValueRangeHasMaxValueMismatchError" identity="463c130a-b81b-4000-8a77-9b1d3e8ac213" namespace="Neumont.Tools.ORM.ObjectModel" id="i463c130azb81bz4000z8a77z9b1d3e8ac213" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
@@ -1233,7 +1146,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="SingleColumnExternalConstraintHasTooFewRoleSequencesError" identity="354d6ef5-c948-4917-a0ac-c510efa34633" namespace="Neumont.Tools.ORM.ObjectModel" id="i354d6ef5zc948z4917za0aczc510efa34633" isLoaded="true" isAbstract="false">
+      <relationship name="SetConstraintHasTooFewRoleSequencesError" identity="354d6ef5-c948-4917-a0ac-c510efa34633" namespace="Neumont.Tools.ORM.ObjectModel" id="i354d6ef5zc948z4917za0aczc510efa34633" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -1245,17 +1158,17 @@
               <referenceType>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</referenceType>
             </generatedProperty>
           </role>
-          <role name="SingleColumnConstraint" identity="3060f3ea-ceae-42dc-93bf-866a8f1c3010" id="i3060f3eazceaez42dcz93bfz866a8f1c3010" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="SetConstraint" identity="3060f3ea-ceae-42dc-93bf-866a8f1c3010" id="i3060f3eazceaez42dcz93bfz866a8f1c3010" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</source>
             <type>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</type>
-            <generatedProperty name="SingleColumnConstraint" identity="001ba072-90d7-4856-9273-0006165acfad">
+            <generatedProperty name="SetConstraint" identity="20afcebe-6c1e-4fac-b46e-9c1f189bfea4">
               <referenceType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</referenceType>
             </generatedProperty>
           </role>
         </roles>
       </relationship>
-      <relationship name="SingleColumnExternalConstraintHasTooManyRoleSequencesError" identity="f685399f-1245-4cf8-a345-d5fdd84f2585" namespace="Neumont.Tools.ORM.ObjectModel" id="if685399fz1245z4cf8za345zd5fdd84f2585" isLoaded="true" isAbstract="false">
+      <relationship name="SetConstraintHasTooManyRoleSequencesError" identity="f685399f-1245-4cf8-a345-d5fdd84f2585" namespace="Neumont.Tools.ORM.ObjectModel" id="if685399fz1245z4cf8za345zd5fdd84f2585" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -1267,11 +1180,11 @@
               <referenceType>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</referenceType>
             </generatedProperty>
           </role>
-          <role name="SingleColumnConstraint" identity="3549c902-5897-41c5-a08b-c50d15573fc7" id="i3549c902z5897z41c5za08bzc50d15573fc7" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="SetConstraint" identity="3549c902-5897-41c5-a08b-c50d15573fc7" id="i3549c902z5897z41c5za08bzc50d15573fc7" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</source>
             <type>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</type>
-            <generatedProperty name="SingleColumnConstraint" identity="c4c0090b-876f-4e2b-9a03-6c5c08ff15c9">
+            <generatedProperty name="SetConstraint" identity="e1ad5e2b-8302-475c-a3b6-3adef48cfea6">
               <referenceType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</referenceType>
             </generatedProperty>
           </role>
@@ -1429,7 +1342,7 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError" identity="59346b60-b2c5-4942-b32e-744201e5aba9" namespace="Neumont.Tools.ORM.ObjectModel" id="i59346b60zb2c5z4942zb32ez744201e5aba9" isLoaded="true" isAbstract="false">
+      <relationship name="UniquenessConstraintHasUniquenessImpliedByUniquenessError" identity="59346b60-b2c5-4942-b32e-744201e5aba9" namespace="Neumont.Tools.ORM.ObjectModel" id="i59346b60zb2c5z4942zb32ez744201e5aba9" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -1441,11 +1354,11 @@
               <referenceType>i2bee7b88z2833z49a2z92c1z91d2716000e5</referenceType>
             </generatedProperty>
           </role>
-          <role name="ExternalUniquenessConstraint" identity="3800537a-5acf-41b6-b3be-3a0654cc24ad" id="i3800537az5acfz41b6zb3bez3a0654cc24ad" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="UniquenessConstraint" identity="3800537a-5acf-41b6-b3be-3a0654cc24ad" id="i3800537az5acfz41b6zb3bez3a0654cc24ad" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i2bee7b88z2833z49a2z92c1z91d2716000e5</source>
             <type>ic50782dez5fd3z4076za062zdd8983367363</type>
-            <generatedProperty name="ExternalUniquenessConstraint" identity="ebc0ec78-2f2f-4608-a7c7-23d690fbd069">
+            <generatedProperty name="UniquenessConstraint" identity="262e22d1-c597-45e5-b683-18b7d05584c1">
               <referenceType>ic50782dez5fd3z4076za062zdd8983367363</referenceType>
             </generatedProperty>
           </role>
@@ -1638,22 +1551,22 @@
             <superType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</superType>
             <subType>i012ad46dz6e3ez4ca2z97e8z44ea4f27ca75</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraint-ORMNamedElement" identity="f5daff5a-f3d8-472d-bfd7-4e7b326ca985" id="if5daff5azf3d8z472dzbfd7z4e7b326ca985" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraint-ORMNamedElement" identity="f5daff5a-f3d8-472d-bfd7-4e7b326ca985" id="if5daff5azf3d8z472dzbfd7z4e7b326ca985" definitionlevel="none">
             <source />
             <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
             <subType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraint-MultiColumnExternalConstraint" identity="34e1fb49-1c4f-46f6-b837-f9e1bf4e8e84" id="i34e1fb49z1c4fz46f6zb837zf9e1bf4e8e84" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraint-SetComparisonConstraint" identity="34e1fb49-1c4f-46f6-b837-f9e1bf4e8e84" id="i34e1fb49z1c4fz46f6zb837zf9e1bf4e8e84" definitionlevel="none">
             <source />
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
             <subType>i1bee2436zcd79z45bezb484z9c1dc5cb81ab</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExclusionConstraint-MultiColumnExternalConstraint" identity="752ced87-7651-4026-bc4f-56e0bbafdcdf" id="i752ced87z7651z4026zbc4fz56e0bbafdcdf" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ExclusionConstraint-SetComparisonConstraint" identity="752ced87-7651-4026-bc4f-56e0bbafdcdf" id="i752ced87z7651z4026zbc4fz56e0bbafdcdf" definitionlevel="none">
             <source />
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
             <subType>i5373783fz9dddz4ffbz95d8z8e28cd73b98a</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SubsetConstraint-MultiColumnExternalConstraint" identity="eacab58e-5277-4f67-8dc2-997aa4ab5d50" id="ieacab58ez5277z4f67z8dc2z997aa4ab5d50" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SubsetConstraint-SetComparisonConstraint" identity="eacab58e-5277-4f67-8dc2-997aa4ab5d50" id="ieacab58ez5277z4f67z8dc2z997aa4ab5d50" definitionlevel="none">
             <source />
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
             <subType>i7ac282bfz98d2z4ad1z9bf0z5ec0cdb17d95</subType>
@@ -1663,47 +1576,32 @@
             <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
             <subType>id9ab8420z8604z4016z8827z0d59c77b47f8</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="InternalConstraint-ConstraintRoleSequence" identity="48b5fa7e-b061-4fb7-8770-76ed12eb01f6" id="i48b5fa7ezb061z4fb7z8770z76ed12eb01f6" definitionlevel="none">
-            <source />
-            <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
-            <subType>ie17dcd50zeefez4960zb425zb87f246c6ea0</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SimpleMandatoryConstraint-InternalConstraint" identity="8df7641e-0a1f-4303-a6a6-daa30f117b4c" id="i8df7641ez0a1fz4303za6a6zdaa30f117b4c" definitionlevel="none">
-            <source />
-            <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-            <subType>ib09e7a1fz184ez4e7fz88e3z6ca763ded9eb</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="InternalUniquenessConstraint-InternalConstraint" identity="d87d61a8-3cbc-43c9-a551-7ecd722a23c1" id="id87d61a8z3cbcz43c9za551z7ecd722a23c1" definitionlevel="none">
-            <source />
-            <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-            <subType>i9480cf96zadfdz45b6z967ez018dddf27b94</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintRoleSequence-ConstraintRoleSequence" identity="865e705c-c844-4a44-9398-6f93cccc5586" id="i865e705czc844z4a44z9398z6f93cccc5586" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintRoleSequence-ConstraintRoleSequence" identity="865e705c-c844-4a44-9398-6f93cccc5586" id="i865e705czc844z4a44z9398z6f93cccc5586" definitionlevel="none">
             <source />
             <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
             <subType>i34a3c709z1021z4afez80dbz6302f4c681ea</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraint-ConstraintRoleSequence" identity="d7b8b219-b96f-4612-9161-50313c0e422a" id="id7b8b219zb96fz4612z9161z50313c0e422a" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraint-ConstraintRoleSequence" identity="d7b8b219-b96f-4612-9161-50313c0e422a" id="id7b8b219zb96fz4612z9161z50313c0e422a" definitionlevel="none">
             <source />
             <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
             <subType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RingConstraint-SingleColumnExternalConstraint" identity="2b04da08-cb76-48ed-81a5-cfe65824fd9d" id="i2b04da08zcb76z48edz81a5zcfe65824fd9d" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="RingConstraint-SetConstraint" identity="2b04da08-cb76-48ed-81a5-cfe65824fd9d" id="i2b04da08zcb76z48edz81a5zcfe65824fd9d" definitionlevel="none">
             <source />
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>ic0f29d7azf057z49a6z87dfz7abcbb55d471</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-SingleColumnExternalConstraint" identity="2b02e85c-372e-453f-8ea4-137e0d6c34a5" id="i2b02e85cz372ez453fz8ea4z137e0d6c34a5" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-SetConstraint" identity="2b02e85c-372e-453f-8ea4-137e0d6c34a5" id="i2b02e85cz372ez453fz8ea4z137e0d6c34a5" definitionlevel="none">
             <source />
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>icee1eaf8z155fz4646zacb3zbf2e87be032a</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessConstraint-SingleColumnExternalConstraint" identity="3dc8aab8-220a-4788-a9ec-3566aa973f49" id="i3dc8aab8z220az4788za9ecz3566aa973f49" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessConstraint-SetConstraint" identity="3dc8aab8-220a-4788-a9ec-3566aa973f49" id="i3dc8aab8z220az4788za9ecz3566aa973f49" definitionlevel="none">
             <source />
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>ic50782dez5fd3z4076za062zdd8983367363</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="DisjunctiveMandatoryConstraint-SingleColumnExternalConstraint" identity="486c40ed-8f0e-40a7-b39f-f90812e8c44d" id="i486c40edz8f0ez40a7zb39fzf90812e8c44d" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="MandatoryConstraint-SetConstraint" identity="486c40ed-8f0e-40a7-b39f-f90812e8c44d" id="i486c40edz8f0ez40a7zb39fzf90812e8c44d" definitionlevel="none">
             <source />
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>i749901acz66bbz4d86za42cz127456eb5451</subType>
@@ -1788,7 +1686,7 @@
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i11a3fe3fz7986z4c12z9c6azd89b56db29a0</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="EqualityIsImpliedByMandatoryError-ModelError" identity="cebae205-dee3-40d9-818a-a25b0923e55d" id="icebae205zdee3z40d9z818aza25b0923e55d" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="EqualityImpliedByMandatoryError-ModelError" identity="cebae205-dee3-40d9-818a-a25b0923e55d" id="icebae205zdee3z40d9z818aza25b0923e55d" definitionlevel="none">
             <source />
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i47f92ff5z0183z4a60z96eez8528565f4b67</subType>
@@ -1798,7 +1696,7 @@
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i3c7be87dzdb77z4269z8372z33664b89c558</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="DisjunctiveMandatoryImpliedByMandatoryError-ModelError" identity="336c9d1d-8f0a-494c-acb3-5f5ed93ee594" id="i336c9d1dz8f0az494czacb3z5f5ed93ee594" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="MandatoryImpliedByMandatoryError-ModelError" identity="336c9d1d-8f0a-494c-acb3-5f5ed93ee594" id="i336c9d1dz8f0az494czacb3z5f5ed93ee594" definitionlevel="none">
             <source />
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i35071ae7z35b9z462dz91afz8d19e4bf6c30</subType>
@@ -2028,17 +1926,17 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i4f0bfd84z658bz4bf4zacdaz5db1355b1a33</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalFactConstraint-ORMElementLink" identity="3130cf67-e4ff-4257-be28-f9657bbf4984" id="i3130cf67ze4ffz4257zbe28zf9657bbf4984" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="FactConstraint-ORMElementLink" identity="3130cf67-e4ff-4257-be28-f9657bbf4984" id="i3130cf67ze4ffz4257zbe28zf9657bbf4984" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalFactConstraint-ExternalFactConstraint" identity="6dfd05af-b32c-44a2-be38-5f6abac6ac83" id="i6dfd05afzb32cz44a2zbe38z5f6abac6ac83" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="FactSetComparisonConstraint-FactConstraint" identity="6dfd05af-b32c-44a2-be38-5f6abac6ac83" id="i6dfd05afzb32cz44a2zbe38z5f6abac6ac83" definitionlevel="none">
             <source />
             <superType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</superType>
             <subType>i6de34beez23caz4503zb451z0bf4f9623e88</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalFactConstraint-ExternalFactConstraint" identity="f2561052-b55f-4da9-9bbf-88076febd5a0" id="if2561052zb55fz4da9z9bbfz88076febd5a0" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="FactSetConstraint-FactConstraint" identity="f2561052-b55f-4da9-9bbf-88076febd5a0" id="if2561052zb55fz4da9z9bbfz88076febd5a0" definitionlevel="none">
             <source />
             <superType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</superType>
             <subType>i786eebcez120bz43c0z9622ze799943f4021</subType>
@@ -2048,7 +1946,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ia075a8fdzfeb9z4decz9852z85b7272a009f</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasRoleSequence-ORMElementLink" identity="bbda4a9d-de5b-4ab3-bbcd-98f9b7de4094" id="ibbda4a9dzde5bz4ab3zbbcdz98f9b7de4094" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasRoleSequence-ORMElementLink" identity="bbda4a9d-de5b-4ab3-bbcd-98f9b7de4094" id="ibbda4a9dzde5bz4ab3zbbcdz98f9b7de4094" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i4d952086zd820z4023z9207z14302e77b703</subType>
@@ -2108,27 +2006,22 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ib82e579ez4d0cz4411z9135z8c8b15979355</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ModelHasSingleColumnExternalConstraint-ORMElementLink" identity="3a7600d5-c65b-4021-83fd-fe8ceea1f146" id="i3a7600d5zc65bz4021z83fdzfe8ceea1f146" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ModelHasSetConstraint-ORMElementLink" identity="3a7600d5-c65b-4021-83fd-fe8ceea1f146" id="i3a7600d5zc65bz4021z83fdzfe8ceea1f146" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ic39ab93ez10fdz4629za27azb5560039f36c</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ModelHasMultiColumnExternalConstraint-ORMElementLink" identity="78c7c3b1-3890-4af9-81c5-31d55caa385c" id="i78c7c3b1z3890z4af9z81c5z31d55caa385c" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ModelHasSetComparisonConstraint-ORMElementLink" identity="78c7c3b1-3890-4af9-81c5-31d55caa385c" id="i78c7c3b1z3890z4af9z81c5z31d55caa385c" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ib4dc9ac8zf3f3z4280zbf70z32bd74695ea3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FactTypeHasInternalConstraint-ORMElementLink" identity="94eae700-03d0-42f3-883b-5043c41de3f5" id="i94eae700z03d0z42f3z883bz5043c41de3f5" definitionlevel="none">
-            <source />
-            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-            <subType>ic2f9b082zf991z4fbdz9945zd55032e7ce27</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasDuplicateNameError-ORMElementLink" identity="208fe0f7-8a28-4e35-ac4b-d8995a9e0660" id="i208fe0f7z8a28z4e35zac4bzd8995a9e0660" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasDuplicateNameError-ORMElementLink" identity="208fe0f7-8a28-4e35-ac4b-d8995a9e0660" id="i208fe0f7z8a28z4e35zac4bzd8995a9e0660" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i36e3a440z8e08z4b01z91cbz9182ec03f621</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasDuplicateNameError-ORMElementLink" identity="0176f3ff-dbac-4c97-adfa-77cd1679cd77" id="i0176f3ffzdbacz4c97zadfaz77cd1679cd77" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasDuplicateNameError-ORMElementLink" identity="0176f3ff-dbac-4c97-adfa-77cd1679cd77" id="i0176f3ffzdbacz4c97zadfaz77cd1679cd77" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ied53d70dzb151z45bbza0ddz13f50dc475c1</subType>
@@ -2148,7 +2041,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i6eaa9466z7d37z4c73za92dz3f96b5f06cf3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError-ORMElementLink" identity="e3f99f4d-8ea7-41e0-84ec-7e522c91d366" id="ie3f99f4dz8ea7z41e0z84ecz7e522c91d366" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError-ORMElementLink" identity="e3f99f4d-8ea7-41e0-84ec-7e522c91d366" id="ie3f99f4dz8ea7z41e0z84ecz7e522c91d366" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i4d0d1805zbcf9z4026z91ccze6d21b81bf3a</subType>
@@ -2188,17 +2081,17 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i8bba1a0ezd440z4952z858ezd98be57a86a5</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="675a2b65-0000-41d1-a233-a9104116b0bf" id="i675a2b65z0000z41d1za233za9104116b0bf" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="675a2b65-0000-41d1-a233-a9104116b0bf" id="i675a2b65z0000z41d1za233za9104116b0bf" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>if9f003bbz7296z4ae9z9ddez08d0018f8aed</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="92a0be59-c21b-4cb5-8168-ca479953cd19" id="i92a0be59zc21bz4cb5z8168zca479953cd19" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="92a0be59-c21b-4cb5-8168-ca479953cd19" id="i92a0be59zc21bz4cb5z8168zca479953cd19" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ibe96de91zb789z468az8140zfc083adc13b7</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="InternalUniquenessConstraintHasNMinusOneError-ORMElementLink" identity="ff17e2fc-fe36-4328-a800-fa09586bfae8" id="iff17e2fczfe36z4328za800zfa09586bfae8" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessConstraintHasNMinusOneError-ORMElementLink" identity="ff17e2fc-fe36-4328-a800-fa09586bfae8" id="iff17e2fczfe36z4328za800zfa09586bfae8" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i3813d2d2za6ccz4f26za5ffz24b6c05e0cc5</subType>
@@ -2208,7 +2101,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i3d930f60zdf77z482dzb522zaed091f46349</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError-ORMElementLink" identity="2b6cf500-059a-4b25-9b7d-b1ffede42165" id="i2b6cf500z059az4b25z9b7dzb1ffede42165" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraintHasEqualityImpliedByMandatoryError-ORMElementLink" identity="2b6cf500-059a-4b25-9b7d-b1ffede42165" id="i2b6cf500z059az4b25z9b7dzb1ffede42165" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i80308cb5zfdf0z44ddz8a03zd8bb64dde146</subType>
@@ -2218,7 +2111,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i92e220d3z1ff5z487dzbb01z9343fa460cf2</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError-ORMElementLink" identity="f1c51f9e-af48-455d-b872-2be8d0423c93" id="if1c51f9ezaf48z455dzb872z2be8d0423c93" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="MandatoryConstraintHasMandatoryImpliedByMandatoryError-ORMElementLink" identity="f1c51f9e-af48-455d-b872-2be8d0423c93" id="if1c51f9ezaf48z455dzb872z2be8d0423c93" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i24765452zd1f9z48e5zb2d2zc222703a93cd</subType>
@@ -2248,11 +2141,11 @@
             <source />
             <role>iba041047z0d0fz45dczaac3z29d5111ed1b0</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollection" identity="5259a9ce-c3bb-4a1e-93ba-9cf4dbe7332d" id="i5259a9cezc3bbz4a1ez93baz9cf4dbe7332d" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FactSetComparisonConstraint.SetComparisonConstraintCollection" identity="5259a9ce-c3bb-4a1e-93ba-9cf4dbe7332d" id="i5259a9cezc3bbz4a1ez93baz9cf4dbe7332d" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i00ab3368zd142z4d99z8457zafd56e639f5a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollection" identity="79b4e237-9d23-4c95-9fa4-200a1e489d9d" id="i79b4e237z9d23z4c95z9fa4z200a1e489d9d" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FactSetConstraint.SetConstraintCollection" identity="79b4e237-9d23-4c95-9fa4-200a1e489d9d" id="i79b4e237z9d23z4c95z9fa4z200a1e489d9d" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i6045259dza85ez40f6zbac3z744f03cef430</role>
           </treeExpression>
@@ -2260,7 +2153,7 @@
             <source />
             <role>i3b2ebee1zafe8z42cbza7dbz8ad4dc7d8be9</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollection" identity="8e519335-cd66-48a0-81db-45e5bc618d27" id="i8e519335zcd66z48a0z81dbz45e5bc618d27" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasRoleSequence.RoleSequenceCollection" identity="8e519335-cd66-48a0-81db-45e5bc618d27" id="i8e519335zcd66z48a0z81dbz45e5bc618d27" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>i152a01cez3754z4b69z9f9ez036762f25a58</role>
           </treeExpression>
@@ -2308,23 +2201,19 @@
             <source />
             <role>ibfb270b2zdcd7z4637z83afz956b28b9cd83</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollection" identity="b35d1b06-fbca-4258-880d-efffc12f235d" id="ib35d1b06zfbcaz4258z880dzefffc12f235d" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetConstraint.SetConstraintCollection" identity="b35d1b06-fbca-4258-880d-efffc12f235d" id="ib35d1b06zfbcaz4258z880dzefffc12f235d" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>ie5a1060bz13abz4ab1z8a12zc6aeeef6f8bf</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollection" identity="d6edb13e-4810-4945-b2c3-cc9614ad2cab" id="id6edb13ez4810z4945zb2c3zcc9614ad2cab" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetComparisonConstraint.SetComparisonConstraintCollection" identity="d6edb13e-4810-4945-b2c3-cc9614ad2cab" id="id6edb13ez4810z4945zb2c3zcc9614ad2cab" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>id1aac147za429z4d57za8c7ze658130e1e74</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.InternalConstraintCollection" identity="0c0916a0-7231-44e0-9143-fbdf9c73c898" id="i0c0916a0z7231z44e0z9143zfbdf9c73c898" definitionlevel="none" containmentstyle="embedding">
-            <source />
-            <role>ibee9d250z53f3z48b5zb63bz337f545bf988</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameError" identity="9f1d6a73-df6a-4fb4-badb-42191d3995c2" id="i9f1d6a73zdf6az4fb4zbadbz42191d3995c2" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasDuplicateNameError.DuplicateNameError" identity="9f1d6a73-df6a-4fb4-badb-42191d3995c2" id="i9f1d6a73zdf6az4fb4zbadbz42191d3995c2" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>if16cdde1zb246z4528za9c2z49ba4be7c288</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameError" identity="cd9f5a15-869e-47e5-8537-026d0833ae98" id="icd9f5a15z869ez47e5z8537z026d0833ae98" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasDuplicateNameError.DuplicateNameError" identity="cd9f5a15-869e-47e5-8537-026d0833ae98" id="icd9f5a15z869ez47e5z8537z026d0833ae98" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i83d48411zc26cz4755za726z76ef2716998a</role>
           </treeExpression>
@@ -2340,7 +2229,7 @@
             <source />
             <role>ib5991c3dz0013z46abz9f17z9a3c70d69e57</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchError" identity="0a51cedd-4b41-4f28-9b13-8ece48f04a85" id="i0a51ceddz4b41z4f28z9b13z8ece48f04a85" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchError" identity="0a51cedd-4b41-4f28-9b13-8ece48f04a85" id="i0a51ceddz4b41z4f28z9b13z8ece48f04a85" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i59b2a377z5b0ez455bz91eaz67be1e4c57ce</role>
           </treeExpression>
@@ -2372,15 +2261,15 @@
             <source />
             <role>i4260983az5da6z4598zb6fbzf0e015c431a6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection" identity="caf2ceca-48c9-4386-a881-db760eefc66e" id="icaf2cecaz48c9z4386za881zdb760eefc66e" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection" identity="caf2ceca-48c9-4386-a881-db760eefc66e" id="icaf2cecaz48c9z4386za881zdb760eefc66e" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>idc5071d8zd878z4821z990ez3bb8792e5a3a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError" identity="bd048d52-90f5-4d7b-aee6-f2525ec1d96e" id="ibd048d52z90f5z4d7bzaee6zf2525ec1d96e" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError" identity="bd048d52-90f5-4d7b-aee6-f2525ec1d96e" id="ibd048d52z90f5z4d7bzaee6zf2525ec1d96e" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i0fa1d625z2370z4adczb0afz57266b0370c6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalUniquenessConstraintHasNMinusOneError.NMinusOneError" identity="a13b93c0-32e2-4231-b513-72ed1b61675d" id="ia13b93c0z32e2z4231zb513z72ed1b61675d" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasNMinusOneError.NMinusOneError" identity="a13b93c0-32e2-4231-b513-72ed1b61675d" id="ia13b93c0z32e2z4231zb513z72ed1b61675d" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>ic5b85daezaabaz40b1zb300za9c2cf03e91e</role>
           </treeExpression>
@@ -2388,7 +2277,7 @@
             <source />
             <role>i35e5a908zdc07z4971z95a3z6f998ad80b5b</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryError" identity="bd11df3d-83f9-49ed-af80-7809b93be3c2" id="ibd11df3dz83f9z49edzaf80z7809b93be3c2" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityImpliedByMandatoryError" identity="bd11df3d-83f9-49ed-af80-7809b93be3c2" id="ibd11df3dz83f9z49edzaf80z7809b93be3c2" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i4108fc75z346ez4ebcza012z2e3e7692a6af</role>
           </treeExpression>
@@ -2396,7 +2285,7 @@
             <source />
             <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryError" identity="ffefa143-9558-47f0-a7a4-070bb487c8a2" id="iffefa143z9558z47f0za7a4z070bb487c8a2" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryError" identity="ffefa143-9558-47f0-a7a4-070bb487c8a2" id="iffefa143z9558z47f0za7a4z070bb487c8a2" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
           </treeExpression>
@@ -2466,32 +2355,10 @@
             <source />
             <role>i8b431735z2115z42b4zbd0dzd8956238a480</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasEqualityConstraint.EqualityConstraint" identity="c7083083-2be6-435e-98a0-59e3fab33c91" id="ic7083083z2be6z435ez98a0z59e3fab33c91" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>if5068697z685cz45baza00fzf97b106b2120</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasExternalUniquenessConstraint.ExternalUniquenessConstraint" identity="056c7893-6ca9-4817-9b45-7f9ba331a5a5" id="i056c7893z6ca9z4817z9b45z7f9ba331a5a5" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i6281ff66zc834z4fd6z9953zcec88ead8fed</role>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectificationImpliesEqualityConstraint-ORMElementLink" identity="ac4acf82-f8f3-458a-ae1a-7a00b5113649" id="iac4acf82zf8f3z458azae1az7a00b5113649" definitionlevel="none">
-            <source />
-            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-            <subType>i71920485zcd18z433ez92b1z5999efca75a3</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectificationImpliesExternalUniquenessConstraint-ORMElementLink" identity="e3d6c73c-25db-4713-803d-85a42c166d7e" id="ie3d6c73cz25dbz4713z803dz85a42c166d7e" definitionlevel="none">
-            <source />
-            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-            <subType>if3af8af0zb779z4e1czb25cz6a02b25d836b</subType>
-          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="ObjectificationImpliesFactType-ORMElementLink" identity="257c969a-95ce-4f01-995f-ff984ca820f5" id="i257c969az95cez4f01z995fzff984ca820f5" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i8bc2a4f5z890az45c9z8600z1424c1371322</subType>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="bc9d0ce4-74b5-49c9-8c55-9501378f51c8" id="ibc9d0ce4z74b5z49c9z8c55z9501378f51c8" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i59433a81z84bcz486eza960zea6e0a26bcea</role>
           </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="MinValueMismatchError-ValueMismatchError" identity="55a7ea94-0b00-4a52-96c2-01f0de280390" id="i55a7ea94z0b00z4a52z96c2z01f0de280390" definitionlevel="none">
             <source />
@@ -2535,20 +2402,20 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ic570ff8dz3cdfz45b4z8782z6025bd4350fb</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError" identity="3755585c-7022-4ca2-ae33-8680116cfec0" id="i3755585cz7022z4ca2zae33z8680116cfec0" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError" identity="3755585c-7022-4ca2-ae33-8680116cfec0" id="i3755585cz7022z4ca2zae33z8680116cfec0" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i8b5fdab2z57edz4b17za5a0z8bd667e31b26</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError" identity="1d4ea866-c904-4c7c-afc3-5cfcc7c2be62" id="i1d4ea866zc904z4c7czafc3z5cfcc7c2be62" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError" identity="1d4ea866-c904-4c7c-afc3-5cfcc7c2be62" id="i1d4ea866zc904z4c7czafc3z5cfcc7c2be62" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i622c5d2fze667z4619za390z0979056e7c70</role>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasTooManyRoleSequencesError-ORMElementLink" identity="1c991304-f65d-44c2-8d4f-64fc70da33f4" id="i1c991304zf65dz44c2z8d4fz64fc70da33f4" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasTooManyRoleSequencesError-ORMElementLink" identity="1c991304-f65d-44c2-8d4f-64fc70da33f4" id="i1c991304zf65dz44c2z8d4fz64fc70da33f4" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>if685399fz1245z4cf8za345zd5fdd84f2585</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasTooFewRoleSequencesError-ORMElementLink" identity="56f2ca8d-7a71-4a68-8faf-c8f303b0370a" id="i56f2ca8dz7a71z4a68z8fafzc8f303b0370a" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasTooFewRoleSequencesError-ORMElementLink" identity="56f2ca8d-7a71-4a68-8faf-c8f303b0370a" id="i56f2ca8dz7a71z4a68z8fafzc8f303b0370a" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i354d6ef5zc948z4917za0aczc510efa34633</subType>
@@ -2637,7 +2504,7 @@
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i5face1eez692dz4371z8638z2553d49aee10</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessImpliedByUniquenessError-ModelError" identity="3f43d69a-0645-4399-8aac-5cb3f648f443" id="i3f43d69az0645z4399z8aacz5cb3f648f443" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessImpliedByUniquenessError-ModelError" identity="3f43d69a-0645-4399-8aac-5cb3f648f443" id="i3f43d69az0645z4399z8aacz5cb3f648f443" definitionlevel="none">
             <source />
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i2bee7b88z2833z49a2z92c1z91d2716000e5</subType>
@@ -2656,11 +2523,11 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ifd77a9a0z997fz4289z8c5dz6dabfb9f75bf</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessImpliedByUniquenessError" identity="46894116-9bd5-4f8a-bd3c-3045fd62dbec" id="i46894116z9bd5z4f8azbd3cz3045fd62dbec" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessImpliedByUniquenessError" identity="46894116-9bd5-4f8a-bd3c-3045fd62dbec" id="i46894116z9bd5z4f8azbd3cz3045fd62dbec" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i4d76f7f2zdfcez458fz8003z7745360372b0</role>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError-ORMElementLink" identity="43c74b7d-0368-4968-89c2-43d9a1008412" id="i43c74b7dz0368z4968z89c2z43d9a1008412" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessConstraintHasUniquenessImpliedByUniquenessError-ORMElementLink" identity="43c74b7d-0368-4968-89c2-43d9a1008412" id="i43c74b7dz0368z4968z89c2z43d9a1008412" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i59346b60zb2c5z4942zb32ez744201e5aba9</subType>
@@ -2820,22 +2687,22 @@
             <superType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</superType>
             <subType>i012ad46dz6e3ez4ca2z97e8z44ea4f27ca75</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraint-ORMNamedElement" identity="e2e9d4cd-0a92-4aef-8c3b-5e79028646d3" id="ie2e9d4cdz0a92z4aefz8c3bz5e79028646d3" definitionlevel="use">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraint-ORMNamedElement" identity="e2e9d4cd-0a92-4aef-8c3b-5e79028646d3" id="ie2e9d4cdz0a92z4aefz8c3bz5e79028646d3" definitionlevel="use">
             <source>if5daff5azf3d8z472dzbfd7z4e7b326ca985</source>
             <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
             <subType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraint-MultiColumnExternalConstraint" identity="38446d99-f279-41c8-a4b4-ed3137f0f792" id="i38446d99zf279z41c8za4b4zed3137f0f792" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraint-SetComparisonConstraint" identity="38446d99-f279-41c8-a4b4-ed3137f0f792" id="i38446d99zf279z41c8za4b4zed3137f0f792" definitionlevel="definition">
             <source>i34e1fb49z1c4fz46f6zb837zf9e1bf4e8e84</source>
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
             <subType>i1bee2436zcd79z45bezb484z9c1dc5cb81ab</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExclusionConstraint-MultiColumnExternalConstraint" identity="f770d291-45d5-4639-bf14-47f9efbd814a" id="if770d291z45d5z4639zbf14z47f9efbd814a" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ExclusionConstraint-SetComparisonConstraint" identity="f770d291-45d5-4639-bf14-47f9efbd814a" id="if770d291z45d5z4639zbf14z47f9efbd814a" definitionlevel="definition">
             <source>i752ced87z7651z4026zbc4fz56e0bbafdcdf</source>
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
             <subType>i5373783fz9dddz4ffbz95d8z8e28cd73b98a</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SubsetConstraint-MultiColumnExternalConstraint" identity="962adcb5-1ce2-4a21-b5aa-3e42b944e2b6" id="i962adcb5z1ce2z4a21zb5aaz3e42b944e2b6" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SubsetConstraint-SetComparisonConstraint" identity="962adcb5-1ce2-4a21-b5aa-3e42b944e2b6" id="i962adcb5z1ce2z4a21zb5aaz3e42b944e2b6" definitionlevel="definition">
             <source>ieacab58ez5277z4f67z8dc2z997aa4ab5d50</source>
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
             <subType>i7ac282bfz98d2z4ad1z9bf0z5ec0cdb17d95</subType>
@@ -2869,41 +2736,22 @@
             <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
             <subType>id9ab8420z8604z4016z8827z0d59c77b47f8</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="InternalConstraint-ConstraintRoleSequence" identity="7596c5c5-99bc-4dec-b40e-86c27e011853" id="i7596c5c5z99bcz4deczb40ez86c27e011853" definitionlevel="use">
-            <source>i48b5fa7ezb061z4fb7z8770z76ed12eb01f6</source>
-            <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
-            <subType>ie17dcd50zeefez4960zb425zb87f246c6ea0</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SimpleMandatoryConstraint-InternalConstraint" identity="1b490128-e2f4-41b9-b268-775b323e27e5" id="i1b490128ze2f4z41b9zb268z775b323e27e5" definitionlevel="definition">
-            <source>i8df7641ez0a1fz4303za6a6zdaa30f117b4c</source>
-            <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-            <subType>ib09e7a1fz184ez4e7fz88e3z6ca763ded9eb</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="InternalUniquenessConstraint-InternalConstraint" identity="c2fd34b2-7643-4527-ac21-4f680aa99b61" id="ic2fd34b2z7643z4527zac21z4f680aa99b61" definitionlevel="definition">
-            <source>id87d61a8z3cbcz43c9za551z7ecd722a23c1</source>
-            <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-            <subType>i9480cf96zadfdz45b6z967ez018dddf27b94</subType>
-          </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="IsPreferred" identity="f7670cb2-ce0d-4707-a205-fd57a7e3ac31" id="if7670cb2zce0dz4707za205zfd57a7e3ac31">
-            <source />
-            <property>ic1ba5d02za7e4z4cd5zac9fz89ee1d811ee8</property>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintRoleSequence-ConstraintRoleSequence" identity="e0b2c044-ab8f-4601-81ad-39be7451d67b" id="ie0b2c044zab8fz4601z81adz39be7451d67b" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintRoleSequence-ConstraintRoleSequence" identity="e0b2c044-ab8f-4601-81ad-39be7451d67b" id="ie0b2c044zab8fz4601z81adz39be7451d67b" definitionlevel="definition">
             <source>i865e705czc844z4a44z9398z6f93cccc5586</source>
             <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
             <subType>i34a3c709z1021z4afez80dbz6302f4c681ea</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraint-ConstraintRoleSequence" identity="44f372b3-be3a-4f6f-8d0a-2ef45b7a0b8e" id="i44f372b3zbe3az4f6fz8d0az2ef45b7a0b8e" definitionlevel="use">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraint-ConstraintRoleSequence" identity="44f372b3-be3a-4f6f-8d0a-2ef45b7a0b8e" id="i44f372b3zbe3az4f6fz8d0az2ef45b7a0b8e" definitionlevel="use">
             <source>id7b8b219zb96fz4612z9161z50313c0e422a</source>
             <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
             <subType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RingConstraint-SingleColumnExternalConstraint" identity="ac65ac1a-bb58-4c35-8be3-7d14c1b4dfcd" id="iac65ac1azbb58z4c35z8be3z7d14c1b4dfcd" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="RingConstraint-SetConstraint" identity="ac65ac1a-bb58-4c35-8be3-7d14c1b4dfcd" id="iac65ac1azbb58z4c35z8be3z7d14c1b4dfcd" definitionlevel="definition">
             <source>i2b04da08zcb76z48edz81a5zcfe65824fd9d</source>
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>ic0f29d7azf057z49a6z87dfz7abcbb55d471</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-SingleColumnExternalConstraint" identity="1e1bbab2-b9b0-45b8-ba24-045cbf26f4b6" id="i1e1bbab2zb9b0z45b8zba24z045cbf26f4b6" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-SetConstraint" identity="1e1bbab2-b9b0-45b8-ba24-045cbf26f4b6" id="i1e1bbab2zb9b0z45b8zba24z045cbf26f4b6" definitionlevel="definition">
             <source>i2b02e85cz372ez453fz8ea4z137e0d6c34a5</source>
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>icee1eaf8z155fz4646zacb3zbf2e87be032a</subType>
@@ -2916,7 +2764,7 @@
             <source />
             <property>i7c65f145z1e17z4ea6z8863z2c3c6974b22c</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessConstraint-SingleColumnExternalConstraint" identity="4db19167-8e89-47ec-b267-91c2d0671ab5" id="i4db19167z8e89z47eczb267z91c2d0671ab5" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessConstraint-SetConstraint" identity="4db19167-8e89-47ec-b267-91c2d0671ab5" id="i4db19167z8e89z47eczb267z91c2d0671ab5" definitionlevel="definition">
             <source>i3dc8aab8z220az4788za9ecz3566aa973f49</source>
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>ic50782dez5fd3z4076za062zdd8983367363</subType>
@@ -2925,7 +2773,7 @@
             <source />
             <property>i81ceefc5ze227z4a8ezbe95z1a63066bc9b7</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="DisjunctiveMandatoryConstraint-SingleColumnExternalConstraint" identity="f31a21b4-67cf-442d-a100-fdbd24d501c3" id="if31a21b4z67cfz442dza100zfdbd24d501c3" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="MandatoryConstraint-SetConstraint" identity="f31a21b4-67cf-442d-a100-fdbd24d501c3" id="if31a21b4z67cfz442dza100zfdbd24d501c3" definitionlevel="definition">
             <source>i486c40edz8f0ez40a7zb39fzf90812e8c44d</source>
             <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
             <subType>i749901acz66bbz4d86za42cz127456eb5451</subType>
@@ -3014,7 +2862,7 @@
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i11a3fe3fz7986z4c12z9c6azd89b56db29a0</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="EqualityIsImpliedByMandatoryError-ModelError" identity="815edd7a-1a45-44f2-8af0-fc57adfa532b" id="i815edd7az1a45z44f2z8af0zfc57adfa532b" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="EqualityImpliedByMandatoryError-ModelError" identity="815edd7a-1a45-44f2-8af0-fc57adfa532b" id="i815edd7az1a45z44f2z8af0zfc57adfa532b" definitionlevel="definition">
             <source>icebae205zdee3z40d9z818aza25b0923e55d</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i47f92ff5z0183z4a60z96eez8528565f4b67</subType>
@@ -3024,7 +2872,7 @@
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i3c7be87dzdb77z4269z8372z33664b89c558</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="DisjunctiveMandatoryImpliedByMandatoryError-ModelError" identity="4cdb920f-0364-45e0-b19c-ef9395f7bde4" id="i4cdb920fz0364z45e0zb19czef9395f7bde4" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="MandatoryImpliedByMandatoryError-ModelError" identity="4cdb920f-0364-45e0-b19c-ef9395f7bde4" id="i4cdb920fz0364z45e0zb19czef9395f7bde4" definitionlevel="definition">
             <source>i336c9d1dz8f0az494czacb3z5f5ed93ee594</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i35071ae7z35b9z462dz91afz8d19e4bf6c30</subType>
@@ -3318,17 +3166,17 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i4f0bfd84z658bz4bf4zacdaz5db1355b1a33</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalFactConstraint-ORMElementLink" identity="cf3d3f82-cac2-4bf3-b226-a16142d514e3" id="icf3d3f82zcac2z4bf3zb226za16142d514e3" definitionlevel="use">
+          <treeExpression xsi:type="InheritanceExpression" name="FactConstraint-ORMElementLink" identity="cf3d3f82-cac2-4bf3-b226-a16142d514e3" id="icf3d3f82zcac2z4bf3zb226za16142d514e3" definitionlevel="use">
             <source>i3130cf67ze4ffz4257zbe28zf9657bbf4984</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalFactConstraint-ExternalFactConstraint" identity="9823675d-0667-4ce5-b54c-d7fe7d562db5" id="i9823675dz0667z4ce5zb54czd7fe7d562db5" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="FactSetComparisonConstraint-FactConstraint" identity="9823675d-0667-4ce5-b54c-d7fe7d562db5" id="i9823675dz0667z4ce5zb54czd7fe7d562db5" definitionlevel="definition">
             <source>i6dfd05afzb32cz44a2zbe38z5f6abac6ac83</source>
             <superType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</superType>
             <subType>i6de34beez23caz4503zb451z0bf4f9623e88</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalFactConstraint-ExternalFactConstraint" identity="2af13276-cce4-427e-ba62-8adb215a0ca9" id="i2af13276zcce4z427ezba62z8adb215a0ca9" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="FactSetConstraint-FactConstraint" identity="2af13276-cce4-427e-ba62-8adb215a0ca9" id="i2af13276zcce4z427ezba62z8adb215a0ca9" definitionlevel="definition">
             <source>if2561052zb55fz4da9z9bbfz88076febd5a0</source>
             <superType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</superType>
             <subType>i786eebcez120bz43c0z9622ze799943f4021</subType>
@@ -3338,7 +3186,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ia075a8fdzfeb9z4decz9852z85b7272a009f</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasRoleSequence-ORMElementLink" identity="b3ebf65c-cb89-44f9-84bb-462f8987d150" id="ib3ebf65czcb89z44f9z84bbz462f8987d150" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasRoleSequence-ORMElementLink" identity="b3ebf65c-cb89-44f9-84bb-462f8987d150" id="ib3ebf65czcb89z44f9z84bbz462f8987d150" definitionlevel="definition">
             <source>ibbda4a9dzde5bz4ab3zbbcdz98f9b7de4094</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i4d952086zd820z4023z9207z14302e77b703</subType>
@@ -3398,27 +3246,22 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ib82e579ez4d0cz4411z9135z8c8b15979355</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ModelHasSingleColumnExternalConstraint-ORMElementLink" identity="1a7d4740-4227-4345-830e-cc164715f09f" id="i1a7d4740z4227z4345z830ezcc164715f09f" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ModelHasSetConstraint-ORMElementLink" identity="1a7d4740-4227-4345-830e-cc164715f09f" id="i1a7d4740z4227z4345z830ezcc164715f09f" definitionlevel="definition">
             <source>i3a7600d5zc65bz4021z83fdzfe8ceea1f146</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ic39ab93ez10fdz4629za27azb5560039f36c</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ModelHasMultiColumnExternalConstraint-ORMElementLink" identity="fe592b8a-9989-484c-b11f-519020d173ad" id="ife592b8az9989z484czb11fz519020d173ad" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ModelHasSetComparisonConstraint-ORMElementLink" identity="fe592b8a-9989-484c-b11f-519020d173ad" id="ife592b8az9989z484czb11fz519020d173ad" definitionlevel="definition">
             <source>i78c7c3b1z3890z4af9z81c5z31d55caa385c</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ib4dc9ac8zf3f3z4280zbf70z32bd74695ea3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FactTypeHasInternalConstraint-ORMElementLink" identity="a6cb929b-cd8a-4e11-862f-28abcbadfe84" id="ia6cb929bzcd8az4e11z862fz28abcbadfe84" definitionlevel="definition">
-            <source>i94eae700z03d0z42f3z883bz5043c41de3f5</source>
-            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-            <subType>ic2f9b082zf991z4fbdz9945zd55032e7ce27</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasDuplicateNameError-ORMElementLink" identity="66ede632-188a-4a20-b644-6285243e82e3" id="i66ede632z188az4a20zb644z6285243e82e3" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasDuplicateNameError-ORMElementLink" identity="66ede632-188a-4a20-b644-6285243e82e3" id="i66ede632z188az4a20zb644z6285243e82e3" definitionlevel="definition">
             <source>i208fe0f7z8a28z4e35zac4bzd8995a9e0660</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i36e3a440z8e08z4b01z91cbz9182ec03f621</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasDuplicateNameError-ORMElementLink" identity="eb987eca-f0bc-4e42-88e4-c2799d003143" id="ieb987ecazf0bcz4e42z88e4zc2799d003143" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasDuplicateNameError-ORMElementLink" identity="eb987eca-f0bc-4e42-88e4-c2799d003143" id="ieb987ecazf0bcz4e42z88e4zc2799d003143" definitionlevel="definition">
             <source>i0176f3ffzdbacz4c97zadfaz77cd1679cd77</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ied53d70dzb151z45bbza0ddz13f50dc475c1</subType>
@@ -3438,7 +3281,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i6eaa9466z7d37z4c73za92dz3f96b5f06cf3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError-ORMElementLink" identity="e3302099-2f2b-4adf-9fc3-ed940e0db369" id="ie3302099z2f2bz4adfz9fc3zed940e0db369" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError-ORMElementLink" identity="e3302099-2f2b-4adf-9fc3-ed940e0db369" id="ie3302099z2f2bz4adfz9fc3zed940e0db369" definitionlevel="definition">
             <source>ie3f99f4dz8ea7z41e0z84ecz7e522c91d366</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i4d0d1805zbcf9z4026z91ccze6d21b81bf3a</subType>
@@ -3478,17 +3321,17 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i8bba1a0ezd440z4952z858ezd98be57a86a5</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="43d89a57-4b61-4f89-8fa6-faaffa03791d" id="i43d89a57z4b61z4f89z8fa6zfaaffa03791d" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetComparisonConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="43d89a57-4b61-4f89-8fa6-faaffa03791d" id="i43d89a57z4b61z4f89z8fa6zfaaffa03791d" definitionlevel="definition">
             <source>i675a2b65z0000z41d1za233za9104116b0bf</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>if9f003bbz7296z4ae9z9ddez08d0018f8aed</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="402c8af3-ec61-49fa-b6d7-c22c0f6e7af7" id="i402c8af3zec61z49fazb6d7zc22c0f6e7af7" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasCompatibleRolePlayerTypeError-ORMElementLink" identity="402c8af3-ec61-49fa-b6d7-c22c0f6e7af7" id="i402c8af3zec61z49fazb6d7zc22c0f6e7af7" definitionlevel="definition">
             <source>i92a0be59zc21bz4cb5z8168zca479953cd19</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ibe96de91zb789z468az8140zfc083adc13b7</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="InternalUniquenessConstraintHasNMinusOneError-ORMElementLink" identity="5e3aa388-2004-441b-8ef3-5e7a7ebc5ee1" id="i5e3aa388z2004z441bz8ef3z5e7a7ebc5ee1" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessConstraintHasNMinusOneError-ORMElementLink" identity="5e3aa388-2004-441b-8ef3-5e7a7ebc5ee1" id="i5e3aa388z2004z441bz8ef3z5e7a7ebc5ee1" definitionlevel="definition">
             <source>iff17e2fczfe36z4328za800zfa09586bfae8</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i3813d2d2za6ccz4f26za5ffz24b6c05e0cc5</subType>
@@ -3498,7 +3341,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i3d930f60zdf77z482dzb522zaed091f46349</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError-ORMElementLink" identity="ad709518-b3fb-4af8-ab15-576575145b18" id="iad709518zb3fbz4af8zab15z576575145b18" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraintHasEqualityImpliedByMandatoryError-ORMElementLink" identity="ad709518-b3fb-4af8-ab15-576575145b18" id="iad709518zb3fbz4af8zab15z576575145b18" definitionlevel="definition">
             <source>i2b6cf500z059az4b25z9b7dzb1ffede42165</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i80308cb5zfdf0z44ddz8a03zd8bb64dde146</subType>
@@ -3508,7 +3351,7 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i92e220d3z1ff5z487dzbb01z9343fa460cf2</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError-ORMElementLink" identity="37eb15c4-b2b3-4abd-862c-10a023e5a23b" id="i37eb15c4zb2b3z4abdz862cz10a023e5a23b" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="MandatoryConstraintHasMandatoryImpliedByMandatoryError-ORMElementLink" identity="37eb15c4-b2b3-4abd-862c-10a023e5a23b" id="i37eb15c4zb2b3z4abdz862cz10a023e5a23b" definitionlevel="definition">
             <source>if1c51f9ezaf48z455dzb872z2be8d0423c93</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i24765452zd1f9z48e5zb2d2zc222703a93cd</subType>
@@ -3538,11 +3381,11 @@
             <source>i72a826f5za089z45e4zb2abz3e86b6610489</source>
             <role>iba041047z0d0fz45dczaac3z29d5111ed1b0</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollection" identity="8ba0d778-d704-4bd9-8b8b-d86958d0aff2" id="i8ba0d778zd704z4bd9z8b8bzd86958d0aff2" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="FactSetComparisonConstraint.SetComparisonConstraintCollection" identity="8ba0d778-d704-4bd9-8b8b-d86958d0aff2" id="i8ba0d778zd704z4bd9z8b8bzd86958d0aff2" definitionlevel="use" containmentstyle="fromsource">
             <source>i5259a9cezc3bbz4a1ez93baz9cf4dbe7332d</source>
             <role>i00ab3368zd142z4d99z8457zafd56e639f5a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollection" identity="ebc4230e-878d-430f-855d-58e96a4a4276" id="iebc4230ez878dz430fz855dz58e96a4a4276" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="FactSetConstraint.SetConstraintCollection" identity="ebc4230e-878d-430f-855d-58e96a4a4276" id="iebc4230ez878dz430fz855dz58e96a4a4276" definitionlevel="use" containmentstyle="fromsource">
             <source>i79b4e237z9d23z4c95z9fa4z200a1e489d9d</source>
             <role>i6045259dza85ez40f6zbac3z744f03cef430</role>
           </treeExpression>
@@ -3550,7 +3393,7 @@
             <source>i769016d2z0ad9z4826zbbffz4c26704aa579</source>
             <role>i3b2ebee1zafe8z42cbza7dbz8ad4dc7d8be9</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollection" identity="a2048aeb-9cac-443d-83ed-9b95669da976" id="ia2048aebz9cacz443dz83edz9b95669da976" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasRoleSequence.RoleSequenceCollection" identity="a2048aeb-9cac-443d-83ed-9b95669da976" id="ia2048aebz9cacz443dz83edz9b95669da976" definitionlevel="use" containmentstyle="fromsource">
             <source>i8e519335zcd66z48a0z81dbz45e5bc618d27</source>
             <role>i152a01cez3754z4b69z9f9ez036762f25a58</role>
           </treeExpression>
@@ -3598,23 +3441,19 @@
             <source>ifc1f0906za7c3z4684za68bz86df38dbb1c4</source>
             <role>ibfb270b2zdcd7z4637z83afz956b28b9cd83</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollection" identity="4797c277-21db-4d33-b235-45c5e747a04f" id="i4797c277z21dbz4d33zb235z45c5e747a04f" definitionlevel="definition" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetConstraint.SetConstraintCollection" identity="4797c277-21db-4d33-b235-45c5e747a04f" id="i4797c277z21dbz4d33zb235z45c5e747a04f" definitionlevel="definition" containmentstyle="fromsource">
             <source>ib35d1b06zfbcaz4258z880dzefffc12f235d</source>
             <role>ie5a1060bz13abz4ab1z8a12zc6aeeef6f8bf</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollection" identity="27b7cc21-8e7c-4571-945c-cf01112f96c3" id="i27b7cc21z8e7cz4571z945czcf01112f96c3" definitionlevel="definition" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetComparisonConstraint.SetComparisonConstraintCollection" identity="27b7cc21-8e7c-4571-945c-cf01112f96c3" id="i27b7cc21z8e7cz4571z945czcf01112f96c3" definitionlevel="definition" containmentstyle="fromsource">
             <source>id6edb13ez4810z4945zb2c3zcc9614ad2cab</source>
             <role>id1aac147za429z4d57za8c7ze658130e1e74</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.InternalConstraintCollection" identity="be185f59-0e6c-414a-b3fc-9f1e1e2e1af2" id="ibe185f59z0e6cz414azb3fcz9f1e1e2e1af2" definitionlevel="definition" containmentstyle="fromsource">
-            <source>i0c0916a0z7231z44e0z9143zfbdf9c73c898</source>
-            <role>ibee9d250z53f3z48b5zb63bz337f545bf988</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameError" identity="faa67959-0b23-4080-8f91-1a1e4d2cfc30" id="ifaa67959z0b23z4080z8f91z1a1e4d2cfc30" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasDuplicateNameError.DuplicateNameError" identity="faa67959-0b23-4080-8f91-1a1e4d2cfc30" id="ifaa67959z0b23z4080z8f91z1a1e4d2cfc30" definitionlevel="use" containmentstyle="fromsource">
             <source>i9f1d6a73zdf6az4fb4zbadbz42191d3995c2</source>
             <role>if16cdde1zb246z4528za9c2z49ba4be7c288</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameError" identity="01e2fd87-6fab-4963-9a81-bfe0ce2415c0" id="i01e2fd87z6fabz4963z9a81zbfe0ce2415c0" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasDuplicateNameError.DuplicateNameError" identity="01e2fd87-6fab-4963-9a81-bfe0ce2415c0" id="i01e2fd87z6fabz4963z9a81zbfe0ce2415c0" definitionlevel="use" containmentstyle="fromsource">
             <source>icd9f5a15z869ez47e5z8537z026d0833ae98</source>
             <role>i83d48411zc26cz4755za726z76ef2716998a</role>
           </treeExpression>
@@ -3630,7 +3469,7 @@
             <source>i10e0ec08z5aacz4f87zb917z596e245c01f9</source>
             <role>ib5991c3dz0013z46abz9f17z9a3c70d69e57</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchError" identity="61e3cfad-8d75-4845-a3e5-1449b27d2537" id="i61e3cfadz8d75z4845za3e5z1449b27d2537" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchError" identity="61e3cfad-8d75-4845-a3e5-1449b27d2537" id="i61e3cfadz8d75z4845za3e5z1449b27d2537" definitionlevel="use" containmentstyle="fromsource">
             <source>i0a51ceddz4b41z4f28z9b13z8ece48f04a85</source>
             <role>i59b2a377z5b0ez455bz91eaz67be1e4c57ce</role>
           </treeExpression>
@@ -3662,15 +3501,15 @@
             <source>iac4ace85z72e0z4558za839z3f93bd6074b0</source>
             <role>i4260983az5da6z4598zb6fbzf0e015c431a6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection" identity="b1fa5ac8-7b01-4aa1-8beb-6994363e187d" id="ib1fa5ac8z7b01z4aa1z8bebz6994363e187d" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection" identity="b1fa5ac8-7b01-4aa1-8beb-6994363e187d" id="ib1fa5ac8z7b01z4aa1z8bebz6994363e187d" definitionlevel="use" containmentstyle="fromsource">
             <source>icaf2cecaz48c9z4386za881zdb760eefc66e</source>
             <role>idc5071d8zd878z4821z990ez3bb8792e5a3a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError" identity="23358b0b-ee1e-4626-a3c8-d222375967bf" id="i23358b0bzee1ez4626za3c8zd222375967bf" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError" identity="23358b0b-ee1e-4626-a3c8-d222375967bf" id="i23358b0bzee1ez4626za3c8zd222375967bf" definitionlevel="use" containmentstyle="fromsource">
             <source>ibd048d52z90f5z4d7bzaee6zf2525ec1d96e</source>
             <role>i0fa1d625z2370z4adczb0afz57266b0370c6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalUniquenessConstraintHasNMinusOneError.NMinusOneError" identity="927f9760-d873-4a6b-a393-ee95b5c33b92" id="i927f9760zd873z4a6bza393zee95b5c33b92" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasNMinusOneError.NMinusOneError" identity="927f9760-d873-4a6b-a393-ee95b5c33b92" id="i927f9760zd873z4a6bza393zee95b5c33b92" definitionlevel="use" containmentstyle="fromsource">
             <source>ia13b93c0z32e2z4231zb513z72ed1b61675d</source>
             <role>ic5b85daezaabaz40b1zb300za9c2cf03e91e</role>
           </treeExpression>
@@ -3678,7 +3517,7 @@
             <source>i01c223fbz9753z4929za1f5za26869953f94</source>
             <role>i35e5a908zdc07z4971z95a3z6f998ad80b5b</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryError" identity="36cb543c-92b5-4323-bb8c-aa1738bceb07" id="i36cb543cz92b5z4323zbb8czaa1738bceb07" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityImpliedByMandatoryError" identity="36cb543c-92b5-4323-bb8c-aa1738bceb07" id="i36cb543cz92b5z4323zbb8czaa1738bceb07" definitionlevel="use" containmentstyle="fromsource">
             <source>ibd11df3dz83f9z49edzaf80z7809b93be3c2</source>
             <role>i4108fc75z346ez4ebcza012z2e3e7692a6af</role>
           </treeExpression>
@@ -3686,7 +3525,7 @@
             <source>i747c2b28z29edz4086z96c9zcf81ee92fa78</source>
             <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryError" identity="085af5f6-ce77-4e31-9424-a7f3ec44ca12" id="i085af5f6zce77z4e31z9424za7f3ec44ca12" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryError" identity="085af5f6-ce77-4e31-9424-a7f3ec44ca12" id="i085af5f6zce77z4e31z9424za7f3ec44ca12" definitionlevel="use" containmentstyle="fromsource">
             <source>iffefa143z9558z47f0za7a4z070bb487c8a2</source>
             <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
           </treeExpression>
@@ -3756,32 +3595,10 @@
             <source>i5e102039z247fz454czad42zb18e18ff15a1</source>
             <role>i8b431735z2115z42b4zbd0dzd8956238a480</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasEqualityConstraint.EqualityConstraint" identity="1b1ff326-b97d-4f7d-9d7a-c7147b9e6e95" id="i1b1ff326zb97dz4f7dz9d7azc7147b9e6e95" definitionlevel="use" containmentstyle="fromsource">
-            <source>ic7083083z2be6z435ez98a0z59e3fab33c91</source>
-            <role>if5068697z685cz45baza00fzf97b106b2120</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasExternalUniquenessConstraint.ExternalUniquenessConstraint" identity="1ba241ff-9838-4b5e-a9c0-18d58f8d6991" id="i1ba241ffz9838z4b5eza9c0z18d58f8d6991" definitionlevel="use" containmentstyle="fromsource">
-            <source>i056c7893z6ca9z4817z9b45z7f9ba331a5a5</source>
-            <role>i6281ff66zc834z4fd6z9953zcec88ead8fed</role>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectificationImpliesEqualityConstraint-ORMElementLink" identity="945bc997-bc42-44a1-bb48-0f120004e78d" id="i945bc997zbc42z44a1zbb48z0f120004e78d" definitionlevel="definition">
-            <source>iac4acf82zf8f3z458azae1az7a00b5113649</source>
-            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-            <subType>i71920485zcd18z433ez92b1z5999efca75a3</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectificationImpliesExternalUniquenessConstraint-ORMElementLink" identity="6a1d4bdd-0272-434b-8238-b800da27fad4" id="i6a1d4bddz0272z434bz8238zb800da27fad4" definitionlevel="definition">
-            <source>ie3d6c73cz25dbz4713z803dz85a42c166d7e</source>
-            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
-            <subType>if3af8af0zb779z4e1czb25cz6a02b25d836b</subType>
-          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="ObjectificationImpliesFactType-ORMElementLink" identity="8f6165e1-c569-45b7-bba2-5a006580e237" id="i8f6165e1zc569z45b7zbba2z5a006580e237" definitionlevel="definition">
             <source>i257c969az95cez4f01z995fzff984ca820f5</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i8bc2a4f5z890az45c9z8600z1424c1371322</subType>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="be395592-4daa-4542-9f8b-ed4b5d63c031" id="ibe395592z4daaz4542z9f8bzed4b5d63c031" definitionlevel="use" containmentstyle="fromsource">
-            <source>ibc9d0ce4z74b5z49c9z8c55z9501378f51c8</source>
-            <role>i59433a81z84bcz486eza960zea6e0a26bcea</role>
           </treeExpression>
           <treeExpression xsi:type="ValuePropertyExpression" name="" identity="b5fbe53b-6956-429d-9e85-1af8cc2b0b60" id="ib5fbe53bz6956z429dz9e85z1af8cc2b0b60">
             <source />
@@ -3819,10 +3636,6 @@
             <source />
             <property>if5e0ff79zcd3bz47b3zb876z2b598f01b3be</property>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="b9f98b5d-2409-4d16-b15e-c41ec6ff3a27" id="ib9f98b5dz2409z4d16zb15ezc41ec6ff3a27">
-            <source />
-            <property>i92d7a1a4z3b81z44edz8beazf9b9254007e3</property>
-          </treeExpression>
           <treeExpression xsi:type="ValuePropertyExpression" name="" identity="761537e0-2f04-4f16-a5cb-03888049794c" id="i761537e0z2f04z4f16za5cbz03888049794c">
             <source />
             <property>i3841d4c3zd8a0z4c3ez8ebcz964420b5ff90</property>
@@ -3849,20 +3662,20 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ic570ff8dz3cdfz45b4z8782z6025bd4350fb</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError" identity="9adf67e4-482a-4ab1-9b71-bfd06a9eee37" id="i9adf67e4z482az4ab1z9b71zbfd06a9eee37" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError" identity="9adf67e4-482a-4ab1-9b71-bfd06a9eee37" id="i9adf67e4z482az4ab1z9b71zbfd06a9eee37" definitionlevel="use" containmentstyle="fromsource">
             <source>i3755585cz7022z4ca2zae33z8680116cfec0</source>
             <role>i8b5fdab2z57edz4b17za5a0z8bd667e31b26</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError" identity="474f9a96-4ee2-442d-86e7-0ad9a7b7cf23" id="i474f9a96z4ee2z442dz86e7z0ad9a7b7cf23" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError" identity="474f9a96-4ee2-442d-86e7-0ad9a7b7cf23" id="i474f9a96z4ee2z442dz86e7z0ad9a7b7cf23" definitionlevel="use" containmentstyle="fromsource">
             <source>i1d4ea866zc904z4c7czafc3z5cfcc7c2be62</source>
             <role>i622c5d2fze667z4619za390z0979056e7c70</role>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasTooManyRoleSequencesError-ORMElementLink" identity="6b16f1a9-e257-458a-b179-8f1a543ea19f" id="i6b16f1a9ze257z458azb179z8f1a543ea19f" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasTooManyRoleSequencesError-ORMElementLink" identity="6b16f1a9-e257-458a-b179-8f1a543ea19f" id="i6b16f1a9ze257z458azb179z8f1a543ea19f" definitionlevel="definition">
             <source>i1c991304zf65dz44c2z8d4fz64fc70da33f4</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>if685399fz1245z4cf8za345zd5fdd84f2585</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="SingleColumnExternalConstraintHasTooFewRoleSequencesError-ORMElementLink" identity="8b7f3777-1d0a-4634-ba11-7061b9403c34" id="i8b7f3777z1d0az4634zba11z7061b9403c34" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="SetConstraintHasTooFewRoleSequencesError-ORMElementLink" identity="8b7f3777-1d0a-4634-ba11-7061b9403c34" id="i8b7f3777z1d0az4634zba11z7061b9403c34" definitionlevel="definition">
             <source>i56f2ca8dz7a71z4a68z8fafzc8f303b0370a</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i354d6ef5zc948z4917za0aczc510efa34633</subType>
@@ -3967,7 +3780,7 @@
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i5face1eez692dz4371z8638z2553d49aee10</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessImpliedByUniquenessError-ModelError" identity="97a1b8d4-8044-4250-97a2-36708cdca50e" id="i97a1b8d4z8044z4250z97a2z36708cdca50e" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessImpliedByUniquenessError-ModelError" identity="97a1b8d4-8044-4250-97a2-36708cdca50e" id="i97a1b8d4z8044z4250z97a2z36708cdca50e" definitionlevel="definition">
             <source>i3f43d69az0645z4399z8aacz5cb3f648f443</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i2bee7b88z2833z49a2z92c1z91d2716000e5</subType>
@@ -3986,11 +3799,11 @@
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ifd77a9a0z997fz4289z8c5dz6dabfb9f75bf</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessImpliedByUniquenessError" identity="3dc68c5b-5a83-48b1-a551-debc9e86831f" id="i3dc68c5bz5a83z48b1za551zdebc9e86831f" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessImpliedByUniquenessError" identity="3dc68c5b-5a83-48b1-a551-debc9e86831f" id="i3dc68c5bz5a83z48b1za551zdebc9e86831f" definitionlevel="use" containmentstyle="fromsource">
             <source>i46894116z9bd5z4f8azbd3cz3045fd62dbec</source>
             <role>i4d76f7f2zdfcez458fz8003z7745360372b0</role>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError-ORMElementLink" identity="bd0a60df-d56f-4731-bba7-9ec704f46a06" id="ibd0a60dfzd56fz4731zbba7z9ec704f46a06" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="UniquenessConstraintHasUniquenessImpliedByUniquenessError-ORMElementLink" identity="bd0a60df-d56f-4731-bba7-9ec704f46a06" id="ibd0a60dfzd56fz4731zbba7z9ec704f46a06" definitionlevel="definition">
             <source>i43c74b7dz0368z4968z89c2z43d9a1008412</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i59346b60zb2c5z4942zb32ez744201e5aba9</subType>
@@ -4093,6 +3906,14 @@
             <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
             <subType>iddc5ef24z70bbz48aaz8481z2a76021581a3</subType>
           </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="fdca01df-578f-4e2d-8a4a-0a310f0911a8" id="ifdca01dfz578fz4e2dz8a4az0a310f0911a8">
+            <source />
+            <property>ib60c5d91zf076z4a46z819bz81001acecfdb</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="4a9e57a0-709a-4cb5-9465-1d01b6910778" id="i4a9e57a0z709az4cb5z9465z1d01b6910778">
+            <source />
+            <property>i11fe2070z97fbz4a06za198z8ed3311edc4f</property>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
@@ -4158,19 +3979,19 @@
             <source>i72a826f5za089z45e4zb2abz3e86b6610489</source>
             <role>iba041047z0d0fz45dczaac3z29d5111ed1b0</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollection" identity="f7bd5b15-b393-4a35-bfb4-94755472664c" id="if7bd5b15zb393z4a35zbfb4z94755472664c" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FactSetComparisonConstraint.SetComparisonConstraintCollection" identity="f7bd5b15-b393-4a35-bfb4-94755472664c" id="if7bd5b15zb393z4a35zbfb4z94755472664c" definitionlevel="none" containmentstyle="reference">
             <source>i5259a9cezc3bbz4a1ez93baz9cf4dbe7332d</source>
             <role>i00ab3368zd142z4d99z8457zafd56e639f5a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalFactConstraint.FactTypeCollection" identity="98aec120-b8ed-4ea1-99d8-db92cccf9c23" id="i98aec120zb8edz4ea1z99d8zdb92cccf9c23" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FactSetComparisonConstraint.FactTypeCollection" identity="98aec120-b8ed-4ea1-99d8-db92cccf9c23" id="i98aec120zb8edz4ea1z99d8zdb92cccf9c23" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i6352e486z6683z4334z8c5cz9601fa3c07d7</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollection" identity="6d924ffd-8685-47f8-8b4b-4aee49c92296" id="i6d924ffdz8685z47f8z8b4bz4aee49c92296" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FactSetConstraint.SetConstraintCollection" identity="6d924ffd-8685-47f8-8b4b-4aee49c92296" id="i6d924ffdz8685z47f8z8b4bz4aee49c92296" definitionlevel="none" containmentstyle="reference">
             <source>i79b4e237z9d23z4c95z9fa4z200a1e489d9d</source>
             <role>i6045259dza85ez40f6zbac3z744f03cef430</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalFactConstraint.FactTypeCollection" identity="203ce6ef-717d-4a4f-9204-7a06d4d242ee" id="i203ce6efz717dz4a4fz9204z7a06d4d242ee" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FactSetConstraint.FactTypeCollection" identity="203ce6ef-717d-4a4f-9204-7a06d4d242ee" id="i203ce6efz717dz4a4fz9204z7a06d4d242ee" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i3330f860z0dd6z4178zb7e8ze89cec558389</role>
           </treeExpression>
@@ -4182,11 +4003,11 @@
             <source />
             <role>ic419f56dzc63fz4972zbdebz86d9264e2de7</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollection" identity="45b88bd8-3b8e-4300-b165-7117bda6d9a0" id="i45b88bd8z3b8ez4300zb165z7117bda6d9a0" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasRoleSequence.RoleSequenceCollection" identity="45b88bd8-3b8e-4300-b165-7117bda6d9a0" id="i45b88bd8z3b8ez4300zb165z7117bda6d9a0" definitionlevel="none" containmentstyle="embedding">
             <source>i8e519335zcd66z48a0z81dbz45e5bc618d27</source>
             <role>i152a01cez3754z4b69z9f9ez036762f25a58</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasRoleSequence.ExternalConstraint" identity="d10ee4b8-976a-40cc-b35a-a0924a66d663" id="id10ee4b8z976az40cczb35aza0924a66d663" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasRoleSequence.ExternalConstraint" identity="d10ee4b8-976a-40cc-b35a-a0924a66d663" id="id10ee4b8z976az40cczb35aza0924a66d663" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>iefd54a41z2206z4daaz969azb85b6a662ca9</role>
           </treeExpression>
@@ -4278,43 +4099,35 @@
             <source />
             <role>ibabae7a3z71e7z426bza5c3zd8ec45d12df6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollection" identity="dd00628e-86a6-41cd-8d82-b322b7fc4c44" id="idd00628ez86a6z41cdz8d82zb322b7fc4c44" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetConstraint.SetConstraintCollection" identity="dd00628e-86a6-41cd-8d82-b322b7fc4c44" id="idd00628ez86a6z41cdz8d82zb322b7fc4c44" definitionlevel="none" containmentstyle="embedding">
             <source>ib35d1b06zfbcaz4258z880dzefffc12f235d</source>
             <role>ie5a1060bz13abz4ab1z8a12zc6aeeef6f8bf</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasSingleColumnExternalConstraint.Model" identity="3a626386-af99-4e37-b48e-58ee94ef8cb0" id="i3a626386zaf99z4e37zb48ez58ee94ef8cb0" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetConstraint.Model" identity="3a626386-af99-4e37-b48e-58ee94ef8cb0" id="i3a626386zaf99z4e37zb48ez58ee94ef8cb0" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i1769af74z7b45z4b04zb049zec0b7fded9f0</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollection" identity="604fa79c-08f6-4a46-b4f6-e7d40b6fa12b" id="i604fa79cz08f6z4a46zb4f6ze7d40b6fa12b" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetComparisonConstraint.SetComparisonConstraintCollection" identity="604fa79c-08f6-4a46-b4f6-e7d40b6fa12b" id="i604fa79cz08f6z4a46zb4f6ze7d40b6fa12b" definitionlevel="none" containmentstyle="embedding">
             <source>id6edb13ez4810z4945zb2c3zcc9614ad2cab</source>
             <role>id1aac147za429z4d57za8c7ze658130e1e74</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ModelHasMultiColumnExternalConstraint.Model" identity="e9405ec8-b2e5-4063-b25d-46c354ed19e6" id="ie9405ec8zb2e5z4063zb25dz46c354ed19e6" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ModelHasSetComparisonConstraint.Model" identity="e9405ec8-b2e5-4063-b25d-46c354ed19e6" id="ie9405ec8zb2e5z4063zb25dz46c354ed19e6" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i8e41a69cz0797z4882zac2az2fd39cef5a18</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.InternalConstraintCollection" identity="9b15e699-2b6c-48fb-b498-2e8ac4e854f0" id="i9b15e699z2b6cz48fbzb498z2e8ac4e854f0" definitionlevel="none" containmentstyle="embedding">
-            <source>i0c0916a0z7231z44e0z9143zfbdf9c73c898</source>
-            <role>ibee9d250z53f3z48b5zb63bz337f545bf988</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.FactType" identity="1632ed5b-39f5-4b7d-b29d-741843946141" id="i1632ed5bz39f5z4b7dzb29dz741843946141" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i95904280z42fcz47cez8ed3z40f58b2deec9</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameError" identity="aba33cb9-7813-4015-b04d-8d9ff798f363" id="iaba33cb9z7813z4015zb04dz8d9ff798f363" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasDuplicateNameError.DuplicateNameError" identity="aba33cb9-7813-4015-b04d-8d9ff798f363" id="iaba33cb9z7813z4015zb04dz8d9ff798f363" definitionlevel="none" containmentstyle="reference">
             <source>i9f1d6a73zdf6az4fb4zbadbz42191d3995c2</source>
             <role>if16cdde1zb246z4528za9c2z49ba4be7c288</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollection" identity="74066463-4da9-49b9-ae1d-0f101fb657cd" id="i74066463z4da9z49b9zae1dz0f101fb657cd" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasDuplicateNameError.SetConstraintCollection" identity="74066463-4da9-49b9-ae1d-0f101fb657cd" id="i74066463z4da9z49b9zae1dz0f101fb657cd" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i2c19092dz87b2z4b01z90c3zffac3a8b4828</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameError" identity="26e65798-e609-4bcc-87f2-15e6ac33c4ca" id="i26e65798ze609z4bccz87f2z15e6ac33c4ca" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasDuplicateNameError.DuplicateNameError" identity="26e65798-e609-4bcc-87f2-15e6ac33c4ca" id="i26e65798ze609z4bccz87f2z15e6ac33c4ca" definitionlevel="none" containmentstyle="reference">
             <source>icd9f5a15z869ez47e5z8537z026d0833ae98</source>
             <role>i83d48411zc26cz4755za726z76ef2716998a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollection" identity="9877632f-dec5-4cdf-b100-5131bb3ff42e" id="i9877632fzdec5z4cdfzb100z5131bb3ff42e" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasDuplicateNameError.SetComparisonConstraintCollection" identity="9877632f-dec5-4cdf-b100-5131bb3ff42e" id="i9877632fzdec5z4cdfzb100z5131bb3ff42e" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>if2ee7a71z9202z4dc3z9843zea3a7c1585e3</role>
           </treeExpression>
@@ -4342,11 +4155,11 @@
             <source />
             <role>i60e3df7dzcfadz4cf6z9d9bz5569fa68e373</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchError" identity="92db97d6-687d-4358-8bff-3e91ea07f493" id="i92db97d6z687dz4358z8bffz3e91ea07f493" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchError" identity="92db97d6-687d-4358-8bff-3e91ea07f493" id="i92db97d6z687dz4358z8bffz3e91ea07f493" definitionlevel="none" containmentstyle="embedding">
             <source>i0a51ceddz4b41z4f28z9b13z8ece48f04a85</source>
             <role>i59b2a377z5b0ez455bz91eaz67be1e4c57ce</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.Constraint" identity="31aaf2ed-e53b-4844-8c24-4c7ba94239f2" id="i31aaf2edze53bz4844z8c24z4c7ba94239f2" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.Constraint" identity="31aaf2ed-e53b-4844-8c24-4c7ba94239f2" id="i31aaf2edze53bz4844z8c24z4c7ba94239f2" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i4d9e7146z6f77z413ezafb4zd885bff9295e</role>
           </treeExpression>
@@ -4406,27 +4219,27 @@
             <source />
             <role>i18a22f2cze949z4384zbe3ez6c5684f47358</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection" identity="fde37922-a636-4521-ad01-cbaeaaac2771" id="ifde37922za636z4521zad01zcbaeaaac2771" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection" identity="fde37922-a636-4521-ad01-cbaeaaac2771" id="ifde37922za636z4521zad01zcbaeaaac2771" definitionlevel="none" containmentstyle="embedding">
             <source>icaf2cecaz48c9z4386za881zdb760eefc66e</source>
             <role>idc5071d8zd878z4821z990ez3bb8792e5a3a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraint" identity="e3b89d94-c01f-4537-968c-5a54c0737474" id="ie3b89d94zc01fz4537z968cz5a54c0737474" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraint" identity="e3b89d94-c01f-4537-968c-5a54c0737474" id="ie3b89d94zc01fz4537z968cz5a54c0737474" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i0730fc3bz4254z4546zb607z0cd96a428a3e</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError" identity="f7266e3b-6470-4f32-a81c-1de1a713fbed" id="if7266e3bz6470z4f32za81cz1de1a713fbed" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError" identity="f7266e3b-6470-4f32-a81c-1de1a713fbed" id="if7266e3bz6470z4f32za81cz1de1a713fbed" definitionlevel="none" containmentstyle="embedding">
             <source>ibd048d52z90f5z4d7bzaee6zf2525ec1d96e</source>
             <role>i0fa1d625z2370z4adczb0afz57266b0370c6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraint" identity="c1f6666f-0888-4270-89c7-99cf128c7c7f" id="ic1f6666fz0888z4270z89c7z99cf128c7c7f" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasCompatibleRolePlayerTypeError.SetConstraint" identity="c1f6666f-0888-4270-89c7-99cf128c7c7f" id="ic1f6666fz0888z4270z89c7z99cf128c7c7f" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>id8a3c296z8f3fz4a14zb198zade11de6a48a</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalUniquenessConstraintHasNMinusOneError.NMinusOneError" identity="98ed4238-fed1-4e21-b154-0d34dbb8efa5" id="i98ed4238zfed1z4e21zb154z0d34dbb8efa5" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasNMinusOneError.NMinusOneError" identity="98ed4238-fed1-4e21-b154-0d34dbb8efa5" id="i98ed4238zfed1z4e21zb154z0d34dbb8efa5" definitionlevel="none" containmentstyle="embedding">
             <source>ia13b93c0z32e2z4231zb513z72ed1b61675d</source>
             <role>ic5b85daezaabaz40b1zb300za9c2cf03e91e</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalUniquenessConstraintHasNMinusOneError.Constraint" identity="12ad9793-b8f4-4db0-9430-cc01ee1d3a9e" id="i12ad9793zb8f4z4db0z9430zcc01ee1d3a9e" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasNMinusOneError.Constraint" identity="12ad9793-b8f4-4db0-9430-cc01ee1d3a9e" id="i12ad9793zb8f4z4db0z9430zcc01ee1d3a9e" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>idf179dfcz8827z46b7za19azb3428ceb09ce</role>
           </treeExpression>
@@ -4438,11 +4251,11 @@
             <source />
             <role>i5a789e61z2569z4f9bz9186zfa4b575d39cf</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryError" identity="e9abf72d-6a09-4b84-9ad2-fc6fc010cea8" id="ie9abf72dz6a09z4b84z9ad2zfc6fc010cea8" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityImpliedByMandatoryError" identity="e9abf72d-6a09-4b84-9ad2-fc6fc010cea8" id="ie9abf72dz6a09z4b84z9ad2zfc6fc010cea8" definitionlevel="none" containmentstyle="embedding">
             <source>ibd11df3dz83f9z49edzaf80z7809b93be3c2</source>
             <role>i4108fc75z346ez4ebcza012z2e3e7692a6af</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraint" identity="83a3a3f2-6365-4e24-9558-443ec3412172" id="i83a3a3f2z6365z4e24z9558z443ec3412172" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityConstraint" identity="83a3a3f2-6365-4e24-9558-443ec3412172" id="i83a3a3f2z6365z4e24z9558z443ec3412172" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>ifdf5af22z719bz47fbzac2azef9bbe68e61e</role>
           </treeExpression>
@@ -4454,11 +4267,11 @@
             <source />
             <role>i6c31dffdz3f72z434fz98eaz82a98e06bce6</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryError" identity="46f43c76-c410-4a94-be38-b4a1a9b51dfb" id="i46f43c76zc410z4a94zbe38zb4a1a9b51dfb" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryError" identity="46f43c76-c410-4a94-be38-b4a1a9b51dfb" id="i46f43c76zc410z4a94zbe38zb4a1a9b51dfb" definitionlevel="none" containmentstyle="embedding">
             <source>iffefa143z9558z47f0za7a4z070bb487c8a2</source>
             <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraint" identity="21165588-05b9-4262-bbb9-529d56e9acad" id="i21165588z05b9z4262zbbb9z529d56e9acad" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraint" identity="21165588-05b9-4262-bbb9-529d56e9acad" id="i21165588z05b9z4262zbbb9z529d56e9acad" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>icf3b1ba2z1ae9z4481zb437z12939e2df798</role>
           </treeExpression>
@@ -4494,30 +4307,6 @@
             <source />
             <role>i56a35a2fz83bcz4124zb161z5f1357ab91ed</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasEqualityConstraint.EqualityConstraint" identity="de191cbe-7ec0-4696-a604-2fed688c08fb" id="ide191cbez7ec0z4696za604z2fed688c08fb" definitionlevel="none" containmentstyle="embedding">
-            <source>ic7083083z2be6z435ez98a0z59e3fab33c91</source>
-            <role>if5068697z685cz45baza00fzf97b106b2120</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasEqualityConstraint.NestingEntityTypeHasFactType" identity="8dfa0cb6-722a-46dd-b1be-961a2a39ecab" id="i8dfa0cb6z722az46ddzb1bez961a2a39ecab" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>iced10a6azf2c2z48e8zadc0za6ec3047b518</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasExternalUniquenessConstraint.ExternalUniquenessConstraint" identity="59e08903-4e9f-485d-aee9-23b2b7ed0c94" id="i59e08903z4e9fz485dzaee9z23b2b7ed0c94" definitionlevel="none" containmentstyle="embedding">
-            <source>i056c7893z6ca9z4817z9b45z7f9ba331a5a5</source>
-            <role>i6281ff66zc834z4fd6z9953zcec88ead8fed</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="NestingEntityTypeHasFactTypeHasExternalUniquenessConstraint.NestingEntityTypeHasFactType" identity="b5ac1f3f-90fe-49ee-a826-fc17c0b7426f" id="ib5ac1f3fz90fez49eeza826zfc17c0b7426f" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i5cb4d4d4z6854z4b51z92d5z65fe1a4afe87</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="f99155de-ba53-4763-b84a-a3a33a9382a9" id="if99155dezba53z4763zb84aza3a33a9382a9" definitionlevel="none" containmentstyle="fromsource">
-            <source>ibc9d0ce4z74b5z49c9z8c55z9501378f51c8</source>
-            <role>i59433a81z84bcz486eza960zea6e0a26bcea</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="InternalConstraintHasConstraintDuplicateNameError.InternalConstraint" identity="0d5d0e3b-f40c-4b9d-9967-2fa318779026" id="i0d5d0e3bzf40cz4b9dz9967z2fa318779026" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i32360264z7de9z46bazaa18z0c66d37e0bb2</role>
-          </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="ValueRangeHasMaxValueMismatchError.MaxValueMismatchError" identity="f03706c0-e4d1-4b0a-8973-91fd80323590" id="if03706c0ze4d1z4b0az8973z91fd80323590" definitionlevel="none" containmentstyle="embedding">
             <source>i64afe34cz6047z4da6z9bacz92e13d45f018</source>
             <role>ie1106d80z3da0z455czb95bz5b06552da7e3</role>
@@ -4542,19 +4331,19 @@
             <source />
             <role>i149d8a9dz2e40z40d4za409ze0434f57f939</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError" identity="55467339-de8e-4d42-9691-e18c8d7d7381" id="i55467339zde8ez4d42z9691ze18c8d7d7381" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError" identity="55467339-de8e-4d42-9691-e18c8d7d7381" id="i55467339zde8ez4d42z9691ze18c8d7d7381" definitionlevel="none" containmentstyle="embedding">
             <source>i3755585cz7022z4ca2zae33z8680116cfec0</source>
             <role>i8b5fdab2z57edz4b17za5a0z8bd667e31b26</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnExternalConstraint" identity="96fefbb6-34b8-4154-aa26-4e3e60a88bcb" id="i96fefbb6z34b8z4154zaa26z4e3e60a88bcb" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooFewRoleSequencesError.SetConstraint" identity="96fefbb6-34b8-4154-aa26-4e3e60a88bcb" id="i96fefbb6z34b8z4154zaa26z4e3e60a88bcb" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i3060f3eazceaez42dcz93bfz866a8f1c3010</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError" identity="88a814a5-bba2-4d4a-8594-98938455d3b3" id="i88a814a5zbba2z4d4az8594z98938455d3b3" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError" identity="88a814a5-bba2-4d4a-8594-98938455d3b3" id="i88a814a5zbba2z4d4az8594z98938455d3b3" definitionlevel="none" containmentstyle="embedding">
             <source>i1d4ea866zc904z4c7czafc3z5cfcc7c2be62</source>
             <role>i622c5d2fze667z4619za390z0979056e7c70</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnExternalConstraint" identity="b0825155-2ee6-4ea5-9abb-54a5e06ab7fd" id="ib0825155z2ee6z4ea5z9abbz54a5e06ab7fd" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="SetConstraintHasTooManyRoleSequencesError.SetConstraint" identity="b0825155-2ee6-4ea5-9abb-54a5e06ab7fd" id="ib0825155z2ee6z4ea5z9abbz54a5e06ab7fd" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i3549c902z5897z41c5za08bzc50d15573fc7</role>
           </treeExpression>
@@ -4614,11 +4403,11 @@
             <source />
             <role>i4403485ez75d5z4e7az84d2z0f8bf0cd0ab9</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessImpliedByUniquenessError" identity="19f66e5d-0e6c-4fb9-ba06-ec066fb7ee98" id="i19f66e5dz0e6cz4fb9zba06zec066fb7ee98" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessImpliedByUniquenessError" identity="19f66e5d-0e6c-4fb9-ba06-ec066fb7ee98" id="i19f66e5dz0e6cz4fb9zba06zec066fb7ee98" definitionlevel="none" containmentstyle="embedding">
             <source>i46894116z9bd5z4f8azbd3cz3045fd62dbec</source>
             <role>i4d76f7f2zdfcez458fz8003z7745360372b0</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessConstraint" identity="27a5f74f-62ba-48f3-9d67-706d44e5a841" id="i27a5f74fz62baz48f3z9d67z706d44e5a841" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="UniquenessConstraintHasUniquenessImpliedByUniquenessError.UniquenessConstraint" identity="27a5f74f-62ba-48f3-9d67-706d44e5a841" id="i27a5f74fz62baz48f3z9d67z706d44e5a841" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i3800537az5acfz41b6zb3bez3a0654cc24ad</role>
           </treeExpression>
@@ -4826,7 +4615,7 @@
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
         <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
       </concept>
-      <concept name="MultiColumnExternalConstraint" identity="0d75242d-1462-4936-ad30-e1ce61a6ba3f" namespace="Neumont.Tools.ORM.ObjectModel" id="i0d75242dz1462z4936zad30ze1ce61a6ba3f" isLoaded="true" isAbstract="false">
+      <concept name="SetComparisonConstraint" identity="0d75242d-1462-4936-ad30-e1ce61a6ba3f" namespace="Neumont.Tools.ORM.ObjectModel" id="i0d75242dz1462z4936zad30ze1ce61a6ba3f" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
         <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
         <valueProperties>
@@ -4896,33 +4685,7 @@
           </property>
         </valueProperties>
       </concept>
-      <concept name="SimpleMandatoryConstraint" identity="b09e7a1f-184e-4e7f-88e3-6ca763ded9eb" namespace="Neumont.Tools.ORM.ObjectModel" id="ib09e7a1fz184ez4e7fz88e3z6ca763ded9eb" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
-        <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-      </concept>
-      <concept name="InternalUniquenessConstraint" identity="9480cf96-adfd-45b6-967e-018dddf27b94" namespace="Neumont.Tools.ORM.ObjectModel" id="i9480cf96zadfdz45b6z967ez018dddf27b94" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
-        <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-        <valueProperties>
-          <property name="IsPreferred" identity="c1ba5d02-a7e4-4cd5-ac9f-89ee1d811ee8" id="ic1ba5d02za7e4z4cd5zac9fz89ee1d811ee8">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlyprefertrue" tag="" />
-            <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="59286865-da45-4d98-b3ab-2db27996ebb4" default="false" />
-          </property>
-        </valueProperties>
-      </concept>
-      <concept name="InternalConstraint" identity="e17dcd50-eefe-4960-b425-b87f246c6ea0" namespace="Neumont.Tools.ORM.ObjectModel" id="ie17dcd50zeefez4960zb425zb87f246c6ea0" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
-        <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
-        <valueProperties>
-          <property name="Modality" identity="92d7a1a4-3b81-44ed-8bea-f9b9254007e3" id="i92d7a1a4z3b81z44edz8beazf9b9254007e3">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="EnumerationPropertyInfo" name="ConstraintModality" identity="00000000-0000-0000-0000-000000000000" default="Alethic">
-              <enumeration>i7f2085b2z337cz47c0z8f7az5706eb9f9949</enumeration>
-            </propertyInfo>
-          </property>
-        </valueProperties>
-      </concept>
-      <concept name="MultiColumnExternalConstraintRoleSequence" identity="34a3c709-1021-4afe-80db-6302f4c681ea" namespace="Neumont.Tools.ORM.ObjectModel" id="i34a3c709z1021z4afez80dbz6302f4c681ea" isLoaded="true" isAbstract="false">
+      <concept name="SetComparisonConstraintRoleSequence" identity="34a3c709-1021-4afe-80db-6302f4c681ea" namespace="Neumont.Tools.ORM.ObjectModel" id="i34a3c709z1021z4afez80dbz6302f4c681ea" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
       </concept>
@@ -4952,7 +4715,7 @@
           </property>
         </valueProperties>
       </concept>
-      <concept name="ExternalUniquenessConstraint" identity="c50782de-5fd3-4076-a062-dd8983367363" namespace="Neumont.Tools.ORM.ObjectModel" id="ic50782dez5fd3z4076za062zdd8983367363" isLoaded="true" isAbstract="false">
+      <concept name="UniquenessConstraint" identity="c50782de-5fd3-4076-a062-dd8983367363" namespace="Neumont.Tools.ORM.ObjectModel" id="ic50782dez5fd3z4076za062zdd8983367363" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
         <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
         <valueProperties>
@@ -4960,13 +4723,27 @@
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlyprefertrue" tag="" />
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="94c2369a-5a3d-42d3-ab74-9cd0f2fcb905" default="false" />
           </property>
+          <property name="IsInternal" identity="11fe2070-97fb-4a06-a198-8ed3311edc4f" id="i11fe2070z97fbz4a06za198z8ed3311edc4f">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="sometimesuireadonlyprefertrue" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
+          </property>
         </valueProperties>
       </concept>
-      <concept name="DisjunctiveMandatoryConstraint" identity="749901ac-66bb-4d86-a42c-127456eb5451" namespace="Neumont.Tools.ORM.ObjectModel" id="i749901acz66bbz4d86za42cz127456eb5451" isLoaded="true" isAbstract="false">
+      <concept name="MandatoryConstraint" identity="749901ac-66bb-4d86-a42c-127456eb5451" namespace="Neumont.Tools.ORM.ObjectModel" id="i749901acz66bbz4d86za42cz127456eb5451" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
+        <valueProperties>
+          <property name="IsSimple" identity="b60c5d91-f076-4a46-819b-81001acecfdb" id="ib60c5d91zf076z4a46z819bz81001acecfdb">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="sometimesuireadonlyprefertrue" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
+          </property>
+        </valueProperties>
       </concept>
-      <concept name="SingleColumnExternalConstraint" identity="5b304d59-8d34-45c5-80fc-4a0fe122aa0a" namespace="Neumont.Tools.ORM.ObjectModel" id="i5b304d59z8d34z45c5z80fcz4a0fe122aa0a" isLoaded="true" isAbstract="false">
+      <concept name="SetConstraint" identity="5b304d59-8d34-45c5-80fc-4a0fe122aa0a" namespace="Neumont.Tools.ORM.ObjectModel" id="i5b304d59z8d34z45c5z80fcz4a0fe122aa0a" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
         <superType>id9ab8420z8604z4016z8827z0d59c77b47f8</superType>
         <valueProperties>
@@ -5048,7 +4825,7 @@
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
-      <concept name="EqualityIsImpliedByMandatoryError" identity="47f92ff5-0183-4a60-96ee-8528565f4b67" namespace="Neumont.Tools.ORM.ObjectModel" id="i47f92ff5z0183z4a60z96eez8528565f4b67" isLoaded="true" isAbstract="false">
+      <concept name="EqualityImpliedByMandatoryError" identity="47f92ff5-0183-4a60-96ee-8528565f4b67" namespace="Neumont.Tools.ORM.ObjectModel" id="i47f92ff5z0183z4a60z96eez8528565f4b67" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
@@ -5056,7 +4833,7 @@
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
-      <concept name="DisjunctiveMandatoryImpliedByMandatoryError" identity="35071ae7-35b9-462d-91af-8d19e4bf6c30" namespace="Neumont.Tools.ORM.ObjectModel" id="i35071ae7z35b9z462dz91afz8d19e4bf6c30" isLoaded="true" isAbstract="false">
+      <concept name="MandatoryImpliedByMandatoryError" identity="35071ae7-35b9-462d-91af-8d19e4bf6c30" namespace="Neumont.Tools.ORM.ObjectModel" id="i35071ae7z35b9z462dz91afz8d19e4bf6c30" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
@@ -5383,7 +5160,7 @@
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
-      <concept name="ExternalUniquenessImpliedByUniquenessError" identity="2bee7b88-2833-49a2-92c1-91d2716000e5" namespace="Neumont.Tools.ORM.ObjectModel" id="i2bee7b88z2833z49a2z92c1z91d2716000e5" isLoaded="true" isAbstract="false">
+      <concept name="UniquenessImpliedByUniquenessError" identity="2bee7b88-2833-49a2-92c1-91d2716000e5" namespace="Neumont.Tools.ORM.ObjectModel" id="i2bee7b88z2833z49a2z92c1z91d2716000e5" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>

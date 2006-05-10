@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) || classInfo.IsDerivedFrom(MultiColumnExternalConstraint.MetaClassGuid) || classInfo.IsDerivedFrom(SingleColumnExternalConstraint.MetaClassGuid);
+			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) || classInfo.IsDerivedFrom(SetComparisonConstraint.MetaClassGuid) || classInfo.IsDerivedFrom(SetConstraint.MetaClassGuid);
 		}
 		/// <summary>
 		/// Attach a deserialized ObjectType, FactType, or external constraint to the model.
@@ -158,8 +158,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			base.MergeRelate(sourceElement, elementGroup);
 			ObjectType objectType;
 			FactType factType;
-			SingleColumnExternalConstraint singleColumnConstraint;
-			MultiColumnExternalConstraint multiColumnConstraint;
+			SetConstraint SetConstraint;
+			SetComparisonConstraint SetComparisonConstraint;
 			if (null != (objectType = sourceElement as ObjectType))
 			{
 				if ("VALUETYPE" == (string) elementGroup.UserData)
@@ -172,43 +172,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				factType.Model = this;
 			}
-			else if (null != (singleColumnConstraint = sourceElement as SingleColumnExternalConstraint))
+			else if (null != (SetConstraint = sourceElement as SetConstraint))
 			{
-				singleColumnConstraint.Model = this;
+				SetConstraint.Model = this;
 			}
-			else if (null != (multiColumnConstraint = sourceElement as MultiColumnExternalConstraint))
+			else if (null != (SetComparisonConstraint = sourceElement as SetComparisonConstraint))
 			{
-				multiColumnConstraint.Model = this;
+				SetComparisonConstraint.Model = this;
 			}
 		}
 		#endregion // MergeContext functions
 	}
-	#region ORMMetaModel verbalization snippets
-	public partial class ORMMetaModel : IVerbalizationSnippetsProvider
-	{
-		#region IVerbalizationSnippetsProvider Implementation
-		/// <summary>
-		/// IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets
-		/// </summary>
-		protected VerbalizationSnippetsData[] ProvideVerbalizationSnippets()
-		{
-			return new VerbalizationSnippetsData[]
-			{
-	            new VerbalizationSnippetsData(
-					typeof(CoreVerbalizationSnippetType),
-	                CoreVerbalizationSets.Default,
-	                "Core",
-					ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
-					ResourceStrings.CoreVerbalizationSnippetsDefaultDescription)
-			};
-		}
-		VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
-		{
-			return ProvideVerbalizationSnippets();
-		}
-		#endregion // IVerbalizationSnippetsProvider Implementation
-	}
-	#endregion // ORMMetaModel verbalization snippets
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent
 	{
@@ -291,9 +265,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return FactTypesDictionary;
 			}
-			else if (parentMetaRoleGuid == ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid ||
-					 parentMetaRoleGuid == ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid ||
-					 parentMetaRoleGuid == FactTypeHasInternalConstraint.FactTypeMetaRoleGuid ||
+			else if (parentMetaRoleGuid == ModelHasSetComparisonConstraint.ModelMetaRoleGuid ||
+					 parentMetaRoleGuid == ModelHasSetConstraint.ModelMetaRoleGuid ||
 					 parentMetaRoleGuid == ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid ||
 					 parentMetaRoleGuid == RoleHasValueConstraint.RoleMetaRoleGuid)
 			{
@@ -350,28 +323,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(MultiColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(SingleColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(InternalConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))]
+		[RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError)), RuleOn(typeof(SetConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))]
 		private class RemoveDuplicateConstraintNameErrorRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ModelElement link = e.ModelElement;
-				MultiColumnExternalConstraintHasDuplicateNameError mcLink;
-				SingleColumnExternalConstraintHasDuplicateNameError scLink;
-				InternalConstraintHasDuplicateNameError iLink;
+				SetComparisonConstraintHasDuplicateNameError mcLink;
+				SetConstraintHasDuplicateNameError scLink;
 				ValueConstraintHasDuplicateNameError vLink;
 				ConstraintDuplicateNameError error = null;
-				if (null != (mcLink = link as MultiColumnExternalConstraintHasDuplicateNameError))
+				if (null != (mcLink = link as SetComparisonConstraintHasDuplicateNameError))
 				{
 					error = mcLink.DuplicateNameError;
 				}
-				else if (null != (scLink = link as SingleColumnExternalConstraintHasDuplicateNameError))
+				else if (null != (scLink = link as SetConstraintHasDuplicateNameError))
 				{
 					error = scLink.DuplicateNameError;
-				}
-				else if (null != (iLink = link as InternalConstraintHasDuplicateNameError))
-				{
-					error = iLink.DuplicateNameError;
 				}
 				else if (null != (vLink = link as ValueConstraintHasDuplicateNameError))
 				{
@@ -379,7 +347,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (error != null && !error.IsRemoved)
 				{
-					if ((error.MultiColumnExternalConstraintCollection.Count + error.SingleColumnExternalConstraintCollection.Count + error.InternalConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
+					if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
 					{
 						error.Remove();
 					}
@@ -693,36 +661,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#region TrackingList class
 				private class TrackingList : List<NamedElement>
 				{
-					private MultiColumnExternalConstraintMoveableCollection myNativeMCCollection;
-					private SingleColumnExternalConstraintMoveableCollection myNativeSCCollection;
-					private InternalConstraintMoveableCollection myNativeICCollection;
+					private SetComparisonConstraintMoveableCollection myNativeMCCollection;
+					private SetConstraintMoveableCollection myNativeSCCollection;
 					private ValueConstraintMoveableCollection myNativeVCCollection;
 					public TrackingList(ConstraintDuplicateNameError error)
 					{
-						myNativeMCCollection = error.MultiColumnExternalConstraintCollection;
-						myNativeSCCollection = error.SingleColumnExternalConstraintCollection;
-						myNativeICCollection = error.InternalConstraintCollection;
+						myNativeMCCollection = error.SetComparisonConstraintCollection;
+						myNativeSCCollection = error.SetConstraintCollection;
 						myNativeVCCollection = error.ValueConstraintCollection;
 					}
-					public MultiColumnExternalConstraintMoveableCollection NativeMultiColumnCollection
+					public SetComparisonConstraintMoveableCollection NativeMultiColumnCollection
 					{
 						get
 						{
 							return myNativeMCCollection;
 						}
 					}
-					public SingleColumnExternalConstraintMoveableCollection NativeSingleColumnCollection
+					public SetConstraintMoveableCollection NativeSingleColumnCollection
 					{
 						get
 						{
 							return myNativeSCCollection;
-						}
-					}
-					public InternalConstraintMoveableCollection NativeInternalCollection
-					{
-						get
-						{
-							return myNativeICCollection;
 						}
 					}
 					public ValueConstraintMoveableCollection NativeValueCollection
@@ -737,28 +696,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#region IDuplicateNameCollectionManager Implementation
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
-					SingleColumnExternalConstraint scConstraint = null;
-					MultiColumnExternalConstraint mcConstraint = null;
-					InternalConstraint iConstraint = null;
+					SetConstraint scConstraint = null;
+					SetComparisonConstraint mcConstraint = null;
 					ValueConstraint vConstraint = null;
 					ConstraintDuplicateNameError existingError = null;
-					if (null != (scConstraint = element as SingleColumnExternalConstraint))
+					if (null != (scConstraint = element as SetConstraint))
 					{
 						existingError = scConstraint.DuplicateNameError;
 					}
-					else if (null != (mcConstraint = element as MultiColumnExternalConstraint))
+					else if (null != (mcConstraint = element as SetComparisonConstraint))
 					{
 						existingError = mcConstraint.DuplicateNameError;
-					}
-					else if (null != (iConstraint = element as InternalConstraint))
-					{
-						existingError = iConstraint.DuplicateNameError;
 					}
 					else if (null != (vConstraint = element as ValueConstraint))
 					{
 						existingError = vConstraint.DuplicateNameError;
 					}
-					Debug.Assert(scConstraint != null || mcConstraint != null || iConstraint != null || vConstraint != null);
+					Debug.Assert(scConstraint != null || mcConstraint != null || vConstraint != null);
 					if (afterTransaction)
 					{
 						if (elementCollection == null)
@@ -810,12 +764,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 									mcConstraint.DuplicateNameError = error;
 									error.Model = mcConstraint.Model;
 								}
-								else if (iConstraint != null)
-								{
-									iConstraint.DuplicateNameError = error;
-									Debug.Assert(iConstraint.FactType != null && iConstraint.FactType.Model != null); // Can't get here unless the constraint is attached to an attached fact
-									error.Model = iConstraint.FactType.Model;
-								}
 								else if (vConstraint != null)
 								{
 									vConstraint.DuplicateNameError = error;
@@ -848,7 +796,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// to make sure that the element is not already in the collection
 							if (null != mcConstraint)
 							{
-								MultiColumnExternalConstraintMoveableCollection typedCollection = trackingList.NativeMultiColumnCollection;
+								SetComparisonConstraintMoveableCollection typedCollection = trackingList.NativeMultiColumnCollection;
 								if (notifyAdded == null || !typedCollection.Contains(mcConstraint))
 								{
 									typedCollection.Add(mcConstraint);
@@ -856,18 +804,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else if (null != scConstraint)
 							{
-								SingleColumnExternalConstraintMoveableCollection typedCollection = trackingList.NativeSingleColumnCollection;
+								SetConstraintMoveableCollection typedCollection = trackingList.NativeSingleColumnCollection;
 								if (notifyAdded == null || !typedCollection.Contains(scConstraint))
 								{
 									typedCollection.Add(scConstraint);
-								}
-							}
-							else if (null != iConstraint)
-							{
-								InternalConstraintMoveableCollection typedCollection = trackingList.NativeInternalCollection;
-								if (notifyAdded == null || !typedCollection.Contains(iConstraint))
-								{
-									typedCollection.Add(iConstraint);
 								}
 							}
 							else if (null != vConstraint)
@@ -890,21 +830,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						// Just clear the error. A rule is used to remove the error
 						// object itself when there is no longer a duplicate.
-						MultiColumnExternalConstraint mcConstraint;
-						SingleColumnExternalConstraint scConstraint;
-						InternalConstraint iConstraint;
+						SetComparisonConstraint mcConstraint;
+						SetConstraint scConstraint;
 						ValueConstraint vConstraint;
-						if (null != (scConstraint = element as SingleColumnExternalConstraint))
+						if (null != (scConstraint = element as SetConstraint))
 						{
 							scConstraint.DuplicateNameError = null;
 						}
-						else if (null != (mcConstraint = element as MultiColumnExternalConstraint))
+						else if (null != (mcConstraint = element as SetComparisonConstraint))
 						{
 							mcConstraint.DuplicateNameError = null;
-						}
-						else if (null != (iConstraint = element as InternalConstraint))
-						{
-							iConstraint.DuplicateNameError = null;
 						}
 						else if (null != (vConstraint = element as ValueConstraint))
 						{
@@ -931,7 +866,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>A base name string pattern</returns>
 			protected override string GetRootNamePattern(NamedElement element)
 			{
-				Debug.Assert(element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint || element is InternalConstraint || element is ValueConstraint);
+				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
 				// UNDONE: How explicit do we want to be on constraint naming?
 				return base.GetRootNamePattern(element);
 			}
@@ -1031,7 +966,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class ModelHasMultiColumnExternalConstraint : INamedElementDictionaryLink
+	public partial class ModelHasSetComparisonConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1052,11 +987,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns MultiColumnExternalConstraintCollection.
+		/// Returns SetComparisonConstraintCollection.
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return MultiColumnExternalConstraintCollection; }
+			get { return SetComparisonConstraintCollection; }
 		}
 		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
 		{
@@ -1072,7 +1007,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class MultiColumnExternalConstraint : INamedElementDictionaryChild
+	public partial class SetComparisonConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
@@ -1087,12 +1022,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="childMetaRoleGuid">Guid</param>
 		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{
-			parentMetaRoleGuid = ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid;
+			parentMetaRoleGuid = ModelHasSetComparisonConstraint.ModelMetaRoleGuid;
+			childMetaRoleGuid = ModelHasSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
-	public partial class ModelHasSingleColumnExternalConstraint : INamedElementDictionaryLink
+	public partial class ModelHasSetConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -1113,11 +1048,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns SingleColumnExternalConstraintCollection.
+		/// Returns SetConstraintCollection.
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return SingleColumnExternalConstraintCollection; }
+			get { return SetConstraintCollection; }
 		}
 		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
 		{
@@ -1126,47 +1061,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
 		/// Returns null.
-		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
-		{
-			get { return null; }
-		}
-		#endregion // INamedElementDictionaryLink implementation
-	}
-	public partial class FactTypeHasInternalConstraint : INamedElementDictionaryLink
-	{
-		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
-		{
-			get { return ParentRolePlayer; }
-		}
-		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns FactType.
-		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
-		{
-			get { return FactType; }
-		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
-		{
-			get { return ChildRolePlayer; }
-		}
-		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns InternalConstraintCollection.
-		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
-		{
-			get { return InternalConstraintCollection; }
-		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
-		{
-			get { return RemoteParentRolePlayer; }
-		}
-		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null
 		/// </summary>
 		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
@@ -1297,7 +1191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class SingleColumnExternalConstraint : INamedElementDictionaryChild
+	public partial class SetConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
@@ -1312,28 +1206,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="childMetaRoleGuid">Guid</param>
 		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{
-			parentMetaRoleGuid = ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
-		}
-		#endregion // INamedElementDictionaryChild implementation
-	}
-	public partial class InternalConstraint : INamedElementDictionaryChild
-	{
-		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
-		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
-		}
-		/// <summary>
-		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
-		/// this child as participating in the 'ModelHasConstraint' naming set.
-		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
-		{
-			parentMetaRoleGuid = FactTypeHasInternalConstraint.FactTypeMetaRoleGuid;
-			childMetaRoleGuid = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
+			parentMetaRoleGuid = ModelHasSetConstraint.ModelMetaRoleGuid;
+			childMetaRoleGuid = ModelHasSetConstraint.SetConstraintCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
@@ -1680,15 +1554,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			private IList myList1;
 			private IList myList2;
 			private IList myList3;
-			private IList myList4;
 			#endregion // Member Variables
 			#region Constructors
 			public CompositeCollection(ConstraintDuplicateNameError error)
 			{
-				myList1 = error.MultiColumnExternalConstraintCollection;
-				myList2 = error.SingleColumnExternalConstraintCollection;
-				myList3 = error.InternalConstraintCollection;
-				myList4 = error.ValueConstraintCollection;
+				myList1 = error.SetComparisonConstraintCollection;
+				myList2 = error.SetConstraintCollection;
+				myList3 = error.ValueConstraintCollection;
 			}
 			#endregion // Constructors
 			#region ICollection Implementation
@@ -1711,19 +1583,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (nextCount != 0)
 				{
 					myList3.CopyTo(array, baseIndex);
-					baseIndex += nextCount;
-				}
-				nextCount = myList4.Count;
-				if (nextCount != 0)
-				{
-					myList4.CopyTo(array, baseIndex);
 				}
 			}
 			int ICollection.Count
 			{
 				get
 				{
-					return myList1.Count + myList2.Count + myList3.Count + myList4.Count;
+					return myList1.Count + myList2.Count + myList3.Count;
 				}
 			}
 			bool ICollection.IsSynchronized
@@ -1756,36 +1622,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return obj;
 				}
-				foreach (object obj in myList4)
-				{
-					yield return obj;
-				}
 			}
 			#endregion // IEnumerable Implementation
 			#region IList Implementation
 			bool IList.Contains(object value)
 			{
-				if (value is MultiColumnExternalConstraint)
+				if (value is SetComparisonConstraint)
 				{
 					if (myList1.Contains(value))
 					{
 						return true;
 					}
 				}
-				else if (value is SingleColumnExternalConstraint)
+				else if (value is SetConstraint)
 				{
 					if (myList2.Contains(value))
 					{
 						return true;
 					}
 				}
-				else if (value is InternalConstraint)
-				{
-					return myList3.Contains(value);
-				}
 				else if (value is ValueConstraint)
 				{
-					return myList4.Contains(value);
+					return myList3.Contains(value);
 				}
 				return false;
 			}
@@ -1805,14 +1663,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (retVal != -1)
 						{
 							retVal += myList1.Count + myList2.Count;
-						}
-						else
-						{
-							retVal = myList4.IndexOf(value);
-							if (retVal != -1)
-							{
-								retVal += myList1.Count + myList2.Count + myList3.Count;
-							}
 						}
 					}
 				}
@@ -1841,13 +1691,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						index -= list1Count;
 						int list2Count = myList2.Count;
-						if (index >= list2Count)
-						{
-							index -= list2Count;
-							int list3Count = myList3.Count;
-							return (index >= list3Count) ? myList4[index - list3Count] : myList3[index];
-						}
-						return myList2[index];
+						return (index >= list2Count) ? myList3[index - list2Count] : myList2[index];
 					}
 					return myList1[index];
 				}
@@ -1860,16 +1704,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int list2Count = myList2.Count;
 						if (index >= list2Count)
 						{
-							index -= list2Count;
-							int list3Count = myList3.Count;
-							if (index >= list3Count)
-							{
-								myList4[index - list3Count] = value;
-							}
-							else
-							{
-								myList3[index] = value;
-							}
+							myList3[index - list2Count] = value;
 						}
 						else
 						{
@@ -1884,25 +1719,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			int IList.Add(object value)
 			{
-				InternalConstraint ic;
-				MultiColumnExternalConstraint mcec;
-				SingleColumnExternalConstraint scec;
+				SetComparisonConstraint mcec;
+				SetConstraint scec;
 				ValueConstraint vc;
-				if (null != (ic = value as InternalConstraint))
-				{
-					return myList3.Add(ic) + myList1.Count + myList2.Count;
-				}
-				else if (null != (scec = value as SingleColumnExternalConstraint))
+				if (null != (scec = value as SetConstraint))
 				{
 					return myList2.Add(scec) + myList1.Count;
 				}
-				else if (null != (mcec = value as MultiColumnExternalConstraint))
+				else if (null != (mcec = value as SetComparisonConstraint))
 				{
 					return myList1.Add(mcec);
 				}
 				else if (null != (vc = value as ValueConstraint))
 				{
-					return myList4.Add(vc);
+					return myList3.Add(vc) + myList1.Count + myList2.Count;
 				}
 				else
 				{
@@ -1930,9 +1760,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ConstraintCollection Implementation
 		#region IHasIndirectModelErrorOwner Implementation
 		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[]{
-			MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
-			SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
-			InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
+			SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
+			SetConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
 			ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid};
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()

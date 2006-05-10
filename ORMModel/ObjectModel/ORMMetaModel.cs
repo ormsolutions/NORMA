@@ -31,7 +31,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <param name="element">The element to validate</param>
 	[CLSCompliant(true)]
 	public delegate void ElementValidator(ModelElement element);
-	public partial class ORMMetaModel : IORMModelEventSubscriber
+	public partial class ORMMetaModel : IORMModelEventSubscriber, IVerbalizationSnippetsProvider
 	{
 		#region InitializingToolboxItems property
 		private static bool myReflectRulesSuspended;
@@ -165,5 +165,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded);
 		}
 		#endregion // IORMModelEventSubscriber Implementation
+		#region IVerbalizationSnippetsProvider Implementation
+		/// <summary>
+		/// IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets
+		/// </summary>
+		protected VerbalizationSnippetsData[] ProvideVerbalizationSnippets()
+		{
+			return new VerbalizationSnippetsData[]
+		{
+            new VerbalizationSnippetsData(
+				typeof(CoreVerbalizationSnippetType),
+                CoreVerbalizationSets.Default,
+                "Core",
+				ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
+				ResourceStrings.CoreVerbalizationSnippetsDefaultDescription)
+		};
+		}
+		VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
+		{
+			return ProvideVerbalizationSnippets();
+		}
+		#endregion // IVerbalizationSnippetsProvider Implementation
 	}
 }

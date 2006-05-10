@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ds:settings xmlns:ds="http://schemas.neumont.edu/ORM/DesignerSettings">
-	<ds:xmlConverters xmlns:ormRoot2006-01="http://schemas.neumont.edu/ORM/2006-01/ORMRoot" xmlns:ormCore2006-01="http://schemas.neumont.edu/ORM/2006-01/ORMCore" xmlns:unversionedOrmRoot="http://schemas.neumont.edu/ORM/ORMRoot" xmlns:unversionedOrmCore="http://schemas.neumont.edu/ORM/ORMCore">
-		<ds:xmlConverter description="Import standalone core model file" sourceElement="ormCore2006-01:ORMModel" targetElement="ormRoot2006-01:ORM2" transformFile="CoreModelImport.xslt"/>
+	<ds:xmlConverters
+		xmlns:ormRoot2006-04="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+		xmlns:ormCore2006-04="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+		xmlns:ormRoot2006-01="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
+		xmlns:ormCore2006-01="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
+		xmlns:unversionedOrmRoot="http://schemas.neumont.edu/ORM/ORMRoot"
+		xmlns:unversionedOrmCore="http://schemas.neumont.edu/ORM/ORMCore">
+		<ds:xmlConverter description="Import standalone core model file" sourceElement="ormCore2006-04:ORMModel" targetElement="ormRoot2006-04:ORM2" transformFile="CoreModelImport.xslt"/>
 		<ds:xmlConverter description="Import Visio ORM models from Orthogonal Toolbox" sourceElement="VisioModels" targetElement="ormCore2006-01:ORMModel" transformFile="VisioToCoreModelImport.xslt"/>
 		<ds:xmlConverter description="Upgrade core model to 2006-01 schema" sourceElement="unversionedOrmCore:ORMModel" targetElement="ormCore2006-01:ORMModel" transformFile="CoreUpgradeTo2006-01.xslt"/>
 		<ds:xmlConverter description="Upgrade root model to 2006-01 schema" sourceElement="unversionedOrmRoot:ORM2" targetElement="ormRoot2006-01:ORM2" transformFile="RootUpgradeTo2006-01.xslt"/>
+		<ds:xmlConverter description="Upgrade core model to 2006-04 schema" sourceElement="ormCore2006-01:ORMModel" targetElement="ormCore2006-04:ORMModel" transformFile="CoreUpgradeTo2006-04.xslt"/>
+		<ds:xmlConverter description="Upgrade root model to 2006-04 schema" sourceElement="ormRoot2006-01:ORM2" targetElement="ormRoot2006-04:ORM2" transformFile="RootUpgradeTo2006-04.xslt"/>
 	</ds:xmlConverters>
 </ds:settings>

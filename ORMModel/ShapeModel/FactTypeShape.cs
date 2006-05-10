@@ -759,7 +759,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					IList<Role> constraintRoles = factConstraint.RoleCollection;
 					int constraintRoleCount = constraintRoles.Count;
-					if (factConstraint.Constraint.ConstraintStorageStyle == ConstraintStorageStyle.MultiColumnExternalConstraint)
+					if (factConstraint.Constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint)
 					{
 						// The constraint can have multiple role sequences, and there is nothing stopping
 						// them from overlapping. Although this is a pathological state, it is a valid model
@@ -1418,8 +1418,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 							InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
 							if (activeInternalAction != null)
 							{
-								InternalUniquenessConstraint activeInternalConstraint = activeInternalAction.ActiveConstraint;
-								InternalUniquenessConstraint targetConstraint = currentConstraint as InternalUniquenessConstraint;
+								UniquenessConstraint activeInternalConstraint = activeInternalAction.ActiveConstraint;
+								UniquenessConstraint targetConstraint = currentConstraint as UniquenessConstraint;
 								if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
 								{
 									isSticky = true;
@@ -1690,8 +1690,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				DiagramClientView clientView = e.DiagramClientView;
 				ORMDiagram diagram = clientView.Diagram as ORMDiagram;
-				InternalUniquenessConstraint iuc = AssociatedConstraint as InternalUniquenessConstraint;
-				if (iuc != null)
+				UniquenessConstraint iuc = AssociatedConstraint as UniquenessConstraint;
+				if (iuc != null && iuc.IsInternal)
 				{
 					// Move on to the selection action
 					InternalUniquenessConstraintConnectAction iucca = diagram.InternalUniquenessConstraintConnectAction;
@@ -1991,8 +1991,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 										// We need to find out if this role is in one of the role sequences being edited, or if it's just selected.
 										parentFactShape.DrawHighlight(g, roleBounds, true, highlightThisRole);
 										Debug.Assert(sequence != null);
-										MultiColumnExternalConstraint mcec;
-										SingleColumnExternalConstraint scec;
+										SetComparisonConstraint mcec;
+										SetConstraint scec;
 										bool drawIndexNumbers = false;
 										string indexString = "";
 
@@ -2009,9 +2009,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 										}
 										if (drawIndexNumbers)
 										{
-											if (null != (mcec = stickyConstraint as MultiColumnExternalConstraint))
+											if (null != (mcec = stickyConstraint as SetComparisonConstraint))
 											{
-												MultiColumnExternalConstraintRoleSequenceMoveableCollection sequenceCollection = mcec.RoleSequenceCollection;
+												SetComparisonConstraintRoleSequenceMoveableCollection sequenceCollection = mcec.RoleSequenceCollection;
 												int sequenceCollectionCount = sequenceCollection.Count;
 												for (int sequenceIndex = 0; sequenceIndex < sequenceCollectionCount; ++sequenceIndex)
 												{
@@ -2035,7 +2035,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 													}
 												}
 											}
-											else if (null != (scec = stickyConstraint as SingleColumnExternalConstraint))
+											else if (null != (scec = stickyConstraint as SetConstraint))
 											{
 												indexString = (scec.RoleCollection.IndexOf(currentRole.Role) + 1).ToString();
 											}
@@ -2677,23 +2677,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				IStickyObject stickyObject;
 				ExternalConstraintShape shape;
-				MultiColumnExternalConstraint mcec;
+				SetComparisonConstraint mcec;
 				RoleBase role;
 				if ((null != (stickyObject = ((ORMDiagram)Diagram).StickyObject)) &&
 					(null != (shape = stickyObject as ExternalConstraintShape)) &&
-					(null != (mcec = shape.AssociatedConstraint as MultiColumnExternalConstraint)) &&
+					(null != (mcec = shape.AssociatedConstraint as SetComparisonConstraint)) &&
 					stickyObject.StickySelectable(role = roleField.AssociatedRole))
 				{
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
 					if ((activeExternalAction == null) ||
 						(-1 == activeExternalAction.GetActiveRoleIndex(role.Role)))
 					{
-						MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = (mcec as MultiColumnExternalConstraint).RoleSequenceCollection;
+						SetComparisonConstraintRoleSequenceMoveableCollection sequences = (mcec as SetComparisonConstraint).RoleSequenceCollection;
 						int sequenceCount = sequences.Count;
 						string formatString = ResourceStrings.SetConstraintStickyRoleTooltipFormatString;
 						for (int i = 0; i < sequenceCount; ++i)
 						{
-							MultiColumnExternalConstraintRoleSequence sequence = sequences[i];
+							SetComparisonConstraintRoleSequence sequence = sequences[i];
 							int roleIndex = sequence.RoleCollection.IndexOf(role.Role);
 							if (roleIndex != -1)
 							{
@@ -3167,17 +3167,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 				factType = AssociatedFactType;
 				if (factType != null)
 				{
-					SingleColumnExternalConstraint scec;
-					MultiColumnExternalConstraint mcec = null;
+					SetConstraint scec;
+					SetComparisonConstraint mcec = null;
 					IList factConstraints = null;
 					IList<Role> roles = null;
-					if (null != (scec = constraint as SingleColumnExternalConstraint))
+					if (null != (scec = constraint as SetConstraint))
 					{
-						factConstraints = scec.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+						factConstraints = scec.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid);
 					}
-					else if (null != (mcec = constraint as MultiColumnExternalConstraint))
+					else if (null != (mcec = constraint as SetComparisonConstraint))
 					{
-						factConstraints = mcec.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
+						factConstraints = mcec.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid);
 					}
 					if (factConstraints != null)
 					{
@@ -3537,7 +3537,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactTypeDuplicateNameError factTypeNameError;
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
-			InternalUniquenessConstraint activateConstraint = null;
+			UniquenessConstraint activateConstraint = null;
 			bool selectConstraintOnly = false;
 			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
@@ -3564,9 +3564,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store theStore = fact.Store;
 				using (Transaction tran = theStore.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
 				{
-					InternalUniquenessConstraint theConstraint = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(theStore);
-					activateConstraint = theConstraint;
-					theConstraint.FactType = fact;
+					activateConstraint = UniquenessConstraint.CreateInternalUniquenessConstraint(fact);
 					tran.Commit();
 				}
 			}
@@ -3592,24 +3590,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (constraintNameError = error as ConstraintDuplicateNameError))
 			{
 				// We'll get here if one of the constraints we own has a duplicate name
-				IList internalConstraints = constraintNameError.InternalConstraintCollection;
-				int internalConstraintsCount = internalConstraints.Count;
+				IList setConstraints = constraintNameError.SetConstraintCollection;
+				int setConstraintsCount = setConstraints.Count;
 				fact = AssociatedFactType;
-				for (int i = 0; i < internalConstraintsCount; ++i)
+				for (int i = 0; i < setConstraintsCount; ++i)
 				{
-					InternalConstraint ic = (InternalConstraint)internalConstraints[i];
-					if (ic.FactType == fact)
+					SetConstraint setConstraint = (SetConstraint)setConstraints[i];
+					IConstraint ic = setConstraint.Constraint;
+					if (ic.ConstraintIsInternal &&
+						setConstraint.FactTypeCollection.Contains(fact))
 					{
-						switch (ic.Constraint.ConstraintType)
+						switch (ic.ConstraintType)
 						{
 							case ConstraintType.InternalUniqueness:
-								activateConstraint = (InternalUniquenessConstraint)ic;
+								activateConstraint = (UniquenessConstraint)setConstraint;
 								selectConstraintOnly = true;
 								activateNamePropertyAfterSelect = true;
 								break;
 							case ConstraintType.SimpleMandatory:
-								Diagram.ActiveDiagramView.DiagramClientView.Selection.Set(new DiagramItem(this, RolesShape, new RoleSubField(ic.RoleCollection[0])));
-								ActivateNameProperty(ic);
+								Diagram.ActiveDiagramView.DiagramClientView.Selection.Set(new DiagramItem(this, RolesShape, new RoleSubField(setConstraint.RoleCollection[0])));
+								ActivateNameProperty(setConstraint);
 								break;
 						}
 						break;
@@ -3735,8 +3735,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Get a diagram item for an internal uniqueness constraint on the associated fact.
 		/// A diagram item is used to represent selection in a DiagramClientView.
 		/// </summary>
-		public DiagramItem GetDiagramItem(InternalUniquenessConstraint constraint)
+		public DiagramItem GetDiagramItem(UniquenessConstraint constraint)
 		{
+			Debug.Assert(constraint.IsInternal);
 			return new DiagramItem(this, (ConstraintDisplayPosition == ConstraintDisplayPosition.Top) ? myTopConstraintShapeField : myBottomConstraintShapeField, new ConstraintSubField(constraint));
 		}
 		/// <summary>
@@ -3756,7 +3757,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			RectangleD rect = RectangleD.Empty;
 			PointD retVal = PointD.Empty;
-			if (constraint.ConstraintStorageStyle == ConstraintStorageStyle.InternalConstraint)
+			if (constraint.ConstraintIsInternal)
 			{
 				// We know the attach location of an internal constraint
 				ConstraintDisplayPosition position = ConstraintDisplayPosition;
@@ -3938,7 +3939,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>true if the PreferredIdentifierFor property on the role is not null.</returns>
 		protected virtual bool ShouldDrawConstraintPreferred(IConstraint constraint)
 		{
-			return constraint.PreferredIdentifierFor != null;
+			if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
+			{
+				return (constraint as UniquenessConstraint).PreferredIdentifierFor != null;
+			}
+			return false;
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
@@ -4423,7 +4428,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(InternalUniquenessConstraint.ModalityMetaAttributeGuid);
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(UniquenessConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
 
 			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
@@ -4438,7 +4443,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(InternalUniquenessConstraint.ModalityMetaAttributeGuid);
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(UniquenessConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
 
 			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
@@ -4450,10 +4455,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void InternalConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
-			InternalUniquenessConstraint iuc = e.ModelElement as InternalUniquenessConstraint;
-			if (iuc != null && !iuc.IsRemoved)
+			UniquenessConstraint iuc = e.ModelElement as UniquenessConstraint;
+			FactTypeMoveableCollection factTypes;
+			if (iuc != null &&
+				!iuc.IsRemoved &&
+				iuc.IsInternal &&
+				1 == (factTypes = iuc.FactTypeCollection).Count)
 			{
-				FactType factType = iuc.FactType;
+				FactType factType = factTypes[0];
 				if (factType != null && !factType.IsRemoved)
 				{
 					foreach (PresentationElement pel in factType.PresentationRolePlayers)
@@ -4473,10 +4482,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			InternalUniquenessConstraint constraint;
+			UniquenessConstraint constraint = link.PreferredIdentifier;
+			FactTypeMoveableCollection factTypes;
 			FactType factType;
-			if ((null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint)) &&
-				(null != (factType = constraint.FactType)))
+			if (constraint.IsInternal &&
+				1 == (factTypes = constraint.FactTypeCollection).Count &&
+				null != (factType = factTypes[0]))
 			{
 				foreach (PresentationElement pel in factType.PresentationRolePlayers)
 				{
@@ -4494,11 +4505,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public static void PreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			InternalUniquenessConstraint constraint;
+			UniquenessConstraint constraint = link.PreferredIdentifier;
+			FactTypeMoveableCollection factTypes;
 			FactType factType;
-			if ((null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint)) &&
-				!constraint.IsRemoved &&
-				(null != (factType = constraint.FactType)))
+			if (!constraint.IsRemoved &&
+				1 == (factTypes = constraint.FactTypeCollection).Count &&
+				null != (factType = factTypes[0]))
 			{
 				foreach (PresentationElement pel in factType.PresentationRolePlayers)
 				{

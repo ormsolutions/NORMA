@@ -9,9 +9,9 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
-	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram"
 	exclude-result-prefixes="#default xsl">
 	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
 	<xsl:template match="orm:ORMModel">

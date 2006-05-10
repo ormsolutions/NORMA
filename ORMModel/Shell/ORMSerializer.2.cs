@@ -660,7 +660,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The namespace for the root node of the ORM document
 		/// </summary>
-		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/ORMRoot";
+		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMRoot";
 
 		/// <summary>
 		/// Used for sorting.

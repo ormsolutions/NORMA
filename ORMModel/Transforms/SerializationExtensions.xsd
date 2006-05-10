@@ -24,6 +24,9 @@
 	</xs:annotation>
 
 	<xs:simpleType name="ElementWriteStyle">
+		<xs:annotation>
+			<xs:documentation>How to write and element.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="NotWritten">
 				<xs:annotation>
@@ -87,11 +90,7 @@
 				<xs:documentation>The new namespace.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="WriteStyle" type="ElementWriteStyle">
-			<xs:annotation>
-				<xs:documentation>How to write.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
+		<xs:attribute name="WriteStyle" type="ElementWriteStyle"/>
 		<xs:attribute name="DoubleTagName" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>
@@ -153,6 +152,12 @@
 			<xs:attribute name="Name" type="xs:string" use="required">
 				<xs:annotation>
 					<xs:documentation>The new name of the element.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="WriteStyle" type="ElementWriteStyle"/>
+			<xs:attribute name="DoubleTagName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>

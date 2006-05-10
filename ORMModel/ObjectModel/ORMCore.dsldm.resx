@@ -1,20 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<metadata name="Common Public License Copyright Notice">
-		<value>
-			Neumont Object-Role Modeling Architect for Visual Studio
-
-			Copyright © Neumont University. All rights reserved.
-
-			The use and distribution terms for this software are covered by the
-			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
-			can be found in the file CPL.txt at the root of this distribution.
-			By using this software in any fashion, you are agreeing to be bound by
-			the terms of this license.
-
-			You must not remove this notice, or any other, from this software.
-		</value>
-	</metadata>
   <!-- 
     Microsoft ResX Schema 
     
@@ -258,10 +243,10 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionType" xml:space="preserve">
     <value>ExclusionType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint" xml:space="preserve">
     <value>ExternalUniquenessConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsPreferred" xml:space="preserve">
     <value>IsPreferredIdentifier</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType" xml:space="preserve">
@@ -279,11 +264,8 @@
   <data name="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint" xml:space="preserve">
     <value>InternalUniquenessConstraint</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred" xml:space="preserve">
-    <value>IsPreferredIdentifier</value>
-  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint" xml:space="preserve">
-    <value>MandatoryConstraint</value>
+    <value>DisjunctiveMandatoryConstraint</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType" xml:space="preserve">
     <value>ObjectifiedFactType</value>
@@ -362,6 +344,9 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RootType.NoteText" xml:space="preserve">
     <value>Note</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint" xml:space="preserve">
+    <value>SimpleMandatoryConstraint</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraint" xml:space="preserve">
     <value>SubsetConstraint</value>
@@ -473,5 +458,11 @@
   </data>
   <data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
     <value>Partially Derived</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.IsSimple" xml:space="preserve">
+    <value>IsSimple</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsInternal" xml:space="preserve">
+    <value>IsInternal</value>
   </data>
 </root>

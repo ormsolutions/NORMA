@@ -245,14 +245,14 @@ namespace Neumont.Tools.ORM.Shell
 				object resolvedObject = EditorUtility.ResolveContextInstance(e.Item, false);
 				ModelElement element;
 				IDataObject elementData = new DataObject();
-				if (null != (element = resolvedObject  as MultiColumnExternalConstraint))
+				if (null != (element = resolvedObject  as SetComparisonConstraint))
 				{
-					elementData.SetData(typeof(MultiColumnExternalConstraint), element);
+					elementData.SetData(typeof(SetComparisonConstraint), element);
 					ObjectModelBrowser.DoDragDrop(elementData, DragDropEffects.All);
 				}
-				else if (null != (element = resolvedObject as SingleColumnExternalConstraint))
+				else if (null != (element = resolvedObject as SetConstraint))
 				{
-					elementData.SetData(typeof(SingleColumnExternalConstraint), element);
+					elementData.SetData(typeof(SetConstraint), element);
 					ObjectModelBrowser.DoDragDrop(elementData, DragDropEffects.All);
 				}
 				else if ((element = resolvedObject as ObjectType) != null || (element  = resolvedObject as FactType)!= null)

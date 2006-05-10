@@ -2247,7 +2247,8 @@
 	</xsl:template>
 	<xsl:template name="CreateORMCustomSerializedElementInfoNameVariable">
 		<xsl:param name="modifier"/>
-		<xsl:if test="count(se:ConditionalName)">
+		<xsl:variable name="conditionalNames" select="se:ConditionalName"/>
+		<xsl:if test="$conditionalNames">
 			<plx:local dataTypeName=".string" name="name{$modifier}">
 				<plx:initialize>
 					<xsl:choose>
@@ -2262,7 +2263,38 @@
 					</xsl:choose>
 				</plx:initialize>
 			</plx:local>
-			<xsl:for-each select="se:ConditionalName">
+			<xsl:variable name="primaryWriteStyle" select="string(@WriteStyle)"/>
+			<xsl:if test="$conditionalNames/@WriteStyle[not(.=$primaryWriteStyle)]">
+				<plx:local dataTypeName="ORMCustomSerializedElementWriteStyle" name="writeStyle{$modifier}">
+					<plx:initialize>
+						<plx:callStatic name="Element" dataTypeName="ORMCustomSerializedElementWriteStyle" type="field">
+							<xsl:if test="$primaryWriteStyle">
+								<xsl:attribute name="name">
+									<xsl:value-of select="$primaryWriteStyle"/>
+								</xsl:attribute>
+							</xsl:if>
+						</plx:callStatic>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
+			<xsl:variable name="primaryDoubleTagName" select="string(@DoubleTagName)"/>
+			<xsl:if test="$conditionalNames/@DoubleTagName[not(.=$primaryDoubleTagName)]">
+				<plx:local dataTypeName=".string" name="doubleTagName{$modifier}">
+					<plx:initialize>
+						<xsl:choose>
+							<xsl:when test="$primaryDoubleTagName">
+								<plx:string>
+									<xsl:value-of select="$primaryDoubleTagName"/>
+								</plx:string>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:nullKeyword/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
+			<xsl:for-each select="$conditionalNames">
 				<xsl:variable name="branchType">
 					<xsl:choose>
 						<xsl:when test="position()=1">
@@ -2287,12 +2319,37 @@
 							</plx:string>
 						</plx:right>
 					</plx:assign>
+					<xsl:variable name="currentWriteStyle" select="string(@WriteStyle)"/>
+					<xsl:if test="$currentWriteStyle and not($currentWriteStyle=$primaryWriteStyle)">
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="writeStyle{$modifier}"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="{$currentWriteStyle}" dataTypeName="ORMCustomSerializedElementWriteStyle" type="field"/>
+							</plx:right>
+						</plx:assign>
+					</xsl:if>
+					<xsl:variable name="currentDoubleTagName" select="string(@DoubleTagName)"/>
+					<xsl:if test="$currentDoubleTagName and not($currentDoubleTagName=$primaryDoubleTagName)">
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="doubleTagName{$modifier}"/>
+							</plx:left>
+							<plx:right>
+								<plx:string>
+									<xsl:value-of select="$currentDoubleTagName"/>
+								</plx:string>
+							</plx:right>
+						</plx:assign>
+					</xsl:if>
 				</xsl:element>
 			</xsl:for-each>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="PassORMCustomSerializedElementInfoParams">
 		<xsl:param name="modifier"/>
+		<xsl:variable name="conditionalNames" select="se:ConditionalName"/>
 		<plx:passParam>
 			<xsl:choose>
 				<xsl:when test="string-length(@Prefix)">
@@ -2307,7 +2364,7 @@
 		</plx:passParam>
 		<plx:passParam>
 			<xsl:choose>
-				<xsl:when test="count(se:ConditionalName)">
+				<xsl:when test="$conditionalNames">
 					<plx:nameRef name="name{$modifier}"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -2337,35 +2394,51 @@
 			</xsl:choose>
 		</plx:passParam>
 		<plx:passParam>
-			<plx:callStatic name="pending" type="field" dataTypeName="ORMCustomSerializedElementWriteStyle">
-				<xsl:attribute name="name">
-					<xsl:choose>
-						<xsl:when test="string-length(@DoubleTagName)">
-							<xsl:text>DoubleTaggedElement</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:choose>
-								<xsl:when test="string-length(@WriteStyle)">
-									<xsl:value-of select="@WriteStyle"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:text>Element</xsl:text>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:attribute>
-			</plx:callStatic>
-		</plx:passParam>
-		<plx:passParam>
+			<xsl:variable name="primaryWriteStyle" select="string(@WriteStyle)"/>
 			<xsl:choose>
-				<xsl:when test="string-length(@DoubleTagName)">
-					<plx:string>
-						<xsl:value-of select="@DoubleTagName"/>
-					</plx:string>
+				<xsl:when test="$conditionalNames/@WriteStyle[not(.=$primaryWriteStyle)]">
+					<plx:nameRef name="writeStyle{$modifier}"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:nullKeyword/>
+					<plx:callStatic name="pending" type="field" dataTypeName="ORMCustomSerializedElementWriteStyle">
+						<xsl:attribute name="name">
+							<xsl:choose>
+								<xsl:when test="string-length(@DoubleTagName)">
+									<xsl:text>DoubleTaggedElement</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:choose>
+										<xsl:when test="$primaryWriteStyle">
+											<xsl:value-of select="$primaryWriteStyle"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>Element</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+					</plx:callStatic>
+				</xsl:otherwise>
+			</xsl:choose>
+		</plx:passParam>
+		<plx:passParam>
+			<xsl:variable name="primaryDoubleTagName" select="string(@DoubleTagName)"/>
+			<xsl:choose>
+				<xsl:when test="$conditionalNames/@DoubleTagName[not(.=$primaryDoubleTagName)]">
+					<plx:nameRef name="doubleTagName{$modifier}"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="$primaryDoubleTagName">
+							<plx:string>
+								<xsl:value-of select="$primaryDoubleTagName"/>
+							</plx:string>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:nullKeyword/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:passParam>

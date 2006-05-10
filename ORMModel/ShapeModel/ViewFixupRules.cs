@@ -62,8 +62,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					objectTypeShape.AutoResize();
 
 					ObjectType objectType = objectTypeShape.ModelElement as ObjectType;
-					InternalUniquenessConstraint preferredConstraint;
-					if (null != (preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint) &&
+					UniquenessConstraint preferredConstraint;
+					if (null != (preferredConstraint = objectType.PreferredIdentifier) &&
+						preferredConstraint.IsInternal &&
 						preferredConstraint.RoleCollection[0].RolePlayer.IsValueType)
 					{
 
@@ -72,7 +73,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
 						// View or Hide FactType
-						FactType factType = preferredConstraint.FactType;
+						FactType factType = preferredConstraint.FactTypeCollection[0];
 						if (!expandingRefMode)
 						{
 							RemoveShapesFromDiagram(factType, parentDiagram);
@@ -128,8 +129,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 
 						//View or Hide ObjectTypePlaysRole links
-						foreach (Role role in factType.RoleCollection)
+						foreach (RoleBase roleBase in factType.RoleCollection)
 						{
+							Role role = roleBase.Role;
 							foreach (ObjectTypePlaysRole link in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
 							{
 								if (expandingRefMode)
@@ -235,74 +237,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactTypechanged
 		#endregion // ModelHasFactType fixup
 		#region ModelHasConstraint fixup
-		#region MultiColumnExternalConstraintAdded class
-		[RuleOn(typeof(ModelHasMultiColumnExternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class MultiColumnExternalConstraintAdded : AddRule
+		#region SetComparisonConstraintAdded class
+		[RuleOn(typeof(ModelHasSetComparisonConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class SetComparisonConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelHasMultiColumnExternalConstraint link = e.ModelElement as ModelHasMultiColumnExternalConstraint;
+				ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
 				if (link != null)
 				{
-					Diagram.FixUpDiagram(link.Model, link.MultiColumnExternalConstraintCollection);
+					Diagram.FixUpDiagram(link.Model, link.SetComparisonConstraintCollection);
 				}
 			}
 		}
-		#endregion // MultiColumnExternalConstraintAdded class
-		#region SingleColumnExternalConstraintAdded class
-		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class SingleColumnExternalConstraintAdded : AddRule
+		#endregion // SetComparisonConstraintAdded class
+		#region SetConstraintAdded class
+		[RuleOn(typeof(ModelHasSetConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class SetConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelHasSingleColumnExternalConstraint link = e.ModelElement as ModelHasSingleColumnExternalConstraint;
+				ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
 				if (link != null)
 				{
-					Diagram.FixUpDiagram(link.Model, link.SingleColumnExternalConstraintCollection);
+					Diagram.FixUpDiagram(link.Model, link.SetConstraintCollection);
 				}
 			}
 		}
-		#endregion // SingleColumnExternalConstraintAdded class
+		#endregion // SetConstraintAdded class
 		#region ConstraintSetChanged fixup
-		#region FactTypeHasInternalConstraintAdded class
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class FactTypeHasInternalConstraintAdded : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasInternalConstraint link;
-				FactType fact;
-				InternalConstraint constraint;
-				if (null != (link = e.ModelElement as FactTypeHasInternalConstraint) &&
-					null != (fact = link.FactType) &&
-					null != (constraint = link.InternalConstraintCollection))
-				{
-					FactTypeShape.ConstraintSetChanged(fact, constraint, false);
-				}
-			}
-		}
-		#endregion // FactTypeHasInternalConstraintAdded class
-		#region FactTypeHasInternalConstraintRemoved class
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class FactTypeHasInternalConstraintRemoved : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				FactTypeHasInternalConstraint link;
-				FactType fact;
-				InternalConstraint constraint;
-				if (null != (link = e.ModelElement as FactTypeHasInternalConstraint) &&
-					null != (fact = link.FactType) &&
-					null != (constraint = link.InternalConstraintCollection))
-				{
-					if (!fact.IsRemoved)
-					{
-						FactTypeShape.ConstraintSetChanged(fact, constraint, false);
-					}
-				}
-			}
-		}
-		#endregion // FactTypeHasInternalConstraintRemoved class
 		#region ConstraintRoleSequenceRoleAdded class
 		/// <summary>
 		/// Update the fact type when constraint roles are removed
@@ -360,13 +323,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
 				FactType factType;
-				MultiColumnExternalFactConstraint factConstraint = link.FactConstraintCollection as MultiColumnExternalFactConstraint;
+				FactSetComparisonConstraint factConstraint = link.FactConstraintCollection as FactSetComparisonConstraint;
 				if (factConstraint != null &&
 					!factConstraint.IsRemoved &&
 					(null != (factType = factConstraint.FactTypeCollection)) &&
 					!factType.IsRemoved)
 				{
-					FactTypeShape.ConstraintSetChanged(factType, factConstraint.MultiColumnExternalConstraintCollection, false);
+					FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraintCollection, false);
 				}
 			}
 		}
@@ -723,9 +686,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Role role = roleValueConstraint.Role;
 			FactType factType = role.FactType;
 			ObjectType objectType = null;
-			foreach (Role r in factType.RoleCollection)
+			foreach (RoleBase rBase in factType.RoleCollection)
 			{
-				if (!Object.ReferenceEquals(r, role))
+				Role r = rBase.Role;
+				if (!object.ReferenceEquals(r, role))
 				{
 					objectType = r.RolePlayer;
 				}
@@ -742,24 +706,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ValueTypeHasValueConstraint fixup
-		#region ExternalFactConstraint fixup
-		#region ExternalFactConstraintAdded class
-		[RuleOn(typeof(ExternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ExternalFactConstraintAdded : AddRule
+		#region FactConstraint fixup
+		#region FactConstraintAdded class
+		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private class FactConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ExternalFactConstraint link = e.ModelElement as ExternalFactConstraint;
+				FactConstraint link = e.ModelElement as FactConstraint;
 				if (link != null)
 				{
 					FixupExternalConstraintLink(link);
 				}
 			}
 		}
-		#endregion // ExternalFactConstraintAdded class
-		#region ExternalFactConstraintRemoved class
-		[RuleOn(typeof(ExternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ExternalFactConstraintRemoved : RemoveRule
+		#endregion // FactConstraintAdded class
+		#region FactConstraintRemoved class
+		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class FactConstraintRemoved : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
@@ -776,13 +740,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ExternalFactConstraintRemoved class
+		#endregion // FactConstraintRemoved class
 		#region DisplayExternalConstraintLinksFixupListener class
 		/// <summary>
 		/// A fixup class to display external constraint links for
 		/// when both endpoints are represented on the diagram
 		/// </summary>
-		private class DisplayExternalConstraintLinksFixupListener : DeserializationFixupListener<ExternalFactConstraint>
+		private class DisplayExternalConstraintLinksFixupListener : DeserializationFixupListener<FactConstraint>
 		{
 			/// <summary>
 			/// Create a new DisplayExternalConstraintLinksFixupListener
@@ -793,10 +757,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Add external fact constraint links to the diagram
 			/// </summary>
-			/// <param name="element">A ExternalFactConstraint instance</param>
+			/// <param name="element">A FactConstraint instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ExternalFactConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected override void ProcessElement(FactConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FixupExternalConstraintLink(element);
 			}
@@ -806,7 +770,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Helper function to display external constraint links.
 		/// </summary>
 		/// <param name="link">An ObjectTypePlaysRole element</param>
-		private static void FixupExternalConstraintLink(ExternalFactConstraint link)
+		private static void FixupExternalConstraintLink(FactConstraint link)
 		{
 			// Make sure the constraint, fact type, and link
 			// are displayed on the diagram
@@ -825,7 +789,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ExternalFactConstraint fixup
+		#endregion // FactConstraint fixup
 		#region SubjectHasPresentation fixup
 		#region PresentationLinkRemoved class
 		[RuleOn(typeof(SubjectHasPresentation))]

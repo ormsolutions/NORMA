@@ -81,6 +81,46 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The display name used for an internal uniqueness constraint
+		/// </summary>
+		public static string InternalUniquenessConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint");
+			}
+		}
+		/// <summary>
+		/// The display name used for an external uniqueness constraint
+		/// </summary>
+		public static string ExternalUniquenessConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.UniquenessConstraint");
+			}
+		}
+		/// <summary>
+		/// The display name used for a disjunctive mandatory constraint
+		/// </summary>
+		public static string DisjunctiveMandatoryConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.MandatoryConstraint");
+			}
+		}
+		/// <summary>
+		/// The display name used for a simple mandatory constraint
+		/// </summary>
+		public static string SimpleMandatoryConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint");
+			}
+		}
+		/// <summary>
 		/// The display name used for a ReadingType
 		/// </summary>
 		public static string ReadingType
@@ -683,11 +723,11 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.
 		/// </summary>
-		public static string ModelErrorConstraintExternalUniquenessImplied
+		public static string ModelErrorConstraintUniquenessImplied
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalUniquenessImpliedByUniquenessError.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.UniquenessImpliedByUniquenessError.Text");
 			}
 		}
 		/// <summary>
@@ -871,43 +911,33 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.
+		/// Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.
 		/// </summary>
-		public static string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint
+		public static string ModelExceptionInvalidPreferredIdentifierPreConditions
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions");
 			}
 		}
 		/// <summary>
-		/// Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.
+		/// Exception message when an attempt is made to attached facts from an external model to a constraint.
 		/// </summary>
-		public static string ModelExceptionInvalidExternalPreferredIdentifierPreConditions
+		public static string ModelExceptionConstraintEnforceNoForeignFacts
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceNoForeignFacts");
 			}
 		}
 		/// <summary>
-		/// Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.
+		/// Exception message when an attempt is made to attached more than one fact to an internal constraint.
 		/// </summary>
-		public static string ModelExceptionInvalidInternalPreferredIdentifierPreConditions
+		public static string ModelExceptionConstraintEnforceSingleFactForInternalConstraint
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions");
-			}
-		}
-		/// <summary>
-		/// Exception message when an attempt is made to add roles from different fact types to a role sequence owned by an internal constraint.
-		/// </summary>
-		public static string ModelExceptionInternalConstraintInconsistentRoleOwners
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalConstraint.InconsistentRoleOwners");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.EnforceSingleFactForInternalConstraint");
 			}
 		}
 		/// <summary>
@@ -1743,21 +1773,21 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.
 		/// </summary>
-		public static string ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError
+		public static string ModelErrorSetConstraintCompatibleRolePlayerTypeError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text");
 			}
 		}
 		/// <summary>
 		/// The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.
 		/// </summary>
-		public static string ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError
+		public static string ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
 			}
 		}
 		/// <summary>
@@ -1773,11 +1803,11 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// Constraint '{0}' is implied by mandatory constraints.
 		/// </summary>
-		public static string ModelErrorExternalEqualityIsImpliedByMandatoryError
+		public static string ModelErrorExternalEqualityImpliedByMandatoryError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text");
 			}
 		}
 		/// <summary>
@@ -1823,11 +1853,11 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.
 		/// </summary>
-		public static string DisjunctiveMandatoryImpliedByMandatoryError
+		public static string MandatoryImpliedByMandatoryError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.DisjunctiveMandatoryImpliedByMandatoryError.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.MandatoryImpliedByMandatoryError.Message");
 			}
 		}
 		/// <summary>

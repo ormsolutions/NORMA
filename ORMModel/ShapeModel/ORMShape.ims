@@ -64,8 +64,8 @@
 					<derivedshapes />
 				</shape>
 				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
-					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
-					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)" />
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SetConstraint)" />
 					<metaattributes />
 					<derivedshapes>
 						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" accessmodifier="public" category="" description="" doccomment="" localize="false">
@@ -140,7 +140,7 @@
 					<derivedshapes />
 				</shape>
 				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" category="" description="" doccomment="" localize="false">
-					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FactConstraint)" />
 					<metaattributes />
 					<derivedshapes />
 				</shape>

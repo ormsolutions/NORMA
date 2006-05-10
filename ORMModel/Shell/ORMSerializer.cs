@@ -248,7 +248,7 @@ namespace Neumont.Tools.ORM.Shell
 		private bool ShouldSerialize(ModelElement modelElement)
 		{
 			DataType dataType;
-			if (modelElement is ExternalFactConstraint ||
+			if (modelElement is FactConstraint ||
 				modelElement is ExternalRoleConstraint ||
 				modelElement is ExternalConstraintLink ||
 				modelElement is ValueRangeLink ||

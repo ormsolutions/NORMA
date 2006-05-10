@@ -89,6 +89,18 @@
 	<ResourceString name="ObjectifiedFactType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType">
 		<comment type="summary">The display name used for an objectified (nested) FactType</comment>
 	</ResourceString>
+	<ResourceString name="InternalUniquenessConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint">
+		<comment type="summary">The display name used for an internal uniqueness constraint</comment>
+	</ResourceString>
+	<ResourceString name="ExternalUniquenessConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint">
+		<comment type="summary">The display name used for an external uniqueness constraint</comment>
+	</ResourceString>
+	<ResourceString name="DisjunctiveMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint">
+		<comment type="summary">The display name used for a disjunctive mandatory constraint</comment>
+	</ResourceString>
+	<ResourceString name="SimpleMandatoryConstraint" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint">
+		<comment type="summary">The display name used for a simple mandatory constraint</comment>
+	</ResourceString>
 	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading">
 		<comment type="summary">The display name used for a ReadingType</comment>
 	</ResourceString>
@@ -269,7 +281,7 @@
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText">
 		<comment type="summary">The error message that is returned when attempting to add a new reading to a fact and the text is not valid.  It needs to have a number of place holders equal to the number of roles in the fact and they need to have their positions identified by number using the replacement syntax of String.Format. For example: "{0} has {1}"</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorConstraintExternalUniquenessImplied" model="Model" resourceName="ModelError.Constraint.ExternalUniquenessImpliedByUniquenessError.Text">
+	<ResourceString name="ModelErrorConstraintUniquenessImplied" model="Model" resourceName="ModelError.Constraint.UniquenessImpliedByUniquenessError.Text">
 		<comment type="summary">Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text">
@@ -326,17 +338,14 @@
 	<ResourceString name="ModelExceptionIsMandatoryRequiresAttachedFactType" model="Model" resourceName="ModelException.Role.IsMandatoryRequiresAttachedFactType">
 		<comment type="summary">Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionPreferredIdentifierMustBeUniquenessConstraint" model="Model" resourceName="ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint">
-		<comment type="summary">Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.</comment>
+	<ResourceString name="ModelExceptionInvalidPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions">
+		<comment type="summary">Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionInvalidExternalPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.ExternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
-		<comment type="summary">Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
+	<ResourceString name="ModelExceptionConstraintEnforceNoForeignFacts" model="Model" resourceName="ModelException.Constraint.EnforceNoForeignFacts">
+		<comment type="summary">Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionInvalidInternalPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
-		<comment type="summary">Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionInternalConstraintInconsistentRoleOwners" model="Model" resourceName="ModelException.InternalConstraint.InconsistentRoleOwners">
-		<comment type="summary">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by an internal constraint.</comment>
+	<ResourceString name="ModelExceptionConstraintEnforceSingleFactForInternalConstraint" model="Model" resourceName="ModelException.Constraint.EnforceSingleFactForInternalConstraint">
+		<comment type="summary">Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
 	</ResourceString>
 	<ResourceString name="CoreVerbalizationSnippetsDefaultDescription" model="Model" resourceName="Verbalization.SnippetsDefaultDescription">
 		<comment type="summary">The description for the default verbalization snippets for the core model.</comment>
@@ -587,16 +596,16 @@
 	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text">
 		<comment type="summary">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text">
+	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text">
 		<comment type="summary">The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text">
+	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text">
 		<comment type="summary">The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message">
 		<comment type="summary">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorExternalEqualityIsImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text">
+	<ResourceString name="ModelErrorExternalEqualityImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityImpliedByMandatory.Text">
 		<comment type="summary">Constraint '{0}' is implied by mandatory constraints.</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorObjectTypeRequiresPrimarySupertypeError" model="Model" resourceName="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message">
@@ -611,7 +620,7 @@
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
 		<comment type="summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</ResourceString>
-	<ResourceString name="DisjunctiveMandatoryImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.DisjunctiveMandatoryImpliedByMandatoryError.Message">
+	<ResourceString name="MandatoryImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.MandatoryImpliedByMandatoryError.Message">
 		<comment type="summary">The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.</comment>
 	</ResourceString>
 	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message">

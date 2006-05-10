@@ -347,6 +347,8 @@
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <None Include="Shell\catalog.xml" />
+    <Content Include="Shell\Converters\RootUpgradeTo2006-04.xslt" />
+    <Content Include="Shell\Converters\CoreUpgradeTo2006-04.xslt" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
     <Content Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
     <Content Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />

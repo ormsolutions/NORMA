@@ -118,8 +118,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					(null != (selectedRoles = action.SelectedRoleCollection)) &&
 					(0 != (rolesCount = selectedRoles.Count)))
 				{
-					InternalUniquenessConstraint iuConstraint;
-					if (null != (iuConstraint = constraint as InternalUniquenessConstraint))
+					UniquenessConstraint iuConstraint;
+					if (null != (iuConstraint = constraint as UniquenessConstraint) &&
+						iuConstraint.IsInternal)
 					{
 						// The single-column constraint is its own role set, just add the roles
 						RoleMoveableCollection roles = iuConstraint.RoleCollection;
@@ -184,7 +185,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static Cursor mySearchingCursor = new Cursor(typeof(InternalUniquenessConstraintConnectAction), "ConnectInternalConstraintSearching.cur");
 		private IList<Role> mySelectedRoles;
 		private FactTypeShape mySourceShape;
-		private InternalUniquenessConstraint myIUC;
+		private UniquenessConstraint myIUC;
 		private DiagramItem myLastMouseMoveItem;
 		private static readonly ConnectionType[] EmptyConnectionTypes = {};
 		private enum OnClickedAction
@@ -321,9 +322,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					currentElement = elem;
 					break;
 				}
-				InternalUniquenessConstraint internalUniquenessConstraint;
+				UniquenessConstraint internalUniquenessConstraint;
 				Role role;
-				if (null != (internalUniquenessConstraint = currentElement as InternalUniquenessConstraint))
+				if (null != (internalUniquenessConstraint = currentElement as UniquenessConstraint) &&
+					internalUniquenessConstraint.IsInternal)
 				{
 					if (mySourceShape == null)
 					{
@@ -468,7 +470,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The constraint that acts as the Source object for this mouse action
 		/// </summary>
-		public InternalUniquenessConstraint ActiveConstraint
+		public UniquenessConstraint ActiveConstraint
 		{
 			get
 			{
@@ -482,7 +484,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="attachToShape">The shape the constraint is being attached to.</param>
 		/// <param name="constraint">The constraint being connected.</param>
 		/// <param name="clientView">The active DiagramClientView</param>
-		public void ChainMouseAction(FactTypeShape attachToShape, InternalUniquenessConstraint constraint, DiagramClientView clientView)
+		public void ChainMouseAction(FactTypeShape attachToShape, UniquenessConstraint constraint, DiagramClientView clientView)
 		{
 			DiagramView activeView = Diagram.ActiveDiagramView;
 			if (activeView != null)
@@ -523,7 +525,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// action to a new standard action.
 		/// </summary>
 		public event MouseActionDeactivatedEventHandler AfterMouseActionDeactivated;
-		private InternalUniquenessConstraint myAddedConstraint;
+		private UniquenessConstraint myAddedConstraint;
 		private FactTypeShape myDropTargetShape;
 		#endregion // Member variables
 		#region Constructors
@@ -559,7 +561,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(InternalUniquenessConstraint.MetaClassGuid);
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(UniquenessConstraint.MetaClassGuid);
 			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(InternalConstraintAddedEvent));
 		}
 		/// <summary>
@@ -571,7 +573,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(InternalUniquenessConstraint.MetaClassGuid);
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(UniquenessConstraint.MetaClassGuid);
 			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(InternalConstraintAddedEvent));
 		}
 		/// <summary>
@@ -584,18 +586,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			if (myAddedConstraint == null)
 			{
-				InternalUniquenessConstraint candidate = e.ModelElement as InternalUniquenessConstraint;
-				if (candidate != null)
+				UniquenessConstraint candidate = e.ModelElement as UniquenessConstraint;
+				if (candidate != null && candidate.IsInternal)
 				{
 					ORMDiagram d = Diagram as ORMDiagram;
 					if (d != null)
 					{
 						// Find the shape associated with the fact type we added to
-						FactTypeShape shape = d.FindShapeForElement(candidate.FactType) as FactTypeShape;
-						if (shape != null)
+						FactTypeMoveableCollection candidateFacts = candidate.FactTypeCollection;
+						if (candidateFacts.Count != 0)
 						{
-							myDropTargetShape = shape;
-							myAddedConstraint = candidate;
+							FactTypeShape shape = d.FindShapeForElement(candidateFacts[0]) as FactTypeShape;
+							if (shape != null)
+							{
+								myDropTargetShape = shape;
+								myAddedConstraint = candidate;
+							}
 						}
 					}
 				}
@@ -615,7 +621,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The internal uniqueness constraint added as a result of a completed mouse action
 		/// </summary>
-		public InternalUniquenessConstraint AddedConstraint
+		public UniquenessConstraint AddedConstraint
 		{
 			get
 			{

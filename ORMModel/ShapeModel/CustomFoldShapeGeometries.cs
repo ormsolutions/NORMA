@@ -459,6 +459,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected CustomFoldRoundedRectangleShapeGeometry()
 		{
+			Radius = 1.5 / 25.4; // 1.5 mm
 		}
 		/// <summary>
 		/// Provide custom shape folding for rectangular fact types

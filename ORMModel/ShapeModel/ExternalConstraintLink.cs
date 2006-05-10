@@ -223,12 +223,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				ExternalFactConstraint efc = AssociatedFactConstraint;
+				FactConstraint efc = AssociatedFactConstraint;
 				//Only change the decorator if the ExternalConstraintLink being worked on
 				//is for the second constraint role sequence since we need the arrow to make
 				//it look like the constraint links point from the role of the first sequence
 				//to the role of the second sequence.
-				if (efc is MultiColumnExternalFactConstraint)
+				if (efc is FactSetComparisonConstraint)
 				{
 					SubsetConstraint sConstraint;
 					if (null != (sConstraint = efc.Roles[0] as SubsetConstraint))
@@ -238,7 +238,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						FactTypeShape factTypeShape = fromNode.Nodes as FactTypeShape;
 						FactType factType = factTypeShape.AssociatedFactType;
 						RoleBaseMoveableCollection factTypeRoles = factType.RoleCollection;
-						MultiColumnExternalConstraintRoleSequenceMoveableCollection sequenceCollection = sConstraint.RoleSequenceCollection;
+						SetComparisonConstraintRoleSequenceMoveableCollection sequenceCollection = sConstraint.RoleSequenceCollection;
 						if (sequenceCollection.Count > 1)
 						{
 							foreach (Role r in sequenceCollection[1].RoleCollection)
@@ -270,11 +270,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Get the FactConstraint link associated with this link shape. The
 		/// fact constraint link can be used to get the associated roles.
 		/// </summary>
-		public ExternalFactConstraint AssociatedFactConstraint
+		public FactConstraint AssociatedFactConstraint
 		{
 			get
 			{
-				return ModelElement as ExternalFactConstraint;
+				return ModelElement as FactConstraint;
 			}
 		}
 		/// <summary>

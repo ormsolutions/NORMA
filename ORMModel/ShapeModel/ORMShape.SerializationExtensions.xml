@@ -17,7 +17,7 @@
 	</se:Copyright>
 	<se:MetaModel Class="ORMShapeModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="ormDiagram" URI="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormDiagram" URI="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMDiagram"/>

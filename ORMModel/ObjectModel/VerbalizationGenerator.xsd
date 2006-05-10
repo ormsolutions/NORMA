@@ -36,8 +36,8 @@
 	<xs:simpleType name="ConstraintTypeEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="InternalUniquenessConstraint"/>
-			<xs:enumeration value="ExternalUniquenessConstraint"/>
-			<xs:enumeration value="DisjunctiveMandatoryConstraint"/>
+			<xs:enumeration value="UniquenessConstraint"/>
+			<xs:enumeration value="MandatoryConstraint"/>
 			<xs:enumeration value="SimpleMandatoryConstraint"/>
 			<xs:enumeration value="FrequencyConstraint"/>
 			<xs:enumeration value="RingConstraint"/>
@@ -81,8 +81,8 @@
 	<xs:simpleType name="ConstraintPatternGroupEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="InternalConstraint"/>
-			<xs:enumeration value="SingleColumnExternalConstraint"/>
-			<xs:enumeration value="MultiColumnExternalConstraint"/>
+			<xs:enumeration value="SetConstraint"/>
+			<xs:enumeration value="SetComparisonConstraint"/>
 			<xs:enumeration value="RoleValueConstraint">
 				<xs:annotation>
 					<xs:documentation>Verbalizes role value constraints.</xs:documentation>
@@ -165,7 +165,7 @@
 			<xs:enumeration value="all"/>
 			<xs:enumeration value="included"/>
 			<xs:enumeration value="excluded"/>
-			<xs:enumeration value="singleColumnConstraintRoles"/>
+			<xs:enumeration value="setConstraintRoles"/>
 			<xs:enumeration value="preferredIdentifier"/>
 		</xs:restriction>
 	</xs:simpleType>

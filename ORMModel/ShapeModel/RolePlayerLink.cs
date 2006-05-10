@@ -492,9 +492,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SimpleMandatoryConstraint.ModalityMetaAttributeGuid);
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MandatoryConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
-			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactTypeHasInternalConstraint.MetaRelationshipGuid);
+			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactSetConstraint.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(relInfo, new ElementAddedEventHandler(InternalConstraintRoleSequenceAddedEvent));
 			relInfo = dataDirectory.FindMetaRelationship(ConstraintRoleSequenceHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementRemoved.Add(relInfo, new ElementRemovedEventHandler(InternalConstraintRoleSequenceRoleRemovedEvent));
@@ -507,9 +507,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SimpleMandatoryConstraint.ModalityMetaAttributeGuid);
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MandatoryConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
-			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactTypeHasInternalConstraint.MetaRelationshipGuid);
+			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactSetConstraint.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Remove(relInfo, new ElementAddedEventHandler(InternalConstraintRoleSequenceAddedEvent));
 			relInfo = dataDirectory.FindMetaRelationship(ConstraintRoleSequenceHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementRemoved.Remove(relInfo, new ElementRemovedEventHandler(InternalConstraintRoleSequenceRoleRemovedEvent));
@@ -519,8 +519,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void InternalConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
-			SimpleMandatoryConstraint smc = e.ModelElement as SimpleMandatoryConstraint;
-			if (smc != null && !smc.IsRemoved)
+			MandatoryConstraint smc = e.ModelElement as MandatoryConstraint;
+			if (smc != null && !smc.IsRemoved && smc.IsSimple)
 			{
 				RoleMoveableCollection roles = smc.RoleCollection;
 				if (roles.Count != 0)
@@ -534,9 +534,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void InternalConstraintRoleSequenceAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-			SimpleMandatoryConstraint constraint = link.InternalConstraintCollection as SimpleMandatoryConstraint;
-			if (constraint != null && !constraint.IsRemoved)
+			FactSetConstraint link = e.ModelElement as FactSetConstraint;
+			MandatoryConstraint constraint = link.SetConstraintCollection as MandatoryConstraint;
+			if (constraint != null && !constraint.IsRemoved && constraint.IsSimple)
 			{
 				RoleMoveableCollection roles = constraint.RoleCollection;
 				if (roles.Count > 0)
@@ -553,7 +553,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			Role role;
-			if (link.ConstraintRoleSequenceCollection is SimpleMandatoryConstraint &&
+			MandatoryConstraint constraint;
+			if (null != (constraint = link.ConstraintRoleSequenceCollection as MandatoryConstraint) &&
+				constraint.IsSimple &&
 				(null != (role = link.RoleCollection)) &&
 				!role.IsRemoved)
 			{
