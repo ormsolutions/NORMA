@@ -92,7 +92,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				DelayProcessFactTypeForImpliedObjectification((e.ModelElement as ConstraintRoleSequenceHasRole).RoleCollection.FactType);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).RoleCollection.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
-				DelayProcessFactTypeForImpliedObjectification((e.ModelElement as ConstraintRoleSequenceHasRole).RoleCollection.FactType);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).RoleCollection.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule class
@@ -118,7 +118,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				DelayProcessFactTypeForImpliedObjectification((e.ModelElement as FactTypeHasRole).FactType);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule class
@@ -131,7 +131,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
-				DelayProcessFactTypeForImpliedObjectification((e.ModelElement as FactTypeHasRole).FactType);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleRemovingRule class
@@ -207,6 +207,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ObjectificationAddRule class
+		#region ObjectificationRemoveRule class
+		/// <summary>
+		/// Remove the implied objectifying ObjectType when Objectification is removed.
+		/// </summary>
+		[RuleOn(typeof(Objectification))]
+		private class ObjectificationRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				Objectification objectification = e.ModelElement as Objectification;
+				if (objectification.IsImplied)
+				{
+					ObjectType nestingType = objectification.NestingType;
+					if (!nestingType.IsRemoved)
+					{
+						nestingType.Remove();
+					}
+				}
+			}
+		}
+		#endregion // ObjectificationRemoveRule class
 		#region ImpliedFactTypeAddRule class
 		/// <summary>
 		/// Rule class to block objectification of implied facts
@@ -502,7 +523,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			FactType factType = element as FactType;
 			// We don't need to process implied FactTypes, since they can never be objectified
-			if (factType == null || factType.ImpliedByObjectification != null)
+			if (factType == null || factType.ImpliedByObjectification != null || factType.IsRemoved)
 			{
 				return;
 			}

@@ -55,6 +55,7 @@
 		<arg:Rule class="Objectification.ImpliedObjectificationUniquenessConstraintIsInternalChangeRule"/>
 		<arg:Rule class="Objectification.InternalConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>
+		<arg:Rule class="Objectification.ObjectificationRemoveRule"/>
 		<arg:Rule class="Objectification.ObjectificationNameChangeRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>

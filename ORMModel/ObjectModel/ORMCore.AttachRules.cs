@@ -70,6 +70,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Objectification).GetNestedType("ImpliedObjectificationUniquenessConstraintIsInternalChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Objectification).GetNestedType("InternalConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Objectification).GetNestedType("ObjectificationAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(Objectification).GetNestedType("ObjectificationRemoveRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Objectification).GetNestedType("ObjectificationNameChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Objectification).GetNestedType("RoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Objectification).GetNestedType("RolePlayerAddRule", BindingFlags.Public | BindingFlags.NonPublic),
