@@ -496,7 +496,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ORMModel model = subTypeFact.Model;
 					ObjectType rolePlayer = subTypeFact.Subtype;
 					FactType nestedFact = rolePlayer.NestedFactType;
-					if (nestedFact != null)
+					if (FactTypeShape.ShouldDrawObjectification(nestedFact))
 					{
 						Diagram.FixUpDiagram(model, nestedFact);
 						Diagram.FixUpDiagram(nestedFact, rolePlayer);
@@ -507,7 +507,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					rolePlayer = subTypeFact.Supertype;
 					nestedFact = rolePlayer.NestedFactType;
-					if (nestedFact != null)
+					if (FactTypeShape.ShouldDrawObjectification(nestedFact))
 					{
 						Diagram.FixUpDiagram(model, nestedFact);
 						Diagram.FixUpDiagram(nestedFact, rolePlayer);

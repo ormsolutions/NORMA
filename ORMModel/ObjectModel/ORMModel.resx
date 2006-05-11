@@ -476,10 +476,6 @@
     <value>Constraint '{0}' in model '{1}' is implied by at least one mandatory constraint attached to a subset of the same roles.</value>
     <comment>The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>
-  <data name="ModelException.Objectification.ModelNotSpecified" xml:space="preserve">
-    <value>Objectification requires the Model property to be set on either the NestingType or the NestedFactType role players.</value>
-    <comment>Exception message when an attempt is made to create an objectification relationship when the Model is not specified for either the NestingType or the NestedFactType.</comment>
-  </data>
   <data name="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified" xml:space="preserve">
     <value>A FactType that is implied by an Objectification cannot be objectified.</value>
     <comment>Exception message when an attempt is made to objectify a fact that is implied by another objectification.</comment>

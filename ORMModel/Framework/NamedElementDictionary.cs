@@ -31,7 +31,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// A structure to return a located element, or a collection
 	/// of elements with the same name.
 	/// </summary>
-	[CLSCompliant(true)]
 	public struct LocatedElement
 	{
 		/// <summary>
@@ -131,6 +130,30 @@ namespace Neumont.Tools.ORM.Framework
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Return true if the element is already represented
+		/// by this LocatedElement
+		/// </summary>
+		public bool ContainsElement(NamedElement element)
+		{
+			object testElement = myElement;
+			ICollection collection;
+			if (object.ReferenceEquals(testElement, element))
+			{
+				return true;
+			}
+			else if (null != (collection = testElement as ICollection))
+			{
+				foreach (object test in collection)
+				{
+					if (object.ReferenceEquals(element, test))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
 	}
 	#endregion // LocatedElement structure
 	#region IDuplicateNameCollectionManager interface
@@ -184,7 +207,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// Specifies how like-named elements should be
 	/// handled by the INamedElementDictionary implementation.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum DuplicateNameAction
 	{
 		/// <summary>
@@ -210,7 +232,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// An interface used to manage names on an object
 	/// and provide a quick lookup mechanism for retrieving them.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface INamedElementDictionary
 	{
 		/// <summary>
@@ -264,7 +285,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// An interface implemented on the parent role player
 	/// in a name dictionary setup.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface INamedElementDictionaryParent
 	{
 		/// <summary>
@@ -301,7 +321,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// in a named element dictionary. This interface should
 	/// only be specified on NamedElement-derived classes.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface INamedElementDictionaryChild
 	{
 		/// <summary>
@@ -356,7 +375,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// enables the dictionary implementation to include remote objects
 	/// in the dictionary.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface INamedElementDictionaryRemoteParent
 	{
 		/// <summary>
@@ -636,6 +654,12 @@ namespace Neumont.Tools.ORM.Framework
 				}
 				myDictionary.Add(elementName, element);
 			}
+			else if (locateData.ContainsElement(element))
+			{
+				// Unusual case, but it does happen if changing the element
+				// name triggers a name change for an element that has an
+				// add rule pending for a named element dictionary link.
+			}
 			else if (duplicateAction == DuplicateNameAction.ThrowOnDuplicateName)
 			{
 				ThrowDuplicateNameException(element, elementName);
@@ -699,7 +723,7 @@ namespace Neumont.Tools.ORM.Framework
 		private bool RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
 			string elementName = alternateElementName;
-			if (elementName == null || elementName.Length == 0)
+			if (string.IsNullOrEmpty(elementName))
 			{
 				elementName = element.Name;
 			}

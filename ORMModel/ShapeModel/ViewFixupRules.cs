@@ -484,7 +484,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (model != null)
 				{
 					FactType nestedFact = rolePlayer.NestedFactType;
-					if (nestedFact != null)
+					if (FactTypeShape.ShouldDrawObjectification(nestedFact))
 					{
 						Diagram.FixUpDiagram(model, nestedFact);
 						Diagram.FixUpDiagram(nestedFact, rolePlayer);
@@ -951,9 +951,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			ReadingOrder readingOrd = link.ReadingOrderCollection;
 			FactType fact = link.FactType;
-			if (!fact.IsRemoved)
+			ORMModel model = fact.Model;
+			if (!fact.IsRemoved && model != null)
 			{
-				Diagram.FixUpDiagram(fact.Model, fact); // Make sure the fact is already there
+				Diagram.FixUpDiagram(model, fact); // Make sure the fact is already there
 				Diagram.FixUpDiagram(fact, readingOrd);
 			}
 		}

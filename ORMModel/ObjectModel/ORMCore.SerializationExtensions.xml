@@ -306,6 +306,13 @@
 		</se:Attribute>
 	</se:Element>
 	<se:Element Class="Objectification">
+		<se:Attribute ID="IsImplied">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsImplied" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactTypeCollection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Readings-->

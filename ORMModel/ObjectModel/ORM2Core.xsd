@@ -375,6 +375,7 @@
 		<xs:attribute name="id" type="xs:ID"/>
 		<!-- A reference to a fact type -->
 		<xs:attribute name="ref" type="xs:IDREF"/>
+		<xs:attribute name="IsImplied" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="ObjectificationRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>

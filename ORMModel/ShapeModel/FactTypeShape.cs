@@ -14,6 +14,9 @@
 \**************************************************************************/
 #endregion
 
+// Turn this on to always draw objectifications (even if they are implied)
+//#define ALWAYS_DRAW_OBJECTIFICATIONS
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1200,11 +1203,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>NestedFactHorizontalMargin if objectified; otherwise, 0.</returns>
 			public override double GetMinimumWidth(ShapeElement parentShape)
 			{
-				FactTypeShape factShape = parentShape as FactTypeShape;
-				if (factShape.IsObjectified)
-					return NestedFactHorizontalMargin;
-				else
-					return 0;
+				return (parentShape as FactTypeShape).ShouldDrawObjectified ? NestedFactHorizontalMargin : 0;
 			}
 
 			/// <summary>
@@ -1213,15 +1212,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>NestedFactVerticalMargin if objectified; otherwise, 0.</returns>
 			public override double GetMinimumHeight(ShapeElement parentShape)
 			{
-				FactTypeShape factShape = parentShape as FactTypeShape;
-				if (factShape.IsObjectified)
-				{
-					return NestedFactVerticalMargin;
-				}
-				else
-				{
-					return BorderMargin / 2;
-				}
+				return (parentShape as FactTypeShape).ShouldDrawObjectified ? NestedFactVerticalMargin : BorderMargin / 2;
 			}
 
 			// Nothing to paint for the spacer. So, no DoPaint override needed.
@@ -2451,7 +2442,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return IsObjectified ? DiagramPens.ShapeOutline : RoleBoxResource;
+				return ShouldDrawObjectified ? DiagramPens.ShapeOutline : RoleBoxResource;
 			}
 		}
 		/// <summary>
@@ -2522,7 +2513,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return IsObjectified;
+				return ShouldDrawObjectified;
 			}
 		}
 		/// <summary>
@@ -2541,7 +2532,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					height = rolesShape.GetMinimumHeight(this);
 					height += myTopConstraintShapeField.GetMinimumHeight(this);
 					height += myBottomConstraintShapeField.GetMinimumHeight(this);
-					if (!IsObjectified)
+					if (!ShouldDrawObjectified)
 					{
 						width += BorderMargin;
 						height += BorderMargin;
@@ -2559,7 +2550,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SizeD contentSize = ContentSize;
 			if (!contentSize.IsEmpty)
 			{
-				if (IsObjectified)
+				if (ShouldDrawObjectified)
 				{
 					contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
 					contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
@@ -2721,9 +2712,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				// If the fact is objectified, get the current setting from the options
+				// If the fact should draw as objectified, get the current setting from the options
 				// page for how to draw the shape
-				if (IsObjectified)
+				if (ShouldDrawObjectified)
 				{
 					ShapeGeometry useShape;
 					switch (Shell.OptionsPage.CurrentObjectifiedFactDisplayShape)
@@ -3072,9 +3063,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			FactType factType = AssociatedFactType;
-			ObjectType nestingType = (factType == null) ? null : factType.NestingType;
-			if (nestingType != null)
+			if (ShouldDrawObjectification(factType))
 			{
+				ObjectType nestingType = factType.NestingType;
 				MetaDataDirectory metaDir = factType.Store.MetaDataDirectory;
 				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
 					this.CreatePropertyDescriptor(metaDir.FindMetaAttribute(FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid), this),
@@ -3721,14 +3712,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Return true if the associated fact type is an objectified fact
+		/// Return true if the specified fact type should be drawn as an objectified fact type.
 		/// </summary>
-		public bool IsObjectified
+		public static bool ShouldDrawObjectification(FactType factType)
+		{
+			return factType != null && ShouldDrawObjectification(factType.Objectification);
+		}
+		/// <summary>
+		/// Return true if the specified objectification should be drawn as such.
+		/// </summary>
+		public static bool ShouldDrawObjectification(Objectification objectification)
+		{
+			if (objectification == null || objectification.NestingType.Model == null)
+			{
+				return false;
+			}
+#if ALWAYS_DRAW_OBJECTIFICATIONS
+			return true;
+#else
+			// Return true only if the specified objectification is explicit
+			return !objectification.IsImplied;
+#endif
+		}
+		/// <summary>
+		/// Return true if the associated fact type should be drawn as an objectified fact type.
+		/// </summary>
+		public bool ShouldDrawObjectified
 		{
 			get
 			{
-				FactType factType = AssociatedFactType;
-				return (factType == null) ? false : (factType.NestingType != null);
+				return ShouldDrawObjectification(AssociatedFactType);
 			}
 		}
 		/// <summary>
@@ -3950,11 +3963,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class SwitchToNestedFact : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public static void ProcessObjectification(Objectification link)
 			{
-				Objectification link = e.ModelElement as Objectification;
 				FactType nestedFactType = link.NestedFactType;
 				ObjectType nestingType = link.NestingType;
+
+				// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
+				if (!ShouldDrawObjectification(link))
+				{
+					nestingType.PresentationRolePlayers.Clear();
+					return;
+				}
 
 				// Part1: Make sure the fact shape is visible on any diagram where the
 				// corresponding nestingType is displayed
@@ -3964,11 +3983,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (objectShape != null)
 					{
 						ORMDiagram currentDiagram = objectShape.Diagram as ORMDiagram;
-						NodeShape factShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+						NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
 						if (factShape == null)
 						{
 							Diagram.FixUpDiagram(currentDiagram.ModelElement, nestedFactType);
-							factShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+							factShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
 						}
 						if (factShape != null)
 						{
@@ -3990,7 +4009,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (subtypeLink != null)
 							{
 								ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-								NodeShape factShape = currentDiagram.FindShapeForElement(nestedFactType) as NodeShape;
+								NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
 								if (factShape != null)
 								{
 									if (object.ReferenceEquals(playedRole, subType.SupertypeRole))
@@ -4020,7 +4039,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (rolePlayer != null)
 							{
 								ORMDiagram currentDiagram = rolePlayer.Diagram as ORMDiagram;
-								NodeShape factShape = currentDiagram.FindShapeForElement(nestedFactType) as NodeShape;
+								NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
 								if (factShape != null)
 								{
 									rolePlayer.ToShape = factShape;
@@ -4055,13 +4074,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Objectification link = e.ModelElement as Objectification;
+				ProcessObjectification(e.ModelElement as Objectification);
+			}
 		}
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class SwitchFromNestedFact : RemoveRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public static void ProcessObjectification(Objectification link, bool switchingToImplied)
 			{
-				Objectification link = e.ModelElement as Objectification;
 				FactType nestedFactType = link.NestedFactType;
 				ObjectType nestingType = link.NestingType;
 
@@ -4117,14 +4140,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (factShape != null)
 						{
 							factShape.AutoResize();
-							if (!nestingTypeRemoved)
+							// We don't want to add a shape for the nestingType if the objectification is switching to implied
+							if (!nestingTypeRemoved && !switchingToImplied)
 							{
 								ORMDiagram currentDiagram = factShape.Diagram as ORMDiagram;
-								NodeShape objectShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+								NodeShape objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
 								if (objectShape == null)
 								{
 									Diagram.FixUpDiagram(nestingTypeModel, nestingType);
-									objectShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+									objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
 								}
 								if (objectShape != null)
 								{
@@ -4137,8 +4161,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 
-				// Part3: Move any links from the fact type to the object type
-				if (!nestingTypeRemoved)
+				// Part3: Move any links from the fact type to the object type.
+				// Note: If we are switching to implied, then we don't need to move links to the object type shape,
+				// since there won't be any object type shape.
+				if (!nestingTypeRemoved && !switchingToImplied)
 				{
 					foreach (ObjectTypePlaysRole modelLink in nestingType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid))
 					{
@@ -4158,7 +4184,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									if (subtypeLink != null)
 									{
 										ORMDiagram currentDiagram = subtypeLink.Diagram as ORMDiagram;
-										NodeShape objShape = currentDiagram.FindShapeForElement(nestingType) as NodeShape;
+										NodeShape objShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
 										if (objShape != null)
 										{
 											if (object.ReferenceEquals(playedRole, subType.SupertypeRole))
@@ -4191,7 +4217,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								foreach (RolePlayerLink rolePlayer in modelLink.PresentationRolePlayers)
 								{
-									NodeShape objShape = (rolePlayer.Diagram as ORMDiagram).FindShapeForElement(nestingType) as NodeShape;
+									NodeShape objShape = (rolePlayer.Diagram as ORMDiagram).FindShapeForElement<NodeShape>(nestingType);
 									if (objShape != null)
 									{
 										rolePlayer.ToShape = objShape;
@@ -4202,6 +4228,44 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 								}
 							}
+						}
+					}
+				}
+			}
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				Objectification link = e.ModelElement as Objectification;
+				// If the objectification was not being drawn, we don't need to do anything
+				if (!ShouldDrawObjectification(link))
+				{
+					return;
+				}
+				ProcessObjectification(link, false);
+			}
+		}
+		[RuleOn(typeof(Objectification))]
+		private class ObjectificationIsImpliedChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				if (e.MetaAttribute.Id == Objectification.IsImpliedMetaAttributeGuid)
+				{
+					if ((bool)e.OldValue)
+					{
+						// It was previously implied
+						if (!(bool)e.NewValue)
+						{
+							// It is now explicit
+							SwitchToNestedFact.ProcessObjectification(e.ModelElement as Objectification);
+						}
+					}
+					else
+					{
+						// It was previously explicit
+						if ((bool)e.NewValue)
+						{
+							// It is now implied
+							SwitchFromNestedFact.ProcessObjectification(e.ModelElement as Objectification, true);
 						}
 					}
 				}

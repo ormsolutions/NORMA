@@ -92,6 +92,14 @@
       <relationship name="Objectification" identity="542e780f-0bd0-4617-9715-935beb73cee9" namespace="Neumont.Tools.ORM.ObjectModel" id="i542e780fz0bd0z4617z9715z935beb73cee9" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <valueProperties>
+          <property name="IsImplied" identity="370e2cc7-69e6-4116-919f-7d1b65390eb7" id="i370e2cc7z69e6z4116z919fz7d1b65390eb7">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
+          </property>
+        </valueProperties>
         <roles>
           <role name="NestedFactType" identity="6743ca8b-70dc-4c77-85ff-acf2f197ef72" id="i6743ca8bz70dcz4c77z85ffzacf2f197ef72" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
@@ -3913,6 +3921,10 @@
           <treeExpression xsi:type="ValuePropertyExpression" name="" identity="4a9e57a0-709a-4cb5-9465-1d01b6910778" id="i4a9e57a0z709az4cb5z9465z1d01b6910778">
             <source />
             <property>i11fe2070z97fbz4a06za198z8ed3311edc4f</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="IsImplied" identity="ea615dba-52a4-491e-b85f-22d654965592" id="iea615dbaz52a4z491ezb85fz22d654965592">
+            <source />
+            <property>i370e2cc7z69e6z4116z919fz7d1b65390eb7</property>
           </treeExpression>
         </expressions>
         <roots>

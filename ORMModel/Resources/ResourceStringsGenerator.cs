@@ -671,16 +671,6 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Exception message when an attempt is made to create an objectification relationship when the Model is not specified for either the NestingType or the NestedFactType.
-		/// </summary>
-		public static string ModelExceptionObjectificationRequiresModel
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ModelNotSpecified");
-			}
-		}
-		/// <summary>
 		/// Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.
 		/// </summary>
 		public static string ModelExceptionObjectificationImpliedElementModified

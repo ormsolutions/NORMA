@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			for (int i = 0; i < constraintCount; ++i)
 			{
 				T ic = constraints[i] as T;
-				if (ic != null && (ic as IConstraint).ConstraintIsInternal)
+				if (ic != null && ic.ConstraintIsInternal)
 				{
 					yield return ic;
 				}
@@ -367,7 +367,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override string GetClassName()
 		{
-			return (NestingType == null) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
+			Objectification objectification = Objectification;
+			return (objectification == null || objectification.IsImplied) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
 		}
 		/// <summary>
 		/// Standard override. Stop the DerivationStorage property from

@@ -2431,7 +2431,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+				return ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2474,7 +2474,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
 		{
-			throw new NotSupportedException();
+			if (attributeInfo.Id == Objectification.IsImpliedMetaAttributeGuid)
+			{
+				if (!(this.IsImplied))
+				{
+					return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
 		}
 		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
 		{
@@ -2523,12 +2531,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
 		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.MapAttribute
 		/// </summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
-			return default(Guid);
+			Dictionary<string, Guid> customSerializedAttributes = Objectification.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("IsImplied", Objectification.IsImpliedMetaAttributeGuid);
+				Objectification.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
 		}
 		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{

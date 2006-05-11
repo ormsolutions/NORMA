@@ -481,6 +481,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>true to display, false to not display</returns>
 		public bool ShouldDisplayObjectType(ObjectType typeElement)
 		{
+			// We don't ever display a nesting ObjectType, even if the Objectification is not drawn.
 			if (typeElement.NestedFactType == null)
 			{
 				return ShouldDisplayPartOfReferenceMode(typeElement);
@@ -620,7 +621,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns></returns>
 		public static MetaClassInfo ChooseShapeTypeForObjectType(ObjectType element, IList shapeTypes)
 		{
-			Guid shapeClassId = (element.NestedFactType == null) ? ObjectTypeShape.MetaClassGuid : ObjectifiedFactTypeNameShape.MetaClassGuid;
+			Guid shapeClassId = FactTypeShape.ShouldDrawObjectification(element.NestedFactType) ? ObjectifiedFactTypeNameShape.MetaClassGuid : ObjectTypeShape.MetaClassGuid;
 			foreach (MetaClassInfo classInfo in shapeTypes)
 			{
 				if (classInfo.Id == shapeClassId)
@@ -664,14 +665,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Locate an existing typed shape on this diagram corresponding to this element
 		/// </summary>
-		/// <typeparam name="ShapeType">The type of the shape to return</typeparam>
+		/// <typeparam name="TShape">The type of the shape to return</typeparam>
 		/// <param name="element">The element to search</param>
 		/// <returns>An existing shape, or null if not found</returns>
-		public ShapeType FindShapeForElement<ShapeType>(ModelElement element) where ShapeType : ShapeElement
+		public TShape FindShapeForElement<TShape>(ModelElement element) where TShape : ShapeElement
 		{
 			foreach (PresentationElement pel in element.PresentationRolePlayers)
 			{
-				ShapeType shape = pel as ShapeType;
+				TShape shape = pel as TShape;
 				if (shape != null && shape.Diagram == this)
 				{
 					return shape;

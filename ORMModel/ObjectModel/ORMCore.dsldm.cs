@@ -757,6 +757,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "Name", Neumont.Tools.ORM.ObjectModel.Role.NameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Scale", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ScaleMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeScaleFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Length", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.LengthMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeLengthFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), "IsImplied", Neumont.Tools.ORM.ObjectModel.Objectification.IsImpliedMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Objectification.ObjectificationIsImpliedFieldHandler)),
 
 			};
 			return typeArray;
@@ -26078,6 +26079,128 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaRelationshipGuid = Objectification.MetaClassGuid;
 		#endregion
 
+		#region IsImplied's Generated  Field Code
+		#region IsImplied's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsImpliedMetaAttributeGuidString = "370e2cc7-69e6-4116-919f-7d1b65390eb7";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsImpliedMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Objectification.IsImpliedMetaAttributeGuidString);
+		#endregion
+
+		#region IsImplied's Generated Property Code
+
+		private System.Boolean isImpliedPropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ObjectificationIsImpliedFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Objectification.IsImpliedMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Objectification.IsImplied")]
+		public  System.Boolean IsImplied
+		{
+			get
+			{
+				return isImpliedPropertyStorage;
+			}
+		
+			set
+			{
+				objectificationIsImpliedFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectificationIsImpliedFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Objectification.IsImplied field
+		/// </summary>
+		private static ObjectificationIsImpliedFieldHandler	objectificationIsImpliedFieldHandler	= ObjectificationIsImpliedFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Objectification.IsImplied
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectificationIsImpliedFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.Objectification,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectificationIsImpliedFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Objectification.IsImplied field handler
+			/// </summary>
+			/// <value>ObjectificationIsImpliedFieldHandler</value>
+			public static ObjectificationIsImpliedFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Objectification.objectificationIsImpliedFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Objectification.objectificationIsImpliedFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Objectification will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Objectification.objectificationIsImpliedFieldHandler, so just instantiate one and return it
+						return new ObjectificationIsImpliedFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Objectification.IsImplied field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Objectification.IsImpliedMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Objectification</param>
+			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ObjectModel.Objectification element)
+			{
+				return element.isImpliedPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.Objectification element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.isImpliedPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.isImpliedPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 		#region NestedFactType's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
