@@ -78,7 +78,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int i = 0; i < roleCount; ++i)
 					{
-						CreateImpliedFactTypeForRole(model, nestingType, roles[i].Role).ImpliedByObjectification = objectificationLink;
+						Role role = roles[i].Role;
+						if (role.Proxy == null)
+						{
+							CreateImpliedFactTypeForRole(model, nestingType, role).ImpliedByObjectification = objectificationLink;
+						}
 					}
 				}
 			}
@@ -160,6 +164,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// so we always throw at this point
 						disallowed = true;
 					}
+					else if (null != (objectificationLink = fact.Objectification))
+					{
+						ObjectType nestingType = objectificationLink.NestingType;
+						Role nestedRole = factRoleLink.RoleCollection.Role;
+
+						// Create and populate new fact type
+						if (nestedRole.Proxy == null)
+						{
+							CreateImpliedFactTypeForRole(nestingType.Model, nestingType, nestedRole).ImpliedByObjectification = objectificationLink;
+						}
+					}
 				}
 
 				// Throw if the modification was disallowed by the objectification pattern
@@ -220,21 +235,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactTypeHasRole factRoleLink = element as FactTypeHasRole;
 					fact = factRoleLink.FactType;
 					if (null != (objectificationLink = fact.ImpliedByObjectification))
-					{
+					{ 
 						// Our code only adds these before linking the implied objectification,
 						// so we always throw at this point
-						disallowed = !(myAllowModification || objectificationLink.IsRemoving);
+						if (!myAllowModification && !objectificationLink.IsRemoving)
+						{
+							disallowed = true;
+							RoleProxy proxy;
+							Role proxyRole;
+							if (null != (proxy = factRoleLink.RoleCollection as RoleProxy) &&
+								null != (proxyRole = proxy.Role))
+							{
+								disallowed = !proxyRole.IsRemoving;
+							}
+						}
 					}
 					else if (null != (objectificationLink = fact.Objectification))
 					{
 						if (!objectificationLink.IsRemoving)
 						{
-							Role nestedRole = factRoleLink.RoleCollection.Role;
-							int roleIndex = fact.RoleCollection.IndexOf(nestedRole);
 							try
 							{
 								myAllowModification = true;
-								objectificationLink.ImpliedFactTypeCollection.RemoveAt(roleIndex);
+								Role nestedRole = factRoleLink.RoleCollection.Role;
+								RoleProxy proxyRole = nestedRole.Proxy;
+								Debug.Assert(proxyRole != null, "Proxy is not attached. Safe to ignore, but code path unexpected.");
+								if (proxyRole != null)
+								{
+									proxyRole.FactType.Remove();
+								}
 							}
 							finally
 							{
@@ -260,7 +289,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class RolePlayerAddRule : AddRule
 		{
-			private bool myAllowModification;
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
@@ -271,25 +299,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					Objectification objectificationLink;
 					if (null != fact.ImpliedByObjectification)
 					{
-						if (!myAllowModification)
-						{
-							ThrowBlockedByObjectificationPatternException();
-						}
-					}
-					else if (null != (objectificationLink = fact.Objectification))
-					{
-						int roleIndex = fact.RoleCollection.IndexOf(role);
-						try
-						{
-							myAllowModification = true;
-							// The role player on the near role of the implied fact must
-							// match the role player of the nested role
-							objectificationLink.ImpliedFactTypeCollection[roleIndex].RoleCollection[0].Role.RolePlayer = link.RolePlayer;
-						}
-						finally
-						{
-							myAllowModification = false;
-						}
+						ThrowBlockedByObjectificationPatternException();
 					}
 				}
 			}
@@ -303,7 +313,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class RolePlayerRemovingRule : RemovingRule
 		{
-			private bool myAllowModification;
 			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
@@ -318,27 +327,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					Objectification objectificationLink;
 					if (null != (objectificationLink = fact.ImpliedByObjectification))
 					{
-						if (!(myAllowModification || objectificationLink.IsRemoving || role.IsRemoving))
+						if (!(objectificationLink.IsRemoving || role.IsRemoving))
 						{
 							ThrowBlockedByObjectificationPatternException();
-						}
-					}
-					else if (null != (objectificationLink = fact.Objectification))
-					{
-						if (!objectificationLink.IsRemoving)
-						{
-							int roleIndex = fact.RoleCollection.IndexOf(role);
-							try
-							{
-								myAllowModification = true;
-								// The role player on the near role of the implied fact must
-								// match the role player of the nested role
-								objectificationLink.ImpliedFactTypeCollection[roleIndex].RoleCollection[0].Role.RolePlayer = null;
-							}
-							finally
-							{
-								myAllowModification = false;
-							}
 						}
 					}
 				}
