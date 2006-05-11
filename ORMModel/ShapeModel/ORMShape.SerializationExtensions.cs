@@ -555,7 +555,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -828,7 +828,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -1002,7 +1002,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}

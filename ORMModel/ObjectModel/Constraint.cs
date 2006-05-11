@@ -396,7 +396,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactConstraint factConstraint = roleSequence.EnsureFactConstraintForRole(roleLink.RoleCollection, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
-						factConstraint.ConstrainedRoleCollection.Add(roleLink);
+						ConstraintRoleSequenceHasRoleMoveableCollection constrainedRoles = factConstraint.ConstrainedRoleCollection;
+						if (!constrainedRoles.Contains(roleLink))
+						{
+							constrainedRoles.Add(roleLink);
+						}
 					}
 				}
 			}
@@ -1023,7 +1027,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.RoleCollection, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
-						factConstraint.ConstrainedRoleCollection.Add(roleLink);
+						ConstraintRoleSequenceHasRoleMoveableCollection constrainedRoles = factConstraint.ConstrainedRoleCollection;
+						if (!constrainedRoles.Contains(roleLink))
+						{
+							constrainedRoles.Add(roleLink);
+						}
 					}
 				}
 			}

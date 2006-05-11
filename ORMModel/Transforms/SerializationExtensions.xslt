@@ -214,17 +214,14 @@
 								<xsl:if test="$ClassOverride">
 									<plx:branch>
 										<plx:condition>
-											<plx:unaryOperator type="booleanNot">
-												<!-- UNDONE: Plix CodeDom game -->
-												<plx:binaryOperator type="equality">
-													<plx:left>
-														<plx:nameRef name="baseInfoCount"/>
-													</plx:left>
-													<plx:right>
-														<plx:value type="i4" data="0"/>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:unaryOperator>
+											<plx:binaryOperator type="inequality">
+												<plx:left>
+													<plx:nameRef name="baseInfoCount"/>
+												</plx:left>
+												<plx:right>
+													<plx:value type="i4" data="0"/>
+												</plx:right>
+											</plx:binaryOperator>
 										</plx:condition>
 										<plx:callInstance name="CopyTo">
 											<plx:callObject>
@@ -1437,21 +1434,18 @@
 							</plx:local>
 							<plx:branch>
 								<plx:condition>
-									<plx:unaryOperator type="booleanNot">
-										<!-- UNDONE: Play games from Plix until CodeDom can do != -->
-										<plx:binaryOperator type="equality">
-											<plx:left>
-												<plx:callInstance name="Length" type="property">
-													<plx:callObject>
-														<plx:nameRef type="parameter" name="xmlNamespace"/>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="0"/>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:unaryOperator>
+									<plx:binaryOperator type="inequality">
+										<plx:left>
+											<plx:callInstance name="Length" type="property">
+												<plx:callObject>
+													<plx:nameRef type="parameter" name="xmlNamespace"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value type="i4" data="0"/>
+										</plx:right>
+									</plx:binaryOperator>
 								</plx:condition>
 								<plx:assign>
 									<plx:left>

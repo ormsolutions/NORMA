@@ -533,7 +533,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 7];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 7);
 				}
@@ -737,7 +737,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -976,7 +976,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 2];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 2);
 				}
@@ -1253,7 +1253,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -1556,7 +1556,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -1749,7 +1749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -1993,7 +1993,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 4];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 4);
 				}
@@ -2405,7 +2405,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -2587,7 +2587,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 2];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 2);
 				}
@@ -2860,7 +2860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -3059,7 +3059,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -3186,7 +3186,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -3376,7 +3376,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -3609,7 +3609,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -3803,7 +3803,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -3896,7 +3896,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -4140,7 +4140,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -4344,7 +4344,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
@@ -4400,7 +4400,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -4512,7 +4512,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -4612,7 +4612,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
-				if (!(baseInfoCount == 0))
+				if (baseInfoCount != 0)
 				{
 					baseInfo.CopyTo(ret, 1);
 				}
@@ -6200,7 +6200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			Guid rVal;
 			string key = attributeName;
-			if (!(xmlNamespace.Length == 0))
+			if (xmlNamespace.Length != 0)
 			{
 				key = string.Concat(xmlNamespace, "|", attributeName);
 			}
