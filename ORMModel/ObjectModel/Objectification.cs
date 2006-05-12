@@ -637,7 +637,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ProcessFactTypeForImpliedObjectification(FactType factType, bool throwOnFailure)
 		{
 			// We don't need to process implied FactTypes, since they can never be objectified
-			if (factType == null || factType.ImpliedByObjectification != null || factType.IsRemoved)
+			if (factType == null || factType.IsRemoved || factType.ImpliedByObjectification != null)
 			{
 				return;
 			}
