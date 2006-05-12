@@ -319,8 +319,13 @@
 	<xs:complexType name="Roles">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Role" type="Role"/>
-			<xs:element name="RoleProxy" type="RoleProxy"/>
 		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ImpliedFactRoles">
+		<xs:all>
+			<xs:element name="Role" type="Role"/>
+			<xs:element name="RoleProxy" type="RoleProxy"/>
+		</xs:all>
 	</xs:complexType>
 	<xs:complexType name="SubtypeRoles">
 		<xs:all>
@@ -388,40 +393,37 @@
 			<xs:element name="ImpliedFact" type="ImpliedFact"/>
 		</xs:choice>
 	</xs:complexType>
-	<xs:complexType name="BaseFact" abstract="true">
-		<!-- These are duplicated in SubtypeFact without type extension -->
+	<xs:complexType name="Fact">
+		<!-- These are duplicated in ImpliedFact and SubtypeFact without type extension -->
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="Notes" type="NotesType" minOccurs="0" />
 			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
-	<xs:complexType name="Fact">
-		<xs:complexContent>
-			<xs:extension base="BaseFact">
-				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="ImpliedFact">
-		<xs:complexContent>
-			<xs:extension base="BaseFact">
-				<xs:sequence>
-					<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<!-- This is a straight copy from Fact with a change to FactRoles -->
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="Notes" type="NotesType" minOccurs="0" />
+			<xs:element name="FactRoles" type="ImpliedFactRoles" minOccurs="0"/>
+			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
+			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Name" use="required" type="xs:string"/>
+		<xs:attribute name="id" use="required" type="xs:ID"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="SubtypeFact">
-		<!-- This is a straight copy from BaseFact with a change to FactRoles and an Extensions element-->
+		<!-- This is a straight copy from Fact with a change to FactRoles -->
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="Notes" type="NotesType" minOccurs="0" />
 			<xs:element name="FactRoles" type="SubtypeRoles" minOccurs="1"/>

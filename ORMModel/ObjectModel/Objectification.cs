@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -555,7 +556,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// See if we have more than two roles
 				if (factType.RoleCollection.Count > 2)
 				{
-					CreateImpliedObjectificationForFactType(factType);
+					CreateImpliedObjectificationForFactType(factType, null);
 					return;
 				}
 				// See if we now have a uniqueness constraint that implies an objectification
@@ -564,13 +565,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (uniquenessConstraint.RoleCollection.Count > 1)
 					{
 						// We now have a uniqueness constraint that implies an objectification, so create it
-						CreateImpliedObjectificationForFactType(factType);
+						CreateImpliedObjectificationForFactType(factType, null);
 						return;
 					}
 				}
 			}
 		}
-		private static void CreateImpliedObjectificationForFactType(FactType factType)
+		private static void CreateImpliedObjectificationForFactType(FactType factType, INotifyElementAdded notifyAdded)
 		{
 			Store store = factType.Store;
 			ObjectType objectifiedType = ObjectType.CreateAndInitializeObjectType(store,
@@ -590,6 +591,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					new AttributeAssignment(Objectification.IsImpliedMetaAttributeGuid, true, store)
 				});
 			objectifiedType.Model = factType.Model;
+			if (notifyAdded != null)
+			{
+				// The true addLinks parameter here will pick up both the Objectification and
+				// the ModelHasObjectType links, so is sufficient to get all of the elements we
+				// created here.
+				notifyAdded.ElementAdded(objectifiedType, true);
+			}
 		}
 		/// <summary>
 		/// Create an implied fact type, set its far constraints, and add
@@ -665,6 +673,316 @@ namespace Neumont.Tools.ORM.ObjectModel
 			throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedElementModified);
 		}
 		#endregion // Helper functions
-		// UNDONE: Deserialization fixup
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// validates all model errors and adds errors to the task provider.
+		/// </summary>
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ObjectificationFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener class to enforce valid subtype facts on load.
+		/// Invalid subtype patterns will either be fixed up or completely
+		/// removed.
+		/// </summary>
+		private class ObjectificationFixupListener : DeserializationFixupListener<Objectification>
+		{
+			/// <summary>
+			/// Create a new ObjectificationFixupListener
+			/// </summary>
+			public ObjectificationFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Make sure the objectification pattern is present and correct.
+			/// </summary>
+			/// <param name="element">An Objectification instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(Objectification element, Store store, INotifyElementAdded notifyAdded)
+			{
+				// Note that this assumes xsd validation has occurred (RoleProxy is only on an ImpliedFact, there
+				// is 1 Role and 1 RoleProxy, and implied facts must be attached to an Objectification relationship.
+				FactType nestedFact = element.NestedFactType;
+				ORMModel model = nestedFact.Model;
+				ObjectType nestingType = element.NestingType;
+				RoleBaseMoveableCollection factRoles = nestedFact.RoleCollection;
+				int factRolesCount = factRoles.Count;
+
+				// Make sure each of the facts has a properly constructed role proxy
+				for (int i = 0; i < factRolesCount; ++i)
+				{
+					Role factRole = (Role)factRoles[i];
+					Role farRole = null; // The role on the implied fact with the nesting type as a role player
+					FactType impliedFact = null;
+					RoleProxy proxy = factRole.Proxy;
+					if (proxy != null)
+					{
+						// Make sure the proxy is appropriate
+						impliedFact = proxy.FactType;
+						if (impliedFact != null && !object.ReferenceEquals(impliedFact.ImpliedByObjectification, element))
+						{
+							RemoveFact(impliedFact);
+							impliedFact = null;
+							Debug.Assert(proxy.IsRemoved); // Goes away with delete propagation on the fact
+							proxy = null;
+						}
+						else
+						{
+							RoleBaseMoveableCollection impliedRoles = impliedFact.RoleCollection;
+							if (impliedRoles.Count != 2)
+							{
+								RemoveFact(impliedFact);
+								impliedFact = null;
+								proxy = null;
+							}
+							else
+							{
+								farRole = impliedRoles[0] as Role;
+								if (farRole == null)
+								{
+									farRole = impliedRoles[1] as Role;
+									Debug.Assert(farRole != null);
+									if (farRole == null)
+									{
+										RemoveFact(impliedFact);
+										impliedFact = null;
+										proxy = null;
+									}
+								}
+								if (farRole != null)
+								{
+									ObjectType testRolePlayer = farRole.RolePlayer;
+									if (!object.ReferenceEquals(testRolePlayer, nestingType))
+									{
+										farRole.RolePlayer = nestingType;
+										notifyAdded.ElementAdded((ModelElement)farRole.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid)[0]);
+									}
+								}
+							}
+						}
+					}
+					if (proxy == null)
+					{
+						// Create the proxy role
+						proxy = RoleProxy.CreateRoleProxy(store);
+						proxy.TargetRole = factRole;
+						notifyAdded.ElementAdded(proxy, true);
+
+						// Create the non-proxy role
+						farRole = Role.CreateRole(store);
+						farRole.RolePlayer = nestingType;
+						notifyAdded.ElementAdded(proxy, true);
+
+						// Create the implied fact and set relationships to existing objects
+						impliedFact = FactType.CreateFactType(store);
+						proxy.FactType = impliedFact;
+						farRole.FactType = impliedFact;
+						impliedFact.ImpliedByObjectification = element;
+						impliedFact.Model = model;
+						notifyAdded.ElementAdded(impliedFact, true);
+					}
+
+					// Make sure the internal constraint pattern is correct on the far role
+					EnsureSingleColumnUniqueAndMandatory(store, model, farRole, notifyAdded);
+				}
+
+				// Verify that that are no innapropriate implied facts are attached to the objectification
+				FactTypeMoveableCollection impliedFacts = element.ImpliedFactTypeCollection;
+				int impliedFactCount = impliedFacts.Count;
+				if (impliedFactCount != factRolesCount)
+				{
+					int leftToRemove = impliedFactCount - factRolesCount;
+					Debug.Assert(impliedFactCount > factRolesCount); // We verified and/or added at least this many earlier
+					for (int i = impliedFactCount - 1; i >= 0 && leftToRemove != 0; --i)
+					{
+						FactType impliedFact = impliedFacts[i];
+						RoleBaseMoveableCollection impliedRoles = impliedFact.RoleCollection;
+						if (impliedRoles.Count != 2)
+						{
+							RemoveFact(impliedFact);
+							--leftToRemove;
+						}
+						else
+						{
+							RoleProxy proxy = impliedRoles[0] as RoleProxy;
+							if (proxy == null)
+							{
+								proxy = impliedRoles[1] as RoleProxy;
+							}
+							Role targetRole;
+							if (proxy == null ||
+								null == (targetRole = proxy.Role) ||
+								!object.ReferenceEquals(targetRole, nestedFact))
+							{
+								RemoveFact(impliedFact);
+								--leftToRemove;
+							}
+						}
+					}
+				}
+
+				// Verify the implication pattern
+				if (element.IsImplied && (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count > factRolesCount))
+				{
+					element.IsImplied = false;
+				}
+
+				// Make sure the names are in sync
+				nestedFact.Name = nestingType.Name;
+			}
+			/// <summary>
+			/// Internal constraints are not fully connected at this point (FactSetConstraint instances
+			/// are not implicitly constructed until a later phase), so we need to work a little harder
+			/// to remove them.
+			/// </summary>
+			/// <param name="fact">The fact to clear of external constraints</param>
+			private static void RemoveFact(FactType fact)
+			{
+				RoleBaseMoveableCollection factRoles = fact.RoleCollection;
+				int roleCount = factRoles.Count;
+				for (int i = 0; i < roleCount; ++i)
+				{
+					Role role = factRoles[i].Role;
+					ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+					int sequenceCount = sequences.Count;
+					for (int j = sequenceCount - 1; j >= 0; --j)
+					{
+						SetConstraint ic = sequences[j] as SetConstraint;
+						if (ic != null && ic.Constraint.ConstraintIsInternal)
+						{
+							ic.Remove();
+						}
+					}
+				}
+				fact.Remove();
+			}
+			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, INotifyElementAdded notifyAdded)
+			{
+				ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+				int sequenceCount = sequences.Count;
+				bool haveUniqueness = false;
+				bool haveMandatory = false;
+				SetConstraint ic;
+				for (int i = sequenceCount - 1; i >= 0; --i)
+				{
+					ic = sequences[i] as SetConstraint;
+					if (ic != null && ic.Constraint.ConstraintIsInternal)
+					{
+						if (ic.RoleCollection.Count == 1 && ic.Modality == ConstraintModality.Alethic)
+						{
+							switch (ic.Constraint.ConstraintType)
+							{
+								case ConstraintType.InternalUniqueness:
+									if (haveUniqueness)
+									{
+										ic.Remove();
+									}
+									else
+									{
+										haveUniqueness = true;
+									}
+									break;
+								case ConstraintType.SimpleMandatory:
+									if (haveMandatory)
+									{
+										ic.Remove();
+									}
+									else
+									{
+										haveMandatory = true;
+									}
+									break;
+							}
+						}
+						else
+						{
+							ic.Remove();
+						}
+						if (!haveUniqueness)
+						{
+							ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+							ic.RoleCollection.Add(role);
+							ic.Model = model;
+							notifyAdded.ElementAdded(ic, true);
+						}
+						if (!haveMandatory)
+						{
+							ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
+							ic.RoleCollection.Add(role);
+							ic.Model = model;
+							notifyAdded.ElementAdded(ic, true);
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// verifies that all facts that should have implied objectifications
+		/// have implied objectifications
+		/// </summary>
+		public static IDeserializationFixupListener ImpliedFixupListener
+		{
+			get
+			{
+				return new ImpliedObjectificationFixupListener();
+			}
+		}
+		/// <summary>
+		/// A listener class to enforce valid implied objectification patterns on load.
+		/// Any fact that does not have a required implied objectification but should have
+		/// one will be fixed. Unnecessary implied objectification elements are removed
+		/// during Objectification validation.
+		/// </summary>
+		private class ImpliedObjectificationFixupListener : DeserializationFixupListener<FactType>
+		{
+			/// <summary>
+			/// Create a new SubtypeFactFixupListener
+			/// </summary>
+			public ImpliedObjectificationFixupListener()
+				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
+			{
+			}
+			/// <summary>
+			/// Make sure that any fact type that does not have an implied objectification
+			/// but needs one gets an implied objectification. Note that populating the implied
+			/// objectification is left up to the other fixup listener.
+			/// </summary>
+			/// <param name="element">An FactType instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsRemoved &&
+					null == element.Objectification &&
+					null == element.ImpliedByObjectification)
+				{
+					bool impliedRequired = false;
+					if (element.RoleCollection.Count > 2)
+					{
+						impliedRequired = true;
+					}
+					else
+					{
+						foreach (UniquenessConstraint constraint in element.GetInternalConstraints<UniquenessConstraint>())
+						{
+							impliedRequired = true;
+						}
+					}
+					if (impliedRequired)
+					{
+						CreateImpliedObjectificationForFactType(element, notifyAdded);
+					}
+				}
+			}
+		}
+		#endregion Deserialization Fixup
 	}
 }

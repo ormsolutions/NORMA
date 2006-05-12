@@ -637,7 +637,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// They must both be value types or object types, but can't switch
 					((superType.DataType == null) != (subType.DataType == null)))
 				{
-					element.Remove();
+					RemoveFact(element);
 				}
 				else
 				{
@@ -645,15 +645,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// but we can't set them. All changes must be made explicitly.
 					if (superTypeMetaRole.Multiplicity != RoleMultiplicity.ExactlyOne)
 					{
-						EnsureSingleColumnUniqueAndMandatory(store, element, subTypeMetaRole, true, notifyAdded);
+						EnsureSingleColumnUniqueAndMandatory(store, element.Model, subTypeMetaRole, true, notifyAdded);
 					}
 					if (subTypeMetaRole.Multiplicity != RoleMultiplicity.ZeroToOne)
 					{
-						EnsureSingleColumnUniqueAndMandatory(store, element, superTypeMetaRole, false, notifyAdded);
+						EnsureSingleColumnUniqueAndMandatory(store, element.Model, superTypeMetaRole, false, notifyAdded);
 					}
 				}
 			}
-			private static void EnsureSingleColumnUniqueAndMandatory(Store store, FactType fact, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
+			/// <summary>
+			/// Internal constraints are not fully connected at this point (FactSetConstraint instances
+			/// are not implicitly constructed until a later phase), so we need to work a little harder
+			/// to remove them.
+			/// </summary>
+			/// <param name="fact">The fact to clear of external constraints</param>
+			private static void RemoveFact(FactType fact)
+			{
+				RoleBaseMoveableCollection factRoles = fact.RoleCollection;
+				int roleCount = factRoles.Count;
+				for (int i = 0; i < roleCount; ++i)
+				{
+					Role role = factRoles[i].Role;
+					ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+					int sequenceCount = sequences.Count;
+					for (int j = sequenceCount - 1; j >= 0; --j)
+					{
+						SetConstraint ic = sequences[j] as SetConstraint;
+						if (ic != null && ic.Constraint.ConstraintIsInternal)
+						{
+							ic.Remove();
+						}
+					}
+				}
+				fact.Remove();
+			}
+			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
 			{
 				ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
 				int sequenceCount = sequences.Count;
@@ -699,12 +725,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
 							ic.RoleCollection.Add(role);
+							ic.Model = model;
 							notifyAdded.ElementAdded(ic, true);
 						}
 						if (!haveMandatory)
 						{
 							ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
 							ic.RoleCollection.Add(role);
+							ic.Model = model;
 							notifyAdded.ElementAdded(ic, true);
 						}
 					}
