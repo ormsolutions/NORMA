@@ -223,7 +223,7 @@
     <value>&lt;Nested Fact Type Not Set&gt;</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText" xml:space="preserve">
-    <value>&lt;Nested Type Not Set&gt;</value>
+    <value>&lt;Nesting Type Not Set&gt;</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText" xml:space="preserve">
     <value>&lt;Role Player Not Set&gt;</value>

@@ -44,7 +44,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (e.MetaAttribute.Id == RootType.NameMetaAttributeGuid)
 				{
+					string newValue = (string)e.NewValue;
 					ModelElement modelElement = e.ModelElement;
+					if ((object)((modelElement as NamedElement).Name) != (object)newValue)
+					{
+						// If another name change has happened in the time before this rule is fired, just abort
+						return;
+					}
 					FactType factType;
 					ObjectType objectType;
 					if ((objectType = modelElement as ObjectType) != null)
@@ -55,7 +61,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							try
 							{
 								myCalledRecursively = true;
-								factType.Name = (string)e.NewValue;
+								factType.Name = newValue;
 							}
 							finally
 							{
@@ -71,7 +77,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							try
 							{
 								myCalledRecursively = true;
-								objectType.Name = (string)e.NewValue;
+								objectType.Name = newValue;
 							}
 							finally
 							{
@@ -83,7 +89,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ObjectificationNameChangeRule class
-		#region Implied Objectification creation and removal
+		#region Implied Objectification creation, removal, and pattern enforcement
 		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
 		/// <summary>
 		/// Creates a new implied Objectification if the implied objectification pattern is now present.
@@ -112,14 +118,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule class
 		#region ImpliedObjectificationFactTypeHasRoleAddRule class
 		/// <summary>
-		/// Creates a new implied Objectification if the implied objectification pattern is now present.
+		/// 1) Creates a new implied Objectification if the implied objectification pattern is now present.
+		/// 2) Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
 		private class ImpliedObjectificationFactTypeHasRoleAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
+				FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
+				ORMMetaModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ProcessNewPlayerRoleForImpliedObjectification(factTypeHasRole.RoleCollection as Role);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule class
@@ -152,7 +161,71 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ImpliedObjectificationUniquenessConstraintIsInternalChangeRule class
-		#endregion // Implied Objectification creation and removal
+		#region ImpliedObjectificationIsImpliedChangeRule class
+		/// <summary>
+		/// Validates that an objectification that is implied matches the implied objectification pattern.
+		/// </summary>
+		[RuleOn(typeof(Objectification))]
+		private class ImpliedObjectificationIsImpliedChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				if (e.MetaAttribute.Id == Objectification.IsImpliedMetaAttributeGuid && (bool)e.NewValue)
+				{
+					Objectification objectification = e.ModelElement as Objectification;
+					
+					// Check the implication pattern
+					ProcessFactTypeForImpliedObjectification(objectification.NestedFactType, true);
+					
+					// If we're still objectified, check that we are only doing things that are allowed
+					if (objectification.IsImplied)
+					{
+						ObjectType nestingType = objectification.NestingType;
+						if (nestingType != null && (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
+						{
+							throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact);
+						}
+					}
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationIsImpliedChangeRule class
+		#region ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule class
+		/// <summary>
+		/// Changes an implied Objectification to being explicit if IsIndependent is changed.
+		/// </summary>
+		[RuleOn(typeof(ObjectType))]
+		private class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				if (e.MetaAttribute.Id == ObjectType.IsIndependentMetaAttributeGuid && !(bool)e.NewValue)
+				{
+					ObjectType nestingType = e.ModelElement as ObjectType;
+					FactType nestedFact = nestingType.NestedFactType;
+					Objectification objectification;
+					if (nestedFact != null && (objectification = nestedFact.Objectification).IsImplied)
+					{
+						objectification.IsImplied = false;
+					}
+				}
+			}
+		}
+		#endregion // ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule class
+		#region ImpliedObjectificationObjectifyingTypePlaysRoleAddRule class
+		/// <summary>
+		/// Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ProcessNewPlayerRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRoleCollection);
+			}
+		}
+		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddRule class
+		#endregion // Implied Objectification creation, removal, and pattern enforcement
 		#region Objectification implied facts and constraints pattern enforcement
 		#region ObjectificationAddRule class
 		/// <summary>
@@ -224,6 +297,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (!nestingType.IsRemoved)
 					{
 						nestingType.Remove();
+					}
+				}
+				else
+				{
+					FactType nestedFact = objectification.NestedFactType;
+					if (!nestedFact.IsRemoved)
+					{
+						ORMMetaModel.DelayValidateElement(nestedFact, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 			}
@@ -504,6 +585,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // InternalConstraintChangeRule class
 		#endregion // Objectification implied facts and constraints pattern enforcement
 		#region Helper functions
+		/// <summary>
+		/// If a newly played Role is in a non-implied FactType, then the role player cannot be an implied objectifying ObjectType
+		/// </summary>
+		private static void ProcessNewPlayerRoleForImpliedObjectification(Role playedRole)
+		{
+			if (playedRole != null)
+			{
+				FactType playedFact = playedRole.FactType;
+				if (playedFact != null)
+				{
+					// If the fact is implied, we don't need to do anything else
+					if (playedFact.ImpliedByObjectification != null)
+					{
+						return;
+					}
+
+					ObjectType nestingType = playedRole.RolePlayer;
+					Objectification objectification;
+					if (nestingType != null && (objectification = nestingType.Objectification) != null && objectification.IsImplied)
+					{
+						// The newly-played role is in a non-implied fact, so the objectification is no longer implied
+						objectification.IsImplied = false;
+					}
+				}
+			}
+		}
 		private static void ProcessUniquenessConstraintForImpliedObjectification(UniquenessConstraint uniquenessConstraint, bool changingIsInternal)
 		{
 			if (uniquenessConstraint == null || (!uniquenessConstraint.IsInternal && !changingIsInternal))
@@ -522,7 +629,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void DelayProcessFactTypeForImpliedObjectification(ModelElement element)
 		{
-			FactType factType = element as FactType;
+			ProcessFactTypeForImpliedObjectification(element as FactType, false);
+		}
+		/// <summary>
+		/// Check for the implied objectification pattern, and add or remove it as appropriate.
+		/// </summary>
+		private static void ProcessFactTypeForImpliedObjectification(FactType factType, bool throwOnFailure)
+		{
 			// We don't need to process implied FactTypes, since they can never be objectified
 			if (factType == null || factType.ImpliedByObjectification != null || factType.IsRemoved)
 			{
@@ -547,8 +660,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 							return;
 						}
 					}
-					// We don't have a uniqueness constraint that implies the objectification, so remove it
-					objectification.Remove();
+					// We don't have enough roles or a uniqueness constraint that implies the objectification, so get rid of
+					// the implied objectification
+					if (throwOnFailure)
+					{
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact);
+					}
+					else
+					{
+						objectification.Remove();
+					}
 				}
 			}
 			else
@@ -571,6 +692,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Creates an implied Objectification for the specified FactType.
+		/// NOTE: It is the caller's responsibility to ensure the the specified FactType matches the implied Objectification pattern.
+		/// </summary>
 		private static void CreateImpliedObjectificationForFactType(FactType factType, INotifyElementAdded notifyAdded)
 		{
 			Store store = factType.Store;
@@ -590,9 +715,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					new AttributeAssignment(Objectification.IsImpliedMetaAttributeGuid, true, store)
 				});
-			objectifiedType.Model = factType.Model;
-			if (notifyAdded != null)
+			if (notifyAdded == null)
 			{
+				IDictionary contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				try
+				{
+					contextInfo[ObjectType.AllowDuplicateObjectNamesKey] = null;
+					objectifiedType.Model = factType.Model;
+				}
+				finally
+				{
+					contextInfo.Remove(ObjectType.AllowDuplicateObjectNamesKey);
+				}
+			}
+			else
+			{
+				objectifiedType.Model = factType.Model;
 				// The true addLinks parameter here will pick up both the Objectification and
 				// the ModelHasObjectType links, so is sufficient to get all of the elements we
 				// created here.

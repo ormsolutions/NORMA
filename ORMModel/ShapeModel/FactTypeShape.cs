@@ -4076,7 +4076,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				Objectification link = e.ModelElement as Objectification;
 				ProcessObjectification(e.ModelElement as Objectification);
 			}
 		}

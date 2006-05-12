@@ -256,6 +256,10 @@
     <value>Facts and constraints implied by an Objectification relationship cannot be directly modified.</value>
     <comment>Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
   </data>
+  <data name="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" xml:space="preserve">
+    <value>Implied objectifications must be implied, must be independent, and must only play roles in implied fact types.</value>
+    <comment>Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent or plays a Role in a non-implied FactType.</comment>
+  </data>
   <data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
     <value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>
     <comment>Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>

@@ -26,6 +26,7 @@ using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region ObjectTypeVisitor delegate definition
 	/// <summary>
 	/// A callback definition used for walking subtype and supertype hierarchies.
 	/// </summary>
@@ -54,6 +55,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		SkipChildren,
 	}
+	#endregion // ObjectTypeVisitor delegate definition
 	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner
 	{
 		#region Public token values
@@ -65,6 +67,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the user.
 		/// </summary>
 		public static readonly object DeleteReferenceModeValueType = new object();
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate that
+		/// we should generate duplicate name errors for like-named objects instead of
+		/// throwing an exception.
+		/// </summary>
+		public static readonly object AllowDuplicateObjectNamesKey = new object();
 		#endregion // Public token values
 		#region CustomStorage handlers
 		/// <summary>
@@ -255,6 +263,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 		#endregion // CustomStorage handlers
+		#region Objectification Property
+		/// <summary>
+		/// Return the Objectification relationship that
+		/// attaches this object to its nested fact
+		/// </summary>
+		public Objectification Objectification
+		{
+			get
+			{
+				IList links = GetElementLinks(Objectification.NestingTypeMetaRoleGuid, false);
+				if (links != null && links.Count != 0)
+				{
+					Debug.Assert(links.Count == 1);
+					return (Objectification)links[0];
+				}
+				return null;
+			}
+		}
+		#endregion // Objectification Property
 		#region PreferredIdentifier Property
 		/// <summary>
 		/// Get the preferred identifier for this object. The preferred identifier is

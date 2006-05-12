@@ -283,13 +283,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		/// <returns></returns>
-		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		protected object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
 		{
-			// Use the default settings (allow duplicates during load time only)
-			return null;
+			object retVal = null;
+			IDictionary contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			if (!contextInfo.Contains(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
+				contextInfo.Contains(ObjectType.AllowDuplicateObjectNamesKey))
+			{
+				// Use to their value so they don't have to look up ours again
+				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
+			}
+			return retVal;
 		}
 		#endregion // INamedElementDictionaryParent implementation
 		#region Rules to remove duplicate name errors

@@ -52,6 +52,9 @@
 		<arg:Rule class="Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationFactTypeHasRoleAddRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationFactTypeHasRoleRemovingRule"/>
+		<arg:Rule class="Objectification.ImpliedObjectificationIsImpliedChangeRule"/>
+		<arg:Rule class="Objectification.ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule"/>
+		<arg:Rule class="Objectification.ImpliedObjectificationObjectifyingTypePlaysRoleAddRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationUniquenessConstraintIsInternalChangeRule"/>
 		<arg:Rule class="Objectification.InternalConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>

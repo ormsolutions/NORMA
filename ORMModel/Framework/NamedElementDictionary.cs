@@ -410,6 +410,13 @@ namespace Neumont.Tools.ORM.Framework
 		/// if duplicate names should not be allowed.
 		/// </summary>
 		public static readonly object BlockDuplicateNamesKey = new object();
+		/// <summary>
+		/// The default key used by the named element dictionary to control whether
+		/// duplicate names should be allowed. A null return from
+		/// INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey will use
+		/// this key by default
+		/// </summary>
+		public static readonly object DefaultAllowDuplicateNamesKey = Microsoft.VisualStudio.EnterpriseTools.Shell.ModelingDocData.LoadingKey;
 		#endregion // Public token values
 		#region Default duplicate collection manager
 		/// <summary>
@@ -890,7 +897,7 @@ namespace Neumont.Tools.ORM.Framework
 			DuplicateNameAction duplicateAction = DuplicateNameAction.ThrowOnDuplicateName;
 			if (contextKey == null)
 			{
-				contextKey = Microsoft.VisualStudio.EnterpriseTools.Shell.ModelingDocData.LoadingKey;
+				contextKey = DefaultAllowDuplicateNamesKey;
 			}
 			else if (contextKey == AllowDuplicateNamesKey)
 			{

@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText");
 			}
 		}
 		/// <summary>
@@ -688,6 +688,16 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedFactTypesCannotBeObjectified");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent or plays a Role in a non-implied FactType.
+		/// </summary>
+		public static string ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact");
 			}
 		}
 		/// <summary>
