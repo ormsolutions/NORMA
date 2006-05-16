@@ -555,6 +555,17 @@ namespace Neumont.Tools.ORM.Framework
 			return retVal;
 		}
 		/// <summary>
+		/// Get the default name for the element. If a default name is provided
+		/// then there is no attempt made to get a root name pattern and the dictionary
+		/// is temporarily switched into 'allow duplicates' mode
+		/// </summary>
+		/// <param name="element">The element to get a name for</param>
+		/// <returns>null, or a default name for the element</returns>
+		protected virtual string GetDefaultName(NamedElement element)
+		{
+			return null;
+		}
+		/// <summary>
 		/// Override to throw a custom exception when
 		/// adding duplicate names is not allowed.
 		/// </summary>
@@ -572,10 +583,18 @@ namespace Neumont.Tools.ORM.Framework
 		/// GetRootNamePattern to get a starting name pattern
 		/// </summary>
 		/// <param name="element">NamedElement</param>
+		/// <param name="forceAllowDuplicateName">Set to true if the GetDefaultName returns a non-empty string</param>
 		/// <returns>A name that is not currently in the dictionary.</returns>
-		protected string GenerateUniqueName(NamedElement element)
+		private string GenerateUniqueName(NamedElement element, out bool forceAllowDuplicateName)
 		{
-			string rootName = GetRootNamePattern(element);
+			string rootName = GetDefaultName(element);
+			if (!string.IsNullOrEmpty(rootName))
+			{
+				forceAllowDuplicateName = true;
+				return rootName;
+			}
+			forceAllowDuplicateName = false;
+			rootName = GetRootNamePattern(element);
 			if (!rootName.Contains("{0}"))
 			{
 				rootName += "{0}";
@@ -628,15 +647,42 @@ namespace Neumont.Tools.ORM.Framework
 				if (duplicateAction != DuplicateNameAction.RetrieveDuplicateCollection)
 				{
 					Debug.Assert(element.Store.TransactionManager.InTransaction);
-					elementName = GenerateUniqueName(element);
+					bool forceAllowDuplicateName;
+					elementName = GenerateUniqueName(element, out forceAllowDuplicateName);
 					if (elementName != null && elementName.Length != 0)
 					{
-						element.Name = elementName;
-						if (notifyAdded == null)
+						if (forceAllowDuplicateName && duplicateAction == DuplicateNameAction.ThrowOnDuplicateName)
 						{
-							// The name change rule will not fire during deserialization, just fall through here
-							// if we're deserializing
-							return;
+							duplicateAction = DuplicateNameAction.ModifyDuplicateCollection;
+							bool ruleDisabled = false;
+							RuleManager ruleManager = null;
+							try
+							{
+								if (notifyAdded == null)
+								{
+									ruleManager = element.Store.RuleManager;
+									ruleManager.DisableRule(typeof(NamedElementChangedRule));
+									ruleDisabled = true;
+								}
+								element.Name = elementName;
+							}
+							finally
+							{
+								if (ruleDisabled)
+								{
+									ruleManager.EnableRule(typeof(NamedElementChangedRule));
+								}
+							}
+						}
+						else
+						{
+							element.Name = elementName;
+							if (notifyAdded == null)
+							{
+								// The name change rule will not fire during deserialization, just fall through here
+								// if we're deserializing
+								return;
+							}
 						}
 					}
 					else

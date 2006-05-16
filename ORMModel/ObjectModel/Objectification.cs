@@ -27,68 +27,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Objectification
 	{
 		// UNDONE: Handle unary objectifications (both implied and explicit)
-		#region ObjectificationNameChangeRule class
-		/// <summary>
-		/// Propagate name changes between FactType and ObjectType elements in an Objectification relationship.
-		/// </summary>
-		[RuleOn(typeof(ObjectType))]
-		[RuleOn(typeof(FactType))]
-		private class ObjectificationNameChangeRule : ChangeRule
-		{
-			private bool myCalledRecursively;
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
-			{
-				if (myCalledRecursively)
-				{
-					return;
-				}
-				if (e.MetaAttribute.Id == RootType.NameMetaAttributeGuid)
-				{
-					string newValue = (string)e.NewValue;
-					ModelElement modelElement = e.ModelElement;
-					if ((object)((modelElement as NamedElement).Name) != (object)newValue)
-					{
-						// If another name change has happened in the time before this rule is fired, just abort
-						return;
-					}
-					FactType factType;
-					ObjectType objectType;
-					if ((objectType = modelElement as ObjectType) != null)
-					{
-						if ((factType = objectType.NestedFactType) != null)
-						{
-							// The ObjectType name changed, so change the FactType name to match
-							try
-							{
-								myCalledRecursively = true;
-								factType.Name = newValue;
-							}
-							finally
-							{
-								myCalledRecursively = false;
-							}
-						}
-					}
-					else if ((factType = modelElement as FactType) != null)
-					{
-						if ((objectType = factType.NestingType) != null)
-						{
-							// The FactType name changed, so change the ObjectType name to match
-							try
-							{
-								myCalledRecursively = true;
-								objectType.Name = newValue;
-							}
-							finally
-							{
-								myCalledRecursively = false;
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion // ObjectificationNameChangeRule class
 		#region Implied Objectification creation, removal, and pattern enforcement
 		#region ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
 		/// <summary>
@@ -245,9 +183,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Store store = nestedFact.Store;
 				ObjectType nestingType = objectificationLink.NestingType;
 				ORMModel model = nestedFact.Model;
-
-				// Set the nested FactType name to the nesting ObjectType name
-				nestedFact.Name = nestingType.Name;
 
 				// Comments in this and other related procedures will refer to
 				// the 'near' end and 'far' end of the implied elements. The
@@ -925,6 +860,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 						impliedFact.ImpliedByObjectification = element;
 						impliedFact.Model = model;
 						notifyAdded.ElementAdded(impliedFact, true);
+
+						// Add forward reading
+						ReadingOrderMoveableCollection readingOrders = impliedFact.ReadingOrderCollection;
+						ReadingOrder order = ReadingOrder.CreateReadingOrder(store);
+						RoleBaseMoveableCollection orderRoles;
+						readingOrders.Add(order);
+						orderRoles = order.RoleCollection;
+						orderRoles.Add(proxy);
+						orderRoles.Add(farRole);
+						Reading reading = Reading.CreateReading(store);
+						reading.ReadingOrder = order;
+						reading.Text = ResourceStrings.ImpliedFactTypePredicateReading;
+						notifyAdded.ElementAdded(order, true);
+						notifyAdded.ElementAdded(reading, false);
+
+						// Add inverse reading
+						order = ReadingOrder.CreateReadingOrder(store);
+						readingOrders.Add(order);
+						orderRoles = order.RoleCollection;
+						orderRoles.Add(farRole);
+						orderRoles.Add(proxy);
+						reading = Reading.CreateReading(store);
+						reading.ReadingOrder = order;
+						reading.Text = ResourceStrings.ImpliedFactTypePredicateInverseReading;
+						notifyAdded.ElementAdded(order, true);
+						notifyAdded.ElementAdded(reading, false);
 					}
 
 					// Make sure the internal constraint pattern is correct on the far role
@@ -971,9 +932,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					element.IsImplied = false;
 				}
-
-				// Make sure the names are in sync
-				nestedFact.Name = nestingType.Name;
 			}
 			/// <summary>
 			/// Internal constraints are not fully connected at this point (FactSetConstraint instances
@@ -1043,21 +1001,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							ic.Remove();
 						}
-						if (!haveUniqueness)
-						{
-							ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-							ic.RoleCollection.Add(role);
-							ic.Model = model;
-							notifyAdded.ElementAdded(ic, true);
-						}
-						if (!haveMandatory)
-						{
-							ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
-							ic.RoleCollection.Add(role);
-							ic.Model = model;
-							notifyAdded.ElementAdded(ic, true);
-						}
 					}
+				}
+				if (!haveUniqueness)
+				{
+					ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+					ic.RoleCollection.Add(role);
+					ic.Model = model;
+					notifyAdded.ElementAdded(ic, true);
+				}
+				if (!haveMandatory)
+				{
+					ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
+					ic.RoleCollection.Add(role);
+					ic.Model = model;
+					notifyAdded.ElementAdded(ic, true);
 				}
 			}
 		}

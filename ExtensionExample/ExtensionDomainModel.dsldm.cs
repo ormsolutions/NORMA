@@ -266,8 +266,8 @@ namespace ExtensionExample
 				typeof(ExtensionExample.ExtensionDomainModel),
 				typeof(ExtensionExample.MyCustomExtensionElement),
 				typeof(ExtensionExample.MyCustomExtensionElementElementFactoryCreator),
-				typeof(ExtensionExample.FactTypeRequiresMeaningfulNameError),
-				typeof(ExtensionExample.FactTypeRequiresMeaningfulNameErrorElementFactoryCreator),
+				typeof(ExtensionExample.ObjectTypeRequiresMeaningfulNameError),
+				typeof(ExtensionExample.ObjectTypeRequiresMeaningfulNameErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -650,10 +650,10 @@ namespace ExtensionExample
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("9f620b5a-9a99-45a4-a022-c9ed95ce85d6")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(ExtensionExample.FactTypeRequiresMeaningfulNameError.MetaClassGuidString, "ExtensionExample.FactTypeRequiresMeaningfulNameError")]
-	public  partial class FactTypeRequiresMeaningfulNameError : Neumont.Tools.ORM.ObjectModel.ModelError
+	[Microsoft.VisualStudio.Modeling.MetaObject(ExtensionExample.ObjectTypeRequiresMeaningfulNameError.MetaClassGuidString, "ExtensionExample.ObjectTypeRequiresMeaningfulNameError")]
+	public  partial class ObjectTypeRequiresMeaningfulNameError : Neumont.Tools.ORM.ObjectModel.ModelError
 	{
-		#region FactTypeRequiresMeaningfulNameError's Generated MetaClass Code
+		#region ObjectTypeRequiresMeaningfulNameError's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -661,67 +661,67 @@ namespace ExtensionExample
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(ExtensionExample.FactTypeRequiresMeaningfulNameError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(ExtensionExample.ObjectTypeRequiresMeaningfulNameError.MetaClassGuidString);
 		#endregion
 
 	}
-	#region FactTypeRequiresMeaningfulNameError's Generated Constructor Code
-	public  partial class FactTypeRequiresMeaningfulNameError
+	#region ObjectTypeRequiresMeaningfulNameError's Generated Constructor Code
+	public  partial class ObjectTypeRequiresMeaningfulNameError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public FactTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public ObjectTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static FactTypeRequiresMeaningfulNameError CreateFactTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Store store)
+		public static ObjectTypeRequiresMeaningfulNameError CreateObjectTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			return CreateFactTypeRequiresMeaningfulNameError(store.DefaultPartition);
+			return CreateObjectTypeRequiresMeaningfulNameError(store.DefaultPartition);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static FactTypeRequiresMeaningfulNameError CreateAndInitializeFactTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ObjectTypeRequiresMeaningfulNameError CreateAndInitializeObjectTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeFactTypeRequiresMeaningfulNameError(store.DefaultPartition, assignments);
+			return CreateAndInitializeObjectTypeRequiresMeaningfulNameError(store.DefaultPartition, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public FactTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public ObjectTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 			: base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static FactTypeRequiresMeaningfulNameError CreateFactTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Partition partition)
+		public static ObjectTypeRequiresMeaningfulNameError CreateObjectTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Partition partition)
 		{
-			return (FactTypeRequiresMeaningfulNameError)partition.ElementFactory.CreateElement(typeof(FactTypeRequiresMeaningfulNameError));
+			return (ObjectTypeRequiresMeaningfulNameError)partition.ElementFactory.CreateElement(typeof(ObjectTypeRequiresMeaningfulNameError));
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static FactTypeRequiresMeaningfulNameError CreateAndInitializeFactTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ObjectTypeRequiresMeaningfulNameError CreateAndInitializeObjectTypeRequiresMeaningfulNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (FactTypeRequiresMeaningfulNameError)partition.ElementFactory.CreateElement(typeof(FactTypeRequiresMeaningfulNameError), assignments);
+			return (ObjectTypeRequiresMeaningfulNameError)partition.ElementFactory.CreateElement(typeof(ObjectTypeRequiresMeaningfulNameError), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for FactTypeRequiresMeaningfulNameError
+	#region Class Factory Creator for ObjectTypeRequiresMeaningfulNameError
 	/// <summary>
-	/// FactTypeRequiresMeaningfulNameError Class Factory Creator
+	/// ObjectTypeRequiresMeaningfulNameError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(ExtensionExample.FactTypeRequiresMeaningfulNameError))]
-	public sealed class FactTypeRequiresMeaningfulNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(ExtensionExample.ObjectTypeRequiresMeaningfulNameError))]
+	public sealed class ObjectTypeRequiresMeaningfulNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public FactTypeRequiresMeaningfulNameErrorElementFactoryCreator()
+		public ObjectTypeRequiresMeaningfulNameErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -729,16 +729,16 @@ namespace ExtensionExample
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new ExtensionExample.FactTypeRequiresMeaningfulNameError( partition, bag );
+			return new ExtensionExample.ObjectTypeRequiresMeaningfulNameError( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static FactTypeRequiresMeaningfulNameErrorElementFactoryCreator Instance
+		public static ObjectTypeRequiresMeaningfulNameErrorElementFactoryCreator Instance
 		{
 			get
 			{
-				return new FactTypeRequiresMeaningfulNameErrorElementFactoryCreator();
+				return new ObjectTypeRequiresMeaningfulNameErrorElementFactoryCreator();
 			}
 		}
 	}

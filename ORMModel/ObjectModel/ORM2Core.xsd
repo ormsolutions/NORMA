@@ -49,16 +49,9 @@
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<!--Objects and Object Types-->
-	<!--ObjectRef and  ObjectRefs define references to constrains and collections of constraints-->
-	<xs:complexType name="ObjectRefs">
-		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Object" type="ObjectRef" minOccurs="1" maxOccurs="1"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="ObjectRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
-	<!--end ObjectRef and  ObjectRefs-->
 	<xs:complexType name="Objects">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="EntityType" type="EntityType"/>
@@ -68,14 +61,8 @@
 	</xs:complexType>
 	<xs:complexType name="ObjectType" abstract="true">
 		<xs:sequence>
-			<xs:element name="Notes" type="NotesType" minOccurs="0" />
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
-			<!--Subtypes is derived.-->
-			<!--We need to be able to reference elements from the derived schema without introducing ambiguity.-->
-			<!--<xs:element ref="derived:test"></xs:element>-->
-			<!--<xs:element ref="derived:Subtypes"/>-->
-			<!--Supertypes is derived.-->
-			<xs:element name="Supertypes" type="ObjectRefs" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
@@ -111,8 +98,8 @@
 		<xs:complexContent>
 			<xs:extension base="ObjectType">
 				<xs:sequence>
-					<xs:element name="ConceptualDataType" type="DataTypeRef" minOccurs="1" maxOccurs="1"/>
-					<xs:element name="ValueRestriction" type="ValueRestriction" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ConceptualDataType" type="DataTypeRef"/>
+					<xs:element name="ValueRestriction" type="ValueRestriction" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
@@ -128,7 +115,7 @@
 		<xs:attribute name="Length" type="xs:int"/>
 	</xs:complexType>
 	<xs:complexType name="DataTypeRefRef">
-		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!--end DataTypeRef-->
 	<xs:complexType name="DataTypes">
@@ -276,8 +263,8 @@
 	<!--End DataType -->
 	<!--Data is a gereral purpose element wrapper to enclose data.  This helps make the schema more extendable.-->
 	<xs:complexType name="Data">
-		<xs:sequence minOccurs="1" maxOccurs="1">
-			<xs:element name="Data" minOccurs="1" maxOccurs="1" type="xs:string"/>
+		<xs:sequence>
+			<xs:element name="Data" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 	<!--end data-->
@@ -367,11 +354,6 @@
 	<!--End Roles-->
 	<!-- Facts -->
 	<!--Fact Ref defines a reference to a fact-->
-	<xs:complexType name="FactRefs">
-		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Fact" type="FactRef" minOccurs="1" maxOccurs="1"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="FactRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
@@ -395,22 +377,21 @@
 	</xs:complexType>
 	<xs:complexType name="Fact">
 		<!-- These are duplicated in ImpliedFact and SubtypeFact without type extension -->
-		<xs:sequence minOccurs="0" maxOccurs="1">
-			<xs:element name="Notes" type="NotesType" minOccurs="0" />
+		<xs:sequence minOccurs="0">
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="ImpliedFact">
 		<!-- This is a straight copy from Fact with a change to FactRoles -->
-		<xs:sequence minOccurs="0" maxOccurs="1">
-			<xs:element name="Notes" type="NotesType" minOccurs="0" />
+		<xs:sequence minOccurs="0">
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="FactRoles" type="ImpliedFactRoles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
@@ -418,21 +399,19 @@
 			<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="SubtypeFact">
 		<!-- This is a straight copy from Fact with a change to FactRoles -->
-		<xs:sequence minOccurs="0" maxOccurs="1">
-			<xs:element name="Notes" type="NotesType" minOccurs="0" />
-			<xs:element name="FactRoles" type="SubtypeRoles" minOccurs="1"/>
+		<xs:sequence minOccurs="0">
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
+			<xs:element name="FactRoles" type="SubtypeRoles"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
-		<xs:attribute name="Name" use="required" type="xs:string"/>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 		<xs:attribute name="IsPrimary" type="xs:boolean" default="false"/>
@@ -448,7 +427,7 @@
 			<xs:element name="Body" type="xs:string"/>
 		</xs:sequence>
 		<xs:attribute name="DerivationStorage" type="DerivationStorageType" use="required"/>
-		<xs:attribute name="id" type="xs:ID" use="required" />
+		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:simpleType name="DerivationStorageType">
 		<xs:restriction base="xs:string">
@@ -463,7 +442,7 @@
 	<!--ConstraintRef and  ConstraintRefs define references to constrains and collections of constraints-->
 	<xs:complexType name="ConstraintRefs">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Constraint" type="ConstraintRef" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Constraint" type="ConstraintRef"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ConstraintRef">
@@ -495,10 +474,10 @@
 	</xs:complexType>
 	<xs:complexType name="Constraint">
 		<xs:sequence>
-			<xs:element name="ConstraintNote" type="Data" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ConstraintNote" type="Data" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID"/>
-		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="Modality" type="ConstraintModality" default="Alethic"/>
 	</xs:complexType>
 	<!-- SetComparison constraints-->
@@ -543,16 +522,16 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SetComparisonConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="SetConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="InternalConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!-- end SetComparison constraints-->
 	<!--Set constraints-->
@@ -631,7 +610,7 @@
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="UniquenessConstraintRef">
-		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!--End InternalConstraint-->
 	<!--End Constraints-->
@@ -645,14 +624,14 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReadingOrder">
-		<xs:sequence minOccurs="1" maxOccurs="1">
+		<xs:sequence>
 			<xs:element name="Readings" type="Readings"/>
 			<xs:element name="RoleSequence" type="RoleContainer"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<xs:complexType name="Readings">
-		<xs:sequence minOccurs="1" maxOccurs="unbounded">
+		<xs:sequence maxOccurs="unbounded">
 			<xs:element name="Reading" type="Reading"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -671,7 +650,6 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element ref="ExtensionModelError"/>
 			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
-			<xs:element name="FactTypeDuplicateNameError" type="FactTypeDuplicateNameError"/>
 			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
@@ -722,20 +700,17 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FactTypeDuplicateNameError">
-		<xs:complexContent>
-			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="0" maxOccurs="1">
-					<xs:element name="Facts" type="FactRefs" minOccurs="1" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="ObjectTypeDuplicateNameError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="0" maxOccurs="1">
-					<xs:element name="Objects" type="ObjectRefs" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:sequence>
+					<xs:element name="Objects">
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="Object" type="ObjectRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -743,7 +718,7 @@
 	<xs:complexType name="EntityTypeRequiresReferenceSchemeError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:element name="EntityType" type="ObjectRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -752,7 +727,7 @@
 	<xs:complexType name="ExternalConstraintRoleSequenceArityMismatchError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:element name="Constraint" type="ConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -761,7 +736,7 @@
 	<xs:complexType name="FactTypeRequiresInternalUniquenessConstraintError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:element name="Fact" type="FactRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -770,7 +745,7 @@
 	<xs:complexType name="FactTypeRequiresReadingError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:element name="Fact" type="FactRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -779,7 +754,7 @@
 	<xs:complexType name="TooFewReadingRolesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:element name="Reading" type="ReadingRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -788,7 +763,7 @@
 	<xs:complexType name="TooFewRoleSequencesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:choice>
 						<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 						<xs:element name="SetConstraint" type="SetConstraintRef"/>
@@ -800,7 +775,7 @@
 	<xs:complexType name="TooManyReadingRolesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:element name="Reading" type="ReadingRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -918,7 +893,7 @@
 	<xs:complexType name="TooManyRoleSequencesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:sequence>
 					<xs:choice>
 						<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 						<xs:element name="SetConstraint" type="SetConstraintRef"/>
@@ -1001,7 +976,7 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="CustomReferenceMode">
-		<xs:sequence minOccurs="0" maxOccurs="1">
+		<xs:sequence minOccurs="0">
 			<xs:element name="CustomFormatString" type="xs:string"/>
 			<xs:element name="Kind" type="ReferenceModeKindRef"/>
 		</xs:sequence>
@@ -1017,7 +992,7 @@
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
 					</xs:sequence>
 					<xs:attribute name="Name" type="xs:string" use="required"/>
-					<xs:attribute name="id" type="xs:ID" use="required" />
+					<xs:attribute name="id" type="xs:ID" use="required"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
@@ -1029,7 +1004,7 @@
 					<xs:sequence>
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
 					</xs:sequence>
-					<xs:attribute name="id" type="xs:ID" use="required" />
+					<xs:attribute name="id" type="xs:ID" use="required"/>
 					<xs:attribute name="Name" type="xs:string" use="required"/>
 				</xs:complexType>
 			</xs:element>
@@ -1048,11 +1023,11 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="ValueRange">
-		<xs:attribute name="id" type="xs:ID" use="required" />
-		<xs:attribute name="MinValue" type="xs:string" use="required" />
-		<xs:attribute name="MaxValue" type="xs:string" use="required" />
-		<xs:attribute name="MinInclusion" type="RangeInclusion" default="NotSet" />
-		<xs:attribute name="MaxInclusion" type="RangeInclusion" default="NotSet" />
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="MinValue" type="xs:string" use="required"/>
+		<xs:attribute name="MaxValue" type="xs:string" use="required"/>
+		<xs:attribute name="MinInclusion" type="RangeInclusion" default="NotSet"/>
+		<xs:attribute name="MaxInclusion" type="RangeInclusion" default="NotSet"/>
 	</xs:complexType>
 	<xs:simpleType name="ConstraintModality">
 		<xs:restriction base="xs:string">

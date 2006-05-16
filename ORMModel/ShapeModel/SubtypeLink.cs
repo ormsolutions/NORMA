@@ -322,7 +322,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			TooManyReadingRolesError tooMany;
 			FactTypeRequiresReadingError noReading;
 			FactType fact;
-			FactTypeDuplicateNameError factTypeNameError;
 			Reading reading = null;
 			bool retVal = true;
 			if (null != (tooFew = error as TooFewReadingRolesError))
@@ -340,10 +339,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
 				window.Show();
 				window.ActivateReading(fact);
-			}
-			else if (null != (factTypeNameError = error as FactTypeDuplicateNameError))
-			{
-				ActivateNameProperty(factTypeNameError.FactTypeCollection[0]);
 			}
 			else
 			{

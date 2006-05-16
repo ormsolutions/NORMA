@@ -2,7 +2,7 @@
 <ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_A7018655-7E2D-4152-82F6-5AD119C62B6D" Name="NewModel">
 		<orm:Objects>
-			<orm:EntityType id="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" Name="EntityType1" IsExternal="false" IsIndependent="false" _ReferenceMode="id">
+			<orm:EntityType id="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" Name="EntityType1" _ReferenceMode="id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_B2DAAF56-14CB-4A03-A8CC-13ADD471B782" />
 					<orm:Role ref="_C2915D5E-689F-4571-BEDE-8E236D82DA05" />
@@ -12,7 +12,7 @@
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_B0255EC9-6530-48EC-B6D6-562F5C834015" />
 			</orm:EntityType>
-			<orm:EntityType id="_9501399B-71C1-41A5-BA64-E5BF8FCB8763" Name="EntityType2" IsExternal="false" IsIndependent="false" _ReferenceMode="#">
+			<orm:EntityType id="_9501399B-71C1-41A5-BA64-E5BF8FCB8763" Name="EntityType2" _ReferenceMode="#">
 				<orm:PlayedRoles>
 					<orm:Role ref="_2CE0107A-AD26-4DB6-A5A6-DD3E7ADDA5AC" />
 					<orm:Role ref="_E9839284-995B-48EC-9BC8-F3F56F689342" />
@@ -22,13 +22,13 @@
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_4AE8CEDF-CA97-4E2D-867F-ABBC703583A6" />
 			</orm:EntityType>
-			<orm:ValueType id="_0F60141A-C75B-4EFE-8724-A066DEADF8C2" Name="EntityType1_id" IsExternal="false" IsIndependent="false">
+			<orm:ValueType id="_0F60141A-C75B-4EFE-8724-A066DEADF8C2" Name="EntityType1_id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_E40F99A6-1266-46CD-A19E-2780427457BB" />
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_AF2211A3-6D92-4D30-82BC-BCB64BE16D12" ref="_0CC2F59C-D286-4D9A-AFE3-72AA4D040989" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:ValueType id="_11DA93D5-FC6D-40D3-8263-FE8C8AB45FD2" Name="EntityType2_#" IsExternal="false" IsIndependent="false">
+			<orm:ValueType id="_11DA93D5-FC6D-40D3-8263-FE8C8AB45FD2" Name="EntityType2_#">
 				<orm:PlayedRoles>
 					<orm:Role ref="_E17D09A9-78A5-4793-A848-D85BCA04BD3E" />
 				</orm:PlayedRoles>
@@ -36,7 +36,7 @@
 			</orm:ValueType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact id="_3569A5BB-3E79-4588-AC76-7920ABE61310" Name="FactType1" IsExternal="false">
+			<orm:Fact id="_3569A5BB-3E79-4588-AC76-7920ABE61310">
 				<orm:FactRoles>
 					<orm:Role id="_B2DAAF56-14CB-4A03-A8CC-13ADD471B782" Name="" _IsMandatory="false" _Multiplicity="ZeroToMany">
 						<orm:RolePlayer ref="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" />
@@ -65,7 +65,7 @@
 					<orm:UniquenessConstraint ref="_791A9BF0-BCEE-4562-9E2D-AC73CCAF5673" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_3CA4C3D0-A6A7-46D3-8DD0-44951B4B4E89" Name="FactType2" IsExternal="false">
+			<orm:Fact id="_3CA4C3D0-A6A7-46D3-8DD0-44951B4B4E89">
 				<orm:FactRoles>
 					<orm:Role id="_C2915D5E-689F-4571-BEDE-8E236D82DA05" Name="" _IsMandatory="true" _Multiplicity="ZeroToOne">
 						<orm:RolePlayer ref="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" />
@@ -104,7 +104,7 @@
 					<orm:UniquenessConstraint ref="_29A56AB3-DCFC-46ED-8105-AED55F6BDA0E" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_B6C7D212-7A6D-4D1B-A8CD-03F8FE940049" Name="FactType3" IsExternal="false">
+			<orm:Fact id="_B6C7D212-7A6D-4D1B-A8CD-03F8FE940049">
 				<orm:FactRoles>
 					<orm:Role id="_E9839284-995B-48EC-9BC8-F3F56F689342" Name="" _IsMandatory="true" _Multiplicity="ZeroToOne">
 						<orm:RolePlayer ref="_9501399B-71C1-41A5-BA64-E5BF8FCB8763" />
@@ -143,7 +143,7 @@
 					<orm:UniquenessConstraint ref="_C55E591F-01FD-4981-A18C-83D84B16E07A" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_009787C8-37C8-43EB-933A-7C5B469D1310" Name="FactType4" IsExternal="false">
+			<orm:Fact id="_009787C8-37C8-43EB-933A-7C5B469D1310">
 				<orm:FactRoles>
 					<orm:Role id="_759942CD-D642-4476-B20A-F7BC9B24681B" Name="" _IsMandatory="false" _Multiplicity="ZeroToMany">
 						<orm:RolePlayer ref="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" />
@@ -170,7 +170,7 @@
 					<orm:UniquenessConstraint ref="_719D874E-BFAD-4844-AE5C-B4CFC098E6E6" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_9DC88B4E-7264-49C7-BB47-5537F75D7940" Name="FactType5" IsExternal="false">
+			<orm:Fact id="_9DC88B4E-7264-49C7-BB47-5537F75D7940">
 				<orm:FactRoles>
 					<orm:Role id="_24221AAE-A850-4364-A5AA-2E0683C51B9C" Name="" _IsMandatory="false" _Multiplicity="Unspecified">
 						<orm:RolePlayer ref="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" />

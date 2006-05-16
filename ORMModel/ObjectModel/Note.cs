@@ -19,13 +19,33 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagnostics;
+using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region INoteOwner interface
+	/// <summary>
+	/// An interface to implement for any Note owner
+	/// </summary>
+	public interface INoteOwner
+	{
+		/// <summary>
+		/// Return the name of the note owner
+		/// </summary>
+		string Name { get;}
+		/// <summary>
+		/// The current text value of a note
+		/// </summary>
+		string NoteText { get;}
+		/// <summary>
+		/// A property descriptor corresponding to the NoteText property
+		/// </summary>
+		PropertyDescriptor NoteTextPropertyDescriptor { get;}
+	}
+	#endregion // INoteOwner interface
 	public partial class Note
 	{
 		#region NoteChangeRule class
-
 		/// <summary>
 		/// Enforces Change Rules
 		/// </summary>
@@ -55,5 +75,49 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // NoteChangeRule class
+	}
+	public partial class FactType : INoteOwner
+	{
+		#region INoteOwner Implementation
+		/// <summary>
+		/// Implements INoteOwner.NoteTextPropertyDescriptor
+		/// </summary>
+		protected PropertyDescriptor NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return CreatePropertyDescriptor(Store.MetaDataDirectory.FindMetaAttribute(NoteTextMetaAttributeGuid), this);
+			}
+		}
+		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return NoteTextPropertyDescriptor;
+			}
+		}
+		#endregion // INoteOwner Implementation
+	}
+	public partial class ObjectType : INoteOwner
+	{
+		#region INoteOwner Implementation
+		/// <summary>
+		/// Implements INoteOwner.NoteTextPropertyDescriptor
+		/// </summary>
+		protected PropertyDescriptor NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return CreatePropertyDescriptor(Store.MetaDataDirectory.FindMetaAttribute(NoteTextMetaAttributeGuid), this);
+			}
+		}
+		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return NoteTextPropertyDescriptor;
+			}
+		}
+		#endregion // INoteOwner Implementation
 	}
 }

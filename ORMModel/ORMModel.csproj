@@ -213,7 +213,6 @@
     <Compile Include="ObjectModel\Role.cs" />
     <Compile Include="ObjectModel\ObjectType.cs" />
     <Compile Include="ObjectModel\ORMModel.cs" />
-    <Compile Include="ObjectModel\RootType.cs" />
     <Compile Include="Resources\ResourceStrings.cs" />
     <Compile Include="ShapeModel\AutoSizeTextField.cs" />
     <Compile Include="ShapeModel\ExternalConstraintConnectAction.cs" />

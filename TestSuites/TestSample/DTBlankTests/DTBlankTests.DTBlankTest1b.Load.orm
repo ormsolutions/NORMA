@@ -2,27 +2,27 @@
 <ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_D67E836F-D978-43C1-BA57-EEB0799BA1AA" Name="NewModel">
 		<orm:Objects>
-			<orm:EntityType id="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" Name="Wife" IsExternal="false" IsIndependent="false" _ReferenceMode="WifeId">
+			<orm:EntityType id="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" Name="Wife" _ReferenceMode="WifeId">
 				<orm:PlayedRoles>
 					<orm:Role ref="_5DE9E895-25A7-47F9-AE6B-96B7957C9325" />
 					<orm:Role ref="_C87CD826-FCFB-4BA1-A0A8-D6F36AD30EF3" />
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_6141E6B0-A246-41E0-896A-575A8280BBF3" />
 			</orm:EntityType>
-			<orm:EntityType id="_33DA7CC8-522B-44AB-9F20-8B07D1DDDB6E" Name="Food" IsExternal="false" IsIndependent="false" _ReferenceMode="FoodType">
+			<orm:EntityType id="_33DA7CC8-522B-44AB-9F20-8B07D1DDDB6E" Name="Food" _ReferenceMode="FoodType">
 				<orm:PlayedRoles>
 					<orm:Role ref="_3AEC6033-EB1F-446C-AF17-84C7FFD0FAA1" />
 					<orm:Role ref="_71CF7970-7F55-4BFE-A5F8-9A882849E422" />
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_E2CB0F6E-DDC4-4366-B6F3-1D29D83CD9BC" />
 			</orm:EntityType>
-			<orm:ValueType id="_48AD9853-96F2-42DF-AA1C-BF96317B9D09" Name="FoodType" IsExternal="false" IsIndependent="false">
+			<orm:ValueType id="_48AD9853-96F2-42DF-AA1C-BF96317B9D09" Name="FoodType">
 				<orm:PlayedRoles>
 					<orm:Role ref="_F69451DB-5FEE-41F9-95E6-CF14EA42B0F6" />
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_689DAE46-66B2-46A8-9D19-FEABBEEF4020" ref="_FC4BD969-4E75-4AE5-AE99-05C68B7D5984" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:ValueType id="_2FE6DE92-3EF5-4627-9F13-D926BD9E4CDE" Name="WifeId" IsExternal="false" IsIndependent="false">
+			<orm:ValueType id="_2FE6DE92-3EF5-4627-9F13-D926BD9E4CDE" Name="WifeId">
 				<orm:PlayedRoles>
 					<orm:Role ref="_D7CB30B0-1D56-4EF5-97B8-8ED620E4D3B2" />
 				</orm:PlayedRoles>
@@ -30,7 +30,7 @@
 			</orm:ValueType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact id="_DF6202FB-C9C5-4E58-A882-8754AAAC64DF" Name="FactType1" IsExternal="false">
+			<orm:Fact id="_DF6202FB-C9C5-4E58-A882-8754AAAC64DF">
 				<orm:FactRoles>
 					<orm:Role id="_C87CD826-FCFB-4BA1-A0A8-D6F36AD30EF3" Name="" _IsMandatory="false" _Multiplicity="ZeroToMany">
 						<orm:RolePlayer ref="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" />
@@ -56,7 +56,7 @@
 					<orm:UniquenessConstraint ref="_04F1F0FB-C54A-4241-B5CF-CE664C7CF969" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_2841C5AC-199D-470F-9CCE-61AC6FFE6873" Name="FactType2" IsExternal="false">
+			<orm:Fact id="_2841C5AC-199D-470F-9CCE-61AC6FFE6873">
 				<orm:FactRoles>
 					<orm:Role id="_3AEC6033-EB1F-446C-AF17-84C7FFD0FAA1" Name="" _IsMandatory="true" _Multiplicity="ZeroToOne">
 						<orm:RolePlayer ref="_33DA7CC8-522B-44AB-9F20-8B07D1DDDB6E" />
@@ -95,7 +95,7 @@
 					<orm:UniquenessConstraint ref="_80CC0437-E2B7-4B8A-9C61-7577FD0308CC" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_B5D6ABF3-C141-4C77-B731-A2DCC3B4ED26" Name="FactType3" IsExternal="false">
+			<orm:Fact id="_B5D6ABF3-C141-4C77-B731-A2DCC3B4ED26">
 				<orm:FactRoles>
 					<orm:Role id="_5DE9E895-25A7-47F9-AE6B-96B7957C9325" Name="" _IsMandatory="true" _Multiplicity="ZeroToOne">
 						<orm:RolePlayer ref="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" />

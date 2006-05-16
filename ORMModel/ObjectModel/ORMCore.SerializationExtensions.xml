@@ -64,11 +64,6 @@
 			<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" />
 		</se:ChildElement>
 	</se:Element>
-	<se:Element Class="RootType" Name="RootType" SortChildElements="true" Override="true">
-		<se:ChildElement Name="Notes">
-			<se:Link RelationshipName="RootTypeHasNote" RoleName="Note"/>
-		</se:ChildElement>
-	</se:Element>
 	<se:Element Class="Note" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
 	</se:Element>
@@ -87,7 +82,7 @@
 				</plx:right>
 			</plx:binaryOperator>
 		</se:ConditionalName>
-		<se:Attribute ID="ReferenceModeString"  Name="_ReferenceMode" WriteCustomStorage="true">
+		<se:Attribute ID="ReferenceModeString" Name="_ReferenceMode" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:callThis name="IsValueType" type="property"/>
 			</se:Condition>
@@ -102,6 +97,20 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="IsIndependent">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsIndependent" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="IsExternal">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsExternal" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Attribute ID="IsPersonal">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
@@ -109,6 +118,9 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:ChildElement Name="Notes">
+			<se:Link RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
+		</se:ChildElement>
 		<se:ChildElement Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 		</se:ChildElement>
@@ -116,7 +128,7 @@
 		<se:ChildElement Name="ValueRestriction">
 			<se:Link RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
-		<se:Link Name="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection">
+		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection">
 			<se:ConditionalName Name="SubtypeMetaRole">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
@@ -222,6 +234,16 @@
 				</plx:right>
 			</plx:binaryOperator>
 		</se:ConditionalName>
+		<se:Attribute ID="IsExternal">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsExternal" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:ChildElement Name="Notes">
+			<se:Link RelationshipName="FactTypeHasNote" RoleName="Note"/>
+		</se:ChildElement>
 		<se:ChildElement Name="FactRoles">
 			<se:Link RelationshipName="FactTypeHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
@@ -286,7 +308,6 @@
 		<se:Link RelationshipName="Objectification" RoleName="NestingType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -439,12 +460,6 @@
 		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraintCollection" Name="SetComparisonConstraint"/>
 		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraintCollection" Name="SetConstraint"/>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraintCollection" Name="ValueConstraint"/>
-	</se:Element>
-	<se:Element Class="FactTypeDuplicateNameError" Override="true">
-		<se:ChildElement Name="Facts">
-			<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="FactTypeCollection"/>
-		</se:ChildElement>
-		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="FactTypeCollection" Name="Fact"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeDuplicateNameError" Override="true">
 		<se:ChildElement Name="Objects">

@@ -31,12 +31,13 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections;
+using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// The ToolWindow which is responsible for displaying and allowing
-	/// the update of notes on RootTypes.
+	/// the update of notes on elements implementing INoteOwner.
 	/// </summary>
 	[Guid("A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498")]
 	[CLSCompliant(false)]
@@ -44,7 +45,7 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		#region Private data members
 		private TextBox myTextBox;
-		private List<RootType> mySelectedRootTypes;
+		private List<INoteOwner> mySelectedNoteOwners;
 		#endregion // Private data members
 		#region Construction
 		/// <summary>
@@ -91,36 +92,38 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		void myTextBox_LostFocus(object sender, EventArgs e)
 		{
-			if (mySelectedRootTypes.Count == 1 && myTextBox.Enabled)	// If we only have one selected RootType and the textbox is enabled,
+			if (mySelectedNoteOwners.Count == 1 && myTextBox.Enabled)	// If we only have one selected note and the textbox is enabled,
 			{
-				SetNote(mySelectedRootTypes[0], myTextBox.Text);	// try to set the note.
+				SetNote(mySelectedNoteOwners[0], myTextBox.Text);	// try to set the note.
 			}
 		}
 		#endregion // Event handlers
 		#region Helper functions
 		/// <summary>
-		/// Sets the NoteText property on a RootType.
+		/// Sets the NoteText property on an INoteOwner instance.
 		/// </summary>
-		/// <param name="owner">The RootType on which the note should be set.</param>
+		/// <param name="owner">The INoteOwner on which the note should be set.</param>
 		/// <param name="text">The text of the note.</param>
-		private void SetNote(RootType owner, string text)
+		private void SetNote(INoteOwner owner, string text)
 		{
-			if (owner != null && owner.Store != null)	// Be really defensive.
+			PropertyDescriptor descriptor;
+			if (null != owner && 
+				null != (descriptor = owner.NoteTextPropertyDescriptor))	// Be really defensive.
 			{
-				owner.CreatePropertyDescriptor(owner.Store.MetaDataDirectory.FindMetaAttribute(RootType.NoteTextMetaAttributeGuid), owner).SetValue(owner, text);
+				descriptor.SetValue(owner, text);
 			}
 		}
 		/// <summary>
-		/// Populates mySelectedRootTypes with all currently selected root
-		/// types in the passed in ORMDesignerDocView.
+		/// Populates mySelectedNoteOwners with all currently selected note
+		/// owners in the passed in ORMDesignerDocView.
 		/// </summary>
-		private void PopulateSelectedRootTypes()
+		private void PopulateSelectedNoteOwners()
 		{
-			List<RootType> selectedTypes = mySelectedRootTypes;
+			List<INoteOwner> selectedTypes = mySelectedNoteOwners;
 			if (selectedTypes == null)
 			{
-				selectedTypes = new List<RootType>();
-				mySelectedRootTypes = selectedTypes;
+				selectedTypes = new List<INoteOwner>();
+				mySelectedNoteOwners = selectedTypes;
 			}
 			selectedTypes.Clear();	// Clear the list of selected root types.
 			IORMSelectionContainer selectionContainer = CurrentORMSelectionContainer;
@@ -130,34 +133,34 @@ namespace Neumont.Tools.ORM.Shell
 				ICollection objects = base.GetSelectedComponents();
 				foreach (object o in objects)
 				{
-					RootType rootType = EditorUtility.ResolveContextInstance(o, false) as RootType;	// and if they are a RootType,
-					if (rootType != null)
+					INoteOwner owner = EditorUtility.ResolveContextInstance(o, false) as INoteOwner;	// and if they are an INoteOwner,
+					if (owner != null)
 					{
-						selectedTypes.Add(rootType);	// add them to the list of selected RootTypes.
+						selectedTypes.Add(owner);	// add them to the list of selected owners.
 					}
 				}
 			}
-			DisplayNotes();	// Display the notes for all selected RootTypes.
+			DisplayNotes();	// Display the notes for all selected owners.
 		}
 		/// <summary>
-		/// Displays the notes for all selected RootTypes in the Notes Window.
+		/// Displays the notes for all selected note owners in the Notes Window.
 		/// </summary>
 		private void DisplayNotes()
 		{
-			List<RootType> selectedRootTypes = mySelectedRootTypes; // Cache the list of selected root types.
-			int selectedRootTypesCount = selectedRootTypes.Count; // Cache the count of selected root types.
+			List<INoteOwner> selectedNoteOwners = mySelectedNoteOwners; // Cache the list of selected note owners.
+			int selectedNoteOwnersCount = selectedNoteOwners.Count; // Cache the count of selected note owners.
 			TextBox textBox = myTextBox; // Cache the text box.
 			if (textBox != null) // If the text box is not null,
 			{
 				textBox.Clear(); // clear it's text
 				textBox.ReadOnly = false; // and set it to read only.
-				if (selectedRootTypesCount == 0) // If there aren't any selected root types,
+				if (selectedNoteOwnersCount == 0) // If there aren't any selected note owners,
 				{
 					return; // bail out.
 				}
-				else if (selectedRootTypesCount == 1) // If there is only one selected root type,
+				else if (selectedNoteOwnersCount == 1) // If there is only one selected note owner,
 				{
-					textBox.AppendText(selectedRootTypes[0].NoteText); // add its note text to the text box.
+					textBox.AppendText(selectedNoteOwners[0].NoteText); // add its note text to the text box.
 				}
 				else
 				{
@@ -166,11 +169,11 @@ namespace Neumont.Tools.ORM.Shell
 					string formatString = ResourceStrings.ModelNotesWindowRootTypeNameNotesSeparatorFormatString;
 					// root types are selected.
 					bool first = true;
-					for (int i = 0; i < selectedRootTypesCount; ++i) // Loop through the selected root types,
+					for (int i = 0; i < selectedNoteOwnersCount; ++i) // Loop through the selected root types,
 					{
-						RootType rootType = selectedRootTypes[i]; // cache them locally,
-						string noteText = rootType.NoteText; // and cache their note text.
-						if (!string.IsNullOrEmpty(noteText)) // If there is note text on the root type,
+						INoteOwner noteOwner = selectedNoteOwners[i]; // cache them locally,
+						string noteText = noteOwner.NoteText; // and cache their note text.
+						if (!string.IsNullOrEmpty(noteText)) // If there is note text on the note owner,
 						{
 							if (!first)
 							{
@@ -180,7 +183,7 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								first = false;
 							}
-							sb.AppendFormat(CultureInfo.InvariantCulture, formatString, rootType.Name, noteText);
+							sb.AppendFormat(CultureInfo.InvariantCulture, formatString, noteOwner.Name, noteText);
 						}
 					}
 					textBox.Text = sb.ToString();
@@ -323,7 +326,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void OnORMSelectionContainerChanged()
 		{
-			PopulateSelectedRootTypes();
+			PopulateSelectedNoteOwners();
 		}
 		/// <summary>
 		/// Attaches event handlers to the store.
@@ -338,7 +341,10 @@ namespace Neumont.Tools.ORM.Shell
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			// Track Note changes
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(RootTypeHasNote.MetaRelationshipGuid);
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ObjectTypeHasNote.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasNote.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
 			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
 
@@ -360,7 +366,10 @@ namespace Neumont.Tools.ORM.Shell
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			// Track Note changes
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(RootTypeHasNote.MetaRelationshipGuid);
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ObjectTypeHasNote.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasNote.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(NoteAlteredEventHandler));
 			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(NoteAlteredEventHandler));
 

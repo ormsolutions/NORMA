@@ -92,7 +92,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				attributeGuid == ReferenceModeDisplayMetaAttributeGuid ||
 				attributeGuid == ReferenceModeMetaAttributeGuid ||
 				attributeGuid == ReferenceModeStringMetaAttributeGuid ||
-				attributeGuid == ValueRangeTextMetaAttributeGuid)
+				attributeGuid == ValueRangeTextMetaAttributeGuid ||
+				attributeGuid == NoteTextMetaAttributeGuid)
 			{
 				// Handled by ObjectTypeChangeRule
 				return;
@@ -177,6 +178,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ValueConstraint valueConstraint = FindValueConstraint(false);
 				return (valueConstraint == null) ? "" : valueConstraint.Text;
+			}
+			else if (attributeGuid == NoteTextMetaAttributeGuid)
+			{
+				Note currentNote = Note;
+				return (currentNote != null) ? currentNote.Text : "";
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
@@ -377,6 +383,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override string GetClassName()
 		{
 			return IsValueType ? ResourceStrings.ValueType : ResourceStrings.EntityType;
+		}
+		/// <summary>
+		/// Return a simple name instead of a name decorated with the type (the
+		/// default for a ModelElement). This is the easiest way to display
+		/// clean names in the property grid when we reference properties.
+		/// </summary>
+		public override string ToString()
+		{
+			return Name;
 		}
 
 		#region UtilityMethods
@@ -940,6 +955,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
 					valueConstraint.Text = (string)e.NewValue;
+				}
+				else if (attributeGuid == ObjectType.NoteTextMetaAttributeGuid)
+				{
+					// cache the text.
+					string newText = (string)e.NewValue;
+					ObjectType objectType = e.ModelElement as ObjectType;
+					// Get the note if it exists
+					Note note = objectType.Note;
+					if (note != null)
+					{
+						// and try to set the text to the cached value.
+						note.Text = newText;
+					}
+					else if (!string.IsNullOrEmpty(newText))
+					{
+						// Otherwise, create the note and set the text,
+						note = Note.CreateNote(objectType.Store);
+						note.Text = newText;
+						// then attach the note to the RootType.
+						objectType.Note = note;
+					}
 				}
 			}
 			/// <summary>

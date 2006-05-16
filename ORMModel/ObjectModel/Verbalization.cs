@@ -312,7 +312,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							for (int i = 0; i < matchAllCount; ++i)
 							{
 								RoleBase currentRole = defaultRoleOrder[i];
-								if (!matchAnyLeadRole.Contains(currentRole))
+								if (!matchAnyLeadRole.Contains(currentRole.Role))
 								{
 									if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
 									{

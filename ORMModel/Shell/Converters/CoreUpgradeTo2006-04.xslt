@@ -209,6 +209,19 @@
 			</xsl:apply-templates>
 		</orm:SetConstraint>
 	</xsl:template>
+	<!-- Remove fact names -->
+	<xsl:template match="oldCore:Fact | oldCore:SubtypeFact | oldCore:ImpliedFact">
+		<xsl:param name="ImpliedInternalConstraintIds"/>
+		<xsl:param name="RoleProxyMap"/>
+		<xsl:element name="orm:{local-name()}">
+			<xsl:apply-templates select="@*[local-name()!='Name']|*|text()|comment()">
+				<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+			</xsl:apply-templates>
+		</xsl:element>
+	</xsl:template>
 	<!-- Remove implied constraints -->
-	<xsl:template match="oldCore:ImpliedEqualityConstraint | oldCore:ImpliedExternalUniquenessConstraint"/>
+	<xsl:template match="oldCore:ImpliedEqualityConstraint | oldCore:ImpliedExternalUniquenessConstraint | oldCore:FactTypeDuplicateNameError"/>
+	<!-- Remove default valued IsExternal and IsIndependent attributes -->
+	<xsl:template match="@IsExternal[.='false' or .=0] | @IsIndependent[.='false' or .=0]"/>
 </xsl:stylesheet>

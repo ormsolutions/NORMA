@@ -781,16 +781,6 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Model validation error shown when multiple fact types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.
-		/// </summary>
-		public static string ModelErrorModelHasDuplicateFactTypeNames
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFactTypeNames.Text");
-			}
-		}
-		/// <summary>
 		/// Model validation error shown when multiple object types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.
 		/// </summary>
 		public static string ModelErrorModelHasDuplicateObjectTypeNames

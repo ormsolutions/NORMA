@@ -35,6 +35,12 @@
 		<arg:Rule class="FactType.ModelHasInternalConstraintRemoveRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingRemoveRuleModelValidation"/>
+		<arg:Rule class="FactType.ValidateFactNameForObjectTypeNameChange"/>
+		<arg:Rule class="FactType.ValidateFactNameForReadingChange"/>
+		<arg:Rule class="FactType.ValidateFactNameForReadingOrderReorder"/>
+		<arg:Rule class="FactType.ValidateFactNameForReadingReorder"/>
+		<arg:Rule class="FactType.ValidateFactNameForRolePlayerAdded"/>
+		<arg:Rule class="FactType.ValidateFactNameForRolePlayerRemove"/>
 		<arg:Rule class="FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule"/>
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxRule"/>
 		<arg:Rule class="FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule"/>
@@ -59,7 +65,6 @@
 		<arg:Rule class="Objectification.InternalConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>
 		<arg:Rule class="Objectification.ObjectificationRemoveRule"/>
-		<arg:Rule class="Objectification.ObjectificationNameChangeRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>
 		<arg:Rule class="Objectification.RoleRemovingRule"/>
@@ -82,7 +87,6 @@
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeRemoveRule"/>
 		<arg:Rule class="ORMMetaModel.DelayValidateElements"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateConstraintNameErrorRule"/>
-		<arg:Rule class="ORMModel.RemoveDuplicateFactTypeNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>
 		<arg:Rule class="Reading.ReadingOrderHasRoleRemoved"/>
 		<arg:Rule class="Reading.ReadingPropertiesChanged"/>
@@ -103,7 +107,6 @@
 		<arg:Rule class="Role.RolePlayerRequiredRemovedRule"/>
 		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsRemovedRule"/>
 		<arg:Rule class="RoleValueConstraint.RoleValueConstraintChangeRule"/>
-		<arg:Rule class="RootType.RootTypeChangeRule"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintHasRoleSequenceAdded"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForAdd"/>

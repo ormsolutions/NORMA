@@ -115,7 +115,7 @@ namespace ExtensionExample
 			{
 				classNameMap = new Dictionary<string, Guid>();
 				classNameMap.Add("SampleElement", MyCustomExtensionElement.MetaClassGuid);
-				classNameMap.Add("FactTypeRequiresMeaningfulNameError", FactTypeRequiresMeaningfulNameError.MetaClassGuid);
+				classNameMap.Add("ObjectTypeRequiresMeaningfulNameError", ObjectTypeRequiresMeaningfulNameError.MetaClassGuid);
 				ExtensionDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -252,8 +252,8 @@ namespace ExtensionExample
 		}
 	}
 	#endregion // MyCustomExtensionElement serialization
-	#region FactTypeRequiresMeaningfulNameError serialization
-	public partial class FactTypeRequiresMeaningfulNameError : IORMCustomSerializedElement
+	#region ObjectTypeRequiresMeaningfulNameError serialization
+	public partial class ObjectTypeRequiresMeaningfulNameError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -279,7 +279,7 @@ namespace ExtensionExample
 		{
 			if (rolePlayedInfo.Id == ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid)
 			{
-				return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
+				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -297,14 +297,14 @@ namespace ExtensionExample
 		/// </summary>
 		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
 		{
-			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactTypeRequiresMeaningfulNameError.myChildElementMappings;
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ObjectTypeRequiresMeaningfulNameError.myChildElementMappings;
 			if (childElementMappings == null)
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ExtensionExample|Fact", match);
-				FactTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ExtensionExample|ObjectType", match);
+				ObjectTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
 			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
@@ -318,5 +318,5 @@ namespace ExtensionExample
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
 		}
 	}
-	#endregion // FactTypeRequiresMeaningfulNameError serialization
+	#endregion // ObjectTypeRequiresMeaningfulNameError serialization
 }

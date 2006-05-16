@@ -470,7 +470,7 @@ namespace Neumont.Tools.ORM.FactEditor
 				myObjectEntries.Remove(objectType);
 				int newIndex = myObjectEntries.BinarySearch(objectType, myComparer);
 				Debug.Assert(newIndex < 0);
-				myObjectEntries.Insert(~newIndex, objectType);
+				myObjectEntries.Insert((newIndex < 0) ? ~newIndex : newIndex, objectType);
 			}
 		}
 		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}", RegexOptions.Compiled);

@@ -255,8 +255,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern" xml:space="preserve">
     <value>FactType{0}</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.IsExternal" xml:space="preserve">
+    <value>IsExternal</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplay" xml:space="preserve">
     <value>NestingType</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.NoteText" xml:space="preserve">
+    <value>Note</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FrequencyConstraint" xml:space="preserve">
     <value>FrequencyConstraint</value>
@@ -273,6 +279,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeDisplay" xml:space="preserve">
     <value>DataType</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsExternal" xml:space="preserve">
+    <value>IsExternal</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent" xml:space="preserve">
     <value>IsIndependent</value>
   </data>
@@ -287,6 +296,9 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactTypeDisplay" xml:space="preserve">
     <value>NestedFactType</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.NoteText" xml:space="preserve">
+    <value>Note</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay" xml:space="preserve">
     <value>RefMode</value>
@@ -338,12 +350,6 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role.RolePlayerDisplay" xml:space="preserve">
     <value>RolePlayer</value>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.RootType.IsExternal" xml:space="preserve">
-    <value>IsExternal</value>
-  </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.RootType.NoteText" xml:space="preserve">
-    <value>Note</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint" xml:space="preserve">
     <value>SimpleMandatoryConstraint</value>

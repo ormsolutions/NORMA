@@ -37,7 +37,7 @@
             <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
             <subType>i14db7e59z72e3z441fz9993z88fb3e3c01b3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresMeaningfulNameError-ModelError" identity="454cc16f-ff7f-4f22-a3d3-8f924ba16812" id="i454cc16fzff7fz4f22za3d3z8f924ba16812" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresMeaningfulNameError-ModelError" identity="454cc16f-ff7f-4f22-a3d3-8f924ba16812" id="i454cc16fzff7fz4f22za3d3z8f924ba16812" definitionlevel="none">
             <source />
             <superType>i38306f5cz63edz4ea0zafa8z2b56a81577c6</superType>
             <subType>ib9448302zbeb4z451ezbfd8zcb824201784c</subType>
@@ -60,7 +60,7 @@
             <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
             <subType>i14db7e59z72e3z441fz9993z88fb3e3c01b3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresMeaningfulNameError-ModelError" identity="6f08fbd3-a7ee-447a-b84b-96db944db759" id="i6f08fbd3za7eez447azb84bz96db944db759" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresMeaningfulNameError-ModelError" identity="6f08fbd3-a7ee-447a-b84b-96db944db759" id="i6f08fbd3za7eez447azb84bz96db944db759" definitionlevel="definition">
             <source>i454cc16fzff7fz4f22za3d3z8f924ba16812</source>
             <superType>i38306f5cz63edz4ea0zafa8z2b56a81577c6</superType>
             <subType>ib9448302zbeb4z451ezbfd8zcb824201784c</subType>
@@ -116,7 +116,7 @@
       <concept name="ModelElement" identity="1f92939d-732d-43c9-83e5-127d634068ee" namespace="Microsoft.VisualStudio.Modeling" id="i1f92939dz732dz43c9z83e5z127d634068ee" isLoaded="false" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
       </concept>
-      <concept name="FactTypeRequiresMeaningfulNameError" identity="b9448302-beb4-451e-bfd8-cb824201784c" namespace="ExtensionExample" id="ib9448302zbeb4z451ezbfd8zcb824201784c" isLoaded="true" isAbstract="false">
+      <concept name="ObjectTypeRequiresMeaningfulNameError" identity="b9448302-beb4-451e-bfd8-cb824201784c" namespace="ExtensionExample" id="ib9448302zbeb4z451ezbfd8zcb824201784c" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i38306f5cz63edz4ea0zafa8z2b56a81577c6</superType>
       </concept>

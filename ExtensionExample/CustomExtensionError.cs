@@ -6,52 +6,60 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Framework;
 using System.Globalization;
+using System.Resources;
 
 namespace ExtensionExample
 {
 	/// <summary>
 	/// This is a ModelError added to the ORM Tool using extensions.
-	/// This error informs the user of the ORM Tool that A FactType must have a meaningful name.
-	/// i.e. The name must be something other than "FactType1" (or other variations).
+	/// This error informs the user of the ORM Tool that an ObjectType must have a meaningful name.
+	/// i.e. The name must be something other than "ObjectType1" (or other variations).
 	/// </summary>
-	public partial class FactTypeRequiresMeaningfulNameError : ModelError
+	public partial class ObjectTypeRequiresMeaningfulNameError : ModelError
 	{
-		#region Member Variables
-		private static FactType myFactType = null;
-		#endregion // Member Variables
 		#region Validation Methods
 		/// <summary>
-		/// This method performs Validation of a FactType name.
+		/// This method performs Validation of an ObjectType name.
 		/// </summary>
 		/// <param name="element">The ModelElement you are trying to validate.</param>
-		private static void DelayValidateFactTypeHasMeaningfulNameError(ModelElement element)
+		private static void DelayValidateObjectTypeHasMeaningfulNameError(ModelElement element)
 		{
-			FactType factType = element as FactType;
-			ValidateFactTypeName(factType, null);
+			ObjectType objectType = element as ObjectType;
+			ValidateObjectTypeName(objectType, null);
 		}
-		private static Regex factTypeRegex = new Regex(@"FactType[\d+]{0,}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+		private static Regex objectTypeRegex;
 		/// <summary>
-		/// This method Validates a FactType name.
-		/// If the FactType name has "FactType" of "FactType"
+		/// This method Validates an ObjectType name.
+		/// If the ObjectType name has a name of "ObjectType"
 		/// followed by any digits it will create a new error.
 		/// </summary>
-		/// <param name="factType">The FactType you wish to be validated.</param>
-		private static void ValidateFactTypeName(FactType factType, INotifyElementAdded notifyAdded)
+		/// <param name="objectType">The ObjectType you wish to be validated.</param>
+		private static void ValidateObjectTypeName(ObjectType objectType, INotifyElementAdded notifyAdded)
 		{
-			if (!factType.IsRemoved)
+			if (!objectType.IsRemoved)
 			{
-				myFactType = factType;
-				Match regexMatch = factTypeRegex.Match(factType.Name);
+				Regex regex = objectTypeRegex;
+				if (regex == null)
+				{
+					ResourceManager resMgr = ORMMetaModel.SingletonResourceManager;
+					regex = System.Threading.Interlocked.CompareExchange<Regex>(
+						ref objectTypeRegex,
+						new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", resMgr.GetString("Neumont.Tools.ORM.ObjectModel.ValueType"), resMgr.GetString("Neumont.Tools.ORM.ObjectModel.EntityType")), RegexOptions.Compiled | RegexOptions.IgnoreCase),
+						null);
+					regex = objectTypeRegex;
+				}
+				string objectTypeName = objectType.Name;
+				Match regexMatch = regex.Match(objectType.Name);
 
-				ModelErrorMoveableCollection extensions = factType.ExtensionModelErrorCollection;
-				FactTypeRequiresMeaningfulNameError nameError = null;
+				ModelErrorMoveableCollection extensions = objectType.ExtensionModelErrorCollection;
+				ObjectTypeRequiresMeaningfulNameError nameError = null;
 				int extensionCount = extensions.Count;
 				int i;
 				for (i = 0; i < extensionCount; ++i)
 				{
-					if (extensions[i] is FactTypeRequiresMeaningfulNameError)
+					if (extensions[i] is ObjectTypeRequiresMeaningfulNameError)
 					{
-						nameError = extensions[i] as FactTypeRequiresMeaningfulNameError;
+						nameError = extensions[i] as ObjectTypeRequiresMeaningfulNameError;
 						break;
 					}
 				}
@@ -60,9 +68,9 @@ namespace ExtensionExample
 				{
 					if (nameError == null)
 					{
-						nameError = FactTypeRequiresMeaningfulNameError.CreateFactTypeRequiresMeaningfulNameError(factType.Store);
-						ExtensionElementUtility.AddExtensionModelError(factType, nameError);
-						nameError.Model = factType.Model;
+						nameError = ObjectTypeRequiresMeaningfulNameError.CreateObjectTypeRequiresMeaningfulNameError(objectType.Store);
+						ExtensionElementUtility.AddExtensionModelError(objectType, nameError);
+						nameError.Model = objectType.Model;
 						nameError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -81,10 +89,6 @@ namespace ExtensionExample
 						nameError.Remove();
 					}
 				}
-				if (myFactType != null)
-				{
-					myFactType = null;
-				}
 			}
 		}
 		#endregion // Validation Methods
@@ -94,16 +98,14 @@ namespace ExtensionExample
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			if (myFactType != null)
+			ObjectType objectType = (ObjectType)ExtensionElementUtility.GetExtendedErrorOwnerElement(this);
+			if (objectType != null)
 			{
 				string newText = string.Format(CultureInfo.CurrentCulture,
-					"Fact '{0}' in model '{1}' needs a meaningful name",
-					myFactType.Name,
-					myFactType.Model.Name);
-				if (!Name.Equals(newText))
-				{
-					Name = newText;
-				}
+					"Object '{0}' in model '{1}' needs a meaningful name.",
+					objectType.Name,
+					objectType.Model.Name);
+				Name = newText;
 			}
 		}
 		/// <summary>
@@ -119,51 +121,51 @@ namespace ExtensionExample
 		#endregion // ModelError Overrides
 		#region ExtensionErrorRules
 		/// <summary>
-		/// This Rule calls the DelayValidateElement method when a FactType is added to the Diagram.
+		/// This Rule calls the DelayValidateElement method when a ObjectType is added to the Diagram.
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))]
-		public class ExtensionFactTypeAddRule : AddRule
+		[RuleOn(typeof(ModelHasObjectType))]
+		public class ExtensionObjectTypeAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasFactType).FactTypeCollection, DelayValidateFactTypeHasMeaningfulNameError);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectTypeCollection, DelayValidateObjectTypeHasMeaningfulNameError);
 			}
 		}
 		/// <summary>
-		/// This method calls the DelayValidateElement method when a FactType has been changed.
+		/// This method calls the DelayValidateElement method when an ObjectType has been changed.
 		/// </summary>
-		[RuleOn(typeof(FactType))]
-		public class ExtensionFactTypeChangeRule : ChangeRule
+		[RuleOn(typeof(ObjectType))]
+		public class ExtensionObjectTypeChangeRule : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as FactType), DelayValidateFactTypeHasMeaningfulNameError);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ObjectType), DelayValidateObjectTypeHasMeaningfulNameError);
 			}
 		}
 		#endregion // ExtensionErrorRules
 		#region CustomExtensionError Deserialization Fixup Classes
 		/// <summary>
-		/// A fixup listener for adding/removing the FactTypeRequiresMeaningfulError class
+		/// A fixup listener for adding/removing the ObjectTypeRequiresMeaningfulError class
 		/// </summary>
-		public static IDeserializationFixupListener FactTypeNameErrorFixupListener
+		public static IDeserializationFixupListener ObjectTypeNameErrorFixupListener
 		{
 			get
 			{
-				return new FactTypeNameFixupListener();
+				return new ObjectTypeNameFixupListener();
 			}
 		}
 		/// <summary>
-		/// Private class to Validate a FactType when the .orm file is Deserialization.
+		/// Private class to Validate a ObjectType when the .orm file is Deserialization.
 		/// </summary>
-		private class FactTypeNameFixupListener : DeserializationFixupListener<FactType>
+		private class ObjectTypeNameFixupListener : DeserializationFixupListener<ObjectType>
 		{
-			public FactTypeNameFixupListener()
+			public ObjectTypeNameFixupListener()
 				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
-			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			protected override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				ValidateFactTypeName(element, notifyAdded);
+				ValidateObjectTypeName(element, notifyAdded);
 			}
 		}
 		#endregion // CustomExtensionError Deserialization Fixup Classes

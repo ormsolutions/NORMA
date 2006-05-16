@@ -48,7 +48,7 @@
 			</plx:return>
 		</se:ConditionalSerialization>
 	</se:Element>
-	<se:Element Class="FactTypeRequiresMeaningfulNameError" Override="true">
-		<se:Link Name="Fact" RelationshipName="ORMNamedElementHasExtensionModelError" RoleName="ExtendedElement"/>
+	<se:Element Class="ObjectTypeRequiresMeaningfulNameError" Override="true">
+		<se:Link Name="ObjectType" RelationshipName="ORMNamedElementHasExtensionModelError" RoleName="ExtendedElement"/>
 	</se:Element>
 </se:CustomSerializedElements>

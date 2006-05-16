@@ -66,7 +66,7 @@ namespace TestSample
 
 			// Find the fact that that needs fixing and repair it
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-			FactType fact = (FactType)model.FactTypesDictionary.GetElement("TestFact").SingleElement;
+			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("CB33E377-9ADC-46BA-8E1B-24AE46BC0854"));
 			Role role = fact.RoleCollection[1].Role;
 
 			// At this point, we either need to open a transaction on the store with
@@ -100,7 +100,7 @@ namespace TestSample
 
 			// Find the fact that that needs fixing and repair it
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType4").SingleElement;
+			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("009787C8-37C8-43EB-933A-7C5B469D1310"));
 			fact.RemoveImpliedInternalUniquenessConstraints();
 			myTestServices.LogValidationErrors("After constraint duplication/implication repair");
 		}

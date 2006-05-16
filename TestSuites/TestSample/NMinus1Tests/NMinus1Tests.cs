@@ -81,7 +81,7 @@ namespace TestSample.NMinus1Tests
 
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
 
-			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType1").SingleElement;
+			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("655E4D9B-9835-4BE2-A7BC-FEBE51A32E84"));
 			RoleBaseMoveableCollection roles = fact.RoleCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
@@ -113,7 +113,7 @@ namespace TestSample.NMinus1Tests
 
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
 
-			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType1").SingleElement;
+			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("655E4D9B-9835-4BE2-A7BC-FEBE51A32E84"));
 			RoleBaseMoveableCollection roles = fact.RoleCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{

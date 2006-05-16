@@ -721,21 +721,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							ic.Remove();
 						}
-						if (!haveUniqueness)
-						{
-							ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-							ic.RoleCollection.Add(role);
-							ic.Model = model;
-							notifyAdded.ElementAdded(ic, true);
-						}
-						if (!haveMandatory)
-						{
-							ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
-							ic.RoleCollection.Add(role);
-							ic.Model = model;
-							notifyAdded.ElementAdded(ic, true);
-						}
 					}
+				}
+				if (!haveUniqueness)
+				{
+					ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+					ic.RoleCollection.Add(role);
+					ic.Model = model;
+					notifyAdded.ElementAdded(ic, true);
+				}
+				if (!haveMandatory)
+				{
+					ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
+					ic.RoleCollection.Add(role);
+					ic.Model = model;
+					notifyAdded.ElementAdded(ic, true);
 				}
 			}
 		}

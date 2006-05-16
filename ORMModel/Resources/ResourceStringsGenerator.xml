@@ -299,9 +299,6 @@
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text">
 		<comment type="summary">Model validation error shown when multiple constraints have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorModelHasDuplicateFactTypeNames" model="Model" resourceName="ModelError.Model.DuplicateFactTypeNames.Text">
-		<comment type="summary">Model validation error shown when multiple fact types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
-	</ResourceString>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text">
 		<comment type="summary">Model validation error shown when multiple object types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</ResourceString>

@@ -2847,13 +2847,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 			{
 				string stringValue = value as string;
-				if (stringValue != null)
+				Guid primaryStringGuid = PrimaryStringAttributeId;
+				if (primaryStringGuid == Guid.Empty)
+				{
+					return "";
+				}
+				else if (stringValue != null)
 				{
 					object instance = context.Instance;
 					ModelElement element = ConvertContextToElement(context);
 					if (element != null)
 					{
-						MetaAttributeInfo attrInfo = element.Store.MetaDataDirectory.FindMetaAttribute(PrimaryStringAttributeId);
+						MetaAttributeInfo attrInfo = element.Store.MetaDataDirectory.FindMetaAttribute(primaryStringGuid);
 						// This will recurse when the property descriptor is changed because the
 						// transaction close will refresh the property browser. Make sure we don't
 						// fire a second SetValue here so we only get one item on the undo stack.
@@ -3025,6 +3030,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return factType;
 				}
 				return null;
+			}
+			/// <summary>
+			/// Nothing useful to show here
+			/// </summary>
+			protected override Guid PrimaryStringAttributeId
+			{
+				get
+				{
+					return FactType.NameMetaAttributeGuid;
+				}
 			}
 		}
 		/// <summary>
@@ -3525,7 +3540,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			RolePlayerRequiredError requireRolePlayer;
 			FactType fact;
 			ConstraintDuplicateNameError constraintNameError;
-			FactTypeDuplicateNameError factTypeNameError;
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
 			UniquenessConstraint activateConstraint = null;
@@ -3573,10 +3587,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				clientView.Selection.Set(diagramItem);
 				RoleConnectAction connectAction = ormDiagram.RoleConnectAction;
 				connectAction.ChainMouseAction(GetAbsoluteRoleAttachPoint(role), clientView, false);
-			}
-			else if (null != (factTypeNameError = error as FactTypeDuplicateNameError))
-			{
-				ActivateNameProperty(factTypeNameError.FactTypeCollection[0]);
 			}
 			else if (null != (constraintNameError = error as ConstraintDuplicateNameError))
 			{

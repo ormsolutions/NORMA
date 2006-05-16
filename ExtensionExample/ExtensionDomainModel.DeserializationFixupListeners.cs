@@ -18,7 +18,7 @@ namespace ExtensionExample
 			get
 			{
 				yield return new MyCustomExtensionElementFixupListener();
-				yield return FactTypeRequiresMeaningfulNameError.FactTypeNameErrorFixupListener;
+				yield return ObjectTypeRequiresMeaningfulNameError.ObjectTypeNameErrorFixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

@@ -1496,7 +1496,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
-				SetComparisonConstraintRoleSequence sequence = e.SourceElement as SetComparisonConstraintRoleSequence;
+				SetComparisonConstraintRoleSequence sequence;
 				if (e.SourceMetaRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid &&
 					null != (sequence = e.SourceElement as SetComparisonConstraintRoleSequence))
 				{

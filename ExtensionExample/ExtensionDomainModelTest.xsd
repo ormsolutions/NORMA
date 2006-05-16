@@ -41,12 +41,12 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:element name="FactTypeRequiresMeaningfulNameError" type="FactTypeRequiresMeaningfulNameErrorType" substitutionGroup="orm:ExtensionModelError"/>
-	<xs:complexType name="FactTypeRequiresMeaningfulNameErrorType">
+	<xs:element name="ObjectTypeRequiresMeaningfulNameError" type="ObjectTypeRequiresMeaningfulNameErrorType" substitutionGroup="orm:ExtensionModelError"/>
+	<xs:complexType name="ObjectTypeRequiresMeaningfulNameErrorType">
 		<xs:complexContent>
 			<xs:extension base="orm:ModelError">
 				<xs:sequence>
-					<xs:element name="Fact" type="orm:FactRef" />
+					<xs:element name="ObjectType" type="orm:ObjectRef" />
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

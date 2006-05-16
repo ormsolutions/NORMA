@@ -39,9 +39,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Adds the extension ModelError to the IORMExtendableElement.
 		/// </summary>
-		public static void AddExtensionModelError(IORMExtendableElement extendedElement, ModelError nameError)
+		public static void AddExtensionModelError(IORMExtendableElement extendedElement, ModelError error)
 		{
-			extendedElement.ExtensionModelErrorCollection.Add(nameError);
+			extendedElement.ExtensionModelErrorCollection.Add(error);
 		}
 		/// <summary>
 		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelElement"/>
@@ -59,7 +59,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Gets the IORMExtendableElement that the extension ModelError extensionElement is attached to.
 		/// </summary>
-		public static IORMExtendableElement GetExtensionModelError(ModelError extensionElement)
+		public static IORMExtendableElement GetExtendedErrorOwnerElement(ModelError extensionElement)
 		{
 			return (IORMExtendableElement)
 			(

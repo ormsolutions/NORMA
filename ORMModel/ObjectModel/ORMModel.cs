@@ -144,7 +144,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) ||
+			return classInfo.IsDerivedFrom(ObjectType.MetaClassGuid) ||
+				classInfo.IsDerivedFrom(FactType.MetaClassGuid) ||
 				classInfo.IsDerivedFrom(SetComparisonConstraint.MetaClassGuid) ||
 				(classInfo.IsDerivedFrom(SetConstraint.MetaClassGuid) && !("INTERNALUNIQUENESSCONSTRAINT" == (string)elementGroupPrototype.UserData));
 		}
@@ -192,10 +193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[NonSerialized]
 		private NamedElementDictionary myObjectTypesDictionary;
 		[NonSerialized]
-		private NamedElementDictionary myFactTypesDictionary;
-		[NonSerialized]
 		private NamedElementDictionary myConstraintsDictionary;
-
 		/// <summary>
 		/// Returns the Object Types Dictionary
 		/// </summary>
@@ -212,24 +210,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
-
-		/// <summary>
-		/// Returns the Fact Types Dictionary
-		/// </summary>
-		/// <value>The model FactTypesDictionary</value>
-		public INamedElementDictionary FactTypesDictionary
-		{
-			get
-			{
-				INamedElementDictionary retVal = myFactTypesDictionary;
-				if (retVal == null)
-				{
-					retVal = myFactTypesDictionary = new FactTypeNamedElementDictionary();
-				}
-				return retVal;
-			}
-		}
-
 		/// <summary>
 		/// Returns the Constraints Dictionary
 		/// </summary>
@@ -262,10 +242,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (parentMetaRoleGuid == ModelHasObjectType.ModelMetaRoleGuid)
 			{
 				return ObjectTypesDictionary;
-			}
-			else if (parentMetaRoleGuid == ModelHasFactType.ModelMetaRoleGuid)
-			{
-				return FactTypesDictionary;
 			}
 			else if (parentMetaRoleGuid == ModelHasSetComparisonConstraint.ModelMetaRoleGuid ||
 					 parentMetaRoleGuid == ModelHasSetConstraint.ModelMetaRoleGuid ||
@@ -307,22 +283,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!error.IsRemoved)
 				{
 					if (error.ObjectTypeCollection.Count < 2)
-					{
-						error.Remove();
-					}
-				}
-			}
-		}
-		[RuleOn(typeof(FactTypeHasDuplicateNameError))]
-		private class RemoveDuplicateFactTypeNameErrorRule : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				FactTypeHasDuplicateNameError link = e.ModelElement as FactTypeHasDuplicateNameError;
-				FactTypeDuplicateNameError error = link.DuplicateNameError;
-				if (!error.IsRemoved)
-				{
-					if (error.FactTypeCollection.Count < 2)
 					{
 						error.Remove();
 					}
@@ -493,8 +453,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>A base name string pattern</returns>
 			protected override string GetRootNamePattern(NamedElement element)
 			{
+				return ((ObjectType)element).IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
+			}
+			/// <summary>
+			/// Return a default name and allow duplicates for auto-generated names on objectifying types
+			/// </summary>
+			protected override string GetDefaultName(NamedElement element)
+			{
 				ObjectType objectType = (ObjectType)element;
-				return objectType.IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
+				Objectification objectificationLink;
+				FactType nestedFact;
+				if (null != (objectificationLink = objectType.Objectification) &&
+					null != (nestedFact = objectificationLink.NestedFactType))
+				{
+					return nestedFact.GeneratedName;
+				}
+				return null;
 			}
 			/// <summary>
 			/// Raise an exception with text specific to a name in a model
@@ -508,152 +482,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#endregion // Base overrides
 		}
 		#endregion // ObjectTypeNamedElementDictionary class
-		#region FactTypeNamedElementDictionary class
-		/// <summary>
-		/// Dictionary used to set the initial names of fact types and to
-		/// generate model validation errors and exceptions for duplicate
-		/// element names.
-		/// </summary>
-		protected class FactTypeNamedElementDictionary : NamedElementDictionary
-		{
-			private class DuplicateNameManager : IDuplicateNameCollectionManager
-			{
-				#region TrackingList class
-				private class TrackingList : List<FactType>
-				{
-					private FactTypeMoveableCollection myNativeCollection;
-					public TrackingList(FactTypeDuplicateNameError error)
-					{
-						myNativeCollection = error.FactTypeCollection;
-					}
-					public FactTypeMoveableCollection NativeCollection
-					{
-						get
-						{
-							return myNativeCollection;
-						}
-					}
-				}
-				#endregion // TrackingList class
-				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
-				{
-					FactType factType = (FactType)element;
-					if (afterTransaction)
-					{
-						if (elementCollection == null)
-						{
-							FactTypeDuplicateNameError error = factType.DuplicateNameError;
-							if (error != null)
-							{
-								// We're not in a transaction, but the object model will be in
-								// the state we need it because we put it there during a transaction.
-								// Just return the collection from the current state of the object model.
-								TrackingList trackingList = new TrackingList(error);
-								trackingList.Add(factType);
-								elementCollection = trackingList;
-							}
-						}
-						else
-						{
-							((TrackingList)elementCollection).Add(factType);
-						}
-						return elementCollection;
-					}
-					else
-					{
-						// Modify the object model to add the error.
-						if (elementCollection == null)
-						{
-							FactTypeDuplicateNameError error = null;
-							if (notifyAdded != null)
-							{
-								// During deserialization fixup, an error
-								// may already be attached to the object. Track
-								// it down and verify that it is a legitimate error.
-								// If it is not legitimate, then generate a new one.
-								error = factType.DuplicateNameError;
-								if (error != null && !error.ValidateDuplicates(factType))
-								{
-									error = null;
-								}
-							}
-							if (error == null)
-							{
-								error = FactTypeDuplicateNameError.CreateFactTypeDuplicateNameError(factType.Store);
-								factType.DuplicateNameError = error;
-								error.Model = factType.Model;
-								error.GenerateErrorText();
-								if (notifyAdded != null)
-								{
-									notifyAdded.ElementAdded(error, true);
-								}
-							}
-							TrackingList trackingList = new TrackingList(error);
-							trackingList.Add(factType);
-							elementCollection = trackingList;
-						}
-						else
-						{
-							TrackingList trackingList = (TrackingList)elementCollection;
-							trackingList.Add(factType);
-							// During deserialization fixup (notifyAdded != null), we need
-							// to make sure that the element is not already in the collection
-							FactTypeMoveableCollection typedCollection = trackingList.NativeCollection;
-							if (notifyAdded == null || !typedCollection.Contains(factType))
-							{
-								typedCollection.Add(factType);
-							}
-						}
-						return elementCollection;
-					}
-				}
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
-				{
-					TrackingList trackingList = (TrackingList)elementCollection;
-					FactType factType = (FactType)element;
-					trackingList.Remove(factType);
-					if (!afterTransaction)
-					{
-						// Just clear the error. A rule is used to remove the error
-						// object itself when there is no longer a duplicate.
-						factType.DuplicateNameError = null;
-					}
-					return elementCollection;
-				}
-				#endregion // IDuplicateNameCollectionManager Implementation
-			}
-			#region Constructors
-			/// <summary>
-			/// Default constructor for FactTypeNamedElementDictionary
-			/// </summary>
-			public FactTypeNamedElementDictionary() : base(new DuplicateNameManager())
-			{
-			}
-			#endregion // Constructors
-			#region Base overrides
-			/// <summary>
-			/// Provide a localized base name pattern for a new FactType
-			/// </summary>
-			/// <param name="element">Ignored. Should be a FactType</param>
-			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(NamedElement element)
-			{
-				Debug.Assert(element is FactType);
-				return (element is SubtypeFact) ? ResourceStrings.SubtypeFactDefaultNamePattern : ResourceStrings.FactTypeDefaultNamePattern;
-			}
-			/// <summary>
-			/// Raise an exception with text specific to a name in a model
-			/// </summary>
-			/// <param name="element">Element we're attempting to name</param>
-			/// <param name="requestedName">The in-use requested name</param>
-			protected override void ThrowDuplicateNameException(NamedElement element, string requestedName)
-			{
-				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
-			}
-			#endregion // Base overrides
-		}
-		#endregion // FactTypeNamedElementDictionary class
 		#region ConstraintNamedElementDictionary class
 		/// <summary>
 		/// Dictionary used to set the initial names of constraints and to
@@ -1456,46 +1284,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#region IHasIndirectModelErrorOwner Implementation
 		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid };
-		/// <summary>
-		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
-		/// </summary>
-		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
-		{
-			return myIndirectModelErrorOwnerLinkRoles;
-		}
-		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
-		{
-			return GetIndirectModelErrorOwnerLinkRoles();
-		}
-		#endregion // IHasIndirectModelErrorOwner Implementation
-	}
-	public partial class FactTypeDuplicateNameError : DuplicateNameError, IHasIndirectModelErrorOwner
-	{
-		/// <summary>
-		/// Get the duplicate elements represented by this DuplicateNameError
-		/// </summary>
-		/// <returns>FactTypeCollection</returns>
-		protected override IList DuplicateElements
-		{
-			get
-			{
-				return FactTypeCollection;
-			}
-		}
-		/// <summary>
-		/// Get the text to display the duplicate error information. Replacement
-		/// field {0} is replaced by the model name, field {1} is replaced by the
-		/// element name.
-		/// </summary>
-		protected override string ErrorFormatText
-		{
-			get
-			{
-				return ResourceStrings.ModelErrorModelHasDuplicateFactTypeNames;
-			}
-		}
-		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
