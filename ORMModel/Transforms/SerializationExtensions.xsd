@@ -140,6 +140,11 @@
 				<xs:documentation>The role name.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="CreateAsRelationshipName" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>The name a relationship derived from the one defining the roles.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:attributeGroup>
 	<xs:element name="ConditionalName">
 		<xs:annotation>

@@ -144,15 +144,31 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		Attribute,
 		/// <summary>
-		/// The element matches a singled contained role. The guid identifying
+		/// The element matches a single contained role. The guid identifying
 		/// the MetaRoleInfo is returned in the SingleOppositeMetaRoleGuid property.
 		/// </summary>
 		SingleOppositeMetaRole,
+		/// <summary>
+		/// The element matches a single contained role and the link must
+		/// be created as an explicit subtype of the relationship specified by the
+		/// meta role. The guid identifying the MetaRoleInfo is returned in the
+		/// SingleOppositeMetaRoleGuid property and the guid identifying the MetaRelationshipInfo
+		/// is returned by the ExplicitRelationshipGuid property.
+		/// </summary>
+		SingleOppositeMetaRoleExplicitRelationshipType,
 		/// <summary>
 		/// The element matches more than one contained role. The guids identifying
 		/// the roles are returned in the OppositeMetaRoleGuidCollection property
 		/// </summary>
 		MultipleOppositeMetaRoles,
+		/// <summary>
+		/// The element matches more than one contained role and the link must
+		/// be created as an explicit subtype of the relationship specified by the
+		/// meta role. The guids identifying the roles are returned in the
+		/// OppositeMetaRoleGuidCollection property. The guid identifying the
+		/// MetaRelationshipInfo is returned by the ExplicitRelationshipGuid property.
+		/// </summary>
+		MultipleOppositeMetaRolesExplicitRelationshipType,
 	}
 	#endregion Public Enumerations
 	#region Public Classes
@@ -419,7 +435,14 @@ namespace Neumont.Tools.ORM.Shell
 	[CLSCompliant(true)]
 	public struct ORMCustomSerializedElementMatch
 	{
+		/// <summary>
+		/// Holds a single role guid, or the explicit relationship guid
+		/// </summary>
 		private Guid mySingleGuid;
+		/// <summary>
+		/// Holds multiple guids, or the single role guid if an explicit
+		/// relationship guid is provided
+		/// </summary>
 		private Guid[] myMultiGuids;
 		private ORMCustomSerializedElementMatchStyle myMatchStyle;
 		private string myDoubleTagName;
@@ -459,12 +482,46 @@ namespace Neumont.Tools.ORM.Shell
 		/// The element was recognized as an opposite role player. Optimized overload
 		/// for 1 element.
 		/// </summary>
-		/// <param name="oppositeMetaRoleGuid">The opposite meta role guids</param>
+		/// <param name="oppositeMetaRoleGuid">The opposite meta role guid</param>
 		public void InitializeRoles(Guid oppositeMetaRoleGuid)
 		{
 			mySingleGuid = oppositeMetaRoleGuid;
 			myMultiGuids = null;
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole;
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type
+		/// </summary>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="oppositeMetaRoleGuids">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, params Guid[] oppositeMetaRoleGuids)
+		{
+			Debug.Assert(oppositeMetaRoleGuids != null && oppositeMetaRoleGuids.Length != 0);
+			if (oppositeMetaRoleGuids.Length == 1)
+			{
+				mySingleGuid = explicitRelationshipGuid;
+				myMultiGuids = oppositeMetaRoleGuids;
+				myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType;
+			}
+			else
+			{
+				mySingleGuid = explicitRelationshipGuid;
+				myMultiGuids = oppositeMetaRoleGuids;
+				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType;
+			}
+			myDoubleTagName = null;
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type.
+		/// Optimized overload for 1 element.
+		/// </summary>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="oppositeMetaRoleGuid">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, Guid oppositeMetaRoleGuid)
+		{
+			mySingleGuid = oppositeMetaRoleGuid;
+			myMultiGuids = new Guid[] { oppositeMetaRoleGuid };
+			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType;
 		}
 		/// <summary>
 		/// The guid identifying the meta attribute. Valid for a match
@@ -485,7 +542,15 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return (myMatchStyle == ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole) ? mySingleGuid : Guid.Empty;
+				switch (myMatchStyle)
+				{
+					case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole:
+						return mySingleGuid;
+					case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType:
+						return myMultiGuids[0];
+					default:
+						return Guid.Empty;
+				}
 			}
 		}
 		/// <summary>
@@ -496,7 +561,33 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return (myMatchStyle == ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles) ? myMultiGuids : null;
+				switch (myMatchStyle)
+				{
+					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
+					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
+						return myMultiGuids;
+					default:
+						return null;
+				}
+			}
+		}
+		/// <summary>
+		/// The guid identifying the meta relationship of the explicit relationship
+		/// type to create. Validate for match styles of SingleOppositeMetaRoleExplicitRelationshipType
+		/// and MultipleOppositeMetaRolesExplicitRelationshipType.
+		/// </summary>
+		public Guid ExplicitRelationshipGuid
+		{
+			get
+			{
+				switch (myMatchStyle)
+				{
+					case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType:
+					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
+						return mySingleGuid;
+					default:
+						return Guid.Empty;
+				}
 			}
 		}
 		/// <summary>
@@ -1973,6 +2064,7 @@ namespace Neumont.Tools.ORM.Shell
 					bool aggregatedClass = idValue != null && refValue == null;
 					MetaRoleInfo oppositeMetaRole = null;
 					MetaClassInfo oppositeMetaClass = null;
+					MetaRelationshipInfo explicitRelationshipType = null;
 					bool oppositeMetaClassFullyDeterministic = false;
 					bool resolveOppositeMetaClass = false;
 					IList<Guid> oppositeMetaRoleGuids = null;
@@ -2032,11 +2124,18 @@ namespace Neumont.Tools.ORM.Shell
 									oppositeMetaRole = dataDir.FindMetaRole(match.SingleOppositeMetaRoleGuid);
 									resolveOppositeMetaClass = true;
 									break;
+								case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType:
+									explicitRelationshipType = dataDir.FindMetaRelationship(match.ExplicitRelationshipGuid);
+									oppositeMetaRole = dataDir.FindMetaRole(match.SingleOppositeMetaRoleGuid);
+									resolveOppositeMetaClass = true;
+									break;
 								case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
-									{
-										oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
-										break;
-									}
+									oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
+									break;
+								case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
+									explicitRelationshipType = dataDir.FindMetaRelationship(match.ExplicitRelationshipGuid);
+									oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
+									break;
 								case ORMCustomSerializedElementMatchStyle.Attribute:
 									{
 										MetaAttributeInfo attributeInfo = dataDir.FindMetaAttribute(match.MetaAttributeGuid);
@@ -2264,7 +2363,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							if (createLink)
 							{
-								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeMetaRole);
+								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeMetaRole, explicitRelationshipType);
 								if (!aggregatedClass && idValue != null)
 								{
 									ProcessClassElement(reader, customModel, newLink);
@@ -2429,8 +2528,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="rolePlayer">The near role player</param>
 		/// <param name="oppositeRolePlayer">The opposite role player</param>
 		/// <param name="oppositeMetaRoleInfo">The opposite meta role</param>
+		/// <param name="explicitMetaRelationshipInfo">The relationship type to create.
+		/// Derived from oppositeMetaRoleInfo if not specified.</param>
 		/// <returns>The newly created element link</returns>
-		private ElementLink CreateElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo oppositeMetaRoleInfo)
+		private ElementLink CreateElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo oppositeMetaRoleInfo, MetaRelationshipInfo explicitMetaRelationshipInfo)
 		{
 			// Create an element link. There is no attempt here to determine if the link already
 			// exists in the store;
@@ -2438,7 +2539,9 @@ namespace Neumont.Tools.ORM.Shell
 			Debug.Assert(null == myStore.ElementDirectory.FindElement(id));
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
 				false,
-				oppositeMetaRoleInfo.MetaRelationship.ImplementationClass,
+				(explicitMetaRelationshipInfo == null) ?
+					oppositeMetaRoleInfo.MetaRelationship.ImplementationClass :
+					explicitMetaRelationshipInfo.ImplementationClass,
 				id,
 				new RoleAssignment[]{
 					new RoleAssignment(oppositeMetaRoleInfo.OppositeMetaRole, rolePlayer),

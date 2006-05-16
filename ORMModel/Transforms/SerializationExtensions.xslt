@@ -893,26 +893,14 @@
 				<xsl:variable name="childElements" select="se:ChildElement"/>
 				<xsl:variable name="allLinksTemp">
 					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten')]">
-						<xsl:variable name="relationship" select="@RelationshipName"/>
-						<xsl:variable name="role" select="@RoleName"/>
-						<xsl:choose>
-							<xsl:when test="count($linksInChildElement[@RelationshipName=$relationship and @RoleName=$role]) > 0">
-								<xsl:copy>
-									<xsl:copy-of select="@*"/>
-									<xsl:attribute name="contained">
-										<xsl:value-of select="true()"/>
-									</xsl:attribute>
-								</xsl:copy>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:copy>
-									<xsl:copy-of select="@*"/>
-									<xsl:attribute name="uncontained">
-										<xsl:value-of select="true()"/>
-									</xsl:attribute>
-								</xsl:copy>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:copy>
+							<xsl:copy-of select="@*"/>
+							<xsl:if test="$linksInChildElement[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and string(@CreateAsRelationshipName)=string(current()/@CreateAsRelationshipName)]">
+								<xsl:attribute name="contained">
+									<xsl:value-of select="true()"/>
+								</xsl:attribute>
+							</xsl:if>
+						</xsl:copy>
 					</xsl:for-each>
 				</xsl:variable>
 				<xsl:variable name="allLinks" select="exsl:node-set($allLinksTemp)/child::*"/>
@@ -921,11 +909,22 @@
 					<xsl:choose>
 						<!-- Walk the $allLinks, then add the ones that are
 						NOT contained in $linksInChildElement -->
-						<xsl:when test="@uncontained">
+						<xsl:when test="not(@contained)">
+							<xsl:variable name="createAsRelationshipName" select="string(@CreateAsRelationshipName)"/>
 							<plx:callInstance name="InitializeRoles">
+								<xsl:if test="$createAsRelationshipName">
+									<xsl:attribute name="name">
+										<xsl:text>InitializeRolesWithExplicitRelationship</xsl:text>
+									</xsl:attribute>
+								</xsl:if>
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
+								<xsl:if test="$createAsRelationshipName">
+									<plx:passParam>
+										<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{$createAsRelationshipName}" type="property"/>
+									</plx:passParam>
+								</xsl:if>
 								<plx:passParam>
 									<plx:callStatic name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" type="property"/>
 								</plx:passParam>
@@ -963,8 +962,8 @@
 						<xsl:for-each select="se:Link">
 							<xsl:variable name="relationshipName" select="@RelationshipName"/>
 							<xsl:variable name="roleName" select="@RoleName"/>
-							<xsl:variable name="namedLinks" select="$allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName]"/>
-							<xsl:if test="count($namedLinks)">
+							<xsl:variable name="namedLinks" select="$allLinks[@RelationshipName=current()/@RelationshipName and @RoleName=current()/@RoleName and string(@CreateAsRelationshipName)=string(current()/@CreateAsRelationshipName)]"/>
+							<xsl:if test="$namedLinks">
 								<xsl:copy>
 									<xsl:copy-of select="@*"/>
 									<xsl:for-each select="$namedLinks[1]">
@@ -989,10 +988,21 @@
 					<xsl:if test="count($localLinks)">
 						<xsl:variable name="containerName" select="@Name"/>
 						<xsl:for-each select="$localLinks">
+							<xsl:variable name="createAsRelationshipName" select="string(@CreateAsRelationshipName)"/>
 							<plx:callInstance name="InitializeRoles">
+								<xsl:if test="$createAsRelationshipName">
+									<xsl:attribute name="name">
+										<xsl:text>InitializeRolesWithExplicitRelationship</xsl:text>
+									</xsl:attribute>
+								</xsl:if>
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
+								<xsl:if test="$createAsRelationshipName">
+									<plx:passParam>
+										<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{$createAsRelationshipName}" type="property"/>
+									</plx:passParam>
+								</xsl:if>
 								<plx:passParam>
 									<plx:callStatic name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" type="field"/>
 								</plx:passParam>
@@ -1041,25 +1051,45 @@
 				<xsl:for-each select="$childElements">
 					<xsl:variable name="linksFragment">
 						<xsl:for-each select="se:Link">
-							<xsl:variable name="relationshipName" select="@RelationshipName"/>
-							<xsl:variable name="roleName" select="@RoleName"/>
-							<xsl:variable name="containerName" select="@ContainerName"/>
-							<xsl:variable name="containerPrefix" select="@ContainerPrefix"/>
-							<xsl:if test="count($allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName]) = 0">
+							<xsl:variable name="relationshipName" select="string(@RelationshipName)"/>
+							<xsl:variable name="roleName" select="string(@RoleName)"/>
+							<xsl:variable name="createAsRelationshipName" select="string(@CreateAsRelationshipName)"/>
+							<xsl:if test="not($allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName and string(@CreateAsRelationshipName)=$createAsRelationshipName])">
+								<xsl:if test="$createAsRelationshipName">
+									<explicitCreateMarker>
+										<plx:passParam>
+											<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{$createAsRelationshipName}" type="property"/>
+										</plx:passParam>
+									</explicitCreateMarker>
+								</xsl:if>
 								<plx:passParam>
-									<plx:callStatic name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" type="property"/>
+									<plx:callStatic name="{$roleName}MetaRoleGuid" dataTypeName="{$relationshipName}" type="property"/>
 								</plx:passParam>
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
 					<xsl:variable name="links" select="exsl:node-set($linksFragment)/child::*"/>
-					<xsl:if test="count($links)">
-						<plx:callInstance name="InitializeRoles">
-							<plx:callObject>
-								<plx:nameRef name="match"/>
-							</plx:callObject>
-							<xsl:copy-of select="$links"/>
-						</plx:callInstance>
+					<xsl:if test="$links">
+						<xsl:variable name="explicitCreateParam" select="$links/self::explicitCreateMarker/plx:passParam"/>
+						<xsl:choose>
+							<xsl:when test="$explicitCreateParam">
+								<plx:callInstance name="InitializeRolesWithExplicitRelationship">
+									<plx:callObject>
+										<plx:nameRef name="match"/>
+									</plx:callObject>
+									<xsl:copy-of select="$explicitCreateParam"/>
+									<xsl:copy-of select="$links/self::plx:passParam"/>
+								</plx:callInstance>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:callInstance name="InitializeRoles">
+									<plx:callObject>
+										<plx:nameRef name="match"/>
+									</plx:callObject>
+									<xsl:copy-of select="$links/self::plx:passParam"/>
+								</plx:callInstance>
+							</xsl:otherwise>
+						</xsl:choose>
 						<plx:callInstance name="Add">
 							<plx:callObject>
 								<plx:nameRef name="childElementMappings"/>
@@ -1086,21 +1116,6 @@
 							</plx:passParam>
 						</plx:callInstance>
 					</xsl:if>
-				</xsl:for-each>
-
-
-				<xsl:for-each select="se:ChildElement">
-					<xsl:choose>
-						<!-- It's a relationship -->
-						<xsl:when test="se:Link">
-							<xsl:for-each select="se:Link">
-								<!--										<xsl:if test="@RelationshipName = parent::parent::se:Element/se:Link"></xsl:if>-->
-							</xsl:for-each>
-						</xsl:when>
-						<!-- It's a something that I don't find an example for-->
-						<xsl:otherwise>
-						</xsl:otherwise>
-					</xsl:choose>
 				</xsl:for-each>
 
 				<!-- Add reverse mapping for attributes serialized as elements -->
