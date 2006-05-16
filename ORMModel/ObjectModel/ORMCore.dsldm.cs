@@ -2293,51 +2293,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region NestedFactType's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.FactType NestedFactType
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.FactType;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Neumont.Tools.ORM.ObjectModel.FactType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.FactType;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), newRoles);
-				}
-			}
-		}
-		#endregion
 		#region PlayedRoleCollection's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -15652,7 +15607,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region Name's Generated Property Code
 
 		/// <summary>
-		/// Transitional Property
+		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
 		[System.ComponentModel.MergableProperty(false)]
@@ -15992,51 +15947,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region NestingType's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ObjectType NestingType
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ObjectType;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Neumont.Tools.ORM.ObjectModel.ObjectType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ObjectType;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), newRoles);
-				}
-			}
-		}
-		#endregion
 		#region Model's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -26411,6 +26321,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactType")]
 		public  Neumont.Tools.ORM.ObjectModel.FactType NestedFactType
@@ -26432,6 +26343,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.Objectification.NestingType")]
 		public  Neumont.Tools.ORM.ObjectModel.ObjectType NestingType

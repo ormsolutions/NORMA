@@ -66,7 +66,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
 				ORMMetaModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
-				ProcessNewPlayerRoleForImpliedObjectification(factTypeHasRole.RoleCollection as Role);
+				ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.RoleCollection as Role);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule class
@@ -121,7 +121,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						ObjectType nestingType = objectification.NestingType;
 						if (nestingType != null && (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count != objectification.ImpliedFactTypeCollection.Count))
 						{
-							throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact);
+							throw InvalidImpliedObjectificationException();
 						}
 					}
 				}
@@ -159,7 +159,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ProcessNewPlayerRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRoleCollection);
+				ProcessNewPlayedRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRoleCollection);
 			}
 		}
 		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddRule class
@@ -337,7 +337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Throw if the modification was disallowed by the objectification pattern
 				if (disallowed)
 				{
-					ThrowBlockedByObjectificationPatternException();
+					throw BlockedByObjectificationPatternException();
 				}
 			}
 		}
@@ -433,7 +433,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Throw if the modification was disallowed by the objectification pattern
 				if (disallowed)
 				{
-					ThrowBlockedByObjectificationPatternException();
+					throw BlockedByObjectificationPatternException();
 				}
 			}
 		}
@@ -455,7 +455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (null != fact.ImpliedByObjectification)
 					{
-						ThrowBlockedByObjectificationPatternException();
+						throw BlockedByObjectificationPatternException();
 					}
 				}
 			}
@@ -485,7 +485,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (!(objectificationLink.IsRemoving || role.IsRemoving))
 						{
-							ThrowBlockedByObjectificationPatternException();
+							throw BlockedByObjectificationPatternException();
 						}
 					}
 				}
@@ -511,7 +511,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (1 == (facts = constraint.FactTypeCollection).Count &&
 							facts[0].ImpliedByObjectification != null)
 						{
-							ThrowBlockedByObjectificationPatternException();
+							throw BlockedByObjectificationPatternException();
 						}
 					}
 				}
@@ -523,15 +523,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// If a newly played Role is in a non-implied FactType, then the role player cannot be an implied objectifying ObjectType
 		/// </summary>
-		private static void ProcessNewPlayerRoleForImpliedObjectification(Role playedRole)
+		private static void ProcessNewPlayedRoleForImpliedObjectification(Role playedRole)
 		{
 			if (playedRole != null)
 			{
 				FactType playedFact = playedRole.FactType;
 				if (playedFact != null)
 				{
+					RoleBaseMoveableCollection roles;
 					// If the fact is implied, we don't need to do anything else
-					if (playedFact.ImpliedByObjectification != null)
+					if (playedFact.ImpliedByObjectification != null || ((roles = playedFact.RoleCollection).Count > 0 && roles[0] is RoleProxy))
 					{
 						return;
 					}
@@ -599,11 +600,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// the implied objectification
 					if (throwOnFailure)
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact);
+						throw InvalidImpliedObjectificationException();
 					}
 					else
 					{
-						objectification.Remove();
+						objectification.NestingType.Remove();
 					}
 				}
 			}
@@ -738,13 +739,82 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return impliedFact;
 		}
 		/// <summary>
-		/// Throw an exception indicating that the current modification is
-		/// not allowed by the objectification patterh
+		/// Creates an Objectification between the specified FactType and ObjectType. If the FactType already has an implied
+		/// Objectification, it will be merged with the new objectifying ObjectType.
 		/// </summary>
-		private static void ThrowBlockedByObjectificationPatternException()
+		public static void CreateExplicitObjectification(FactType nestedFactType, ObjectType nestingType)
 		{
-			throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedElementModified);
+			Objectification objectification = nestedFactType.Objectification;
+			if (objectification != null && objectification.IsImplied)
+			{
+				// Ignore the nestingType being set to null if the current Objectification is implied
+				if (nestingType != null)
+				{
+					// We already have an implied Objectification, so modify it for the new ObjectType
+					RuleManager ruleManager = objectification.Store.RuleManager;
+					ObjectType impliedObjectifyingType = objectification.NestingType;
+					objectification.NestingType = nestingType;
+					bool addRuleDisabled = false;
+					bool removingRuleDisabled = false;
+					try
+					{
+						ruleManager.DisableRule(typeof(RolePlayerAddRule));
+						addRuleDisabled = true;
+						ruleManager.DisableRule(typeof(RolePlayerRemovingRule));
+						removingRuleDisabled = true;
+						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
+						{
+							RoleBaseMoveableCollection roles = impliedFactType.RoleCollection;
+							Debug.Assert(roles.Count == 2,
+								"When this method is called, we should be at a stable point, so implied Fact Types should always have exactly two Roles.");
+							Role role = roles[1] as Role;
+							if (role == null)
+							{
+								role = roles[0] as Role;
+								Debug.Assert(role != null);
+							}
+							role.RolePlayer = nestingType;
+						}
+					}
+					finally
+					{
+						if (addRuleDisabled)
+						{
+							ruleManager.EnableRule(typeof(RolePlayerAddRule));
+						}
+						if (removingRuleDisabled)
+						{
+							ruleManager.EnableRule(typeof(RolePlayerRemovingRule));
+						}
+					}
+					objectification.IsImplied = false;
+					impliedObjectifyingType.Remove();
+				}
+			}
+			else
+			{
+				// We don't have an implied Objectification, so we don't need to do anything special.
+				nestedFactType.NestingType = nestingType;
+			}
 		}
+		#region Exception Helpers
+		/// <summary>
+		/// Returns an exception indicating that the current modification is
+		/// not allowed by the objectification pattern.
+		/// </summary>
+		private static InvalidOperationException BlockedByObjectificationPatternException()
+		{
+			return new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedElementModified);
+		}
+		/// <summary>
+		/// Returns an exception indicating that the implied objectification is not actually
+		/// implied or the nesting type is doing things that are not allowed.
+		/// </summary>
+		private static InvalidOperationException InvalidImpliedObjectificationException()
+		{
+			return new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact);
+		}
+		#endregion // Exception Helpers
 		#endregion // Helper functions
 		#region Deserialization Fixup
 		/// <summary>
@@ -914,6 +984,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (proxy == null)
 							{
 								proxy = impliedRoles[1] as RoleProxy;
+								Debug.Assert(proxy != null, "At least one role in an implied fact should be a proxy.");
 							}
 							Role targetRole;
 							if (proxy == null ||

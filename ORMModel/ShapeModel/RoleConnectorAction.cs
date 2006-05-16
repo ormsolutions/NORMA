@@ -162,7 +162,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RoleConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).RoleConnectAction;
 				ObjectType objectType;
 				Role role;
-				if ((null != (role = action.mySourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement))) ||
+				Objectification objectification;
+				if ((null != (role = action.mySourceRole) && null != (objectType = ObjectTypeFromShape(targetShapeElement)) &&
+					(null == (objectification = objectType.Objectification) || !objectification.IsImplied)) ||
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
 					return !object.ReferenceEquals(role.FactType, objectType.NestedFactType);
@@ -423,7 +425,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>An ObjectType, or null</returns>
 		protected static ObjectType ObjectTypeFromShape(ShapeElement shape)
 		{
-			ObjectType objectType = null;
+			ObjectType objectType;
 			if (shape == null)
 			{
 				// Protect against breaking into the debugger, should

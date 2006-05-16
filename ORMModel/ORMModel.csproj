@@ -102,6 +102,8 @@
     <Compile Include="FactEditor\FactParser.cs" />
     <Compile Include="FactEditor\FactSaver.cs" />
     <Compile Include="FactEditor\FactTextViewFilter.cs" />
+    <Compile Include="ObjectModel\Editors\Comparers.cs" />
+    <Compile Include="Framework\Utility.cs" />
     <Compile Include="ObjectModel\VerbalizationSnippetSetsManager.cs" />
     <Compile Include="ObjectModel\CustomSetStringPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\DataType.cs" />

@@ -3854,28 +3854,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				if (value != null)
-				{
-					// The relationship is 1-1, just use the code on the other end
-					value.PreferredIdentifier = (UniquenessConstraint)this;
-				}
-				else
-				{
-					// Clear the links
-					IList links = this.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
-					int linkCount = links.Count;
-					if (linkCount != 0)
-					{
-						for (int i = linkCount - 1; i >= 0; --i)
-						{
-							ElementLink link = links[i] as ElementLink;
-							if (!link.IsRemoved)
-							{
-								link.Remove();
-							}
-						}
-					}
-				}
+				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, typeof(EntityTypeHasPreferredIdentifier));
 			}
 		}
 		ObjectType IConstraint.PreferredIdentifierFor

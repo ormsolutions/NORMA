@@ -33,7 +33,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	{
 		/// <summary>
 		/// Returns a list of role player candidates for a fact type.
-		/// The nesting type is filtered out of the list.
+		/// The nesting types of this fact type and of implied objectifications are filtered out of the list.
 		/// </summary>
 		/// <param name="context">ITypeDescriptorContext. Used to retrieve the selected instance</param>
 		/// <param name="value">The current value</param>
@@ -46,18 +46,19 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			{
 				// Make sure we're sorted
 				List<ObjectType> types = new List<ObjectType>(candidates.Count);
-				ObjectType nestingType = instance.FactType.NestingType;
+				Objectification thisObjectification = instance.FactType.Objectification;
 				foreach (ObjectType objType in candidates)
 				{
-					if (objType != nestingType)
+					Objectification objectification = objType.Objectification;
+					if (objectification != null && objectification != thisObjectification && !objectification.IsImplied)
 					{
 						types.Add(objType);
 					}
 				}
-				types.Sort(delegate(ObjectType type1, ObjectType type2)
+				if (types.Count > 1)
 				{
-					return string.Compare(type1.Name, type2.Name);
-				});
+					types.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+				}
 				candidates = types;
 			}
 			return candidates;
@@ -104,55 +105,45 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		{
 			Debug.Assert(!(value is object[]));
 			FactType instance = (FactType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
-			ObjectType[] roleTypes = null;
-			IList<ObjectType> roleTypesList = null;
+			if (instance.ImpliedByObjectification != null)
+			{
+				// Implied FactTypes can't be objectified, so we just return an empty list
+				return new ObjectType[0];
+			}
 			IList candidates = instance.Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
 			int count = candidates.Count;
 			if (count > 0)
 			{
+				IComparer<ObjectType> comparer = HashCodeComparer<ObjectType>.Instance;
+				RoleBaseMoveableCollection roles = instance.RoleCollection;
+				ObjectType[] rolePlayers = new ObjectType[roles.Count];
+				for (int i = 0; i < rolePlayers.Length; ++i)
+				{
+					rolePlayers[i] = (roles[i] as Role).RolePlayer;
+				}
+				Array.Sort(rolePlayers, comparer);
+
 				List<ObjectType> types = new List<ObjectType>(count);
 				foreach (ObjectType objType in candidates)
 				{
-					if (!objType.IsValueType && objType.PreferredIdentifier == null)
+					if (!objType.IsValueType)
 					{
 						FactType nestedFact = objType.NestedFactType;
-						if (nestedFact == null || object.ReferenceEquals(nestedFact, instance))
+						// We only show the ObjectType if it is not already nesting a FactType, or if it is explicitly nesting this FactType
+						if (nestedFact == null || ((object)nestedFact == instance && !nestedFact.Objectification.IsImplied))
 						{
-							Debug.Assert(nestedFact == null || object.ReferenceEquals(value, objType)); // Should be equivalent condition to checking nestedFact against instance
-
 							// Make sure that the nested type candidate is also not being used as a role player
 							// This is backed up in the metamodel rules and other pickers.
-							if (roleTypes == null)
-							{
-								RoleBaseMoveableCollection roles = instance.RoleCollection;
-								int roleCount = roles.Count;
-								if (roleCount > 0)
-								{
-									roleTypes = new ObjectType[roleCount];
-									for (int i = 0; i < roleCount; ++i)
-									{
-										roleTypes[i] = roles[i].Role.RolePlayer;
-									}
-								}
-								else
-								{
-									roleTypes = new ObjectType[0];
-								}
-								roleTypesList = roleTypes;
-							}
-							if (!roleTypesList.Contains(objType))
+							if (Array.BinarySearch(rolePlayers, objType, comparer) < 0)
 							{
 								types.Add(objType);
 							}
 						}
 					}
 				}
-				if (types.Count > 0)
+				if (types.Count > 1)
 				{
-					types.Sort(delegate(ObjectType type1, ObjectType type2)
-					{
-						return string.Compare(type1.Name, type2.Name);
-					});
+					types.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
 				}
 				candidates = types;
 			}
@@ -188,6 +179,18 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	/// </summary>
 	public class NestedFactTypePicker : ElementPicker
 	{
+		private sealed class FactTypeNameComparer : IComparer<FactType>
+		{
+			public FactTypeNameComparer()
+			{
+				myStringComparer = StringComparer.CurrentCulture;
+			}
+			private readonly StringComparer myStringComparer;
+			public int Compare(FactType x, FactType y)
+			{
+				return myStringComparer.Compare(x.Name, y.Name);
+			}
+		}
 		/// <summary>
 		/// Returns a list of fact types that can be nested by an entity type.
 		/// Currently nested fact types are filtered out, as well as fact types
@@ -201,57 +204,46 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			Debug.Assert(!(value is object[]));
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
 			IList candidates = instance.Store.ElementDirectory.GetElements(FactType.MetaClassGuid);
-			FactType[] roleFacts = null;
-			IList<FactType> roleFactsList = null;
 			int count = candidates.Count;
 			if (count > 0)
 			{
+				IComparer<FactType> comparer = HashCodeComparer<FactType>.Instance;
+				RoleMoveableCollection playedRoles = instance.PlayedRoleCollection;
+				FactType[] playedFacts = new FactType[playedRoles.Count];
+				for (int i = 0; i < playedFacts.Length; ++i)
+				{
+					playedFacts[i] = playedRoles[i].FactType;
+				}
+				Array.Sort(playedFacts, comparer);
+
 				List<FactType> types = new List<FactType>(count);
+				// Always include the current value in the list if it is not null
+				if (value != null)
+				{
+					types.Add(value as FactType);
+				}
 				foreach (FactType factType in candidates)
 				{
-					if ((factType is SubtypeFact) ||
-						(factType.ImpliedByObjectification != null))
+					// SubtypeFacts and facts implied by an objectification can't be objectified
+					if (factType is SubtypeFact || factType.ImpliedByObjectification != null)
 					{
 						continue;
 					}
-					ObjectType nestingType = factType.NestingType;
-					if (nestingType == null || object.ReferenceEquals(nestingType, instance))
+					Objectification objectification = factType.Objectification;
+					if (objectification == null || objectification.IsImplied)
 					{
-						Debug.Assert(nestingType == null || object.ReferenceEquals(value, factType)); // Should be equivalent condition to checking nestedFact against instance
-
 						// Make sure that the nested fact does not parent a role with this
 						// instance as a role player.
 						// This is backed up in the metamodel rules and other pickers.
-						if (roleFacts == null)
-						{
-							RoleMoveableCollection roles = instance.PlayedRoleCollection;
-							int roleCount = roles.Count;
-							if (roleCount > 0)
-							{
-								roleFacts = new FactType[roleCount];
-								for (int i = 0; i < roleCount; ++i)
-								{
-									roleFacts[i] = roles[i].FactType;
-								}
-							}
-							else
-							{
-								roleFacts = new FactType[0];
-							}
-							roleFactsList = roleFacts;
-						}
-						if (!roleFactsList.Contains(factType))
+						if (Array.BinarySearch(playedFacts, factType, comparer) < 0)
 						{
 							types.Add(factType);
 						}
 					}
 				}
-				if (types.Count > 0)
+				if (types.Count > 1)
 				{
-					types.Sort(delegate(FactType type1, FactType type2)
-					{
-						return string.Compare(type1.Name, type2.Name);
-					});
+					types.Sort(new FactTypeNameComparer());
 				}
 				candidates = types;
 			}
@@ -287,6 +279,18 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	/// </summary>
 	public class DataTypePicker : ElementPicker
 	{
+		private sealed class DataTypeToStringComparer : IComparer<DataType>
+		{
+			public DataTypeToStringComparer()
+			{
+				myStringComparer = StringComparer.CurrentCulture;
+			}
+			private readonly StringComparer myStringComparer;
+			public int Compare(DataType x, DataType y)
+			{
+				return myStringComparer.Compare(x.ToString(), y.ToString());
+			}
+		}
 		/// <summary>
 		/// Returns a list of data types that can be used by a value type.
 		/// </summary>
@@ -297,20 +301,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		{
 			Debug.Assert(!(value is object[]));
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
-			DataTypeMoveableCollection dataTypes = instance.Model.DataTypeCollection;
-			IList content = dataTypes;
+			IList dataTypes = instance.Model.DataTypeCollection;
 			int count = dataTypes.Count;
-			if (count > 0)
+			if (count > 1)
 			{
 				DataType[] types = new DataType[count];
 				dataTypes.CopyTo(types, 0);
-				Array.Sort<DataType>(types, delegate(DataType type1, DataType type2)
-				{
-					return string.Compare(type1.ToString(), type2.ToString());
-				});
-				content = types;
+				Array.Sort<DataType>(types, new DataTypeToStringComparer());
+				dataTypes = types;
 			}
-			return content;
+			return dataTypes;
 		}
 		private static Size myLastControlSize = new Size(192, 144);
 		/// <summary>
@@ -340,18 +340,13 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		{
 			ReferenceMode instance = (ReferenceMode)EditorUtility.ResolveContextInstance(context.Instance, true);
 			IList candidates = instance.Store.ElementDirectory.GetElements(ReferenceModeKind.MetaClassGuid);
-			if (candidates.Count > 1)
+			int candidatesCount = candidates.Count;
+			if (candidatesCount > 1)
 			{
 				// Make sure we're sorted
-				List<ReferenceModeKind> kinds = new List<ReferenceModeKind>(candidates.Count);
-				foreach (ReferenceModeKind refKind in candidates)
-				{
-					kinds.Add(refKind);
-				}
-				kinds.Sort(delegate(ReferenceModeKind kind1, ReferenceModeKind kind2)
-				{
-					return string.Compare(kind1.Name, kind2.Name);
-				});
+				ReferenceModeKind[] kinds = new ReferenceModeKind[candidatesCount];
+				candidates.CopyTo(kinds, 0);
+				Array.Sort<ReferenceModeKind>(kinds, NamedElementComparer<ReferenceModeKind>.CurrentCulture);
 				candidates = kinds;
 			}
 			return candidates;
@@ -385,34 +380,33 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		protected override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true);
-			IList rawModes = instance.Model.ReferenceModeCollection;
-			IList candidates;
-			string instanceName = instance.Name;
-			string formatString = ResourceStrings.ModelReferenceModePickerFormatString; 
-			if (rawModes.Count > 1)
+			IList candidates = instance.Model.ReferenceModeCollection;
+			int candidatesCount = candidates.Count;
+			if (candidatesCount == 0)
+			{
+				// If it's empty, we don't need to do anything else
+				return candidates;
+			}
+			else if (candidatesCount > 1)
 			{
 				// Make sure we're sorted
-				int modeCount = rawModes.Count;
-				ReferenceMode[] modes = new ReferenceMode[modeCount];
-				rawModes.CopyTo(modes, 0);
-				Array.Sort<ReferenceMode>(modes, delegate(ReferenceMode mode1, ReferenceMode mode2)
-				{
-					return string.Compare(mode1.Name, mode2.Name);
-				});
+				ReferenceMode[] modes = new ReferenceMode[candidatesCount];
+				candidates.CopyTo(modes, 0);
+				Array.Sort<ReferenceMode>(modes, NamedElementComparer<ReferenceMode>.CurrentCulture);
 				myModes = modes;
-				string[] prettyStrings = new string[modeCount];
-				for (int i = 0; i < modeCount; ++i)
+				string[] prettyStrings = new string[candidatesCount];
+				for (int i = 0; i < prettyStrings.Length; ++i)
 				{
 					ReferenceMode refMode = modes[i];
-					prettyStrings[i] = string.Format(CultureInfo.InvariantCulture, formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName));
+					prettyStrings[i] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelReferenceModePickerFormatString, refMode.Name, refMode.GenerateValueTypeName(instance.Name));
 				}
 				candidates = prettyStrings;
 			}
 			else
 			{
-				myModes = rawModes;
-				ReferenceMode refMode = (ReferenceMode)rawModes[0];
-				candidates = new string[] { string.Format(CultureInfo.InvariantCulture, formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName)) };
+				myModes = candidates;
+				ReferenceMode refMode = (ReferenceMode)candidates[0];
+				candidates = new string[] { string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelReferenceModePickerFormatString, refMode.Name, refMode.GenerateValueTypeName(instance.Name)) };
 			}
 			return candidates;
 		}

@@ -603,8 +603,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ObjectType rolePlayer = link.RolePlayer;
 					for (int i = 0; i < rolesCount; ++i)
 					{
-						Role currentRole = (Role)roles[i];
-						if (!currentRole.IsRemoving)
+						Role currentRole = roles[i] as Role;
+						if (currentRole != null && !currentRole.IsRemoving)
 						{
 							IList rolePlayerLinks = currentRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
 							if (rolePlayerLinks.Count != 0)

@@ -258,6 +258,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.IsExternal" xml:space="preserve">
     <value>IsExternal</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactType.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplay" xml:space="preserve">
     <value>NestingType</value>
   </data>

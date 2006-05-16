@@ -255,6 +255,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return null;
 			}
 		}
+		/// <summary>
+		/// Gets the ObjectType that is objectifying this FactType.
+		/// </summary>
+		public ObjectType NestingType
+		{
+			get
+			{
+				return GetCounterpartRolePlayer(Objectification.NestedFactTypeMetaRoleGuid, Objectification.NestingTypeMetaRoleGuid, false) as ObjectType;
+			}
+			set
+			{
+				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestedFactTypeMetaRoleGuid, Objectification.NestingTypeMetaRoleGuid, typeof(Objectification));
+			}
+		}
 		#endregion // FactType Specific
 		#region FactConstraintCollection implementation
 		private class FactConstraintCollectionImpl : ICollection<IFactConstraint>
@@ -495,7 +509,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Guid attributeGuid = attribute.Id;
 			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid)
 			{
-				return NestingType;
+				Objectification objectification = Objectification;
+				return (objectification != null && !objectification.IsImplied) ? objectification.NestingType : null;
 			}
 			else if (attributeGuid == DerivationRuleDisplayMetaAttributeGuid)
 			{
@@ -605,7 +620,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Guid attributeGuid = e.MetaAttribute.Id;
 				if (attributeGuid == FactType.NestingTypeDisplayMetaAttributeGuid)
 				{
-					(e.ModelElement as FactType).NestingType = e.NewValue as ObjectType;
+					Objectification.CreateExplicitObjectification(e.ModelElement as FactType, e.NewValue as ObjectType);
 				}
 				else if (attributeGuid == FactType.DerivationRuleDisplayMetaAttributeGuid)
 				{

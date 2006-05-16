@@ -105,17 +105,11 @@
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="NestedFactType" identity="951c9918-6c16-41f8-b196-dac7ac30c4c8">
-              <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
-            </generatedProperty>
           </role>
           <role name="NestingType" identity="7a57a47b-772d-4362-898a-572e9e5a7728" id="i7a57a47bz772dz4362z898az572e9e5a7728" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="NestingType" identity="f23685d4-b6d6-41b9-beb4-5edb1bcf12c3">
-              <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
-            </generatedProperty>
           </role>
         </roles>
       </relationship>
@@ -4591,7 +4585,7 @@
             <propertyInfo xsi:type="StringPropertyInfo" name="" identity="a5dbbc76-c561-4ed9-bc57-fb0917fe1736" default="" max="2147483647" />
           </property>
           <property name="Name" identity="9ff2bd50-e9dd-4271-8b89-bf998ad1e17d" id="i9ff2bd50ze9ddz4271z8b89zbf998ad1e17d">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="Transitional Property" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlyprefertrue" tag="">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlyprefertrue" tag="">
               <clrattribute name="System.ComponentModel.MergableProperty" parametertext="false" />
             </mdfmetadata>
             <propertyInfo xsi:type="StringPropertyInfo" name="" identity="987b404d-7fee-46da-a166-f68c76619aac" default="" max="2147483647" />

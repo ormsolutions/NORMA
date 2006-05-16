@@ -290,8 +290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Objectification Property
 		#region PreferredIdentifier Property
 		/// <summary>
-		/// Get the preferred identifier for this object. The preferred identifier is
-		/// either and InternalUniquenessConstraint or an UniquenessConstraint.
+		/// Gets the preferred identifier for this object. The preferred identifier is an UniquenessConstraint.
 		/// </summary>
 		public UniquenessConstraint PreferredIdentifier
 		{
@@ -311,70 +310,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// which is guaranteed to run for all object model modifications. We defer validation of the constraint
 				// types to that routine. However, the IConstraint passed in must be an ORMNamedElement, so we
 				// use an exception cast here to do a minimal sanity check before proceeding.
-				ORMNamedElement typedValue = (ORMNamedElement)value;
-				bool sameRolePlayer = false;
-				MetaRoleInfo roleInfo = Partition.MetaDataDirectory.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-				IList links = GetElementLinks(roleInfo);
-				int linkCount = links.Count;
-				if (linkCount != 0)
-				{
-					for (int i = linkCount - 1; i >= 0; --i)
-					{
-						ElementLink link = links[i] as ElementLink;
-						if (!link.IsRemoved)
-						{
-							ORMNamedElement counterpart = link.GetRolePlayer(roleInfo.OppositeMetaRole) as ORMNamedElement;
-							if (counterpart != null && object.ReferenceEquals(counterpart, typedValue))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				else if (typedValue != null)
-				{
-					// Check the relationship on the other end to enforce 1-1
-					links = typedValue.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
-					linkCount = links.Count;
-					if (linkCount != 0)
-					{
-						for (int i = linkCount - 1; i >= 0; --i)
-						{
-							ElementLink link = links[i] as ElementLink;
-							if (!link.IsRemoved)
-							{
-								ObjectType counterpart = link.GetRolePlayer(roleInfo) as ObjectType;
-								if (counterpart != null && object.ReferenceEquals(counterpart, this))
-								{
-									sameRolePlayer = true;
-								}
-								else
-								{
-									link.Remove();
-								}
-								break;
-							}
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (typedValue != null))
-				{
-					this.Partition.ElementFactory.CreateElementLink(
-						typeof(EntityTypeHasPreferredIdentifier),
-						new RoleAssignment[]
-						{
-							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, typedValue),
-							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, this)
-						});
-				}
+				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, typeof(EntityTypeHasPreferredIdentifier));
 			}
 		}
 		#endregion // PreferredIdentifier Property
+		#region NestedFactType Property
+		/// <summary>
+		/// Gets the FactType that this ObjectType is objectifying.
+		/// </summary>
+		public FactType NestedFactType
+		{
+			get
+			{
+				return GetCounterpartRolePlayer(Objectification.NestingTypeMetaRoleGuid, Objectification.NestedFactTypeMetaRoleGuid, false) as FactType;
+			}
+			set
+			{
+				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestingTypeMetaRoleGuid, Objectification.NestedFactTypeMetaRoleGuid, typeof(Objectification));
+			}
+		}
+		#endregion // NestedFactType Property
 		#region Customize property display
 		/// <summary>
 		/// Distinguish between a value type and object
@@ -892,7 +847,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.NestedFactTypeDisplayMetaAttributeGuid)
 				{
-					(e.ModelElement as ObjectType).NestedFactType = e.NewValue as FactType;
+					FactType nestedFactType = e.NewValue as FactType;
+					if (nestedFactType != null)
+					{
+						Objectification.CreateExplicitObjectification(e.NewValue as FactType, e.ModelElement as ObjectType);
+					}
+					else
+					{
+						(e.ModelElement as ObjectType).NestedFactType = null;
+					}
 				}
 				else if (attributeGuid == ObjectType.NameMetaAttributeGuid)
 				{
