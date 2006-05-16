@@ -1149,7 +1149,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int readingsCount = readings.Count;
 					for (int j = 0; j < readingsCount; ++j)
 					{
-						Reading reading = readings[i];
+						Reading reading = readings[j];
 						if (!ModelError.HasErrors(reading))
 						{
 							roles = order.RoleCollection;
