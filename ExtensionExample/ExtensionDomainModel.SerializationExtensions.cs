@@ -277,7 +277,8 @@ namespace ExtensionExample
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}

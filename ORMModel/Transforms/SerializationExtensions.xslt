@@ -152,7 +152,7 @@
 											</plx:binaryOperator>
 										</plx:condition>
 										<plx:assign>
-												<plx:left>
+											<plx:left>
 												<plx:nameRef name="baseInfo"/>
 											</plx:left>
 											<plx:right>
@@ -406,8 +406,8 @@
 					</xsl:choose>
 				</plx:function>
 			</xsl:if>
-			<xsl:variable name="haveCustomLinkInfo" select="0!=count(se:Link)"/>
-			<xsl:if test="$haveCustomLinkInfo or not($ClassOverride)">
+			<xsl:variable name="customLinkInfo" select="se:Link"/>
+			<xsl:if test="$customLinkInfo or not($ClassOverride)">
 				<plx:function visibility="protected" name="GetCustomSerializedLinkInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
@@ -419,26 +419,124 @@
 					<plx:param name="elementLink" dataTypeName="ElementLink"/>
 					<plx:returns dataTypeName="ORMCustomSerializedElementInfo"/>
 					<xsl:choose>
-						<xsl:when test="$haveCustomLinkInfo">
-							<xsl:for-each select="se:Link">
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="equality">
-											<plx:left>
-												<plx:callInstance type="property" name="Id">
-													<plx:callObject>
-														<plx:nameRef type="parameter" name="rolePlayedInfo"/>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic type="field" name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
-								</plx:branch>
-							</xsl:for-each>
+						<xsl:when test="$customLinkInfo">
+							<plx:local name="roleId" dataTypeName="Guid">
+								<plx:initialize>
+									<plx:callInstance type="property" name="Id">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="rolePlayedInfo"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<xsl:choose>
+								<xsl:when test="not(se:Link[string(@CreateAsRelationshipName)])">
+									<xsl:for-each select="$customLinkInfo">
+										<plx:branch>
+											<plx:condition>
+												<plx:binaryOperator type="equality">
+													<plx:left>
+														<plx:nameRef name="roleId"/>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic type="field" name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" />
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+											<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+										</plx:branch>
+									</xsl:for-each>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:variable name="sortedCustomLinkInfo">
+										<xsl:for-each select="$customLinkInfo">
+											<xsl:sort select="@RelationshipName"/>
+											<xsl:sort select="@RoleName"/>
+											<!-- Put the ones without a CreatedAsRelationshipName last -->
+											<xsl:sort select="@CreateAsRelationshipName" order="descending"/>
+											<xsl:copy-of select="."/>
+										</xsl:for-each>
+									</xsl:variable>
+									<xsl:for-each select="exsl:node-set($sortedCustomLinkInfo)/child::*">
+										<xsl:variable name="roleName" select="@RoleName"/>
+										<xsl:variable name="relationshipName" select="@RelationshipName"/>
+										<xsl:if test="position()=1 or not(preceding-sibling::se:Link[1][@RelationshipName=$relationshipName and @RoleName=$roleName])">
+											<plx:branch>
+												<plx:condition>
+													<plx:binaryOperator type="equality">
+														<plx:left>
+															<plx:nameRef name="roleId"/>
+														</plx:left>
+														<plx:right>
+															<plx:callStatic type="field" name="{$roleName}MetaRoleGuid" dataTypeName="{$relationshipName}" />
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:condition>
+												<xsl:choose>
+													<!-- Note that the CreateAs conditions are sorted first -->
+													<xsl:when test="string(@CreateAsRelationshipName)">
+														<plx:local name="elementLinkMetaId" dataTypeName="Guid">
+															<plx:initialize>
+																<plx:callInstance name="Id" type="property">
+																	<plx:callObject>
+																		<plx:callInstance name="MetaRelationship" type="property">
+																			<plx:callObject>
+																				<plx:nameRef name="elementLink"/>
+																			</plx:callObject>
+																		</plx:callInstance>
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:initialize>
+														</plx:local>
+														<plx:branch>
+															<plx:condition>
+																<plx:binaryOperator type="equality">
+																	<plx:left>
+																		<plx:nameRef name="elementLinkMetaId"/>
+																	</plx:left>
+																	<plx:right>
+																		<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
+																	</plx:right>
+																</plx:binaryOperator>
+															</plx:condition>
+															<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+														</plx:branch>
+														<xsl:if test="position()!=last() and following-sibling::se:Link[1][@RelationshipName=$relationshipName and @RoleName=$roleName]">
+															<xsl:for-each select="following-sibling::se:Link[@RelationshipName=$relationshipName and @RoleName=$roleName]">
+																<xsl:choose>
+																	<xsl:when test="string(@CreateAsRelationshipName)">
+																		<plx:alternateBranch>
+																			<plx:condition>
+																				<plx:binaryOperator type="equality">
+																					<plx:left>
+																						<plx:nameRef name="elementLinkMetaId"/>
+																					</plx:left>
+																					<plx:right>
+																						<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
+																					</plx:right>
+																				</plx:binaryOperator>
+																			</plx:condition>
+																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+																		</plx:alternateBranch>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<plx:fallbackBranch>
+																			<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+																		</plx:fallbackBranch>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:for-each>
+														</xsl:if>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</plx:branch>
+										</xsl:if>
+									</xsl:for-each>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:if test="$ClassOverride">
 								<plx:branch>
 									<plx:condition>

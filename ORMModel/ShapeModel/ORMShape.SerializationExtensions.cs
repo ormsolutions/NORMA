@@ -238,7 +238,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SubjectHasPresentation.SubjectMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -439,7 +440,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SubjectHasPresentation.SubjectMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -873,7 +875,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}

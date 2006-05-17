@@ -899,11 +899,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueTypeHasDataType.DataTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueTypeHasDataType.DataTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ConceptualDataType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
-			if (rolePlayedInfo.Id == ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid)
+			if (roleId == ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid)
 			{
 				string name = "Role";
 				if (elementLink.GetRolePlayer(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid) is SubtypeMetaRole)
@@ -916,31 +917,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return new ORMCustomSerializedElementInfo(null, name, null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == Objectification.NestedFactTypeMetaRoleGuid)
+			if (roleId == Objectification.NestedFactTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "NestedPredicate", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
-			if (rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid)
+			if (roleId == EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "PreferredIdentifier", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid)
+			if (roleId == ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid)
+			if (roleId == ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorMetaRoleGuid)
+			if (roleId == ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorMetaRoleGuid)
+			if (roleId == ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorMetaRoleGuid)
+			if (roleId == ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -1162,7 +1163,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ReferenceModeHasReferenceModeKind.KindMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReferenceModeHasReferenceModeKind.KindMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Kind", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -1352,7 +1354,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -1454,7 +1457,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -1542,7 +1546,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -1633,11 +1638,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid)
+			if (roleId == ValueConstraintHasValueRangeOverlapError.ValueRangeOverlapErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -1782,11 +1788,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid)
+			if (roleId == ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -1909,7 +1916,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FactSetConstraint.SetConstraintCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactSetConstraint.SetConstraintCollectionMetaRoleGuid)
 			{
 				string name = null;
 				ORMCustomSerializedElementWriteStyle writeStyle = ORMCustomSerializedElementWriteStyle.NotWritten;
@@ -1925,27 +1933,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return new ORMCustomSerializedElementInfo(null, name, null, writeStyle, null);
 			}
-			if (rolePlayedInfo.Id == ObjectificationImpliesFactType.ImpliedByObjectificationMetaRoleGuid)
+			if (roleId == ObjectificationImpliesFactType.ImpliedByObjectificationMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ImpliedByObjectification", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == Objectification.NestingTypeMetaRoleGuid)
+			if (roleId == Objectification.NestingTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid)
+			if (roleId == FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid)
+			if (roleId == FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorMetaRoleGuid)
+			if (roleId == FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid)
+			if (roleId == FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -2393,7 +2401,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ImpliedByObjectification", null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -2529,7 +2538,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ReadingOrderHasRole.RoleCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReadingOrderHasRole.RoleCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -2697,11 +2707,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid)
+			if (roleId == ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -2824,23 +2835,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectTypePlaysRole.RolePlayerMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypePlaysRole.RolePlayerMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "RolePlayer", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == RoleProxyHasRole.ProxyMetaRoleGuid)
+			if (roleId == RoleProxyHasRole.ProxyMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid)
+			if (roleId == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == ReadingOrderHasRole.ReadingOrderMetaRoleGuid)
+			if (roleId == ReadingOrderHasRole.ReadingOrderMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid)
+			if (roleId == RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3023,11 +3035,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == RoleProxyHasRole.TargetRoleMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == RoleProxyHasRole.TargetRoleMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == ReadingOrderHasRole.ReadingOrderMetaRoleGuid)
+			if (roleId == ReadingOrderHasRole.ReadingOrderMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3150,19 +3163,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SetComparisonConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid)
+			if (roleId == SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid)
+			if (roleId == SetComparisonConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchErrorMetaRoleGuid)
+			if (roleId == SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ArityMismatchErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3376,7 +3390,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -3573,23 +3588,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid)
+			if (roleId == SetConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid)
+			if (roleId == SetConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid)
+			if (roleId == SetConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == FactSetConstraint.FactTypeCollectionMetaRoleGuid)
+			if (roleId == FactSetConstraint.FactTypeCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3790,7 +3806,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == MandatoryConstraintHasMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3860,11 +3877,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (rolePlayedInfo.Id == FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid)
+			if (roleId == FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3928,11 +3946,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "PreferredIdentifierFor", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == UniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid)
+			if (roleId == UniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -4104,7 +4123,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityImpliedByMandatoryErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityImpliedByMandatoryErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -4238,7 +4258,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -4341,15 +4362,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasDuplicateNameError.SetComparisonConstraintCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SetComparisonConstraintHasDuplicateNameError.SetComparisonConstraintCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetComparisonConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasDuplicateNameError.SetConstraintCollectionMetaRoleGuid)
+			if (roleId == SetConstraintHasDuplicateNameError.SetConstraintCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid)
+			if (roleId == ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ValueConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4453,7 +4475,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Object", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4520,7 +4543,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "EntityType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4587,7 +4611,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.ConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Constraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4654,7 +4679,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FactTypeHasImpliedInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactTypeHasImpliedInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4721,7 +4747,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4788,7 +4815,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4855,7 +4883,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "FrequencyConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4922,7 +4951,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ValueRange", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -4989,7 +5019,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ValueRange", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5056,7 +5087,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueConstraintHasValueRangeOverlapError.ValueConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ValueConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5123,7 +5155,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "RingConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5190,7 +5223,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ReadingHasTooFewRolesError.ReadingMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReadingHasTooFewRolesError.ReadingMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Reading", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5257,11 +5291,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasTooFewRoleSequencesError.SetComparisonConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SetComparisonConstraintHasTooFewRoleSequencesError.SetComparisonConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetComparisonConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasTooFewRoleSequencesError.SetConstraintMetaRoleGuid)
+			if (roleId == SetConstraintHasTooFewRoleSequencesError.SetConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5330,7 +5365,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ReadingHasTooManyRolesError.ReadingMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ReadingHasTooManyRolesError.ReadingMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Reading", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5397,11 +5433,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasTooManyRoleSequencesError.SetComparisonConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SetComparisonConstraintHasTooManyRoleSequencesError.SetComparisonConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetComparisonConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasTooManyRoleSequencesError.SetConstraintMetaRoleGuid)
+			if (roleId == SetConstraintHasTooManyRoleSequencesError.SetConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5470,7 +5507,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ConceptualDataType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5537,7 +5575,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == EqualityConstraintHasEqualityImpliedByMandatoryError.EqualityConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "EqualityConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5604,7 +5643,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == UniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == UniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "UniquenessConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5671,7 +5711,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == MandatoryConstraintHasMandatoryImpliedByMandatoryError.MandatoryConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "MandatoryConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5738,7 +5779,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5805,7 +5847,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectTypeHasPreferredIdentifierRequiresMandatoryError.ObjectTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypeHasPreferredIdentifierRequiresMandatoryError.ObjectTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5872,7 +5915,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == ObjectTypeHasCompatibleSupertypesError.ObjectTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypeHasCompatibleSupertypesError.ObjectTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5962,11 +6006,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraintMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SetComparisonConstraintHasCompatibleRolePlayerTypeError.SetComparisonConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetComparisonConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == SetConstraintHasCompatibleRolePlayerTypeError.SetConstraintMetaRoleGuid)
+			if (roleId == SetConstraintHasCompatibleRolePlayerTypeError.SetConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "SetConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -6064,7 +6109,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == RoleHasRolePlayerRequiredError.RoleMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == RoleHasRolePlayerRequiredError.RoleMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -6131,11 +6177,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (rolePlayedInfo.Id == FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintMetaRoleGuid)
+			if (roleId == FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "FrequencyConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
