@@ -76,6 +76,7 @@
 			<xsl:apply-templates select="ObjectNotes" />
 			<xsl:apply-templates select="@ConceptualDatatype" />
 			<xsl:apply-templates select="@AllowableValues" />
+			<xsl:apply-templates select="@ObjectNamespace" />
 		</orm:ValueType>
 	</xsl:template>
 	<xsl:template match="@ObjectID">
@@ -213,6 +214,23 @@
 			</orm:ValueConstraint>
 		</orm:ValueRestriction>
 	</xsl:template>
+	<xsl:template match="@ObjectNamespace">
+		<xsl:apply-templates select="../../Object[@ObjectName=current() and @AllowableValues]" mode="ValueRanges" />
+	</xsl:template>
+	<xsl:template match="Object" mode="ValueRanges">
+		<xsl:variable name="id" select="@ObjectID" />
+		<xsl:variable name="Values" select="normalize-space(@AllowableValues)" />
+		<orm:ValueRestriction>
+			<orm:ValueConstraint id="GUID_RoleValueRangeDefinitionID{$id}" Name="RoleValueRangeDefinitionID{$id}">
+				<orm:ValueRanges>
+					<xsl:call-template name="valueRanges">
+						<xsl:with-param name="allowedValues" select="translate($Values, $apos, '')" />
+						<xsl:with-param name="objectID" select="$id" />
+					</xsl:call-template>
+				</orm:ValueRanges>
+			</orm:ValueConstraint>
+		</orm:ValueRestriction>
+	</xsl:template>
 	<xsl:template name="valueRanges">
 		<xsl:param name="allowedValues" />
 		<xsl:param name="objectID" />
@@ -263,7 +281,9 @@
 			<xsl:apply-templates select="FactNotes" />
 			<xsl:apply-templates select="FactRoles" />
 			<xsl:apply-templates select="FactReadings"/>
-			<xsl:apply-templates select="FactConstraints"/>
+			<xsl:apply-templates select="FactConstraints">
+				<xsl:with-param name="NestedObject" select="@NestedAsObjectID" />
+			</xsl:apply-templates>
 		</orm:Fact>
 	</xsl:template>
 	<xsl:template match="@FactID">
@@ -297,10 +317,7 @@
 				<xsl:text>GUID_RoleID</xsl:text>
 				<xsl:value-of select ="@FactRoleID"/>
 			</xsl:attribute>
-			<xsl:attribute name="Name">
-				<xsl:text>RoleID</xsl:text>
-				<xsl:value-of select ="@FactRoleID"/>
-			</xsl:attribute>
+			<xsl:attribute name="Name" />
 			<xsl:attribute name="_IsMandatory">
 				<!--This is a calculated field the loader ignores it anyway.-->
 				<xsl:text>false</xsl:text>
@@ -315,25 +332,7 @@
 					<xsl:value-of select="$ValueRole/@RolePlayerObjectID"/>
 				</xsl:attribute>
 			</orm:RolePlayer>
-			<xsl:variable name="innerObject" select="../../../../Objects/Object[@ObjectKind='Value Type' and @ObjectNamespace and @ObjectID=$ValueRole/@RolePlayerObjectID]" />
-			<xsl:apply-templates select="../../../../Objects/Object[@ObjectName=$innerObject/@ObjectNamespace and @AllowableValues]" mode="ValueRanges">
-				<xsl:with-param name="ValueRole" select="$ValueRole/@RolePlayerObjectID" />
-			</xsl:apply-templates>
 		</orm:Role>
-	</xsl:template>
-	<xsl:template match="Object" mode="ValueRanges">
-		<xsl:param name="ValueRole" />
-		<xsl:variable name="Values" select="normalize-space(@AllowableValues)" />
-		<orm:ValueRestriction>
-			<orm:RoleValueConstraint id="GUID_RoleValueRangeDefinitionID{$ValueRole}" Name="RoleValueRangeDefinitionID{$ValueRole}">
-				<orm:ValueRanges>
-					<xsl:call-template name="valueRanges">
-						<xsl:with-param name="allowedValues" select="translate($Values, $apos, '')" />
-						<xsl:with-param name="objectID" select="$ValueRole" />
-					</xsl:call-template>
-				</orm:ValueRanges>
-			</orm:RoleValueConstraint>
-		</orm:ValueRestriction>
 	</xsl:template>
 	<xsl:template match="FactReadings">
 		<orm:ReadingOrders>
@@ -453,15 +452,21 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="FactConstraints">
+		<xsl:param  name="NestedObject" />
 		<orm:InternalConstraints>
-			<xsl:apply-templates select="FactConstraint"/>
+			<xsl:apply-templates select="FactConstraint">
+				<xsl:with-param name="NestedObject" select="$NestedObject" />
+			</xsl:apply-templates>
 		</orm:InternalConstraints>
 	</xsl:template>
 	<xsl:template match="FactConstraint">
+		<xsl:param name="NestedObject" />
 		<xsl:variable name="tempConstraint" select="../../../../Constraints/Constraint[@ConstraintID=current()/@FactConstraintID]"/>
 		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']" />
 		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Mandatory']" />
-		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']" />
+		<xsl:apply-templates select="$tempConstraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
+			<xsl:with-param name="NestedObject" select="$NestedObject" />
+		</xsl:apply-templates>
 	</xsl:template>
 	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='false']">
 		<xsl:variable name="tempID" select="@ConstraintID" />
@@ -484,6 +489,7 @@
 		</orm:SimpleMandatoryConstraint>
 	</xsl:template>
 	<xsl:template match="Constraint[@IsInternal='true' and @ConstraintType='Uniqueness' and @IsPrimaryReference='true']">
+		<xsl:param name="NestedObject" />
 		<xsl:variable name="tempID" select="@ConstraintID" />
 		<orm:InternalUniquenessConstraint id="GUID_ConstraintID{$tempID}" Name="InternalUniquenessConstraint{$tempID}">
 			<orm:RoleSequence>
@@ -491,9 +497,16 @@
 					<orm:Role ref="GUID_RoleID{.}" />
 				</xsl:for-each>
 			</orm:RoleSequence>
-			<xsl:variable name="tempFact" select="../../Facts/Fact[FactConstraints/FactConstraint/@FactConstraintID=current()/@ConstraintID]/FactRoles/FactRole[1]/@FactRoleID" />
-			<xsl:variable name="tempRole" select="../../Roles/Role[@RoleID = $tempFact]/@RolePlayerObjectID" />
-			<orm:PreferredIdentifierFor ref="GUID_ObjectID{$tempRole}" />
+			<xsl:choose>
+				<xsl:when test="string-length($NestedObject) &gt; 0">
+					<orm:PreferredIdentifierFor ref="GUID_ObjectID{$NestedObject}" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="tempFact" select="../../Facts/Fact[FactConstraints/FactConstraint/@FactConstraintID=current()/@ConstraintID]/FactRoles/FactRole[1]/@FactRoleID" />
+					<xsl:variable name="tempRole" select="../../Roles/Role[@RoleID = $tempFact]/@RolePlayerObjectID" />
+					<orm:PreferredIdentifierFor ref="GUID_ObjectID{$tempRole}" />
+				</xsl:otherwise>
+			</xsl:choose>
 		</orm:InternalUniquenessConstraint>
 	</xsl:template>
 	<!--End Fact Templates-->
