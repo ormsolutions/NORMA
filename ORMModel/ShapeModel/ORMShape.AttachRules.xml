@@ -60,8 +60,8 @@
 		<arg:Rule class="ORMShapeModel.SetConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintRemoved"/>
-		<arg:Rule class="ReadingShape.ReadingOrderReadingTextChanged"/>
 		<arg:Rule class="ReadingShape.ReadingOrderRemoved"/>
+		<arg:Rule class="ReadingShape.ReadingPositionChanged"/>
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>
 		<arg:Rule class="ReadingShape.RoleDisplayOrderPositionChanged"/>
 		<arg:Rule class="ReadingShape.RoleDisplayOrderAdded"/>

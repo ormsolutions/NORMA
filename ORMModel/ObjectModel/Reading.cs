@@ -69,9 +69,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
 		{
 			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
-			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == IsPrimaryMetaAttributeGuid)
+			if (elemDesc != null)
 			{
-				return IsPrimary;
+				Guid attributeId = elemDesc.MetaAttributeInfo.Id;
+				if (attributeId == IsPrimaryForReadingOrderMetaAttributeGuid)
+				{
+					return IsPrimaryForReadingOrder;
+				}
+				else if (attributeId == IsPrimaryForFactTypeMetaAttributeGuid)
+				{
+					return IsPrimaryForFactType;
+				}
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -180,6 +188,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return regCountPlaces.Matches(textText).Count;
 		}
 		#endregion
+		#region CustomStorage handlers
+		/// <summary>
+		/// Standard override. Retrieve values for calculated properties.
+		/// </summary>
+		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			Guid attributeId = attribute.Id;
+			bool checkFact = false;
+			if (attributeId == IsPrimaryForReadingOrderMetaAttributeGuid ||
+				(checkFact = (attributeId == IsPrimaryForFactTypeMetaAttributeGuid)))
+			{
+				ReadingOrder order;
+				if (!IsRemoved &&
+					null != (order = ReadingOrder) &&
+					object.ReferenceEquals(this, order.ReadingCollection[0]))
+				{
+					if (checkFact)
+					{
+						FactType factType = order.FactType;
+						if (factType != null &&
+							object.ReferenceEquals(order, factType.ReadingOrderCollection[0]))
+						{
+							return true;
+						}
+					}
+					else
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			return base.GetValueForCustomStoredAttribute(attribute);
+		}
+		/// <summary>
+		/// Standard override. All custom storage properties are derived, not
+		/// stored. Actual changes are handled in ReadingPropertiesChanged rule class.
+		/// </summary>
+		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		{
+			Guid attributeGuid = attribute.Id;
+			if (attributeGuid == IsPrimaryForReadingOrderMetaAttributeGuid ||
+				attributeGuid == IsPrimaryForFactTypeMetaAttributeGuid)
+			{
+				// Handled by ReadingPropertiesChanged
+				return;
+			}
+			base.SetValueForCustomStoredAttribute(attribute, newValue);
+		}
+		#endregion // CustomStorage handlers
 		#region rule classes and helpers
 
 		/// <summary>
@@ -257,48 +315,52 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(Reading))]
 		private class ReadingPropertiesChanged : ChangeRule
 		{
-			//so we know when not to run code when items are being set to false
-			bool mySettingNewPrimary;
-
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				Guid attributeGuid = e.MetaAttribute.Id;
 				Reading changedReading = e.ModelElement as Reading;
-				if (attributeGuid == Reading.IsPrimaryMetaAttributeGuid)
+				if (changedReading.IsRemoved)
 				{
-					bool newVal = (bool)e.NewValue;
-					if (newVal)
-					{
-						Debug.Assert(!mySettingNewPrimary);
-						ReadingOrder readingOrder = changedReading.ReadingOrder;
-						if (readingOrder != null)
-						{
-							mySettingNewPrimary = true;
-							try
-							{
-								foreach (Reading r in readingOrder.ReadingCollection)
-								{
-									if (!object.ReferenceEquals(r, changedReading))
-									{
-										if (r.IsPrimary) r.IsPrimary = false;
-										// UNDONE: Break here? This should be the only one
-									}
-								}
-							}
-							finally
-							{
-								mySettingNewPrimary = false;
-							}
-						}
-					}
-					else if (!mySettingNewPrimary)
+					return;
+				}
+				bool moveReadingOrder = false;
+				if (attributeGuid == Reading.IsPrimaryForReadingOrderMetaAttributeGuid ||
+					(moveReadingOrder = (attributeGuid == Reading.IsPrimaryForFactTypeMetaAttributeGuid)))
+				{
+					if (!((bool)e.NewValue))
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionReadingIsPrimaryToFalse);
+					}
+					ReadingOrder order;
+					if (null != (order = changedReading.ReadingOrder))
+					{
+						ReadingMoveableCollection readings = order.ReadingCollection;
+						if (readings.Count > 1 && !object.ReferenceEquals(readings[0], changedReading))
+						{
+							readings.Move(changedReading, 0);
+						}
+						if (moveReadingOrder)
+						{
+							FactType factType;
+							if (null != (factType = order.FactType))
+							{
+								ReadingOrderMoveableCollection readingOrders = factType.ReadingOrderCollection;
+								if (readingOrders.Count > 1 && !object.ReferenceEquals(readingOrders[0], order))
+								{
+									readingOrders.Move(order, 0);
+								}
+							}
+						}
 					}
 				}
 				else if (attributeGuid == Reading.TextMetaAttributeGuid)
 				{
-					if (!changedReading.IsRemoved)
+					string newValue = (string)e.NewValue;
+					if (newValue.Length == 0)
+					{
+						changedReading.Remove();
+					}
+					else
 					{
 						changedReading.ValidateRoleCountError(null);
 

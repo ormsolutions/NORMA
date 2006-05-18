@@ -740,8 +740,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Language", Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionLanguageFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression), "DerivationStorage", Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.DerivationStorageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivationExpression.FactTypeDerivationExpressionDerivationStorageFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "Text", Neumont.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingTextFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "IsPrimary", Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "IsPrimaryForReadingOrder", Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrderMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryForReadingOrderFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "Language", Neumont.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingLanguageFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "IsPrimaryForFactType", Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactTypeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryForFactTypeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrder), "ReadingText", Neumont.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrder.ReadingOrderReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "MinValue", Neumont.Tools.ORM.ObjectModel.ValueRange.MinValueMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeMinValueFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "MaxValue", Neumont.Tools.ORM.ObjectModel.ValueRange.MaxValueMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeMaxValueFieldHandler)),
@@ -20686,124 +20687,92 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region IsPrimary's Generated  Field Code
-		#region IsPrimary's Generated  MetaAttribute Code
+		#region IsPrimaryForReadingOrder's Generated  Field Code
+		#region IsPrimaryForReadingOrder's Generated  MetaAttribute Code
 		/// <summary>
 		/// MetaAttribute Guid String
 		/// </summary>
-		public const System.String IsPrimaryMetaAttributeGuidString = "fb40e877-7171-473d-88b5-bea06782e468";
+		public const System.String IsPrimaryForReadingOrderMetaAttributeGuidString = "fb40e877-7171-473d-88b5-bea06782e468";
 
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid IsPrimaryMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuidString);
+		public static readonly System.Guid IsPrimaryForReadingOrderMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrderMetaAttributeGuidString);
 		#endregion
 
-		#region IsPrimary's Generated Property Code
+		#region IsPrimaryForReadingOrder's Generated Property Code
 
-		private System.Boolean isPrimaryPropertyStorage = false;
-		
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferFalse)]
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingIsPrimaryFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Reading.IsPrimary")]
-		public  System.Boolean IsPrimary
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ReadingIsPrimaryForReadingOrderFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrderMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrder")]
+		public  System.Boolean IsPrimaryForReadingOrder
 		{
 			get
 			{
-				return isPrimaryPropertyStorage;
+				return readingIsPrimaryForReadingOrderFieldHandler.GetFieldValue(this);
 			}
 		
 			set
 			{
-				readingIsPrimaryFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+				readingIsPrimaryForReadingOrderFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
 			}
 		}
 		#endregion
 
-		#region ReadingIsPrimaryFieldHandler Generated Code
+		#region ReadingIsPrimaryForReadingOrderFieldHandler Generated Code
 		/// <summary>
-		/// FieldHandler for Reading.IsPrimary field
+		/// FieldHandler for Reading.IsPrimaryForReadingOrder field
 		/// </summary>
-		private static ReadingIsPrimaryFieldHandler	readingIsPrimaryFieldHandler	= ReadingIsPrimaryFieldHandler.Instance;
+		private static ReadingIsPrimaryForReadingOrderFieldHandler	readingIsPrimaryForReadingOrderFieldHandler	= ReadingIsPrimaryForReadingOrderFieldHandler.Instance;
 
 		/// <summary>
-		/// Implement the field handler for Reading.IsPrimary
+		/// Implement the field handler for Reading.IsPrimaryForReadingOrder
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ReadingIsPrimaryFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.Reading,System.Boolean>
+		public sealed partial class ReadingIsPrimaryForReadingOrderFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.Reading,System.Boolean>
 		{
 			/// <summary>
 			/// Constructor
 			/// </summary>
-			private ReadingIsPrimaryFieldHandler() { }
+			private ReadingIsPrimaryForReadingOrderFieldHandler() { }
 
 			/// <summary>
-			/// Returns the singleton instance of the Reading.IsPrimary field handler
+			/// Returns the singleton instance of the Reading.IsPrimaryForReadingOrder field handler
 			/// </summary>
-			/// <value>ReadingIsPrimaryFieldHandler</value>
-			public static ReadingIsPrimaryFieldHandler Instance
+			/// <value>ReadingIsPrimaryForReadingOrderFieldHandler</value>
+			public static ReadingIsPrimaryForReadingOrderFieldHandler Instance
 			{
 				get
 				{
-					if (Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler != null)
+					if (Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryForReadingOrderFieldHandler != null)
 					{
-						return Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler;
+						return Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryForReadingOrderFieldHandler;
 					}
 					else
 					{
 						// The static constructor in Reading will assign this value to
-						// Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler, so just instantiate one and return it
-						return new ReadingIsPrimaryFieldHandler();
+						// Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryForReadingOrderFieldHandler, so just instantiate one and return it
+						return new ReadingIsPrimaryForReadingOrderFieldHandler();
 					}
 				}
 			}
 
 			/// <summary>
-			/// Returns the meta attribute id for the Reading.IsPrimary field handler
+			/// Returns the meta attribute id for the Reading.IsPrimaryForReadingOrder field handler
 			/// </summary>
 			/// <value>Guid</value>
 			public sealed override System.Guid Id
 			{
 				get
 				{
-					return Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid;
+					return Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrderMetaAttributeGuid;
 				}
 			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the Reading</param>
-			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ObjectModel.Reading element)
-			{
-				return element.isPrimaryPropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.Reading element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
-			{
-				oldValue = element.isPrimaryPropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.isPrimaryPropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
 		}
 		#endregion
 		#endregion
@@ -20925,6 +20894,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		
+		}
+		#endregion
+		#endregion
+		
+		#region IsPrimaryForFactType's Generated  Field Code
+		#region IsPrimaryForFactType's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPrimaryForFactTypeMetaAttributeGuidString = "c22fe3bf-eb13-4dfd-8cb8-dc4b60a7822e";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPrimaryForFactTypeMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactTypeMetaAttributeGuidString);
+		#endregion
+
+		#region IsPrimaryForFactType's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferFalse)]
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ReadingIsPrimaryForFactTypeFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactTypeMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactType")]
+		public  System.Boolean IsPrimaryForFactType
+		{
+			get
+			{
+				return readingIsPrimaryForFactTypeFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				readingIsPrimaryForFactTypeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingIsPrimaryForFactTypeFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Reading.IsPrimaryForFactType field
+		/// </summary>
+		private static ReadingIsPrimaryForFactTypeFieldHandler	readingIsPrimaryForFactTypeFieldHandler	= ReadingIsPrimaryForFactTypeFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Reading.IsPrimaryForFactType
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingIsPrimaryForFactTypeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.Reading,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingIsPrimaryForFactTypeFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Reading.IsPrimaryForFactType field handler
+			/// </summary>
+			/// <value>ReadingIsPrimaryForFactTypeFieldHandler</value>
+			public static ReadingIsPrimaryForFactTypeFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryForFactTypeFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryForFactTypeFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Reading will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Reading.readingIsPrimaryForFactTypeFieldHandler, so just instantiate one and return it
+						return new ReadingIsPrimaryForFactTypeFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Reading.IsPrimaryForFactType field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactTypeMetaAttributeGuid;
+				}
+			}
 		}
 		#endregion
 		#endregion

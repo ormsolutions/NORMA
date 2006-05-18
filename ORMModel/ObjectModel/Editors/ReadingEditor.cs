@@ -684,7 +684,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				{
 					column = (int)ColumnIndex.ReadingText;
 				}
-				else if (attrId.Equals(Reading.IsPrimaryMetaAttributeGuid))
+				else if (attrId.Equals(Reading.IsPrimaryForReadingOrderMetaAttributeGuid))
 				{
 					column = (int)ColumnIndex.IsPrimary;
 				}
@@ -1321,7 +1321,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					Reading theReading = myReadingList[row].Reading;
 					if (theReading != null)
 					{
-						if (theReading.IsPrimary)
+						if (theReading.IsPrimaryForReadingOrder)
 						{
 							retval.StateImageIndex = (int)StandardCheckBoxImage.Indeterminate;
 						}
@@ -1435,11 +1435,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				Reading theReading = myReadingList[row].Reading;
 				if (theReading != null)
 				{
-					if (!theReading.IsPrimary)
+					if (!theReading.IsPrimaryForReadingOrder)
 					{
 						using (Transaction t = theReading.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorChangePrimaryReadingText))
 						{
-							theReading.IsPrimary = true; //only false ones should get this far
+							theReading.IsPrimaryForReadingOrder = true; //only false ones should get this far
 							t.Commit();
 							retval = StateRefreshChanges.ParentsChildren;
 						}

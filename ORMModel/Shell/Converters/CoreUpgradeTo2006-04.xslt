@@ -66,7 +66,10 @@
 		<xsl:param name="ImpliedInternalConstraintIds"/>
 		<xsl:param name="RoleProxyMap"/>
 		<orm:Constraints>
-			<xsl:apply-templates select="@*|*|text()|comment()"/>
+			<xsl:apply-templates select="@*|*|text()|comment()">
+				<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+			</xsl:apply-templates>
 			<xsl:apply-templates select="../oldCore:Facts/child::*/oldCore:InternalConstraints/child::*" mode="MoveInternals">
 				<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
 				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
@@ -208,6 +211,82 @@
 				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
 			</xsl:apply-templates>
 		</orm:SetConstraint>
+	</xsl:template>
+	<!-- Remove IsPrimary from Reading. The primary reading is moved first in the
+		 ReadingOrder, and the ReadingOrder that matches the FactOrder.FactRoles order
+		 is moved first. The correlation between the fact roles order and the reading
+		 order role order is now ignored (in favor of the first ReadingOrder), and the
+		 first reading in an order is the primary reading. -->
+	<xsl:template match="oldCore:Reading">
+		<xsl:param name="ImpliedInternalConstraintIds"/>
+		<xsl:param name="RoleProxyMap"/>
+		<!-- Duplicate without the IsPrimary attribute -->
+		<xsl:element name="orm:{local-name()}">
+			<xsl:apply-templates select="@*[local-name()!='IsPrimary']|*|text()|comment()">
+				<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+			</xsl:apply-templates>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template match="oldCore:Readings">
+		<xsl:param name="ImpliedInternalConstraintIds"/>
+		<xsl:param name="RoleProxyMap"/>
+		<!-- Put the old IsPrimary reading first -->
+		<xsl:element name="orm:{local-name()}">
+			<xsl:apply-templates select="@*|child::*[@IsPrimary='true']|text()|comment()">
+				<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+			</xsl:apply-templates>
+			<xsl:apply-templates select="child::*[not(@IsPrimary='true')]">
+				<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+				<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+			</xsl:apply-templates>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template match="oldCore:ReadingOrders">
+		<xsl:param name="ImpliedInternalConstraintIds"/>
+		<xsl:param name="RoleProxyMap"/>
+		<!-- Put the readingOrder that matches the parent fact types role order first -->
+		<xsl:variable name="factRoleIds" select="../oldCore:FactRoles/child::*/@id"/>
+		<xsl:variable name="factRolesCount" select="count($factRoleIds)"/>
+		<xsl:variable name="primaryOrderIdFragment">
+			<xsl:for-each select="oldCore:ReadingOrder">
+				<xsl:variable name="testMatch">
+					<xsl:for-each select="oldCore:RoleSequence/oldCore:Role/@ref">
+						<xsl:variable name="currentPosition" select="position()"/>
+						<xsl:if test=".=$factRoleIds[$currentPosition]">
+							<xsl:text>x</xsl:text>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:if test="string-length($testMatch)=$factRolesCount">
+					<primaryReadingOrder>
+						<xsl:copy-of select="@id"/>
+					</primaryReadingOrder>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="primaryOrderId" select="exsl:node-set($primaryOrderIdFragment)/child::*/@*"/>
+		<xsl:element name="orm:{local-name()}">
+			<xsl:choose>
+				<xsl:when test="$primaryOrderId">
+					<xsl:apply-templates select="@*|child::*[@id=$primaryOrderId]|text()|comment()">
+						<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+						<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+					</xsl:apply-templates>
+					<xsl:apply-templates select="child::*[not(@id=$primaryOrderId)]">
+						<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+						<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+					</xsl:apply-templates>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="@*|*|text()|comment()">
+						<xsl:with-param name="ImpliedInternalConstraintIds" select="$ImpliedInternalConstraintIds"/>
+						<xsl:with-param name="RoleProxyMap" select="$RoleProxyMap"/>
+					</xsl:apply-templates>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
 	</xsl:template>
 	<!-- Remove fact names -->
 	<xsl:template match="oldCore:Fact | oldCore:SubtypeFact | oldCore:ImpliedFact">

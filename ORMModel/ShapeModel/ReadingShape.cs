@@ -124,9 +124,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static void ReadingAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-			if (link.ReadingCollection.IsPrimary)
+			ReadingOrder order = link.ReadingOrder;
+			// The primary reading is the first reading in the reading order.
+			// Note: this is done inline here because we already have the link,
+			// which would need to be requeried in the IsPrimaryForReadingOrder property
+			if (object.ReferenceEquals(order.ReadingCollection[0], link.ReadingCollection))
 			{
-				RefreshPresentationElements(link.ReadingOrder);
+				RefreshPresentationElements(order);
 			}
 		}
 
@@ -136,12 +140,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void ReadingRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
-			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-			Reading read = link.ReadingCollection;
-			ReadingOrder ord = link.ReadingOrder;
-
-			if (!ord.IsRemoved && read.IsPrimary)
+			ReadingOrder ord = (e.ModelElement as ReadingOrderHasReading).ReadingOrder;
+			if (!ord.IsRemoved)
 			{
+				// There is no way to test for primary after the element is removed, so
+				// always attempt a refresh on a delete
 				RefreshPresentationElements(ord);
 			}
 		}
@@ -152,14 +155,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
-			Reading read = e.ModelElement as Reading;
-			Guid attrGuid = e.MetaAttribute.Id;
+			Guid attributeId = e.MetaAttribute.Id;
 
-			if (read.IsPrimary &&
-				(attrGuid == Reading.TextMetaAttributeGuid || attrGuid == Reading.IsPrimaryMetaAttributeGuid) &&
-				!read.IsRemoved)
+			if (attributeId == Reading.TextMetaAttributeGuid)
 			{
-				RefreshPresentationElements(read.ReadingOrder);
+				Reading reading = e.ModelElement as Reading;
+				if (!reading.IsRemoved &&
+					reading.IsPrimaryForReadingOrder)
+				{
+					RefreshPresentationElements(reading.ReadingOrder);
+				}
 			}
 		}
 		#endregion // Reading Events
@@ -514,15 +519,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
 				FactType factType = link.FactType;
-				ReadingOrder readingOrder = link.ReadingOrderCollection;
-				if (readingOrder.FactType == null)
-				{
-					ReadingOrderMoveableCollection newReadingOrders = factType.ReadingOrderCollection;
-					if (newReadingOrders.Count > 0)
-					{
-						readingOrder = newReadingOrders[0];
-					}
-				}
 				foreach (PresentationElement pel in factType.PresentationRolePlayers)
 				{
 					FactTypeShape factShape = pel as FactTypeShape;
@@ -588,31 +584,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // nested class ReadingAutoSizeTextField
 		#region change rules
 		/// <summary>
-		/// Rule to detect changes to the ReadingText so that the shape knows the
-		/// display text needs to be recreated.
+		/// Changing the position of a Reading in a ReadingOrder changes the
+		/// primary reading for that order, requiring a redraw
 		/// </summary>
-		[RuleOn(typeof(ReadingOrder), FireTime=TimeToFire.LocalCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ReadingOrderReadingTextChanged : ChangeRule
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class ReadingPositionChanged : RolePlayerPositionChangeRule
 		{
-			/// <summary>
-			/// Used to get notification of attribute changes.
-			/// Current code interested in changes to:
-			/// ReadingText
-			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
-				Guid attrId = e.MetaAttribute.Id;
-				ReadingOrder readingOrd = e.ModelElement as ReadingOrder;
-				Debug.Assert(readingOrd != null);
-				if (attrId == ReadingOrder.ReadingTextMetaAttributeGuid)
+				if (e.OldOrdinal == 0 || e.NewOrdinal == 0)
 				{
-					PresentationElementMoveableCollection pelList = readingOrd.PresentationRolePlayers;
-					foreach (ShapeElement pel in pelList)
+					ReadingOrder order = e.SourceElement as ReadingOrder;
+					FactType factType = order.FactType;
+					foreach (PresentationElement pel in factType.PresentationRolePlayers)
 					{
-						ReadingShape reading = pel as ReadingShape;
-						if (reading != null)
+						FactTypeShape factShape = pel as FactTypeShape;
+						if (factShape != null)
 						{
-							reading.InvalidateDisplayText();
+							foreach (ShapeElement shape in factShape.RelativeChildShapes)
+							{
+								ReadingShape readingShape = shape as ReadingShape;
+								if (readingShape != null)
+								{
+									readingShape.InvalidateDisplayText();
+								}
+							}
 						}
 					}
 				}
@@ -664,43 +660,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				Guid attrId = e.MetaAttribute.Id;
-				Reading read = e.ModelElement as Reading;
-				Debug.Assert(read != null);
-				ReadingOrder readingOrder = read.ReadingOrder;
-				if (attrId == Reading.TextMetaAttributeGuid || attrId == Reading.IsPrimaryMetaAttributeGuid)
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == Reading.TextMetaAttributeGuid)
 				{
-					Debug.Assert(readingOrder != null);
-					PresentationElementMoveableCollection pelList = readingOrder.FactType.PresentationRolePlayers;
-					foreach (ShapeElement pel in pelList)
+					Reading reading = e.ModelElement as Reading;
+					ReadingOrder readingOrder;
+					FactType factType;
+					if (!reading.IsRemoved &&
+						null != (readingOrder = reading.ReadingOrder) &&
+						null != (factType = readingOrder.FactType))
 					{
-						foreach (ShapeElement pel2 in pel.RelativeChildShapes)
+						// UNDONE: We're using this and similar foreach constructs all over this
+						// file. Put some clean helper functions together and start using them.
+						PresentationElementMoveableCollection pelList = factType.PresentationRolePlayers;
+						int pelCount = pelList.Count;
+						for (int i = 0; i < pelCount; ++i)
 						{
-							ReadingShape readShape = pel2 as ReadingShape;
-							if (readShape != null)
+							FactTypeShape factShape = pelList[i] as FactTypeShape;
+							if (factShape != null)
 							{
-								readShape.InvalidateDisplayText();
+								ShapeElementMoveableCollection childShapes = factShape.RelativeChildShapes;
+								int childPelCount = childShapes.Count;
+								for (int j = 0; j < childPelCount; ++j)
+								{
+									ReadingShape readingShape = childShapes[j] as ReadingShape;
+									if (readingShape != null)
+									{
+										readingShape.InvalidateDisplayText();
+									}
+								}
 							}
-						}
-					}
-				}
-				// UNDONE: Handling of TextMetaAttributeGuid belongs in the object model, not the shape model
-				if(attrId == Reading.TextMetaAttributeGuid)
-				{
-					string newValue = (string)e.NewValue;
-					if (newValue.Length == 0)
-					{
-						ReadingMoveableCollection readingColl = readingOrder.ReadingCollection;
-						if (readingColl.Count > 1)
-						{
-							read.Remove();
-						}
-						else
-						{
-							// The PresentationLinkRemoved class in ViewFixupRules.cs will
-							// reattach another available reading to the presentation element, so
-							// this will not necessarily remove the reading shape
-							readingOrder.Remove();
 						}
 					}
 				}

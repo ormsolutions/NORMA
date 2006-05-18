@@ -273,8 +273,8 @@
     <comment>Exception message when an attempt is made to make an object type both a value type and an objectified fact type.</comment>
   </data>
   <data name="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse" xml:space="preserve">
-    <value>The IsPrimary property cannot be set to false, set it to true for the new primary reading and this will occur automatically</value>
-    <comment>Exception message output when an attempt is made to set the IsPrimary property of a Reading to false.</comment>
+    <value>The IsPrimaryForReadingOrder and IsPrimaryForFactType properties cannot be set to false, set it to true for the new primary reading and this will occur automatically</value>
+    <comment>Exception message output when an attempt is made to set the IsPrimaryForReadingOrder or IsPrimaryForFactType properties of a Reading to false.</comment>
   </data>
   <data name="ModelException.ReferenceMode.AmbiguousName" xml:space="preserve">
     <value>Multiple reference modes found with the same name. Use the reference mode picker instead of setting the name directly.</value>

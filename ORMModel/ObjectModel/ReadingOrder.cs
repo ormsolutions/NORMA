@@ -30,8 +30,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ReadingOrder : IRedirectVerbalization, IHasIndirectModelErrorOwner
 	{
-		private Reading primaryReading;
-
 		#region Reading facade method
 		/// <summary>
 		/// Adds a reading to the fact.
@@ -47,21 +45,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				throw new ArgumentException(ResourceStrings.ModelExceptionFactAddReadingInvalidReadingText, "readingText");
 			}
 
-			Store theStore = this.Store;
-			//TODO:determine which reading order matches the current display order
-			bool setIsPrimary = ReadingCollection.Count == 0;
-			AttributeAssignment[] attrList = new AttributeAssignment[setIsPrimary ? 2 : 1];
-
-			attrList[0] = new AttributeAssignment(Reading.TextMetaAttributeGuid, readingText, theStore);
-			if (setIsPrimary)
-			{
-				attrList[1] = new AttributeAssignment(Reading.IsPrimaryMetaAttributeGuid, true, theStore);
-			}
-
-			Reading retval = Reading.CreateAndInitializeReading(theStore, attrList);
-			retval.ReadingOrder = this;
-
-			return retval;
+			Store store = Store;
+			Reading retVal = Reading.CreateAndInitializeReading(
+				store,
+				new AttributeAssignment[]{
+					new AttributeAssignment(Reading.TextMetaAttributeGuid, readingText, store)});
+			retVal.ReadingOrder = this;
+			return retVal;
 		}
 		#endregion // Reading facade method
 		#region CustomStoredAttribute handling
@@ -80,7 +70,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					retval = PrimaryReading.Text;
+					retval = readings[0].Text;
 				}
 			}
 			else
@@ -100,7 +90,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ReadingMoveableCollection readings = ReadingCollection;
 				if (readings.Count > 0)
 				{
-					PrimaryReading.Text = (string)newValue;
+					readings[0].Text = (string)newValue;
 				}
 			}
 			else
@@ -118,107 +108,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Reading retval = null;
-				if (primaryReading == null)
+				ReadingMoveableCollection readings;
+				if (!IsRemoved &&
+					0 != (readings = ReadingCollection).Count)
 				{
-					ReadingMoveableCollection readings = this.ReadingCollection;
-					int numReadings = readings.Count;
-					for (int i = 0; i < numReadings && retval == null; ++i)
-					{
-						if (readings[i].IsPrimary) retval = readings[i];
-					}
-					if (retval == null && numReadings > 0)
-					{
-						readings[0].IsPrimary = true;
-						retval = readings[0];
-					}
+					return readings[0];
 				}
-				else
-				{
-					retval = primaryReading;
-				}
-				return retval;
+				return null;
 			}
-		}
-		/// <summary>
-		/// Invalidates the cached value of the primary reading.
-		/// </summary>
-		private void InvalidatePrimaryReading()
-		{
-			primaryReading = null;
 		}
 		#endregion
-		#region ReadingOrderHasReading rule classes
-		[RuleOn(typeof(ReadingOrderHasReading))]
-		private class ReadingOrderHasReadingAdded : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-				ReadingOrder theReadingOrder = link.ReadingOrder;
-				ReadingMoveableCollection factReadings = theReadingOrder.ReadingCollection;
-				int roleCount = factReadings.Count;
-				ReadingMoveableCollection readings = theReadingOrder.ReadingCollection;
-				if (readings.Count == 1)
-				{
-					Reading onlyReading = readings[0];
-					if (!onlyReading.IsPrimary)
-					{
-						onlyReading.IsPrimary = true;
-					}
-				}
-				else
-				{
-					//if more than one reading and the new one is set to be the
-					//primary one then setting any others that are primary to false.
-					Reading newReading = link.ReadingCollection;
-					if (newReading.IsPrimary)
-					{
-						Reading r;
-						for (int i = 0; i < roleCount; ++i)
-						{
-							r = factReadings[i];
-							if (!object.ReferenceEquals(r, newReading))
-							{
-								if (r.IsPrimary)
-								{
-									r.IsPrimary = false;
-									//UNDONE:break? should only be one.
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		[RuleOn(typeof(ReadingOrderHasReading))]
-		private class ReadingOrderHasReadingRemoved : RemoveRule
-		{
-			/// <summary>
-			/// deals with the primary reading being removed by selecting the first
-			/// reading in the list if there are any left.
-			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				//TODO:test
-				
-				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-				ReadingOrder readOrd = link.ReadingOrder;
-				if (readOrd.FactType != null)
-				{
-					Reading read = link.ReadingCollection;
-					if (read.IsPrimary)
-					{
-						ReadingMoveableCollection allReadings = readOrd.ReadingCollection;
-						if (allReadings.Count > 0)
-						{
-							allReadings[0].IsPrimary = true;
-						}
-					}
-				}
-			}
-		}
+		#region EnforceNoEmptyReadingOrder rule class
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)]
 		private class EnforceNoEmptyReadingOrder : RemoveRule
 		{
@@ -239,7 +139,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion FactTypeReadingRoleRemoved rule class
+		#endregion // EnforceNoEmptyReadingOrder rule class
 		#region ReadingOrderHasRoleRemoving rule class
 		/// <summary>
 		/// Handles the clean up of the readings that the role is involved in by replacing

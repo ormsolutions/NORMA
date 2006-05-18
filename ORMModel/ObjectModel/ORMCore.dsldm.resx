@@ -321,8 +321,11 @@
   <data name="Neumont.Tools.ORM.ObjectModel.Reading" xml:space="preserve">
     <value>Reading</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.Reading.IsPrimary" xml:space="preserve">
-    <value>IsPrimary</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForFactType" xml:space="preserve">
+    <value>IsPrimaryForFactType</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryForReadingOrder" xml:space="preserve">
+    <value>IsPrimaryForReadingOrder</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Reading.Text" xml:space="preserve">
     <value>Text</value>

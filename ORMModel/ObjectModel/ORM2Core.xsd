@@ -638,7 +638,6 @@
 	<xs:complexType name="Reading">
 		<xs:complexContent>
 			<xs:extension base="Data">
-				<xs:attribute name="IsPrimary" type="xs:boolean" default="false"/>
 				<xs:attribute name="id" type="xs:ID" use="required"/>
 			</xs:extension>
 		</xs:complexContent>

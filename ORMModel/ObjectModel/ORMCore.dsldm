@@ -3063,7 +3063,7 @@
             <source />
             <property>ideb9d5ffz64f8z4887zb41az8ea3689efa4d</property>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="IsPrimary" identity="7afe0e6e-5958-40fd-afda-02dc882d26bf" id="i7afe0e6ez5958z40fdzafdaz02dc882d26bf">
+          <treeExpression xsi:type="ValuePropertyExpression" name="IsPrimaryForReadingOrder" identity="7afe0e6e-5958-40fd-afda-02dc882d26bf" id="i7afe0e6ez5958z40fdzafdaz02dc882d26bf">
             <source />
             <property>ifb40e877z7171z473dz88b5zbea06782e468</property>
           </treeExpression>
@@ -3911,6 +3911,10 @@
           <treeExpression xsi:type="ValuePropertyExpression" name="IsImplied" identity="ea615dba-52a4-491e-b85f-22d654965592" id="iea615dbaz52a4z491ezb85fz22d654965592">
             <source />
             <property>i370e2cc7z69e6z4116z919fz7d1b65390eb7</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="IsPrimaryForFactType" identity="5defaf49-32ad-4e88-961a-b6be2d9294fc" id="i5defaf49z32adz4e88z961azb6be2d9294fc">
+            <source />
+            <property>ic22fe3bfzeb13z4dfdz8cb8zdc4b60a7822e</property>
           </treeExpression>
         </expressions>
         <roots>
@@ -5029,13 +5033,21 @@
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
             <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="e6912ba5-43a0-473b-b8e0-117b2cb3c4d0" default="" max="2147483647" />
           </property>
-          <property name="IsPrimary" identity="fb40e877-7171-473d-88b5-bea06782e468" id="ifb40e877z7171z473dz88b5zbea06782e468">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="" />
+          <property name="IsPrimaryForReadingOrder" identity="fb40e877-7171-473d-88b5-bea06782e468" id="ifb40e877z7171z473dz88b5zbea06782e468">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="">
+                <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="c5445ea4-1809-49ad-81fb-50e9b858a1d9" default="false" />
           </property>
           <property name="Language" identity="28f89850-a91e-4b64-a917-43a97cfb192e" id="i28f89850za91ez4b64za917z43a97cfb192e">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
             <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="653eb50c-8419-4783-bc97-91c56d6bd03d" default="" max="2147483647" />
+          </property>
+          <property name="IsPrimaryForFactType" identity="c22fe3bf-eb13-4dfd-8cb8-dc4b60a7822e" id="ic22fe3bfzeb13z4dfdz8cb8zdc4b60a7822e">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="">
+                <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
           </property>
         </valueProperties>
       </concept>

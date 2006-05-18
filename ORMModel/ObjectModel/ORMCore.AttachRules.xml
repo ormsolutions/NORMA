@@ -92,8 +92,6 @@
 		<arg:Rule class="Reading.ReadingPropertiesChanged"/>
 		<arg:Rule class="ReadingOrder.EnforceNoEmptyReadingOrder"/>
 		<arg:Rule class="ReadingOrder.FactTypeHasRoleAddedRule"/>
-		<arg:Rule class="ReadingOrder.ReadingOrderHasReadingAdded"/>
-		<arg:Rule class="ReadingOrder.ReadingOrderHasReadingRemoved"/>
 		<arg:Rule class="ReadingOrder.ReadingOrderHasRoleRemoving"/>
 		<arg:Rule class="ReferenceMode.ReferenceModeAddedRule"/>
 		<arg:Rule class="ReferenceMode.ReferenceModeChangeRule"/>

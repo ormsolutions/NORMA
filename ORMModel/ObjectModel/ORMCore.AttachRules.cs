@@ -107,8 +107,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Reading).GetNestedType("ReadingPropertiesChanged", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrder", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingOrder).GetNestedType("FactTypeHasRoleAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ReadingOrder).GetNestedType("ReadingOrderHasReadingAdded", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ReadingOrder).GetNestedType("ReadingOrderHasReadingRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingOrder).GetNestedType("ReadingOrderHasRoleRemoving", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReferenceMode).GetNestedType("ReferenceModeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReferenceMode).GetNestedType("ReferenceModeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
