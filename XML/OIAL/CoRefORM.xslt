@@ -266,7 +266,6 @@
 									</orm:Role>
 								</xsl:when>
 								<xsl:otherwise>
-									<!--Grab the Role Name-->
 									<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="{@Name}" _IsMandatory="true">
 										<orm:RolePlayer ref="{$factId}"/>
 									</orm:Role>
@@ -277,7 +276,9 @@
 								<xsl:copy-of select="orm:RolePlayer"/>
 							</xsl:copy>
 						</orm:FactRoles>
-						<xsl:copy-of select="$fact/orm:InternalConstraints"/>
+						<orm:InternalConstraints>
+							<orm:UniquenessConstraint ref="{@id}{$CoRefInternalUniquenessIdDecorator}"/>
+						</orm:InternalConstraints>
 					</orm:Fact>
 				</xsl:for-each>
 			</xsl:when>
@@ -303,6 +304,14 @@
 				<xsl:with-param name="ObjectifiedFacts" select="$ObjectifiedFacts"/>
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
+			<xsl:for-each select="$BinarizableFacts">
+				<xsl:variable name="currentID" select="orm:FactRoles/orm:Role/@id"/>
+				<orm:UniquenessConstraint id="{$currentID}{$CoRefInternalUniquenessIdDecorator}" Name=""  IsInternal="true">
+					<orm:RoleSequence>
+						<orm:Role ref="{$currentID}" />
+					</orm:RoleSequence>
+				</orm:UniquenessConstraint>
+			</xsl:for-each>
 		</xsl:copy>
 	</xsl:template>
 	<xsl:template match="orm:UniquenessConstraint[count(orm:RoleSequence/orm:Role)&gt;1 and @IsInternal='true']" mode="CoRefORM">
@@ -337,7 +346,7 @@
 			<xsl:for-each select="$BinarizableFacts">
 				<xsl:choose>
 					<xsl:when test="orm:InternalConstraints/orm:UniquenessConstraint/orm:RoleSequence[count(orm:Role)>1]">
-						<orm:EntityType Name="{@Name}" id="{@id}" IsIndependent="true">
+						<orm:EntityType Name="{orm:FactRoles/orm:Role/@Name}" id="{@id}" IsIndependent="true">
 							<orm:PlayedRoles>
 								<xsl:for-each select="orm:FactRoles/orm:Role">
 									<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
@@ -347,7 +356,7 @@
 						</orm:EntityType>
 					</xsl:when>
 					<xsl:otherwise>
-						<orm:ValueType Name="{@Name}" id="{@id}" IsExternal="false" IsIndependent="false">
+						<orm:ValueType Name="{orm:FactRoles/orm:Role/@Name}" id="{@id}" IsExternal="false" IsIndependent="false">
 							<orm:PlayedRoles>
 								<xsl:for-each select="orm:FactRoles/orm:Role">
 									<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
