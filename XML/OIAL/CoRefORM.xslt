@@ -81,7 +81,6 @@
 		<xsl:variable name="ObjectifiedTypes" select="$Model/orm:Objects/orm:ObjectifiedType"/>
 		<xsl:variable name="ImpliedFacts" select="$Model/orm:Facts/orm:ImpliedFact[orm:ImpliedByObjectification]" />
 		<xsl:variable name="UnmodifiedObjectifiedFacts" select="$Model/orm:Facts/orm:Fact[@id=$ObjectifiedTypes/orm:NestedPredicate/@ref]" />
-		<xsl:variable name="InternalConstraintsRefsOnUnmodifiedObjectifiedFacts" select="$UnmodifiedObjectifiedFacts/orm:InternalConstraints/child::*"/>
 		<xsl:variable name="RoleMapFragment">
 			<xsl:call-template name="BuildRoleMap">
 				<xsl:with-param name="RoleProxies" select="$ImpliedFacts/child::orm:FactRoles/child::orm:RoleProxy"/>
@@ -108,8 +107,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="ObjectifiedFacts" select="exsl:node-set($ObjectifiedFactsFragment)/child::*"/>
-		<xsl:variable name="SpanningUniquenessConstraints" select="$Model/orm:Constraints/orm:UniquenessConstraint[orm:RoleSequence[count(orm:Role)>1]]"/>
-		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and (orm:InternalConstraints/orm:UniquenessConstraint[@ref=$SpanningUniquenessConstraints/@id] or count(orm:FactRoles/orm:Role)=1)]"/>
+		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and count(orm:FactRoles/orm:Role)=1]"/>
 
 		<xsl:apply-templates select="$Model" mode="CoRefORM">
 			<xsl:with-param name="Model" select="$Model"/>
@@ -268,6 +266,7 @@
 									</orm:Role>
 								</xsl:when>
 								<xsl:otherwise>
+									<!--Grab the Role Name-->
 									<orm:Role id="{@id}{$CoRefOppositeRoleIdDecorator}" Name="{@Name}" _IsMandatory="true">
 										<orm:RolePlayer ref="{$factId}"/>
 									</orm:Role>
@@ -305,6 +304,23 @@
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
 		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="orm:UniquenessConstraint[count(orm:RoleSequence/orm:Role)&gt;1 and @IsInternal='true']" mode="CoRefORM">
+		<xsl:param name="Model"/>
+		<xsl:param name="RoleMap"/>
+		<xsl:param name="ObjectifiedFacts"/>
+		<xsl:param name="BinarizableFacts"/>
+		<xsl:variable name="InternalUniquenessConstraintsOnObjectifiedFacts" select="$ObjectifiedFacts/child::orm:InternalConstraints/orm:UniquenessConstraint/@ref"/>
+		<xsl:choose>
+			<xsl:when test="current()/@id=$InternalUniquenessConstraintsOnObjectifiedFacts">
+				<orm:UniquenessConstraint id="{@id}" Name="{@Name}">
+					<xsl:copy-of select="current()/child::*"/>
+				</orm:UniquenessConstraint>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:copy-of select="."/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="orm:Objects" mode="CoRefORM">
 		<xsl:param name="Model"/>
