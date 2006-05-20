@@ -35,10 +35,8 @@
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintTypeEnum">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="InternalUniquenessConstraint"/>
 			<xs:enumeration value="UniquenessConstraint"/>
 			<xs:enumeration value="MandatoryConstraint"/>
-			<xs:enumeration value="SimpleMandatoryConstraint"/>
 			<xs:enumeration value="FrequencyConstraint"/>
 			<xs:enumeration value="RingConstraint"/>
 			<xs:enumeration value="SubsetConstraint"/>
@@ -56,12 +54,22 @@
 			</xs:enumeration>
 			<xs:enumeration value="DefaultBinaryMissingUniquenessVerbalizer">
 				<xs:annotation>
-					<xs:documentation>Helper class for verbalizing default binary conditions. The childHelperFor attribute should be set to FactType/</xs:documentation>
+					<xs:documentation>Helper class for verbalizing default binary conditions. The childHelperFor attribute should be set to FactType.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="CombinedMandatoryUniqueVerbalizer">
 				<xs:annotation>
-					<xs:documentation>Helper class for verbalizing combinations of uniqueness and mandatory constraints on binaries. The childHelperFor attribute should be set to FactType/</xs:documentation>
+					<xs:documentation>Helper class for verbalizing combinations of uniqueness and mandatory constraints on binaries. The childHelperFor attribute should be set to FactType.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ImpliedUniqueVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Helper class for verbalizing implied single-role internal uniqueness constraints. The childHelperFor attribute should be set to FactType.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ImpliedMandatoryVerbalizer">
+				<xs:annotation>
+					<xs:documentation>Helper class for verbalizing implied simple mandatory constraints. The childHelperFor attribute should be set to FactType.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -170,7 +178,9 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:attributeGroup name="FactArityAttributes">
+		<xs:attribute name="factCount" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="factArity" type="xs:unsignedByte" use="optional"/>
+		<xs:attribute name="constraintArity" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="minFactArity" type="xs:unsignedByte" use="optional"/>
 		<xs:attribute name="maxFactArity" type="xs:unsignedByte" use="optional"/>
 	</xs:attributeGroup>

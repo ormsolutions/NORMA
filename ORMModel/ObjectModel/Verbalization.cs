@@ -401,7 +401,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						testOrder = readingOrders[i];
 						testRoles = testOrder.RoleCollection;
-						if (testRoles[0] == matchLeadRole)
+						if (object.ReferenceEquals(testRoles[0].Role, matchLeadRole))
 						{
 							if (defaultRoleOrder != null)
 							{

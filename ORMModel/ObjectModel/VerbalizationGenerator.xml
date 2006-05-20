@@ -45,11 +45,11 @@
 			<Snippet ref="ReferenceModeVerbalization" conditionalMatch="HasReferenceMode">
 				<ReferenceMode/>
 			</Snippet>
-				<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
-					<Snippet ref="ObjectType">
-						<ObjectTypeName/>
-					</Snippet>
+			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
+				<Snippet ref="ObjectType">
+					<ObjectTypeName/>
 				</Snippet>
+			</Snippet>
 			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType">
 				<PortableDataType/>
 			</Snippet>
@@ -61,73 +61,9 @@
 		</Note>
 		<!-- Generate constraint verbalizations -->
 		<Constraints>
-			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
-				<ConstrainedRoles factArity="1" sign="positive">
-					<!-- span='all' is implicit in the other conditions. 0 arity includedRoles is blocked. -->
-					<Snippet ref="ImpliedModalNecessityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="UniversalQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
-							</Snippet>
-							<Fact/>
-						</Snippet>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles factArity="1">
-					<!-- span="all" sign="negative" is implicit in the other conditions are previous element-->
-					<Snippet ref="ModalPossibilityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="IdentityReferenceQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
-							</Snippet>
-							<Fact/>
-						</Snippet>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles span="all" sign="positive">
-					<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
-						 they are always on. We need to see if there are any verbalizations where subscripts are
-						 required in some places but not others before designing the xml and generating from it.
-						 If subscripts are required in all places in any verbalization pattern that uses them, then
-						 the following would be a potential tag for this location (we'd have subscripts off by default). -->
-					<!--<EnableSubscripts minFactArity="3"/>-->
-					<Snippet ref="ModalPossibilityOperator">
-						<IterateRoles listStyle="TopLevelIndentedLogicalAndList">
-							<Fact readingChoice="PreferPrimaryLeadReading">
-								<PredicateReplacement match="primary">
-									<Snippet ref="MoreThanOneQuantifier"/>
-								</PredicateReplacement>
-								<PredicateReplacement>
-									<Snippet ref="IdentityReferenceQuantifier"/>
-								</PredicateReplacement>
-							</Fact>
-						</IterateRoles>
-					</Snippet>
-					<Snippet ref="ImpliedModalNecessityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="CombinationIdentifier">
-								<Snippet ref="UniversalQuantifier">
-									<IterateRoles match="included" listStyle="CompactSimpleList"/>
-								</Snippet>
-							</Snippet>
-							<Fact/>
-						</Snippet>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles span="all">
-					<!-- sign="negative" is implied by the previous element -->
-					<Snippet ref="ModalPossibilityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="CombinationIdentifier">
-								<Snippet ref="IdentityReferenceQuantifier">
-									<IterateRoles match="included" listStyle="CompactSimpleList"/>
-								</Snippet>
-							</Snippet>
-							<Fact/>
-						</Snippet>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles factArity="2" sign="positive">
+			<!-- Implied single-role internal uniqueness constraint on proxy role of implied binary fact -->
+			<Constraint type="ImpliedUniqueVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
+				<ConstrainedRoles constraintArity="1" factArity="2" sign="positive">
 					<ConditionalReading>
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
@@ -162,7 +98,7 @@
 						<IterateRoles listStyle="null" match="excluded"/>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles factArity="2">
+				<ConstrainedRoles constraintArity="1" factArity="2">
 					<!-- sign="negative" is implied by the previous element -->
 					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
 					<Snippet ref="ForEachCompactQuantifier">
@@ -179,50 +115,9 @@
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="negative">
-					<Snippet ref="ModalPossibilityOperator">
-						<Fact>
-							<PredicateReplacement match="included">
-								<Snippet ref="IdentityReferenceQuantifier"/>
-							</PredicateReplacement>
-							<PredicateReplacement>
-								<Snippet ref="MoreThanOneQuantifier"/>
-							</PredicateReplacement>
-						</Fact>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles>
-					<!-- sign="positive" is implied by the previous element -->
-					<Snippet ref="ForEachQuantifier">
-						<IterateRoles match="included" listStyle="SimpleList"/>
-						<Snippet ref="ImpliedModalNecessityOperator">
-							<Fact>
-								<PredicateReplacement match="included">
-									<Snippet ref="DefiniteArticle"/>
-								</PredicateReplacement>
-								<PredicateReplacement match="excluded">
-									<Snippet ref="OneQuantifier"/>
-								</PredicateReplacement>
-							</Fact>
-						</Snippet>
-					</Snippet>
-				</ConstrainedRoles>
 			</Constraint>
-
-			<!-- Simple Mandatory Constraint -->
-			<Constraint type="SimpleMandatoryConstraint" patternGroup="InternalConstraint">
-
-				<!-- 3.1.1 unary predicate -->
-				<!-- Each A R -->
-				<ConstrainedRoles factArity="1" sign="positive">
-					<Snippet ref="ImpliedModalNecessityOperator">
-						<Snippet ref="UniversalQuantifier">
-							<Fact/>
-						</Snippet>
-					</Snippet>
-				</ConstrainedRoles>
-
-
+			<!-- Implied simple mandatory on constraint on proxy role of implied binary fact -->
+			<Constraint type="ImpliedMandatoryVerbalizer" childHelperFor="FactType" patternGroup="InternalConstraint">
 				<!-- 3.1.2 binary predicate -->
 				<ConstrainedRoles factArity="2">
 					<ConditionalReading>
@@ -246,49 +141,6 @@
 						<!-- For each A, some B S that A -->
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
-								<Snippet ref="ImpliedModalNecessityOperator">
-									<Fact>
-										<PredicateReplacement match="included">
-											<Snippet ref="DefiniteArticle"/>
-										</PredicateReplacement>
-										<PredicateReplacement>
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-									</Fact>
-								</Snippet>
-							</Snippet>
-						</ReadingChoice>
-					</ConditionalReading>
-				</ConstrainedRoles>
-
-				<!-- mandatory constraint starts reading attribute style -->
-				<!-- Each A R some B -->
-				<!-- not doing this time around -->
-
-				<!-- 3.1.3 n-ary predicate -->
-				<ConstrainedRoles minFactArity="3">
-					<ConditionalReading>
-						<!-- mandatory role starts reading -->
-						<!-- Each A R some B1 ... some Bn -->
-						<ReadingChoice match="RequireLeadReading">
-							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
-									<PredicateReplacement match="included">
-										<Snippet ref="UniversalQuantifier"/>
-									</PredicateReplacement>
-									<PredicateReplacement>
-										<Snippet ref="ExistentialQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</Snippet>
-						</ReadingChoice>
-
-						<!-- mandatory role does NOT start reading-->
-						<!-- For each A,
-							some B1 R ... that A ... some Bn -->
-						<ReadingChoice>
-							<Snippet ref="ForEachQuantifier">
 								<IterateRoles match="included" listStyle="SimpleList"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
@@ -363,6 +215,100 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<Constraint type="MandatoryConstraint" patternGroup="SetConstraint">
+				<!-- Handle internal constraint patterns first -->
+				<!-- 3.1.1 unary predicate -->
+				<!-- Each A R -->
+				<ConstrainedRoles constraintArity="1" factArity="1" sign="positive">
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="UniversalQuantifier">
+							<Fact/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+
+				<!-- 3.1.2 binary predicate -->
+				<ConstrainedRoles constraintArity="1" factArity="2" maxFactArity="2">
+					<ConditionalReading>
+
+						<!-- mandatory constraint starts reading relational style -->
+						<!-- Each A R some B -->
+						<ReadingChoice match="RequireLeadReading">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="included">
+										<Snippet ref="UniversalQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
+						</ReadingChoice>
+
+						<!-- mandatory role does NOT start reading -->
+						<!-- For each A, some B S that A -->
+						<ReadingChoice>
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<Fact>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+
+				<!-- mandatory constraint starts reading attribute style -->
+				<!-- Each A R some B -->
+				<!-- not doing this time around -->
+
+				<!-- 3.1.3 n-ary predicate -->
+				<ConstrainedRoles constraintArity="1" minFactArity="3">
+					<ConditionalReading>
+						<!-- mandatory role starts reading -->
+						<!-- Each A R some B1 ... some Bn -->
+						<ReadingChoice match="RequireLeadReading">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="included">
+										<Snippet ref="UniversalQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
+						</ReadingChoice>
+
+						<!-- mandatory role does NOT start reading-->
+						<!-- For each A,
+							some B1 R ... that A ... some Bn -->
+						<ReadingChoice>
+							<Snippet ref="ForEachQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<Fact>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+
+				<!-- Start disjunctive mandatory constraints -->
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="negative" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
@@ -442,6 +388,154 @@
 			</Constraint>
 			<!-- Start External Uniqueness Constraint-->
 			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint">
+				<!-- Internal constraints -->
+				<ConstrainedRoles factCount="1" factArity="1" sign="positive">
+					<!-- span='all' is implicit in the other conditions. 0 arity includedRoles is blocked. -->
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="OccursInPopulation">
+							<Snippet ref="UniversalQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+							</Snippet>
+							<Fact/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" factArity="1">
+					<!-- span="all" sign="negative" is implicit in the other conditions are previous element-->
+					<Snippet ref="ModalPossibilityOperator">
+						<Snippet ref="OccursInPopulation">
+							<Snippet ref="IdentityReferenceQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+							</Snippet>
+							<Fact/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" span="all" sign="positive">
+					<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
+						 they are always on. We need to see if there are any verbalizations where subscripts are
+						 required in some places but not others before designing the xml and generating from it.
+						 If subscripts are required in all places in any verbalization pattern that uses them, then
+						 the following would be a potential tag for this location (we'd have subscripts off by default). -->
+					<!--<EnableSubscripts minFactArity="3"/>-->
+					<Snippet ref="ModalPossibilityOperator">
+						<IterateRoles listStyle="TopLevelIndentedLogicalAndList">
+							<Fact readingChoice="PreferPrimaryLeadReading">
+								<PredicateReplacement match="primary">
+									<Snippet ref="MoreThanOneQuantifier"/>
+								</PredicateReplacement>
+								<PredicateReplacement>
+									<Snippet ref="IdentityReferenceQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles>
+					</Snippet>
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="OccursInPopulation">
+							<Snippet ref="CombinationIdentifier">
+								<Snippet ref="UniversalQuantifier">
+									<IterateRoles match="included" listStyle="CompactSimpleList"/>
+								</Snippet>
+							</Snippet>
+							<Fact/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" span="all">
+					<!-- sign="negative" is implied by the previous element -->
+					<Snippet ref="ModalPossibilityOperator">
+						<Snippet ref="OccursInPopulation">
+							<Snippet ref="CombinationIdentifier">
+								<Snippet ref="IdentityReferenceQuantifier">
+									<IterateRoles match="included" listStyle="CompactSimpleList"/>
+								</Snippet>
+							</Snippet>
+							<Fact/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" factArity="2" sign="positive">
+					<ConditionalReading>
+						<ReadingChoice match="RequireLeadReading">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="included">
+										<Snippet ref="UniversalQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="OneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles listStyle="SimpleList" match="included"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<Fact>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Snippet ref="OneQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
+						<IterateRoles listStyle="null" match="included"/>
+						<IterateRoles listStyle="null" match="excluded"/>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" factArity="2">
+					<!-- sign="negative" is implied by the previous element -->
+					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
+					<Snippet ref="ForEachCompactQuantifier">
+						<IterateRoles match="included" listStyle="CompactSimpleList"/>
+						<Snippet ref="ModalPossibilityOperator">
+							<Fact readingChoice="PreferLeadReading">
+								<PredicateReplacement match="included">
+									<Snippet ref="DefiniteArticle"/>
+								</PredicateReplacement>
+								<PredicateReplacement match="excluded">
+									<Snippet ref="OneQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1" sign="negative">
+					<Snippet ref="ModalPossibilityOperator">
+						<Fact>
+							<PredicateReplacement match="included">
+								<Snippet ref="IdentityReferenceQuantifier"/>
+							</PredicateReplacement>
+							<PredicateReplacement>
+								<Snippet ref="MoreThanOneQuantifier"/>
+							</PredicateReplacement>
+						</Fact>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles factCount="1">
+					<!-- sign="positive" is implied by the previous element -->
+					<Snippet ref="ForEachQuantifier">
+						<IterateRoles match="included" listStyle="SimpleList"/>
+						<Snippet ref="ImpliedModalNecessityOperator">
+							<Fact>
+								<PredicateReplacement match="included">
+									<Snippet ref="DefiniteArticle"/>
+								</PredicateReplacement>
+								<PredicateReplacement match="excluded">
+									<Snippet ref="OneQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+
+				<!-- External constraints -->
 				<!-- Positive Reading -->
 				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2">
 					<ConditionalReading>

@@ -274,7 +274,7 @@
 		</plx:class>
 	</xsl:template>
 	<xsl:template match="cvg:Constraint" mode="ConstraintVerbalization">
-		<xsl:variable name="patternGroup" select="@patternGroup"/>
+		<xsl:variable name="patternGroup" select="string(@patternGroup)"/>
 		<xsl:variable name="isValueTypeValueConstraint" select="$patternGroup='ValueTypeValueConstraint'"/>
 		<xsl:variable name="isRoleValue" select="$patternGroup='RoleValueConstraint'"/>
 		<xsl:variable name="isInternal" select="$patternGroup='InternalConstraint' or $isRoleValue"/>
@@ -544,26 +544,36 @@
 				</xsl:if>
 				<xsl:if test="not($isValueTypeValueConstraint)">
 					<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
-						<xsl:if test="$isInternal">
-							<plx:initialize>
-								<plx:callInstance name="RoleCollection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="parentFact"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:initialize>
-						</xsl:if>
+						<plx:initialize>
+							<xsl:choose>
+								<xsl:when test="$isInternal">
+									<plx:callInstance name="RoleCollection" type="property">
+										<plx:callObject>
+											<plx:nameRef name="parentFact"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nullKeyword/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:initialize>
 					</plx:local>
 					<plx:local name="factArity" dataTypeName=".i4">
-						<xsl:if test="$isInternal">
-							<plx:initialize>
-								<plx:callInstance name="Count" type="property">
-									<plx:callObject>
-										<plx:nameRef name="factRoles"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:initialize>
-						</xsl:if>
+						<plx:initialize>
+							<xsl:choose>
+								<xsl:when test="$isInternal">
+									<plx:callInstance name="Count" type="property">
+										<plx:callObject>
+											<plx:nameRef name="factRoles"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:value data="0" type="i4"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:initialize>
 					</plx:local>
 					<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
 						<xsl:if test="$isInternal">
@@ -1182,6 +1192,7 @@
 	</xsl:template>
 	<!-- Handle the span constraint condition attribute -->
 	<xsl:template match="@span" mode="ConstraintConditionOperator">
+		<xsl:param name="PatternGroup"/>
 		<xsl:choose>
 			<xsl:when test=".='all'">
 				<plx:binaryOperator type="equality">
@@ -1189,7 +1200,14 @@
 						<plx:nameRef name="factArity"/>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="includedArity"/>
+						<xsl:choose>
+							<xsl:when test="$PatternGroup='SetConstraint' and parent::*[@constraintArity=1 or @factCount=1]">
+								<plx:nameRef name="constraintRoleArity"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:nameRef name="includedArity"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:right>
 				</plx:binaryOperator>
 			</xsl:when>
@@ -1199,6 +1217,36 @@
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	<!-- Handle the factCount constraint condition attribute -->
+	<xsl:template match="@factCount" mode="ConstraintConditionOperator">
+		<plx:binaryOperator type="equality">
+			<plx:left>
+				<plx:nameRef name="allFactsCount"/>
+			</plx:left>
+			<plx:right>
+				<plx:value type="i4" data="{.}"/>
+			</plx:right>
+		</plx:binaryOperator>
+	</xsl:template>
+	<!-- Handle the constraintArity constraint condition attribute -->
+	<xsl:template match="@constraintArity" mode="ConstraintConditionOperator">
+		<xsl:param name="PatternGroup"/>
+		<plx:binaryOperator type="equality">
+			<plx:left>
+				<xsl:choose>
+					<xsl:when test="$PatternGroup='InternalConstraint'">
+						<plx:nameRef name="includedArity"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:nameRef name="constraintRoleArity"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:left>
+			<plx:right>
+				<plx:value type="i4" data="{.}"/>
+			</plx:right>
+		</plx:binaryOperator>
 	</xsl:template>
 	<!-- Handle the factArity constraint condition attribute -->
 	<xsl:template match="@factArity" mode="ConstraintConditionOperator">
@@ -1307,6 +1355,16 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="conditionTest" select="exsl:node-set($conditionTestFragment)/child::*"/>
+		<xsl:variable name="forwardPatternGroup">
+			<xsl:choose>
+				<xsl:when test="$conditionTest and $PatternGroup='SetConstraint' and (@constraintArity=1 or @factCount=1)">
+					<xsl:text>InternalSetConstraint</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$PatternGroup"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$conditionTest">
 				<xsl:variable name="branchType">
@@ -1324,14 +1382,14 @@
 						<xsl:copy-of select="$conditionTest"/>
 					</plx:condition>
 					<xsl:call-template name="ConstraintBodyContent">
-						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="PatternGroup" select="string($forwardPatternGroup)"/>
 					</xsl:call-template>
 				</xsl:element>
 			</xsl:when>
 			<xsl:when test="$fallback">
 				<plx:fallbackBranch>
 					<xsl:call-template name="ConstraintBodyContent">
-						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="PatternGroup" select="string($forwardPatternGroup)"/>
 					</xsl:call-template>
 				</plx:fallbackBranch>
 			</xsl:when>
@@ -1756,6 +1814,29 @@
 	</xsl:template>
 	<xsl:template name="ConstraintBodyContent">
 		<xsl:param name="PatternGroup"/>
+		<!-- If we're a SetConstraint acting like an internal constraint then
+			 initialize necessary variables -->
+		<xsl:if test="$PatternGroup='InternalSetConstraint'">
+			<plx:assign>
+				<plx:left>
+					<plx:nameRef name="allReadingOrders"/>
+				</plx:left>
+				<plx:right>
+					<plx:callInstance name="ReadingOrderCollection" type="property">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="allFacts"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value data="0" type="i4"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:right>
+			</plx:assign>
+		</xsl:if>
 		<!-- At this point we'll either have ConditionalReading or Snippet children -->
 		<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
@@ -1780,7 +1861,7 @@
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="VariableDecorator" select="'1'"/>
 		<xsl:param name="TopLevel" select="false()"/>
-		<xsl:param name="Match" select="@match"/>
+		<xsl:param name="Match" select="string(@match)"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:choose>
 			<xsl:when test="contains($Match,'All')">
@@ -2595,7 +2676,21 @@
 						<plx:initialize>
 							<plx:callInstance name=".implied" type="arrayIndexer">
 								<plx:callObject>
-									<plx:nameRef name="basicRoleReplacements"/>
+									<xsl:choose>
+										<xsl:when test="$PatternGroup='InternalSetConstraint'">
+											<plx:callInstance name=".implied" type="arrayIndexer">
+												<plx:callObject>
+													<plx:nameRef name="allBasicRoleReplacements"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:value data="0" type="i4"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</xsl:when>
+										<xsl:otherwise>
+											<plx:nameRef name="basicRoleReplacements"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</plx:callObject>
 								<plx:passParam>
 									<plx:nameRef name="{$iterVarName}"/>
@@ -2704,17 +2799,24 @@
 					<plx:nameRef name="factRoles"/>
 				</plx:passParam>
 				<plx:passParam>
-					<xsl:variable name="replacementSet">
-						<xsl:choose>
-							<xsl:when test="$complexReplacement">
-								<xsl:text>roleReplacements</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>basicRoleReplacements</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<plx:nameRef name="{$replacementSet}"/>
+					<xsl:choose>
+						<xsl:when test="$complexReplacement">
+							<plx:nameRef name="roleReplacements"/>
+						</xsl:when>
+						<xsl:when test="$PatternGroup='InternalSetConstraint'">
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="allBasicRoleReplacements"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value data="0" type="i4"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:nameRef name="basicRoleReplacements"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</plx:passParam>
 			</plx:callStatic>
 		</xsl:variable>
@@ -2815,6 +2917,17 @@
 		<xsl:param name="VariablePrefix"/>
 		<xsl:param name="VariableDecorator"/>
 		<xsl:param name="FirstPassVariable"/>
+		<xsl:variable name="includedRolesFragment">
+			<xsl:choose>
+				<xsl:when test="$PatternGroup='InternalSetConstraint'">
+					<xsl:text>allConstraintRoles</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>includedRoles</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="includedRoles" select="string($includedRolesFragment)"/>
 		<xsl:variable name="operatorsFragment">
 			<xsl:choose>
 				<xsl:when test="$Match='primary'">
@@ -2841,7 +2954,7 @@
 							<plx:unaryOperator type="booleanNot">
 								<plx:callInstance name="Contains">
 									<plx:callObject>
-										<plx:nameRef name="includedRoles"/>
+										<plx:nameRef name="{$includedRoles}"/>
 									</plx:callObject>
 									<plx:passParam>
 										<plx:callInstance name="Role" type="property">
@@ -2864,7 +2977,7 @@
 							</plx:binaryOperator>
 							<plx:callInstance name="Contains">
 								<plx:callObject>
-									<plx:nameRef name="includedRoles"/>
+									<plx:nameRef name="{$includedRoles}"/>
 								</plx:callObject>
 								<plx:passParam>
 									<plx:callInstance name="Role" type="property">
@@ -2903,7 +3016,7 @@
 						<xsl:otherwise>
 							<plx:callInstance name="Contains">
 								<plx:callObject>
-									<plx:nameRef name="includedRoles"/>
+									<plx:nameRef name="{$includedRoles}"/>
 								</plx:callObject>
 								<plx:passParam>
 									<plx:callInstance name="Role" type="property">
@@ -2933,7 +3046,7 @@
 							<plx:unaryOperator type="booleanNot">
 								<plx:callInstance name="Contains">
 									<plx:callObject>
-										<plx:nameRef name="includedRoles"/>
+										<plx:nameRef name="{$includedRoles}"/>
 									</plx:callObject>
 									<plx:passParam>
 										<plx:callInstance name="Role" type="property">
@@ -3583,6 +3696,7 @@
 			<xsl:variable name="filterOperatorsFragment">
 				<xsl:apply-templates select="@*" mode="IterateRolesFilterOperator">
 					<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:for-each select="exsl:node-set($filterOperatorsFragment)/child::*">
@@ -3681,7 +3795,14 @@
 												<xsl:text>factArity</xsl:text>
 											</xsl:when>
 											<xsl:when test="$contextMatch='included'">
-												<xsl:text>includedArity</xsl:text>
+												<xsl:choose>
+													<xsl:when test="$PatternGroup='InternalSetConstraint'">
+														<xsl:text>constraintRoleArity</xsl:text>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:text>includedArity</xsl:text>
+													</xsl:otherwise>
+												</xsl:choose>
 											</xsl:when>
 											<xsl:when test="$contextMatch='setConstraintRoles'">
 												<xsl:text>constraintRoleArity</xsl:text>
@@ -4080,7 +4201,14 @@
 														<xsl:text>factArity</xsl:text>
 													</xsl:when>
 													<xsl:when test="$contextMatch='included'">
-														<xsl:text>includedArity</xsl:text>
+														<xsl:choose>
+															<xsl:when test="$PatternGroup='InternalSetConstraint'">
+																<xsl:text>constraintRoleArity</xsl:text>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:text>includedArity</xsl:text>
+															</xsl:otherwise>
+														</xsl:choose>
 													</xsl:when>
 													<xsl:when test="$contextMatch='setConstraintRoles'">
 														<xsl:text>constraintRoleArity</xsl:text>
@@ -4208,7 +4336,21 @@
 					<plx:passParam>
 						<plx:callInstance name=".implied" type="arrayIndexer">
 							<plx:callObject>
-								<plx:nameRef name="basicRoleReplacements"/>
+								<xsl:choose>
+									<xsl:when test="$PatternGroup='InternalSetConstraint'">
+										<plx:callInstance name=".implied" type="arrayIndexer">
+											<plx:callObject>
+												<plx:nameRef name="allBasicRoleReplacements"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:value data="0" type="i4"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:nameRef name="basicRoleReplacements"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</plx:callObject>
 							<plx:passParam>
 								<xsl:choose>
@@ -4222,7 +4364,7 @@
 												<plx:callInstance name=".implied" type="arrayIndexer">
 													<plx:callObject>
 														<plx:nameRef name="includedRoles">
-															<xsl:if test="@match='setConstraintRoles'">
+															<xsl:if test="@match='setConstraintRoles' or $PatternGroup='InternalSetConstraint'">
 																<xsl:attribute name="name">
 																	<xsl:text>allConstraintRoles</xsl:text>
 																</xsl:attribute>
@@ -4283,7 +4425,14 @@
 														<xsl:text>factArity</xsl:text>
 													</xsl:when>
 													<xsl:when test="$contextMatch='included'">
-														<xsl:text>includedArity</xsl:text>
+														<xsl:choose>
+															<xsl:when test="$PatternGroup='InternalSetConstraint'">
+																<xsl:text>constraintRoleArity</xsl:text>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:text>includedArity</xsl:text>
+															</xsl:otherwise>
+														</xsl:choose>
 													</xsl:when>
 													<xsl:when test="$contextMatch='setConstraintRoles'">
 														<xsl:text>constraintRoleArity</xsl:text>
@@ -4480,6 +4629,7 @@
 	</xsl:template>
 	<xsl:template match="@match" mode="IterateRolesFilterOperator">
 		<xsl:param name="IteratorVariableName"/>
+		<xsl:param name="PatternGroup"/>
 		<xsl:variable name="matchValue" select="."/>
 		<xsl:choose>
 			<xsl:when test="$matchValue='excluded'">
@@ -4487,7 +4637,14 @@
 					<plx:left>
 						<plx:callInstance name="IndexOf">
 							<plx:callObject>
-								<plx:nameRef name="includedRoles"/>
+								<xsl:choose>
+									<xsl:when test="$PatternGroup='InternalSetConstraint'">
+										<plx:nameRef name="allConstraintRoles"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:nameRef name="includedRoles"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</plx:callObject>
 							<plx:passParam>
 								<plx:callInstance name="Role" type="property">
@@ -4539,6 +4696,7 @@
 			<xsl:variable name="filterOperatorsFragment">
 				<xsl:apply-templates select="@*" mode="IterateRolesFilterOperator">
 					<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:for-each select="exsl:node-set($filterOperatorsFragment)/child::*">
@@ -4566,7 +4724,14 @@
 									<xsl:text>factArity</xsl:text>
 								</xsl:when>
 								<xsl:when test="$contextMatch='included'">
-									<xsl:text>includedArity</xsl:text>
+									<xsl:choose>
+										<xsl:when test="$PatternGroup='InternalSetConstraint'">
+											<xsl:text>constraintRoleArity</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>includedArity</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:when>
 								<xsl:when test="$contextMatch='setConstraintRoles'">
 									<xsl:text>constraintRoleArity</xsl:text>
@@ -4889,7 +5054,14 @@
 								<!-- The matchAnyLeadRole param -->
 								<xsl:choose>
 									<xsl:when test="not($PatternGroup='SetConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
-										<plx:nameRef name="includedRoles"/>
+										<xsl:choose>
+											<xsl:when test="$PatternGroup='InternalSetConstraint'">
+												<plx:nameRef name="allConstraintRoles"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:nameRef name="includedRoles"/>
+											</xsl:otherwise>
+										</xsl:choose>
 									</xsl:when>
 									<xsl:otherwise>
 										<plx:nullKeyword/>

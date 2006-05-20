@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		PartiallyDerived,
 	}
 	#endregion
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeFilterChildren, IVerbalizeCustomChildren
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren
 	{
 		#region ReadingOrder acquisition
 		/// <summary>
@@ -1727,69 +1727,99 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // AutoFix Methods
-		#region IVerbalizeFilterChildren Implementation
+		#region ImpliedUniqueVerbalizer class
 		/// <summary>
-		/// Implements IVerbalizeFilterChildren.FilterChildVerbalizer
+		/// Non-generated portions of verbalization helper used to verbalize a
+		/// single-role internal uniqueness constraint on a proxy role.
 		/// </summary>
-		protected CustomChildVerbalizer FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative)
+		private partial class ImpliedUniqueVerbalizer
 		{
-			if (!isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization)
+			private FactType myFact;
+			private UniquenessConstraint myConstraint;
+			public void Initialize(FactType fact, UniquenessConstraint constraint)
 			{
-				IConstraint constraint = childVerbalizer as IConstraint;
-				if (constraint != null && constraint.ConstraintIsInternal)
+				myFact = fact;
+				myConstraint = constraint;
+			}
+			private void DisposeHelper()
+			{
+				myFact = null;
+				myConstraint = null;
+			}
+			private FactType FactType
+			{
+				get
 				{
-					RoleBaseMoveableCollection factRoles = RoleCollection;
-					if (factRoles.Count == 2)
-					{
-						ConstraintModality modality = constraint.Modality;
-						// See if we want to do an 'exactly one' instead of 'at most one'/'some'
-						MandatoryConstraint mandatory;
-						UniquenessConstraint iuc;
-						if (null != (mandatory = constraint as MandatoryConstraint))
-						{
-							foreach (ConstraintRoleSequence testConstraint in mandatory.RoleCollection[0].ConstraintRoleSequenceCollection)
-							{
-								UniquenessConstraint testIuc = testConstraint as UniquenessConstraint;
-								if (testIuc != null &&
-									testIuc.IsInternal &&
-									testIuc.Modality == modality &&
-									testIuc.RoleCollection.Count == 1)
-								{
-									// Don't verbalize the mandatory role
-									return CustomChildVerbalizer.Empty;
-								}
-							}
-						}
-						else if (null != (iuc = constraint as UniquenessConstraint) && iuc.IsInternal)
-						{
-							RoleMoveableCollection roles = iuc.RoleCollection;
-							if (roles.Count == 1)
-							{
-								foreach (ConstraintRoleSequence testConstraint in roles[0].ConstraintRoleSequenceCollection)
-								{
-									MandatoryConstraint testMandatory = testConstraint as MandatoryConstraint;
-									if (testMandatory != null &&
-										testMandatory.IsSimple &&
-										testMandatory.Modality == modality)
-									{
-										// Fold the verbalizations into one
-										CombinedMandatoryUniqueVerbalizer verbalizer = CombinedMandatoryUniqueVerbalizer.GetVerbalizer();
-										verbalizer.Initialize(this, iuc);
-										return new CustomChildVerbalizer(verbalizer, true);
-									}
-								}
-							}
-						}
-					}
+					return myFact;
 				}
 			}
-			return new CustomChildVerbalizer(childVerbalizer);
+			private RoleMoveableCollection RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			private ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
+			private bool IsPreferred
+			{
+				get
+				{
+					return myConstraint.IsPreferred;
+				}
+			}
 		}
-		CustomChildVerbalizer IVerbalizeFilterChildren.FilterChildVerbalizer(IVerbalize childVerbalizer, bool isNegative)
+		#endregion // ImpliedUniqueVerbalizer class
+		#region ImpliedMandatoryVerbalizer class
+		/// <summary>
+		/// <summary>
+		/// Non-generated portions of verbalization helper used to verbalize a
+		/// simple mandatory constraint on a proxy role.
+		/// </summary>
+		/// </summary>
+		private partial class ImpliedMandatoryVerbalizer
 		{
-			return FilterChildVerbalizer(childVerbalizer, isNegative);
+			private FactType myFact;
+			private MandatoryConstraint myConstraint;
+			public void Initialize(FactType fact, MandatoryConstraint constraint)
+			{
+				myFact = fact;
+				myConstraint = constraint;
+			}
+			private void DisposeHelper()
+			{
+				myFact = null;
+				myConstraint = null;
+			}
+			private FactType FactType
+			{
+				get
+				{
+					return myFact;
+				}
+			}
+			private RoleMoveableCollection RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			private ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
 		}
-		#endregion // IVerbalizeFilterChildren Implementation
+		#endregion // ImpliedMandatoryVerbalizer class
 		#region CombinedMandatoryUniqueVerbalizer class
 		/// <summary>
 		/// Non-generated portions of verbalization helper used to verbalize a
@@ -1834,50 +1864,245 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // CombinedMandatoryUniqueVerbalizer class
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>
-		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
+		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
+		/// for internal constraints, combinations of internals, and defaults
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
 		{
-			if (!isNegative && Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization)
+			SetConstraintMoveableCollection setConstraints = SetConstraintCollection;
+			int setConstraintCount = setConstraints.Count;
+			if (setConstraintCount == 0)
 			{
-				RoleBaseMoveableCollection factRoles = RoleCollection;
-				if (factRoles.Count == 2)
-				{
-					foreach (UniquenessConstraint contextIuc in GetInternalConstraints<UniquenessConstraint>())
-					{
-						if (contextIuc.Modality == ConstraintModality.Alethic)
-						{
-							RoleMoveableCollection roles = contextIuc.RoleCollection;
-							if (roles.Count == 1)
-							{
-								// We have an appropriate context role. See if there
-								// a single-role constraint opposite it. If not, then
-								// we provide the default verbalization.
-								RoleBase oppositeRole = factRoles[0];
-								if (object.ReferenceEquals(oppositeRole, roles[0]))
-								{
-									oppositeRole = factRoles[1];
-								}
+				yield break;
+			}
 
-								bool provideDefault = true;
-								foreach (ConstraintRoleSequence sequence in oppositeRole.Role.ConstraintRoleSequenceCollection)
+			// All internal constraints (and combinations) are non-aggregated, so they
+			// are verbalized as custom children.
+			bool lookForDefault = !isNegative && Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization;
+			bool lookForCombined = !isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
+
+			RoleBaseMoveableCollection factRoles = RoleCollection;
+			if (2 == factRoles.Count)
+			{
+				// UNDONE: Internal verbalization of proxy roles
+				Role[] roles = new Role[2];
+				RoleProxy proxy = null;
+				int primaryRoleCount;
+				if (ImpliedByObjectification == null)
+				{
+					roles[0] = (Role)factRoles[0];
+					roles[1] = (Role)factRoles[1];
+					primaryRoleCount = 2;
+				}
+				else
+				{
+					// Find the proxy, and put the opposite role in the 0 slot
+					proxy = factRoles[0] as RoleProxy;
+					if (proxy != null)
+					{
+						roles[0] = (Role)factRoles[1];
+					}
+					else
+					{
+						proxy = (RoleProxy)factRoles[1];
+						roles[0] = (Role)factRoles[0];
+					}
+					primaryRoleCount = 1;
+				}
+				// Array of single role constraints.
+				//    Index 1 == Left/Right
+				//    Index 2 == Alethic/Deontic
+				//    Index 3 == Unique/Mandatory
+				SetConstraint[,,] singleRoleConstraints = new SetConstraint[2, 2, 2];
+
+				// A single-role uniqueness constraint with an implied default
+				SetConstraint constraintWithImpliedOppositeDefault = null;
+
+				// Don't run loop at end if we don't have anything to verbalize
+				bool haveSingles = false;
+
+				for (int i = 0; i < setConstraintCount; ++i)
+				{
+					SetConstraint constraint = setConstraints[i];
+					IConstraint iConstraint = constraint.Constraint;
+					if (iConstraint.ConstraintIsInternal)
+					{
+						RoleMoveableCollection constraintRoles = constraint.RoleCollection;
+						if (constraintRoles.Count == 1)
+						{
+							// Handle singles specially at the end so that
+							// the verbalization order is less dependent on the
+							// constraint order in the model
+							Role constraintRole = constraintRoles[0];
+							for (int iRole = 0; iRole < primaryRoleCount; ++iRole)
+							{
+								if (object.ReferenceEquals(constraintRole, roles[iRole]))
 								{
-									UniquenessConstraint iucTest = sequence as UniquenessConstraint;
-									if (iucTest != null && iucTest.IsInternal && iucTest.RoleCollection.Count == 1 && iucTest.Modality == ConstraintModality.Alethic)
+									int modalityIndex = (constraint.Modality == ConstraintModality.Alethic) ? 0 : 1;
+									int constraintIndex = (iConstraint.ConstraintType == ConstraintType.InternalUniqueness) ? 0 : 1;
+									if (singleRoleConstraints[iRole, modalityIndex, constraintIndex] == null) // Skip duplicate
 									{
-										provideDefault = false;
-										break;
+										singleRoleConstraints[iRole, modalityIndex, constraintIndex] = constraint;
+										haveSingles = true;
+										if (lookForDefault && modalityIndex == 0 && constraintIndex == 0) // Alethic Uniqueness constraint
+										{
+											if (constraintWithImpliedOppositeDefault != null)
+											{
+												lookForDefault = false;
+												constraintWithImpliedOppositeDefault = null;
+											}
+											else
+											{
+												constraintWithImpliedOppositeDefault = constraint;
+											}
+										}
 									}
 								}
-								if (provideDefault)
-								{
-									DefaultBinaryMissingUniquenessVerbalizer verbalizer = DefaultBinaryMissingUniquenessVerbalizer.GetVerbalizer();
-									verbalizer.Initialize(this, contextIuc);
-									yield return new CustomChildVerbalizer(verbalizer, true);
-								}
-								break;
 							}
 						}
+						else
+						{
+							yield return new CustomChildVerbalizer((IVerbalize)constraint);
+						}
+					}
+				}
+
+				if (proxy != null)
+				{
+					// Pick up single role internal constraints from the proxy target role and
+					// add them to the second column
+					ConstraintRoleSequenceMoveableCollection sequences = proxy.TargetRole.ConstraintRoleSequenceCollection;
+					int sequenceCount = sequences.Count;
+					for (int i = 0; i < sequenceCount; ++i)
+					{
+						SetConstraint constraint = sequences[i] as SetConstraint;
+						IConstraint iConstraint;
+						if (constraint != null &&
+							(iConstraint = constraint.Constraint).ConstraintIsInternal &&
+							constraint.RoleCollection.Count == 1)
+						{
+							int modalityIndex = (constraint.Modality == ConstraintModality.Alethic) ? 0 : 1;
+							int constraintIndex = (iConstraint.ConstraintType == ConstraintType.InternalUniqueness) ? 0 : 1;
+							if (singleRoleConstraints[1, modalityIndex, constraintIndex] == null) // Skip duplicate
+							{
+								singleRoleConstraints[1, modalityIndex, constraintIndex] = constraint;
+								haveSingles = true;
+								if (lookForDefault && modalityIndex == 0 && constraintIndex == 0) // Alethic Uniqueness constraint
+								{
+									if (constraintWithImpliedOppositeDefault != null)
+									{
+										lookForDefault = false;
+										constraintWithImpliedOppositeDefault = null;
+									}
+									else
+									{
+										constraintWithImpliedOppositeDefault = constraint;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (haveSingles)
+				{
+					// Walk the single role constraints and try to combine them
+					// Group by modality/constraintType/role position
+					for (int modalityIndex = 0; modalityIndex < 2; ++modalityIndex)
+					{
+						for (int roleIndex = 0; roleIndex < 2; ++roleIndex)
+						{
+							UniquenessConstraint uniquenessConstraint = singleRoleConstraints[roleIndex, modalityIndex, 0] as UniquenessConstraint;
+							MandatoryConstraint mandatoryConstraint = singleRoleConstraints[roleIndex, modalityIndex, 1] as MandatoryConstraint;
+							if (lookForCombined)
+							{
+								if (uniquenessConstraint != null && mandatoryConstraint != null)
+								{
+									// Combine verbalizations into one
+									CombinedMandatoryUniqueVerbalizer verbalizer = CombinedMandatoryUniqueVerbalizer.GetVerbalizer();
+									verbalizer.Initialize(this, uniquenessConstraint);
+									yield return new CustomChildVerbalizer(verbalizer, true);
+								}
+								else if (uniquenessConstraint != null)
+								{
+									if (roleIndex == 1 && proxy != null)
+									{
+										// Make sure the readings come from the implied fact
+										ImpliedUniqueVerbalizer verbalizer = ImpliedUniqueVerbalizer.GetVerbalizer();
+										verbalizer.Initialize(this, uniquenessConstraint);
+										yield return new CustomChildVerbalizer(verbalizer, true);
+									}
+									else
+									{
+										yield return new CustomChildVerbalizer(uniquenessConstraint);
+									}
+								}
+								else if (mandatoryConstraint != null)
+								{
+									if (roleIndex == 1 && proxy != null)
+									{
+										// Make sure the readings come from the implied fact
+										ImpliedMandatoryVerbalizer verbalizer = ImpliedMandatoryVerbalizer.GetVerbalizer();
+										verbalizer.Initialize(this, mandatoryConstraint);
+										yield return new CustomChildVerbalizer(verbalizer, true);
+									}
+									else
+									{
+										yield return new CustomChildVerbalizer(mandatoryConstraint);
+									}
+								}
+							}
+							else
+							{
+								if (uniquenessConstraint != null)
+								{
+									if (roleIndex == 1 && proxy != null)
+									{
+										// Make sure the readings come from the implied fact
+										ImpliedUniqueVerbalizer verbalizer = ImpliedUniqueVerbalizer.GetVerbalizer();
+										verbalizer.Initialize(this, uniquenessConstraint);
+										yield return new CustomChildVerbalizer(verbalizer, true);
+									}
+									else
+									{
+										yield return new CustomChildVerbalizer(uniquenessConstraint);
+									}
+								}
+								if (mandatoryConstraint != null)
+								{
+									if (roleIndex == 1 && proxy != null)
+									{
+										// Make sure the readings come from the implied fact
+										ImpliedMandatoryVerbalizer verbalizer = ImpliedMandatoryVerbalizer.GetVerbalizer();
+										verbalizer.Initialize(this, mandatoryConstraint);
+										yield return new CustomChildVerbalizer(verbalizer, true);
+									}
+									else
+									{
+										yield return new CustomChildVerbalizer(mandatoryConstraint);
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (constraintWithImpliedOppositeDefault != null)
+				{
+					DefaultBinaryMissingUniquenessVerbalizer verbalizer = DefaultBinaryMissingUniquenessVerbalizer.GetVerbalizer();
+					verbalizer.Initialize(this, (UniquenessConstraint)constraintWithImpliedOppositeDefault);
+					yield return new CustomChildVerbalizer(verbalizer, true);
+				}
+			}
+			else
+			{
+				// Easy case, just verbalize all internal constraints as entered
+				for (int i = 0; i < setConstraintCount; ++i)
+				{
+					SetConstraint constraint = setConstraints[i];
+					if (constraint.Constraint.ConstraintIsInternal)
+					{
+						yield return new CustomChildVerbalizer((IVerbalize)constraint);
 					}
 				}
 			}
