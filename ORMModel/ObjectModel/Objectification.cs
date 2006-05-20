@@ -999,9 +999,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 
 				// Verify the implication pattern
-				if (element.IsImplied && (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count > factRolesCount))
+				if (element.IsImplied)
 				{
-					element.IsImplied = false;
+					if (!nestingType.IsIndependent || nestingType.PlayedRoleCollection.Count > factRolesCount || factRolesCount < 2)
+					{
+						element.IsImplied = false;
+					}
+					else if (factRolesCount == 2)
+					{
+						// We require a multi-role internal uniqueness constraint to be implied
+						// The internal constraints may not be attached to the fact yet
+						// as this also happens during deserialization fixup, so get the
+						// constraints from the non-derivable role connections
+						bool canBeImplied = false;
+						for (int i = 0; i < 2 && !canBeImplied; ++i)
+						{
+							Role role = (Role)factRoles[i].Role;
+							ConstraintRoleSequenceMoveableCollection constraints = role.ConstraintRoleSequenceCollection;
+							int constraintCount = constraints.Count;
+							for (int j = 0; j < constraintCount; ++j)
+							{
+								UniquenessConstraint uc = constraints[j] as UniquenessConstraint;
+								if (uc != null && uc.IsInternal && uc.RoleCollection.Count > 1)
+								{
+									canBeImplied = true;
+									break;
+								}
+							}
+						}
+						if (!canBeImplied)
+						{
+							element.IsImplied = false;
+						}
+					}
 				}
 			}
 			/// <summary>
@@ -1132,15 +1162,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null == element.ImpliedByObjectification)
 				{
 					bool impliedRequired = false;
-					if (element.RoleCollection.Count > 2)
+					RoleBaseMoveableCollection roles = element.RoleCollection;
+					int roleCount = roles.Count;
+					if (roleCount > 2)
 					{
 						impliedRequired = true;
 					}
 					else
 					{
-						foreach (UniquenessConstraint constraint in element.GetInternalConstraints<UniquenessConstraint>())
+						// The internal constraints may not be attached to the fact yet
+						// as this also happens during deserialization fixup, so get the
+						// constraints from the non-derived role connections
+						for (int i = 0; i < roleCount && !impliedRequired; ++i)
 						{
-							impliedRequired = true;
+							Role role = roles[i].Role;
+							ConstraintRoleSequenceMoveableCollection constraints = role.ConstraintRoleSequenceCollection;
+							int constraintCount = constraints.Count;
+							for (int j = 0; j < constraintCount; ++j)
+							{
+								UniquenessConstraint uc = constraints[j] as UniquenessConstraint;
+								if (uc != null && uc.IsInternal && uc.RoleCollection.Count > 1)
+								{
+									impliedRequired = true;
+									break;
+								}
+							}
 						}
 					}
 					if (impliedRequired)
