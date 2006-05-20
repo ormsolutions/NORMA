@@ -1863,7 +1863,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Gender_Gender_Code")
 			End If
 		End Sub
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
@@ -1872,16 +1872,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaisePersonHasParentsChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Protected Function RaisehasParentsChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))) = TryCast(Me.Events(8), EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))(Me, Me.PersonHasParents, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))(Me, Me.hasParents, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
@@ -1890,11 +1890,11 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaisePersonHasParentsChangedEvent(ByVal oldValue As Nullable(Of Boolean))
+		Protected Sub RaisehasParentsChangedEvent(ByVal oldValue As Nullable(Of Boolean))
 			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))) = TryCast(Me.Events(8), EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))(Me, oldValue, Me.PersonHasParents), New AsyncCallback(eventHandler.EndInvoke), Nothing)
-				Me.RaisePropertyChangedEvent("PersonHasParents")
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))(Me, oldValue, Me.hasParents), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				Me.RaisePropertyChangedEvent("hasParents")
 			End If
 		End Sub
 		Public Custom Event OptionalUniqueDecimalChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Decimal)))
@@ -2186,7 +2186,7 @@ Namespace SampleModel
 		<DataObjectFieldAttribute(False, False, False)> _
 		Public MustOverride Property Gender_Gender_Code() As String
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property PersonHasParents() As Nullable(Of Boolean)
+		Public MustOverride Property hasParents() As Nullable(Of Boolean)
 		<DataObjectFieldAttribute(False, False, True)> _
 		Public MustOverride Property OptionalUniqueDecimal() As Nullable(Of Decimal)
 		<DataObjectFieldAttribute(False, False, False)> _
@@ -2204,13 +2204,13 @@ Namespace SampleModel
 		<DataObjectFieldAttribute(False, False, True)> _
 		Public MustOverride Property Death() As Death
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public MustOverride ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public MustOverride ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public MustOverride ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public MustOverride ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 		<DataObjectFieldAttribute(False, False, True)> _
 		Public MustOverride ReadOnly Property Task() As ICollection(Of Task)
 		<DataObjectFieldAttribute(False, False, True)> _
@@ -2219,7 +2219,7 @@ Namespace SampleModel
 			Return Me.ToString(Nothing)
 		End Function
 		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
-			Return String.Format(provider, "Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}PersonHasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}ValueType1DoesSomethingElseWith = {14},{0}{1}MalePerson = {15},{0}{1}FemalePerson = {16},{0}{1}ChildPerson = {17},{0}{1}Death = {18}{0}}}", Environment.NewLine, "", Me.FirstName, Me.Date_YMD, Me.LastName, Me.OptionalUniqueString, Me.HatType_ColorARGB, Me.HatType_HatTypeStyle_HatTypeStyle_Description, Me.OwnsCar_vin, Me.Gender_Gender_Code, Me.PersonHasParents, Me.OptionalUniqueDecimal, Me.MandatoryUniqueDecimal, Me.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...")
+			Return String.Format(provider, "Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}hasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}ValueType1DoesSomethingElseWith = {14},{0}{1}MalePerson = {15},{0}{1}FemalePerson = {16},{0}{1}ChildPerson = {17},{0}{1}Death = {18}{0}}}", Environment.NewLine, "", Me.FirstName, Me.Date_YMD, Me.LastName, Me.OptionalUniqueString, Me.HatType_ColorARGB, Me.HatType_HatTypeStyle_HatTypeStyle_Description, Me.OwnsCar_vin, Me.Gender_Gender_Code, Me.hasParents, Me.OptionalUniqueDecimal, Me.MandatoryUniqueDecimal, Me.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...")
 		End Function
 		Public Shared Narrowing Operator CType(ByVal Person As Person) As MalePerson
 			If Person Is Nothing Then
@@ -2553,28 +2553,28 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Nullable(Of Boolean)
 			Get
-				Return Me.Person.PersonHasParents
+				Return Me.Person.hasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				Me.Person.PersonHasParents = Value
+				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanging, Value
+				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanged, Value
+				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.hasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OptionalUniqueDecimal() As Nullable(Of Decimal)
@@ -2721,24 +2721,24 @@ Namespace SampleModel
 				RemoveHandler Me.Person.DeathChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public Overridable ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 			Get
-				Return Me.Person.PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCar
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public Overridable ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 			Get
-				Return Me.Person.PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickName
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
@@ -3033,28 +3033,28 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Nullable(Of Boolean)
 			Get
-				Return Me.Person.PersonHasParents
+				Return Me.Person.hasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				Me.Person.PersonHasParents = Value
+				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanging, Value
+				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanged, Value
+				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.hasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OptionalUniqueDecimal() As Nullable(Of Decimal)
@@ -3201,24 +3201,24 @@ Namespace SampleModel
 				RemoveHandler Me.Person.DeathChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public Overridable ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 			Get
-				Return Me.Person.PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCar
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public Overridable ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 			Get
-				Return Me.Person.PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickName
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
@@ -3619,28 +3619,28 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Nullable(Of Boolean)
 			Get
-				Return Me.Person.PersonHasParents
+				Return Me.Person.hasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				Me.Person.PersonHasParents = Value
+				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanging, Value
+				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanged, Value
+				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.hasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OptionalUniqueDecimal() As Nullable(Of Decimal)
@@ -3811,24 +3811,24 @@ Namespace SampleModel
 				RemoveHandler Me.Person.DeathChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public Overridable ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 			Get
-				Return Me.Person.PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCar
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public Overridable ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 			Get
-				Return Me.Person.PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickName
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
@@ -4241,28 +4241,28 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Nullable(Of Boolean)
 			Get
-				Return Me.Person.PersonHasParents
+				Return Me.Person.hasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				Me.Person.PersonHasParents = Value
+				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanging, Value
+				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanging, Value
+				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Person.PersonHasParentsChanged, Value
+				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Person.PersonHasParentsChanged, Value
+				RemoveHandler Me.Person.hasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OptionalUniqueDecimal() As Nullable(Of Decimal)
@@ -4433,24 +4433,24 @@ Namespace SampleModel
 				RemoveHandler Me.Person.ChildPersonChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public Overridable ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 			Get
-				Return Me.Person.PersonDrivesCarAsDrivenByPerson
+				Return Me.Person.PersonDrivesCar
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Person.PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public Overridable ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 			Get
-				Return Me.Person.PersonHasNickNameAsPerson
+				Return Me.Person.PersonHasNickName
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
@@ -4520,7 +4520,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event NaturalDeathIsFromProstateCancerChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isFromProstateCancerChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -4529,16 +4529,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaiseNaturalDeathIsFromProstateCancerChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Protected Function RaiseisFromProstateCancerChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, Me.NaturalDeathIsFromProstateCancer, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, Me.isFromProstateCancer, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event NaturalDeathIsFromProstateCancerChanged As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isFromProstateCancerChanged As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -4547,11 +4547,11 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaiseNaturalDeathIsFromProstateCancerChangedEvent(ByVal oldValue As Nullable(Of Boolean))
+		Protected Sub RaiseisFromProstateCancerChangedEvent(ByVal oldValue As Nullable(Of Boolean))
 			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.NaturalDeathIsFromProstateCancer), New AsyncCallback(eventHandler.EndInvoke), Nothing)
-				Me.RaisePropertyChangedEvent("NaturalDeathIsFromProstateCancer")
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.isFromProstateCancer), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				Me.RaisePropertyChangedEvent("isFromProstateCancer")
 			End If
 		End Sub
 		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Death))
@@ -4589,14 +4589,14 @@ Namespace SampleModel
 			End If
 		End Sub
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property NaturalDeathIsFromProstateCancer() As Nullable(Of Boolean)
+		Public MustOverride Property isFromProstateCancer() As Nullable(Of Boolean)
 		<DataObjectFieldAttribute(False, False, False)> _
 		Public MustOverride Property Death() As Death
 		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
 		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
-			Return String.Format(provider, "NaturalDeath{0}{{{0}{1}NaturalDeathIsFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "", Me.NaturalDeathIsFromProstateCancer, "TODO: Recursively call ToString for customTypes...")
+			Return String.Format(provider, "NaturalDeath{0}{{{0}{1}isFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "", Me.isFromProstateCancer, "TODO: Recursively call ToString for customTypes...")
 		End Function
 		Public Shared Widening Operator CType(ByVal NaturalDeath As NaturalDeath) As Death
 			If NaturalDeath Is Nothing Then
@@ -4876,28 +4876,28 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Nullable(Of Boolean)
 			Get
-				Return Me.Death.Person.PersonHasParents
+				Return Me.Death.Person.hasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				Me.Death.Person.PersonHasParents = Value
+				Me.Death.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Death.Person.PersonHasParentsChanging, Value
+				AddHandler Me.Death.Person.hasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Death.Person.PersonHasParentsChanging, Value
+				RemoveHandler Me.Death.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Death.Person.PersonHasParentsChanged, Value
+				AddHandler Me.Death.Person.hasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Death.Person.PersonHasParentsChanged, Value
+				RemoveHandler Me.Death.Person.hasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OptionalUniqueDecimal() As Nullable(Of Decimal)
@@ -5068,24 +5068,24 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.ChildPersonChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public Overridable ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 			Get
-				Return Me.Death.Person.PersonDrivesCarAsDrivenByPerson
+				Return Me.Death.Person.PersonDrivesCar
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public Overridable ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 			Get
-				Return Me.Death.Person.PersonHasNickNameAsPerson
+				Return Me.Death.Person.PersonHasNickName
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
@@ -5137,7 +5137,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event UnnaturalDeathIsViolentChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isViolentChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5146,16 +5146,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaiseUnnaturalDeathIsViolentChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Protected Function RaiseisViolentChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.UnnaturalDeathIsViolent, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.isViolent, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event UnnaturalDeathIsViolentChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isViolentChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5164,14 +5164,14 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaiseUnnaturalDeathIsViolentChangedEvent(ByVal oldValue As Nullable(Of Boolean))
+		Protected Sub RaiseisViolentChangedEvent(ByVal oldValue As Nullable(Of Boolean))
 			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.UnnaturalDeathIsViolent), New AsyncCallback(eventHandler.EndInvoke), Nothing)
-				Me.RaisePropertyChangedEvent("UnnaturalDeathIsViolent")
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.isViolent), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				Me.RaisePropertyChangedEvent("isViolent")
 			End If
 		End Sub
-		Public Custom Event UnnaturalDeathIsBloodyChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isBloodyChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5180,16 +5180,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaiseUnnaturalDeathIsBloodyChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Protected Function RaiseisBloodyChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.UnnaturalDeathIsBloody, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.isBloody, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event UnnaturalDeathIsBloodyChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isBloodyChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5198,11 +5198,11 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaiseUnnaturalDeathIsBloodyChangedEvent(ByVal oldValue As Nullable(Of Boolean))
+		Protected Sub RaiseisBloodyChangedEvent(ByVal oldValue As Nullable(Of Boolean))
 			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.UnnaturalDeathIsBloody), New AsyncCallback(eventHandler.EndInvoke), Nothing)
-				Me.RaisePropertyChangedEvent("UnnaturalDeathIsBloody")
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.isBloody), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				Me.RaisePropertyChangedEvent("isBloody")
 			End If
 		End Sub
 		Public Custom Event DeathChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Death))
@@ -5240,16 +5240,16 @@ Namespace SampleModel
 			End If
 		End Sub
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property UnnaturalDeathIsViolent() As Nullable(Of Boolean)
+		Public MustOverride Property isViolent() As Nullable(Of Boolean)
 		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property UnnaturalDeathIsBloody() As Nullable(Of Boolean)
+		Public MustOverride Property isBloody() As Nullable(Of Boolean)
 		<DataObjectFieldAttribute(False, False, False)> _
 		Public MustOverride Property Death() As Death
 		Public Overloads Overrides Function ToString() As String
 			Return Me.ToString(Nothing)
 		End Function
 		Public Overloads Overridable Function ToString(ByVal provider As IFormatProvider) As String
-			Return String.Format(provider, "UnnaturalDeath{0}{{{0}{1}UnnaturalDeathIsViolent = ""{2}"",{0}{1}UnnaturalDeathIsBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "", Me.UnnaturalDeathIsViolent, Me.UnnaturalDeathIsBloody, "TODO: Recursively call ToString for customTypes...")
+			Return String.Format(provider, "UnnaturalDeath{0}{{{0}{1}isViolent = ""{2}"",{0}{1}isBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "", Me.isViolent, Me.isBloody, "TODO: Recursively call ToString for customTypes...")
 		End Function
 		Public Shared Widening Operator CType(ByVal UnnaturalDeath As UnnaturalDeath) As Death
 			If UnnaturalDeath Is Nothing Then
@@ -5529,28 +5529,28 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property PersonHasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Nullable(Of Boolean)
 			Get
-				Return Me.Death.Person.PersonHasParents
+				Return Me.Death.Person.hasParents
 			End Get
 			Set(ByVal Value As Nullable(Of Boolean))
-				Me.Death.Person.PersonHasParents = Value
+				Me.Death.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event PersonHasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Death.Person.PersonHasParentsChanging, Value
+				AddHandler Me.Death.Person.hasParentsChanging, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Death.Person.PersonHasParentsChanging, Value
+				RemoveHandler Me.Death.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event PersonHasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
 			AddHandler(ByVal Value As EventHandler)
-				AddHandler Me.Death.Person.PersonHasParentsChanged, Value
+				AddHandler Me.Death.Person.hasParentsChanged, Value
 			End AddHandler
 			RemoveHandler(ByVal Value As EventHandler)
-				RemoveHandler Me.Death.Person.PersonHasParentsChanged, Value
+				RemoveHandler Me.Death.Person.hasParentsChanged, Value
 			End RemoveHandler
 		End Event
 		Public Overridable Property OptionalUniqueDecimal() As Nullable(Of Decimal)
@@ -5721,24 +5721,24 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.ChildPersonChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+		Public Overridable ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 			Get
-				Return Me.Death.Person.PersonDrivesCarAsDrivenByPerson
+				Return Me.Death.Person.PersonDrivesCar
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+		Public Overridable ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 			Get
-				Return Me.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller
+				Return Me.Death.Person.PersonBoughtCarFromPersonOnDate
 			End Get
 		End Property
-		Public Overridable ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+		Public Overridable ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 			Get
-				Return Me.Death.Person.PersonHasNickNameAsPerson
+				Return Me.Death.Person.PersonHasNickName
 			End Get
 		End Property
 		Public Overridable ReadOnly Property Task() As ICollection(Of Task)
@@ -5974,8 +5974,8 @@ Namespace SampleModel
 		Function TryGetReviewByInternalUniquenessConstraint26(ByVal Car_vin As Integer, ByVal Criterion_Name As String, <System.Runtime.InteropServices.Out> ByRef Review As Review) As Boolean
 		Function GetPersonHasNickNameByInternalUniquenessConstraint33(ByVal NickName As String, ByVal Person As Person) As PersonHasNickName
 		Function TryGetPersonHasNickNameByInternalUniquenessConstraint33(ByVal NickName As String, ByVal Person As Person, <System.Runtime.InteropServices.Out> ByRef PersonHasNickName As PersonHasNickName) As Boolean
-		Function GetChildPersonByExternalUniquenessConstraint3(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson) As ChildPerson
-		Function TryGetChildPersonByExternalUniquenessConstraint3(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson, <System.Runtime.InteropServices.Out> ByRef ChildPerson As ChildPerson) As Boolean
+		Function GetChildPersonByInternalUniquenessConstraint49(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson) As ChildPerson
+		Function TryGetChildPersonByInternalUniquenessConstraint49(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson, <System.Runtime.InteropServices.Out> ByRef ChildPerson As ChildPerson) As Boolean
 		Function GetPersonByExternalUniquenessConstraint1(ByVal FirstName As String, ByVal Date_YMD As Integer) As Person
 		Function TryGetPersonByExternalUniquenessConstraint1(ByVal FirstName As String, ByVal Date_YMD As Integer, <System.Runtime.InteropServices.Out> ByRef Person As Person) As Boolean
 		Function GetPersonByExternalUniquenessConstraint2(ByVal LastName As String, ByVal Date_YMD As Integer) As Person
@@ -6030,10 +6030,10 @@ Namespace SampleModel
 			Dim constraintEnforcementCollectionCallbacksByTypeAndNameDictionary As Dictionary(Of ConstraintEnforcementCollectionTypeAndPropertyNameKey, Object) = New Dictionary(Of ConstraintEnforcementCollectionTypeAndPropertyNameKey, Object)(2)
 			Me._ContraintEnforcementCollectionCallbacksByTypeDictionary = constraintEnforcementCollectionCallbacksByTypeDictionary
 			Me._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = constraintEnforcementCollectionCallbacksByTypeAndNameDictionary
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of Person, PersonDrivesCar)), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonDrivesCar)(New PotentialCollectionModificationCallback(Of Person, PersonDrivesCar)(Me.OnPersonPersonDrivesCarAsDrivenByPersonAdding), New CommittedCollectionModificationCallback(Of Person, PersonDrivesCar)(Me.OnPersonPersonDrivesCarAsDrivenByPersonAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonDrivesCar)(Me.OnPersonPersonDrivesCarAsDrivenByPersonRemoved)))
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)), "PersonBoughtCarFromPersonOnDateAsBuyer"), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonBoughtCarFromPersonOnDate)(New PotentialCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdding), New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAsBuyerRemoved)))
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)), "PersonBoughtCarFromPersonOnDateAsSeller"), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonBoughtCarFromPersonOnDate)(New PotentialCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdding), New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAsSellerRemoved)))
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of Person, PersonHasNickName)), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonHasNickName)(New PotentialCollectionModificationCallback(Of Person, PersonHasNickName)(Me.OnPersonPersonHasNickNameAsPersonAdding), New CommittedCollectionModificationCallback(Of Person, PersonHasNickName)(Me.OnPersonPersonHasNickNameAsPersonAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonHasNickName)(Me.OnPersonPersonHasNickNameAsPersonRemoved)))
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of Person, PersonDrivesCar)), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonDrivesCar)(New PotentialCollectionModificationCallback(Of Person, PersonDrivesCar)(Me.OnPersonPersonDrivesCarAdding), New CommittedCollectionModificationCallback(Of Person, PersonDrivesCar)(Me.OnPersonPersonDrivesCarAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonDrivesCar)(Me.OnPersonPersonDrivesCarRemoved)))
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)), "PersonBoughtCarFromPersonOnDate"), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonBoughtCarFromPersonOnDate)(New PotentialCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAdding), New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateRemoved)))
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(New ConstraintEnforcementCollectionTypeAndPropertyNameKey(GetType(ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)), "PersonBoughtCarFromPersonOnDate"), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonBoughtCarFromPersonOnDate)(New PotentialCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAdding), New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonBoughtCarFromPersonOnDate)(Me.OnPersonPersonBoughtCarFromPersonOnDateRemoved)))
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of Person, PersonHasNickName)), New ConstraintEnforcementCollectionCallbacks(Of Person, PersonHasNickName)(New PotentialCollectionModificationCallback(Of Person, PersonHasNickName)(Me.OnPersonPersonHasNickNameAdding), New CommittedCollectionModificationCallback(Of Person, PersonHasNickName)(Me.OnPersonPersonHasNickNameAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, PersonHasNickName)(Me.OnPersonPersonHasNickNameRemoved)))
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of Person, Task)), New ConstraintEnforcementCollectionCallbacks(Of Person, Task)(New PotentialCollectionModificationCallback(Of Person, Task)(Me.OnPersonTaskAdding), New CommittedCollectionModificationCallback(Of Person, Task)(Me.OnPersonTaskAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, Task)(Me.OnPersonTaskRemoved)))
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of Person, ValueType1)), New ConstraintEnforcementCollectionCallbacks(Of Person, ValueType1)(New PotentialCollectionModificationCallback(Of Person, ValueType1)(Me.OnPersonValueType1DoesSomethingWithAdding), New CommittedCollectionModificationCallback(Of Person, ValueType1)(Me.OnPersonValueType1DoesSomethingWithAdded), Nothing, New CommittedCollectionModificationCallback(Of Person, ValueType1)(Me.OnPersonValueType1DoesSomethingWithRemoved)))
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(GetType(ConstraintEnforcementCollection(Of MalePerson, ChildPerson)), New ConstraintEnforcementCollectionCallbacks(Of MalePerson, ChildPerson)(New PotentialCollectionModificationCallback(Of MalePerson, ChildPerson)(Me.OnMalePersonChildPersonAdding), New CommittedCollectionModificationCallback(Of MalePerson, ChildPerson)(Me.OnMalePersonChildPersonAdded), Nothing, New CommittedCollectionModificationCallback(Of MalePerson, ChildPerson)(Me.OnMalePersonChildPersonRemoved)))
@@ -6245,30 +6245,30 @@ Namespace SampleModel
 				Me._InternalUniquenessConstraint33Dictionary.Add(newValue, instance)
 			End If
 		End Sub
-		Private ReadOnly _ExternalUniquenessConstraint3Dictionary As Dictionary(Of Tuple(Of MalePerson, Integer, FemalePerson), ChildPerson) = New Dictionary(Of Tuple(Of MalePerson, Integer, FemalePerson), ChildPerson)()
-		Public Function GetChildPersonByExternalUniquenessConstraint3(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson) As ChildPerson Implements _
-			ISampleModelContext.GetChildPersonByExternalUniquenessConstraint3
-			Return Me._ExternalUniquenessConstraint3Dictionary(Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(Father, BirthOrder_BirthOrder_Nr, Mother))
+		Private ReadOnly _InternalUniquenessConstraint49Dictionary As Dictionary(Of Tuple(Of MalePerson, Integer, FemalePerson), ChildPerson) = New Dictionary(Of Tuple(Of MalePerson, Integer, FemalePerson), ChildPerson)()
+		Public Function GetChildPersonByInternalUniquenessConstraint49(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson) As ChildPerson Implements _
+			ISampleModelContext.GetChildPersonByInternalUniquenessConstraint49
+			Return Me._InternalUniquenessConstraint49Dictionary(Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(Father, BirthOrder_BirthOrder_Nr, Mother))
 		End Function
-		Public Function TryGetChildPersonByExternalUniquenessConstraint3(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson, <System.Runtime.InteropServices.Out> ByRef ChildPerson As ChildPerson) As Boolean Implements _
-			ISampleModelContext.TryGetChildPersonByExternalUniquenessConstraint3
-			Return Me._ExternalUniquenessConstraint3Dictionary.TryGetValue(Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(Father, BirthOrder_BirthOrder_Nr, Mother), ChildPerson)
+		Public Function TryGetChildPersonByInternalUniquenessConstraint49(ByVal Father As MalePerson, ByVal BirthOrder_BirthOrder_Nr As Integer, ByVal Mother As FemalePerson, <System.Runtime.InteropServices.Out> ByRef ChildPerson As ChildPerson) As Boolean Implements _
+			ISampleModelContext.TryGetChildPersonByInternalUniquenessConstraint49
+			Return Me._InternalUniquenessConstraint49Dictionary.TryGetValue(Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(Father, BirthOrder_BirthOrder_Nr, Mother), ChildPerson)
 		End Function
-		Private Function OnExternalUniquenessConstraint3Changing(ByVal instance As ChildPerson, ByVal newValue As Tuple(Of MalePerson, Integer, FemalePerson)) As Boolean
+		Private Function OnInternalUniquenessConstraint49Changing(ByVal instance As ChildPerson, ByVal newValue As Tuple(Of MalePerson, Integer, FemalePerson)) As Boolean
 			If CObj(newValue) IsNot Nothing Then
 				Dim currentInstance As ChildPerson
-				If Me._ExternalUniquenessConstraint3Dictionary.TryGetValue(newValue, currentInstance) Then
+				If Me._InternalUniquenessConstraint49Dictionary.TryGetValue(newValue, currentInstance) Then
 					Return CObj(currentInstance) Is instance
 				End If
 			End If
 			Return True
 		End Function
-		Private Sub OnExternalUniquenessConstraint3Changed(ByVal instance As ChildPerson, ByVal oldValue As Tuple(Of MalePerson, Integer, FemalePerson), ByVal newValue As Tuple(Of MalePerson, Integer, FemalePerson))
+		Private Sub OnInternalUniquenessConstraint49Changed(ByVal instance As ChildPerson, ByVal oldValue As Tuple(Of MalePerson, Integer, FemalePerson), ByVal newValue As Tuple(Of MalePerson, Integer, FemalePerson))
 			If CObj(oldValue) IsNot Nothing Then
-				Me._ExternalUniquenessConstraint3Dictionary.Remove(oldValue)
+				Me._InternalUniquenessConstraint49Dictionary.Remove(oldValue)
 			End If
 			If CObj(newValue) IsNot Nothing Then
-				Me._ExternalUniquenessConstraint3Dictionary.Add(newValue, instance)
+				Me._InternalUniquenessConstraint49Dictionary.Add(newValue, instance)
 			End If
 		End Sub
 		Private ReadOnly _ExternalUniquenessConstraint1Dictionary As Dictionary(Of Tuple(Of String, Integer), Person) = New Dictionary(Of Tuple(Of String, Integer), Person)()
@@ -6656,10 +6656,10 @@ Namespace SampleModel
 			Return True
 		End Function
 		Private Overloads Sub OnPersonDrivesCarDrivenByPersonChanged(ByVal instance As PersonDrivesCar, ByVal oldValue As Person)
-			instance.DrivenByPerson.PersonDrivesCarAsDrivenByPerson.Add(instance)
+			instance.DrivenByPerson.PersonDrivesCar.Add(instance)
 			Dim InternalUniquenessConstraint18OldValueTuple As Tuple(Of Integer, Person)
 			If CObj(oldValue) IsNot Nothing Then
-				oldValue.PersonDrivesCarAsDrivenByPerson.Remove(instance)
+				oldValue.PersonDrivesCar.Remove(instance)
 				InternalUniquenessConstraint18OldValueTuple = Tuple.CreateTuple(Of Integer, Person)(instance.DrivesCar_vin, oldValue)
 			Else
 				InternalUniquenessConstraint18OldValueTuple = Nothing
@@ -6825,11 +6825,11 @@ Namespace SampleModel
 			Return True
 		End Function
 		Private Overloads Sub OnPersonBoughtCarFromPersonOnDateBuyerChanged(ByVal instance As PersonBoughtCarFromPersonOnDate, ByVal oldValue As Person)
-			instance.Buyer.PersonBoughtCarFromPersonOnDateAsBuyer.Add(instance)
+			instance.Buyer.PersonBoughtCarFromPersonOnDate.Add(instance)
 			Dim InternalUniquenessConstraint23OldValueTuple As Tuple(Of Person, Integer, Person)
 			Dim InternalUniquenessConstraint25OldValueTuple As Tuple(Of Integer, Integer, Person)
 			If CObj(oldValue) IsNot Nothing Then
-				oldValue.PersonBoughtCarFromPersonOnDateAsBuyer.Remove(instance)
+				oldValue.PersonBoughtCarFromPersonOnDate.Remove(instance)
 				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple(Of Person, Integer, Person)(oldValue, instance.CarSold_vin, instance.Seller)
 				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple(Of Integer, Integer, Person)(instance.CarSold_vin, instance.SaleDate_YMD, oldValue)
 			Else
@@ -6854,11 +6854,11 @@ Namespace SampleModel
 			Return True
 		End Function
 		Private Overloads Sub OnPersonBoughtCarFromPersonOnDateSellerChanged(ByVal instance As PersonBoughtCarFromPersonOnDate, ByVal oldValue As Person)
-			instance.Seller.PersonBoughtCarFromPersonOnDateAsSeller.Add(instance)
+			instance.Seller.PersonBoughtCarFromPersonOnDate.Add(instance)
 			Dim InternalUniquenessConstraint23OldValueTuple As Tuple(Of Person, Integer, Person)
 			Dim InternalUniquenessConstraint24OldValueTuple As Tuple(Of Integer, Person, Integer)
 			If CObj(oldValue) IsNot Nothing Then
-				oldValue.PersonBoughtCarFromPersonOnDateAsSeller.Remove(instance)
+				oldValue.PersonBoughtCarFromPersonOnDate.Remove(instance)
 				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple(Of Person, Integer, Person)(instance.Buyer, instance.CarSold_vin, oldValue)
 				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple(Of Integer, Person, Integer)(instance.SaleDate_YMD, oldValue, instance.CarSold_vin)
 			Else
@@ -7158,10 +7158,10 @@ Namespace SampleModel
 			Return True
 		End Function
 		Private Overloads Sub OnPersonHasNickNamePersonChanged(ByVal instance As PersonHasNickName, ByVal oldValue As Person)
-			instance.Person.PersonHasNickNameAsPerson.Add(instance)
+			instance.Person.PersonHasNickName.Add(instance)
 			Dim InternalUniquenessConstraint33OldValueTuple As Tuple(Of String, Person)
 			If CObj(oldValue) IsNot Nothing Then
-				oldValue.PersonHasNickNameAsPerson.Remove(instance)
+				oldValue.PersonHasNickName.Remove(instance)
 				InternalUniquenessConstraint33OldValueTuple = Tuple.CreateTuple(Of String, Person)(instance.NickName, oldValue)
 			Else
 				InternalUniquenessConstraint33OldValueTuple = Nothing
@@ -7377,7 +7377,7 @@ Namespace SampleModel
 		Private Function OnPersonGender_Gender_CodeChanging(ByVal instance As Person, ByVal newValue As String) As Boolean
 			Return True
 		End Function
-		Private Function OnPersonPersonHasParentsChanging(ByVal instance As Person, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnPersonhasParentsChanging(ByVal instance As Person, ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Return True
 		End Function
 		Private Function OnPersonOptionalUniqueDecimalChanging(ByVal instance As Person, ByVal newValue As Nullable(Of Decimal)) As Boolean
@@ -7509,52 +7509,52 @@ Namespace SampleModel
 				oldValue.Person = Nothing
 			End If
 		End Sub
-		Private Function OnPersonPersonDrivesCarAsDrivenByPersonAdding(ByVal instance As Person, ByVal value As PersonDrivesCar) As Boolean
+		Private Function OnPersonPersonDrivesCarAdding(ByVal instance As Person, ByVal value As PersonDrivesCar) As Boolean
 			If CObj(Me) IsNot value.Context Then
 				Throw SampleModelContext.GetDifferentContextsException()
 			End If
 			Return True
 		End Function
-		Private Sub OnPersonPersonDrivesCarAsDrivenByPersonAdded(ByVal instance As Person, ByVal value As PersonDrivesCar)
+		Private Sub OnPersonPersonDrivesCarAdded(ByVal instance As Person, ByVal value As PersonDrivesCar)
 			value.DrivenByPerson = instance
 		End Sub
-		Private Sub OnPersonPersonDrivesCarAsDrivenByPersonRemoved(ByVal instance As Person, ByVal value As PersonDrivesCar)
+		Private Sub OnPersonPersonDrivesCarRemoved(ByVal instance As Person, ByVal value As PersonDrivesCar)
 			value.DrivenByPerson = Nothing
 		End Sub
-		Private Function OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdding(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate) As Boolean
+		Private Function OnPersonPersonBoughtCarFromPersonOnDateAdding(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate) As Boolean
 			If CObj(Me) IsNot value.Context Then
 				Throw SampleModelContext.GetDifferentContextsException()
 			End If
 			Return True
 		End Function
-		Private Sub OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdded(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
+		Private Sub OnPersonPersonBoughtCarFromPersonOnDateAdded(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
 			value.Buyer = instance
 		End Sub
-		Private Sub OnPersonPersonBoughtCarFromPersonOnDateAsBuyerRemoved(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
+		Private Sub OnPersonPersonBoughtCarFromPersonOnDateRemoved(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
 			value.Buyer = Nothing
 		End Sub
-		Private Function OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdding(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate) As Boolean
+		Private Function OnPersonPersonBoughtCarFromPersonOnDateAdding(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate) As Boolean
 			If CObj(Me) IsNot value.Context Then
 				Throw SampleModelContext.GetDifferentContextsException()
 			End If
 			Return True
 		End Function
-		Private Sub OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdded(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
+		Private Sub OnPersonPersonBoughtCarFromPersonOnDateAdded(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
 			value.Seller = instance
 		End Sub
-		Private Sub OnPersonPersonBoughtCarFromPersonOnDateAsSellerRemoved(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
+		Private Sub OnPersonPersonBoughtCarFromPersonOnDateRemoved(ByVal instance As Person, ByVal value As PersonBoughtCarFromPersonOnDate)
 			value.Seller = Nothing
 		End Sub
-		Private Function OnPersonPersonHasNickNameAsPersonAdding(ByVal instance As Person, ByVal value As PersonHasNickName) As Boolean
+		Private Function OnPersonPersonHasNickNameAdding(ByVal instance As Person, ByVal value As PersonHasNickName) As Boolean
 			If CObj(Me) IsNot value.Context Then
 				Throw SampleModelContext.GetDifferentContextsException()
 			End If
 			Return True
 		End Function
-		Private Sub OnPersonPersonHasNickNameAsPersonAdded(ByVal instance As Person, ByVal value As PersonHasNickName)
+		Private Sub OnPersonPersonHasNickNameAdded(ByVal instance As Person, ByVal value As PersonHasNickName)
 			value.Person = instance
 		End Sub
-		Private Sub OnPersonPersonHasNickNameAsPersonRemoved(ByVal instance As Person, ByVal value As PersonHasNickName)
+		Private Sub OnPersonPersonHasNickNameRemoved(ByVal instance As Person, ByVal value As PersonHasNickName)
 			value.Person = Nothing
 		End Sub
 		Private Function OnPersonTaskAdding(ByVal instance As Person, ByVal value As Task) As Boolean
@@ -7595,10 +7595,10 @@ Namespace SampleModel
 			Inherits Person
 			Public Sub New(ByVal context As SampleModelContext, ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String)
 				Me._Context = context
-				Me._PersonDrivesCarAsDrivenByPerson = New ConstraintEnforcementCollection(Of Person, PersonDrivesCar)(Me)
-				Me._PersonBoughtCarFromPersonOnDateAsBuyer = New ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)(Me, "PersonBoughtCarFromPersonOnDateAsBuyer")
-				Me._PersonBoughtCarFromPersonOnDateAsSeller = New ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)(Me, "PersonBoughtCarFromPersonOnDateAsSeller")
-				Me._PersonHasNickNameAsPerson = New ConstraintEnforcementCollection(Of Person, PersonHasNickName)(Me)
+				Me._PersonDrivesCar = New ConstraintEnforcementCollection(Of Person, PersonDrivesCar)(Me)
+				Me._PersonBoughtCarFromPersonOnDate = New ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)(Me, "PersonBoughtCarFromPersonOnDate")
+				Me._PersonBoughtCarFromPersonOnDate = New ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)(Me, "PersonBoughtCarFromPersonOnDate")
+				Me._PersonHasNickName = New ConstraintEnforcementCollection(Of Person, PersonHasNickName)(Me)
 				Me._Task = New ConstraintEnforcementCollection(Of Person, Task)(Me)
 				Me._ValueType1DoesSomethingWith = New ConstraintEnforcementCollection(Of Person, ValueType1)(Me)
 				Me._FirstName = FirstName
@@ -7762,18 +7762,18 @@ Namespace SampleModel
 					End If
 				End Set
 			End Property
-			<AccessedThroughPropertyAttribute("PersonHasParents")> _
-			Private _PersonHasParents As Nullable(Of Boolean)
-			Public Overrides Property PersonHasParents() As Nullable(Of Boolean)
+			<AccessedThroughPropertyAttribute("hasParents")> _
+			Private _hasParents As Nullable(Of Boolean)
+			Public Overrides Property hasParents() As Nullable(Of Boolean)
 				Get
-					Return Me._PersonHasParents
+					Return Me._hasParents
 				End Get
 				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._PersonHasParents
+					Dim oldValue As Nullable(Of Boolean) = Me._hasParents
 					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
-						If Me._Context.OnPersonPersonHasParentsChanging(Me, Value) AndAlso MyBase.RaisePersonHasParentsChangingEvent(Value) Then
-							Me._PersonHasParents = Value
-							MyBase.RaisePersonHasParentsChangedEvent(oldValue)
+						If Me._Context.OnPersonhasParentsChanging(Me, Value) AndAlso MyBase.RaisehasParentsChangingEvent(Value) Then
+							Me._hasParents = Value
+							MyBase.RaisehasParentsChangedEvent(oldValue)
 						End If
 					End If
 				End Set
@@ -7917,32 +7917,32 @@ Namespace SampleModel
 					End If
 				End Set
 			End Property
-			<AccessedThroughPropertyAttribute("PersonDrivesCarAsDrivenByPerson")> _
-			Private ReadOnly _PersonDrivesCarAsDrivenByPerson As ICollection(Of PersonDrivesCar)
-			Public Overrides ReadOnly Property PersonDrivesCarAsDrivenByPerson() As ICollection(Of PersonDrivesCar)
+			<AccessedThroughPropertyAttribute("PersonDrivesCar")> _
+			Private ReadOnly _PersonDrivesCar As ICollection(Of PersonDrivesCar)
+			Public Overrides ReadOnly Property PersonDrivesCar() As ICollection(Of PersonDrivesCar)
 				Get
-					Return Me._PersonDrivesCarAsDrivenByPerson
+					Return Me._PersonDrivesCar
 				End Get
 			End Property
-			<AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDateAsBuyer")> _
-			Private ReadOnly _PersonBoughtCarFromPersonOnDateAsBuyer As ICollection(Of PersonBoughtCarFromPersonOnDate)
-			Public Overrides ReadOnly Property PersonBoughtCarFromPersonOnDateAsBuyer() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+			<AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDate")> _
+			Private ReadOnly _PersonBoughtCarFromPersonOnDate As ICollection(Of PersonBoughtCarFromPersonOnDate)
+			Public Overrides ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 				Get
-					Return Me._PersonBoughtCarFromPersonOnDateAsBuyer
+					Return Me._PersonBoughtCarFromPersonOnDate
 				End Get
 			End Property
-			<AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDateAsSeller")> _
-			Private ReadOnly _PersonBoughtCarFromPersonOnDateAsSeller As ICollection(Of PersonBoughtCarFromPersonOnDate)
-			Public Overrides ReadOnly Property PersonBoughtCarFromPersonOnDateAsSeller() As ICollection(Of PersonBoughtCarFromPersonOnDate)
+			<AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDate")> _
+			Private ReadOnly _PersonBoughtCarFromPersonOnDate As ICollection(Of PersonBoughtCarFromPersonOnDate)
+			Public Overrides ReadOnly Property PersonBoughtCarFromPersonOnDate() As ICollection(Of PersonBoughtCarFromPersonOnDate)
 				Get
-					Return Me._PersonBoughtCarFromPersonOnDateAsSeller
+					Return Me._PersonBoughtCarFromPersonOnDate
 				End Get
 			End Property
-			<AccessedThroughPropertyAttribute("PersonHasNickNameAsPerson")> _
-			Private ReadOnly _PersonHasNickNameAsPerson As ICollection(Of PersonHasNickName)
-			Public Overrides ReadOnly Property PersonHasNickNameAsPerson() As ICollection(Of PersonHasNickName)
+			<AccessedThroughPropertyAttribute("PersonHasNickName")> _
+			Private ReadOnly _PersonHasNickName As ICollection(Of PersonHasNickName)
+			Public Overrides ReadOnly Property PersonHasNickName() As ICollection(Of PersonHasNickName)
 				Get
-					Return Me._PersonHasNickNameAsPerson
+					Return Me._PersonHasNickName
 				End Get
 			End Property
 			<AccessedThroughPropertyAttribute("Task")> _
@@ -8170,27 +8170,27 @@ Namespace SampleModel
 		End Function
 		Private Function OnChildPersonBirthOrder_BirthOrder_NrChanging(ByVal instance As ChildPerson, ByVal newValue As Integer) As Boolean
 			If CObj(instance) IsNot Nothing Then
-				If Not (Me.OnExternalUniquenessConstraint3Changing(instance, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, newValue, instance.Mother))) Then
+				If Not (Me.OnInternalUniquenessConstraint49Changing(instance, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, newValue, instance.Mother))) Then
 					Return False
 				End If
 			End If
 			Return True
 		End Function
 		Private Overloads Sub OnChildPersonBirthOrder_BirthOrder_NrChanged(ByVal instance As ChildPerson, ByVal oldValue As Nullable(Of Integer))
-			Dim ExternalUniquenessConstraint3OldValueTuple As Tuple(Of MalePerson, Integer, FemalePerson)
+			Dim InternalUniquenessConstraint49OldValueTuple As Tuple(Of MalePerson, Integer, FemalePerson)
 			If oldValue.HasValue Then
-				ExternalUniquenessConstraint3OldValueTuple = Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, oldValue.Value, instance.Mother)
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, oldValue.Value, instance.Mother)
 			Else
-				ExternalUniquenessConstraint3OldValueTuple = Nothing
+				InternalUniquenessConstraint49OldValueTuple = Nothing
 			End If
-			Me.OnExternalUniquenessConstraint3Changed(instance, ExternalUniquenessConstraint3OldValueTuple, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother))
+			Me.OnInternalUniquenessConstraint49Changed(instance, InternalUniquenessConstraint49OldValueTuple, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother))
 		End Sub
 		Private Function OnChildPersonFatherChanging(ByVal instance As ChildPerson, ByVal newValue As MalePerson) As Boolean
 			If CObj(Me) IsNot newValue.Context Then
 				Throw SampleModelContext.GetDifferentContextsException()
 			End If
 			If CObj(instance) IsNot Nothing Then
-				If Not (Me.OnExternalUniquenessConstraint3Changing(instance, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(newValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother))) Then
+				If Not (Me.OnInternalUniquenessConstraint49Changing(instance, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(newValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother))) Then
 					Return False
 				End If
 			End If
@@ -8198,21 +8198,21 @@ Namespace SampleModel
 		End Function
 		Private Overloads Sub OnChildPersonFatherChanged(ByVal instance As ChildPerson, ByVal oldValue As MalePerson)
 			instance.Father.ChildPerson.Add(instance)
-			Dim ExternalUniquenessConstraint3OldValueTuple As Tuple(Of MalePerson, Integer, FemalePerson)
+			Dim InternalUniquenessConstraint49OldValueTuple As Tuple(Of MalePerson, Integer, FemalePerson)
 			If CObj(oldValue) IsNot Nothing Then
 				oldValue.ChildPerson.Remove(instance)
-				ExternalUniquenessConstraint3OldValueTuple = Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(oldValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother)
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(oldValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother)
 			Else
-				ExternalUniquenessConstraint3OldValueTuple = Nothing
+				InternalUniquenessConstraint49OldValueTuple = Nothing
 			End If
-			Me.OnExternalUniquenessConstraint3Changed(instance, ExternalUniquenessConstraint3OldValueTuple, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother))
+			Me.OnInternalUniquenessConstraint49Changed(instance, InternalUniquenessConstraint49OldValueTuple, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother))
 		End Sub
 		Private Function OnChildPersonMotherChanging(ByVal instance As ChildPerson, ByVal newValue As FemalePerson) As Boolean
 			If CObj(Me) IsNot newValue.Context Then
 				Throw SampleModelContext.GetDifferentContextsException()
 			End If
 			If CObj(instance) IsNot Nothing Then
-				If Not (Me.OnExternalUniquenessConstraint3Changing(instance, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, newValue))) Then
+				If Not (Me.OnInternalUniquenessConstraint49Changing(instance, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, newValue))) Then
 					Return False
 				End If
 			End If
@@ -8220,14 +8220,14 @@ Namespace SampleModel
 		End Function
 		Private Overloads Sub OnChildPersonMotherChanged(ByVal instance As ChildPerson, ByVal oldValue As FemalePerson)
 			instance.Mother.ChildPerson.Add(instance)
-			Dim ExternalUniquenessConstraint3OldValueTuple As Tuple(Of MalePerson, Integer, FemalePerson)
+			Dim InternalUniquenessConstraint49OldValueTuple As Tuple(Of MalePerson, Integer, FemalePerson)
 			If CObj(oldValue) IsNot Nothing Then
 				oldValue.ChildPerson.Remove(instance)
-				ExternalUniquenessConstraint3OldValueTuple = Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, oldValue)
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, oldValue)
 			Else
-				ExternalUniquenessConstraint3OldValueTuple = Nothing
+				InternalUniquenessConstraint49OldValueTuple = Nothing
 			End If
-			Me.OnExternalUniquenessConstraint3Changed(instance, ExternalUniquenessConstraint3OldValueTuple, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother))
+			Me.OnInternalUniquenessConstraint49Changed(instance, InternalUniquenessConstraint49OldValueTuple, Tuple.CreateTuple(Of MalePerson, Integer, FemalePerson)(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother))
 		End Sub
 		Private Function OnChildPersonPersonChanging(ByVal instance As ChildPerson, ByVal newValue As Person) As Boolean
 			If CObj(Me) IsNot newValue.Context Then
@@ -8546,7 +8546,7 @@ Namespace SampleModel
 			End If
 			Return New NaturalDeathCore(Me, Death)
 		End Function
-		Private Function OnNaturalDeathNaturalDeathIsFromProstateCancerChanging(ByVal instance As NaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnNaturalDeathisFromProstateCancerChanging(ByVal instance As NaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Return True
 		End Function
 		Private Function OnNaturalDeathDeathChanging(ByVal instance As NaturalDeath, ByVal newValue As Death) As Boolean
@@ -8585,18 +8585,18 @@ Namespace SampleModel
 					Return Me._Context
 				End Get
 			End Property
-			<AccessedThroughPropertyAttribute("NaturalDeathIsFromProstateCancer")> _
-			Private _NaturalDeathIsFromProstateCancer As Nullable(Of Boolean)
-			Public Overrides Property NaturalDeathIsFromProstateCancer() As Nullable(Of Boolean)
+			<AccessedThroughPropertyAttribute("isFromProstateCancer")> _
+			Private _isFromProstateCancer As Nullable(Of Boolean)
+			Public Overrides Property isFromProstateCancer() As Nullable(Of Boolean)
 				Get
-					Return Me._NaturalDeathIsFromProstateCancer
+					Return Me._isFromProstateCancer
 				End Get
 				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._NaturalDeathIsFromProstateCancer
+					Dim oldValue As Nullable(Of Boolean) = Me._isFromProstateCancer
 					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
-						If Me._Context.OnNaturalDeathNaturalDeathIsFromProstateCancerChanging(Me, Value) AndAlso MyBase.RaiseNaturalDeathIsFromProstateCancerChangingEvent(Value) Then
-							Me._NaturalDeathIsFromProstateCancer = Value
-							MyBase.RaiseNaturalDeathIsFromProstateCancerChangedEvent(oldValue)
+						If Me._Context.OnNaturalDeathisFromProstateCancerChanging(Me, Value) AndAlso MyBase.RaiseisFromProstateCancerChangingEvent(Value) Then
+							Me._isFromProstateCancer = Value
+							MyBase.RaiseisFromProstateCancerChangedEvent(oldValue)
 						End If
 					End If
 				End Set
@@ -8635,10 +8635,10 @@ Namespace SampleModel
 			End If
 			Return New UnnaturalDeathCore(Me, Death)
 		End Function
-		Private Function OnUnnaturalDeathUnnaturalDeathIsViolentChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnUnnaturalDeathisViolentChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Return True
 		End Function
-		Private Function OnUnnaturalDeathUnnaturalDeathIsBloodyChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnUnnaturalDeathisBloodyChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
 			Return True
 		End Function
 		Private Function OnUnnaturalDeathDeathChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Death) As Boolean
@@ -8677,34 +8677,34 @@ Namespace SampleModel
 					Return Me._Context
 				End Get
 			End Property
-			<AccessedThroughPropertyAttribute("UnnaturalDeathIsViolent")> _
-			Private _UnnaturalDeathIsViolent As Nullable(Of Boolean)
-			Public Overrides Property UnnaturalDeathIsViolent() As Nullable(Of Boolean)
+			<AccessedThroughPropertyAttribute("isViolent")> _
+			Private _isViolent As Nullable(Of Boolean)
+			Public Overrides Property isViolent() As Nullable(Of Boolean)
 				Get
-					Return Me._UnnaturalDeathIsViolent
+					Return Me._isViolent
 				End Get
 				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._UnnaturalDeathIsViolent
+					Dim oldValue As Nullable(Of Boolean) = Me._isViolent
 					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
-						If Me._Context.OnUnnaturalDeathUnnaturalDeathIsViolentChanging(Me, Value) AndAlso MyBase.RaiseUnnaturalDeathIsViolentChangingEvent(Value) Then
-							Me._UnnaturalDeathIsViolent = Value
-							MyBase.RaiseUnnaturalDeathIsViolentChangedEvent(oldValue)
+						If Me._Context.OnUnnaturalDeathisViolentChanging(Me, Value) AndAlso MyBase.RaiseisViolentChangingEvent(Value) Then
+							Me._isViolent = Value
+							MyBase.RaiseisViolentChangedEvent(oldValue)
 						End If
 					End If
 				End Set
 			End Property
-			<AccessedThroughPropertyAttribute("UnnaturalDeathIsBloody")> _
-			Private _UnnaturalDeathIsBloody As Nullable(Of Boolean)
-			Public Overrides Property UnnaturalDeathIsBloody() As Nullable(Of Boolean)
+			<AccessedThroughPropertyAttribute("isBloody")> _
+			Private _isBloody As Nullable(Of Boolean)
+			Public Overrides Property isBloody() As Nullable(Of Boolean)
 				Get
-					Return Me._UnnaturalDeathIsBloody
+					Return Me._isBloody
 				End Get
 				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._UnnaturalDeathIsBloody
+					Dim oldValue As Nullable(Of Boolean) = Me._isBloody
 					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
-						If Me._Context.OnUnnaturalDeathUnnaturalDeathIsBloodyChanging(Me, Value) AndAlso MyBase.RaiseUnnaturalDeathIsBloodyChangingEvent(Value) Then
-							Me._UnnaturalDeathIsBloody = Value
-							MyBase.RaiseUnnaturalDeathIsBloodyChangedEvent(oldValue)
+						If Me._Context.OnUnnaturalDeathisBloodyChanging(Me, Value) AndAlso MyBase.RaiseisBloodyChangingEvent(Value) Then
+							Me._isBloody = Value
+							MyBase.RaiseisBloodyChangedEvent(oldValue)
 						End If
 					End If
 				End Set

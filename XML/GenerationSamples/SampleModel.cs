@@ -2424,7 +2424,7 @@ namespace SampleModel
 				this.RaisePropertyChangedEvent("Gender_Gender_Code");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
@@ -2436,18 +2436,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaisePersonHasParentsChangingEvent(Nullable<bool> newValue)
+		protected bool RaisehasParentsChangingEvent(Nullable<bool> newValue)
 		{
 			EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> eventHandler = this.Events[8] as EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<Person, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<Person, Nullable<bool>>(this, this.PersonHasParents, newValue);
+				PropertyChangingEventArgs<Person, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<Person, Nullable<bool>>(this, this.hasParents, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
@@ -2459,13 +2459,13 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaisePersonHasParentsChangedEvent(Nullable<bool> oldValue)
+		protected void RaisehasParentsChangedEvent(Nullable<bool> oldValue)
 		{
 			EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, Nullable<bool>>(this, oldValue, this.PersonHasParents), new AsyncCallback(eventHandler.EndInvoke), null);
-				this.RaisePropertyChangedEvent("PersonHasParents");
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, Nullable<bool>>(this, oldValue, this.hasParents), new AsyncCallback(eventHandler.EndInvoke), null);
+				this.RaisePropertyChangedEvent("hasParents");
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<decimal>>> OptionalUniqueDecimalChanging
@@ -2869,7 +2869,7 @@ namespace SampleModel
 			set;
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> PersonHasParents
+		public abstract Nullable<bool> hasParents
 		{
 			get;
 			set;
@@ -2923,22 +2923,22 @@ namespace SampleModel
 			set;
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public abstract ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get;
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public abstract ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get;
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public abstract ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get;
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public abstract ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get;
 		}
@@ -2958,7 +2958,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}PersonHasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}ValueType1DoesSomethingElseWith = {14},{0}{1}MalePerson = {15},{0}{1}FemalePerson = {16},{0}{1}ChildPerson = {17},{0}{1}Death = {18}{0}}}", Environment.NewLine, "", this.FirstName, this.Date_YMD, this.LastName, this.OptionalUniqueString, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.PersonHasParents, this.OptionalUniqueDecimal, this.MandatoryUniqueDecimal, this.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"Person{0}{{{0}{1}FirstName = ""{2}"",{0}{1}Date_YMD = ""{3}"",{0}{1}LastName = ""{4}"",{0}{1}OptionalUniqueString = ""{5}"",{0}{1}HatType_ColorARGB = ""{6}"",{0}{1}HatType_HatTypeStyle_HatTypeStyle_Description = ""{7}"",{0}{1}OwnsCar_vin = ""{8}"",{0}{1}Gender_Gender_Code = ""{9}"",{0}{1}hasParents = ""{10}"",{0}{1}OptionalUniqueDecimal = ""{11}"",{0}{1}MandatoryUniqueDecimal = ""{12}"",{0}{1}MandatoryUniqueString = ""{13}"",{0}{1}ValueType1DoesSomethingElseWith = {14},{0}{1}MalePerson = {15},{0}{1}FemalePerson = {16},{0}{1}ChildPerson = {17},{0}{1}Death = {18}{0}}}", Environment.NewLine, "", this.FirstName, this.Date_YMD, this.LastName, this.OptionalUniqueString, this.HatType_ColorARGB, this.HatType_HatTypeStyle_HatTypeStyle_Description, this.OwnsCar_vin, this.Gender_Gender_Code, this.hasParents, this.OptionalUniqueDecimal, this.MandatoryUniqueDecimal, this.MandatoryUniqueString, "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...", "TODO: Recursively call ToString for customTypes...");
 		}
 		public static explicit operator MalePerson(Person Person)
 		{
@@ -3428,37 +3428,37 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> PersonHasParents
+		public virtual Nullable<bool> hasParents
 		{
 			get
 			{
-				return this.Person.PersonHasParents;
+				return this.Person.hasParents;
 			}
 			set
 			{
-				this.Person.PersonHasParents = value;
+				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanging += value;
+				this.Person.hasParentsChanging += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanging -= value;
+				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanged += value;
+				this.Person.hasParentsChanged += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanged -= value;
+				this.Person.hasParentsChanged -= value;
 			}
 		}
 		public virtual Nullable<decimal> OptionalUniqueDecimal
@@ -3659,32 +3659,32 @@ namespace SampleModel
 				this.Person.DeathChanged -= value;
 			}
 		}
-		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public virtual ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get
 			{
-				return this.Person.PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCar;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public virtual ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get
 			{
-				return this.Person.PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickName;
 			}
 		}
 		public virtual ICollection<Task> Task
@@ -4087,37 +4087,37 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> PersonHasParents
+		public virtual Nullable<bool> hasParents
 		{
 			get
 			{
-				return this.Person.PersonHasParents;
+				return this.Person.hasParents;
 			}
 			set
 			{
-				this.Person.PersonHasParents = value;
+				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanging += value;
+				this.Person.hasParentsChanging += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanging -= value;
+				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanged += value;
+				this.Person.hasParentsChanged += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanged -= value;
+				this.Person.hasParentsChanged -= value;
 			}
 		}
 		public virtual Nullable<decimal> OptionalUniqueDecimal
@@ -4318,32 +4318,32 @@ namespace SampleModel
 				this.Person.DeathChanged -= value;
 			}
 		}
-		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public virtual ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get
 			{
-				return this.Person.PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCar;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public virtual ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get
 			{
-				return this.Person.PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickName;
 			}
 		}
 		public virtual ICollection<Task> Task
@@ -4891,37 +4891,37 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> PersonHasParents
+		public virtual Nullable<bool> hasParents
 		{
 			get
 			{
-				return this.Person.PersonHasParents;
+				return this.Person.hasParents;
 			}
 			set
 			{
-				this.Person.PersonHasParents = value;
+				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanging += value;
+				this.Person.hasParentsChanging += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanging -= value;
+				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanged += value;
+				this.Person.hasParentsChanged += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanged -= value;
+				this.Person.hasParentsChanged -= value;
 			}
 		}
 		public virtual Nullable<decimal> OptionalUniqueDecimal
@@ -5155,32 +5155,32 @@ namespace SampleModel
 				this.Person.DeathChanged -= value;
 			}
 		}
-		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public virtual ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get
 			{
-				return this.Person.PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCar;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public virtual ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get
 			{
-				return this.Person.PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickName;
 			}
 		}
 		public virtual ICollection<Task> Task
@@ -5745,37 +5745,37 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> PersonHasParents
+		public virtual Nullable<bool> hasParents
 		{
 			get
 			{
-				return this.Person.PersonHasParents;
+				return this.Person.hasParents;
 			}
 			set
 			{
-				this.Person.PersonHasParents = value;
+				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanging += value;
+				this.Person.hasParentsChanging += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanging -= value;
+				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
-				this.Person.PersonHasParentsChanged += value;
+				this.Person.hasParentsChanged += value;
 			}
 			remove
 			{
-				this.Person.PersonHasParentsChanged -= value;
+				this.Person.hasParentsChanged -= value;
 			}
 		}
 		public virtual Nullable<decimal> OptionalUniqueDecimal
@@ -6009,32 +6009,32 @@ namespace SampleModel
 				this.Person.ChildPersonChanged -= value;
 			}
 		}
-		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public virtual ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get
 			{
-				return this.Person.PersonDrivesCarAsDrivenByPerson;
+				return this.Person.PersonDrivesCar;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Person.PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public virtual ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get
 			{
-				return this.Person.PersonHasNickNameAsPerson;
+				return this.Person.PersonHasNickName;
 			}
 		}
 		public virtual ICollection<Task> Task
@@ -6129,7 +6129,7 @@ namespace SampleModel
 		{
 			get;
 		}
-		public event EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>> NaturalDeathIsFromProstateCancerChanging
+		public event EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>> isFromProstateCancerChanging
 		{
 			add
 			{
@@ -6141,18 +6141,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaiseNaturalDeathIsFromProstateCancerChangingEvent(Nullable<bool> newValue)
+		protected bool RaiseisFromProstateCancerChangingEvent(Nullable<bool> newValue)
 		{
 			EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<NaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>(this, this.NaturalDeathIsFromProstateCancer, newValue);
+				PropertyChangingEventArgs<NaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>(this, this.isFromProstateCancer, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>> NaturalDeathIsFromProstateCancerChanged
+		public event EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>> isFromProstateCancerChanged
 		{
 			add
 			{
@@ -6164,13 +6164,13 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaiseNaturalDeathIsFromProstateCancerChangedEvent(Nullable<bool> oldValue)
+		protected void RaiseisFromProstateCancerChangedEvent(Nullable<bool> oldValue)
 		{
 			EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>(this, oldValue, this.NaturalDeathIsFromProstateCancer), new AsyncCallback(eventHandler.EndInvoke), null);
-				this.RaisePropertyChangedEvent("NaturalDeathIsFromProstateCancer");
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>(this, oldValue, this.isFromProstateCancer), new AsyncCallback(eventHandler.EndInvoke), null);
+				this.RaisePropertyChangedEvent("isFromProstateCancer");
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<NaturalDeath, Death>> DeathChanging
@@ -6218,7 +6218,7 @@ namespace SampleModel
 			}
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> NaturalDeathIsFromProstateCancer
+		public abstract Nullable<bool> isFromProstateCancer
 		{
 			get;
 			set;
@@ -6235,7 +6235,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"NaturalDeath{0}{{{0}{1}NaturalDeathIsFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "", this.NaturalDeathIsFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"NaturalDeath{0}{{{0}{1}isFromProstateCancer = ""{2}"",{0}{1}Death = {3}{0}}}", Environment.NewLine, "", this.isFromProstateCancer, "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Death(NaturalDeath NaturalDeath)
 		{
@@ -6622,37 +6622,37 @@ namespace SampleModel
 				this.Death.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> PersonHasParents
+		public virtual Nullable<bool> hasParents
 		{
 			get
 			{
-				return this.Death.Person.PersonHasParents;
+				return this.Death.Person.hasParents;
 			}
 			set
 			{
-				this.Death.Person.PersonHasParents = value;
+				this.Death.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
-				this.Death.Person.PersonHasParentsChanging += value;
+				this.Death.Person.hasParentsChanging += value;
 			}
 			remove
 			{
-				this.Death.Person.PersonHasParentsChanging -= value;
+				this.Death.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
-				this.Death.Person.PersonHasParentsChanged += value;
+				this.Death.Person.hasParentsChanged += value;
 			}
 			remove
 			{
-				this.Death.Person.PersonHasParentsChanged -= value;
+				this.Death.Person.hasParentsChanged -= value;
 			}
 		}
 		public virtual Nullable<decimal> OptionalUniqueDecimal
@@ -6886,32 +6886,32 @@ namespace SampleModel
 				this.Death.Person.ChildPersonChanged -= value;
 			}
 		}
-		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public virtual ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get
 			{
-				return this.Death.Person.PersonDrivesCarAsDrivenByPerson;
+				return this.Death.Person.PersonDrivesCar;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public virtual ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get
 			{
-				return this.Death.Person.PersonHasNickNameAsPerson;
+				return this.Death.Person.PersonHasNickName;
 			}
 		}
 		public virtual ICollection<Task> Task
@@ -6976,7 +6976,7 @@ namespace SampleModel
 		{
 			get;
 		}
-		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> UnnaturalDeathIsViolentChanging
+		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> isViolentChanging
 		{
 			add
 			{
@@ -6988,18 +6988,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaiseUnnaturalDeathIsViolentChangingEvent(Nullable<bool> newValue)
+		protected bool RaiseisViolentChangingEvent(Nullable<bool> newValue)
 		{
 			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>(this, this.UnnaturalDeathIsViolent, newValue);
+				PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>(this, this.isViolent, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> UnnaturalDeathIsViolentChanged
+		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> isViolentChanged
 		{
 			add
 			{
@@ -7011,16 +7011,16 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaiseUnnaturalDeathIsViolentChangedEvent(Nullable<bool> oldValue)
+		protected void RaiseisViolentChangedEvent(Nullable<bool> oldValue)
 		{
 			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>(this, oldValue, this.UnnaturalDeathIsViolent), new AsyncCallback(eventHandler.EndInvoke), null);
-				this.RaisePropertyChangedEvent("UnnaturalDeathIsViolent");
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>(this, oldValue, this.isViolent), new AsyncCallback(eventHandler.EndInvoke), null);
+				this.RaisePropertyChangedEvent("isViolent");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> UnnaturalDeathIsBloodyChanging
+		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> isBloodyChanging
 		{
 			add
 			{
@@ -7032,18 +7032,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaiseUnnaturalDeathIsBloodyChangingEvent(Nullable<bool> newValue)
+		protected bool RaiseisBloodyChangingEvent(Nullable<bool> newValue)
 		{
 			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>(this, this.UnnaturalDeathIsBloody, newValue);
+				PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>(this, this.isBloody, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> UnnaturalDeathIsBloodyChanged
+		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> isBloodyChanged
 		{
 			add
 			{
@@ -7055,13 +7055,13 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaiseUnnaturalDeathIsBloodyChangedEvent(Nullable<bool> oldValue)
+		protected void RaiseisBloodyChangedEvent(Nullable<bool> oldValue)
 		{
 			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>(this, oldValue, this.UnnaturalDeathIsBloody), new AsyncCallback(eventHandler.EndInvoke), null);
-				this.RaisePropertyChangedEvent("UnnaturalDeathIsBloody");
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>(this, oldValue, this.isBloody), new AsyncCallback(eventHandler.EndInvoke), null);
+				this.RaisePropertyChangedEvent("isBloody");
 			}
 		}
 		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Death>> DeathChanging
@@ -7109,13 +7109,13 @@ namespace SampleModel
 			}
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> UnnaturalDeathIsViolent
+		public abstract Nullable<bool> isViolent
 		{
 			get;
 			set;
 		}
 		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> UnnaturalDeathIsBloody
+		public abstract Nullable<bool> isBloody
 		{
 			get;
 			set;
@@ -7132,7 +7132,7 @@ namespace SampleModel
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}UnnaturalDeathIsViolent = ""{2}"",{0}{1}UnnaturalDeathIsBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "", this.UnnaturalDeathIsViolent, this.UnnaturalDeathIsBloody, "TODO: Recursively call ToString for customTypes...");
+			return string.Format(provider, @"UnnaturalDeath{0}{{{0}{1}isViolent = ""{2}"",{0}{1}isBloody = ""{3}"",{0}{1}Death = {4}{0}}}", Environment.NewLine, "", this.isViolent, this.isBloody, "TODO: Recursively call ToString for customTypes...");
 		}
 		public static implicit operator Death(UnnaturalDeath UnnaturalDeath)
 		{
@@ -7519,37 +7519,37 @@ namespace SampleModel
 				this.Death.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> PersonHasParents
+		public virtual Nullable<bool> hasParents
 		{
 			get
 			{
-				return this.Death.Person.PersonHasParents;
+				return this.Death.Person.hasParents;
 			}
 			set
 			{
-				this.Death.Person.PersonHasParents = value;
+				this.Death.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> PersonHasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
 		{
 			add
 			{
-				this.Death.Person.PersonHasParentsChanging += value;
+				this.Death.Person.hasParentsChanging += value;
 			}
 			remove
 			{
-				this.Death.Person.PersonHasParentsChanging -= value;
+				this.Death.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> PersonHasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
 		{
 			add
 			{
-				this.Death.Person.PersonHasParentsChanged += value;
+				this.Death.Person.hasParentsChanged += value;
 			}
 			remove
 			{
-				this.Death.Person.PersonHasParentsChanged -= value;
+				this.Death.Person.hasParentsChanged -= value;
 			}
 		}
 		public virtual Nullable<decimal> OptionalUniqueDecimal
@@ -7783,32 +7783,32 @@ namespace SampleModel
 				this.Death.Person.ChildPersonChanged -= value;
 			}
 		}
-		public virtual ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+		public virtual ICollection<PersonDrivesCar> PersonDrivesCar
 		{
 			get
 			{
-				return this.Death.Person.PersonDrivesCarAsDrivenByPerson;
+				return this.Death.Person.PersonDrivesCar;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsBuyer;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+		public virtual ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 		{
 			get
 			{
-				return this.Death.Person.PersonBoughtCarFromPersonOnDateAsSeller;
+				return this.Death.Person.PersonBoughtCarFromPersonOnDate;
 			}
 		}
-		public virtual ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+		public virtual ICollection<PersonHasNickName> PersonHasNickName
 		{
 			get
 			{
-				return this.Death.Person.PersonHasNickNameAsPerson;
+				return this.Death.Person.PersonHasNickName;
 			}
 		}
 		public virtual ICollection<Task> Task
@@ -8120,8 +8120,8 @@ namespace SampleModel
 		bool TryGetReviewByInternalUniquenessConstraint26(int Car_vin, string Criterion_Name, out Review Review);
 		PersonHasNickName GetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person);
 		bool TryGetPersonHasNickNameByInternalUniquenessConstraint33(string NickName, Person Person, out PersonHasNickName PersonHasNickName);
-		ChildPerson GetChildPersonByExternalUniquenessConstraint3(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother);
-		bool TryGetChildPersonByExternalUniquenessConstraint3(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson);
+		ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother);
+		bool TryGetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson);
 		Person GetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD);
 		bool TryGetPersonByExternalUniquenessConstraint1(string FirstName, int Date_YMD, out Person Person);
 		Person GetPersonByExternalUniquenessConstraint2(string LastName, int Date_YMD);
@@ -8216,10 +8216,10 @@ namespace SampleModel
 			Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object> constraintEnforcementCollectionCallbacksByTypeAndNameDictionary = new Dictionary<ConstraintEnforcementCollectionTypeAndPropertyNameKey, object>(2);
 			this._ContraintEnforcementCollectionCallbacksByTypeDictionary = constraintEnforcementCollectionCallbacksByTypeDictionary;
 			this._ContraintEnforcementCollectionCallbacksByTypeAndNameDictionary = constraintEnforcementCollectionCallbacksByTypeAndNameDictionary;
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, PersonDrivesCar>), new ConstraintEnforcementCollectionCallbacks<Person, PersonDrivesCar>(new PotentialCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarAsDrivenByPersonAdding), new CommittedCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarAsDrivenByPersonAdded), null, new CommittedCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarAsDrivenByPersonRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateAsBuyer"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAsBuyerRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDateAsSeller"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAsSellerRemoved)));
-			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, PersonHasNickName>), new ConstraintEnforcementCollectionCallbacks<Person, PersonHasNickName>(new PotentialCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameAsPersonAdding), new CommittedCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameAsPersonAdded), null, new CommittedCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameAsPersonRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, PersonDrivesCar>), new ConstraintEnforcementCollectionCallbacks<Person, PersonDrivesCar>(new PotentialCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarAdding), new CommittedCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarAdded), null, new CommittedCollectionModificationCallback<Person, PersonDrivesCar>(this.OnPersonPersonDrivesCarRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDate"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeAndNameDictionary.Add(new ConstraintEnforcementCollectionTypeAndPropertyNameKey(typeof(ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>), "PersonBoughtCarFromPersonOnDate"), new ConstraintEnforcementCollectionCallbacks<Person, PersonBoughtCarFromPersonOnDate>(new PotentialCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAdding), new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateAdded), null, new CommittedCollectionModificationCallback<Person, PersonBoughtCarFromPersonOnDate>(this.OnPersonPersonBoughtCarFromPersonOnDateRemoved)));
+			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, PersonHasNickName>), new ConstraintEnforcementCollectionCallbacks<Person, PersonHasNickName>(new PotentialCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameAdding), new CommittedCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameAdded), null, new CommittedCollectionModificationCallback<Person, PersonHasNickName>(this.OnPersonPersonHasNickNameRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, Task>), new ConstraintEnforcementCollectionCallbacks<Person, Task>(new PotentialCollectionModificationCallback<Person, Task>(this.OnPersonTaskAdding), new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskAdded), null, new CommittedCollectionModificationCallback<Person, Task>(this.OnPersonTaskRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<Person, ValueType1>), new ConstraintEnforcementCollectionCallbacks<Person, ValueType1>(new PotentialCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithAdding), new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithAdded), null, new CommittedCollectionModificationCallback<Person, ValueType1>(this.OnPersonValueType1DoesSomethingWithRemoved)));
 			constraintEnforcementCollectionCallbacksByTypeDictionary.Add(typeof(ConstraintEnforcementCollection<MalePerson, ChildPerson>), new ConstraintEnforcementCollectionCallbacks<MalePerson, ChildPerson>(new PotentialCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonAdding), new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonAdded), null, new CommittedCollectionModificationCallback<MalePerson, ChildPerson>(this.OnMalePersonChildPersonRemoved)));
@@ -8469,36 +8469,36 @@ namespace SampleModel
 				this._InternalUniquenessConstraint33Dictionary.Add(newValue, instance);
 			}
 		}
-		private readonly Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson> _ExternalUniquenessConstraint3Dictionary = new Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson>();
-		public ChildPerson GetChildPersonByExternalUniquenessConstraint3(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother)
+		private readonly Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson> _InternalUniquenessConstraint49Dictionary = new Dictionary<Tuple<MalePerson, int, FemalePerson>, ChildPerson>();
+		public ChildPerson GetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother)
 		{
-			return this._ExternalUniquenessConstraint3Dictionary[Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother)];
+			return this._InternalUniquenessConstraint49Dictionary[Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother)];
 		}
-		public bool TryGetChildPersonByExternalUniquenessConstraint3(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson)
+		public bool TryGetChildPersonByInternalUniquenessConstraint49(MalePerson Father, int BirthOrder_BirthOrder_Nr, FemalePerson Mother, out ChildPerson ChildPerson)
 		{
-			return this._ExternalUniquenessConstraint3Dictionary.TryGetValue(Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother), out ChildPerson);
+			return this._InternalUniquenessConstraint49Dictionary.TryGetValue(Tuple.CreateTuple<MalePerson, int, FemalePerson>(Father, BirthOrder_BirthOrder_Nr, Mother), out ChildPerson);
 		}
-		private bool OnExternalUniquenessConstraint3Changing(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> newValue)
+		private bool OnInternalUniquenessConstraint49Changing(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> newValue)
 		{
 			if ((object)newValue != null)
 			{
 				ChildPerson currentInstance;
-				if (this._ExternalUniquenessConstraint3Dictionary.TryGetValue(newValue, out currentInstance))
+				if (this._InternalUniquenessConstraint49Dictionary.TryGetValue(newValue, out currentInstance))
 				{
 					return (object)currentInstance == instance;
 				}
 			}
 			return true;
 		}
-		private void OnExternalUniquenessConstraint3Changed(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> oldValue, Tuple<MalePerson, int, FemalePerson> newValue)
+		private void OnInternalUniquenessConstraint49Changed(ChildPerson instance, Tuple<MalePerson, int, FemalePerson> oldValue, Tuple<MalePerson, int, FemalePerson> newValue)
 		{
 			if ((object)oldValue != null)
 			{
-				this._ExternalUniquenessConstraint3Dictionary.Remove(oldValue);
+				this._InternalUniquenessConstraint49Dictionary.Remove(oldValue);
 			}
 			if ((object)newValue != null)
 			{
-				this._ExternalUniquenessConstraint3Dictionary.Add(newValue, instance);
+				this._InternalUniquenessConstraint49Dictionary.Add(newValue, instance);
 			}
 		}
 		private readonly Dictionary<Tuple<string, int>, Person> _ExternalUniquenessConstraint1Dictionary = new Dictionary<Tuple<string, int>, Person>();
@@ -8963,11 +8963,11 @@ namespace SampleModel
 		}
 		private void OnPersonDrivesCarDrivenByPersonChanged(PersonDrivesCar instance, Person oldValue)
 		{
-			instance.DrivenByPerson.PersonDrivesCarAsDrivenByPerson.Add(instance);
+			instance.DrivenByPerson.PersonDrivesCar.Add(instance);
 			Tuple<int, Person> InternalUniquenessConstraint18OldValueTuple;
 			if ((object)oldValue != null)
 			{
-				oldValue.PersonDrivesCarAsDrivenByPerson.Remove(instance);
+				oldValue.PersonDrivesCar.Remove(instance);
 				InternalUniquenessConstraint18OldValueTuple = Tuple.CreateTuple<int, Person>(instance.DrivesCar_vin, oldValue);
 			}
 			else
@@ -9179,12 +9179,12 @@ namespace SampleModel
 		}
 		private void OnPersonBoughtCarFromPersonOnDateBuyerChanged(PersonBoughtCarFromPersonOnDate instance, Person oldValue)
 		{
-			instance.Buyer.PersonBoughtCarFromPersonOnDateAsBuyer.Add(instance);
+			instance.Buyer.PersonBoughtCarFromPersonOnDate.Add(instance);
 			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
 			Tuple<int, int, Person> InternalUniquenessConstraint25OldValueTuple;
 			if ((object)oldValue != null)
 			{
-				oldValue.PersonBoughtCarFromPersonOnDateAsBuyer.Remove(instance);
+				oldValue.PersonBoughtCarFromPersonOnDate.Remove(instance);
 				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(oldValue, instance.CarSold_vin, instance.Seller);
 				InternalUniquenessConstraint25OldValueTuple = Tuple.CreateTuple<int, int, Person>(instance.CarSold_vin, instance.SaleDate_YMD, oldValue);
 			}
@@ -9217,12 +9217,12 @@ namespace SampleModel
 		}
 		private void OnPersonBoughtCarFromPersonOnDateSellerChanged(PersonBoughtCarFromPersonOnDate instance, Person oldValue)
 		{
-			instance.Seller.PersonBoughtCarFromPersonOnDateAsSeller.Add(instance);
+			instance.Seller.PersonBoughtCarFromPersonOnDate.Add(instance);
 			Tuple<Person, int, Person> InternalUniquenessConstraint23OldValueTuple;
 			Tuple<int, Person, int> InternalUniquenessConstraint24OldValueTuple;
 			if ((object)oldValue != null)
 			{
-				oldValue.PersonBoughtCarFromPersonOnDateAsSeller.Remove(instance);
+				oldValue.PersonBoughtCarFromPersonOnDate.Remove(instance);
 				InternalUniquenessConstraint23OldValueTuple = Tuple.CreateTuple<Person, int, Person>(instance.Buyer, instance.CarSold_vin, oldValue);
 				InternalUniquenessConstraint24OldValueTuple = Tuple.CreateTuple<int, Person, int>(instance.SaleDate_YMD, oldValue, instance.CarSold_vin);
 			}
@@ -9605,11 +9605,11 @@ namespace SampleModel
 		}
 		private void OnPersonHasNickNamePersonChanged(PersonHasNickName instance, Person oldValue)
 		{
-			instance.Person.PersonHasNickNameAsPerson.Add(instance);
+			instance.Person.PersonHasNickName.Add(instance);
 			Tuple<string, Person> InternalUniquenessConstraint33OldValueTuple;
 			if ((object)oldValue != null)
 			{
-				oldValue.PersonHasNickNameAsPerson.Remove(instance);
+				oldValue.PersonHasNickName.Remove(instance);
 				InternalUniquenessConstraint33OldValueTuple = Tuple.CreateTuple<string, Person>(instance.NickName, oldValue);
 			}
 			else
@@ -9892,7 +9892,7 @@ namespace SampleModel
 		{
 			return true;
 		}
-		private bool OnPersonPersonHasParentsChanging(Person instance, Nullable<bool> newValue)
+		private bool OnPersonhasParentsChanging(Person instance, Nullable<bool> newValue)
 		{
 			return true;
 		}
@@ -10072,7 +10072,7 @@ namespace SampleModel
 				oldValue.Person = null;
 			}
 		}
-		private bool OnPersonPersonDrivesCarAsDrivenByPersonAdding(Person instance, PersonDrivesCar value)
+		private bool OnPersonPersonDrivesCarAdding(Person instance, PersonDrivesCar value)
 		{
 			if ((object)this != value.Context)
 			{
@@ -10080,15 +10080,15 @@ namespace SampleModel
 			}
 			return true;
 		}
-		private void OnPersonPersonDrivesCarAsDrivenByPersonAdded(Person instance, PersonDrivesCar value)
+		private void OnPersonPersonDrivesCarAdded(Person instance, PersonDrivesCar value)
 		{
 			value.DrivenByPerson = instance;
 		}
-		private void OnPersonPersonDrivesCarAsDrivenByPersonRemoved(Person instance, PersonDrivesCar value)
+		private void OnPersonPersonDrivesCarRemoved(Person instance, PersonDrivesCar value)
 		{
 			value.DrivenByPerson = null;
 		}
-		private bool OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private bool OnPersonPersonBoughtCarFromPersonOnDateAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
 		{
 			if ((object)this != value.Context)
 			{
@@ -10096,15 +10096,15 @@ namespace SampleModel
 			}
 			return true;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateAsBuyerAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonPersonBoughtCarFromPersonOnDateAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
 		{
 			value.Buyer = instance;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateAsBuyerRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonPersonBoughtCarFromPersonOnDateRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
 		{
 			value.Buyer = null;
 		}
-		private bool OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private bool OnPersonPersonBoughtCarFromPersonOnDateAdding(Person instance, PersonBoughtCarFromPersonOnDate value)
 		{
 			if ((object)this != value.Context)
 			{
@@ -10112,15 +10112,15 @@ namespace SampleModel
 			}
 			return true;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateAsSellerAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonPersonBoughtCarFromPersonOnDateAdded(Person instance, PersonBoughtCarFromPersonOnDate value)
 		{
 			value.Seller = instance;
 		}
-		private void OnPersonPersonBoughtCarFromPersonOnDateAsSellerRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
+		private void OnPersonPersonBoughtCarFromPersonOnDateRemoved(Person instance, PersonBoughtCarFromPersonOnDate value)
 		{
 			value.Seller = null;
 		}
-		private bool OnPersonPersonHasNickNameAsPersonAdding(Person instance, PersonHasNickName value)
+		private bool OnPersonPersonHasNickNameAdding(Person instance, PersonHasNickName value)
 		{
 			if ((object)this != value.Context)
 			{
@@ -10128,11 +10128,11 @@ namespace SampleModel
 			}
 			return true;
 		}
-		private void OnPersonPersonHasNickNameAsPersonAdded(Person instance, PersonHasNickName value)
+		private void OnPersonPersonHasNickNameAdded(Person instance, PersonHasNickName value)
 		{
 			value.Person = instance;
 		}
-		private void OnPersonPersonHasNickNameAsPersonRemoved(Person instance, PersonHasNickName value)
+		private void OnPersonPersonHasNickNameRemoved(Person instance, PersonHasNickName value)
 		{
 			value.Person = null;
 		}
@@ -10184,10 +10184,10 @@ namespace SampleModel
 			public PersonCore(SampleModelContext context, string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
 			{
 				this._Context = context;
-				this._PersonDrivesCarAsDrivenByPerson = new ConstraintEnforcementCollection<Person, PersonDrivesCar>(this);
-				this._PersonBoughtCarFromPersonOnDateAsBuyer = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDateAsBuyer");
-				this._PersonBoughtCarFromPersonOnDateAsSeller = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDateAsSeller");
-				this._PersonHasNickNameAsPerson = new ConstraintEnforcementCollection<Person, PersonHasNickName>(this);
+				this._PersonDrivesCar = new ConstraintEnforcementCollection<Person, PersonDrivesCar>(this);
+				this._PersonBoughtCarFromPersonOnDate = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDate");
+				this._PersonBoughtCarFromPersonOnDate = new ConstraintEnforcementCollectionWithPropertyName<Person, PersonBoughtCarFromPersonOnDate>(this, "PersonBoughtCarFromPersonOnDate");
+				this._PersonHasNickName = new ConstraintEnforcementCollection<Person, PersonHasNickName>(this);
 				this._Task = new ConstraintEnforcementCollection<Person, Task>(this);
 				this._ValueType1DoesSomethingWith = new ConstraintEnforcementCollection<Person, ValueType1>(this);
 				this._FirstName = FirstName;
@@ -10396,23 +10396,23 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonHasParents")]
-			private Nullable<bool> _PersonHasParents;
-			public override Nullable<bool> PersonHasParents
+			[AccessedThroughPropertyAttribute("hasParents")]
+			private Nullable<bool> _hasParents;
+			public override Nullable<bool> hasParents
 			{
 				get
 				{
-					return this._PersonHasParents;
+					return this._hasParents;
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._PersonHasParents;
+					Nullable<bool> oldValue = this._hasParents;
 					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
 					{
-						if (this._Context.OnPersonPersonHasParentsChanging(this, value) && base.RaisePersonHasParentsChangingEvent(value))
+						if (this._Context.OnPersonhasParentsChanging(this, value) && base.RaisehasParentsChangingEvent(value))
 						{
-							this._PersonHasParents = value;
-							base.RaisePersonHasParentsChangedEvent(oldValue);
+							this._hasParents = value;
+							base.RaisehasParentsChangedEvent(oldValue);
 						}
 					}
 				}
@@ -10597,40 +10597,40 @@ namespace SampleModel
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonDrivesCarAsDrivenByPerson")]
-			private readonly ICollection<PersonDrivesCar> _PersonDrivesCarAsDrivenByPerson;
-			public override ICollection<PersonDrivesCar> PersonDrivesCarAsDrivenByPerson
+			[AccessedThroughPropertyAttribute("PersonDrivesCar")]
+			private readonly ICollection<PersonDrivesCar> _PersonDrivesCar;
+			public override ICollection<PersonDrivesCar> PersonDrivesCar
 			{
 				get
 				{
-					return this._PersonDrivesCarAsDrivenByPerson;
+					return this._PersonDrivesCar;
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDateAsBuyer")]
-			private readonly ICollection<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateAsBuyer;
-			public override ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsBuyer
+			[AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDate")]
+			private readonly ICollection<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDate;
+			public override ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 			{
 				get
 				{
-					return this._PersonBoughtCarFromPersonOnDateAsBuyer;
+					return this._PersonBoughtCarFromPersonOnDate;
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDateAsSeller")]
-			private readonly ICollection<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDateAsSeller;
-			public override ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDateAsSeller
+			[AccessedThroughPropertyAttribute("PersonBoughtCarFromPersonOnDate")]
+			private readonly ICollection<PersonBoughtCarFromPersonOnDate> _PersonBoughtCarFromPersonOnDate;
+			public override ICollection<PersonBoughtCarFromPersonOnDate> PersonBoughtCarFromPersonOnDate
 			{
 				get
 				{
-					return this._PersonBoughtCarFromPersonOnDateAsSeller;
+					return this._PersonBoughtCarFromPersonOnDate;
 				}
 			}
-			[AccessedThroughPropertyAttribute("PersonHasNickNameAsPerson")]
-			private readonly ICollection<PersonHasNickName> _PersonHasNickNameAsPerson;
-			public override ICollection<PersonHasNickName> PersonHasNickNameAsPerson
+			[AccessedThroughPropertyAttribute("PersonHasNickName")]
+			private readonly ICollection<PersonHasNickName> _PersonHasNickName;
+			public override ICollection<PersonHasNickName> PersonHasNickName
 			{
 				get
 				{
-					return this._PersonHasNickNameAsPerson;
+					return this._PersonHasNickName;
 				}
 			}
 			[AccessedThroughPropertyAttribute("Task")]
@@ -10915,7 +10915,7 @@ namespace SampleModel
 		{
 			if ((object)instance != null)
 			{
-				if (!(this.OnExternalUniquenessConstraint3Changing(instance, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, newValue, instance.Mother))))
+				if (!(this.OnInternalUniquenessConstraint49Changing(instance, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, newValue, instance.Mother))))
 				{
 					return false;
 				}
@@ -10924,16 +10924,16 @@ namespace SampleModel
 		}
 		private void OnChildPersonBirthOrder_BirthOrder_NrChanged(ChildPerson instance, Nullable<int> oldValue)
 		{
-			Tuple<MalePerson, int, FemalePerson> ExternalUniquenessConstraint3OldValueTuple;
+			Tuple<MalePerson, int, FemalePerson> InternalUniquenessConstraint49OldValueTuple;
 			if (oldValue.HasValue)
 			{
-				ExternalUniquenessConstraint3OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, oldValue.Value, instance.Mother);
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, oldValue.Value, instance.Mother);
 			}
 			else
 			{
-				ExternalUniquenessConstraint3OldValueTuple = null;
+				InternalUniquenessConstraint49OldValueTuple = null;
 			}
-			this.OnExternalUniquenessConstraint3Changed(instance, ExternalUniquenessConstraint3OldValueTuple, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother));
+			this.OnInternalUniquenessConstraint49Changed(instance, InternalUniquenessConstraint49OldValueTuple, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother));
 		}
 		private bool OnChildPersonFatherChanging(ChildPerson instance, MalePerson newValue)
 		{
@@ -10943,7 +10943,7 @@ namespace SampleModel
 			}
 			if ((object)instance != null)
 			{
-				if (!(this.OnExternalUniquenessConstraint3Changing(instance, Tuple.CreateTuple<MalePerson, int, FemalePerson>(newValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother))))
+				if (!(this.OnInternalUniquenessConstraint49Changing(instance, Tuple.CreateTuple<MalePerson, int, FemalePerson>(newValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother))))
 				{
 					return false;
 				}
@@ -10953,17 +10953,17 @@ namespace SampleModel
 		private void OnChildPersonFatherChanged(ChildPerson instance, MalePerson oldValue)
 		{
 			instance.Father.ChildPerson.Add(instance);
-			Tuple<MalePerson, int, FemalePerson> ExternalUniquenessConstraint3OldValueTuple;
+			Tuple<MalePerson, int, FemalePerson> InternalUniquenessConstraint49OldValueTuple;
 			if ((object)oldValue != null)
 			{
 				oldValue.ChildPerson.Remove(instance);
-				ExternalUniquenessConstraint3OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(oldValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother);
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(oldValue, instance.BirthOrder_BirthOrder_Nr, instance.Mother);
 			}
 			else
 			{
-				ExternalUniquenessConstraint3OldValueTuple = null;
+				InternalUniquenessConstraint49OldValueTuple = null;
 			}
-			this.OnExternalUniquenessConstraint3Changed(instance, ExternalUniquenessConstraint3OldValueTuple, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother));
+			this.OnInternalUniquenessConstraint49Changed(instance, InternalUniquenessConstraint49OldValueTuple, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother));
 		}
 		private bool OnChildPersonMotherChanging(ChildPerson instance, FemalePerson newValue)
 		{
@@ -10973,7 +10973,7 @@ namespace SampleModel
 			}
 			if ((object)instance != null)
 			{
-				if (!(this.OnExternalUniquenessConstraint3Changing(instance, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, newValue))))
+				if (!(this.OnInternalUniquenessConstraint49Changing(instance, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, newValue))))
 				{
 					return false;
 				}
@@ -10983,17 +10983,17 @@ namespace SampleModel
 		private void OnChildPersonMotherChanged(ChildPerson instance, FemalePerson oldValue)
 		{
 			instance.Mother.ChildPerson.Add(instance);
-			Tuple<MalePerson, int, FemalePerson> ExternalUniquenessConstraint3OldValueTuple;
+			Tuple<MalePerson, int, FemalePerson> InternalUniquenessConstraint49OldValueTuple;
 			if ((object)oldValue != null)
 			{
 				oldValue.ChildPerson.Remove(instance);
-				ExternalUniquenessConstraint3OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, oldValue);
+				InternalUniquenessConstraint49OldValueTuple = Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, oldValue);
 			}
 			else
 			{
-				ExternalUniquenessConstraint3OldValueTuple = null;
+				InternalUniquenessConstraint49OldValueTuple = null;
 			}
-			this.OnExternalUniquenessConstraint3Changed(instance, ExternalUniquenessConstraint3OldValueTuple, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother));
+			this.OnInternalUniquenessConstraint49Changed(instance, InternalUniquenessConstraint49OldValueTuple, Tuple.CreateTuple<MalePerson, int, FemalePerson>(instance.Father, instance.BirthOrder_BirthOrder_Nr, instance.Mother));
 		}
 		private bool OnChildPersonPersonChanging(ChildPerson instance, Person newValue)
 		{
@@ -11398,7 +11398,7 @@ namespace SampleModel
 			}
 			return new NaturalDeathCore(this, Death);
 		}
-		private bool OnNaturalDeathNaturalDeathIsFromProstateCancerChanging(NaturalDeath instance, Nullable<bool> newValue)
+		private bool OnNaturalDeathisFromProstateCancerChanging(NaturalDeath instance, Nullable<bool> newValue)
 		{
 			return true;
 		}
@@ -11446,23 +11446,23 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("NaturalDeathIsFromProstateCancer")]
-			private Nullable<bool> _NaturalDeathIsFromProstateCancer;
-			public override Nullable<bool> NaturalDeathIsFromProstateCancer
+			[AccessedThroughPropertyAttribute("isFromProstateCancer")]
+			private Nullable<bool> _isFromProstateCancer;
+			public override Nullable<bool> isFromProstateCancer
 			{
 				get
 				{
-					return this._NaturalDeathIsFromProstateCancer;
+					return this._isFromProstateCancer;
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._NaturalDeathIsFromProstateCancer;
+					Nullable<bool> oldValue = this._isFromProstateCancer;
 					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
 					{
-						if (this._Context.OnNaturalDeathNaturalDeathIsFromProstateCancerChanging(this, value) && base.RaiseNaturalDeathIsFromProstateCancerChangingEvent(value))
+						if (this._Context.OnNaturalDeathisFromProstateCancerChanging(this, value) && base.RaiseisFromProstateCancerChangingEvent(value))
 						{
-							this._NaturalDeathIsFromProstateCancer = value;
-							base.RaiseNaturalDeathIsFromProstateCancerChangedEvent(oldValue);
+							this._isFromProstateCancer = value;
+							base.RaiseisFromProstateCancerChangedEvent(oldValue);
 						}
 					}
 				}
@@ -11509,11 +11509,11 @@ namespace SampleModel
 			}
 			return new UnnaturalDeathCore(this, Death);
 		}
-		private bool OnUnnaturalDeathUnnaturalDeathIsViolentChanging(UnnaturalDeath instance, Nullable<bool> newValue)
+		private bool OnUnnaturalDeathisViolentChanging(UnnaturalDeath instance, Nullable<bool> newValue)
 		{
 			return true;
 		}
-		private bool OnUnnaturalDeathUnnaturalDeathIsBloodyChanging(UnnaturalDeath instance, Nullable<bool> newValue)
+		private bool OnUnnaturalDeathisBloodyChanging(UnnaturalDeath instance, Nullable<bool> newValue)
 		{
 			return true;
 		}
@@ -11561,44 +11561,44 @@ namespace SampleModel
 					return this._Context;
 				}
 			}
-			[AccessedThroughPropertyAttribute("UnnaturalDeathIsViolent")]
-			private Nullable<bool> _UnnaturalDeathIsViolent;
-			public override Nullable<bool> UnnaturalDeathIsViolent
+			[AccessedThroughPropertyAttribute("isViolent")]
+			private Nullable<bool> _isViolent;
+			public override Nullable<bool> isViolent
 			{
 				get
 				{
-					return this._UnnaturalDeathIsViolent;
+					return this._isViolent;
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._UnnaturalDeathIsViolent;
+					Nullable<bool> oldValue = this._isViolent;
 					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
 					{
-						if (this._Context.OnUnnaturalDeathUnnaturalDeathIsViolentChanging(this, value) && base.RaiseUnnaturalDeathIsViolentChangingEvent(value))
+						if (this._Context.OnUnnaturalDeathisViolentChanging(this, value) && base.RaiseisViolentChangingEvent(value))
 						{
-							this._UnnaturalDeathIsViolent = value;
-							base.RaiseUnnaturalDeathIsViolentChangedEvent(oldValue);
+							this._isViolent = value;
+							base.RaiseisViolentChangedEvent(oldValue);
 						}
 					}
 				}
 			}
-			[AccessedThroughPropertyAttribute("UnnaturalDeathIsBloody")]
-			private Nullable<bool> _UnnaturalDeathIsBloody;
-			public override Nullable<bool> UnnaturalDeathIsBloody
+			[AccessedThroughPropertyAttribute("isBloody")]
+			private Nullable<bool> _isBloody;
+			public override Nullable<bool> isBloody
 			{
 				get
 				{
-					return this._UnnaturalDeathIsBloody;
+					return this._isBloody;
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._UnnaturalDeathIsBloody;
+					Nullable<bool> oldValue = this._isBloody;
 					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
 					{
-						if (this._Context.OnUnnaturalDeathUnnaturalDeathIsBloodyChanging(this, value) && base.RaiseUnnaturalDeathIsBloodyChangingEvent(value))
+						if (this._Context.OnUnnaturalDeathisBloodyChanging(this, value) && base.RaiseisBloodyChangingEvent(value))
 						{
-							this._UnnaturalDeathIsBloody = value;
-							base.RaiseUnnaturalDeathIsBloodyChangedEvent(oldValue);
+							this._isBloody = value;
+							base.RaiseisBloodyChangedEvent(oldValue);
 						}
 					}
 				}

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
 	targetNamespace="http://schemas.orm.net/OIAL"
 	xmlns:oil="http://schemas.orm.net/OIAL"
@@ -21,7 +21,7 @@
 	</xs:annotation>
 
 	<xs:import namespace="http://schemas.orm.net/ORMDataTypes"/>
-	
+
 	<xs:simpleType name="sourceRef">
 		<xs:restriction base="xs:string"/>
 	</xs:simpleType>
@@ -34,13 +34,22 @@
 	<xs:simpleType name="mandatory">
 		<xs:union memberTypes="oil:modality">
 			<xs:simpleType>
-				<xs:restriction base="xs:string">
-					<xs:enumeration value="false"/>
+				<xs:restriction base="oil:canonicalBoolean">
+					<xs:pattern value="false"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:union>
 	</xs:simpleType>
-	
+	<xs:simpleType name="canonicalBoolean">
+		<xs:annotation>
+			<xs:documentation>An xs:boolean limited to the canonical representation defined in XML Schema Part 2: Datatypes Second Edition.</xs:documentation>
+			<xs:documentation>That is, an oil:canonicalBoolean can only contain the set of literals {true, false}, and cannot contain the set of literals {1, 0}.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:boolean">
+			<xs:pattern value="false|true"/>
+		</xs:restriction>
+	</xs:simpleType>
+
 	<xs:element name="model">
 		<xs:complexType>
 			<xs:sequence>
@@ -82,7 +91,7 @@
 
 
 	<xs:complexType name="conceptType">
-		<xs:choice maxOccurs="unbounded">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="conceptType" type="oil:absorbedConceptType">
 				<xs:key name="absorbedConceptTypeChildKey">
 					<xs:selector xpath="oil:conceptType|oil:conceptTypeRef|oil:informationType"/>
@@ -114,7 +123,7 @@
 		<xs:attribute name="name" use="required" type="xs:token"/>
 		<xs:attribute name="sourceRef" use="required" type="oil:sourceRef"/>
 	</xs:complexType>
-	
+
 	<xs:complexType name="absorbedConceptType">
 		<xs:complexContent>
 			<xs:extension base="oil:conceptType">
@@ -164,7 +173,7 @@
 			</xs:element>
 		</xs:choice>
 	</xs:group>
-	
+
 	<xs:complexType name="roleSequence">
 		<xs:group ref="oil:typeRef" maxOccurs="unbounded"/>
 	</xs:complexType>
@@ -196,7 +205,7 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="oil:singleRoleConstraint">
-							<xs:attribute name="isPreferred" use="required" type="xs:boolean"/>
+							<xs:attribute name="isPreferred" use="required" type="oil:canonicalBoolean"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>
@@ -258,7 +267,7 @@
 			<xs:extension base="oil:constraint"/>
 		</xs:complexContent>
 	</xs:complexType>
-	
+
 
 	<xs:group name="roleSequenceConstraint">
 		<xs:choice>
@@ -266,7 +275,7 @@
 			<xs:group ref="oil:multiRoleSequenceConstraint"/>
 		</xs:choice>
 	</xs:group>
-	
+
 	<xs:group name="singleRoleSequenceConstraint">
 		<xs:annotation>
 			<xs:documentation>Constraints that can apply only to a single role sequence (e.g. frequency on multiple roles, ring, disjunctive mandatory, uniqueness on multiple roles)</xs:documentation>
@@ -325,7 +334,7 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="oil:singleRoleSequenceConstraint">
-							<xs:attribute name="isPreferred" use="required" type="xs:boolean"/>
+							<xs:attribute name="isPreferred" use="required" type="oil:canonicalBoolean"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>

@@ -15,8 +15,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	extension-element-prefixes="exsl"
@@ -51,12 +51,19 @@
 
 		<xsl:variable name="objectsAndFacts" select="($Model/orm:Objects|$Model/orm:Facts)/child::*"/>
 
+		<xsl:variable name="SingleRoleMandatoryConstraints" select="$Model/orm:Constraints/orm:MandatoryConstraint[count(orm:RoleSequence/child::*)=1]"/>
+		<xsl:variable name="SingleRoleUniquenessConstraints" select="$Model/orm:Constraints/orm:UniquenessConstraint[count(orm:RoleSequence/child::*)=1]"/>
+		<xsl:variable name="AlethicSingleRoleMandatoryConstraints" select="$SingleRoleMandatoryConstraints[not(@Modality) or @Modality='Alethic']"/>
+		<xsl:variable name="AlethicSingleRoleUniquenessConstraints" select="$SingleRoleUniquenessConstraints[not(@Modality) or @Modality='Alethic']"/>
+		
 		<xsl:variable name="ObjectTypeInformationFragment">
 			<xsl:for-each select="$Model/orm:Objects/child::*">
 				<xsl:copy>
 					<xsl:copy-of select="@*"/>
 					<xsl:call-template name="GetObjectTypeInformation">
 						<xsl:with-param name="Model" select="$Model"/>
+						<xsl:with-param name="AlethicSingleRoleMandatoryConstraints" select="$AlethicSingleRoleMandatoryConstraints"/>
+						<xsl:with-param name="AlethicSingleRoleUniquenessConstraints" select="$AlethicSingleRoleUniquenessConstraints"/>
 					</xsl:call-template>
 				</xsl:copy>
 			</xsl:for-each>
@@ -68,33 +75,31 @@
 		<xsl:variable name="IndependentObjectTypes" select="$ObjectTypeInformation[@IsIndependent='true']"/>
 		<!-- Get subtypes that are not independent. -->
 		<xsl:variable name="NonIndependentSubtypeObjectTypes" select="$ObjectTypeInformation[subtypeMetaFacts/child::* and not(@IsIndependent='true')]"/>
+		<!-- Get the supertypes that have a subtype that is not independent. -->
+		<xsl:variable name="NonIndependentSubtypeSupertypeObjectTypes" select="$ObjectTypeInformation[supertypeMetaFacts/orm:SubtypeFact/orm:FactRoles/orm:SubtypeMetaRole/orm:RolePlayer/@ref=$NonIndependentSubtypeObjectTypes/@id]"/>
 
 		<xsl:if test="$EnableAssertions">
 			<!-- Get the non-objectified fact types that have uniqueness constraints spanning more than one role. -->
-			<xsl:variable name="MultiRoleUniquenessFactTypes" select="$Model/orm:Facts/orm:Fact[orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(child::*)>1]]"/>
-			<xsl:if test="$MultiRoleUniquenessFactTypes or $Model/orm:Facts/orm:ImpliedFact">
+			<xsl:variable name="MultiRoleInternalUniquenessConstraints" select="$Model/orm:Constraints/orm:UniquenessConstraint[@IsInternal='true' and count(orm:RoleSequence/child::*)>1]"/>
+			<xsl:if test="$MultiRoleInternalUniquenessConstraints or $Model/orm:Facts/orm:ImpliedFact or $Model/orm:Facts/orm:Fact[not(count(orm:FactRoles/child::*)=2)]">
 				<xsl:message terminate="yes">
-					<xsl:text>After CoRefORM.xslt has been run, there should be no $MultiRoleUniquenessFactTypes or orm:ImpliedFacts left.</xsl:text>
+					<xsl:text>After CoRefORM.xslt has been run, there should be no $MultiRoleInternalUniquenessConstraints, orm:ImpliedFacts, or greater-than-binary orm:Facts left.</xsl:text>
 				</xsl:message>
 			</xsl:if>
 		</xsl:if>
-
+		
 		<xsl:variable name="FactTypeAbsorptionsFragment">
 			<!-- For each binary, one-to-one fact type... -->
-			<xsl:for-each select="$Model/orm:Facts/orm:Fact[count(orm:FactRoles/child::*)=2 and count(orm:InternalConstraints/orm:InternalUniquenessConstraint)=2]">
-				<xsl:variable name="countMandatories" select="count(orm:InternalConstraints/orm:SimpleMandatoryConstraint)"/>
+			<xsl:for-each select="$Model/orm:Facts/orm:Fact[count(orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref])=2]">
+				<xsl:variable name="mandatories" select="$AlethicSingleRoleMandatoryConstraints[orm:RoleSequence/child::*/@ref=current()/orm:FactRoles/child::*/@id]"/>
+				<xsl:variable name="countMandatories" select="count($mandatories)"/>
 				<xsl:variable name="rolePlayerIds" select="orm:FactRoles/child::*/orm:RolePlayer/@ref"/>
 				<xsl:variable name="rolePlayers" select="$ObjectTypeInformation[@id=$rolePlayerIds]"/>
 				<AbsorbFactType ref="{@id}">
-					<xsl:if test="$OutputDebugInformation">
-						<xsl:attribute name="refName">
-							<xsl:value-of select="@Name"/>
-						</xsl:attribute>
-					</xsl:if>
 					<xsl:choose>
 						<!-- If only one role is mandatory... -->
 						<xsl:when test="$countMandatories = 1">
-							<xsl:variable name="mandatoryRolePlayerId" select="orm:FactRoles/child::*[@id=current()/orm:InternalConstraints/orm:SimpleMandatoryConstraint/orm:RoleSequence/child::*/@ref]/orm:RolePlayer/@ref"/>
+							<xsl:variable name="mandatoryRolePlayerId" select="orm:FactRoles/child::*[@id=$mandatories/orm:RoleSequence/child::*/@ref]/orm:RolePlayer/@ref"/>
 							<xsl:variable name="nonMandatoryRolePlayer" select="$rolePlayers[not(@id=$mandatoryRolePlayerId)]"/>
 							<xsl:choose>
 								<!-- See if the potential absorber object type plays any functional roles (other than the current one) that are not part of its preferred identifier... -->
@@ -106,9 +111,6 @@
 										<xsl:value-of select="'fully'"/>
 									</xsl:attribute>
 									<xsl:if test="$OutputDebugInformation">
-										<xsl:attribute name="refName">
-											<xsl:value-of select="@Name"/>
-										</xsl:attribute>
 										<xsl:attribute name="towardsName">
 											<xsl:value-of select="$nonMandatoryRolePlayer/@Name"/>
 										</xsl:attribute>
@@ -122,9 +124,6 @@
 										<xsl:value-of select="'factOnly'"/>
 									</xsl:attribute>
 									<xsl:if test="$OutputDebugInformation">
-										<xsl:attribute name="refName">
-											<xsl:value-of select="@Name"/>
-										</xsl:attribute>
 										<xsl:attribute name="towardsName">
 											<xsl:value-of select="$rolePlayers[@id=$mandatoryRolePlayerId]/@Name"/>
 										</xsl:attribute>
@@ -167,9 +166,6 @@
 								</xsl:choose>
 							</xsl:attribute>
 							<xsl:if test="$OutputDebugInformation">
-								<xsl:attribute name="refName">
-									<xsl:value-of select="@Name"/>
-								</xsl:attribute>
 								<xsl:attribute name="towardsName">
 									<xsl:value-of select="$rolePlayers[@id=$towardsId]/@Name"/>
 								</xsl:attribute>
@@ -217,11 +213,11 @@
 		</xsl:variable>
 		<xsl:variable name="ObjectTypeAbsorptions" select="exsl:node-set($ObjectTypeAbsorptionsFragment)/child::*"/>
 
-		<!-- Get the non-independent, non-subtype object types that play at least one functional role (not including their preferred identifier) that isn't absorbed away from that object type. -->
+		<!-- Get the non-independent, non-subtype object types that play at least one functional role (not including their preferred identifier) or supertype meta role that isn't absorbed away from that object type. -->
 		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypesFragment">
 			<xsl:for-each select="$ObjectTypeInformation[functionalDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id) and not(@id=$ObjectTypeAbsorptions/@ref)]">
 				<xsl:variable name="factTypeAbsorptionsAwayFromThisObjectType" select="$FactTypeAbsorptions[not(@towards=current()/@id)]"/>
-				<xsl:if test="functionalNonPreferredIdentifierDirectFacts/child::*[not(@id=$factTypeAbsorptionsAwayFromThisObjectType/@ref)]">
+				<xsl:if test="$NonIndependentSubtypeSupertypeObjectTypes[@id=current()/@id] or functionalNonPreferredIdentifierDirectFacts/child::*[not(@id=$factTypeAbsorptionsAwayFromThisObjectType/@ref)]">
 					<xsl:copy-of select="."/>
 				</xsl:if>
 			</xsl:for-each>
@@ -273,6 +269,8 @@
 
 			<xsl:apply-templates select="$TopLevelTypes" mode="GenerateConceptTypes">
 				<xsl:with-param name="Model" select="$Model"/>
+				<xsl:with-param name="SingleRoleMandatoryConstraints" select="$SingleRoleMandatoryConstraints"/>
+				<xsl:with-param name="SingleRoleUniquenessConstraints" select="$SingleRoleUniquenessConstraints"/>
 				<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 				<xsl:with-param name="FactTypeAbsorptions" select="$FactTypeAbsorptions"/>
 				<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
@@ -286,6 +284,8 @@
 	<!-- Returns a variety of useful information for the current context node. Don't call this directly, use the cached info from $ObjectTypeInformation. -->
 	<xsl:template name="GetObjectTypeInformation">
 		<xsl:param name="Model"/>
+		<xsl:param name="AlethicSingleRoleMandatoryConstraints"/>
+		<xsl:param name="AlethicSingleRoleUniquenessConstraints"/>
 
 		<!-- Any subtype meta facts where this object type is the subtype. -->
 		<xsl:variable name="subtypeMetaFacts" select="$Model/orm:Facts/orm:SubtypeFact[orm:FactRoles/orm:SubtypeMetaRole/orm:RolePlayer/@ref=current()/@id]"/>
@@ -299,13 +299,14 @@
 		<!-- All direct and inherited roles that are played by the supertype(s) of this object type. -->
 		<xsl:variable name="inheritedPlayedRolesFragment">
 			<xsl:for-each select="$Model/orm:Objects/child::*[@id=$subtypeMetaFacts/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref]">
-				<xsl:call-template name="GetSpecificObjectTypeInformation">
-					<xsl:with-param name="Model" select="$Model"/>
-					<xsl:with-param name="RequestedInformation" select="'directAndInheritedPlayedRoles'"/>
-				</xsl:call-template>
+					<xsl:call-template name="GetObjectTypeInformation">
+						<xsl:with-param name="Model" select="$Model"/>
+						<xsl:with-param name="AlethicSingleRoleMandatoryConstraints" select="$AlethicSingleRoleMandatoryConstraints"/>
+						<xsl:with-param name="AlethicSingleRoleUniquenessConstraints" select="$AlethicSingleRoleUniquenessConstraints"/>
+					</xsl:call-template>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="inheritedPlayedRoles" select="exsl:node-set($inheritedPlayedRolesFragment)/child::*"/>
+		<xsl:variable name="inheritedPlayedRoles" select="exsl:node-set($inheritedPlayedRolesFragment)/child::directAndInheritedPlayedRoles/child::*"/>
 
 		<!-- All roles directly played by this object type or its supertype(s). -->
 		<xsl:variable name="directAndInheritedPlayedRoles" select="$directPlayedRoles | $inheritedPlayedRoles"/>
@@ -322,10 +323,10 @@
 		<!-- All roles in $directFacts that are opposite a role in $directPlayedRoles. -->
 		<xsl:variable name="directFactsOppositeRoles" select="$directFacts/orm:FactRoles/child::*[not(@id=$directPlayedRoles/@ref)] | $directFacts/orm:FactRoles[child::*[1]/@id=$directPlayedRoles/@ref and child::*[2]/@id=$directPlayedRoles/@ref]/child::*"/>
 
-		<!-- The internal or external uniqueness constraint that is the preferred identifier for this object type. -->
-		<xsl:variable name="preferredIdentifier" select="($Model/orm:Facts/orm:Fact/orm:InternalConstraints/orm:InternalUniquenessConstraint|$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint)[@id=current()/orm:PreferredIdentifier/@ref]"/>
+		<!-- The uniqueness constraint that is the preferred identifier for this object type. -->
+		<xsl:variable name="preferredIdentifier" select="$Model/orm:Constraints/orm:UniquenessConstraint[@id=current()/orm:PreferredIdentifier/@ref]"/>
 		<!-- The facts that are directly part of the preferred identifier of this object type. Note that this may include facts that are NOT in $directAndInheritedFacts. -->
-		<xsl:variable name="preferredIdentifierFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=$preferredIdentifier/orm:RoleSequence/orm:Role/@ref]"/>
+		<xsl:variable name="preferredIdentifierFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=$preferredIdentifier/orm:RoleSequence/child::*/@ref]"/>
 
 		<!-- $directFacts that are not also $preferredIdentifierFacts -->
 		<xsl:variable name="nonPreferredIdentifierDirectFacts" select="$directFacts[not(@id=$preferredIdentifierFacts/@id)]"/>
@@ -336,17 +337,21 @@
 		<!-- $directAndInheritedFacts that are not also $preferredIdentifierFacts -->
 		<xsl:variable name="nonPreferredIdentifierDirectAndInheritedFacts" select="$directAndInheritedFacts[not(@id=$preferredIdentifierFacts/@id)]"/>
 
+		<!-- $directPlayedRoles that are alethicly mandatory -->
+		<xsl:variable name="mandatoryDirectPlayedRoles" select="$directPlayedRoles[@ref=$AlethicSingleRoleMandatoryConstraints/orm:RoleSequence/child::*/@ref]"/>
+		
 		<!-- $directFacts that are alethicly mandatory -->
-		<xsl:variable name="mandatoryDirectFacts" select="$directFacts[orm:InternalConstraints/orm:SimpleMandatoryConstraint[(not(@Modality) or @Modality='Alethic') and orm:RoleSequence/orm:Role/@ref=$directPlayedRoles/@ref]]"/>
+		<xsl:variable name="mandatoryDirectFacts" select="$directFacts[orm:FactRoles/child::*/@id=$mandatoryDirectPlayedRoles/@ref]"/>
 
 		<!-- $nonPreferredIdentifierDirectFacts that are alethicly mandatory -->
-		<xsl:variable name="mandatoryNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[orm:InternalConstraints/orm:SimpleMandatoryConstraint[(not(@Modality) or @Modality='Alethic') and orm:RoleSequence/orm:Role/@ref=$directPlayedRoles/@ref]]"/>
-
+		<xsl:variable name="mandatoryNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[@id=$mandatoryDirectFacts/@id]"/>
+		
+		<!-- TODO: The comment says $nonPreferredIdentifierDirectFacts but the code says $directFacts... Which is correct? -->
 		<!-- $nonPreferredIdentifierDirectFacts on which this object type is functionally dependent. -->
-		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:InternalConstraints/orm:InternalUniquenessConstraint[(not(@Modality) or @Modality='Alethic')]/orm:RoleSequence[not(orm:Role/@ref=$directPlayedRoles/@ref)]]"/>
+		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and not(@id=$directPlayedRoles/@ref)]]"/>
 
 		<!-- $directFacts in which this object type plays a functional role -->
-		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:InternalConstraints/orm:InternalUniquenessConstraint[(not(@Modality) or @Modality='Alethic')]/orm:RoleSequence[count(orm:Role)=1 and orm:Role/@ref=$directPlayedRoles/@ref]]"/>
+		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:FactRoles/child::*[@id=$AlethicSingleRoleUniquenessConstraints/orm:RoleSequence/child::*/@ref and @id=$directPlayedRoles/@ref]]"/>
 
 		<!-- The intersection of $mandatoryDirectFacts, $dependentDirectFacts, and $functionalDirectFacts. -->
 		<xsl:variable name="mandatoryDependentFunctionalDirectFacts" select="$mandatoryDirectFacts[@id=$dependentDirectFacts/@id and @id=$functionalDirectFacts/@id]"/>
@@ -402,6 +407,9 @@
 		<nonPreferredIdentifierDirectAndInheritedFacts>
 			<xsl:copy-of select="$nonPreferredIdentifierDirectAndInheritedFacts"/>
 		</nonPreferredIdentifierDirectAndInheritedFacts>
+		<mandatoryDirectPlayedRoles>
+			<xsl:copy-of select="$mandatoryDirectPlayedRoles"/>
+		</mandatoryDirectPlayedRoles>
 		<mandatoryDirectFacts>
 			<xsl:copy-of select="$mandatoryDirectFacts"/>
 		</mandatoryDirectFacts>
@@ -427,16 +435,6 @@
 			<xsl:copy-of select="$mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts"/>
 		</mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts>
 
-	</xsl:template>
-	<xsl:template name="GetSpecificObjectTypeInformation">
-		<xsl:param name="Model"/>
-		<xsl:param name="RequestedInformation"/>
-		<xsl:variable name="allInformationFragment">
-			<xsl:call-template name="GetObjectTypeInformation">
-				<xsl:with-param name="Model" select="$Model"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<xsl:copy-of select="exsl:node-set($allInformationFragment)/child::*[local-name()=$RequestedInformation]/child::*"/>
 	</xsl:template>
 
 	<xsl:template match="orm:ValueType" mode="GenerateInformationTypeFormats">
@@ -558,6 +556,8 @@
 
 	<xsl:template match="orm:EntityType | orm:ValueType" mode="GenerateConceptTypes">
 		<xsl:param name="Model"/>
+		<xsl:param name="SingleRoleMandatoryConstraints"/>
+		<xsl:param name="SingleRoleUniquenessConstraints"/>
 		<xsl:param name="ObjectTypeInformation"/>
 		<xsl:param name="FactTypeAbsorptions"/>
 		<xsl:param name="ObjectTypeAbsorptions"/>
@@ -611,7 +611,7 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="mandatory">
-					<xsl:variable name="simpleMandatoryConstraint" select="orm:InternalConstraints/orm:SimpleMandatoryConstraint[orm:RoleSequence/orm:Role/@ref=$thisRole/@id]"/>
+					<xsl:variable name="simpleMandatoryConstraint" select="$SingleRoleMandatoryConstraints[orm:RoleSequence/child::*/@ref=$thisRoleId]"/>
 					<xsl:choose>
 						<xsl:when test="$simpleMandatoryConstraint">
 							<xsl:call-template name="GetModality">
@@ -644,7 +644,7 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="oppositeOilUniquenessConstraint">
-					<xsl:variable name="uniquenessConstraint" select="orm:InternalConstraints/orm:InternalUniquenessConstraint[orm:RoleSequence/orm:Role/@ref=$oppositeRoleId]"/>
+					<xsl:variable name="uniquenessConstraint" select="$SingleRoleUniquenessConstraints[orm:RoleSequence/child::*/@ref=$oppositeRoleId]"/>
 					<xsl:if test="$uniquenessConstraint">
 						<oil:singleRoleUniquenessConstraint name="{$uniquenessConstraint/@Name}" sourceRef="{$uniquenessConstraint/@id}">
 							<xsl:attribute name="modality">
@@ -653,7 +653,7 @@
 								</xsl:call-template>
 							</xsl:attribute>
 							<xsl:attribute name="isPreferred">
-								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:InternalUniquenessConstraint/@id = $uniquenessConstraint/@id"/>
+								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:UniquenessConstraint/@id = $uniquenessConstraint/@id"/>
 							</xsl:attribute>
 						</oil:singleRoleUniquenessConstraint>
 					</xsl:if>
@@ -697,6 +697,8 @@
 					<xsl:when test="$oppositeRolePlayerDesiredParentOrTopLevelTypeId = $thisObjectTypeId">
 						<xsl:apply-templates select="$oppositeRolePlayer" mode="GenerateConceptTypes">
 							<xsl:with-param name="Model" select="$Model"/>
+							<xsl:with-param name="SingleRoleMandatoryConstraints" select="$SingleRoleMandatoryConstraints"/>
+							<xsl:with-param name="SingleRoleUniquenessConstraints" select="$SingleRoleUniquenessConstraints"/>
 							<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
 							<xsl:with-param name="FactTypeAbsorptions" select="$FactTypeAbsorptions"/>
 							<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
@@ -720,7 +722,7 @@
 			</xsl:for-each>
 
 			<!-- Process external constraints. -->
-			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[(child::orm:RoleSequences|self::*)/orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directFactsOppositeRoles/child::*/@id]">
+			<xsl:for-each select="$Model/orm:Constraints/child::*[(child::orm:RoleSequences|self::*)[count(orm:RoleSequence/orm:Role)>1]/orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directFactsOppositeRoles/child::*/@id]">
 
 				<!-- HACK: TODO: UNDONE: The code inside $roleSequences kind of works, but is largely untested and very fragile. -->
 				<xsl:variable name="roleSequencesFragment">
@@ -801,10 +803,10 @@
 
 				<xsl:choose>
 					<!-- TODO: Process other external constraints here. -->
-					<xsl:when test="self::orm:ExternalUniquenessConstraint">
+					<xsl:when test="self::orm:UniquenessConstraint">
 						<oil:roleSequenceUniquenessConstraint name="{@Name}" modality="{$modality}" sourceRef="{@id}">
 							<xsl:attribute name="isPreferred">
-								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:ExternalUniquenessConstraint/@id = current()/@id"/>
+								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:UniquenessConstraint/@id = current()/@id"/>
 							</xsl:attribute>
 							<xsl:copy-of select="$roleSequences"/>
 						</oil:roleSequenceUniquenessConstraint>

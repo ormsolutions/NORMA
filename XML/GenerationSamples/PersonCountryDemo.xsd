@@ -69,14 +69,14 @@
 				<xs:element name="PersonElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Person" type="oxs:Person_FACTS" />
+							<xs:element name="Person" type="oxs:PersonFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="CountryElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Country" type="oxs:Country_FACTS" />
+							<xs:element name="Country" type="oxs:CountryFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>

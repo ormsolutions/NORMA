@@ -31,7 +31,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// An enum representing the type of verbalization
 	/// for a given element
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum VerbalizationContent
 	{
 		/// <summary>
@@ -51,12 +50,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// the verbalizer to the writer
 	/// </summary>
 	/// <param name="content">The style of verbalization content</param>
-	[CLSCompliant(true)]
 	public delegate void NotifyBeginVerbalization(VerbalizationContent content);
 	/// <summary>
 	/// Interface for verbalization
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IVerbalize
 	{
 		/// <summary>
@@ -72,7 +69,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Interface to redirect verbalization. Called for top-level selected objects only
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IRedirectVerbalization
 	{
 		/// <summary>
@@ -88,7 +84,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// IVerbalize. IVerbalizeChildren is ignored for the top-level
 	/// verbalization object if IRedirectVerbalization is specified.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IVerbalizeChildren { }
 	#endregion // IVerbalizeChildren interface
 	#region CustomChildVerbalizer struct
@@ -96,10 +91,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// Structure to hold return information from the IVerbalizeFilterChildren.FilterChildVerbalizer
 	/// and IVerbalizeCustomChildren.GetCustomChildVerbalizations methods
 	/// </summary>
-	public struct CustomChildVerbalizer
+	public struct CustomChildVerbalizer : IEquatable<CustomChildVerbalizer>
 	{
-		private IVerbalize myInstance;
-		private bool myOptions;
+		private readonly IVerbalize myInstance;
+		private readonly bool myOptions;
 		/// <summary>
 		/// Any empty VerbalizationFilterResult structure
 		/// </summary>
@@ -156,11 +151,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override bool Equals(object obj)
 		{
-			if (obj is CustomChildVerbalizer)
-			{
-				return Equals((CustomChildVerbalizer)obj);
-			}
-			return false;
+			return (obj is CustomChildVerbalizer) && Equals((CustomChildVerbalizer)obj);
 		}
 		/// <summary>
 		/// Standard GetHashCode override
@@ -401,12 +392,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						testOrder = readingOrders[i];
 						testRoles = testOrder.RoleCollection;
-						if (object.ReferenceEquals(testRoles[0].Role, matchLeadRole))
+						testRolesCount = testRoles.Count;
+						if (testRolesCount != 0 && object.ReferenceEquals(testRoles[0], matchLeadRole))
 						{
 							if (defaultRoleOrder != null)
 							{
 								int j;
-								testRolesCount = testRoles.Count;
 								for (j = 0; j < testRolesCount; ++j)
 								{
 									if (testRoles[j] != defaultRoleOrder[j])
@@ -490,15 +481,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Match the first non whitespace/html character
 		/// </summary>
-		private static Regex FirstBodyCharacterPatternAny = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>[^<\s])", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static readonly Regex FirstBodyCharacterPatternAny = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>[^<\s])", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Match the first non whitespace/html character, but only if it is lower case
 		/// </summary>
-		private static Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static readonly Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Match the last non whitespace/html character
 		/// </summary>
-		private static Regex LastBodyCharacterPattern = new Regex(@"(?<1>[^<\s])((<[^>]*?>)|\s)*?\z", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static readonly Regex LastBodyCharacterPattern = new Regex(@"(?<1>[^<\s])((<[^>]*?>)|\s)*?\z", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Helper function for turning verbalizations into true sentences. Handles html and plain text
 		/// body text.

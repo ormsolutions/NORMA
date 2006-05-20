@@ -268,7 +268,7 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="PersonHasParents">
+		<ddl:columnDefinition name="hasParents">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="OptnlUnqDcml">
@@ -310,13 +310,13 @@
 		<ddl:columnDefinition name="DDCDCT">
 			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DNDNDIFPC">
+		<ddl:columnDefinition name="DNDFPC">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DUDUDIV">
+		<ddl:columnDefinition name="DUDV">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="DUDUDIB">
+		<ddl:columnDefinition name="DUDB">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition>
@@ -356,7 +356,7 @@
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
-			<dep:constraintNameDefinition name="CPEUC3" />
+			<dep:constraintNameDefinition name="CPIUC49" />
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<ddl:column name="Father_Person_id" />
 				<ddl:column name="CPBOBON" />

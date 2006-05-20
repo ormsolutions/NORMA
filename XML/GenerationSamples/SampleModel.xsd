@@ -73,22 +73,22 @@
 			<xs:maxLength value="11" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="NaturalDeathIsFromProstateCancer">
+	<xs:simpleType name="isFromProstateCancer">
 		<xs:restriction base="xs:boolean">
 			<xs:enumeration value="true" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="UnnaturalDeathIsViolent">
+	<xs:simpleType name="isViolent">
 		<xs:restriction base="xs:boolean">
 			<xs:enumeration value="true" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="UnnaturalDeathIsBloody">
+	<xs:simpleType name="isBloody">
 		<xs:restriction base="xs:boolean">
 			<xs:enumeration value="true" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="PersonHasParents">
+	<xs:simpleType name="hasParents">
 		<xs:restriction base="xs:boolean">
 			<xs:enumeration value="true" />
 		</xs:restriction>
@@ -203,7 +203,7 @@
 				<xs:attribute name="HatTypeStyle_Description" type="oxs:HatTypeStyle_Description" use="optional" />
 				<xs:attribute name="vin" type="xs:integer" use="optional" />
 				<xs:attribute name="Gender_Code" type="oxs:Gender_Code" use="required" />
-				<xs:attribute name="PersonHasParents" type="oxs:true" use="optional" />
+				<xs:attribute name="hasParents" type="oxs:true" use="optional" />
 				<xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
 				<xs:attribute name="MandatoryUniqueDecimal" type="oxs:MandatoryUniqueDecimal" use="required" />
 				<xs:attribute name="MandatoryUniqueString" type="oxs:MandatoryUniqueString" use="required" />
@@ -235,49 +235,49 @@
 				<xs:element name="PersonDrivesCarElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="PersonDrivesCar" type="oxs:PersonDrivesCar_FACTS" />
+							<xs:element name="PersonDrivesCar" type="oxs:PersonDrivesCarFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="PersonBoughtCarFromPersonOnDateElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="PersonBoughtCarFromPersonOnDate" type="oxs:PersonBoughtCarFromPersonOnDate_FACTS" />
+							<xs:element name="PersonBoughtCarFromPersonOnDate" type="oxs:PersonBoughtCarFromPersonOnDateFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="ReviewElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Review" type="oxs:Review_FACTS" />
+							<xs:element name="Review" type="oxs:ReviewFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="PersonHasNickNameElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="PersonHasNickName" type="oxs:PersonHasNickName_FACTS" />
+							<xs:element name="PersonHasNickName" type="oxs:PersonHasNickNameFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="PersonElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Person" type="oxs:Person_FACTS" />
+							<xs:element name="Person" type="oxs:PersonFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="TaskElements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Task" type="oxs:Task_FACTS" />
+							<xs:element name="Task" type="oxs:TaskFacts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="ValueType1Elements">
 					<xs:complexType>
 						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="ValueType1" type="oxs:ValueType1_FACTS" />
+							<xs:element name="ValueType1" type="oxs:ValueType1Facts" />
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>

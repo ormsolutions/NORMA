@@ -128,19 +128,6 @@
 				<xsl:with-param name="ObjectifiedFacts" select="$ObjectifiedFacts"/>
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
-			<xsl:if test="not(orm:Constraints) and $BinarizableFacts">
-				<orm:Constraints>
-					<xsl:for-each select="$BinarizableFacts/orm:InternalConstraints/orm:UniquenessConstraint">
-						<xsl:variable name="BinarizedUniquenessConstraint" select="$Model/orm:Constraints/orm:UniquenessConstraint[@id=current()/@ref]"/>
-						<orm:UniquenessConstraint>
-							<xsl:copy-of select="$BinarizedUniquenessConstraint/@id"/>
-							<xsl:copy-of select="$BinarizedUniquenessConstraint/@Name"/>
-							<xsl:copy-of select="$BinarizedUniquenessConstraint/@IsInternal"/>
-							<xsl:copy-of select="$BinarizedUniquenessConstraint/orm:RoleSequence"/>
-						</orm:UniquenessConstraint>
-					</xsl:for-each>
-				</orm:Constraints>
-			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
 	<xsl:template match="orm:ImpliedFact" mode="CoRefORM">
@@ -171,11 +158,7 @@
 				<xsl:with-param name="ObjectifiedFacts" select="$ObjectifiedFacts"/>
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
-			<orm:PreferredIdentifier>
-				<xsl:attribute name="ref">
-					<xsl:value-of select="$object/@PreferredIdentifier"/>
-				</xsl:attribute>
-			</orm:PreferredIdentifier>
+			<orm:PreferredIdentifier ref="{$object/@PreferredIdentifier}"/>
 		</orm:EntityType>
 	</xsl:template>
 	<xsl:template match="*|@*|text()" name="DefaultCoRefORMTemplate" mode="CoRefORM">
@@ -208,8 +191,8 @@
 	</xsl:template>
 	<xsl:template match="orm:RoleProxy" mode="CoRefORM">
 		<xsl:variable name="proxiedRole" select="../../../orm:Fact/child::orm:FactRoles/child::orm:Role[@id=current()/orm:Role/@ref]"/>
-		<orm:Role id="{$proxiedRole/@id}" _IsMandatory="{$proxiedRole/@_IsMandatory}" _Multiplicity="{$proxiedRole/@_Multiplicity}" Name="{$proxiedRole/@Name}">
-			<orm:RolePlayer ref="{$proxiedRole/orm:RolePlayer/@ref}" />
+		<orm:Role _Multiplicity="ExactlyOne">
+			<xsl:copy-of select="$proxiedRole/@*[not(local-name()='_Multiplicity')]|$proxiedRole/child::*"/>
 		</orm:Role>
 	</xsl:template>
 	<xsl:template match="orm:Role/@ref | orm:ImpliedFact/orm:FactRoles/orm:Role/@id" mode="CoRefORM">
