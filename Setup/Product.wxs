@@ -26,7 +26,7 @@
 
 		<Package
 			Id="$(var.PackageCode)"
-			Description="$(loc.ProductName) - $(loc.ReleaseVersion)"
+			Description="$(loc.ProductName) - $(var.ReleaseDescription)"
 			Comments="$(loc.PackageCommentsPrefix)$(loc.ProductName)$(loc.PackageCommentsSuffix)"
 			Manufacturer="$(loc.Manufacturer)"
 			InstallerVersion="300"
@@ -41,13 +41,13 @@
 		<Condition Message="$(loc.Windows2000OrHigherRequired)">VersionNT >= 500</Condition>
 
 		<Property Id="VSPRODUCTDIR">
-			<RegistrySearch Id="VSProductDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="ProductDir" Type="directory" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VSProductDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="ProductDir" Type="directory" Win64="$(var.Win64)"/>
 		</Property>
 		<Property Id="VSTEMPLATEITEMDIR">
-			<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\VSTemplate\Item" Name="UserFolder" Type="directory" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\VSTemplate\Item" Name="UserFolder" Type="directory" Win64="$(var.Win64)"/>
 		</Property>
 		<Property Id="VSENVIRONMENTPATH">
-			<RegistrySearch Id="VSEnvironmentPathRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentPath" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VSEnvironmentPathRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentPath" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<!-- Make sure Visual Studio 2005 is installed. Since VS requires .NET, we don't need to check for it separately. -->
 		<!-- Technically, since DSL Tools requires VS, we don't even need to do this check, but since we have to get the properties anyway, we might as well. It gives the user a more appropriate error message, anyway. -->
@@ -55,41 +55,44 @@
 		
 		<Property Id="DSLTOOLSPACKAGECLASS">
 			<!-- The value that we look up on the next line doesn't have to be Class, it only has to be a value that will always be present in the DSL Tools package registry key. -->
-			<RegistrySearch Id="DSLToolsPackageClassRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Packages\{d1091694-ea72-4bdd-8918-78324cc25448}" Name="Class" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="DSLToolsPackageClassRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Packages\{d1091694-ea72-4bdd-8918-78324cc25448}" Name="Class" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<!-- Make sure the DSL Tools redistributable or SDK is installed. -->
 		<Condition Message="$(loc.DSLToolsRequired)">DSLTOOLSPACKAGECLASS OR Installed</Condition>
 
 		<!-- Get the package GUIDs for the various VS packages. -->
 		<Property Id="VCSHARPPACKAGEGUID">
-			<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C#" Name="Package" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C#" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<Property Id="VBASICPACKAGEGUID">
-			<RegistrySearch Id="VBasicPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual Basic" Name="Package" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VBasicPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual Basic" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<Property Id="VJSHARPPACKAGEGUID">
-			<RegistrySearch Id="VJSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual J#" Name="Package" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VJSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual J#" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<Property Id="VCPLUSPLUSPACKAGEGUID">
-			<RegistrySearch Id="VCPlusPlusPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C++" Name="Package" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VCPlusPlusPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C++" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 		<Property Id="VWEBDEVPACKAGEGUID">
-			<RegistrySearch Id="VWebDevPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Visual Web Developer" Name="Package" Type="raw" Win64="$(var.Win64)" />
+			<RegistrySearch Id="VWebDevPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Visual Web Developer" Name="Package" Type="raw" Win64="$(var.Win64)"/>
 		</Property>
 
 		<!-- Only support per-machine installation. -->
 		<Property Id="ALLUSERS">1</Property>
 		
 		<!-- Setup Add/Remove Programs functionality. -->
+		<Property Id="ARPNOMODIFY" Value="1"/>
 		<Property Id="ARPCONTACT">$(loc.Manufacturer)</Property>
 		<Property Id="ARPPRODUCTICON">AboutBox.ico</Property>
+		<Property Id="ARPURLINFOABOUT">$(var.NeumontWebsiteUrl)</Property>
+		<Property Id="ARPURLUPDATEINFO">$(var.NORMAWebsiteUrl)</Property>
 		
-		<Icon Id="AboutBox.ico" src="..\ORMModel\Resources\AboutBox.ico" />
+		<Icon Id="AboutBox.ico" src="..\ORMModel\Resources\AboutBox.ico"/>
 		
-		<Media Id="1" Cabinet="NORMA_VS.cab" EmbedCab="yes" CompressionLevel="high" />
+		<Media Id="1" Cabinet="NORMA_VS.cab" EmbedCab="yes" CompressionLevel="high"/>
 
-		<FeatureRef Id="MainFeature" />
-		<DirectoryRef Id="TARGETDIR" />
+		<FeatureRef Id="MainFeature"/>
+		<DirectoryRef Id="TARGETDIR"/>
 
 		<Property Id="ADMINORADVERTISED">$(loc.AdminOrAdvertised)</Property>
 		<CustomAction Id="AdminOrAdvertisedCustomAction" Return="check" Error="[ADMINORADVERTISED]"/>
@@ -100,10 +103,14 @@
 			<Custom Before="CostInitialize" Action="AdminOrAdvertisedCustomAction"/>
 		</AdvertiseExecuteSequence>
 
-		<CustomAction Id="DevEnvSetup" Property="VSENVIRONMENTPATH" ExeCommand="$(var.RootSuffixCmd)/Setup" Return="ignore"/>
+		<CustomAction Id="ArpInstallLocationCustomAction" Property="ARPINSTALLLOCATION" Value="[$(var.DefaultShortProductDir)]"/>
+		<CustomAction Id="DevEnvSetupCustomAction" Property="VSENVIRONMENTPATH" ExeCommand="$(var.RootSuffixCmd)/Setup" Return="ignore" Impersonate="no" Execute="deferred"/>
 		<InstallExecuteSequence>
-			<Custom After="InstallFinalize" Action="DevEnvSetup"/>
+			<RemoveExistingProducts Before="ArpInstallLocationCustomAction"/>
+			<Custom Before="InstallInitialize" Action="ArpInstallLocationCustomAction"/>
+			<Custom Before="InstallFinalize" Action="DevEnvSetupCustomAction"/>
 		</InstallExecuteSequence>
 
+		<UIRef Id="NORMAUI"/>
 	</Product>
 </Wix>

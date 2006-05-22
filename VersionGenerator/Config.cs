@@ -21,7 +21,7 @@ using System.Text;
 
 namespace Neumont.Tools.ORM.SDK
 {
-	internal partial class VersionGenerator
+	internal static partial class VersionGenerator
 	{
 		private static class Config
 		{

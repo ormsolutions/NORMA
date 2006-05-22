@@ -27,6 +27,7 @@
     <Compile Include="Features.wxs" />
     <Compile Include="Components.wxs" />
     <Compile Include="ComponentGroups.wxs" />
+    <Compile Include="UI.wxs" />
     <None Include="Config.wxi" />
     <None Include="NORMAVSPackageRegistry.wxi" />
     <None Include="Strings.wxl" />
@@ -35,5 +36,32 @@
     <None Include="DILSchemaCatalog.xml" />
     <None Include="NORMASchemaCatalog.xml" />
     <None Include="ORMSchemaCatalog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bitmaps\bannrbmp.bmp" />
+    <None Include="Bitmaps\dlgbmp.bmp" />
+    <None Include="Bitmaps\info.ico" />
+    <None Include="Bitmaps\warning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\CancelDlg.wxs" />
+    <Compile Include="UI\Common.wxs" />
+    <Compile Include="UI\ErrorDlg.wxs" />
+    <Compile Include="UI\ErrorProgressText.wxs" />
+    <Compile Include="UI\ExitDialog.wxs" />
+    <Compile Include="UI\FatalError.wxs" />
+    <Compile Include="UI\FilesInUse.wxs" />
+    <Compile Include="UI\MaintenanceTypeDlg.wxs" />
+    <Compile Include="UI\MaintenanceWelcomeDlg.wxs" />
+    <Compile Include="UI\MsiRMFilesInUse.wxs" />
+    <Compile Include="UI\OutOfDiskDlg.wxs" />
+    <Compile Include="UI\OutOfRbDiskDlg.wxs" />
+    <Compile Include="UI\PrepareDlg.wxs" />
+    <Compile Include="UI\ProgressDlg.wxs" />
+    <Compile Include="UI\ResumeDlg.wxs" />
+    <Compile Include="UI\UserExit.wxs" />
+    <Compile Include="UI\VerifyReadyDlg.wxs" />
+    <Compile Include="UI\WaitForCostingDlg.wxs" />
+    <Compile Include="UI\WelcomeDlg.wxs" />
   </ItemGroup>
 </Project>

@@ -89,6 +89,9 @@
 	<?define DefaultShortProductDir="NORMAVS"?>
 	<?define DefaultProductDir="ORM Architect for Visual Studio"?>
 
+	<?define NORMAWebsiteUrl="http://norma.orm.net"?>
+	<?define NeumontWebsiteUrl="http://www.neumont.edu"?>
+
 	<!-- Misc. Visual Studio GUIDs -->
 	<?define VSGeneralProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8"?>
 	<?define VSMiscProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3"?>

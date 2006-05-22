@@ -21,7 +21,7 @@ using System.Xml;
 
 namespace Neumont.Tools.ORM.SDK
 {
-	internal partial class VersionGenerator
+	internal static partial class VersionGenerator
 	{
 		private static int Main()
 		{
@@ -46,6 +46,7 @@ namespace Neumont.Tools.ORM.SDK
 			string unquotedFileVersion = string.Format("{0}.{1}.{2}.{3}", Config.MajorVersion, Config.MinorVersion, build, revision);
 			string quotedInformationalVersion = string.Format("\"{0} {1:yyyy-MM}{2}\"", unquotedFileVersion, Config.ReleaseYearMonth, Config.ReleaseType);
 			string quotedProductVersion = string.Format("\"{0}.{1}.0.0\"", Config.MajorVersion, Config.MinorVersion);
+			string quotedReleaseDescription = string.Format("\"{0:yyyy-MM} {1}\"", Config.ReleaseYearMonth, Config.ReleaseType);
 
 			#region Version.h
 			FileInfo versionH = new FileInfo("Version.h");
@@ -104,12 +105,13 @@ namespace Neumont.Tools.ORM.SDK
 				using (XmlWriter writer = XmlWriter.Create(versionWXI.CreateText(), settings))
 				{
 					writer.WriteStartDocument();
-					writer.WriteStartElement("Include", "http://schemas.microsoft.com/wix/2003/01/wi");
 					writer.WriteComment(generatedWarning);
+					writer.WriteStartElement("Include", "http://schemas.microsoft.com/wix/2003/01/wi");
 					writer.WriteProcessingInstruction("define", string.Format("MajorMinorVersion=\"{0}.{1}\"", Config.MajorVersion, Config.MinorVersion));
 					writer.WriteProcessingInstruction("define", string.Format("MajorVersionHexits=\"{0:d2}\"", Config.MajorVersion));
 					writer.WriteProcessingInstruction("define", string.Format("ProductVersion=\"{0}\"", unquotedFileVersion));
 					writer.WriteProcessingInstruction("define", string.Format("VersionGuidSuffix=\"$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits){0:d2}{1:d4}{2:d4}\"", Config.MinorVersion, build, revision));
+					writer.WriteProcessingInstruction("define", "ReleaseDescription=" + quotedReleaseDescription);
 					writer.WriteEndElement();
 					writer.WriteEndDocument();
 				}
