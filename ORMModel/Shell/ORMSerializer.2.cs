@@ -519,7 +519,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeMetaRoleGuid">The opposite meta role guid</param>
 		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, Guid oppositeMetaRoleGuid)
 		{
-			mySingleGuid = oppositeMetaRoleGuid;
+			mySingleGuid = explicitRelationshipGuid;
 			myMultiGuids = new Guid[] { oppositeMetaRoleGuid };
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType;
 		}
