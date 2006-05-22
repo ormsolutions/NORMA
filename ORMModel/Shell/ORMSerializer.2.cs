@@ -1727,18 +1727,7 @@ namespace Neumont.Tools.ORM.Shell
 				ModelElement retVal = FindElementOfType(classInfo);
 				if (retVal == null)
 				{
-					Type implClass = classInfo.ImplementationClass;
-					if (implClass.IsAbstract || implClass == typeof(ModelElement)) // The class factory won't create a raw model element
-					{
-						MetaClassInfo descendantInfo = FindCreatableClass(classInfo.Descendants); // Try the cheap search first
-						if (descendantInfo != null)
-						{
-							descendantInfo = FindCreatableClass(classInfo.AllDescendants);
-						}
-						Debug.Assert(descendantInfo != null); // Some descendant should always be creatable, otherwise there could not be a valid link
-						classInfo = descendantInfo;
-					}
-					retVal = store.ElementFactory.CreateElement(false, classInfo.ImplementationClass);
+					retVal = RealizeClassInfo(store.ElementFactory, classInfo);
 					if (myMultipleElements != null)
 					{
 						myMultipleElements.Add(retVal);
@@ -1754,6 +1743,50 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						mySingleElement = retVal;
 					}
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Create a ModelElement of a type compatible with the specified classInfo
+			/// </summary>
+			/// <param name="elementFactory">The ElementFactory from the context store</param>
+			/// <param name="classInfo">The meta information for the class to create</param>
+			/// <returns>ModelElement</returns>
+			private ModelElement RealizeClassInfo(ElementFactory elementFactory, MetaClassInfo classInfo)
+			{
+				Type implClass = classInfo.ImplementationClass;
+				if (implClass.IsAbstract || implClass == typeof(ModelElement)) // The class factory won't create a raw model element
+				{
+					MetaClassInfo descendantInfo = FindCreatableClass(classInfo.Descendants); // Try the cheap search first
+					if (descendantInfo != null)
+					{
+						descendantInfo = FindCreatableClass(classInfo.AllDescendants);
+					}
+					Debug.Assert(descendantInfo != null); // Some descendant should always be creatable, otherwise there could not be a valid link
+					classInfo = descendantInfo;
+				}
+				MetaRelationshipInfo relationshipInfo;
+				ModelElement retVal = null;
+				int metaRoleCount;
+				IList metaRoles;
+				if (null != (relationshipInfo = classInfo as MetaRelationshipInfo) &&
+					0 != (metaRoleCount = (metaRoles = relationshipInfo.MetaRoles).Count))
+				{
+					// If this is a link element, then we need to create it with dummy role players
+					// to go along with the dummy element. The framework will allow the create of
+					// an ElementLink using CreateElement, but there is no way to remove that element
+					// unless it has the correct roles players attached to it.
+					RoleAssignment[] assignments = new RoleAssignment[metaRoleCount];
+					for (int i = 0; i < metaRoleCount; ++i)
+					{
+						MetaRoleInfo roleInfo = (MetaRoleInfo)metaRoles[i];
+						assignments[i] = new RoleAssignment(roleInfo, RealizeClassInfo(elementFactory, roleInfo.RolePlayer));
+					}
+					retVal = elementFactory.CreateElementLink(classInfo.ImplementationClass, assignments);
+				}
+				else
+				{
+					retVal = elementFactory.CreateElement(false, classInfo.ImplementationClass);
 				}
 				return retVal;
 			}
@@ -1857,15 +1890,69 @@ namespace Neumont.Tools.ORM.Shell
 				for (int i = linkCount - 1; i >= 0; --i) // Walk backwards, we're messing with the list contents
 				{
 					ElementLink link = (ElementLink)links[i];
-					foreach (MetaRoleInfo metaRole in link.MetaRelationship.MetaRoles)
+					IList metaRoles = link.MetaRelationship.MetaRoles;
+					int metaRoleCount = metaRoles.Count;
+					for (int j = 0; j < metaRoleCount; ++j)
 					{
-						if (object.ReferenceEquals(link.GetRolePlayer(metaRole), placeholder))
+						MetaRoleInfo roleInfo = (MetaRoleInfo)metaRoles[j];
+						if ((object)link.GetRolePlayer(roleInfo) == placeholder)
 						{
-							link.SetRolePlayer(metaRole, realElement);
+							link.SetRolePlayer(roleInfo, realElement);
 						}
 					}
 				}
-				placeholder.Remove();
+				RemoveDetachedPlaceholder(placeholder);
+			}
+			private static void RemoveDetachedPlaceholder(ModelElement placeholder)
+			{
+				// If the placeholder is a dummy link, then make sure that all of its
+				// children are removed
+				ElementLink linkPlaceholder = placeholder as ElementLink;
+				if (linkPlaceholder != null)
+				{
+					RemoveDetachedLinkPlaceholder(linkPlaceholder);
+				}
+				else
+				{
+					placeholder.Remove();
+				}
+			}
+			private static void RemoveDetachedLinkPlaceholder(ElementLink linkPlaceholder)
+			{
+				MetaRelationshipInfo relationshipInfo = linkPlaceholder.MetaRelationship;
+				IList metaRoles = relationshipInfo.MetaRoles;
+				int metaRoleCount = metaRoles.Count;
+				if (metaRoleCount != 0)
+				{
+					// Cache the role players up front so we can recursively delete them
+					// Note that deleting a role player before deleting the link is likely to
+					// delete the link as well because most role players are non-optional.
+					// Delete propagation may also apply to the opposite role player, which
+					// we don't want in case there are elements attached to that link that
+					// do not delete automatically. To handle this case, we cache the role
+					// players, delete the link without propagating deletion to the
+					// roles, then delete the role players explicitly.
+					ModelElement[] rolePlayers = new ModelElement[metaRoleCount];
+					for (int i = 0; i < metaRoleCount; ++i)
+					{
+						rolePlayers[i] = linkPlaceholder.GetRolePlayer((MetaRoleInfo)metaRoles[i]);
+					}
+
+					// Remove the link without removing the role players
+					linkPlaceholder.Remove(metaRoles);
+
+					// Remove the role players
+					for (int i = 0; i < metaRoleCount; ++i)
+					{
+						Debug.Assert(!rolePlayers[i].IsRemoved);
+						RemoveDetachedPlaceholder(rolePlayers[i]);
+					}
+				}
+				else
+				{
+					linkPlaceholder.Remove();
+				}
+
 			}
 		}
 		private Dictionary<string, Guid> myCustomIdToGuidMap;
@@ -2536,7 +2623,23 @@ namespace Neumont.Tools.ORM.Shell
 			// Create an element link. There is no attempt here to determine if the link already
 			// exists in the store;
 			Guid id = (idValue == null) ? Guid.NewGuid() : GetElementId(idValue);
+
+			// An element link is always created as itself or as a placeholder, so the guid
+			// should never be in use. Placeholders are created if a forward reference is made
+			// to a class that is a link.
 			Debug.Assert(null == myStore.ElementDirectory.FindElement(id));
+			PlaceholderElement placeholder = default(PlaceholderElement);
+			Dictionary<Guid, PlaceholderElement> placeholderMap = null;
+			bool existingPlaceholder = false;
+			if (idValue != null)
+			{
+				// See if this has been created before as a placeholder
+				placeholderMap = myPlaceholderElementMap;
+				if (placeholderMap != null)
+				{
+					existingPlaceholder = placeholderMap.TryGetValue(id, out placeholder);
+				}
+			}
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
 				false,
 				(explicitMetaRelationshipInfo == null) ?
@@ -2549,6 +2652,11 @@ namespace Neumont.Tools.ORM.Shell
 			if (myNotifyAdded != null)
 			{
 				myNotifyAdded.ElementAdded(retVal);
+			}
+			if (existingPlaceholder)
+			{
+				placeholder.FulfilPlaceholderRoles(retVal);
+				placeholderMap.Remove(id);
 			}
 			return retVal;
 		}
@@ -2591,7 +2699,8 @@ namespace Neumont.Tools.ORM.Shell
 			if (retVal == null)
 			{
 				PlaceholderElement placeholder = default(PlaceholderElement);
-				bool existingPlaceholder = myPlaceholderElementMap != null && myPlaceholderElementMap.TryGetValue(id, out placeholder);
+				Dictionary<Guid, PlaceholderElement> placeholderMap = myPlaceholderElementMap;
+				bool existingPlaceholder = placeholderMap != null && placeholderMap.TryGetValue(id, out placeholder);
 				// The false parameter indicates that OnInitialize should not be called, which
 				// is standard fare for deserialization routines.
 				if (metaClassInfo == null)
@@ -2599,14 +2708,18 @@ namespace Neumont.Tools.ORM.Shell
 					metaClassInfo = myStore.MetaDataDirectory.FindMetaClass(metaClassId);
 				}
 				Type implClass = metaClassInfo.ImplementationClass;
-				if (createAsPlaceholder || implClass.IsAbstract)
+				// Any request to create a MetaRelationshipInfo as an element instead of
+				// an element link means a forward reference to a link object. Always create
+				// this as a placeholder, given that we will eventually realize this as
+				// a real link.
+				if (createAsPlaceholder || implClass.IsAbstract || metaClassInfo is MetaRelationshipInfo)
 				{
-					if (!existingPlaceholder && myPlaceholderElementMap == null)
+					if (placeholderMap == null)
 					{
-						myPlaceholderElementMap = new Dictionary<Guid, PlaceholderElement>();
+						myPlaceholderElementMap = placeholderMap = new Dictionary<Guid, PlaceholderElement>();
 					}
 					retVal = placeholder.CreatePlaceholderElement(myStore, metaClassInfo);
-					myPlaceholderElementMap[id] = placeholder;
+					placeholderMap[id] = placeholder;
 				}
 				else
 				{
@@ -2619,7 +2732,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (existingPlaceholder)
 					{
 						placeholder.FulfilPlaceholderRoles(retVal);
-						myPlaceholderElementMap.Remove(id);
+						placeholderMap.Remove(id);
 					}
 				}
 			}
