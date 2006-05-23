@@ -58,7 +58,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_F950097E-AE89-41FB-A35F-290CA84963B8">
 						<orm:Readings>
-							<orm:Reading id="_C11EB8AA-B65E-45D5-89A0-30218CD8208F" IsPrimary="true">
+							<orm:Reading id="_C11EB8AA-B65E-45D5-89A0-30218CD8208F">
 								<orm:Data>{0} played {1} for {2}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -85,7 +85,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_6710A4F2-1BE3-4718-8EBD-312AE44F01FE">
 						<orm:Readings>
-							<orm:Reading id="_90D49AA4-0F6F-4E8C-ADC8-52AED004B6BA" IsPrimary="true">
+							<orm:Reading id="_90D49AA4-0F6F-4E8C-ADC8-52AED004B6BA">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -96,7 +96,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_5ABD172A-744C-47BD-98B2-C4D63CF8436B">
 						<orm:Readings>
-							<orm:Reading id="_7422D5C4-B96C-494E-9BF0-DDDCCC7AB7FD" IsPrimary="true">
+							<orm:Reading id="_7422D5C4-B96C-494E-9BF0-DDDCCC7AB7FD">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -124,7 +124,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_778FADE2-73AF-41DB-8929-D403DBAFD141">
 						<orm:Readings>
-							<orm:Reading id="_E49D5AD6-440A-4C84-A786-1A7916AA2688" IsPrimary="true">
+							<orm:Reading id="_E49D5AD6-440A-4C84-A786-1A7916AA2688">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -135,7 +135,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_9465BED0-B7F7-4246-A275-81ED6A474FBD">
 						<orm:Readings>
-							<orm:Reading id="_4F14801D-CD96-4570-BCFE-5DACAD616FD7" IsPrimary="true">
+							<orm:Reading id="_4F14801D-CD96-4570-BCFE-5DACAD616FD7">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -163,7 +163,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_A7489B5C-4BDB-431D-8AA9-8EF0B6FABDC8">
 						<orm:Readings>
-							<orm:Reading id="_3F7547EC-A0B1-41C1-ADBF-5DAF5ACD3361" IsPrimary="true">
+							<orm:Reading id="_3F7547EC-A0B1-41C1-ADBF-5DAF5ACD3361">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -174,7 +174,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_D9CC43C4-0694-4864-8532-BD5C235EE2B0">
 						<orm:Readings>
-							<orm:Reading id="_2AB7568F-544B-4CA7-944D-7C86AABBD971" IsPrimary="true">
+							<orm:Reading id="_2AB7568F-544B-4CA7-944D-7C86AABBD971">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>

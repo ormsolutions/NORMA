@@ -48,7 +48,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_996B5CE9-B14C-46E8-9B81-915D80DDFA6F">
 						<orm:Readings>
-							<orm:Reading id="_EE44982B-A682-4514-840C-3C430737A190" IsPrimary="true">
+							<orm:Reading id="_EE44982B-A682-4514-840C-3C430737A190">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -77,7 +77,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_757BDF6E-D305-4F40-A710-87288111FAEF">
 						<orm:Readings>
-							<orm:Reading id="_48EFC491-D2EB-408D-820B-014A2E4C05BA" IsPrimary="true">
+							<orm:Reading id="_48EFC491-D2EB-408D-820B-014A2E4C05BA">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -88,7 +88,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_69B6F963-AFBB-4B7E-947F-A94FD0785584">
 						<orm:Readings>
-							<orm:Reading id="_55A61833-E0B2-499E-BC28-3FAED53515C7" IsPrimary="true">
+							<orm:Reading id="_55A61833-E0B2-499E-BC28-3FAED53515C7">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -116,7 +116,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_61DBB7F2-1F44-4724-87D0-D19AB053626E">
 						<orm:Readings>
-							<orm:Reading id="_FC2520FB-E7F7-432E-8E79-EFF230D535E1" IsPrimary="true">
+							<orm:Reading id="_FC2520FB-E7F7-432E-8E79-EFF230D535E1">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -127,7 +127,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_1CD5CA5C-27C9-4D63-9E31-2C94A3DF7A4E">
 						<orm:Readings>
-							<orm:Reading id="_3128DE89-465F-418E-886A-4300F314FA8C" IsPrimary="true">
+							<orm:Reading id="_3128DE89-465F-418E-886A-4300F314FA8C">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -155,7 +155,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_3D60D0F2-8350-4DF8-BFFC-72988A12CD7C">
 						<orm:Readings>
-							<orm:Reading id="_6CF8CD11-8219-413A-9D48-1C154F0EAADB" IsPrimary="true">
+							<orm:Reading id="_6CF8CD11-8219-413A-9D48-1C154F0EAADB">
 								<orm:Data>{0} had tea and crumpets with {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -188,7 +188,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_7D140977-AF21-4ACE-B34E-BFC68859C0E2">
 						<orm:Readings>
-							<orm:Reading id="_A4D159C3-17D5-486B-B51F-7B5EC18C8730" IsPrimary="true">
+							<orm:Reading id="_A4D159C3-17D5-486B-B51F-7B5EC18C8730">
 								<orm:Data>{0} is running from {1} to {2}{3}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>

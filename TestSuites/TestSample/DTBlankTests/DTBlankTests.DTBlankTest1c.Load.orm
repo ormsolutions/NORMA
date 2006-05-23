@@ -42,7 +42,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_6EF9E47E-99EA-4EF2-8B07-0E6A51954F79">
 						<orm:Readings>
-							<orm:Reading id="_16A1176B-67A1-4B88-98D1-766A3B9037C6" IsPrimary="true">
+							<orm:Reading id="_16A1176B-67A1-4B88-98D1-766A3B9037C6">
 								<orm:Data>{0} refuses to eat {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -68,7 +68,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_77BE87E4-49D5-42AF-86FE-D0A7148FD0AE">
 						<orm:Readings>
-							<orm:Reading id="_D86BE0D3-5809-4179-92B6-27C0A8EA67D1" IsPrimary="true">
+							<orm:Reading id="_D86BE0D3-5809-4179-92B6-27C0A8EA67D1">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -79,7 +79,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_CF8D7A48-ACF9-49BD-950D-DE37AE22111D">
 						<orm:Readings>
-							<orm:Reading id="_A01B6A4C-F06D-4BCF-9F10-3406511CF4DE" IsPrimary="true">
+							<orm:Reading id="_A01B6A4C-F06D-4BCF-9F10-3406511CF4DE">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -107,7 +107,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_3BCA3257-D1BD-4DC6-95A6-5F7676FCA963">
 						<orm:Readings>
-							<orm:Reading id="_4AE70E99-76A4-4711-B460-45CF3563EC54" IsPrimary="true">
+							<orm:Reading id="_4AE70E99-76A4-4711-B460-45CF3563EC54">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -118,7 +118,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_7D7ABCB3-FA51-499D-AD61-402BB0575D04">
 						<orm:Readings>
-							<orm:Reading id="_FFEA1156-B54C-4384-9DEE-E9B74F79B5DC" IsPrimary="true">
+							<orm:Reading id="_FFEA1156-B54C-4384-9DEE-E9B74F79B5DC">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>

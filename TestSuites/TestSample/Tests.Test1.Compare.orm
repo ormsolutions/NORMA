@@ -35,7 +35,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_7C1AB60C-3894-4FD8-9EEA-B078B86BD30C">
 						<orm:Readings>
-							<orm:Reading id="_56F4DF84-3A8B-4D2B-9AA0-9811617F21BB" IsPrimary="true">
+							<orm:Reading id="_56F4DF84-3A8B-4D2B-9AA0-9811617F21BB">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -46,8 +46,8 @@
 					</orm:ReadingOrder>
 				</orm:ReadingOrders>
 				<orm:InternalConstraints>
-					<orm:MandatoryConstraint ref="_CD0C9032-2C58-4BFF-8946-6A701F3BF9B9" />
-					<orm:UniquenessConstraint ref="_CCE2E814-87CF-426A-AB96-D2600141FC64" />
+					<orm:MandatoryConstraint ref="_6215197F-E491-4DDD-84E0-ABB70CD3318F" />
+					<orm:UniquenessConstraint ref="_009C458C-0059-4CEC-9A6B-C9A8E411F112" />
 				</orm:InternalConstraints>
 			</orm:Fact>
 			<orm:Fact id="_A3114D4F-7A9C-47A2-8D32-C2F97EE6B7B4">
@@ -62,7 +62,7 @@
 				<orm:ReadingOrders>
 					<orm:ReadingOrder id="_6E5FA437-738A-45AC-9147-BF9D9E384A6B">
 						<orm:Readings>
-							<orm:Reading id="_2803A99A-39FB-495B-B931-69F715626300" IsPrimary="true">
+							<orm:Reading id="_2803A99A-39FB-495B-B931-69F715626300">
 								<orm:Data>{0} has {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -73,7 +73,7 @@
 					</orm:ReadingOrder>
 					<orm:ReadingOrder id="_4DB53085-3BA7-4296-ACB4-475C54B2AD7B">
 						<orm:Readings>
-							<orm:Reading id="_3019327D-7286-4719-930E-35CE499C7BC8" IsPrimary="true">
+							<orm:Reading id="_3019327D-7286-4719-930E-35CE499C7BC8">
 								<orm:Data>{0} is of {1}</orm:Data>
 							</orm:Reading>
 						</orm:Readings>
@@ -107,12 +107,12 @@
 					<orm:Role ref="_793246E9-AF54-4ED9-A067-13177BCA7955" />
 				</orm:RoleSequence>
 			</orm:UniquenessConstraint>
-			<orm:MandatoryConstraint id="_CD0C9032-2C58-4BFF-8946-6A701F3BF9B9" Name="SimpleMandatoryConstraint2" IsSimple="true">
+			<orm:MandatoryConstraint id="_6215197F-E491-4DDD-84E0-ABB70CD3318F" Name="SimpleMandatoryConstraint2" IsSimple="true">
 				<orm:RoleSequence>
 					<orm:Role ref="_0E961155-96F6-422B-93E7-DC90F696EE09" />
 				</orm:RoleSequence>
 			</orm:MandatoryConstraint>
-			<orm:UniquenessConstraint id="_CCE2E814-87CF-426A-AB96-D2600141FC64" Name="InternalUniquenessConstraint3" IsInternal="true">
+			<orm:UniquenessConstraint id="_009C458C-0059-4CEC-9A6B-C9A8E411F112" Name="InternalUniquenessConstraint3" IsInternal="true">
 				<orm:RoleSequence>
 					<orm:Role ref="_0E961155-96F6-422B-93E7-DC90F696EE09" />
 				</orm:RoleSequence>
