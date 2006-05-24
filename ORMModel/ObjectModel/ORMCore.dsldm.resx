@@ -354,6 +354,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.Role.Multiplicity" xml:space="preserve">
     <value>Multiplicity</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleName" xml:space="preserve">
+    <value>ImpliedRoleName</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role.RolePlayerDisplay" xml:space="preserve">
     <value>RolePlayer</value>
   </data>

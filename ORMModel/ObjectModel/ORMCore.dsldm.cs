@@ -757,6 +757,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "MandatoryConstraintName", Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleMandatoryConstraintNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "MandatoryConstraintModality", Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleMandatoryConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "Name", Neumont.Tools.ORM.ObjectModel.Role.NameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "ObjectificationOppositeRoleName", Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleObjectificationOppositeRoleNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Scale", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ScaleMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeScaleFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Length", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.LengthMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeLengthFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Objectification), "IsImplied", Neumont.Tools.ORM.ObjectModel.Objectification.IsImpliedMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Objectification.ObjectificationIsImpliedFieldHandler)),
@@ -24750,6 +24751,94 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		
+		}
+		#endregion
+		#endregion
+		
+		#region ObjectificationOppositeRoleName's Generated  Field Code
+		#region ObjectificationOppositeRoleName's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ObjectificationOppositeRoleNameMetaAttributeGuidString = "622a170e-329b-4a8c-916d-724b699c7363";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ObjectificationOppositeRoleNameMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleNameMetaAttributeGuidString);
+		#endregion
+
+		#region ObjectificationOppositeRoleName's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleObjectificationOppositeRoleNameFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleNameMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleName")]
+		public  System.String ObjectificationOppositeRoleName
+		{
+			get
+			{
+				return roleObjectificationOppositeRoleNameFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				roleObjectificationOppositeRoleNameFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region RoleObjectificationOppositeRoleNameFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Role.ObjectificationOppositeRoleName field
+		/// </summary>
+		private static RoleObjectificationOppositeRoleNameFieldHandler	roleObjectificationOppositeRoleNameFieldHandler	= RoleObjectificationOppositeRoleNameFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Role.ObjectificationOppositeRoleName
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class RoleObjectificationOppositeRoleNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.Role,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private RoleObjectificationOppositeRoleNameFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Role.ObjectificationOppositeRoleName field handler
+			/// </summary>
+			/// <value>RoleObjectificationOppositeRoleNameFieldHandler</value>
+			public static RoleObjectificationOppositeRoleNameFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Role.roleObjectificationOppositeRoleNameFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Role.roleObjectificationOppositeRoleNameFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Role will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Role.roleObjectificationOppositeRoleNameFieldHandler, so just instantiate one and return it
+						return new RoleObjectificationOppositeRoleNameFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Role.ObjectificationOppositeRoleName field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleNameMetaAttributeGuid;
+				}
+			}
 		}
 		#endregion
 		#endregion

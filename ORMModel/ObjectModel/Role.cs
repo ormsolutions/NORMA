@@ -82,7 +82,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				attributeGuid == MandatoryConstraintNameMetaAttributeGuid ||
 				attributeGuid == MultiplicityMetaAttributeGuid ||
 				attributeGuid == ValueRangeTextMetaAttributeGuid ||
-				attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
+				attributeGuid == MandatoryConstraintModalityMetaAttributeGuid ||
+				attributeGuid == ObjectificationOppositeRoleNameMetaAttributeGuid)
 			{
 				// Handled by RoleChangeRule
 				return;
@@ -228,13 +229,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				RoleValueConstraint valueConstraint = ValueConstraint;
 				return (valueConstraint == null) ? "" : valueConstraint.Text;
 			}
-			#region MandatoryConstraintModality
 			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
 			{
 				MandatoryConstraint smc = SimpleMandatoryConstraint;
 				return (smc != null) ? smc.Modality : ConstraintModality.Alethic;
 			}
-			#endregion // MandatoryConstraintModality
+			else if (attributeGuid == ObjectificationOppositeRoleNameMetaAttributeGuid)
+			{
+				RoleProxy roleProxy = Proxy;
+				Role proxyOppositeRole;
+				return (roleProxy != null && (proxyOppositeRole = roleProxy.OppositeRole as Role) != null) ? proxyOppositeRole.Name : "";
+			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
@@ -252,16 +257,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Display for binary fact types
 				return fact != null && fact.RoleCollection.Count == 2;
 			}
-			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid)
+			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid || attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
 			{
 				return SimpleMandatoryConstraint != null;
 			}
-			#region MandatoryConstraintModality
-			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
+			else if (attributeGuid == ObjectificationOppositeRoleNameMetaAttributeGuid)
 			{
-				return SimpleMandatoryConstraint != null;
+				FactType fact = FactType;
+				return fact != null && fact.Objectification != null;
 			}
-			#endregion // MandatoryConstraintModality
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		/// <summary>
@@ -360,34 +364,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Multiplicity Display
-		#region Properties
-		/// <summary>
-		/// Used as a shortcut to find the opposite role in a binary fact.
-		/// Returns null if the fact is not a binary
-		/// </summary>
-		public RoleBase OppositeRole
-		{
-			get
-			{
-				// Only do this if it's a binary fact
-				RoleBaseMoveableCollection roles = this.FactType.RoleCollection;
-				if (roles.Count == 2)
-				{
-					// loop over the collection and get the other role
-					Role oppositeRole = roles[0].Role;
-					if (object.ReferenceEquals(oppositeRole, this))
-					{
-						oppositeRole = roles[1].Role;
-					}
-					return oppositeRole;
-				}
-				else
-				{
-					return null;
-				}
-			}
-		}
-		#endregion
 		#region RoleChangeRule class
 		[RuleOn(typeof(Role))]
 		private class RoleChangeRule : ChangeRule
@@ -700,6 +676,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				#endregion // Handle MandatoryConstraintModality attribute changes
+				#region Handle ObjectificationOppositeRoleName attribute changes
+				else if (attributeGuid == Role.ObjectificationOppositeRoleNameMetaAttributeGuid)
+				{
+					RoleProxy roleProxy = (e.ModelElement as Role).Proxy;
+					Role oppositeRole;
+					if (roleProxy != null && (oppositeRole = roleProxy.OppositeRole as Role) != null)
+					{
+						oppositeRole.Name = (string)e.NewValue;
+					}
+				}
+				#endregion // Handle ObjectificationOppositeRoleName attribute changes
 			}
 		}
 		#endregion // RoleChangeRule class
@@ -1043,6 +1030,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				return retVal;
+			}
+		}
+		/// <summary>
+		/// Used as a shortcut to find the opposite RoleBase in a binary FactType.
+		/// Returns null if the FactType is not binary.
+		/// </summary>
+		public RoleBase OppositeRole
+		{
+			get
+			{
+				// Only do this if it's a binary fact
+				RoleBaseMoveableCollection roles = this.FactType.RoleCollection;
+				if (roles.Count == 2)
+				{
+					// loop over the collection and get the other role
+					RoleBase oppositeRole = roles[0];
+					if (object.ReferenceEquals(oppositeRole, this))
+					{
+						return roles[1];
+					}
+					return oppositeRole;
+				}
+				else
+				{
+					return null;
+				}
 			}
 		}
 	}

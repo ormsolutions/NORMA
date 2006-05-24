@@ -3916,6 +3916,10 @@
             <source />
             <property>ic22fe3bfzeb13z4dfdz8cb8zdc4b60a7822e</property>
           </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="46f41cd5-a6f2-43b9-a50e-b3aa463609b3" id="i46f41cd5za6f2z43b9za50ezb3aa463609b3">
+            <source />
+            <property>i622a170ez329bz4a8cz916dz724b699c7363</property>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
@@ -4695,6 +4699,10 @@
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
             <propertyInfo xsi:type="StringPropertyInfo" name="" identity="5438f69a-84e1-4e2f-bdcc-55d9683fab9a" default="" max="2147483647" />
           </property>
+          <property name="ObjectificationOppositeRoleName" identity="622a170e-329b-4a8c-916d-724b699c7363" id="i622a170ez329bz4a8cz916dz724b699c7363">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="57b3887d-e2c5-4cc7-b4b3-c1c95343d26d" default="" max="2147483647" />
+          </property>
         </valueProperties>
       </concept>
       <concept name="SetComparisonConstraintRoleSequence" identity="34a3c709-1021-4afe-80db-6302f4c681ea" namespace="Neumont.Tools.ORM.ObjectModel" id="i34a3c709z1021z4afez80dbz6302f4c681ea" isLoaded="true" isAbstract="false">
@@ -5035,7 +5043,7 @@
           </property>
           <property name="IsPrimaryForReadingOrder" identity="fb40e877-7171-473d-88b5-bea06782e468" id="ifb40e877z7171z473dz88b5zbea06782e468">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="">
-                <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
             </mdfmetadata>
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="c5445ea4-1809-49ad-81fb-50e9b858a1d9" default="false" />
           </property>
@@ -5045,7 +5053,7 @@
           </property>
           <property name="IsPrimaryForFactType" identity="c22fe3bf-eb13-4dfd-8cb8-dc4b60a7822e" id="ic22fe3bfzeb13z4dfdz8cb8zdc4b60a7822e">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="">
-                <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
             </mdfmetadata>
             <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
           </property>
