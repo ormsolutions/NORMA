@@ -697,7 +697,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.BlockVerbalization))
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
 			{
 				FactTypeRequiresReadingError noReadingError = this.ReadingRequiredError;
 				if (noReadingError != null)
@@ -706,7 +706,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = this.InternalUniquenessConstraintRequiredError;
 				if (noUniquenessError != null)
@@ -722,14 +722,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
-			if (0 == (filter & (ModelErrorUses.Verbalize | ModelErrorUses.BlockVerbalization)) || filter == (ModelErrorUses)(-1))
+			if (0 == (filter & (ModelErrorUses.Verbalize | ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)) || filter == (ModelErrorUses)(-1))
 			{
 				// The fact name is used in the generated error text, it needs to be an owner
 				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError frequencyContradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
 				{
 					yield return new ModelErrorUsage(frequencyContradictionError, ModelErrorUses.None);
 				}
-
 				// NMinusOneError is parented off InternalConstraint. The constraint has a name,
 				// but the name is often arbitrary. Including the fact name as well makes the
 				// error message much more meaningful.
@@ -742,7 +741,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			if (0 == (filter & ModelErrorUses.BlockVerbalization) || filter == (ModelErrorUses)(-1)) // Roles don't verbalize, we need to show these here
+			if (0 == (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)) || filter == (ModelErrorUses)(-1)) // Roles don't verbalize, we need to show these here
 			{
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
@@ -772,34 +771,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-			}
-			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.Verbalize)))
-			{
-				foreach (ReadingOrder readingOrder in ReadingOrderCollection)
+				if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 				{
-					foreach (Reading reading in readingOrder.ReadingCollection)
+					foreach (ReadingOrder readingOrder in ReadingOrderCollection)
 					{
-						foreach (ModelError readingError in (reading as IModelErrorOwner).GetErrorCollection(filter))
+						foreach (Reading reading in readingOrder.ReadingCollection)
 						{
-							if (readingError is TooFewReadingRolesError)
+							foreach (ModelError readingError in (reading as IModelErrorOwner).GetErrorCollection(filter))
 							{
-								if (0 != (filter & ModelErrorUses.BlockVerbalization))
+								if (readingError is TooFewReadingRolesError)
 								{
-									yield return new ModelErrorUsage(readingError, ModelErrorUses.BlockVerbalization);
+									if (0 != (filter & ModelErrorUses.BlockVerbalization))
+									{
+										yield return new ModelErrorUsage(readingError, ModelErrorUses.BlockVerbalization);
+									}
 								}
-							}
-							else if (0 != (filter & ModelErrorUses.Verbalize))
-							{
-								yield return new ModelErrorUsage(readingError, ModelErrorUses.Verbalize);
+								else if (0 != (filter & ModelErrorUses.Verbalize))
+								{
+									yield return new ModelErrorUsage(readingError, ModelErrorUses.Verbalize);
+								}
 							}
 						}
 					}
 				}
-			}
-			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
-			{
-				yield return baseError;
+				// Get errors off the base
+				foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+				{
+					yield return baseError;
+				}
 			}
 		}
 		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
@@ -915,7 +914,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 
 				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = InternalUniquenessConstraintRequiredError;
-				
+
 				if (hasError)
 				{
 					if (noUniquenessError == null)
@@ -1165,7 +1164,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int j = 0; j < readingsCount; ++j)
 					{
 						Reading reading = readings[j];
-						if (!ModelError.HasErrors(reading))
+						if (!ModelError.HasErrors(reading, ModelErrorUses.DisplayPrimary))
 						{
 							roles = order.RoleCollection;
 							formatText = reading.Text;
@@ -1575,7 +1574,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// A form a subset of the roles of B. Running this method will fix a
 		/// FactTypeHasImpliedInternalUniquenessConstraintError on this FactType.
 		/// </summary>
-		public void RemoveImpliedInternalUniquenessConstraints() 
+		public void RemoveImpliedInternalUniquenessConstraints()
 		{
 			int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
 			if (iucCount == 0)
@@ -1913,7 +1912,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//    Index 1 == Left/Right
 				//    Index 2 == Alethic/Deontic
 				//    Index 3 == Unique/Mandatory
-				SetConstraint[,,] singleRoleConstraints = new SetConstraint[2, 2, 2];
+				SetConstraint[, ,] singleRoleConstraints = new SetConstraint[2, 2, 2];
 
 				// A single-role uniqueness constraint with an implied default
 				SetConstraint constraintWithImpliedOppositeDefault = null;
@@ -2153,7 +2152,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 
 	#region FactType Model Validation Errors
-	
+
 	#region class FactTypeRequiresReadingError
 	partial class FactTypeRequiresReadingError : IRepresentModelElements
 	{
@@ -2176,7 +2175,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
-			get 
+			get
 			{
 				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}

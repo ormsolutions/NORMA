@@ -75,6 +75,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// this error is fixed.
 		/// </summary>
 		BlockVerbalization = 2,
+		/// <summary>
+		/// If the model element can have child elements with errors this 
+		/// will let us filter out the child elements.
+		/// </summary>
+		DisplayPrimary = 4, 
 	}
 	#endregion // ModelErrorUses enum
 	#region ModelErrorUsage struct
@@ -436,13 +441,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Checks to see if the Model Element contains errors
 		/// </summary>
-		public static bool HasErrors(ModelElement modelElement)
+		public static bool HasErrors(ModelElement modelElement, ModelErrorUses useFilter)
 		{
 			bool hasError = false;
 			IModelErrorOwner errorOwner = modelElement as IModelErrorOwner;
 			if (errorOwner != null)
 			{
-				using (IEnumerator<ModelErrorUsage> enumerator = errorOwner.GetErrorCollection(ModelErrorUses.None).GetEnumerator())
+				using (IEnumerator<ModelErrorUsage> enumerator = errorOwner.GetErrorCollection(useFilter).GetEnumerator())
 				{
 					hasError = enumerator.MoveNext();
 				}

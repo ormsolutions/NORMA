@@ -132,7 +132,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				if (ModelError.HasErrors(ModelElement))
+				if (ModelError.HasErrors(ModelElement, ModelErrorUses.DisplayPrimary))
 				{
 					ORMDiagram diagram;
 					DiagramView view;

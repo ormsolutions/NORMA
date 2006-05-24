@@ -197,23 +197,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					FactSetConstraint testFactConstraint = (FactSetConstraint)existingFactConstraints[i];
 					if (testFactConstraint.SetConstraintCollection == this)
-					{
+				{
 						retVal = testFactConstraint;
 						break;
-					}
 				}
+			}
 				if (retVal == null)
-				{
+		{
 					retVal = FactSetConstraint.CreateFactSetConstraint(fact.Store, new RoleAssignment[]
-						{
+			{
 							new RoleAssignment(FactSetConstraint.FactTypeCollectionMetaRoleGuid, fact),
 							new RoleAssignment(FactSetConstraint.SetConstraintCollectionMetaRoleGuid, this)
 						});
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
-				}
 			}
+				}
 			return retVal;
-		}
+			}
 		#endregion // SetConstraint Specific
 		#region SetConstraint synchronization rules
 		/// <summary>
@@ -234,20 +234,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			if (factModel != null)
-			{
+		{
 				if (constraintModel == null)
-				{
+			{
 					constraint.Model = factModel;
-				}
+			}
 				else if (!object.ReferenceEquals(factModel, constraintModel))
-				{
+		{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFacts);
 				}
 			}
 			else if (constraintModel != null)
 			{
 				fact.Model = constraintModel;
-			}
+		}
 		}
 		/// <summary>
 		/// Ensure that a fact and constraint have a consistent owning model
@@ -256,10 +256,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private class FactSetConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
-			{
+		{
 				EnforceNoForeignFacts(e.ModelElement as FactSetConstraint);
-			}
 		}
+	}
 		/// <summary>
 		/// Ensure that an internal constraint always goes away with its fact
 		/// </summary>
@@ -291,9 +291,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int i = 0; i < existingLinksCount; ++i)
 				{
 					EnforceNoForeignFacts(existingConstraintLinks[i] as FactSetConstraint);
-				}
-			}
-		}
+						}
+					}
+					}
 		/// <summary>
 		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
@@ -416,7 +416,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.BlockVerbalization))
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
 			{
 				TooFewRoleSequencesError tooFew;
 				if (null != (tooFew = TooFewRoleSequencesError))
@@ -429,7 +429,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return new ModelErrorUsage(tooMany, ModelErrorUses.BlockVerbalization);
 				}
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary))
 			{
 				CompatibleRolePlayerTypeError typeCompatibility;
 				if (null != (typeCompatibility = CompatibleRolePlayerTypeError))
@@ -892,26 +892,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (fact != null)
 			{
 				IList existingFactConstraints = fact.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid);
-				int listCount = existingFactConstraints.Count;
-				for (int i = 0; i < listCount; ++i)
-				{
+					int listCount = existingFactConstraints.Count;
+					for (int i = 0; i < listCount; ++i)
+					{
 					FactSetComparisonConstraint testFactConstraint = (FactSetComparisonConstraint)existingFactConstraints[i];
 					if (testFactConstraint.SetComparisonConstraintCollection == this)
-					{
-						retVal = testFactConstraint;
-						break;
+						{
+							retVal = testFactConstraint;
+							break;
+						}
 					}
-				}
-				if (retVal == null)
-				{
+					if (retVal == null)
+					{
 					retVal = FactSetComparisonConstraint.CreateFactSetComparisonConstraint(fact.Store, new RoleAssignment[]
 					{
 						new RoleAssignment(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid, fact),
 						new RoleAssignment(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid, this)
 					});
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
+					}
 				}
-			}
 			return retVal;
 		}
 		#endregion // SetComparisonConstraint Specific
@@ -1573,7 +1573,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.BlockVerbalization))
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
 			{
 				TooManyRoleSequencesError tooMany;
 				TooFewRoleSequencesError tooFew;
@@ -1591,7 +1591,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return arityMismatch;
 				}
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				foreach (CompatibleRolePlayerTypeError compatibleTypeError in CompatibleRolePlayerTypeErrorCollection)
 				{
@@ -1725,7 +1725,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!IsRemoved && !IsRemoving)
 			{
 				ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
-			}
+		}
 		}
 		void IConstraint.ValidateColumnCompatibility()
 		{
@@ -2501,17 +2501,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 											int testFactsCount = testFacts.Count;
 											for (int i = 0; i < testFactsCount; ++i)
 											{
-												// If this fact is involved in the external preferred identifier, then
-												// the prerequisites for the pattern no longer hold
+													// If this fact is involved in the external preferred identifier, then
+													// the prerequisites for the pattern no longer hold
 												if (object.ReferenceEquals(fact, testFacts[i]))
-												{
-													oldRolePlayer.PreferredIdentifier = null;
-													break;
-												}
+													{
+															oldRolePlayer.PreferredIdentifier = null;
+															break;
+														}
+													}
 											}
 										}
 									}
-								}
 								break;
 							case ConstraintType.ExternalUniqueness:
 								{
@@ -2870,7 +2870,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				NMinusOneError nMinusOneError = NMinusOneError;
 				if (nMinusOneError != null)
@@ -3135,9 +3135,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					// UNDONE: Support toggling IsInternal property after the object has been created
 					throw new InvalidOperationException("UniquenessConstraint.IsInternal cannot be changed");
-				}
 			}
 		}
+	}
 		#endregion // UniquenessConstraintChangeRule class
 	}
 	#endregion // UniquenessConstraint class
@@ -3167,7 +3167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				yield return baseError;
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				MandatoryImpliedByMandatoryError impliedDisjunctive = ImpliedByMandatoryError;
 				if (impliedDisjunctive != null)
@@ -3458,7 +3458,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				yield return baseError;
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
 				if (minMaxError != null)
@@ -3737,7 +3737,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				yield return baseError;
 			}
-			if (0 != (filter & ModelErrorUses.BlockVerbalization))
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
 			{
 				RingConstraintTypeNotSpecifiedError notSpecified = this.RingConstraintTypeNotSpecifiedError;
 				if (notSpecified != null)

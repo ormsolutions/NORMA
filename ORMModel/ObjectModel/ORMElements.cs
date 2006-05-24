@@ -59,7 +59,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			if (filter == 0 || (0 != (filter & ModelErrorUses.Verbalize)))
+			if (filter == 0 || (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary))))
 			{
 				foreach (object error in GetCounterpartRolePlayers(ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
 				{
@@ -130,7 +130,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			if (filter == 0 || (0 != (filter & ModelErrorUses.Verbalize)))
+			if (filter == 0 || (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary))))
 			{
 				foreach (object error in GetCounterpartRolePlayers(ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
 				{

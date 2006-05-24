@@ -83,7 +83,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				MaxValueMismatchError max;
 				MinValueMismatchError min;

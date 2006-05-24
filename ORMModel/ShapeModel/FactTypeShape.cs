@@ -530,123 +530,123 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			#endregion // Array sorting code
 		}
-			#region Move Roles
-			/// <summary>
-			/// Moves the display order of a role to the left in a fact type shape.
-			/// </summary>
-			/// <param name="roleToMove">The role to move to the left.</param>
-			/// <returns>True if it actually moved the role.</returns>
-			public bool MoveRoleLeft(Role roleToMove)
+		#region Move Roles
+		/// <summary>
+		/// Moves the display order of a role to the left in a fact type shape.
+		/// </summary>
+		/// <param name="roleToMove">The role to move to the left.</param>
+		/// <returns>True if it actually moved the role.</returns>
+		public bool MoveRoleLeft(Role roleToMove)
+		{
+			return MoveRole(true, roleToMove);
+		}
+		/// <summary>
+		/// Moves the display order of a role to the right in a fact type shape.
+		/// </summary>
+		/// <param name="roleToMove">The role to move to the right.</param>
+		/// <returns>True if it actually moved the role.</returns>
+		public bool MoveRoleRight(Role roleToMove)
+		{
+			return MoveRole(false, roleToMove);
+		}
+		private bool MoveRole(bool movingLeft, Role roleToMove)
+		{
+			bool moveOccured = false;
+			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleOrderTransactionName))
 			{
-				return MoveRole(true, roleToMove);
-			}
-			/// <summary>
-			/// Moves the display order of a role to the right in a fact type shape.
-			/// </summary>
-			/// <param name="roleToMove">The role to move to the right.</param>
-			/// <returns>True if it actually moved the role.</returns>
-			public bool MoveRoleRight(Role roleToMove)
-			{
-				return MoveRole(false, roleToMove);
-			}
-			private bool MoveRole(bool movingLeft, Role roleToMove)
-			{
-				bool moveOccured = false;
-				using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleOrderTransactionName))
+				RoleBaseMoveableCollection roles = EnsureDisplayOrderCollection();
+				int index = roles.IndexOf(roleToMove);
+				if (index != 0 && movingLeft)
 				{
-					RoleBaseMoveableCollection roles = EnsureDisplayOrderCollection();
-					int index = roles.IndexOf(roleToMove);
-					if (index != 0 && movingLeft)
-					{
-						roles.Move(index, index - 1);
-					}
-					else if (index < roles.Count - 1 && !movingLeft)
-					{
-						roles.Move(index, index + 1);
-					}
+					roles.Move(index, index - 1);
+				}
+				else if (index < roles.Count - 1 && !movingLeft)
+				{
+					roles.Move(index, index + 1);
+				}
 
-					if (t.HasPendingChanges)
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+					moveOccured = true;
+				}
+			}
+			return moveOccured;
+		}
+		private RoleBaseMoveableCollection EnsureDisplayOrderCollection()
+		{
+			RoleBaseMoveableCollection displayRoles = RoleDisplayOrderCollection;
+			if (displayRoles.Count == 0)
+			{
+				FactType fact = AssociatedFactType;
+				if (fact != null)
+				{
+					RoleBaseMoveableCollection nativeRoles = fact.RoleCollection;
+					int nativeRoleCount = nativeRoles.Count;
+					for (int i = 0; i < nativeRoleCount; ++i)
 					{
-						t.Commit();
-						moveOccured = true;
+						displayRoles.Add(nativeRoles[i].Role);
 					}
 				}
-				return moveOccured;
 			}
-			private RoleBaseMoveableCollection EnsureDisplayOrderCollection()
+			return displayRoles;
+		}
+		/// <summary>
+		/// Gets the currently displayed order of the roles in the fact type.
+		/// If there is not a custom display order then it will return the default
+		/// role collection.
+		/// </summary>
+		public RoleBaseMoveableCollection DisplayedRoleOrder
+		{
+			get
 			{
-				RoleBaseMoveableCollection displayRoles = RoleDisplayOrderCollection;
-				if (displayRoles.Count == 0)
+				RoleBaseMoveableCollection alternateOrder = RoleDisplayOrderCollection;
+				return (alternateOrder.Count == 0) ? AssociatedFactType.RoleCollection : alternateOrder;
+			}
+		}
+		/// <summary>
+		/// Gets the reading order that matches the currently displayed order of the
+		/// fact that is passed in.
+		/// </summary>
+		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
+		public static ReadingOrder FindMatchingReadingOrder(FactTypeShape theFact)
+		{
+			RoleBaseMoveableCollection factRoles = theFact.DisplayedRoleOrder;
+			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
+			factRoles.CopyTo(roleOrder, 0);
+			return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
+		}
+		#region RoleDisplayOrderChanged class
+		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
+		{
+			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
+			{
+				Role role;
+				if (null != (role = e.CounterpartRolePlayer as Role))
 				{
-					FactType fact = AssociatedFactType;
-					if (fact != null)
+					foreach (PresentationElement pElem in role.FactType.PresentationRolePlayers)
 					{
-						RoleBaseMoveableCollection nativeRoles = fact.RoleCollection;
-						int nativeRoleCount = nativeRoles.Count;
-						for (int i = 0; i < nativeRoleCount; ++i)
+						FactTypeShape factShape;
+						if (null != (factShape = pElem as FactTypeShape))
 						{
-							displayRoles.Add(nativeRoles[i].Role);
-						}
-					}
-				}
-				return displayRoles;
-			}
-			/// <summary>
-			/// Gets the currently displayed order of the roles in the fact type.
-			/// If there is not a custom display order then it will return the default
-			/// role collection.
-			/// </summary>
-			public RoleBaseMoveableCollection DisplayedRoleOrder
-			{
-				get
-				{
-					RoleBaseMoveableCollection alternateOrder = RoleDisplayOrderCollection;
-					return (alternateOrder.Count == 0) ? AssociatedFactType.RoleCollection : alternateOrder;
-				}
-			}
-			/// <summary>
-			/// Gets the reading order that matches the currently displayed order of the
-			/// fact that is passed in.
-			/// </summary>
-			/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
-			public static ReadingOrder FindMatchingReadingOrder(FactTypeShape theFact)
-			{
-				RoleBaseMoveableCollection factRoles = theFact.DisplayedRoleOrder;
-				RoleBase[] roleOrder = new RoleBase[factRoles.Count];
-				factRoles.CopyTo(roleOrder, 0);
-				return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
-			}
-			#region RoleDisplayOrderChanged class
-			[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-			private class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
-			{
-				public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
-				{
-					Role role;
-					if (null != (role = e.CounterpartRolePlayer as Role))
-					{
-						foreach (PresentationElement pElem in role.FactType.PresentationRolePlayers)
-						{
-							FactTypeShape factShape;
-							if (null != (factShape = pElem as FactTypeShape))
+							foreach (LinkConnectsToNode connection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
 							{
-								foreach (LinkConnectsToNode connection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+								BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+								if (binaryLink != null)
 								{
-									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-									if (binaryLink != null)
-									{
-										binaryLink.RipUp();
-									}
+									binaryLink.RipUp();
 								}
-
-								factShape.InvalidateRequired(true);
 							}
+
+							factShape.InvalidateRequired(true);
 						}
 					}
 				}
 			}
-			#endregion // RoleDisplayOrderChanged class
-			#endregion // Move Roles
+		}
+		#endregion // RoleDisplayOrderChanged class
+		#endregion // Move Roles
 		#endregion // ConstraintBox struct
 		#region Pre-defined ConstraintBoxRoleActivity arrays
 		// Used for the WalkConstraints method.  Having these static arrays is very
@@ -1355,10 +1355,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ConstraintSubField testSubField = null;
 				DiagramItem testSelect = null;
 				DiagramClientView view = e.View;
+				bool factShapeHighlighted = false;
 				if (view != null)
 				{
 					highlightedShapes = view.HighlightedShapes;
 					selection = view.Selection;
+					if (highlightedShapes != null)
+					{
+						foreach (DiagramItem item in highlightedShapes)
+						{
+							if (object.ReferenceEquals(factShape, item.Shape))
+							{
+								if (item.SubField == null)
+								{
+									factShapeHighlighted = true;
+									break;
+								}
+							}
+						}
+					}
 				}
 				StyleSet styleSet = factShape.StyleSet;
 				Pen alethicConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
@@ -1387,6 +1402,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Pen constraintPen = isDeontic ? deonticConstraintPen : alethicConstraintPen;
 						Color startColor = constraintPen.Color;
 						DashStyle startDashStyle = constraintPen.DashStyle;
+
 
 						if (isInternalConstraint)
 						{
@@ -1445,9 +1461,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 							}
 						}
-						if (isHighlighted || isSticky)
+
+						if (ModelError.HasErrors(factConstraint.Constraint as ModelElement, ModelErrorUses.DisplayPrimary) && isInternalConstraint && !isSticky)
 						{
-							factShape.DrawHighlight(g, boundsF, isSticky, isHighlighted);
+							Brush backBrush;
+							if (factShapeHighlighted || isHighlighted || isSticky)
+							{
+								backBrush = styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource);
+							}
+							else
+							{
+								backBrush = styleSet.GetBrush(ORMDiagram.ErrorBackgroundResource);
+							}
+							g.FillRectangle(backBrush, boundsF);
+						}
+						else
+						{
+							if (isHighlighted || isSticky || ModelError.HasErrors(factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary))
+							{
+								factShape.DrawHighlight(g, boundsF, isSticky, factShapeHighlighted || isHighlighted);
+							}
 						}
 
 						if (isInternalConstraint)
@@ -1876,8 +1909,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					DiagramItem testSelect = new DiagramItem(parentShape, this, testSubField);
 					DiagramClientView clientView = e.View;
 					SelectedShapesCollection selection = null;
+					bool factShapeHighlighted = false;
 					if (clientView != null)
 					{
+						FactTypeShape factShape = factType.PresentationRolePlayers[0] as FactTypeShape;
 						selection = clientView.Selection;
 						foreach (DiagramItem item in clientView.HighlightedShapes)
 						{
@@ -1887,8 +1922,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (roleField != null)
 								{
 									highlightRoleBox = roles.IndexOf(roleField.AssociatedRole);
-									break;
 								}
+								else if (item.SubField == null)
+								{
+									factShapeHighlighted = true;
+								}
+								break;
 							}
 						}
 					}
@@ -1905,6 +1944,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					int activeRoleIndex;
 					float top = (float)bounds.Top;
 					float bottom = (float)bounds.Bottom;
+					float verticalLineTop = top + (float)margin;
+					float verticalLineBottom = bottom - (float)margin;
 					float height = (float)bounds.Height;
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
 					InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
@@ -1921,8 +1962,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							float lastXF = (float)lastX;
 							RectangleF roleBounds = new RectangleF(lastXF, top, offsetByF, height);
-							highlightThisRole = (i == highlightRoleBox);
 							RoleBase currentRole = roles[i];
+							highlightThisRole = i == highlightRoleBox || factShapeHighlighted;
+
+							Brush roleCenterBrush;
+							if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary))
+							{
+								roleCenterBrush = styleSet.GetBrush(ORMDiagram.ErrorBackgroundResource);
+							}
+							else
+							{
+								ShapeElement shpe = parentShape as ShapeElement;
+								roleCenterBrush = shpe.ParentShape.StyleSet.GetBrush(DiagramBrushes.DiagramBackground);
+							}
+							g.FillRectangle(roleCenterBrush, roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
 
 							// There is an active ExternalConstraintConnectAction, and this role is currently in the action's role set.
 							if ((activeExternalAction != null) &&
@@ -2056,7 +2109,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 								#endregion // Handling StickyObject highlighting and selection
 								else if (highlightThisRole)
 								{
-									parentFactShape.DrawHighlight(g, roleBounds, false, true);
+									if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary))
+									{
+										Brush errorHighlight = styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource);
+										g.FillRectangle(errorHighlight, roleBounds);
+									}
+									else
+									{
+										parentFactShape.DrawHighlight(g, roleBounds, false, true);
+									}
 								}
 							}
 
@@ -2084,7 +2145,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							// Draw the line between the role boxes
 							if (i != 0)
 							{
-								g.DrawLine(pen, lastXF, top, lastXF, bottom);
+								g.DrawLine(pen, lastXF, verticalLineTop, lastXF, verticalLineBottom);
 							}
 							lastX += offsetBy;
 						}
@@ -2434,6 +2495,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FontSettings fontSettings = new FontSettings();
 			fontSettings.Size = 5f / 72f; // 5 Point.
 			classStyleSet.AddFont(RoleBoxResource, DiagramFonts.CommentText, fontSettings);
+
+			BrushSettings backgroundBrush = new BrushSettings();
+			backgroundBrush.Color = Color.Transparent;
+			classStyleSet.OverrideBrush(DiagramBrushes.DiagramBackground, backgroundBrush);
 		}
 		/// <summary>
 		/// Use the rolebox outline pen unless we're objectified
@@ -4646,7 +4711,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 
-		[RuleOn(typeof(FactTypeHasDerivationExpression),FireTime = TimeToFire.TopLevelCommit,Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
 		private class DerivationRuleAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)

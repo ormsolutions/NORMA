@@ -320,7 +320,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="metaAttributeInfo">Passed to base</param>
 			/// <param name="requestor">Passed to base</param>
 			/// <param name="attributes">Passed to base</param>
-			public MultiplicityPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes) : base(modelElement, metaAttributeInfo, requestor, attributes)
+			public MultiplicityPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
+				: base(modelElement, metaAttributeInfo, requestor, attributes)
 			{
 			}
 			/// <summary>
@@ -337,7 +338,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			private class FilteredMultiplicityConverter : ModelingEnumerationConverter
 			{
-				public FilteredMultiplicityConverter(EnumerationDomain domain) : base(domain)
+				public FilteredMultiplicityConverter(EnumerationDomain domain)
+					: base(domain)
 				{
 				}
 				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
@@ -700,14 +702,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize)))
 			{
 				RolePlayerRequiredError requiredError;
 				if (null != (requiredError = RolePlayerRequiredError))
 				{
 					yield return requiredError;
 				}
+
 			}
+			if (filter == (ModelErrorUses.DisplayPrimary))
+			{
+				RoleValueConstraint constraint;
+				if (null != (constraint = this.ValueConstraint))
+				{
+					foreach (ValueRange range in constraint.ValueRangeCollection)
+					{
+						foreach (ModelError valueError in (range as IModelErrorOwner).GetErrorCollection(filter))
+						{
+							yield return valueError;
+						}
+					}
+				}
+			}
+
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
@@ -726,7 +744,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
-		protected  new void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRolePlayerRequiredForRule(notifyAdded);
