@@ -794,11 +794,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				// Get errors off the base
-				foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			}
+			if (filter == ModelErrorUses.DisplayPrimary || filter == ModelErrorUses.Verbalize)
+			{
+				// If we're objectified, list primary errors from the objectifying type
+				// here as well. Note that we should verbalize anything we list in our
+				// validation errors
+				ObjectType nestingType = NestingType;
+				if (nestingType != null)
 				{
-					yield return baseError;
+					// Always ask for 'DisplayPrimary', even if we're verbalizing
+					// None of these should list as blocking verbalization here, even if they're blocking on the nesting
+					foreach (ModelError nestingError in (nestingType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.DisplayPrimary))
+					{
+						yield return new ModelErrorUsage(nestingError, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+					}
 				}
+			}
+
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
 			}
 		}
 		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)

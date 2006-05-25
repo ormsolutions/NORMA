@@ -107,6 +107,52 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		AnyRole,
 	}
+	/// <summary>
+	/// Determine when an internal uniqueness constraint being
+	/// that is a preferred identifier displays as a double line.
+	/// These options are cumulative, so any higher display option
+	/// turns on all other displays.
+	/// </summary>
+	public enum PreferredInternalUniquenessConstraintDisplay
+	{
+		/// <summary>
+		/// Never display as preferred
+		/// </summary>
+		Never,
+		/// <summary>
+		/// Display as preferred when the fact is not
+		/// explicitly or implicitly objectified. This only
+		/// occurs with single-role uniqueness constraints
+		/// on binary facts.
+		/// </summary>
+		UnobjectifiedInternalConstraint,
+		/// <summary>
+		/// Display as preferred when the fact is explicitly
+		/// objectified and has multiple internal uniqueness constraints.
+		/// </summary>
+		MultipleObjectifiedInternalConstraints,
+		/// <summary>
+		/// Display as preferred when the fact is implicitly
+		/// objectified and has multiple internal uniqueness constraints.
+		/// Implicit objectification occurs for n-aries and binaries with
+		/// a spanning internal uniqueness constraint, so this will generally
+		/// apply only to n-ary facts with more than one uniqueness constraint.
+		/// </summary>
+		MultipleImpliedObjectifiedInternalConstraints,
+		/// <summary>
+		/// Display as preferred when the fact is explicitly
+		/// objectified and has a single internal constraint.
+		/// </summary>
+		SingleObjectifiedInternalConstraint,
+		/// <summary>
+		/// Display as preferred when the fact is implicitly
+		/// objectified and has a single internal constraint.
+		/// Implicit objectification occurs for n-aries and binaries with
+		/// a spanning internal uniqueness constraint and will draw
+		/// spanning internal uniqueness constraints on binaries as preferred.
+		/// </summary>
+		SingleImpliedObjectifiedInternalConstraint,
+	}
 	#endregion // Shape enums
 	#region Other Options Enums
 	/// <summary>
@@ -255,6 +301,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const string CustomVerbalizationSnippets_Default = "";
 		private static string myCurrentCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
 		private string myCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
+
+		private const PreferredInternalUniquenessConstraintDisplay PreferredInternalUniquenessConstraintDisplay_Default = PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints;
+		private static PreferredInternalUniquenessConstraintDisplay myCurrentPreferredInternalUniquenessConstraintDisplay = PreferredInternalUniquenessConstraintDisplay_Default;
+		private PreferredInternalUniquenessConstraintDisplay myPreferredInternalUniquenessConstraintDisplay = PreferredInternalUniquenessConstraintDisplay_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -275,6 +325,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
+			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -294,6 +345,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
+			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
 		}
 
 		/// <summary>
@@ -311,7 +363,8 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
 				myCurrentObjectTypeDisplayShape == myObjectTypeDisplayShape &&
 				myCurrentRoleNameDisplay == myRoleNameDisplay &&
-				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay)
+				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay &&
+				myCurrentPreferredInternalUniquenessConstraintDisplay == myPreferredInternalUniquenessConstraintDisplay)
 			{
 				// Non-displayed setting, don't notify
 				myCurrentDefaultDataType = myDefaultDataType;
@@ -343,6 +396,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
+			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -685,6 +739,27 @@ namespace Neumont.Tools.ORM.Shell
 		public static string CurrentCustomVerbalizationSnippets
 		{
 			get { return myCurrentCustomVerbalizationSnippets; }
+		}
+
+		/// <summary>
+		/// Current setting for PreferredInternalUniquenessConstraintDisplay
+		/// </summary>
+		[DefaultValue(PreferredInternalUniquenessConstraintDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyPreferredInternalUniquenessConstraintDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyPreferredInternalUniquenessConstraintDisplayDisplayNameId)]
+		public PreferredInternalUniquenessConstraintDisplay PreferredInternalUniquenessConstraintDisplay
+		{
+			get { return myPreferredInternalUniquenessConstraintDisplay; }
+			set { myPreferredInternalUniquenessConstraintDisplay = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for PreferredInternalUniquenessConstraintDisplay
+		/// </summary>
+		public static PreferredInternalUniquenessConstraintDisplay CurrentPreferredInternalUniquenessConstraintDisplay
+		{
+			get { return myCurrentPreferredInternalUniquenessConstraintDisplay; }
 		}
 		#endregion // Accessor properties
 	}

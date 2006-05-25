@@ -264,9 +264,9 @@
     <value>The name '{0}' is already in use in this model.</value>
     <comment>Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>
   </data>
-  <data name="ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType" xml:space="preserve">
-    <value>An object type with a preferred identifier must be an unobjectified entity type.</value>
-    <comment>Exception message when an attempt is made to set both a primary identifier and a value type or a nested fact type on the same object type.</comment>
+  <data name="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType" xml:space="preserve">
+    <value>An object type with a preferred identifier must be an entity type.</value>
+    <comment>Exception message when an attempt is made to set both a primary identifier and a value type on the same object type.</comment>
   </data>
   <data name="ModelException.ObjectType.EnforceValueTypeNotNestingType" xml:space="preserve">
     <value>An object type cannot be both a value type and an objectified fact type.</value>

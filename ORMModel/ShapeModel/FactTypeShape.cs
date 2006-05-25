@@ -1527,7 +1527,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								endPos = boundsF.Right;
 								//draw fully spanning constraint
-								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && constraintBox.IsSpanning);
+								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && constraintBox.IsSpanning);
 							}
 							else
 							{
@@ -1557,7 +1557,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											//draw constraint
 											if (constraintHasDrawn)
 											{
-												DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
+												DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && !drawCalled);
 												drawCalled = true;
 											}
 											startPos = endPos;
@@ -1587,7 +1587,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								//We've reached the end. Draw out any right constraints that may exist.
 								if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
 								{
-									DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
+									DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && !drawCalled);
 								}
 							}
 						}
@@ -3827,7 +3827,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static bool ShouldDrawObjectification(Objectification objectification)
 		{
-			if (objectification == null || objectification.NestingType.Model == null)
+			ObjectType nestingType;
+			if (objectification == null || (!(nestingType = objectification.NestingType).IsRemoved && nestingType.Model == null))
 			{
 				return false;
 			}

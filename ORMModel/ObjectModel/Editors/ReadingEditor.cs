@@ -356,7 +356,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		}
 		private static bool IsMatchingReadingOrder(RoleBase[] roleOrder, RoleBaseMoveableCollection readingOrderRoles)
 		{
-			Debug.Assert(roleOrder.Length == readingOrderRoles.Count);
+			//Debug.Assert(roleOrder.Length == readingOrderRoles.Count);
 			int numRoles = roleOrder.Length;
 			if (numRoles != readingOrderRoles.Count)
 			{

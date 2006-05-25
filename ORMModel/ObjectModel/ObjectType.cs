@@ -56,7 +56,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SkipChildren,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
-	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner
+	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Public token values
 		/// <summary>
@@ -219,15 +219,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				attributeGuid == LengthMetaAttributeGuid ||
 				attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
-				return NestedFactType == null && (IsValueType || HasReferenceMode);
+				return IsValueType || HasReferenceMode;
 			}
-			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid)
+			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
+				attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
 			{
-				return !IsValueType && PreferredIdentifier == null;
-			}
-			else if (attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
-			{
-				return !IsValueType && NestedFactType == null;
+				return !IsValueType;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
@@ -258,13 +255,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
 		{
 			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
-			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == IsValueTypeMetaAttributeGuid)
+			if (elemDesc != null)
 			{
-				return NestedFactType != null || PreferredIdentifier != null || IsSubtypeOrSupertype;
-			}
-			else if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
-			{
-				return !(NestedFactType == null && (IsValueType || HasReferenceMode));
+				Guid attributeId = elemDesc.MetaAttributeInfo.Id;
+				if (attributeId == IsValueTypeMetaAttributeGuid)
+				{
+					return NestedFactType != null || PreferredIdentifier != null || IsSubtypeOrSupertype;
+				}
+				else if (attributeId == ValueRangeTextMetaAttributeGuid)
+				{
+					return !(IsValueType || HasReferenceMode);
+				}
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -1185,7 +1186,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool hasError = true;
 				Store theStore = Store;
 				ORMModel theModel = Model;
-				if (IsValueType == true || NestedFactType != null || this.PreferredIdentifier != null)
+				if (IsValueType == true || this.PreferredIdentifier != null)
 				{
 					hasError = false;
 				}
@@ -1363,11 +1364,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (pid != null && !pid.IsInternal)
 				{
 					hasError = true;
+					Objectification objectification = pid.PreferredIdentifierFor.Objectification;
 					RoleMoveableCollection constraintRoles = pid.RoleCollection;
 					int constraintRoleCount = constraintRoles.Count;
 					for (int i = 0; hasError && i < constraintRoleCount; ++i)
 					{
 						Role constrainedRole = constraintRoles[i];
+						RoleProxy proxyRole;
+						FactType impliedFactType;
+						if (null != objectification &&
+							null != (proxyRole = constrainedRole.Proxy) &&
+							null != (impliedFactType = proxyRole.FactType) &&
+							object.ReferenceEquals(impliedFactType.ImpliedByObjectification, objectification))
+						{
+							// The opposite role will always have a simple mandatory on it
+							hasError = false;
+							break;
+						}
+
 						RoleBaseMoveableCollection factRoles = constrainedRole.FactType.RoleCollection;
 						Debug.Assert(factRoles.Count == 2); // Should not be a preferred identifier otherwise
 						Role oppositeRole = factRoles[0].Role;
@@ -1582,15 +1596,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(Objectification))]
-		private class VerifyObjectificationAddRule : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Objectification link = e.ModelElement as Objectification;
-				ORMMetaModel.DelayValidateElement(link.NestingType, DelayValidateEntityTypeRequiresReferenceSchemeError);
-			}
-		}
 		[RuleOn(typeof(ValueTypeHasDataType))]
 		private class VerifyValueTypeHasDataTypeAddRule : AddRule
 		{
@@ -1598,15 +1603,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ORMMetaModel.DelayValidateElement(link.ValueTypeCollection, DelayValidateEntityTypeRequiresReferenceSchemeError);
-			}
-		}
-		[RuleOn(typeof(Objectification))]
-		private class VerifyObjectificationRemoveRule : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				Objectification link = e.ModelElement as Objectification;
-				ORMMetaModel.DelayValidateElement(link.NestingType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
 		[RuleOn(typeof(ValueTypeHasDataType))]
@@ -1930,6 +1926,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 
+			if (filter == ModelErrorUses.DisplayPrimary || filter == ModelErrorUses.Verbalize)
+			{
+				// If we're objectified, list primary errors from the objectifying type
+				// here as well. Note that we should verbalize anything we list in our
+				// validation errors
+				ObjectType valueType = GetValueTypeForPreferredConstraint();
+				if (valueType != null)
+				{
+					// Always ask for 'DisplayPrimary', even if we're verbalizing
+					// None of these should list as blocking verbalization here, even if they're blocking on the nesting
+					foreach (ModelError valueError in (valueType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.DisplayPrimary))
+					{
+						yield return new ModelErrorUsage(valueError, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+					}
+				}
+			}
+
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
@@ -1972,6 +1985,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles1 = new Guid[] { Objectification.NestingTypeMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles2 = new Guid[] { ObjectTypePlaysRole.RolePlayerMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			if (Objectification != null)
+			{
+				return myIndirectModelErrorOwnerLinkRoles1;
+			}
+			else if (IsValueType)
+			{
+				// This may be used as a reference mode on the other side.
+				// Display data type errors on the other end.
+				return myIndirectModelErrorOwnerLinkRoles2;
+			}
+			return null;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region CheckForIncompatibleRelationshipRule class
 		/// <summary>
 		/// Ensure consistency among relationships attached to ObjectType roles.
@@ -2007,8 +2045,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					else
 					{
 						ObjectType nestingType = nester.NestingType;
-						if (!(incompatibleValueTypeCombination = nestingType.IsValueType) &&
-							!(incompatiblePreferredIdentifierCombination = null != nestingType.PreferredIdentifier))
+						if (!(incompatibleValueTypeCombination = nestingType.IsValueType))
 						{
 							foreach (RoleBase role in nester.NestedFactType.RoleCollection)
 							{
@@ -2058,7 +2095,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (incompatiblePreferredIdentifierCombination)
 				{
-					exceptionString = ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType;
+					exceptionString = ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType;
 				}
 				else if (subtypesNotNested)
 				{
@@ -2169,6 +2206,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ReferenceModeDisplayPropertyDescriptor class
 	}
+	#region ValueTypeHasDataType class
+	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner
+	{
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { new Guid(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuidString) };
+		/// <summary>
+		/// Implements IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return myIndirectModelErrorOwnerLinkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
+	}
+	#endregion // ValueTypeHasDataType class
 	#region EntityTypeRequiresReferenceSchemeError class
 	partial class EntityTypeRequiresReferenceSchemeError : IRepresentModelElements
 	{

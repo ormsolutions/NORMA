@@ -18,7 +18,9 @@
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="DataTypeNotSpecifiedError.UnspecifiedTypeAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
-		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierAddRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRemovingRule"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleRemoved"/>
@@ -79,8 +81,6 @@
 		<arg:Rule class="ObjectType.SupertypeAddedRule"/>
 		<arg:Rule class="ObjectType.SupertypeRemoveRule"/>
 		<arg:Rule class="ObjectType.SupertypeRemovingRule"/>
-		<arg:Rule class="ObjectType.VerifyObjectificationAddRule"/>
-		<arg:Rule class="ObjectType.VerifyObjectificationRemoveRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeRemoveRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>

@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// that the model errors directly attached to one object are
 	/// listed as part of the ErrorCollection for another object.
 	/// The other object is often the direct or indirect aggregate,
-	/// but does not have to be. IModelErrorIndirectOwner can also
+	/// but does not have to be. IHasIndirectModelErrorOwner can also
 	/// be combined with IModelErrorOwner to show the error in multiple
 	/// places. If the error is shown more than one step away then
 	/// each element in the chain must implement this interface.
@@ -243,6 +243,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// this object.
 		/// </summary>
 		Guid[] GetIndirectModelErrorOwnerLinkRoles();
+	}
+	/// <summary>
+	/// The IElementLinkRoleHasIndirectModelErrorOwner interface is used to
+	/// indicate that model errors directly attached to the link
+	/// object have an indirect model error owner. This is very
+	/// similar to IHasIndirectModelErrorOwner, but this assumes
+	/// the element coming in is an ElementLink, and the retrieved
+	/// roles are roles on that link.
+	/// </summary>
+	public interface IElementLinkRoleHasIndirectModelErrorOwner
+	{
+		/// <summary>
+		/// Return an array of MetaRole guids. Each MetaRole
+		/// represents a role that can be used to leave the link
+		/// to get to an object that that can be followed to get
+		/// an IModelErrorOwner implementation that represents
+		/// this object.
+		/// </summary>
+		Guid[] GetIndirectModelErrorOwnerElementLinkRoles();
 	}
 	#endregion // IHasIndirectModelErrorOwner interface
 	#region IModelErrorActivation interface

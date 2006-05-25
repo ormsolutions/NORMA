@@ -351,6 +351,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			/// <summary>
+			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
+			/// </summary>
+			public override bool FireBefore
+			{
+				get
+				{
+					return true;
+				}
+			}
 		}
 		/// <summary>
 		/// If a role sequence is added that already contains roles, then
@@ -372,6 +382,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (errorOwner != null)
 				{
 					errorOwner.DelayValidateErrors();
+				}
+			}
+			/// <summary>
+			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
+			/// </summary>
+			public override bool FireBefore
+			{
+				get
+				{
+					return true;
 				}
 			}
 		}
@@ -991,18 +1011,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			/// <summary>
+			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
+			/// </summary>
+			public override bool FireBefore
+			{
+				get
+				{
+					return true;
+				}
+			}
 		}
 		/// <summary>
 		/// If a role sequence is added that already contains roles, then
 		/// make sure the corresponding FactConstraint and ExternalRoleConstraint
 		/// objects are created for each role.
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
 		private class ConstraintHasRoleSequenceAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EnsureFactConstraintForRoleSequence(e.ModelElement as SetComparisonConstraintHasRoleSequence);
+			}
+			/// <summary>
+			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
+			/// </summary>
+			public override bool FireBefore
+			{
+				get
+				{
+					return true;
+				}
 			}
 		}
 		/// <summary>
@@ -2181,73 +2221,100 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType forType = PreferredIdentifierFor;
 					if (!forType.IsRemoving && !forType.IsRemoved)
 					{
+						Objectification objectification = forType.Objectification;
 						if (constraint.IsInternal)
 						{
-							RoleMoveableCollection constraintRoles;
-							RoleBaseMoveableCollection factRoles;
-							Role constraintRole;
-							FactType factType;
-							if (1 == (constraintRoles = constraint.RoleCollection).Count &&
-								!(constraintRole = constraintRoles[0]).IsRemoving &&
-								null != (factType = constraintRole.FactType) &&
-								!factType.IsRemoving &&
-								2 == (factRoles = factType.RoleCollection).Count)
+							if (objectification != null &&
+								object.ReferenceEquals(objectification.NestedFactType, constraint.FactTypeCollection[0]))
 							{
-								// Make sure we have exactly one additional single-roled internal
-								// uniqueness constraint on the opposite role, and that the
-								// opposite role is mandatory, and that the role player is still
-								// connected.
-								Role oppositeRole = factRoles[0].Role;
-								if (object.ReferenceEquals(oppositeRole, constraintRole))
+								remove = objectification.IsRemoving;
+							}
+							else
+							{
+								// ConstraintRoleSequenceHasRole is not a propagate delete
+								// relationship, so the link can be gone without the role
+								// being removed. Get the links first instead of using the
+								// generated counterpart collection.
+								IList constraintRoleLinks = constraint.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+								ConstraintRoleSequenceHasRole constraintRoleLink;
+								RoleBaseMoveableCollection factRoles;
+								Role constraintRole;
+								FactType factType;
+								if (1 == constraintRoleLinks.Count &&
+									!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[0]).IsRemoving &&
+									!(constraintRole = constraintRoleLink.RoleCollection).IsRemoving &&
+									null != (factType = constraintRole.FactType) &&
+									!factType.IsRemoving &&
+									2 == (factRoles = factType.RoleCollection).Count)
 								{
-									oppositeRole = factRoles[1].Role;
-								}
-
-								// Test for attached object type. It is very common
-								// to edit the link directly, so we need to check the
-								// link itself, not the counterpart.
-								bool rolePlayerOK = false;
-								foreach (ObjectTypePlaysRole rolePlayerLink in oppositeRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
-								{
-									if (!rolePlayerLink.IsRemoving)
+									// Make sure we have exactly one additional single-roled internal
+									// uniqueness constraint on the opposite role, and that the
+									// opposite role is mandatory, and that the role player is still
+									// connected.
+									Role oppositeRole = factRoles[0].Role;
+									if (object.ReferenceEquals(oppositeRole, constraintRole))
 									{
-										rolePlayerOK = true;
-										break;
+										oppositeRole = factRoles[1].Role;
 									}
-								}
 
-								if (rolePlayerOK)
-								{
-									bool haveOppositeUniqueness = false;
-									bool haveOppositeMandatory = false;
-									foreach (ConstraintRoleSequence testRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+									// Test for attached object type. It is very common
+									// to edit the link directly, so we need to check the
+									// link itself, not the counterpart.
+									bool rolePlayerOK = false;
+									if (!oppositeRole.IsRemoving)
 									{
-										IConstraint testConstraint = testRoleSequence.Constraint;
-										if (testConstraint != null && !(testConstraint as ModelElement).IsRemoving)
+										IList rolePlayerLinks = oppositeRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+										int rolePlayerLinksCount = rolePlayerLinks.Count;
+										for (int i = 0; i < rolePlayerLinksCount; ++i)
 										{
-											switch (testConstraint.ConstraintType)
+											ObjectTypePlaysRole rolePlayerLink = (ObjectTypePlaysRole)rolePlayerLinks[i];
+											if (!rolePlayerLink.IsRemoving)
 											{
-												case ConstraintType.InternalUniqueness:
-													if (haveOppositeUniqueness)
-													{
-														// Should only have one
-														haveOppositeUniqueness = false;
-														break;
-													}
-													if (testRoleSequence.RoleCollection.Count == 1)
-													{
-														haveOppositeUniqueness = true;
-													}
-													break;
-												case ConstraintType.SimpleMandatory:
-													haveOppositeMandatory = true;
-													break;
+												rolePlayerOK = true;
+												break;
 											}
 										}
 									}
-									if (haveOppositeUniqueness && haveOppositeMandatory)
+
+									if (rolePlayerOK)
 									{
-										remove = false;
+										bool haveOppositeUniqueness = false;
+										bool haveOppositeMandatory = false;
+										IList oppositeRoleConstraintLinks = oppositeRole.GetElementLinks(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
+										int oppositeRoleConstraintLinkCount = oppositeRoleConstraintLinks.Count;
+										for (int i = 0; i < oppositeRoleConstraintLinkCount; ++i)
+										{
+											ConstraintRoleSequenceHasRole oppositeRoleConstraintLink = (ConstraintRoleSequenceHasRole)oppositeRoleConstraintLinks[i];
+											ConstraintRoleSequence testRoleSequence;
+											SetConstraint testConstraint;
+											if (!oppositeRoleConstraintLink.IsRemoving &&
+												!(testRoleSequence = oppositeRoleConstraintLink.ConstraintRoleSequenceCollection).IsRemoving &&
+												null != (testConstraint = testRoleSequence as SetConstraint))
+											{
+												switch (testConstraint.Constraint.ConstraintType)
+												{
+													case ConstraintType.InternalUniqueness:
+														if (haveOppositeUniqueness)
+														{
+															// Should only have one
+															haveOppositeUniqueness = false;
+															break;
+														}
+														if (testRoleSequence.RoleCollection.Count == 1)
+														{
+															haveOppositeUniqueness = true;
+														}
+														break;
+													case ConstraintType.SimpleMandatory:
+														haveOppositeMandatory = true;
+														break;
+												}
+											}
+										}
+										if (haveOppositeUniqueness && haveOppositeMandatory)
+										{
+											remove = false;
+										}
 									}
 								}
 							}
@@ -2255,39 +2322,72 @@ namespace Neumont.Tools.ORM.ObjectModel
 						else
 						{
 							// See list of conditions in UniquenessConstraint.TestAllowPreferred
-							RoleMoveableCollection roles = constraint.RoleCollection;
-							int allRolesCount = roles.Count;
+							IList constraintRoleLinks = constraint.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+							ConstraintRoleSequenceHasRole constraintRoleLink;
+							Role constraintRole;
+							int allRolesCount = constraintRoleLinks.Count;
+							RoleProxy proxy;
+							FactType impliedFact;
 							int remainingRolesCount = 0;
 							FactType factType;
+							int proxyRoleCount = 0;
+							if (objectification != null && objectification.IsRemoving)
+							{
+								objectification = null;
+							}
 							for (int i = 0; i < allRolesCount; ++i)
 							{
-								if (!roles[i].IsRemoving)
+								if (!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[i]).IsRemoving &&
+									!(constraintRole = constraintRoleLink.RoleCollection).IsRemoving)
 								{
 									++remainingRolesCount;
+									if (objectification != null &&
+										null != (proxy = constraintRole.Proxy) &&
+										!proxy.IsRemoving &&
+										null != (impliedFact = proxy.FactType) &&
+										!impliedFact.IsRemoving &&
+										object.ReferenceEquals(impliedFact.ImpliedByObjectification, objectification))
+									{
+										++proxyRoleCount;
+									}
 								}
 							}
 							if (remainingRolesCount != 0) // Condition 1
 							{
 								int remainingFactsCount = 0;
-								foreach (FactSetConstraint factConstraint in constraint.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid))
+								IList factSetConstraints = constraint.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid);
+								int factSetConstraintCount = factSetConstraints.Count;
+								for (int i = 0; i < factSetConstraintCount; ++i)
 								{
+									FactSetConstraint factConstraint = (FactSetConstraint)factSetConstraints[i];
 									if (!factConstraint.IsRemoving)
 									{
 										factType = factConstraint.FactTypeCollection;
-										if (!factType.IsRemoving && !factType.IsRemoving)
+										if (!factType.IsRemoving)
 										{
 											++remainingFactsCount;
 										}
 									}
 								}
-								if (remainingFactsCount == remainingRolesCount) // Condition 2
+								if ((remainingFactsCount + ((proxyRoleCount == 0) ? 0 : (proxyRoleCount - 1))) == remainingRolesCount) // Condition 2
 								{
 									int constraintRoleIndex = 0;
 									for (; constraintRoleIndex < allRolesCount; ++constraintRoleIndex)
 									{
-										Role constraintRole = roles[constraintRoleIndex];
-										if (!constraintRole.IsRemoving)
+										if (!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[constraintRoleIndex]).IsRemoving &&
+											!(constraintRole = constraintRoleLink.RoleCollection).IsRemoving)
 										{
+											if (objectification != null &&
+												null != (proxy = constraintRole.Proxy) &&
+												!proxy.IsRemoving &&
+												null != (impliedFact = proxy.FactType) &&
+												!impliedFact.IsRemoving &&
+												object.ReferenceEquals(impliedFact.ImpliedByObjectification, objectification))
+											{
+												// The remaining binary fact conditions are verified
+												// by the objectification pattern on implied facts.
+												continue;
+											}
 											factType = constraintRole.FactType;
 											RoleBaseMoveableCollection factRoles = factType.RoleCollection;
 											if (factRoles.Count != 2)
@@ -2298,6 +2398,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 											if (object.ReferenceEquals(oppositeRole, constraintRole))
 											{
 												oppositeRole = factRoles[1].Role;
+											}
+											if (oppositeRole.IsRemoving)
+											{
+												break;
 											}
 											ObjectType currentRolePlayer = null;
 											// Don't use oppositeRole.RolePlayer, this will pick up
@@ -2433,152 +2537,226 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // TestRemovePreferredIdentifierRemovingRule class
-		#region TestRemovePreferredIdentifierAddRule class
+		#region TestRemovePreferredIdentifierRoleAddRule class
 		/// <summary>
 		/// A rule to determine if a role has been added to a fact that
 		/// has a preferred identifier attached to one of its constraints.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class TestRemovePreferredIdentifierAddRule : AddRule
+		[RuleOn(typeof(FactTypeHasRole))]
+		private class TestRemovePreferredIdentifierRoleAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelElement element = e.ModelElement;
-				FactTypeHasRole roleLink;
-				ConstraintRoleSequenceHasRole constraintLink;
-				if (null != (roleLink = element as FactTypeHasRole))
+				FactTypeHasRole roleLink = e.ModelElement as FactTypeHasRole;
+				FactType fact = roleLink.FactType;
+				foreach (IFactConstraint factConstraint in fact.FactConstraintCollection)
 				{
-					FactType fact = roleLink.FactType;
-					foreach (IFactConstraint factConstraint in fact.FactConstraintCollection)
-					{
-						// If the preferred identifier is already there, then
-						// the fact is binary and removing the role will
-						// invalidate the prerequisites. Remove the identifier.
-						// Note that the setter for most of the constraint implementations
-						// is empty, this will only apply to internal and external
-						// uniqueness constraints.
-						factConstraint.Constraint.PreferredIdentifierFor = null;
-					}
-				}
-				else if (null != (constraintLink = element as ConstraintRoleSequenceHasRole))
-				{
-					ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequenceCollection;
-					IConstraint constraint = sequence.Constraint;
+					UniquenessConstraint constraint = factConstraint.Constraint as UniquenessConstraint;
 					if (constraint != null)
 					{
-						switch (constraint.ConstraintType)
+						ObjectType forType = constraint.PreferredIdentifierFor;
+						if (forType != null)
 						{
-							case ConstraintType.InternalUniqueness:
-								// A preferred identifier on an internal uniqueness constraint requires
-								// the constraint to have one role only. If we already have a preferred
-								// identifier on this role, then we must have one already, so adding an
-								// additional role is bad.
+							Objectification objectification;
+							if (!(null != (objectification = forType.Objectification) &&
+								object.ReferenceEquals(fact, objectification.NestedFactType)))
+							{
+								// If the preferred identifier is already there, then
+								// the fact is binary and removing the role will
+								// invalidate the prerequisites. Remove the identifier.
+								// Note that the setter for most of the constraint implementations
+								// is empty, this will only apply to internal and external
+								// uniqueness constraints.
 								constraint.PreferredIdentifierFor = null;
-								// There are also problems if the role is added to the opposite single
-								// role constraint, which must have a single-column internal uniqueness
-								// constraint over it for both internal and external identifiers.
-								UniquenessConstraint iuc = constraint as UniquenessConstraint;
-								FactTypeMoveableCollection facts = iuc.FactTypeCollection;
-								if (facts.Count == 1)
-								{
-									FactType fact = facts[0];
-									RoleBaseMoveableCollection roles = fact.RoleCollection;
-									if (roles.Count == 2)
-									{
-										Role oldRole = roles[0].Role;
-										if (object.ReferenceEquals(oldRole, constraintLink.RoleCollection))
-										{
-											// Unlikely but possible (you'd need to insert instead of add)
-											oldRole = roles[1].Role;
-										}
-										ObjectType oldRolePlayer;
-										UniquenessConstraint preferredIdentifier;
-										if ((null != (oldRolePlayer = oldRole.RolePlayer)) &&
-											!oldRolePlayer.IsRemoved &&
-											(null != (preferredIdentifier = oldRolePlayer.PreferredIdentifier)))
-										{
-											FactTypeMoveableCollection testFacts = preferredIdentifier.FactTypeCollection;
-											int testFactsCount = testFacts.Count;
-											for (int i = 0; i < testFactsCount; ++i)
-											{
-													// If this fact is involved in the external preferred identifier, then
-													// the prerequisites for the pattern no longer hold
-												if (object.ReferenceEquals(fact, testFacts[i]))
-													{
-															oldRolePlayer.PreferredIdentifier = null;
-															break;
-														}
-													}
-											}
-										}
-									}
-								break;
-							case ConstraintType.ExternalUniqueness:
-								{
-									// A preferred identifier on an external uniqueness constraint
-									// can be extended to include a new role if the role is on a binary
-									// fact opposite the object being identified. The opposite role must
-									// have a single-column internal uniqueness constraint. Given that
-									// we add the uniqueness constraint automatically when the preferred
-									// identifier is added, it is also appropriate to add it here to preserve
-									// the pattern.
-									// Note that we'll go one step further here to keep the pattern. If the
-									// opposite role player is not set then we'll set it automatically.
-									ObjectType identifierFor = constraint.PreferredIdentifierFor;
-									if (identifierFor != null)
-									{
-										bool clearIdentifier = true;
-										Role nearRole = constraintLink.RoleCollection;
-										FactType factType = nearRole.FactType;
-										if (null != factType)
-										{
-											RoleBaseMoveableCollection factRoles = factType.RoleCollection;
-											if (factRoles.Count == 2)
-											{
-												Role oppositeRole = factRoles[0].Role;
-												if (object.ReferenceEquals(oppositeRole, nearRole))
-												{
-													oppositeRole = factRoles[1].Role;
-												}
-												ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
-												if (oppositeRolePlayer == null || object.ReferenceEquals(oppositeRolePlayer, identifierFor))
-												{
-													bool haveSingleRoleInternalUniqueness = false;
-													foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
-													{
-														if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
-														{
-															haveSingleRoleInternalUniqueness = true;
-															break;
-														}
-													}
-													if (!haveSingleRoleInternalUniqueness)
-													{
-														UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(oppositeRole.Store);
-														oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
-													}
-													if (oppositeRolePlayer == null)
-													{
-														oppositeRole.RolePlayer = identifierFor;
-													}
-													clearIdentifier = false;
-												}
-											}
-										}
-										if (clearIdentifier)
-										{
-											// Could not maintain the pattern
-											constraint.PreferredIdentifierFor = null;
-										}
-									}
-								}
-								break;
+							}
 						}
 					}
 				}
 			}
 		}
-		#endregion // TestRemovePreferredIdentifierAddRule class
+		#endregion // TestRemovePreferredIdentifierRoleAddRule class
+		#region TestRemovePreferredIdentifierConstraintRoleAddRule class
+		/// <summary>
+		/// A rule to determine if a role has been added to a constraint
+		/// that is acting as a preferred identifier
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class TestRemovePreferredIdentifierConstraintRoleAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole constraintLink = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequenceCollection;
+				IConstraint constraint = sequence.Constraint;
+				if (constraint != null)
+				{
+					switch (constraint.ConstraintType)
+					{
+						case ConstraintType.InternalUniqueness:
+							ObjectType preferredFor = constraint.PreferredIdentifierFor;
+							if (preferredFor != null)
+							{
+								FactType nestedFactType = preferredFor.NestedFactType;
+								if (nestedFactType != null && object.ReferenceEquals(nestedFactType, constraintLink.RoleCollection.FactType))
+								{
+									// Adding a link to an internal constraint that is the preferred
+									// identifier for an objectifying type is always valid
+									break;
+								}
+							}
+							// A preferred identifier on an internal uniqueness constraint requires
+							// the constraint to have one role only. If we already have a preferred
+							// identifier on this role, then we must have one already, so adding an
+							// additional role is bad.
+							constraint.PreferredIdentifierFor = null;
+							// There are also problems if the role is added to the opposite single
+							// role constraint, which must have a single-column internal uniqueness
+							// constraint over it for both internal and external identifiers.
+							UniquenessConstraint iuc = constraint as UniquenessConstraint;
+							FactTypeMoveableCollection facts = iuc.FactTypeCollection;
+							if (facts.Count == 1)
+							{
+								FactType fact = facts[0];
+								RoleBaseMoveableCollection roles = fact.RoleCollection;
+								if (roles.Count == 2)
+								{
+									Role oldRole = roles[0].Role;
+									if (object.ReferenceEquals(oldRole, constraintLink.RoleCollection))
+									{
+										// Unlikely but possible (you'd need to insert instead of add)
+										oldRole = roles[1].Role;
+									}
+									ObjectType oldRolePlayer;
+									UniquenessConstraint preferredIdentifier;
+									if ((null != (oldRolePlayer = oldRole.RolePlayer)) &&
+										!oldRolePlayer.IsRemoved &&
+										(null != (preferredIdentifier = oldRolePlayer.PreferredIdentifier)))
+									{
+										FactTypeMoveableCollection testFacts = preferredIdentifier.FactTypeCollection;
+										int testFactsCount = testFacts.Count;
+										for (int i = 0; i < testFactsCount; ++i)
+										{
+											// If this fact is involved in the external preferred identifier, then
+											// the prerequisites for the pattern no longer hold
+											if (object.ReferenceEquals(fact, testFacts[i]))
+											{
+												oldRolePlayer.PreferredIdentifier = null;
+												break;
+											}
+										}
+									}
+								}
+							}
+							break;
+						case ConstraintType.ExternalUniqueness:
+							{
+								// A preferred identifier on an external uniqueness constraint
+								// can be extended to include a new role if the role is on a binary
+								// fact opposite the object being identified. The opposite role must
+								// have a single-column internal uniqueness constraint. Given that
+								// we add the uniqueness constraint automatically when the preferred
+								// identifier is added, it is also appropriate to add it here to preserve
+								// the pattern.
+								// Note that we'll go one step further here to keep the pattern. If the
+								// opposite role player is not set then we'll set it automatically.
+								ObjectType identifierFor = constraint.PreferredIdentifierFor;
+								if (identifierFor != null)
+								{
+									bool clearIdentifier = true;
+									Role nearRole = constraintLink.RoleCollection;
+									FactType factType = nearRole.FactType;
+									if (null != factType)
+									{
+										Objectification objectification = identifierFor.Objectification;
+										RoleProxy proxy;
+										FactType impliedFact;
+										RoleBaseMoveableCollection factRoles;
+										if (null != (objectification = identifierFor.Objectification) &&
+											null != (proxy = nearRole.Proxy) &&
+											null != (impliedFact = proxy.FactType) &&
+											object.ReferenceEquals(objectification, impliedFact.ImpliedByObjectification))
+										{
+											clearIdentifier = false;
+										}
+										else if ((factRoles = factType.RoleCollection).Count == 2)
+										{
+											Role oppositeRole = factRoles[0].Role;
+											if (object.ReferenceEquals(oppositeRole, nearRole))
+											{
+												oppositeRole = factRoles[1].Role;
+											}
+											ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
+											if (oppositeRolePlayer == null || object.ReferenceEquals(oppositeRolePlayer, identifierFor))
+											{
+												bool haveSingleRoleInternalUniqueness = false;
+												foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
+												{
+													if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+													{
+														haveSingleRoleInternalUniqueness = true;
+														break;
+													}
+												}
+												if (!haveSingleRoleInternalUniqueness)
+												{
+													UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(oppositeRole.Store);
+													oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+												}
+												if (oppositeRolePlayer == null)
+												{
+													oppositeRole.RolePlayer = identifierFor;
+												}
+												clearIdentifier = false;
+											}
+										}
+									}
+									if (clearIdentifier)
+									{
+										// Could not maintain the pattern
+										constraint.PreferredIdentifierFor = null;
+									}
+								}
+							}
+							break;
+					}
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierConstraintRoleAddRule class
+		#region TestRemovePreferredIdentifierObjectificationAddRule class
+		/// <summary>
+		/// A rule to determine if an internal constraint on one of its
+		/// roles is the preferred identifier for a direct role player. This
+		/// pattern is not allowed.
+		/// </summary>
+		[RuleOn(typeof(Objectification))]
+		private class TestRemovePreferredIdentifierObjectificationAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Objectification link = e.ModelElement as Objectification;
+				FactType factType = link.NestedFactType;
+				RoleBaseMoveableCollection roles = factType.RoleCollection;
+				int roleCount = roles.Count;
+				for (int i = 0; i < roleCount; ++i)
+				{
+					// Implied facts cannot be objectified, we will never see
+					// role proxies here, so the exception case is fine.
+					Role role = (Role)roles[i];
+					ObjectType rolePlayer;
+					UniquenessConstraint pid;
+					FactTypeMoveableCollection facts;
+					if (null != (rolePlayer = role.RolePlayer) &&
+						null != (pid = rolePlayer.PreferredIdentifier) &&
+						1 == (facts = pid.FactTypeCollection).Count &&
+						object.ReferenceEquals(facts[0], factType))
+					{
+						rolePlayer.PreferredIdentifier = null;
+					}
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierObjectificationAddRule class
 		#region PreferredIdentifierAddedRule class
 		/// <summary>
 		/// Verify that all preconditions hold for adding a primary
@@ -2601,9 +2779,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// for object types with preferred identifiers) is enforced in
 				// ObjectType.CheckForIncompatibleRelationshipRule
 				ObjectType entityType = link.PreferredIdentifierFor;
-				if (entityType.IsValueType || entityType.NestedFactType != null)
+				if (entityType.IsValueType)
 				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType);
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType);
 				}
 
 				IConstraint constraint = link.PreferredIdentifier as IConstraint;
@@ -2612,7 +2790,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					case ConstraintType.InternalUniqueness:
 						{
 							UniquenessConstraint iuc = constraint as UniquenessConstraint;
-							iuc.TestAllowPreferred(link.PreferredIdentifierFor, true);
+							iuc.TestAllowPreferred(entityType, true);
 
 							// TestAllowPreferred verifies role player types, fact arities, and that
 							// no constraints need to be deleted to make this happen. Additional
@@ -2620,42 +2798,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// role, so find it, add constraints as needed, and then let this
 							// pass through to finish creating the preferred identifier link.
 							Role role = iuc.RoleCollection[0];
-							Role oppositeRole = null;
-							FactType factType = role.FactType;
-							foreach (RoleBase roleBase in factType.RoleCollection)
+							
+							// If we're adding a constraint pattern to the objectifying type from
+							// an internal constraint on its nested type, then the required opposite
+							// role pattern is already enforced by the Objectification relationship.
+							// We do not need to enforce it here.
+							if (role.Proxy == null || !object.ReferenceEquals(role.FactType, entityType.NestedFactType))
 							{
-								Role factRole = roleBase.Role;
-								if (!object.ReferenceEquals(role, factRole))
+								Role oppositeRole = null;
+								FactType factType = role.FactType;
+								foreach (RoleBase roleBase in factType.RoleCollection)
 								{
-									oppositeRole = factRole;
-									break;
+									Role factRole = roleBase.Role;
+									if (!object.ReferenceEquals(role, factRole))
+									{
+										oppositeRole = factRole;
+										break;
+									}
 								}
-							}
-							bool needOppositeConstraint = true;
-							foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
-							{
-								if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
-									roleSequence.RoleCollection.Count == 1)
+								bool needOppositeConstraint = true;
+								foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 								{
-									needOppositeConstraint = false;
-									break;
+									if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+										roleSequence.RoleCollection.Count == 1)
+									{
+										needOppositeConstraint = false;
+										break;
+									}
 								}
+								if (needOppositeConstraint)
+								{
+									// Create a uniqueness constraint on the opposite role to make
+									// this a 1-1 binary fact type.
+									Store store = iuc.Store;
+									UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+									oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+								}
+								oppositeRole.IsMandatory = true; // Make sure it is mandatory
 							}
-							if (needOppositeConstraint)
-							{
-								// Create a uniqueness constraint on the opposite role to make
-								// this a 1-1 binary fact type.
-								Store store = iuc.Store;
-								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
-							}
-							oppositeRole.IsMandatory = true; // Make sure it is mandatory
 							break;
 						}
 					case ConstraintType.ExternalUniqueness:
 						{
 							UniquenessConstraint euc = constraint as UniquenessConstraint;
-							euc.TestAllowPreferred(link.PreferredIdentifierFor, true);
+							euc.TestAllowPreferred(entityType, true);
+							Objectification objectification = entityType.Objectification;
 
 							// TestAllowPreferred verifies role player types and fact arities of the
 							// associated fact types and that no constraints need to be deleted
@@ -2673,6 +2860,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 							for (int i = 0; i < roleCount; ++i)
 							{
 								Role role = roles[i];
+								RoleProxy proxyRole;
+								FactType impliedFactType;
+
+								if (null != objectification &&
+									null != (proxyRole = role.Proxy) &&
+									null != (impliedFactType = proxyRole.FactType) &&
+									object.ReferenceEquals(impliedFactType.ImpliedByObjectification, objectification))
+								{
+									// The opposite role pattern is enforced by the objectification pattern
+									continue;
+								}
+								
 								Role oppositeRole = null;
 								FactType factType = role.FactType;
 								foreach (RoleBase roleBase in factType.RoleCollection)
@@ -2723,7 +2922,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeHasPreferredIdentifier pattern enforcement
 	#region UniquenessConstraint class
-	public partial class UniquenessConstraint : IModelErrorOwner
+	public partial class UniquenessConstraint : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region CustomStorage handlers
 		/// <summary>
@@ -2794,10 +2993,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// To be considered for the preferred reference
 				// mode on an object, the following must hold:
 				// 1) The constraint must have at least one role (Note that there will be a model error for exactly one)
-				// 2) The constraint roles must all come from distinct facts (an internal uniqueness constraint role,
+				// 2a) The constraint is attached to one fact type that is objectified by forType (2b and 3-5 are implied at this point).
+				//     Note that a constraint that is internal to an objectified fact cannot be a preferred identifier for
+				//     role players on that fact.
+				// 2b) Or the constraint roles must all come from distinct facts (an internal uniqueness constraint role,
 				//    regardless of whether it is primary or not, must not be attached to a role with a single-role internal
 				//    uniqueness constraint on it. However, the opposite role must have this condition. Therefore, two
-				//    roles from a preferred constraint cannot share the same binary fact)
+				//    roles from a preferred constraint cannot share the same binary fact).
 				// 3) Each fact must be binary
 				// 4) The opposite role player for each fact must be set to the same object
 				// 5) The opposite role player must be an entity type
@@ -2811,38 +3013,88 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// not a requirement for all role players on preferred identifier constraints.
 				RoleMoveableCollection constraintRoles = RoleCollection;
 				int constraintRoleCount = constraintRoles.Count;
-				if (constraintRoleCount != 0 && FactTypeCollection.Count == constraintRoleCount) // Condition 1 and 2
+				FactTypeMoveableCollection constraintFacts;
+				int constraintFactCount;
+				bool objectified = false;
+				if (constraintRoleCount != 0 &&
+					(!(objectified = (1 == (constraintFactCount = (constraintFacts = FactTypeCollection).Count) &&
+					null != forType &&
+					object.ReferenceEquals(constraintFacts[0], forType.NestedFactType))) ||
+					(constraintFactCount == constraintRoleCount))) // Condition 1 and 2 (bail if 2a
 				{
 					int constraintRoleIndex = 0;
 					ObjectType prevRolePlayer = null;
+					ObjectType prevImpliedRolePlayer = null;
+					bool havePreviousRolePlayer = false;
 					for (; constraintRoleIndex < constraintRoleCount; ++constraintRoleIndex)
 					{
+						bool patternOK = false;
 						Role role = constraintRoles[constraintRoleIndex];
-						RoleBaseMoveableCollection factRoles = role.FactType.RoleCollection;
-						if (factRoles.Count == 2) // Condition 3
+						RoleProxy proxy = role.Proxy;
+						FactType factType = role.FactType;
+						RoleBaseMoveableCollection factRoles = null;
+						bool directBinary;
+						patternOK = false;
+						if ((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2)) ||
+							proxy != null) // Condition 3 (RoleProxy can only be attached to a binary fact)
 						{
-							Role oppositeRole = factRoles[0].Role;
-							if (object.ReferenceEquals(oppositeRole, role))
+							ObjectType rolePlayer = null;
+							ObjectType impliedRolePlayer = null;
+							if (directBinary)
 							{
-								oppositeRole = factRoles[1].Role;
+								Role oppositeRole = factRoles[0].Role;
+								if (object.ReferenceEquals(oppositeRole, role))
+								{
+									oppositeRole = factRoles[1].Role;
+								}
+								rolePlayer = oppositeRole.RolePlayer;
 							}
-							ObjectType rolePlayer = oppositeRole.RolePlayer;
-							if (rolePlayer != null)
+							if (proxy != null)
 							{
-								if (prevRolePlayer != null && object.ReferenceEquals(prevRolePlayer, rolePlayer)) // Condition 4
+								impliedRolePlayer = factType.NestingType;
+							}
+
+							if (rolePlayer != null || impliedRolePlayer != null)
+							{
+								if (havePreviousRolePlayer)
 								{
-									continue;
+									if (prevRolePlayer != null &&
+										(object.ReferenceEquals(prevRolePlayer, rolePlayer) ||
+										object.ReferenceEquals(prevRolePlayer, impliedRolePlayer))) // Condition 4
+									{
+										patternOK = true;
+										prevImpliedRolePlayer = null;
+									}
+									if (!patternOK &&
+										prevImpliedRolePlayer != null &&
+										(object.ReferenceEquals(prevImpliedRolePlayer, rolePlayer) ||
+										object.ReferenceEquals(prevImpliedRolePlayer, impliedRolePlayer))) // Condition 4
+									{
+										patternOK = true;
+										prevRolePlayer = prevImpliedRolePlayer;
+										prevImpliedRolePlayer = null;
+									}
 								}
-								else if ((forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
-										 !rolePlayer.IsValueType) // Condition 5
+								else
 								{
-									prevRolePlayer = rolePlayer;
-									continue;
+									if (rolePlayer != null &&
+										(forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
+										!rolePlayer.IsValueType) // Condition 5
+									{
+										patternOK = true;
+										prevRolePlayer = rolePlayer;
+									}
+									if (impliedRolePlayer != null &&
+										(forType == null || object.ReferenceEquals(forType, impliedRolePlayer)))
+									{
+										Debug.Assert(!impliedRolePlayer.IsValueType, "Objectifying types cannot be value types"); // Condition 5
+										patternOK = true;
+										prevImpliedRolePlayer = impliedRolePlayer;
+									}
 								}
 							}
-							break;
 						}
-						else
+						if (!patternOK)
 						{
 							break;
 						}
@@ -2851,6 +3103,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						return true;
 					}
+				}
+				else if (objectified)
+				{
+					return true;
 				}
 			}
 			if (throwIfFalse)
@@ -2914,6 +3170,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid };
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return (PreferredIdentifierFor != null) ? myIndirectModelErrorOwnerLinkRoles : null;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region NMinusOneError Validation
 		/// <summary>
 		/// Validator callback for NMinusOneError
@@ -3111,20 +3381,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// but this will be such a rare condition that I don't go
 						// out of my way to validate it. Calling code can always use
 						// the TestAllowPreferred method to get a cleaner exception.
-						Role role = constraint.RoleCollection[0];
-						Role oppositeRole = null;
-						foreach (RoleBase roleBase in role.FactType.RoleCollection)
+						// We only use TestAllowPreferred here for role proxy cases
+						// to determine whether we should be preferred for the objectified
+						// type or an opposite role player.
+						Role constraintRole = constraint.RoleCollection[0];
+						RoleBase role = constraintRole.Proxy;
+						ObjectType objectifyingType;
+						ObjectType targetRolePlayer = null;
+						if (role == null)
 						{
-							Role factRole = roleBase.Role;
-							if (!object.ReferenceEquals(role, factRole))
+							role = constraintRole;
+						}
+						else if ((null != (objectifyingType = constraintRole.FactType.NestingType)) &&
+							constraint.TestAllowPreferred(objectifyingType, false))
+						{
+							targetRolePlayer = objectifyingType;
+						}
+						else
+						{
+							role = constraintRole;
+						}
+						if (targetRolePlayer == null)
+						{
+							RoleBaseMoveableCollection factRoles = role.FactType.RoleCollection;
+							int roleCount = factRoles.Count;
+							for (int i = 0; i < roleCount; ++i)
 							{
-								oppositeRole = factRole;
-								break;
+								RoleBase testRole = factRoles[i];
+								if (!object.ReferenceEquals(role, testRole))
+								{
+									targetRolePlayer = ((Role)testRole).RolePlayer;
+									break;
+								}
 							}
 						}
 
-						// Let the PreferredIdentifierAddedRule do all the work
-						constraint.PreferredIdentifierFor = oppositeRole.RolePlayer;
+						// Let the PreferredIdentifierAddedRule do the bulk of the work
+						constraint.PreferredIdentifierFor = targetRolePlayer;
 					}
 					else
 					{

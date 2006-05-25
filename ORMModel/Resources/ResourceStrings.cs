@@ -275,6 +275,14 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPagePropertyExternalConstraintRoleBarDisplayNameId = "OptionsPage.Property.ExternalConstraintRoleBarDisplay.DisplayName";
 		/// <summary>
+		/// Description of the preferred internal uniqueness constraint display option
+		/// </summary>
+		public const string OptionsPagePropertyPreferredInternalUniquenessConstraintDisplayDescriptionId = "OptionsPage.Property.PreferredInternalUniquenessConstraintDisplay.Description";
+		/// <summary>
+		/// Display name of the preferred internal uniqueness constraint display option
+		/// </summary>
+		public const string OptionsPagePropertyPreferredInternalUniquenessConstraintDisplayDisplayNameId = "OptionsPage.Property.PreferredInternalUniquenessConstraintDisplay.DisplayName";
+		/// <summary>
 		/// Description of the object type shape
 		/// </summary>
 		public const string OptionsPagePropertyObjectTypeShapeDescriptionId = "OptionsPage.Property.ObjectTypeShape.Description";

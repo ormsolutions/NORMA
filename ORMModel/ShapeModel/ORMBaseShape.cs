@@ -546,6 +546,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					for (int i = 0; i < roleCount; ++i)
 					{
+						Debug.Assert(metaRoles[i] != Guid.Empty);
 						MetaRoleInfo metaRole = metaDataDirectory.FindMetaRole(metaRoles[i]);
 						if (metaRole != null)
 						{
@@ -560,6 +561,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 								InvalidateIndirectErrorOwnerDisplay(counterpart, metaDataDirectory);
 							}
+						}
+					}
+				}
+			}
+			ElementLink elementLink;
+			IElementLinkRoleHasIndirectModelErrorOwner indirectLinkRoleOwner;
+			if (null != (indirectLinkRoleOwner = element as IElementLinkRoleHasIndirectModelErrorOwner) &&
+				null != (elementLink = element as ElementLink))
+			{
+				Guid[] metaRoles = indirectLinkRoleOwner.GetIndirectModelErrorOwnerElementLinkRoles();
+				int roleCount;
+				if (metaRoles != null &&
+					0 != (roleCount = metaRoles.Length))
+				{
+					if (metaDataDirectory == null)
+					{
+						metaDataDirectory = element.Store.MetaDataDirectory;
+					}
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Debug.Assert(metaRoles[i] != Guid.Empty);
+						MetaRoleInfo metaRole = metaDataDirectory.FindMetaRole(metaRoles[i]);
+						if (metaRole != null)
+						{
+							ModelElement rolePlayer = elementLink.GetRolePlayer(metaRole);
+							if (rolePlayer is IModelErrorOwner)
+							{
+								InvalidateErrorOwnerDisplay(rolePlayer);
+							}
+							InvalidateIndirectErrorOwnerDisplay(rolePlayer, metaDataDirectory);
 						}
 					}
 				}

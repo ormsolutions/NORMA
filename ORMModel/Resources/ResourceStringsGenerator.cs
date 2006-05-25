@@ -881,13 +881,13 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Exception message when an attempt is made to set\ both a primary identifier and a value type or a nested fact type on the same object type.
+		/// Exception message when an attempt is made to set\ both a primary identifier and a value type on the same object type.
 		/// </summary>
-		public static string ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType
+		public static string ModelExceptionEnforcePreferredIdentifierForEntityType
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforcePreferredIdentifierForEntityType");
 			}
 		}
 		/// <summary>

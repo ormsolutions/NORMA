@@ -502,6 +502,14 @@
     <value xml:space="preserve">Object Type Shape</value>
     <comment xml:space="preserve">The human readable name for the object shape property</comment>
   </data>
+  <data name="OptionsPage.Property.PreferredInternalUniquenessConstraintDisplay.Description">
+    <value xml:space="preserve">Internal uniqueness constraints can be the preferred identifier for role players of a fact type and the objectifying entity type on a fact type. In addition, some fact type and internal uniqueness constraint patterns result in implied objectification. This option determines when we display internal constraints as preferred on the design surface.</value>
+    <comment xml:space="preserve">The description for the Internal Uniqueness Constraint Display option.</comment>
+  </data>
+  <data name="OptionsPage.Property.PreferredInternalUniquenessConstraintDisplay.DisplayName">
+    <value xml:space="preserve">Display Internal Preferred</value>
+    <comment xml:space="preserve">The display name for the Internal Uniqueness Constraint Display option.</comment>
+  </data>
   <data name="OptionsPage.Property.RoleNameDisplay.Description">
     <value xml:space="preserve">Object Types can have Role Names associated with them. This option set the default value of the DisplayRoleNames property on a Fact to On or Off.</value>
     <comment xml:space="preserve">The description for the Display Role Names option.</comment>

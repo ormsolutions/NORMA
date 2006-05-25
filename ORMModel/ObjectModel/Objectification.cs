@@ -672,6 +672,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// created here.
 				notifyAdded.ElementAdded(objectifiedType, true);
 			}
+
+			// If the implied fact has a single internal uniqueness constraint
+			// then automatically use it as the preferred identifier.
+			UniquenessConstraint preferredConstraint = null;
+			if (false) //notifyAdded == null)
+			{
+				foreach (UniquenessConstraint candidateConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
+				{
+					if (preferredConstraint != null)
+					{
+						// We found more than one, don't use it
+						preferredConstraint = null;
+						break;
+					}
+					else if (candidateConstraint.PreferredIdentifierFor != null)
+					{
+						break;
+					}
+					preferredConstraint = candidateConstraint;
+				}
+				if (preferredConstraint != null)
+				{
+					objectifiedType.PreferredIdentifier = preferredConstraint;
+				}
+			}
+			else
+			{
+				// This is called during fixup potentially before the fact/constraint relationships
+				// are established, so we need to use the primary relationship (the role) to
+				// find what we're after.
+				RoleBaseMoveableCollection factRoles = factType.RoleCollection;
+				int factRoleCount = factRoles.Count;
+				bool breakOut = false;
+				for (int i = 0; i < factRoleCount && !breakOut; ++i)
+				{
+					Role role = (Role)factRoles[i]; // This must be a role, not a proxy, use exception cast
+					ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+					int sequenceCount = sequences.Count;
+					for (int j = 0; j < sequenceCount; ++j)
+					{
+						UniquenessConstraint candidateConstraint;
+						if (null != (candidateConstraint = sequences[j] as UniquenessConstraint) &&
+							candidateConstraint.IsInternal)
+						{
+							if (preferredConstraint != null)
+							{
+								if (object.ReferenceEquals(candidateConstraint, preferredConstraint))
+								{
+									continue;
+								}
+								// We found more than one, don't use it
+								preferredConstraint = null;
+								breakOut = true;
+								break;
+							}
+							else if (candidateConstraint.PreferredIdentifierFor != null)
+							{
+								breakOut = true;
+								break;
+							}
+							preferredConstraint = candidateConstraint;
+						}
+					}
+				}
+				if (preferredConstraint != null)
+				{
+					ElementLink newLink = 
+					store.ElementFactory.CreateElementLink(
+						typeof(EntityTypeHasPreferredIdentifier),
+						new RoleAssignment[]{
+							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, preferredConstraint),
+							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, objectifiedType)});
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(newLink, false);
+					}
+				}
+			}
 		}
 		/// <summary>
 		/// Create an implied fact type, set its far constraints, and add
