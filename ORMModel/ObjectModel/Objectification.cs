@@ -676,7 +676,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// If the implied fact has a single internal uniqueness constraint
 			// then automatically use it as the preferred identifier.
 			UniquenessConstraint preferredConstraint = null;
-			if (false) //notifyAdded == null)
+			if (notifyAdded == null)
 			{
 				foreach (UniquenessConstraint candidateConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
 				{
@@ -738,16 +738,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (preferredConstraint != null)
 				{
-					ElementLink newLink = 
-					store.ElementFactory.CreateElementLink(
+					notifyAdded.ElementAdded(store.ElementFactory.CreateElementLink(
 						typeof(EntityTypeHasPreferredIdentifier),
 						new RoleAssignment[]{
 							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, preferredConstraint),
-							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, objectifiedType)});
-					if (notifyAdded != null)
-					{
-						notifyAdded.ElementAdded(newLink, false);
-					}
+							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, objectifiedType)}), false);
 				}
 			}
 		}
