@@ -4081,11 +4081,53 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>true if the PreferredIdentifierFor property on the role is not null.</returns>
 		protected virtual bool ShouldDrawConstraintPreferred(IConstraint constraint)
 		{
+			bool retVal = false;
 			if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 			{
-				return (constraint as UniquenessConstraint).PreferredIdentifierFor != null;
+				PreferredInternalUniquenessConstraintDisplay currentDisplayOption = OptionsPage.CurrentPreferredInternalUniquenessConstraintDisplay;
+				if (currentDisplayOption != PreferredInternalUniquenessConstraintDisplay.Never)
+				{
+					UniquenessConstraint currentConstraint = (UniquenessConstraint)constraint;
+					ObjectType forType = currentConstraint.PreferredIdentifierFor;
+					if (forType != null)
+					{
+						Objectification objectification = forType.Objectification;
+						if (objectification != null)
+						{
+							switch (currentDisplayOption)
+							{
+								case PreferredInternalUniquenessConstraintDisplay.MultipleObjectifiedInternalConstraints:
+									if (!objectification.IsImplied)
+									{
+										goto case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints;
+									}
+									break;
+								case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints:
+									foreach (UniquenessConstraint testConstraint in currentConstraint.FactTypeCollection[0].GetInternalConstraints<UniquenessConstraint>())
+									{
+										if (!object.ReferenceEquals(currentConstraint, testConstraint))
+										{
+											retVal = true;
+											break;
+										}
+									}
+									break;
+								case PreferredInternalUniquenessConstraintDisplay.SingleObjectifiedInternalConstraint:
+									retVal = !objectification.IsImplied;
+									break;
+								case PreferredInternalUniquenessConstraintDisplay.SingleImpliedObjectifiedInternalConstraint:
+									retVal = true;
+									break;
+							}
+						}
+						else
+						{
+							retVal = ((int)currentDisplayOption) >= (int)PreferredInternalUniquenessConstraintDisplay.UnobjectifiedInternalConstraint;
+						}
+					}
+				}
 			}
-			return false;
+			return retVal;
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules

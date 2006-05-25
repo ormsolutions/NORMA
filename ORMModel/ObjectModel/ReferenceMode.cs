@@ -316,7 +316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "Fahrenheit", PortableDataType.NumericDecimal);
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "USD", PortableDataType.NumericMoney);
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "AUD", PortableDataType.NumericMoney);
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "EUR", PortableDataType.NumericMoney);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "XEU", PortableDataType.NumericMoney);
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE", PortableDataType.TemporalDate);
 						// UNDONE: Strongly consider extending this list
 					}
