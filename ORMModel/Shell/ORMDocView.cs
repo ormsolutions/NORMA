@@ -1647,8 +1647,7 @@ namespace Neumont.Tools.ORM.Shell
 				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
 				if (errorOwner != null)
 				{
-					// UNDONE: ModelErrorUses filter
-					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.None))
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
 						if (errorIndex == 0)
 						{

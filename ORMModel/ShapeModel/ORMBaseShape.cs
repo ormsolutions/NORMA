@@ -302,8 +302,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						if (errorOwner != null)
 						{
-							// UNDONE: ModelErrorUses filter
-							foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.None))
+							foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 							{
 								if (activator.ActivateModelError(error))
 								{

@@ -34,6 +34,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -331,8 +332,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							IModelErrorOwner errorOwner = myFactConstraint.Constraint as IModelErrorOwner;
 							if (errorOwner != null)
 							{
-								// UNDONE: ModelErrorUses filter
-								using (IEnumerator<ModelErrorUsage> errors = errorOwner.GetErrorCollection(ModelErrorUses.None).GetEnumerator())
+								using (IEnumerator<ModelErrorUsage> errors = errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary).GetEnumerator())
 								{
 									retVal = !errors.MoveNext();
 								}
@@ -3608,6 +3608,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
 			UniquenessConstraint activateConstraint = null;
+			MaxValueMismatchError maxValueMismatchError;
+			MinValueMismatchError minValueMismatchError;
+			ValueRangeOverlapError overlapError;
+			RoleValueConstraint errorValueConstraint = null;
 			bool selectConstraintOnly = false;
 			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
@@ -3701,6 +3705,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			else if (null != (maxValueMismatchError = error as MaxValueMismatchError))
+			{
+				retVal = null != (errorValueConstraint = maxValueMismatchError.ValueRange.ValueConstraint as RoleValueConstraint);
+			}
+			else if (null != (minValueMismatchError = error as MinValueMismatchError))
+			{
+				retVal = null != (errorValueConstraint = minValueMismatchError.ValueRange.ValueConstraint as RoleValueConstraint);
+			}
+			else if (null != (overlapError = error as ValueRangeOverlapError))
+			{
+				retVal = null != (errorValueConstraint = overlapError.ValueConstraint as RoleValueConstraint);
+			}
 			else
 			{
 				retVal = false;
@@ -3757,6 +3773,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 						ActivateNameProperty(activateConstraint);
 					}
 				}
+			}
+			else if (errorValueConstraint != null)
+			{
+				ORMDiagram ormDiagram = Diagram as ORMDiagram;
+				Role role = errorValueConstraint.Role;
+				DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
+				DiagramItem diagramItem = new DiagramItem(this, RolesShape, new RoleSubField(role));
+				clientView.Selection.Set(diagramItem);
+				Store store = Store;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					role.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(Role.ValueRangeTextMetaAttributeGuid), this),
+					false);
 			}
 			return retVal;
 		}
