@@ -117,13 +117,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			BrushSettings brushSettings = new BrushSettings();
 			//UNDONE: This color isn't permanent. probably want a better color for the errors.
-			brushSettings.ForeColor = Color.FromArgb(60, colorService.GetForeColor(ORMDesignerColor.ConstraintError));
+			brushSettings.ForeColor = Color.LightPink;
+			//brushSettings.ForeColor = colorService.GetForeColor(ORMDesignerColor.ConstraintError);
 			brushSettings.HatchStyle = HatchStyle.LightDownwardDiagonal;
 			brushSettings.BrushType = typeof(HatchBrush);
 			classStyleSet.AddBrush(ORMDiagram.ErrorBackgroundResource, DiagramBrushes.DiagramBackground, brushSettings);
 			brushSettings.ForeColor = ORMDiagram.ModifyLuminosity(brushSettings.ForeColor);
 			brushSettings.BackColor = ORMDiagram.ModifyLuminosity(((SolidBrush)classStyleSet.GetBrush(DiagramBrushes.DiagramBackground)).Color);
 			classStyleSet.AddBrush(ORMDiagram.HighlightedErrorBackgroundResource, DiagramBrushes.DiagramBackground, brushSettings);
+
+			BrushSettings transBrush = new BrushSettings();
+			transBrush.ForeColor = Color.Transparent;
+			classStyleSet.AddBrush(ORMDiagram.TransparentBrushResource, DiagramBrushes.DiagramBackground, transBrush);
 		}
 		/// <summary>
 		/// Use a different background brush if we have errors

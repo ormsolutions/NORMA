@@ -50,7 +50,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				foreach (ObjectType objType in candidates)
 				{
 					Objectification objectification = objType.Objectification;
-					if (objectification != null && objectification != thisObjectification && !objectification.IsImplied)
+					if (objectification == null || (objectification != thisObjectification && !objectification.IsImplied))
 					{
 						types.Add(objType);
 					}

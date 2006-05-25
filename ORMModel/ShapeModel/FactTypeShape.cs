@@ -2496,9 +2496,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 			fontSettings.Size = 5f / 72f; // 5 Point.
 			classStyleSet.AddFont(RoleBoxResource, DiagramFonts.CommentText, fontSettings);
 
-			BrushSettings backgroundBrush = new BrushSettings();
-			backgroundBrush.Color = Color.Transparent;
-			classStyleSet.OverrideBrush(DiagramBrushes.DiagramBackground, backgroundBrush);
+		}
+		/// <summary>
+		/// We show extra space around the fact when we're not objectified, but this
+		/// space needs to be transparent if it is not highlighted and has no errors.
+		/// Allow changing the background brush dynamically to handle this situation.
+		/// </summary>
+		public override StyleSetResourceId BackgroundBrushId
+		{
+			get
+			{
+				Objectification objectification;
+				FactType associatedFact = AssociatedFactType;
+				if (null == associatedFact ||
+					(null != (objectification = associatedFact.Objectification) && !objectification.IsImplied) ||
+					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary))
+				{
+					return base.BackgroundBrushId;
+				}
+				else
+				{
+					return ORMDiagram.TransparentBrushResource;
+				}
+			}
 		}
 		/// <summary>
 		/// Use the rolebox outline pen unless we're objectified

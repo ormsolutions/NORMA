@@ -715,6 +715,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The brush used to draw the background for an item with errors when the shape is highlighted.
 		/// </summary>
 		public static readonly StyleSetResourceId HighlightedErrorBackgroundResource = new StyleSetResourceId("Neumont", "HighlightedErrorBackgroundResource");
+		/// <summary>
+		/// A transparent brush.
+		/// </summary>
+		public static readonly StyleSetResourceId TransparentBrushResource = new StyleSetResourceId("Neumont", "TransparentBrushResource");
 
 		/// <summary>
 		/// Standard override to populate the style set for the shape type
