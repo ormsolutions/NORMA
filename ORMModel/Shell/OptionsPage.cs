@@ -132,6 +132,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		MultipleObjectifiedInternalConstraints,
 		/// <summary>
+		/// Display as preferred when the fact is explicitly
+		/// objectified and has a single internal constraint.
+		/// </summary>
+		SingleObjectifiedInternalConstraint,
+		/// <summary>
 		/// Display as preferred when the fact is implicitly
 		/// objectified and has multiple internal uniqueness constraints.
 		/// Implicit objectification occurs for n-aries and binaries with
@@ -139,11 +144,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// apply only to n-ary facts with more than one uniqueness constraint.
 		/// </summary>
 		MultipleImpliedObjectifiedInternalConstraints,
-		/// <summary>
-		/// Display as preferred when the fact is explicitly
-		/// objectified and has a single internal constraint.
-		/// </summary>
-		SingleObjectifiedInternalConstraint,
 		/// <summary>
 		/// Display as preferred when the fact is implicitly
 		/// objectified and has a single internal constraint.

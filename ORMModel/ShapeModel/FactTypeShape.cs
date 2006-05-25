@@ -4094,30 +4094,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 						Objectification objectification = forType.Objectification;
 						if (objectification != null)
 						{
+							bool requireMultiple = false;
 							switch (currentDisplayOption)
 							{
 								case PreferredInternalUniquenessConstraintDisplay.MultipleObjectifiedInternalConstraints:
 									if (!objectification.IsImplied)
 									{
-										goto case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints;
-									}
-									break;
-								case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints:
-									foreach (UniquenessConstraint testConstraint in currentConstraint.FactTypeCollection[0].GetInternalConstraints<UniquenessConstraint>())
-									{
-										if (!object.ReferenceEquals(currentConstraint, testConstraint))
-										{
-											retVal = true;
-											break;
-										}
+										requireMultiple = true;
 									}
 									break;
 								case PreferredInternalUniquenessConstraintDisplay.SingleObjectifiedInternalConstraint:
 									retVal = !objectification.IsImplied;
 									break;
+								case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints:
+									requireMultiple = true;
+									break;
 								case PreferredInternalUniquenessConstraintDisplay.SingleImpliedObjectifiedInternalConstraint:
 									retVal = true;
 									break;
+							}
+							if (requireMultiple)
+							{
+								foreach (UniquenessConstraint testConstraint in currentConstraint.FactTypeCollection[0].GetInternalConstraints<UniquenessConstraint>())
+								{
+									if (!object.ReferenceEquals(currentConstraint, testConstraint))
+									{
+										retVal = true;
+										break;
+									}
+								}
 							}
 						}
 						else
