@@ -503,10 +503,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// We only consider this to be a collapsible ref mode if its roleplayer is a value type
 				RoleMoveableCollection constraintRoles;
 				ObjectType rolePlayer;
+				Role role;
+				RoleProxy proxy;
+				FactType impliedFact;
 				if (entity != null &&
 					1 == (constraintRoles = constraint.RoleCollection).Count &&
-					null != (rolePlayer = constraintRoles[0].RolePlayer) &&
-					rolePlayer.IsValueType)
+					null != (rolePlayer = (role = constraintRoles[0]).RolePlayer) &&
+					rolePlayer.IsValueType &&
+					(null == (proxy = role.Proxy) ||
+					!(null != (impliedFact = proxy.FactType) &&
+					object.ReferenceEquals(impliedFact.ImpliedByObjectification, entity.Objectification))))
 				{
 					return !ShouldCollapseReferenceMode(entity);
 				}

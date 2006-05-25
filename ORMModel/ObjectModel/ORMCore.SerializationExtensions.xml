@@ -86,16 +86,6 @@
 			<se:Condition WriteStyle="NotWritten">
 				<plx:callThis name="IsValueType" type="property"/>
 			</se:Condition>
-			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="identityInequality">
-					<plx:left>
-						<plx:callThis name="NestedFactType" type="property"/>
-					</plx:left>
-					<plx:right>
-						<plx:nullKeyword/>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="IsIndependent">
 			<se:Condition WriteStyle="NotWritten">
@@ -164,8 +154,8 @@
 				</plx:binaryOperator>
 			</se:ConditionalName>
 		</se:Link>
-		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
+		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>

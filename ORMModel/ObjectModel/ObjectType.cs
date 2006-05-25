@@ -413,6 +413,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ORMModel model = this.Model;
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
+			Objectification objectification = Objectification;
+			RoleMoveableCollection constraintRoles;
+			RoleProxy proxy;
+			FactType impliedFact;
+			if (objectification != null &&
+				1 == (constraintRoles = preferredConstraint.RoleCollection).Count &&
+				null != (proxy = constraintRoles[0].Proxy) &&
+				null != (impliedFact = proxy.FactType) &&
+				object.ReferenceEquals(impliedFact.ImpliedByObjectification, objectification))
+			{
+				CreateReferenceMode(valueTypeName);
+				return;
+			}
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			if (!IsValueTypeShared(preferredConstraint) && valueType == null)
 			{

@@ -854,10 +854,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				if (this.NestedFactType != null)
-				{
-					return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
 				return new ORMCustomSerializedAttributeInfo(null, "_ReferenceMode", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (attributeInfo.Id == ObjectType.IsIndependentMetaAttributeGuid)
@@ -917,13 +913,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				return new ORMCustomSerializedElementInfo(null, name, null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == Objectification.NestedFactTypeMetaRoleGuid)
-			{
-				return new ORMCustomSerializedElementInfo(null, "NestedPredicate", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
-			}
 			if (roleId == EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "PreferredIdentifier", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == Objectification.NestedFactTypeMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "NestedPredicate", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
 			if (roleId == ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid)
 			{
@@ -974,9 +970,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
 				metaRole = metaDataDir.FindMetaRole(ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid);
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
-				metaRole = metaDataDir.FindMetaRole(Objectification.NestedFactTypeMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 4;
 				metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 4;
+				metaRole = metaDataDir.FindMetaRole(Objectification.NestedFactTypeMetaRoleGuid);
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 5;
 				metaRole = metaDataDir.FindMetaRole(ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 6;
@@ -1062,10 +1058,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(ValueTypeHasDataType.DataTypeMetaRoleGuid);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ConceptualDataType", match);
-				match.InitializeRoles(Objectification.NestedFactTypeMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|NestedPredicate", match);
 				match.InitializeRoles(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|PreferredIdentifier", match);
+				match.InitializeRoles(Objectification.NestedFactTypeMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|NestedPredicate", match);
 				match.InitializeRoles(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|PlayedRoles|http://schemas.neumont.edu/ORM/2006-04/ORMCore|Role", match);
 				match.InitializeRoles(ObjectTypeHasNote.NoteMetaRoleGuid);

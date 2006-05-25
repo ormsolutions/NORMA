@@ -87,9 +87,12 @@
 		<xs:complexContent>
 			<xs:extension base="ObjectType">
 				<xs:sequence>
+					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
 					<xs:element name="NestedPredicate" type="ObjectifiedFactRef"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
+				<!--ReferenceMode is derived.-->
+				<xs:attribute name="_ReferenceMode" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
