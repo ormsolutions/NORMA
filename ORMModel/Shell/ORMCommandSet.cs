@@ -182,7 +182,6 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusMoveRoleRight), 
 				new EventHandler(OnMenuMoveRoleRight),
 				ORMDesignerCommandIds.MoveRoleRight)
-
 				// Alignment Commands
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusAlignShapes),
@@ -215,11 +214,38 @@ namespace Neumont.Tools.ORM.Shell
 				,new MenuCommand(
 				new EventHandler(OnMenuNewWindow),
 				new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
+				//Reading Editor Commands
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAddReading),
+				new EventHandler(OnMenuAddReading),
+				ORMDesignerCommandIds.ReadingEditorAddReading)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAddReadingOrder),
+				new EventHandler(OnMenuAddReadingOrder),
+				ORMDesignerCommandIds.ReadingEditorAddReadingOrder)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusDeleteReading),
+				new EventHandler(OnMenuDeleteReading),
+				ORMDesignerCommandIds.ReadingEditorDeleteReading)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusPromoteReading),
+				new EventHandler(OnMenuPromoteReading),
+				ORMDesignerCommandIds.ReadingEditorPromoteReading)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusDemoteReading),
+				new EventHandler(OnMenuDemoteReading),
+				ORMDesignerCommandIds.ReadingEditorDemoteReading)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusReadingEditorPromoteReadingOrder),
+				new EventHandler(OnMenuReadingEditorPromoteReadingOrder),
+				ORMDesignerCommandIds.ReadingEditorPromoteReadingOrder)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusReadingEditorDemoteReadingOrder),
+				new EventHandler(OnMenuReadingEditorDemoteReadingOrder),
+				ORMDesignerCommandIds.ReadingEditorDemoteReadingOrder)
 			};
 				#endregion
 				AddCommands(myCommands);
-
-
 			}
 
 			/// <summary>
@@ -573,6 +599,108 @@ namespace Neumont.Tools.ORM.Shell
 					docView.OnMenuAlignShapes((sender as MenuCommand).CommandID.ID);
 				}
 			}
+
+			#region NewReadingEditor context menu handlers
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusAddReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.AddReading);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuAddReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.AddReading();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusAddReadingOrder(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.AddReadingOrder);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuAddReadingOrder(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.AddReadingOrder();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusDeleteReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DeleteReading);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDeleteReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.DeleteSelectedReading();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusPromoteReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.PromoteReading);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuPromoteReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.PromoteReading();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusDemoteReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DemoteReading);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDemoteReading(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.DemoteReading();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusReadingEditorPromoteReadingOrder(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.PromoteReadingOrder);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuReadingEditorPromoteReadingOrder(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.PromoteReadingOrder();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusReadingEditorDemoteReadingOrder(object sender, EventArgs e)
+			{
+				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DemoteReadingOrder);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuReadingEditorDemoteReadingOrder(object sender, EventArgs e)
+			{
+				NewReadingEditor.Instance.DemoteReadingOrder();
+			}
+			#endregion //NewReadingEditor context menu handlers
+
 			private class DynamicErrorCommand : DynamicStatusMenuCommand
 			{
 				public DynamicErrorCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id) : base(statusHandler, invokeHandler, id)
@@ -846,7 +974,6 @@ namespace Neumont.Tools.ORM.Shell
 					return monitorSelect;
 				}
 			}
-
 			/// <summary>
 			/// An element locator. Used to navigate to items.
 			/// </summary>
@@ -873,7 +1000,6 @@ namespace Neumont.Tools.ORM.Shell
 					return MonitorSelection.CurrentDocument as ORMDesignerDocData;
 				}
 			}
-
 			/// <summary>
 			/// Currently focused ORM document view
 			/// </summary>
@@ -895,7 +1021,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// The global identifier for the command set used by the ORM designer.
 			/// </summary>
 			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4b39-89B5-42BC9F49EA24");    // keep in sync with SatDll\PkgCmd.ctc
-
 			#region CommandID objects for commands
 #if DEBUG
 			/// <summary>
@@ -931,7 +1056,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// Insert a role before the selected role
 			/// </summary>
 			public static readonly CommandID InsertRoleBefore = new CommandID(guidORMDesignerCommandSet, cmdIdInsertRoleBefore);
-
 			/// <summary>
 			/// The Custom Reference Mode Editor Explorer item on the view menu
 			/// </summary>
@@ -985,6 +1109,34 @@ namespace Neumont.Tools.ORM.Shell
 			/// Move a role to the right in its order within the fact type.
 			/// </summary>
 			public static readonly CommandID MoveRoleRight = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleRight);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Add a Reading to the Reading Order Selected
+			/// </summary>
+			public static readonly CommandID ReadingEditorAddReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorAddReading);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Add a ReadingOrder 
+			/// </summary>
+			public static readonly CommandID ReadingEditorAddReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorAddReadingOrder);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Delete a Reading rom the Reading Order Selected
+			/// </summary>
+			public static readonly CommandID ReadingEditorDeleteReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDeleteReading);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Move the selected Reading Up
+			/// </summary>
+			public static readonly CommandID ReadingEditorPromoteReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorPromoteReading);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Move the selected Reading Down
+			/// </summary>
+			public static readonly CommandID ReadingEditorDemoteReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDemoteReading);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Move the selected RoleOrder Up
+			/// </summary>
+			public static readonly CommandID ReadingEditorPromoteReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorPromoteReadingOrder);
+			/// <summary>
+			/// The commands for the NewReadingEditor context menu -- Move the selected RoleOrder Down
+			/// </summary>
+			public static readonly CommandID ReadingEditorDemoteReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDemoteReadingOrder);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -992,30 +1144,29 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdContextMenu);
 			/// <summary>
+			/// The context menu for the NewReadingEditor
+			/// </summary>
+			public static readonly CommandID ReadingEditorContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdNewReadingEditorContextMenu);		
+			/// <summary>
 			/// The toolbar for the verbalization window
 			/// </summary>
 			public static readonly CommandID VerbalizationToolBar = new CommandID(guidORMDesignerCommandSet, menuIdVerbalizationToolBar);
-
 			/// <summary>
 			/// Available on any role belonging to the active RoleSequence in the active MCEC or SCEC.
 			/// </summary>
 			public static readonly CommandID ViewActivateRoleSequence = new CommandID(guidORMDesignerCommandSet, cmdIdActivateRoleSequence);
-
 			/// <summary>
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
 			public static readonly CommandID ViewDeleteRoleSequence = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteRoleSequence);
-
 			/// <summary>
 			/// Available on any non-active external constraint.
 			/// </summary>
 			public static readonly CommandID ViewEditExternalConstraint = new CommandID(guidORMDesignerCommandSet, cmdIdEditExternalConstraint);
-
 			/// <summary>
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
 			public static readonly CommandID ViewMoveRoleSequenceUp = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleSequenceUp);
-
 			/// <summary>
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
@@ -1029,9 +1180,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public const int ErrorListLength = cmdIdErrorListEnd - cmdIdErrorList + 1;
             #endregion //CommandID objects for menus
-
-            
-
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
 
@@ -1151,6 +1299,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int menuIdVerbalizationToolBar = 0x0101;
 			/// <summary>
+			/// The context menu for the New Reading Editor
+			/// </summary>
+			private const int menuIdNewReadingEditorContextMenu = 0x0103;
+			/// <summary>
 			/// Moves the role to the left in its order with the fact type.
 			/// </summary>
 			private const int cmdIdMoveRoleLeft = 0x2915;
@@ -1158,6 +1310,35 @@ namespace Neumont.Tools.ORM.Shell
 			/// Moves the role to the right in its order with the fact type.
 			/// </summary>
 			private const int cmdIdMoveRoleRight = 0x2916;
+			/// <summary>
+			/// Initiates the drop down to add a new reading in the Reading Editor
+			/// </summary>
+			private const int cmdIdReadingEditorAddReading = 0x2918;
+			/// <summary>
+			/// Initiates the Addition of a new Reading Order
+			/// </summary>
+			private const int cmdIdReadingEditorAddReadingOrder = 0x2919;
+			/// <summary>
+			/// Initiates the deletion of the selected Reading in the Reading Editor
+			/// </summary>
+			private const int cmdIdReadingEditorDeleteReading = 0x2920;
+			/// <summary>
+			/// Promotes the selected Reading in the Reading Editor
+			/// </summary>
+			private const int cmdIdReadingEditorPromoteReading = 0x2921;
+			/// <summary>
+			/// Demotes the selected Reading in the Reading Editor
+			/// </summary>
+			private const int cmdIdReadingEditorDemoteReading = 0x2922;
+			/// <summary>
+			/// Promotes the RoleOrder in the Reading Editor
+			/// </summary>
+			private const int cmdIdReadingEditorPromoteReadingOrder = 0x2923;
+			/// <summary>
+			/// Demotes the RoleOrder in the Reading Editor
+			/// </summary>
+			private const int cmdIdReadingEditorDemoteReadingOrder = 0x2924;
+
 			#endregion
 		}
 	}

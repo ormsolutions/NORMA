@@ -3651,6 +3651,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
 				window.Show();
 				window.ActivateReading(fact);
+				//UNDONE: remove Old editor Window ^
+				NewORMReadingEditorToolWindow newWindow = ORMDesignerPackage.NewReadingEditorWindow;
+				newWindow.Show();
+				newWindow.ActivateReading(fact);
 			}
 			else if (null != (noUniqueness = error as FactTypeRequiresInternalUniquenessConstraintError))
 			{

@@ -45,6 +45,11 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		#region Member variables
 		private ReadingsViewForm myForm = new ReadingsViewForm();
+		/// <summary>
+		/// The Menu Service assigned to this Tool Window
+		/// </summary>
+		public static IMenuCommandService TheMenuService;
+		private IServiceProvider myCtorServiceProvider;
 		#endregion // Member variables
 		#region construction
 		/// <summary>
@@ -53,7 +58,11 @@ namespace Neumont.Tools.ORM.Shell
 		public NewORMReadingEditorToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
+			this.myCtorServiceProvider = serviceProvider;
+			NewORMReadingEditorToolWindow.TheMenuService = this.MenuService;
+			
 		}
+		
 		#endregion
 		#region ToolWindow overrides
 		/// <summary>
@@ -66,6 +75,27 @@ namespace Neumont.Tools.ORM.Shell
 				return 125;
 			}
 		}
+
+		
+		private object myCommandSet;
+		private bool myCommandsPopulated;
+		/// <summary>
+		/// returns the menu service and instantiates a new command set if none exists
+		/// </summary>
+		public override IMenuCommandService MenuService
+		{
+			get
+			{ 
+				IMenuCommandService retVal = base.MenuService;  
+				if (retVal != null && !myCommandsPopulated)
+				{
+					myCommandsPopulated = true;
+					myCommandSet = new ReadingEditorCommandSet(myCtorServiceProvider, retVal);
+				}
+				return retVal;
+			}
+		}
+
 		/// <summary>
 		/// See <see cref="ToolWindow.BitmapIndex"/>.
 		/// </summary>
@@ -226,6 +256,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myReadingEditor = new NewReadingEditor();
 				this.Controls.Add(myReadingEditor);
+				System.Drawing.Point location = this.Controls[this.Controls.Count - 1].Location;
 				myReadingEditor.Dock = DockStyle.Fill;
 				myReadingEditor.Visible = false;
 				myNoSelectionLabel = new Label();
@@ -238,7 +269,7 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion
 
 			#region properties
-
+		
 			public ActiveFactType EditingFactType
 			{
 				get
@@ -279,7 +310,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// the display order of the fact, if one doesn't
 			/// exist select the new entry.
 			/// </summary>
-			/// <param name="fact"></param>
+			/// <param name="fact">Fact</param>
 			public void ActivateReading(FactType fact)
 			{
 				myReadingEditor.ActivateReading(fact);
@@ -505,5 +536,120 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		#endregion
+		#region Nested Tool Window Class
+		private class ReadingEditorCommandSet : MarshalByRefObject, IDisposable
+		{
+			private IMenuCommandService myMenuService;
+			private IMonitorSelectionService myMonitorSelection;
+			private IServiceProvider myServiceProvider;
+			private MenuCommand[] myCommands;
+
+			public ReadingEditorCommandSet(IServiceProvider provider, IMenuCommandService menuService)
+			{
+				myServiceProvider = provider;
+				myMenuService = menuService;
+				#region command array
+				myCommands = new MenuCommand[]{
+					new DynamicStatusMenuCommand(
+					new EventHandler(OnStatusDelete),
+					new EventHandler(OnMenuDelete),
+					StandardCommands.Delete)};
+				#endregion //command array
+				AddCommands(myCommands);
+			}
+
+			protected virtual void AddCommands(MenuCommand[] commands)
+			{
+				IMenuCommandService menuService = MenuService; //force creation of myMenuService
+				if (menuService != null)
+				{
+					int count = commands.Length;
+					for (int i = 0; i < count; ++i)
+					{
+						menuService.AddCommand(commands[i]);
+					}
+				}
+			}
+
+			protected virtual void RemoveCommands(MenuCommand[] commands)
+			{
+				IMenuCommandService menuService = myMenuService;
+				if (menuService != null)
+				{
+					int count = commands.Length;
+					for (int i = 0; i < count; ++i)
+					{
+						menuService.RemoveCommand(commands[i]);
+					}
+				}
+			}
+
+			protected IMenuCommandService MenuService
+			{
+				get
+				{
+					Debug.Assert(myMenuService != null); // Should be passed into the constructor
+					return myMenuService;
+				}
+			}
+			protected NewORMReadingEditorToolWindow CurrentToolWindow
+			{
+				get
+				{
+					return MonitorSelection.CurrentWindow as NewORMReadingEditorToolWindow;
+				}
+			}
+			/// <summary>
+			/// Load the monitor selection service
+			/// </summary>
+			private IMonitorSelectionService MonitorSelection
+			{
+				get
+				{
+					IMonitorSelectionService monitorSelect = myMonitorSelection;
+					if (monitorSelect == null)
+					{
+						myMonitorSelection = monitorSelect = (IMonitorSelectionService)myServiceProvider.GetService(typeof(IMonitorSelectionService));
+					}
+					return monitorSelect;
+				}
+			}
+
+			#region IDisposable Members
+
+			public void Dispose()
+			{
+				if (myCommands != null)
+				{
+					RemoveCommands(myCommands);
+				}
+				myMenuService = null;
+				myMonitorSelection = null;
+				myServiceProvider = null;
+				myCommands = null;
+			}
+
+			public void OnStatusDelete(Object sender, EventArgs e)
+			{
+				//IMonitorSelectionService service = MonitorSelection;
+				//NewORMReadingEditorToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, service.CurrentWindow as NewORMReadingEditorToolWindow);
+			}
+			public void OnMenuDelete(Object sender, EventArgs e)
+			{
+				//NewORMReadingEditorToolWindow currentWindow = CurrentToolWindow;
+				//if (currentWindow != null)
+				//{
+				//    currentWindow.OnMenuDelete((sender as OleMenuCommand).Text);
+				//}
+			}
+			#endregion
+		}
+
+		#region Nested Click Location Class
+
+		#endregion //Nested Click Location Class
+
+
+		#endregion //Nested Tool Window Class
 	}
 }

@@ -53,7 +53,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			this.myImageList = new System.Windows.Forms.ImageList(this.components);
 			this.mySplitContainer = new System.Windows.Forms.ContainerControl();
 			this.vtrReadings = new Neumont.Tools.ORM.ObjectModel.Editors.NewReadingEditor.CustomVirtualTreeControl();
-			NewReadingEditor.TreeControl = this.vtrReadings;
 			this.mySplitContainer.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -81,14 +80,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			this.vtrReadings.HasRootButtons = false;
 			this.vtrReadings.HasRootLines = false;
 			this.vtrReadings.ImageList = this.myImageList;
-			this.vtrReadings.LabelEditSupport = ((Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles)((((Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Explicit | Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Delayed)
-						| Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.ImmediateMouse)
-						| Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.ImmediateSelection)));
+			this.vtrReadings.LabelEditSupport = ((VirtualTreeLabelEditActivationStyles)((((VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed)
+						| VirtualTreeLabelEditActivationStyles.ImmediateMouse)
+						| VirtualTreeLabelEditActivationStyles.ImmediateSelection)));
 			this.vtrReadings.Location = new System.Drawing.Point(0, 0);
 			this.vtrReadings.Name = "vtrReadings";
 			this.vtrReadings.Size = new System.Drawing.Size(541, 276);
 			this.vtrReadings.TabIndex = 1;
 			this.vtrReadings.Text = "Readings";
+			this.vtrReadings.ContextMenuInvoked += new ContextMenuEventHandler(this.OnContextMenuInvoked);
+			this.vtrReadings.SelectionChanged += new EventHandler(this.OnTreeControlSelectionChanged);
 			// 
 			// NewReadingEditor
 			// 

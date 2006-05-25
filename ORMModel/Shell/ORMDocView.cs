@@ -200,7 +200,7 @@ namespace Neumont.Tools.ORM.Shell
 		private IServiceProvider myCtorServiceProvider;
 		private IMonitorSelectionService myMonitorSelection;
 		/// <summary>
-		/// The filter for multi selection when the elements are all of the same type.
+		/// The filter for multi selection when the elements are all of the same type.`
 		/// </summary>
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
@@ -333,7 +333,6 @@ namespace Neumont.Tools.ORM.Shell
 				return ResourceStrings.ToolboxDefaultTabName;
 			}
 		}
-
 
 		/// <summary>
 		/// Handle right-clicks on the diagram
@@ -1305,8 +1304,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-
-		
 		/// <summary>
 		/// Execute the SelectAll menu command
 		/// </summary>
