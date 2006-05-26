@@ -119,6 +119,7 @@
 				<xs:sequence>
 					<xs:element name="Subject" type="SubjectRef"/>
 				</xs:sequence>
+				<xs:attribute name="ExpandRefMode" type="xs:boolean" default="false" />
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

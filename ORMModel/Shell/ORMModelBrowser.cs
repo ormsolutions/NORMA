@@ -139,7 +139,9 @@ namespace Neumont.Tools.ORM.Shell
 							foreach (object o in selectedType.PresentationRolePlayers)
 							{
 								ObjectTypeShape objectShape = o as ObjectTypeShape;
-								if (null != objectShape && !objectShape.ExpandRefMode)
+								ObjectifiedFactTypeNameShape objectifiedShape;
+								if ((null != (objectShape = o as ObjectTypeShape) && !objectShape.ExpandRefMode) ||
+									(null != (objectifiedShape = o as ObjectifiedFactTypeNameShape) && !objectifiedShape.ExpandRefMode))
 								{
 									contextinfo[ObjectType.DeleteReferenceModeValueType] = null;
 								}

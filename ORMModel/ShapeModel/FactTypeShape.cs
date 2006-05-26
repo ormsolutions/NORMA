@@ -4095,32 +4095,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (objectification != null)
 						{
 							bool requireMultiple = false;
-							switch (currentDisplayOption)
+							if (!object.ReferenceEquals(objectification.NestedFactType, currentConstraint.FactTypeCollection[0]))
 							{
-								case PreferredInternalUniquenessConstraintDisplay.MultipleObjectifiedInternalConstraints:
-									if (!objectification.IsImplied)
-									{
-										requireMultiple = true;
-									}
-									break;
-								case PreferredInternalUniquenessConstraintDisplay.SingleObjectifiedInternalConstraint:
-									retVal = !objectification.IsImplied;
-									break;
-								case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints:
-									requireMultiple = true;
-									break;
-								case PreferredInternalUniquenessConstraintDisplay.SingleImpliedObjectifiedInternalConstraint:
-									retVal = true;
-									break;
+								retVal = true;
 							}
-							if (requireMultiple)
+							else
 							{
-								foreach (UniquenessConstraint testConstraint in currentConstraint.FactTypeCollection[0].GetInternalConstraints<UniquenessConstraint>())
+								switch (currentDisplayOption)
 								{
-									if (!object.ReferenceEquals(currentConstraint, testConstraint))
-									{
+									case PreferredInternalUniquenessConstraintDisplay.MultipleObjectifiedInternalConstraints:
+										if (!objectification.IsImplied)
+										{
+											requireMultiple = true;
+										}
+										break;
+									case PreferredInternalUniquenessConstraintDisplay.SingleObjectifiedInternalConstraint:
+										retVal = !objectification.IsImplied;
+										break;
+									case PreferredInternalUniquenessConstraintDisplay.MultipleImpliedObjectifiedInternalConstraints:
+										requireMultiple = true;
+										break;
+									case PreferredInternalUniquenessConstraintDisplay.SingleImpliedObjectifiedInternalConstraint:
 										retVal = true;
 										break;
+								}
+								if (requireMultiple)
+								{
+									foreach (UniquenessConstraint testConstraint in currentConstraint.FactTypeCollection[0].GetInternalConstraints<UniquenessConstraint>())
+									{
+										if (!object.ReferenceEquals(currentConstraint, testConstraint))
+										{
+											retVal = true;
+											break;
+										}
 									}
 								}
 							}
@@ -4949,18 +4956,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override string GetDisplayText(ShapeElement parentShape)
 			{
 				string baseText = base.GetDisplayText(parentShape);
-				ObjectType objectType;
-				string formatString;
-				if (null != (objectType = parentShape.ModelElement as ObjectType) &&
-					objectType.IsIndependent)
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				string formatString = null;
+				string refModeString = "";
+				if (objectType != null)
 				{
-					formatString = ResourceStrings.ObjectifiedFactTypeNameShapeIndependentFormatString;
+					bool independent = objectType.IsIndependent;
+					refModeString = objectType.ReferenceModeString;
+					if (refModeString.Length != 0)
+					{
+						formatString = independent ? ResourceStrings.ObjectifiedFactTypeNameShapeRefModeIndependentFormatString : ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;
+					}
+					else if (independent)
+					{
+						formatString = ResourceStrings.ObjectifiedFactTypeNameShapeIndependentFormatString;
+					}
 				}
-				else
+				if (formatString == null)
 				{
 					formatString = ResourceStrings.ObjectifiedFactTypeNameShapeStandardFormatString;
 				}
-				return string.Format(CultureInfo.InvariantCulture, formatString, baseText);
+				return string.Format(CultureInfo.InvariantCulture, formatString, baseText, refModeString);
 			}
 		}
 		#endregion // ObjectNameTextField class

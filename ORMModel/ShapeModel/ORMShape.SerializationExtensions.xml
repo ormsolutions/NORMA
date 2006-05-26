@@ -51,10 +51,24 @@
 		<se:Link Name="Subject" RelationshipName="SubjectHasPresentation" RoleName="Subject"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeShape" Override="true">
+		<se:Attribute ID="ExpandRefMode">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="ExpandRefMode" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Attribute ID="ShapeName" WriteStyle="NotWritten"/>
 		<se:Attribute ID="ReferenceModeName" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ObjectifiedFactTypeNameShape" Override="true">
+		<se:Attribute ID="ExpandRefMode">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="ExpandRefMode" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Attribute ID="ObjectTypeName" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ReadingShape" Override="true">

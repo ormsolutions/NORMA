@@ -1090,9 +1090,12 @@ namespace Neumont.Tools.ORM.Shell
 								// Check if the object shape was in expanded mode
 								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
 								ObjectTypeShape objectShape;
+								ObjectifiedFactTypeNameShape objectifiedShape;
 								if (testRefModeCollapse &&
-									null != (objectShape = pel as ObjectTypeShape) &&
-									!objectShape.ExpandRefMode
+									((null != (objectShape = pel as ObjectTypeShape) &&
+									!objectShape.ExpandRefMode) ||
+									(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
+									!objectifiedShape.ExpandRefMode))
 									)
 								{
 									if (!deleteReferenceModeValueTypeInContext)

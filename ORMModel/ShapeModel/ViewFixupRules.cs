@@ -51,17 +51,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasFactType fixup
 		#region ObjectTypeChangeRule class
 		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(ObjectifiedFactTypeNameShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class ObjectTypeShapeChangeRule : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				ObjectTypeShape objectTypeShape;
-				if (null != (objectTypeShape = e.ModelElement as ObjectTypeShape) &&
-					e.MetaAttribute.Id == ObjectTypeShape.ExpandRefModeMetaAttributeGuid)
+				ObjectTypeShape objectTypeShape = null;
+				ObjectifiedFactTypeNameShape objectifiedShape = null;
+				Guid attributeId = e.MetaAttribute.Id;
+				if ((attributeId == ObjectTypeShape.ExpandRefModeMetaAttributeGuid &&
+					null != (objectTypeShape = e.ModelElement as ObjectTypeShape)) ||
+					(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeMetaAttributeGuid &&
+					null != (objectifiedShape = e.ModelElement as ObjectifiedFactTypeNameShape)))
 				{
-					objectTypeShape.AutoResize();
+					if (objectTypeShape != null)
+					{
+						objectTypeShape.AutoResize();
+					}
+					else
+					{
+						objectifiedShape.AutoResize();
+					}
 
-					ObjectType objectType = objectTypeShape.ModelElement as ObjectType;
+					ObjectType objectType = ((objectTypeShape != null) ? objectTypeShape.ModelElement : objectifiedShape.ModelElement) as ObjectType;
 					UniquenessConstraint preferredConstraint;
 					if (null != (preferredConstraint = objectType.PreferredIdentifier) &&
 						preferredConstraint.IsInternal &&
@@ -69,7 +81,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 
 						bool expandingRefMode = (bool)e.NewValue;
-						ORMDiagram parentDiagram = objectTypeShape.Diagram as ORMDiagram;
+						ORMDiagram parentDiagram = ((objectTypeShape != null) ? objectTypeShape.Diagram : objectifiedShape.Diagram) as ORMDiagram;
 						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
 						// View or Hide FactType

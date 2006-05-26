@@ -90,6 +90,9 @@
 									<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
 									<stringdomain default="" max="2147483647" />
 								</metaattribute>
+								<metaattribute name="ExpandRefMode" identity="5bdafe8c-afa7-4b78-adc6-cae876ab2140" type="System.Boolean" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+									<booleandomain default="false" />
+								</metaattribute>
 							</metaattributes>
 							<derivedshapes />
 						</shape>

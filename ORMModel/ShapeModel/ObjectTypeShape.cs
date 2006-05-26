@@ -416,11 +416,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 					PresentationElementMoveableCollection pels = entityType.PresentationRolePlayers;
 					int pelCount = pels.Count;
 					ObjectTypeShape ots;
+					ObjectifiedFactTypeNameShape objectifiedShape;
 					for (int i = 0; i < pelCount; ++i)
 					{
-						if (null != (ots = pels[i] as ObjectTypeShape))
+						PresentationElement pel = pels[i];
+						if (null != (ots = pel as ObjectTypeShape))
 						{
 							ots.AutoResize();
+						}
+						else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
+						{
+							objectifiedShape.AutoResize();
 						}
 					}
 				}
@@ -440,13 +446,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 			//Get the object that represents the item with the preferred identifier. 
 			foreach (PresentationElement pel in preferredIdentifierFor.PresentationRolePlayers)
 			{
-				ObjectTypeShape objectShape = pel as ObjectTypeShape;
-				if (objectShape != null)
+				ObjectTypeShape objectShape;
+				ObjectifiedFactTypeNameShape objectifiedShape;
+				if (null != (objectShape = pel as ObjectTypeShape))
 				{
 					//If there is a fact shape and it is visible then we need to 
 					//set ExpandRefMode to true, otherwise set it to false.
 					FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactTypeCollection[0]);
 					objectShape.ExpandRefMode = factShape != null && factShape.IsVisible;
+				}
+				else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
+				{
+					FactTypeShape factShape = (objectifiedShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactTypeCollection[0]);
+					objectifiedShape.ExpandRefMode = factShape != null && factShape.IsVisible;
 				}
 			}
 		}
@@ -560,10 +572,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								foreach (PresentationElement pel in objectType.PresentationRolePlayers)
 								{
-									ObjectTypeShape objectShape = pel as ObjectTypeShape;
-									if (objectShape != null)
+									ObjectTypeShape objectShape;
+									ObjectifiedFactTypeNameShape objectifiedShape;
+									if (null != (objectShape = pel as ObjectTypeShape))
 									{
 										objectShape.AutoResize();
+									}
+									else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
+									{
+										objectifiedShape.AutoResize();
 									}
 								}
 							}

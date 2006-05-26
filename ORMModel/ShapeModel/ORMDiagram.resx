@@ -414,6 +414,14 @@
     <value xml:space="preserve">({0})</value>
     <comment xml:space="preserve">The string used to display a reference mode.</comment>
   </data>
+  <data name="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString">
+    <value xml:space="preserve">"{0} ({1})!"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for an independent object with a reference mode.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.RefModeFormatString">
+    <value xml:space="preserve">"{0} ({1})"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for an object with a reference mode.</comment>
+  </data>
   <data name="ObjectifiedFactTypeNameShape.StandardFormatString">
     <value xml:space="preserve">"{0}"</value>
     <comment xml:space="preserve">The string used to display an objectified type name.</comment>

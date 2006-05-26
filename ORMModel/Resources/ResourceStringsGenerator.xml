@@ -575,6 +575,12 @@
 	<ResourceString name="ObjectifiedFactTypeNameShapeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.IndependentFormatString">
 		<comment type="summary">The string used to display an objectified type name for an independent object.</comment>
 	</ResourceString>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString">
+		<comment type="summary">The string used to display an objectified type name for an independent object with a reference mode.</comment>
+	</ResourceString>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.IndependentFormatString">
+		<comment type="summary">The string used to display an objectified type name for an object with a reference mode.</comment>
+	</ResourceString>
 	<ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator">
 		<comment type="summary">The string used to divide multiple readings shown in a ReadingShape.</comment>
 	</ResourceString>

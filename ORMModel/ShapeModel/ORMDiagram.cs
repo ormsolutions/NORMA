@@ -581,12 +581,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>True if the object type has a collapsed reference mode</returns>
 		private bool ShouldCollapseReferenceMode(ObjectType objectType)
 		{
-			ObjectTypeShape objectTypeShape = FindShapeForElement<ObjectTypeShape>(objectType);
-			if (objectTypeShape != null)
+			ObjectTypeShape objectTypeShape;
+			ObjectifiedFactTypeNameShape objectifiedShape;
+			if (null != (objectTypeShape = FindShapeForElement<ObjectTypeShape>(objectType)))
 			{
 				if (objectType.HasReferenceMode)
 				{
 					return !objectTypeShape.ExpandRefMode;
+				}
+			}
+			else if (null != (objectifiedShape = FindShapeForElement<ObjectifiedFactTypeNameShape>(objectType)))
+			{
+				if (objectType.HasReferenceMode)
+				{
+					return !objectifiedShape.ExpandRefMode;
 				}
 			}
 			return objectType.HasReferenceMode;

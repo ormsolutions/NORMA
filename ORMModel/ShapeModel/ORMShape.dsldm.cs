@@ -385,6 +385,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "DisplayRoleNames", Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayRoleNamesMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeDisplayRoleNamesFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "RolesPosition", Neumont.Tools.ORM.ShapeModel.FactTypeShape.RolesPositionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeRolesPositionFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape), "ObjectTypeName", Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape), "ExpandRefMode", Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefModeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape), "ReadingText", Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingShapeReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape), "ValueRangeText", Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueConstraintShapeValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.RoleNameShape), "RoleName", Neumont.Tools.ORM.ShapeModel.RoleNameShape.RoleNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.RoleNameShape.RoleNameShapeRoleNameFieldHandler)),
@@ -2537,6 +2538,127 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid;
 				}
 			}
+		}
+		#endregion
+		#endregion
+		
+		#region ExpandRefMode's Generated  Field Code
+		#region ExpandRefMode's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ExpandRefModeMetaAttributeGuidString = "5bdafe8c-afa7-4b78-adc6-cae876ab2140";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ExpandRefModeMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefModeMetaAttributeGuidString);
+		#endregion
+
+		#region ExpandRefMode's Generated Property Code
+
+		private System.Boolean expandRefModePropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefModeMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefMode")]
+		public  System.Boolean ExpandRefMode
+		{
+			get
+			{
+				return expandRefModePropertyStorage;
+			}
+		
+			set
+			{
+				objectifiedFactTypeNameShapeExpandRefModeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectifiedFactTypeNameShape.ExpandRefMode field
+		/// </summary>
+		private static ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler	objectifiedFactTypeNameShapeExpandRefModeFieldHandler	= ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectifiedFactTypeNameShape.ExpandRefMode
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectifiedFactTypeNameShape.ExpandRefMode field handler
+			/// </summary>
+			/// <value>ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler</value>
+			public static ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeExpandRefModeFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeExpandRefModeFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectifiedFactTypeNameShape will assign this value to
+						// Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeExpandRefModeFieldHandler, so just instantiate one and return it
+						return new ObjectifiedFactTypeNameShapeExpandRefModeFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectifiedFactTypeNameShape.ExpandRefMode field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefModeMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ObjectifiedFactTypeNameShape</param>
+			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape element)
+			{
+				return element.expandRefModePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.expandRefModePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.expandRefModePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
 		}
 		#endregion
 		#endregion

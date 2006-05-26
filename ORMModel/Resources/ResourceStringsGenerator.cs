@@ -1701,6 +1701,26 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The string used to display an objectified type name for an independent object with a reference mode.
+		/// </summary>
+		public static string ObjectifiedFactTypeNameShapeRefModeIndependentFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeIndependentFormatString");
+			}
+		}
+		/// <summary>
+		/// The string used to display an objectified type name for an object with a reference mode.
+		/// </summary>
+		public static string ObjectifiedFactTypeNameShapeRefModeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeFormatString");
+			}
+		}
+		/// <summary>
 		/// The string used to divide multiple readings shown in a ReadingShape.
 		/// </summary>
 		public static string ReadingShapeReadingSeparator

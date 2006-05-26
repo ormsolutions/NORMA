@@ -141,6 +141,9 @@
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition" xml:space="preserve">
     <value>ConstraintDisplayPosition</value>
   </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ExpandRefMode" xml:space="preserve">
+    <value>ExpandRefMode</value>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode" xml:space="preserve">
     <value>ExpandRefMode</value>
   </data>
