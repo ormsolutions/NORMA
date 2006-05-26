@@ -270,6 +270,9 @@
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="hasParents">
 			<ddt:boolean type="BOOLEAN" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="OptnlUnqDcml">
 			<ddt:exactNumeric type="DECIMAL" precision="9" />
@@ -357,7 +360,7 @@
 		</ddl:tableConstraintDefinition>
 		<ddl:tableConstraintDefinition>
 			<dep:constraintNameDefinition name="CPIUC49" />
-			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<ddl:column name="Father_Person_id" />
 				<ddl:column name="CPBOBON" />
 				<ddl:column name="Mother_Person_id" />

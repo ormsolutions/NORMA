@@ -182,6 +182,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusMoveRoleRight), 
 				new EventHandler(OnMenuMoveRoleRight),
 				ORMDesignerCommandIds.MoveRoleRight)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusObjectifyFactType), 
+				new EventHandler(OnMenuObjectifyFactType),
+				ORMDesignerCommandIds.ObjectifyFactType)
 				// Alignment Commands
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusAlignShapes),
@@ -578,6 +582,22 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuMoveRoleRight();
+				}
+			}
+			private void OnStatusObjectifyFactType(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ObjectifyFactType);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuObjectifyFactType(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuObjectifyFactType();
 				}
 			}
 			/// <summary>
@@ -1137,6 +1157,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The commands for the NewReadingEditor context menu -- Move the selected RoleOrder Down
 			/// </summary>
 			public static readonly CommandID ReadingEditorDemoteReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDemoteReadingOrder);
+			/// <summary>
+			/// Objectifies the fact type.
+			/// </summary>
+			public static readonly CommandID ObjectifyFactType = new CommandID(guidORMDesignerCommandSet, cmdIdObjectifyFactType);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -1321,24 +1345,28 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Initiates the deletion of the selected Reading in the Reading Editor
 			/// </summary>
-			private const int cmdIdReadingEditorDeleteReading = 0x2920;
+			private const int cmdIdReadingEditorDeleteReading = 0x291A;
 			/// <summary>
 			/// Promotes the selected Reading in the Reading Editor
 			/// </summary>
-			private const int cmdIdReadingEditorPromoteReading = 0x2921;
+			private const int cmdIdReadingEditorPromoteReading = 0x291B;
 			/// <summary>
 			/// Demotes the selected Reading in the Reading Editor
 			/// </summary>
-			private const int cmdIdReadingEditorDemoteReading = 0x2922;
+			private const int cmdIdReadingEditorDemoteReading = 0x291C;
 			/// <summary>
 			/// Promotes the RoleOrder in the Reading Editor
 			/// </summary>
-			private const int cmdIdReadingEditorPromoteReadingOrder = 0x2923;
+			private const int cmdIdReadingEditorPromoteReadingOrder = 0x291D;
 			/// <summary>
 			/// Demotes the RoleOrder in the Reading Editor
 			/// </summary>
-			private const int cmdIdReadingEditorDemoteReadingOrder = 0x2924;
+			private const int cmdIdReadingEditorDemoteReadingOrder = 0x291E;
 
+			/// <summary>
+			/// Objectifies the fact type.
+			/// </summary>
+			private const int cmdIdObjectifyFactType = 0x291F;
 			#endregion
 		}
 	}

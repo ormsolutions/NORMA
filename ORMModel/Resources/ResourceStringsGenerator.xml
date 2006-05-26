@@ -212,6 +212,9 @@
 	<ResourceString name="AddInternalConstraintTransactionName" model="Diagram" resourceName="AddInternalUniquenessConstraint.TransactionName">
 		<comment type="summary">The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</comment>
 	</ResourceString>
+	<ResourceString name="ObjectifyFactTypeTransactionName" model="Diagram" resourceName="ObjectifyFactType.TransactionName">
+		<comment type="summary">The name given to the transaction used when objectifying a fact type.</comment>
+	</ResourceString>
 	<ResourceString name="DropShapeTransactionName" model="Diagram" resourceName="DropShape.TransactionName">
 		<comment type="summary">The name given to the transaction used when adding a shape element for an existing object.</comment>
 	</ResourceString>

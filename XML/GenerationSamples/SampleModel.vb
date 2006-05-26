@@ -1863,7 +1863,7 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Gender_Gender_Code")
 			End If
 		End Sub
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
@@ -1872,16 +1872,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaisehasParentsChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))) = TryCast(Me.Events(8), EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))))
+		Protected Function RaisehasParentsChangingEvent(ByVal newValue As Boolean) As Boolean
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean)) = TryCast(Me.Events(8), EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of Person, Nullable(Of Boolean))(Me, Me.hasParents, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of Person, Boolean) = New PropertyChangingEventArgs(Of Person, Boolean)(Me, Me.hasParents, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(8) = System.Delegate.Combine(Me.Events(8), Value)
 			End AddHandler
@@ -1890,10 +1890,10 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaisehasParentsChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))) = TryCast(Me.Events(8), EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))))
+		Protected Sub RaisehasParentsChangedEvent(ByVal oldValue As Boolean)
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean)) = TryCast(Me.Events(8), EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Nullable(Of Boolean))(Me, oldValue, Me.hasParents), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of Person, Boolean)(Me, oldValue, Me.hasParents), New AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("hasParents")
 			End If
 		End Sub
@@ -2185,8 +2185,8 @@ Namespace SampleModel
 		Public MustOverride Property OwnsCar_vin() As Nullable(Of Integer)
 		<DataObjectFieldAttribute(False, False, False)> _
 		Public MustOverride Property Gender_Gender_Code() As String
-		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property hasParents() As Nullable(Of Boolean)
+		<DataObjectFieldAttribute(False, False, False)> _
+		Public MustOverride Property hasParents() As Boolean
 		<DataObjectFieldAttribute(False, False, True)> _
 		Public MustOverride Property OptionalUniqueDecimal() As Nullable(Of Decimal)
 		<DataObjectFieldAttribute(False, False, False)> _
@@ -2553,15 +2553,15 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property hasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Boolean
 			Get
 				Return Me.Person.hasParents
 			End Get
-			Set(ByVal Value As Nullable(Of Boolean))
+			Set(ByVal Value As Boolean)
 				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
@@ -2569,7 +2569,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
@@ -3033,15 +3033,15 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property hasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Boolean
 			Get
 				Return Me.Person.hasParents
 			End Get
-			Set(ByVal Value As Nullable(Of Boolean))
+			Set(ByVal Value As Boolean)
 				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
@@ -3049,7 +3049,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
@@ -3619,15 +3619,15 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property hasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Boolean
 			Get
 				Return Me.Person.hasParents
 			End Get
-			Set(ByVal Value As Nullable(Of Boolean))
+			Set(ByVal Value As Boolean)
 				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
@@ -3635,7 +3635,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
@@ -4241,15 +4241,15 @@ Namespace SampleModel
 				RemoveHandler Me.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property hasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Boolean
 			Get
 				Return Me.Person.hasParents
 			End Get
-			Set(ByVal Value As Nullable(Of Boolean))
+			Set(ByVal Value As Boolean)
 				Me.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanging, Value
 			End AddHandler
@@ -4257,7 +4257,7 @@ Namespace SampleModel
 				RemoveHandler Me.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Person.hasParentsChanged, Value
 			End AddHandler
@@ -4520,7 +4520,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event isFromProstateCancerChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isFromProstateCancerChanging As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -4529,16 +4529,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaiseisFromProstateCancerChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))))
+		Protected Function RaiseisFromProstateCancerChangingEvent(ByVal newValue As Boolean) As Boolean
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Boolean)) = TryCast(Me.Events(0), EventHandler(Of PropertyChangingEventArgs(Of NaturalDeath, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, Me.isFromProstateCancer, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of NaturalDeath, Boolean) = New PropertyChangingEventArgs(Of NaturalDeath, Boolean)(Me, Me.isFromProstateCancer, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event isFromProstateCancerChanged As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isFromProstateCancerChanged As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -4547,10 +4547,10 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaiseisFromProstateCancerChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))))
+		Protected Sub RaiseisFromProstateCancerChangedEvent(ByVal oldValue As Boolean)
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Boolean)) = TryCast(Me.Events(0), EventHandler(Of PropertyChangedEventArgs(Of NaturalDeath, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.isFromProstateCancer), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of NaturalDeath, Boolean)(Me, oldValue, Me.isFromProstateCancer), New AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("isFromProstateCancer")
 			End If
 		End Sub
@@ -4588,8 +4588,8 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Death")
 			End If
 		End Sub
-		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property isFromProstateCancer() As Nullable(Of Boolean)
+		<DataObjectFieldAttribute(False, False, False)> _
+		Public MustOverride Property isFromProstateCancer() As Boolean
 		<DataObjectFieldAttribute(False, False, False)> _
 		Public MustOverride Property Death() As Death
 		Public Overloads Overrides Function ToString() As String
@@ -4876,15 +4876,15 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property hasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Boolean
 			Get
 				Return Me.Death.Person.hasParents
 			End Get
-			Set(ByVal Value As Nullable(Of Boolean))
+			Set(ByVal Value As Boolean)
 				Me.Death.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.hasParentsChanging, Value
 			End AddHandler
@@ -4892,7 +4892,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.hasParentsChanged, Value
 			End AddHandler
@@ -5137,7 +5137,7 @@ Namespace SampleModel
 		End Sub
 		Public MustOverride ReadOnly Property Context() As SampleModelContext Implements _
 			IHasSampleModelContext.Context
-		Public Custom Event isViolentChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isViolentChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5146,16 +5146,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaiseisViolentChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
+		Protected Function RaiseisViolentChangingEvent(ByVal newValue As Boolean) As Boolean
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Boolean)) = TryCast(Me.Events(0), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.isViolent, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Boolean) = New PropertyChangingEventArgs(Of UnnaturalDeath, Boolean)(Me, Me.isViolent, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event isViolentChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isViolentChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(0) = System.Delegate.Combine(Me.Events(0), Value)
 			End AddHandler
@@ -5164,14 +5164,14 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaiseisViolentChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(0), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
+		Protected Sub RaiseisViolentChangedEvent(ByVal oldValue As Boolean)
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Boolean)) = TryCast(Me.Events(0), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.isViolent), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Boolean)(Me, oldValue, Me.isViolent), New AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("isViolent")
 			End If
 		End Sub
-		Public Custom Event isBloodyChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isBloodyChanging As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5180,16 +5180,16 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Function RaiseisBloodyChangingEvent(ByVal newValue As Nullable(Of Boolean)) As Boolean
-			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
+		Protected Function RaiseisBloodyChangingEvent(ByVal newValue As Boolean) As Boolean
+			Dim eventHandler As EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Boolean)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangingEventArgs(Of UnnaturalDeath, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)) = New PropertyChangingEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, Me.isBloody, newValue)
+				Dim eventArgs As PropertyChangingEventArgs(Of UnnaturalDeath, Boolean) = New PropertyChangingEventArgs(Of UnnaturalDeath, Boolean)(Me, Me.isBloody, newValue)
 				eventHandler(Me, eventArgs)
 				Return Not (eventArgs.Cancel)
 			End If
 			Return True
 		End Function
-		Public Custom Event isBloodyChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean)))
+		Public Custom Event isBloodyChanged As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				Me.Events(1) = System.Delegate.Combine(Me.Events(1), Value)
 			End AddHandler
@@ -5198,10 +5198,10 @@ Namespace SampleModel
 			End RemoveHandler
 		End Event
 		<SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")> _
-		Protected Sub RaiseisBloodyChangedEvent(ByVal oldValue As Nullable(Of Boolean))
-			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))))
+		Protected Sub RaiseisBloodyChangedEvent(ByVal oldValue As Boolean)
+			Dim eventHandler As EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Boolean)) = TryCast(Me.Events(1), EventHandler(Of PropertyChangedEventArgs(Of UnnaturalDeath, Boolean)))
 			If CObj(eventHandler) IsNot Nothing Then
-				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Nullable(Of Boolean))(Me, oldValue, Me.isBloody), New AsyncCallback(eventHandler.EndInvoke), Nothing)
+				eventHandler.BeginInvoke(Me, New PropertyChangedEventArgs(Of UnnaturalDeath, Boolean)(Me, oldValue, Me.isBloody), New AsyncCallback(eventHandler.EndInvoke), Nothing)
 				Me.RaisePropertyChangedEvent("isBloody")
 			End If
 		End Sub
@@ -5239,10 +5239,10 @@ Namespace SampleModel
 				Me.RaisePropertyChangedEvent("Death")
 			End If
 		End Sub
-		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property isViolent() As Nullable(Of Boolean)
-		<DataObjectFieldAttribute(False, False, True)> _
-		Public MustOverride Property isBloody() As Nullable(Of Boolean)
+		<DataObjectFieldAttribute(False, False, False)> _
+		Public MustOverride Property isViolent() As Boolean
+		<DataObjectFieldAttribute(False, False, False)> _
+		Public MustOverride Property isBloody() As Boolean
 		<DataObjectFieldAttribute(False, False, False)> _
 		Public MustOverride Property Death() As Death
 		Public Overloads Overrides Function ToString() As String
@@ -5529,15 +5529,15 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.Gender_Gender_CodeChanged, Value
 			End RemoveHandler
 		End Event
-		Public Overridable Property hasParents() As Nullable(Of Boolean)
+		Public Overridable Property hasParents() As Boolean
 			Get
 				Return Me.Death.Person.hasParents
 			End Get
-			Set(ByVal Value As Nullable(Of Boolean))
+			Set(ByVal Value As Boolean)
 				Me.Death.Person.hasParents = Value
 			End Set
 		End Property
-		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanging As EventHandler(Of PropertyChangingEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.hasParentsChanging, Value
 			End AddHandler
@@ -5545,7 +5545,7 @@ Namespace SampleModel
 				RemoveHandler Me.Death.Person.hasParentsChanging, Value
 			End RemoveHandler
 		End Event
-		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Nullable(Of Boolean)))
+		Public Custom Event hasParentsChanged As EventHandler(Of PropertyChangedEventArgs(Of Person, Boolean))
 			AddHandler(ByVal Value As EventHandler)
 				AddHandler Me.Death.Person.hasParentsChanged, Value
 			End AddHandler
@@ -6000,7 +6000,7 @@ Namespace SampleModel
 		ReadOnly Property ReviewCollection() As ReadOnlyCollection(Of Review)
 		Function CreatePersonHasNickName(ByVal NickName As String, ByVal Person As Person) As PersonHasNickName
 		ReadOnly Property PersonHasNickNameCollection() As ReadOnlyCollection(Of PersonHasNickName)
-		Function CreatePerson(ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String) As Person
+		Function CreatePerson(ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal hasParents As Boolean, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String) As Person
 		ReadOnly Property PersonCollection() As ReadOnlyCollection(Of Person)
 		Function CreateMalePerson(ByVal Person As Person) As MalePerson
 		ReadOnly Property MalePersonCollection() As ReadOnlyCollection(Of MalePerson)
@@ -6010,9 +6010,9 @@ Namespace SampleModel
 		ReadOnly Property ChildPersonCollection() As ReadOnlyCollection(Of ChildPerson)
 		Function CreateDeath(ByVal DeathCause_DeathCause_Type As String, ByVal Person As Person) As Death
 		ReadOnly Property DeathCollection() As ReadOnlyCollection(Of Death)
-		Function CreateNaturalDeath(ByVal Death As Death) As NaturalDeath
+		Function CreateNaturalDeath(ByVal isFromProstateCancer As Boolean, ByVal Death As Death) As NaturalDeath
 		ReadOnly Property NaturalDeathCollection() As ReadOnlyCollection(Of NaturalDeath)
-		Function CreateUnnaturalDeath(ByVal Death As Death) As UnnaturalDeath
+		Function CreateUnnaturalDeath(ByVal isViolent As Boolean, ByVal isBloody As Boolean, ByVal Death As Death) As UnnaturalDeath
 		ReadOnly Property UnnaturalDeathCollection() As ReadOnlyCollection(Of UnnaturalDeath)
 		Function CreateTask() As Task
 		ReadOnly Property TaskCollection() As ReadOnlyCollection(Of Task)
@@ -7238,7 +7238,7 @@ Namespace SampleModel
 		#End Region
 		#End Region
 		#Region "Person"
-		Public Function CreatePerson(ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String) As Person Implements _
+		Public Function CreatePerson(ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal hasParents As Boolean, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String) As Person Implements _
 			ISampleModelContext.CreatePerson
 			If CObj(FirstName) Is Nothing Then
 				Throw New ArgumentNullException("FirstName")
@@ -7264,13 +7264,16 @@ Namespace SampleModel
 			If Not (Me.OnPersonGender_Gender_CodeChanging(Nothing, Gender_Gender_Code)) Then
 				Throw SampleModelContext.GetConstraintEnforcementFailedException("Gender_Gender_Code")
 			End If
+			If Not (Me.OnPersonhasParentsChanging(Nothing, hasParents)) Then
+				Throw SampleModelContext.GetConstraintEnforcementFailedException("hasParents")
+			End If
 			If Not (Me.OnPersonMandatoryUniqueDecimalChanging(Nothing, MandatoryUniqueDecimal)) Then
 				Throw SampleModelContext.GetConstraintEnforcementFailedException("MandatoryUniqueDecimal")
 			End If
 			If Not (Me.OnPersonMandatoryUniqueStringChanging(Nothing, MandatoryUniqueString)) Then
 				Throw SampleModelContext.GetConstraintEnforcementFailedException("MandatoryUniqueString")
 			End If
-			Return New PersonCore(Me, FirstName, Date_YMD, LastName, Gender_Gender_Code, MandatoryUniqueDecimal, MandatoryUniqueString)
+			Return New PersonCore(Me, FirstName, Date_YMD, LastName, Gender_Gender_Code, hasParents, MandatoryUniqueDecimal, MandatoryUniqueString)
 		End Function
 		Private Function OnPersonFirstNameChanging(ByVal instance As Person, ByVal newValue As String) As Boolean
 			If CObj(instance) IsNot Nothing Then
@@ -7377,7 +7380,7 @@ Namespace SampleModel
 		Private Function OnPersonGender_Gender_CodeChanging(ByVal instance As Person, ByVal newValue As String) As Boolean
 			Return True
 		End Function
-		Private Function OnPersonhasParentsChanging(ByVal instance As Person, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnPersonhasParentsChanging(ByVal instance As Person, ByVal newValue As Boolean) As Boolean
 			Return True
 		End Function
 		Private Function OnPersonOptionalUniqueDecimalChanging(ByVal instance As Person, ByVal newValue As Nullable(Of Decimal)) As Boolean
@@ -7593,7 +7596,7 @@ Namespace SampleModel
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
 		Private NotInheritable Class PersonCore
 			Inherits Person
-			Public Sub New(ByVal context As SampleModelContext, ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String)
+			Public Sub New(ByVal context As SampleModelContext, ByVal FirstName As String, ByVal Date_YMD As Integer, ByVal LastName As String, ByVal Gender_Gender_Code As String, ByVal hasParents As Boolean, ByVal MandatoryUniqueDecimal As Decimal, ByVal MandatoryUniqueString As String)
 				Me._Context = context
 				Me._PersonDrivesCar = New ConstraintEnforcementCollection(Of Person, PersonDrivesCar)(Me)
 				Me._PersonBoughtCarFromPersonOnDate = New ConstraintEnforcementCollectionWithPropertyName(Of Person, PersonBoughtCarFromPersonOnDate)(Me, "PersonBoughtCarFromPersonOnDate")
@@ -7608,6 +7611,7 @@ Namespace SampleModel
 				Me._LastName = LastName
 				context.OnPersonLastNameChanged(Me, Nothing)
 				Me._Gender_Gender_Code = Gender_Gender_Code
+				Me._hasParents = hasParents
 				Me._MandatoryUniqueDecimal = MandatoryUniqueDecimal
 				context.OnPersonMandatoryUniqueDecimalChanged(Me, Nothing)
 				Me._MandatoryUniqueString = MandatoryUniqueString
@@ -7763,14 +7767,14 @@ Namespace SampleModel
 				End Set
 			End Property
 			<AccessedThroughPropertyAttribute("hasParents")> _
-			Private _hasParents As Nullable(Of Boolean)
-			Public Overrides Property hasParents() As Nullable(Of Boolean)
+			Private _hasParents As Boolean
+			Public Overrides Property hasParents() As Boolean
 				Get
 					Return Me._hasParents
 				End Get
-				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._hasParents
-					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
+				Set(ByVal Value As Boolean)
+					Dim oldValue As Boolean = Me._hasParents
+					If oldValue <> Value Then
 						If Me._Context.OnPersonhasParentsChanging(Me, Value) AndAlso MyBase.RaisehasParentsChangingEvent(Value) Then
 							Me._hasParents = Value
 							MyBase.RaisehasParentsChangedEvent(oldValue)
@@ -8536,17 +8540,20 @@ Namespace SampleModel
 		#End Region
 		#End Region
 		#Region "NaturalDeath"
-		Public Function CreateNaturalDeath(ByVal Death As Death) As NaturalDeath Implements _
+		Public Function CreateNaturalDeath(ByVal isFromProstateCancer As Boolean, ByVal Death As Death) As NaturalDeath Implements _
 			ISampleModelContext.CreateNaturalDeath
 			If CObj(Death) Is Nothing Then
 				Throw New ArgumentNullException("Death")
 			End If
+			If Not (Me.OnNaturalDeathisFromProstateCancerChanging(Nothing, isFromProstateCancer)) Then
+				Throw SampleModelContext.GetConstraintEnforcementFailedException("isFromProstateCancer")
+			End If
 			If Not (Me.OnNaturalDeathDeathChanging(Nothing, Death)) Then
 				Throw SampleModelContext.GetConstraintEnforcementFailedException("Death")
 			End If
-			Return New NaturalDeathCore(Me, Death)
+			Return New NaturalDeathCore(Me, isFromProstateCancer, Death)
 		End Function
-		Private Function OnNaturalDeathisFromProstateCancerChanging(ByVal instance As NaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnNaturalDeathisFromProstateCancerChanging(ByVal instance As NaturalDeath, ByVal newValue As Boolean) As Boolean
 			Return True
 		End Function
 		Private Function OnNaturalDeathDeathChanging(ByVal instance As NaturalDeath, ByVal newValue As Death) As Boolean
@@ -8573,8 +8580,9 @@ Namespace SampleModel
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
 		Private NotInheritable Class NaturalDeathCore
 			Inherits NaturalDeath
-			Public Sub New(ByVal context As SampleModelContext, ByVal Death As Death)
+			Public Sub New(ByVal context As SampleModelContext, ByVal isFromProstateCancer As Boolean, ByVal Death As Death)
 				Me._Context = context
+				Me._isFromProstateCancer = isFromProstateCancer
 				Me._Death = Death
 				context.OnNaturalDeathDeathChanged(Me, Nothing)
 				context._NaturalDeathList.Add(Me)
@@ -8586,14 +8594,14 @@ Namespace SampleModel
 				End Get
 			End Property
 			<AccessedThroughPropertyAttribute("isFromProstateCancer")> _
-			Private _isFromProstateCancer As Nullable(Of Boolean)
-			Public Overrides Property isFromProstateCancer() As Nullable(Of Boolean)
+			Private _isFromProstateCancer As Boolean
+			Public Overrides Property isFromProstateCancer() As Boolean
 				Get
 					Return Me._isFromProstateCancer
 				End Get
-				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._isFromProstateCancer
-					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
+				Set(ByVal Value As Boolean)
+					Dim oldValue As Boolean = Me._isFromProstateCancer
+					If oldValue <> Value Then
 						If Me._Context.OnNaturalDeathisFromProstateCancerChanging(Me, Value) AndAlso MyBase.RaiseisFromProstateCancerChangingEvent(Value) Then
 							Me._isFromProstateCancer = Value
 							MyBase.RaiseisFromProstateCancerChangedEvent(oldValue)
@@ -8625,20 +8633,26 @@ Namespace SampleModel
 		#End Region
 		#End Region
 		#Region "UnnaturalDeath"
-		Public Function CreateUnnaturalDeath(ByVal Death As Death) As UnnaturalDeath Implements _
+		Public Function CreateUnnaturalDeath(ByVal isViolent As Boolean, ByVal isBloody As Boolean, ByVal Death As Death) As UnnaturalDeath Implements _
 			ISampleModelContext.CreateUnnaturalDeath
 			If CObj(Death) Is Nothing Then
 				Throw New ArgumentNullException("Death")
 			End If
+			If Not (Me.OnUnnaturalDeathisViolentChanging(Nothing, isViolent)) Then
+				Throw SampleModelContext.GetConstraintEnforcementFailedException("isViolent")
+			End If
+			If Not (Me.OnUnnaturalDeathisBloodyChanging(Nothing, isBloody)) Then
+				Throw SampleModelContext.GetConstraintEnforcementFailedException("isBloody")
+			End If
 			If Not (Me.OnUnnaturalDeathDeathChanging(Nothing, Death)) Then
 				Throw SampleModelContext.GetConstraintEnforcementFailedException("Death")
 			End If
-			Return New UnnaturalDeathCore(Me, Death)
+			Return New UnnaturalDeathCore(Me, isViolent, isBloody, Death)
 		End Function
-		Private Function OnUnnaturalDeathisViolentChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnUnnaturalDeathisViolentChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Boolean) As Boolean
 			Return True
 		End Function
-		Private Function OnUnnaturalDeathisBloodyChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Nullable(Of Boolean)) As Boolean
+		Private Function OnUnnaturalDeathisBloodyChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Boolean) As Boolean
 			Return True
 		End Function
 		Private Function OnUnnaturalDeathDeathChanging(ByVal instance As UnnaturalDeath, ByVal newValue As Death) As Boolean
@@ -8665,8 +8679,10 @@ Namespace SampleModel
 		<StructLayoutAttribute(LayoutKind.Auto, CharSet:=CharSet.Auto)> _
 		Private NotInheritable Class UnnaturalDeathCore
 			Inherits UnnaturalDeath
-			Public Sub New(ByVal context As SampleModelContext, ByVal Death As Death)
+			Public Sub New(ByVal context As SampleModelContext, ByVal isViolent As Boolean, ByVal isBloody As Boolean, ByVal Death As Death)
 				Me._Context = context
+				Me._isViolent = isViolent
+				Me._isBloody = isBloody
 				Me._Death = Death
 				context.OnUnnaturalDeathDeathChanged(Me, Nothing)
 				context._UnnaturalDeathList.Add(Me)
@@ -8678,14 +8694,14 @@ Namespace SampleModel
 				End Get
 			End Property
 			<AccessedThroughPropertyAttribute("isViolent")> _
-			Private _isViolent As Nullable(Of Boolean)
-			Public Overrides Property isViolent() As Nullable(Of Boolean)
+			Private _isViolent As Boolean
+			Public Overrides Property isViolent() As Boolean
 				Get
 					Return Me._isViolent
 				End Get
-				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._isViolent
-					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
+				Set(ByVal Value As Boolean)
+					Dim oldValue As Boolean = Me._isViolent
+					If oldValue <> Value Then
 						If Me._Context.OnUnnaturalDeathisViolentChanging(Me, Value) AndAlso MyBase.RaiseisViolentChangingEvent(Value) Then
 							Me._isViolent = Value
 							MyBase.RaiseisViolentChangedEvent(oldValue)
@@ -8694,14 +8710,14 @@ Namespace SampleModel
 				End Set
 			End Property
 			<AccessedThroughPropertyAttribute("isBloody")> _
-			Private _isBloody As Nullable(Of Boolean)
-			Public Overrides Property isBloody() As Nullable(Of Boolean)
+			Private _isBloody As Boolean
+			Public Overrides Property isBloody() As Boolean
 				Get
 					Return Me._isBloody
 				End Get
-				Set(ByVal Value As Nullable(Of Boolean))
-					Dim oldValue As Nullable(Of Boolean) = Me._isBloody
-					If (oldValue.GetValueOrDefault() <> Value.GetValueOrDefault()) OrElse (oldValue.HasValue <> Value.HasValue) Then
+				Set(ByVal Value As Boolean)
+					Dim oldValue As Boolean = Me._isBloody
+					If oldValue <> Value Then
 						If Me._Context.OnUnnaturalDeathisBloodyChanging(Me, Value) AndAlso MyBase.RaiseisBloodyChangingEvent(Value) Then
 							Me._isBloody = Value
 							MyBase.RaiseisBloodyChangedEvent(oldValue)

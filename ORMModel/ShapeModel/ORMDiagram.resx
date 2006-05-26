@@ -430,6 +430,10 @@
     <value xml:space="preserve">"{0} !"</value>
     <comment xml:space="preserve">The string used to display an objectified type name for an independent object.</comment>
   </data>
+  <data name="ObjectifyFactType.TransactionName">
+    <value xml:space="preserve">Objectify Fact Type</value>
+    <comment xml:space="preserve">The name given to the transaction used when objectifying a fact type.</comment>
+  </data>
   <data name="OptionsPage.Category.Appearance">
     <value xml:space="preserve">Appearance</value>
     <comment xml:space="preserve">This is the title of the category on the options page (appearance).</comment>

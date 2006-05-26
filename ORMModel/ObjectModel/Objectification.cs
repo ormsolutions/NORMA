@@ -613,7 +613,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// See if we have more than two roles
 				if (factType.RoleCollection.Count > 2)
 				{
-					CreateImpliedObjectificationForFactType(factType, null);
+					CreateObjectificationForFactType(factType, true, null);
 					return;
 				}
 				// See if we now have a uniqueness constraint that implies an objectification
@@ -622,34 +622,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (uniquenessConstraint.RoleCollection.Count > 1)
 					{
 						// We now have a uniqueness constraint that implies an objectification, so create it
-						CreateImpliedObjectificationForFactType(factType, null);
+						CreateObjectificationForFactType(factType, true, null);
 						return;
 					}
 				}
 			}
 		}
 		/// <summary>
-		/// Creates an implied Objectification for the specified FactType.
-		/// NOTE: It is the caller's responsibility to ensure the the specified FactType matches the implied Objectification pattern.
+		/// Creates an <see cref="Objectification"/> for the specified <see cref="FactType"/>.
+		/// NOTE: If <paramref name="isImplied"/> is <see langword="true"/>, it is the caller's responsibility to ensure that the
+		/// specified <see cref="FactType"/> matches the implied <see cref="Objectification"/> pattern.
 		/// </summary>
-		private static void CreateImpliedObjectificationForFactType(FactType factType, INotifyElementAdded notifyAdded)
+		public static void CreateObjectificationForFactType(FactType factType, bool isImplied, INotifyElementAdded notifyAdded)
 		{
 			Store store = factType.Store;
-			ObjectType objectifiedType = ObjectType.CreateAndInitializeObjectType(store,
+			ObjectType objectifyingType = ObjectType.CreateAndInitializeObjectType(store,
 				new AttributeAssignment[]
 				{
 					new AttributeAssignment(ObjectType.NameMetaAttributeGuid, factType.Name, store),
-					new AttributeAssignment(ObjectType.IsIndependentMetaAttributeGuid, true, store),
+					new AttributeAssignment(ObjectType.IsIndependentMetaAttributeGuid, isImplied, store),
 				});
 			Objectification.CreateAndInitializeObjectification(store,
 				new RoleAssignment[]
 				{
 					new RoleAssignment(Objectification.NestedFactTypeMetaRoleGuid, factType),
-					new RoleAssignment(Objectification.NestingTypeMetaRoleGuid, objectifiedType)
+					new RoleAssignment(Objectification.NestingTypeMetaRoleGuid, objectifyingType)
 				},
 				new AttributeAssignment[]
 				{
-					new AttributeAssignment(Objectification.IsImpliedMetaAttributeGuid, true, store)
+					new AttributeAssignment(Objectification.IsImpliedMetaAttributeGuid, isImplied, store)
 				});
 			if (notifyAdded == null)
 			{
@@ -657,7 +658,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				try
 				{
 					contextInfo[ObjectType.AllowDuplicateObjectNamesKey] = null;
-					objectifiedType.Model = factType.Model;
+					objectifyingType.Model = factType.Model;
 				}
 				finally
 				{
@@ -666,11 +667,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				objectifiedType.Model = factType.Model;
+				objectifyingType.Model = factType.Model;
 				// The true addLinks parameter here will pick up both the Objectification and
 				// the ModelHasObjectType links, so is sufficient to get all of the elements we
 				// created here.
-				notifyAdded.ElementAdded(objectifiedType, true);
+				notifyAdded.ElementAdded(objectifyingType, true);
 			}
 
 			// If the implied fact has a single internal uniqueness constraint
@@ -694,7 +695,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (preferredConstraint != null)
 				{
-					objectifiedType.PreferredIdentifier = preferredConstraint;
+					objectifyingType.PreferredIdentifier = preferredConstraint;
 				}
 			}
 			else
@@ -742,7 +743,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeHasPreferredIdentifier),
 						new RoleAssignment[]{
 							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, preferredConstraint),
-							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, objectifiedType)}), false);
+							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, objectifyingType)}), false);
 				}
 			}
 		}
@@ -1264,7 +1265,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (impliedRequired)
 					{
-						CreateImpliedObjectificationForFactType(element, notifyAdded);
+						CreateObjectificationForFactType(element, true, notifyAdded);
 					}
 				}
 			}

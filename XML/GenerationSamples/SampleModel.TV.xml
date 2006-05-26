@@ -57,14 +57,14 @@
 			<column name="HTHTSHTSD" isPrimaryKey="false" isOptional="true" />
 			<column name="OwnsCar_vin" isPrimaryKey="false" isOptional="true" />
 			<column name="Gender_Gender_Code" isPrimaryKey="false" isOptional="false" />
-			<column name="hasParents" isPrimaryKey="false" isOptional="true" />
+			<column name="hasParents" isPrimaryKey="false" isOptional="false" />
 			<column name="OptnlUnqDcml" isPrimaryKey="false" isOptional="true" />
 			<column name="MndtryUnqDcml" isPrimaryKey="false" isOptional="false" />
 			<column name="MndtryUnqStrng" isPrimaryKey="false" isOptional="false" />
 			<column name="VT1DSEWVT1V" isPrimaryKey="false" isOptional="true" />
-			<column name="CPBOBON" isPrimaryKey="true" isOptional="true" />
-			<column name="Father_Person_id" isPrimaryKey="true" isOptional="false" />
-			<column name="Mother_Person_id" isPrimaryKey="true" isOptional="false" />
+			<column name="CPBOBON" isPrimaryKey="false" isOptional="true" />
+			<column name="Father_Person_id" isPrimaryKey="false" isOptional="false" />
+			<column name="Mother_Person_id" isPrimaryKey="false" isOptional="false" />
 			<column name="Death_Date_YMD" isPrimaryKey="false" isOptional="true" />
 			<column name="DDCDCT" isPrimaryKey="false" isOptional="true" />
 			<column name="DNDFPC" isPrimaryKey="false" isOptional="true" />
@@ -88,7 +88,7 @@
 			<uniquenessConstraint name="IUC67" isPrimary="false">
 				<column name="MndtryUnqStrng" />
 			</uniquenessConstraint>
-			<uniquenessConstraint name="CPIUC49" isPrimary="true">
+			<uniquenessConstraint name="CPIUC49" isPrimary="false">
 				<column name="Father_Person_id" />
 				<column name="CPBOBON" />
 				<column name="Mother_Person_id" />

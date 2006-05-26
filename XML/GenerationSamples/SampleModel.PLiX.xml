@@ -15084,9 +15084,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -15160,24 +15158,18 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -15205,15 +15197,11 @@
 					</plx:condition>
 					<plx:local name="eventArgs" dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 						<plx:initialize>
 							<plx:callNew dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -15255,9 +15243,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -15331,23 +15317,17 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="oldValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 						<plx:passTypeParam dataTypeName="Person" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -15383,9 +15363,7 @@
 						<plx:passParam>
 							<plx:callNew dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="Person" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -18118,12 +18096,10 @@
 						<plx:falseKeyword />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:trueKeyword />
+						<plx:falseKeyword />
 					</plx:passParam>
 				</plx:attribute>
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get />
 				<plx:set />
 			</plx:property>
@@ -20245,9 +20221,7 @@
 				</plx:onRemove>
 			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="hasParents">
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
 						<plx:callInstance type="property" name="hasParents">
@@ -20284,9 +20258,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -20329,9 +20301,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -22765,9 +22735,7 @@
 				</plx:onRemove>
 			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="hasParents">
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
 						<plx:callInstance type="property" name="hasParents">
@@ -22804,9 +22772,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -22849,9 +22815,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -26276,9 +26240,7 @@
 				</plx:onRemove>
 			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="hasParents">
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
 						<plx:callInstance type="property" name="hasParents">
@@ -26315,9 +26277,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -26360,9 +26320,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -30147,9 +30105,7 @@
 				</plx:onRemove>
 			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="hasParents">
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
 						<plx:callInstance type="property" name="hasParents">
@@ -30186,9 +30142,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -30231,9 +30185,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -31501,9 +31453,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="NaturalDeath" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -31577,24 +31527,18 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="NaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="NaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -31622,15 +31566,11 @@
 					</plx:condition>
 					<plx:local name="eventArgs" dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="NaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 						<plx:initialize>
 							<plx:callNew dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="NaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -31672,9 +31612,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="NaturalDeath" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -31748,23 +31686,17 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="oldValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 						<plx:passTypeParam dataTypeName="NaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="NaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -31800,9 +31732,7 @@
 						<plx:passParam>
 							<plx:callNew dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="NaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -32162,12 +32092,10 @@
 						<plx:falseKeyword />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:trueKeyword />
+						<plx:falseKeyword />
 					</plx:passParam>
 				</plx:attribute>
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get />
 				<plx:set />
 			</plx:property>
@@ -33790,9 +33718,7 @@
 				</plx:onRemove>
 			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="hasParents">
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
 						<plx:callInstance type="property" name="hasParents">
@@ -33837,9 +33763,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -33890,9 +33814,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -35266,9 +35188,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -35342,24 +35262,18 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -35387,15 +35301,11 @@
 					</plx:condition>
 					<plx:local name="eventArgs" dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 						<plx:initialize>
 							<plx:callNew dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -35437,9 +35347,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -35513,23 +35421,17 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="oldValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 						<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -35565,9 +35467,7 @@
 						<plx:passParam>
 							<plx:callNew dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -35605,9 +35505,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -35681,24 +35579,18 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -35726,15 +35618,11 @@
 					</plx:condition>
 					<plx:local name="eventArgs" dataTypeName="PropertyChangingEventArgs">
 						<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 						<plx:initialize>
 							<plx:callNew dataTypeName="PropertyChangingEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -35776,9 +35664,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:assign>
@@ -35852,23 +35738,17 @@
 						<plx:string>CA1030:UseEventsWhereAppropriate</plx:string>
 					</plx:passParam>
 				</plx:attribute>
-				<plx:param name="oldValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="oldValue" dataTypeName=".boolean" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
 					<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 						<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-						<plx:passTypeParam dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
-						</plx:passTypeParam>
+						<plx:passTypeParam dataTypeName=".boolean" />
 					</plx:passTypeParam>
 					<plx:initialize>
 						<plx:cast type="testCast" dataTypeName="EventHandler">
 							<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 							</plx:passTypeParam>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
@@ -35904,9 +35784,7 @@
 						<plx:passParam>
 							<plx:callNew dataTypeName="PropertyChangedEventArgs">
 								<plx:passTypeParam dataTypeName="UnnaturalDeath" />
-								<plx:passTypeParam dataTypeName="Nullable">
-									<plx:passTypeParam dataTypeName=".boolean" />
-								</plx:passTypeParam>
+								<plx:passTypeParam dataTypeName=".boolean" />
 								<plx:passParam>
 									<plx:thisKeyword />
 								</plx:passParam>
@@ -36266,12 +36144,10 @@
 						<plx:falseKeyword />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:trueKeyword />
+						<plx:falseKeyword />
 					</plx:passParam>
 				</plx:attribute>
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get />
 				<plx:set />
 			</plx:property>
@@ -36284,12 +36160,10 @@
 						<plx:falseKeyword />
 					</plx:passParam>
 					<plx:passParam>
-						<plx:trueKeyword />
+						<plx:falseKeyword />
 					</plx:passParam>
 				</plx:attribute>
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get />
 				<plx:set />
 			</plx:property>
@@ -37915,9 +37789,7 @@
 				</plx:onRemove>
 			</plx:event>
 			<plx:property visibility="public" modifier="virtual" name="hasParents">
-				<plx:returns dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:returns>
+				<plx:returns dataTypeName=".boolean" />
 				<plx:get>
 					<plx:return>
 						<plx:callInstance type="property" name="hasParents">
@@ -37962,9 +37834,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -38015,9 +37885,7 @@
 				<plx:explicitDelegateType dataTypeName="EventHandler" />
 				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Person" />
-					<plx:passTypeParam dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:passTypeParam>
+					<plx:passTypeParam dataTypeName=".boolean" />
 				</plx:passTypeParam>
 				<plx:onAdd>
 					<plx:attachEvent>
@@ -40898,6 +40766,7 @@
 				<plx:param name="Date_YMD" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
+				<plx:param name="hasParents" dataTypeName=".boolean" />
 				<plx:param name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
 				<plx:param name="MandatoryUniqueString" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
@@ -40953,6 +40822,7 @@
 				<plx:get />
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreateNaturalDeath">
+				<plx:param name="isFromProstateCancer" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="NaturalDeath" />
 			</plx:function>
@@ -40963,6 +40833,8 @@
 				<plx:get />
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreateUnnaturalDeath">
+				<plx:param name="isViolent" dataTypeName=".boolean" />
+				<plx:param name="isBloody" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="UnnaturalDeath" />
 			</plx:function>
@@ -49568,6 +49440,7 @@
 				<plx:param name="Date_YMD" dataTypeName=".i4" />
 				<plx:param name="LastName" dataTypeName=".string" />
 				<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
+				<plx:param name="hasParents" dataTypeName=".boolean" />
 				<plx:param name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
 				<plx:param name="MandatoryUniqueString" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
@@ -49742,6 +49615,27 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnPersonhasParentsChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="hasParents" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
+							<plx:passParam>
+								<plx:string>hasParents</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
 							<plx:callThis accessor="this" type="methodCall" name="OnPersonMandatoryUniqueDecimalChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
@@ -49797,6 +49691,9 @@
 						</plx:passParam>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="Gender_Gender_Code" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="hasParents" />
 						</plx:passParam>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="MandatoryUniqueDecimal" />
@@ -50559,9 +50456,7 @@
 			</plx:function>
 			<plx:function visibility="private" name="OnPersonhasParentsChanging">
 				<plx:param name="instance" dataTypeName="Person" />
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
 					<plx:trueKeyword />
@@ -51795,6 +51690,7 @@
 					<plx:param name="Date_YMD" dataTypeName=".i4" />
 					<plx:param name="LastName" dataTypeName=".string" />
 					<plx:param name="Gender_Gender_Code" dataTypeName=".string" />
+					<plx:param name="hasParents" dataTypeName=".boolean" />
 					<plx:param name="MandatoryUniqueDecimal" dataTypeName=".decimal" />
 					<plx:param name="MandatoryUniqueString" dataTypeName=".string" />
 					<plx:assign>
@@ -51958,6 +51854,14 @@
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="Gender_Gender_Code" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_hasParents" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="hasParents" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -52800,8 +52704,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_hasParents" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
+				<plx:field visibility="private" readOnly="false" name="_hasParents" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>hasParents</plx:string>
@@ -52809,59 +52712,26 @@
 					</plx:attribute>
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="hasParents">
-					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:returns>
+					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
 							<plx:callThis accessor="this" type="field" name="_hasParents" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
+						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_hasParents" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
 							<plx:condition>
-								<plx:binaryOperator type="booleanOr">
+								<plx:binaryOperator type="inequality">
 									<plx:left>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:nameRef type="local" name="oldValue" />
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:valueKeyword />
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
@@ -57000,6 +56870,7 @@
 					<plx:pragma type="region" data="NaturalDeath" />
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreateNaturalDeath" dataTypeName="ISampleModelContext" />
+				<plx:param name="isFromProstateCancer" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="NaturalDeath" />
 				<plx:branch>
@@ -57021,6 +56892,27 @@
 								<plx:string>Death</plx:string>
 							</plx:passParam>
 						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnNaturalDeathisFromProstateCancerChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="isFromProstateCancer" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
+							<plx:passParam>
+								<plx:string>isFromProstateCancer</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
 					</plx:throw>
 				</plx:branch>
 				<plx:branch>
@@ -57050,6 +56942,9 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
+							<plx:nameRef type="parameter" name="isFromProstateCancer" />
+						</plx:passParam>
+						<plx:passParam>
 							<plx:nameRef type="parameter" name="Death" />
 						</plx:passParam>
 					</plx:callNew>
@@ -57057,9 +56952,7 @@
 			</plx:function>
 			<plx:function visibility="private" name="OnNaturalDeathisFromProstateCancerChanging">
 				<plx:param name="instance" dataTypeName="NaturalDeath" />
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
 					<plx:trueKeyword />
@@ -57183,6 +57076,7 @@
 				<plx:derivesFromClass dataTypeName="NaturalDeath" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
+					<plx:param name="isFromProstateCancer" dataTypeName=".boolean" />
 					<plx:param name="Death" dataTypeName="Death" />
 					<plx:assign>
 						<plx:left>
@@ -57190,6 +57084,14 @@
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="context" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="isFromProstateCancer" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -57233,8 +57135,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_isFromProstateCancer" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
+				<plx:field visibility="private" readOnly="false" name="_isFromProstateCancer" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>isFromProstateCancer</plx:string>
@@ -57242,59 +57143,26 @@
 					</plx:attribute>
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="isFromProstateCancer">
-					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:returns>
+					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
 							<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
+						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_isFromProstateCancer" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
 							<plx:condition>
-								<plx:binaryOperator type="booleanOr">
+								<plx:binaryOperator type="inequality">
 									<plx:left>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:nameRef type="local" name="oldValue" />
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:valueKeyword />
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
@@ -57453,6 +57321,8 @@
 					<plx:pragma type="region" data="UnnaturalDeath" />
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="CreateUnnaturalDeath" dataTypeName="ISampleModelContext" />
+				<plx:param name="isViolent" dataTypeName=".boolean" />
+				<plx:param name="isBloody" dataTypeName=".boolean" />
 				<plx:param name="Death" dataTypeName="Death" />
 				<plx:returns dataTypeName="UnnaturalDeath" />
 				<plx:branch>
@@ -57474,6 +57344,48 @@
 								<plx:string>Death</plx:string>
 							</plx:passParam>
 						</plx:callNew>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnUnnaturalDeathisViolentChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="isViolent" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
+							<plx:passParam>
+								<plx:string>isViolent</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:throw>
+				</plx:branch>
+				<plx:branch>
+					<plx:condition>
+						<plx:unaryOperator type="booleanNot">
+							<plx:callThis accessor="this" type="methodCall" name="OnUnnaturalDeathisBloodyChanging">
+								<plx:passParam>
+									<plx:nullKeyword />
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="isBloody" />
+								</plx:passParam>
+							</plx:callThis>
+						</plx:unaryOperator>
+					</plx:condition>
+					<plx:throw>
+						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="SampleModelContext">
+							<plx:passParam>
+								<plx:string>isBloody</plx:string>
+							</plx:passParam>
+						</plx:callStatic>
 					</plx:throw>
 				</plx:branch>
 				<plx:branch>
@@ -57503,6 +57415,12 @@
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
+							<plx:nameRef type="parameter" name="isViolent" />
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="isBloody" />
+						</plx:passParam>
+						<plx:passParam>
 							<plx:nameRef type="parameter" name="Death" />
 						</plx:passParam>
 					</plx:callNew>
@@ -57510,9 +57428,7 @@
 			</plx:function>
 			<plx:function visibility="private" name="OnUnnaturalDeathisViolentChanging">
 				<plx:param name="instance" dataTypeName="UnnaturalDeath" />
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
 					<plx:trueKeyword />
@@ -57520,9 +57436,7 @@
 			</plx:function>
 			<plx:function visibility="private" name="OnUnnaturalDeathisBloodyChanging">
 				<plx:param name="instance" dataTypeName="UnnaturalDeath" />
-				<plx:param name="newValue" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
-				</plx:param>
+				<plx:param name="newValue" dataTypeName=".boolean" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
 					<plx:trueKeyword />
@@ -57646,6 +57560,8 @@
 				<plx:derivesFromClass dataTypeName="UnnaturalDeath" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="SampleModelContext" />
+					<plx:param name="isViolent" dataTypeName=".boolean" />
+					<plx:param name="isBloody" dataTypeName=".boolean" />
 					<plx:param name="Death" dataTypeName="Death" />
 					<plx:assign>
 						<plx:left>
@@ -57653,6 +57569,22 @@
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="context" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_isViolent" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="isViolent" />
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis accessor="this" type="field" name="_isBloody" />
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="isBloody" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
@@ -57696,8 +57628,7 @@
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_isViolent" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
+				<plx:field visibility="private" readOnly="false" name="_isViolent" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>isViolent</plx:string>
@@ -57705,59 +57636,26 @@
 					</plx:attribute>
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="isViolent">
-					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:returns>
+					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
 							<plx:callThis accessor="this" type="field" name="_isViolent" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
+						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_isViolent" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
 							<plx:condition>
-								<plx:binaryOperator type="booleanOr">
+								<plx:binaryOperator type="inequality">
 									<plx:left>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:nameRef type="local" name="oldValue" />
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:valueKeyword />
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
@@ -57803,8 +57701,7 @@
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_isBloody" dataTypeName="Nullable">
-					<plx:passTypeParam dataTypeName=".boolean" />
+				<plx:field visibility="private" readOnly="false" name="_isBloody" dataTypeName=".boolean">
 					<plx:attribute dataTypeName="AccessedThroughPropertyAttribute">
 						<plx:passParam>
 							<plx:string>isBloody</plx:string>
@@ -57812,59 +57709,26 @@
 					</plx:attribute>
 				</plx:field>
 				<plx:property visibility="public" modifier="override" name="isBloody">
-					<plx:returns dataTypeName="Nullable">
-						<plx:passTypeParam dataTypeName=".boolean" />
-					</plx:returns>
+					<plx:returns dataTypeName=".boolean" />
 					<plx:get>
 						<plx:return>
 							<plx:callThis accessor="this" type="field" name="_isBloody" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
-						<plx:local name="oldValue" dataTypeName="Nullable">
-							<plx:passTypeParam dataTypeName=".boolean" />
+						<plx:local name="oldValue" dataTypeName=".boolean">
 							<plx:initialize>
 								<plx:callThis accessor="this" type="field" name="_isBloody" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
 							<plx:condition>
-								<plx:binaryOperator type="booleanOr">
+								<plx:binaryOperator type="inequality">
 									<plx:left>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="methodCall" name="GetValueOrDefault">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:nameRef type="local" name="oldValue" />
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="inequality">
-											<plx:left>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:nameRef type="local" name="oldValue" />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callInstance type="property" name="HasValue">
-													<plx:callObject>
-														<plx:valueKeyword />
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:valueKeyword />
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>

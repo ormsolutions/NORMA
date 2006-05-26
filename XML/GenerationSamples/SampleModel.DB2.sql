@@ -46,7 +46,7 @@ CREATE TABLE SampleModel.Person
 	HTHTSHTSD CHARACTER VARYING(256) , 
 	OwnsCar_vin BIGINT , 
 	Gender_Gender_Code CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LENGTH(LTRIM(RTRIM(Gender_Gender_Code)))) >= 1 AND Gender_Gender_Code IN ('M', 'F')) NOT NULL, 
-	hasParents CHARACTER(1) FOR BIT DATA, 
+	hasParents CHARACTER(1) FOR BIT DATANOT NULL, 
 	OptnlUnqDcml DECIMAL(9) , 
 	MndtryUnqDcml DECIMAL(9) NOT NULL, 
 	MndtryUnqStrng CHARACTER(11) CONSTRAINT MndtryUnqStrng_Chk CHECK ((LENGTH(LTRIM(RTRIM(MndtryUnqStrng)))) >= 11) NOT NULL, 

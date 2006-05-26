@@ -491,6 +491,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The name given to the transaction used when objectifying a fact type.
+		/// </summary>
+		public static string ObjectifyFactTypeTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifyFactType.TransactionName");
+			}
+		}
+		/// <summary>
 		/// The name given to the transaction used when adding a shape element for an existing object.
 		/// </summary>
 		public static string DropShapeTransactionName
@@ -1717,7 +1727,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeFormatString");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.IndependentFormatString");
 			}
 		}
 		/// <summary>

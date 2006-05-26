@@ -73,26 +73,6 @@
 			<xs:maxLength value="11" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="isFromProstateCancer">
-		<xs:restriction base="xs:boolean">
-			<xs:enumeration value="true" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="isViolent">
-		<xs:restriction base="xs:boolean">
-			<xs:enumeration value="true" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="isBloody">
-		<xs:restriction base="xs:boolean">
-			<xs:enumeration value="true" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="hasParents">
-		<xs:restriction base="xs:boolean">
-			<xs:enumeration value="true" />
-		</xs:restriction>
-	</xs:simpleType>
 	<!--Each ORM EntityType and it's Preferred Id or top level ValueType-->
 	<xs:complexType name="PersonDrivesCarIdentifier">
 		<xs:attribute name="DrivesCar_vin" use="required" type="xs:integer" />
@@ -116,9 +96,7 @@
 	</xs:complexType>
 	<xs:complexType name="MalePersonIdentifier" />
 	<xs:complexType name="FemalePersonIdentifier" />
-	<xs:complexType name="ChildPersonIdentifier">
-		<xs:attribute name="BirthOrder_BirthOrder_Nr" use="required" type="xs:integer" />
-	</xs:complexType>
+	<xs:complexType name="ChildPersonIdentifier" />
 	<xs:complexType name="DeathIdentifier" />
 	<xs:complexType name="NaturalDeathIdentifier" />
 	<xs:complexType name="UnnaturalDeathIdentifier" />
@@ -203,7 +181,7 @@
 				<xs:attribute name="HatTypeStyle_Description" type="oxs:HatTypeStyle_Description" use="optional" />
 				<xs:attribute name="vin" type="xs:integer" use="optional" />
 				<xs:attribute name="Gender_Code" type="oxs:Gender_Code" use="required" />
-				<xs:attribute name="hasParents" type="oxs:true" use="optional" />
+				<xs:attribute name="hasParents" type="xs:boolean" use="required" />
 				<xs:attribute name="OptionalUniqueDecimal" type="oxs:OptionalUniqueDecimal" use="optional" />
 				<xs:attribute name="MandatoryUniqueDecimal" type="oxs:MandatoryUniqueDecimal" use="required" />
 				<xs:attribute name="MandatoryUniqueString" type="oxs:MandatoryUniqueString" use="required" />

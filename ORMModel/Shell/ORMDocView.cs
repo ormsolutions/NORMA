@@ -156,21 +156,25 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DeleteAnyShape = 0x1000000,
 		/// <summary>
-		/// Expand the error list for the selected object
-		/// </summary>
-		ErrorList = 0x10000000,
-		/// <summary>
 		/// Align top level shape elements. Applies to all of the standard Format.Align commands.
 		/// </summary>
 		AlignShapes = 0x2000000,
 		/// <summary>
 		/// Move a role's order to the left within the fact type.
 		/// </summary>
-		MoveRoleLeft = 0x4000000, 
+		MoveRoleLeft = 0x4000000,
 		/// <summary>
 		/// Move a role's order to the right within the fact type.
 		/// </summary>
-		MoveRoleRight = 0x8000000, 
+		MoveRoleRight = 0x8000000,
+		/// <summary>
+		/// Expand the error list for the selected object
+		/// </summary>
+		ErrorList = 0x10000000,
+		/// <summary>
+		/// Objectifies the fact type.
+		/// </summary>
+		ObjectifyFactType = 0x20000000,
 		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
@@ -556,14 +560,21 @@ namespace Neumont.Tools.ORM.Shell
 			checkableCommands = ORMDesignerCommands.None;
 			checkedCommands = ORMDesignerCommands.None;
 			toleratedCommands = ORMDesignerCommands.None;
+			FactType factType;
 			Role role;
 			ObjectType objectType;
 			NodeShape nodeShape;
 			SetConstraint setConstraint;
 			bool otherShape = false;
-			if (element is FactType)
+			if (null != (factType = element as FactType))
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				Objectification objectification = factType.Objectification;
+				if (objectification == null || objectification.IsImplied)
+				{
+					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
+					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
+				}
 				if (presentationElement is FactTypeShape)
 				{
 					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
@@ -645,11 +656,21 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				}
+				FactType fact = role.FactType;
+				Debug.Assert(fact != null);
+
 				// Disable role deletion if the role count == 1
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
-				if (role.FactType.RoleCollection.Count == 1)
+				if (fact.RoleCollection.Count == 1)
 				{
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
+				}
+
+				Objectification objectification = fact.Objectification;
+				if (objectification == null || objectification.IsImplied)
+				{
+					visibleCommands |= ORMDesignerCommands.ObjectifyFactType;
+					enabledCommands |= ORMDesignerCommands.ObjectifyFactType;
 				}
 
 				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
@@ -660,9 +681,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (null != (ormDiagram = CurrentDiagram as ORMDiagram))
 				{
 					FactTypeShape factShape;
-					FactType fact;
-					if (null != (fact = role.FactType) &&
-						null != (factShape = ormDiagram.FindShapeForElement<FactTypeShape>(fact)))
+					if (null != (factShape = ormDiagram.FindShapeForElement<FactTypeShape>(fact)))
 					{
 						UpdateMoveRoleCommandStatus(factShape, role, ref visibleCommands, ref enabledCommands);
 					}
@@ -2182,6 +2201,45 @@ namespace Neumont.Tools.ORM.Shell
 							UpdateMoveRoleCommandStatus(factShape, role, ref myVisibleCommands, ref myEnabledCommands);
 						}
 						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Objectifies the selected fact type.
+		/// </summary>
+		protected virtual void OnMenuObjectifyFactType()
+		{
+			ORMDiagram diagram = CurrentDiagram as ORMDiagram;
+			if (diagram != null)
+			{
+				foreach (ModelElement mel in GetSelectedComponents())
+				{
+					FactType factType = EditorUtility.ResolveContextFactType(mel);
+					if (factType != null)
+					{
+						Store store = factType.Store;
+						using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ObjectifyFactTypeTransactionName))
+						{
+							Objectification objectification = factType.Objectification;
+							if (objectification != null)
+							{
+								Debug.Assert(objectification.IsImplied);
+								// Set the objectifying type to not be independent, which breaks the implication pattern and makes
+								// the objectification change to be explicit
+								objectification.NestingType.IsIndependent = false;
+							}
+							else
+							{
+								Objectification.CreateObjectificationForFactType(factType, false, null);
+							}
+							if (t.HasPendingChanges)
+							{
+								t.Commit();
+							}
+						}
+						// Once we've objectified a fact type, we're done
+						break;
 					}
 				}
 			}

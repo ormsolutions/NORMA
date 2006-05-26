@@ -75,18 +75,20 @@
 #define cmdIdMoveRoleLeft				0x2915
 #define cmdIdMoveRoleRight				0x2916
 
-#define cmdIdViewNewReadingEditor			0x2917
+#define cmdIdViewNewReadingEditor		0x2917
 
-#define cmdIdReadingEditorAddReading   0x2918
-#define cmdIdReadingEditorAddReadingOrder 0x2919
-#define cmdIdReadingEditorDeleteReading  0x2920
-#define cmdIdReadingEditorPromoteReading	 0x2921
-#define cmdIdReadingEditorDemoteReading 0x2922
-#define cmdIdReadingEditorPromoteReadingOrder 0x2923
-#define cmdIdReadingEditorDemoteReadingOrder 0x2924
+#define cmdIdReadingEditorAddReading			0x2918
+#define cmdIdReadingEditorAddReadingOrder		0x2919
+#define cmdIdReadingEditorDeleteReading			0x291A
+#define cmdIdReadingEditorPromoteReading		0x291B
+#define cmdIdReadingEditorDemoteReading			0x291C
+#define cmdIdReadingEditorPromoteReadingOrder	0x291D
+#define cmdIdReadingEditorDemoteReadingOrder	0x291E
 
-#define cmdIdErrorList					0x2a00
-#define cmdIdErrorListEnd				0x2aff
+#define cmdIdObjectifyFactType			0x291F
+
+#define cmdIdErrorList					0x2A00
+#define cmdIdErrorListEnd				0x2AFF
 // Reserve 2a00 range for errors, start additional commands after
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs for BitmapResourceStrip.bmp

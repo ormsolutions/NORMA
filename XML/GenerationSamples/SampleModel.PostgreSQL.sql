@@ -56,7 +56,7 @@ CREATE TABLE SampleModel.Person
 	HTHTSHTSD CHARACTER VARYING(256) , 
 	OwnsCar_vin BIGINT , 
 	Gender_Gender_Code SampleModel.Gender_Code NOT NULL, 
-	hasParents BOOLEAN, 
+	hasParents BOOLEANNOT NULL, 
 	OptnlUnqDcml DECIMAL(9) , 
 	MndtryUnqDcml DECIMAL(9) NOT NULL, 
 	MndtryUnqStrng SampleModel.MndtryUnqStrng NOT NULL, 
@@ -75,7 +75,7 @@ CREATE TABLE SampleModel.Person
 	CONSTRAINT IUC65 UNIQUE(OptnlUnqDcml), 
 	CONSTRAINT IUC69 UNIQUE(MndtryUnqDcml), 
 	CONSTRAINT IUC67 UNIQUE(MndtryUnqStrng), 
-	CONSTRAINT CPIUC49 PRIMARY KEY(Father_Person_id, CPBOBON, Mother_Person_id), 
+	CONSTRAINT CPIUC49 UNIQUE(Father_Person_id, CPBOBON, Mother_Person_id), 
 	CONSTRAINT EUC1 UNIQUE(FirstName, Date_YMD), 
 	CONSTRAINT EUC2 UNIQUE(LastName, Date_YMD)
 );

@@ -195,7 +195,7 @@
 		<dcl:column name="Gender_Gender_Code" isNullable="false" isIdentity="false">
 			<dcl:domainDataTypeRef name="Gender_Code" />
 		</dcl:column>
-		<dcl:column name="hasParents" isNullable="true" isIdentity="false">
+		<dcl:column name="hasParents" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="BOOLEAN" />
 		</dcl:column>
 		<dcl:column name="OptnlUnqDcml" isNullable="true" isIdentity="false">
@@ -237,7 +237,7 @@
 		<dcl:referenceConstraint name="Mother_FK" targetTable="Person">
 			<dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" />
 		</dcl:referenceConstraint>
-		<dcl:uniquenessConstraint name="CPIUC49" isPrimary="true">
+		<dcl:uniquenessConstraint name="CPIUC49" isPrimary="false">
 			<dcl:columnRef name="Father_Person_id" />
 			<dcl:columnRef name="CPBOBON" />
 			<dcl:columnRef name="Mother_Person_id" />

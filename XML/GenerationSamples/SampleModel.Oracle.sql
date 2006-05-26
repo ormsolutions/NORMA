@@ -44,7 +44,7 @@ CREATE TABLE Person
 	HTHTSHTSD CHARACTER VARYING(256) , 
 	OwnsCar_vin NUMBER(38) , 
 	Gender_Gender_Code CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LENGTH(TRIM(BOTH FROM Gender_Gender_Code))) >= 1 AND Gender_Gender_Code IN ('M', 'F')) NOT NULL, 
-	hasParents NCHAR, 
+	hasParents NCHARNOT NULL, 
 	OptnlUnqDcml NUMBER(38) , 
 	MndtryUnqDcml NUMBER(38) NOT NULL, 
 	MndtryUnqStrng CHARACTER(11) CONSTRAINT MndtryUnqStrng_Chk CHECK ((LENGTH(TRIM(BOTH FROM MndtryUnqStrng))) >= 11) NOT NULL, 
@@ -63,7 +63,7 @@ CREATE TABLE Person
 	CONSTRAINT IUC65 UNIQUE(OptnlUnqDcml), 
 	CONSTRAINT IUC69 UNIQUE(MndtryUnqDcml), 
 	CONSTRAINT IUC67 UNIQUE(MndtryUnqStrng), 
-	CONSTRAINT CPIUC49 PRIMARY KEY(Father_Person_id, CPBOBON, Mother_Person_id), 
+	CONSTRAINT CPIUC49 UNIQUE(Father_Person_id, CPBOBON, Mother_Person_id), 
 	CONSTRAINT EUC1 UNIQUE(FirstName, Date_YMD), 
 	CONSTRAINT EUC2 UNIQUE(LastName, Date_YMD)
 );

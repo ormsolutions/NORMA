@@ -2424,7 +2424,7 @@ namespace SampleModel
 				this.RaisePropertyChangedEvent("Gender_Gender_Code");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -2436,18 +2436,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaisehasParentsChangingEvent(Nullable<bool> newValue)
+		protected bool RaisehasParentsChangingEvent(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> eventHandler = this.Events[8] as EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>>;
+			EventHandler<PropertyChangingEventArgs<Person, bool>> eventHandler = this.Events[8] as EventHandler<PropertyChangingEventArgs<Person, bool>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<Person, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<Person, Nullable<bool>>(this, this.hasParents, newValue);
+				PropertyChangingEventArgs<Person, bool> eventArgs = new PropertyChangingEventArgs<Person, bool>(this, this.hasParents, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -2459,12 +2459,12 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaisehasParentsChangedEvent(Nullable<bool> oldValue)
+		protected void RaisehasParentsChangedEvent(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>>;
+			EventHandler<PropertyChangedEventArgs<Person, bool>> eventHandler = this.Events[8] as EventHandler<PropertyChangedEventArgs<Person, bool>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, Nullable<bool>>(this, oldValue, this.hasParents), new AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<Person, bool>(this, oldValue, this.hasParents), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("hasParents");
 			}
 		}
@@ -2868,8 +2868,8 @@ namespace SampleModel
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> hasParents
+		[DataObjectFieldAttribute(false, false, false)]
+		public abstract bool hasParents
 		{
 			get;
 			set;
@@ -3428,7 +3428,7 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> hasParents
+		public virtual bool hasParents
 		{
 			get
 			{
@@ -3439,7 +3439,7 @@ namespace SampleModel
 				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -3450,7 +3450,7 @@ namespace SampleModel
 				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -4087,7 +4087,7 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> hasParents
+		public virtual bool hasParents
 		{
 			get
 			{
@@ -4098,7 +4098,7 @@ namespace SampleModel
 				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -4109,7 +4109,7 @@ namespace SampleModel
 				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -4891,7 +4891,7 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> hasParents
+		public virtual bool hasParents
 		{
 			get
 			{
@@ -4902,7 +4902,7 @@ namespace SampleModel
 				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -4913,7 +4913,7 @@ namespace SampleModel
 				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -5745,7 +5745,7 @@ namespace SampleModel
 				this.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> hasParents
+		public virtual bool hasParents
 		{
 			get
 			{
@@ -5756,7 +5756,7 @@ namespace SampleModel
 				this.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -5767,7 +5767,7 @@ namespace SampleModel
 				this.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -6129,7 +6129,7 @@ namespace SampleModel
 		{
 			get;
 		}
-		public event EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>> isFromProstateCancerChanging
+		public event EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>> isFromProstateCancerChanging
 		{
 			add
 			{
@@ -6141,18 +6141,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaiseisFromProstateCancerChangingEvent(Nullable<bool> newValue)
+		protected bool RaiseisFromProstateCancerChangingEvent(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>>;
+			EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<NaturalDeath, bool>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<NaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<NaturalDeath, Nullable<bool>>(this, this.isFromProstateCancer, newValue);
+				PropertyChangingEventArgs<NaturalDeath, bool> eventArgs = new PropertyChangingEventArgs<NaturalDeath, bool>(this, this.isFromProstateCancer, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>> isFromProstateCancerChanged
+		public event EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>> isFromProstateCancerChanged
 		{
 			add
 			{
@@ -6164,12 +6164,12 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaiseisFromProstateCancerChangedEvent(Nullable<bool> oldValue)
+		protected void RaiseisFromProstateCancerChangedEvent(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>>;
+			EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<NaturalDeath, bool>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<NaturalDeath, Nullable<bool>>(this, oldValue, this.isFromProstateCancer), new AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<NaturalDeath, bool>(this, oldValue, this.isFromProstateCancer), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("isFromProstateCancer");
 			}
 		}
@@ -6217,8 +6217,8 @@ namespace SampleModel
 				this.RaisePropertyChangedEvent("Death");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> isFromProstateCancer
+		[DataObjectFieldAttribute(false, false, false)]
+		public abstract bool isFromProstateCancer
 		{
 			get;
 			set;
@@ -6622,7 +6622,7 @@ namespace SampleModel
 				this.Death.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> hasParents
+		public virtual bool hasParents
 		{
 			get
 			{
@@ -6633,7 +6633,7 @@ namespace SampleModel
 				this.Death.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -6644,7 +6644,7 @@ namespace SampleModel
 				this.Death.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -6976,7 +6976,7 @@ namespace SampleModel
 		{
 			get;
 		}
-		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> isViolentChanging
+		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> isViolentChanging
 		{
 			add
 			{
@@ -6988,18 +6988,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaiseisViolentChangingEvent(Nullable<bool> newValue)
+		protected bool RaiseisViolentChangingEvent(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>>;
+			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[0] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>(this, this.isViolent, newValue);
+				PropertyChangingEventArgs<UnnaturalDeath, bool> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, bool>(this, this.isViolent, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> isViolentChanged
+		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> isViolentChanged
 		{
 			add
 			{
@@ -7011,16 +7011,16 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaiseisViolentChangedEvent(Nullable<bool> oldValue)
+		protected void RaiseisViolentChangedEvent(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>>;
+			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[0] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>(this, oldValue, this.isViolent), new AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, bool>(this, oldValue, this.isViolent), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("isViolent");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> isBloodyChanging
+		public event EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> isBloodyChanging
 		{
 			add
 			{
@@ -7032,18 +7032,18 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected bool RaiseisBloodyChangingEvent(Nullable<bool> newValue)
+		protected bool RaiseisBloodyChangingEvent(bool newValue)
 		{
-			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>>;
+			EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[1] as EventHandler<PropertyChangingEventArgs<UnnaturalDeath, bool>>;
 			if ((object)eventHandler != null)
 			{
-				PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, Nullable<bool>>(this, this.isBloody, newValue);
+				PropertyChangingEventArgs<UnnaturalDeath, bool> eventArgs = new PropertyChangingEventArgs<UnnaturalDeath, bool>(this, this.isBloody, newValue);
 				eventHandler(this, eventArgs);
 				return !(eventArgs.Cancel);
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> isBloodyChanged
+		public event EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> isBloodyChanged
 		{
 			add
 			{
@@ -7055,12 +7055,12 @@ namespace SampleModel
 			}
 		}
 		[SuppressMessageAttribute("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
-		protected void RaiseisBloodyChangedEvent(Nullable<bool> oldValue)
+		protected void RaiseisBloodyChangedEvent(bool oldValue)
 		{
-			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>>;
+			EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>> eventHandler = this.Events[1] as EventHandler<PropertyChangedEventArgs<UnnaturalDeath, bool>>;
 			if ((object)eventHandler != null)
 			{
-				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, Nullable<bool>>(this, oldValue, this.isBloody), new AsyncCallback(eventHandler.EndInvoke), null);
+				eventHandler.BeginInvoke(this, new PropertyChangedEventArgs<UnnaturalDeath, bool>(this, oldValue, this.isBloody), new AsyncCallback(eventHandler.EndInvoke), null);
 				this.RaisePropertyChangedEvent("isBloody");
 			}
 		}
@@ -7108,14 +7108,14 @@ namespace SampleModel
 				this.RaisePropertyChangedEvent("Death");
 			}
 		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> isViolent
+		[DataObjectFieldAttribute(false, false, false)]
+		public abstract bool isViolent
 		{
 			get;
 			set;
 		}
-		[DataObjectFieldAttribute(false, false, true)]
-		public abstract Nullable<bool> isBloody
+		[DataObjectFieldAttribute(false, false, false)]
+		public abstract bool isBloody
 		{
 			get;
 			set;
@@ -7519,7 +7519,7 @@ namespace SampleModel
 				this.Death.Person.Gender_Gender_CodeChanged -= value;
 			}
 		}
-		public virtual Nullable<bool> hasParents
+		public virtual bool hasParents
 		{
 			get
 			{
@@ -7530,7 +7530,7 @@ namespace SampleModel
 				this.Death.Person.hasParents = value;
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Person, Nullable<bool>>> hasParentsChanging
+		public event EventHandler<PropertyChangingEventArgs<Person, bool>> hasParentsChanging
 		{
 			add
 			{
@@ -7541,7 +7541,7 @@ namespace SampleModel
 				this.Death.Person.hasParentsChanging -= value;
 			}
 		}
-		public event EventHandler<PropertyChangedEventArgs<Person, Nullable<bool>>> hasParentsChanged
+		public event EventHandler<PropertyChangedEventArgs<Person, bool>> hasParentsChanged
 		{
 			add
 			{
@@ -8158,7 +8158,7 @@ namespace SampleModel
 		{
 			get;
 		}
-		Person CreatePerson(string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, decimal MandatoryUniqueDecimal, string MandatoryUniqueString);
+		Person CreatePerson(string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, bool hasParents, decimal MandatoryUniqueDecimal, string MandatoryUniqueString);
 		ReadOnlyCollection<Person> PersonCollection
 		{
 			get;
@@ -8183,12 +8183,12 @@ namespace SampleModel
 		{
 			get;
 		}
-		NaturalDeath CreateNaturalDeath(Death Death);
+		NaturalDeath CreateNaturalDeath(bool isFromProstateCancer, Death Death);
 		ReadOnlyCollection<NaturalDeath> NaturalDeathCollection
 		{
 			get;
 		}
-		UnnaturalDeath CreateUnnaturalDeath(Death Death);
+		UnnaturalDeath CreateUnnaturalDeath(bool isViolent, bool isBloody, Death Death);
 		ReadOnlyCollection<UnnaturalDeath> UnnaturalDeathCollection
 		{
 			get;
@@ -9704,7 +9704,7 @@ namespace SampleModel
 		#endregion // PersonHasNickNameCore
 		#endregion // PersonHasNickName
 		#region Person
-		public Person CreatePerson(string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
+		public Person CreatePerson(string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, bool hasParents, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
 		{
 			if ((object)FirstName == null)
 			{
@@ -9738,6 +9738,10 @@ namespace SampleModel
 			{
 				throw SampleModelContext.GetConstraintEnforcementFailedException("Gender_Gender_Code");
 			}
+			if (!(this.OnPersonhasParentsChanging(null, hasParents)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("hasParents");
+			}
 			if (!(this.OnPersonMandatoryUniqueDecimalChanging(null, MandatoryUniqueDecimal)))
 			{
 				throw SampleModelContext.GetConstraintEnforcementFailedException("MandatoryUniqueDecimal");
@@ -9746,7 +9750,7 @@ namespace SampleModel
 			{
 				throw SampleModelContext.GetConstraintEnforcementFailedException("MandatoryUniqueString");
 			}
-			return new PersonCore(this, FirstName, Date_YMD, LastName, Gender_Gender_Code, MandatoryUniqueDecimal, MandatoryUniqueString);
+			return new PersonCore(this, FirstName, Date_YMD, LastName, Gender_Gender_Code, hasParents, MandatoryUniqueDecimal, MandatoryUniqueString);
 		}
 		private bool OnPersonFirstNameChanging(Person instance, string newValue)
 		{
@@ -9892,7 +9896,7 @@ namespace SampleModel
 		{
 			return true;
 		}
-		private bool OnPersonhasParentsChanging(Person instance, Nullable<bool> newValue)
+		private bool OnPersonhasParentsChanging(Person instance, bool newValue)
 		{
 			return true;
 		}
@@ -10181,7 +10185,7 @@ namespace SampleModel
 		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 		private sealed class PersonCore : Person
 		{
-			public PersonCore(SampleModelContext context, string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
+			public PersonCore(SampleModelContext context, string FirstName, int Date_YMD, string LastName, string Gender_Gender_Code, bool hasParents, decimal MandatoryUniqueDecimal, string MandatoryUniqueString)
 			{
 				this._Context = context;
 				this._PersonDrivesCar = new ConstraintEnforcementCollection<Person, PersonDrivesCar>(this);
@@ -10197,6 +10201,7 @@ namespace SampleModel
 				this._LastName = LastName;
 				context.OnPersonLastNameChanged(this, null);
 				this._Gender_Gender_Code = Gender_Gender_Code;
+				this._hasParents = hasParents;
 				this._MandatoryUniqueDecimal = MandatoryUniqueDecimal;
 				context.OnPersonMandatoryUniqueDecimalChanged(this, null);
 				this._MandatoryUniqueString = MandatoryUniqueString;
@@ -10397,8 +10402,8 @@ namespace SampleModel
 				}
 			}
 			[AccessedThroughPropertyAttribute("hasParents")]
-			private Nullable<bool> _hasParents;
-			public override Nullable<bool> hasParents
+			private bool _hasParents;
+			public override bool hasParents
 			{
 				get
 				{
@@ -10406,8 +10411,8 @@ namespace SampleModel
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._hasParents;
-					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
+					bool oldValue = this._hasParents;
+					if (oldValue != value)
 					{
 						if (this._Context.OnPersonhasParentsChanging(this, value) && base.RaisehasParentsChangingEvent(value))
 						{
@@ -11386,19 +11391,23 @@ namespace SampleModel
 		#endregion // DeathCore
 		#endregion // Death
 		#region NaturalDeath
-		public NaturalDeath CreateNaturalDeath(Death Death)
+		public NaturalDeath CreateNaturalDeath(bool isFromProstateCancer, Death Death)
 		{
 			if ((object)Death == null)
 			{
 				throw new ArgumentNullException("Death");
 			}
+			if (!(this.OnNaturalDeathisFromProstateCancerChanging(null, isFromProstateCancer)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("isFromProstateCancer");
+			}
 			if (!(this.OnNaturalDeathDeathChanging(null, Death)))
 			{
 				throw SampleModelContext.GetConstraintEnforcementFailedException("Death");
 			}
-			return new NaturalDeathCore(this, Death);
+			return new NaturalDeathCore(this, isFromProstateCancer, Death);
 		}
-		private bool OnNaturalDeathisFromProstateCancerChanging(NaturalDeath instance, Nullable<bool> newValue)
+		private bool OnNaturalDeathisFromProstateCancerChanging(NaturalDeath instance, bool newValue)
 		{
 			return true;
 		}
@@ -11431,9 +11440,10 @@ namespace SampleModel
 		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 		private sealed class NaturalDeathCore : NaturalDeath
 		{
-			public NaturalDeathCore(SampleModelContext context, Death Death)
+			public NaturalDeathCore(SampleModelContext context, bool isFromProstateCancer, Death Death)
 			{
 				this._Context = context;
+				this._isFromProstateCancer = isFromProstateCancer;
 				this._Death = Death;
 				context.OnNaturalDeathDeathChanged(this, null);
 				context._NaturalDeathList.Add(this);
@@ -11447,8 +11457,8 @@ namespace SampleModel
 				}
 			}
 			[AccessedThroughPropertyAttribute("isFromProstateCancer")]
-			private Nullable<bool> _isFromProstateCancer;
-			public override Nullable<bool> isFromProstateCancer
+			private bool _isFromProstateCancer;
+			public override bool isFromProstateCancer
 			{
 				get
 				{
@@ -11456,8 +11466,8 @@ namespace SampleModel
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._isFromProstateCancer;
-					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
+					bool oldValue = this._isFromProstateCancer;
+					if (oldValue != value)
 					{
 						if (this._Context.OnNaturalDeathisFromProstateCancerChanging(this, value) && base.RaiseisFromProstateCancerChangingEvent(value))
 						{
@@ -11497,23 +11507,31 @@ namespace SampleModel
 		#endregion // NaturalDeathCore
 		#endregion // NaturalDeath
 		#region UnnaturalDeath
-		public UnnaturalDeath CreateUnnaturalDeath(Death Death)
+		public UnnaturalDeath CreateUnnaturalDeath(bool isViolent, bool isBloody, Death Death)
 		{
 			if ((object)Death == null)
 			{
 				throw new ArgumentNullException("Death");
 			}
+			if (!(this.OnUnnaturalDeathisViolentChanging(null, isViolent)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("isViolent");
+			}
+			if (!(this.OnUnnaturalDeathisBloodyChanging(null, isBloody)))
+			{
+				throw SampleModelContext.GetConstraintEnforcementFailedException("isBloody");
+			}
 			if (!(this.OnUnnaturalDeathDeathChanging(null, Death)))
 			{
 				throw SampleModelContext.GetConstraintEnforcementFailedException("Death");
 			}
-			return new UnnaturalDeathCore(this, Death);
+			return new UnnaturalDeathCore(this, isViolent, isBloody, Death);
 		}
-		private bool OnUnnaturalDeathisViolentChanging(UnnaturalDeath instance, Nullable<bool> newValue)
+		private bool OnUnnaturalDeathisViolentChanging(UnnaturalDeath instance, bool newValue)
 		{
 			return true;
 		}
-		private bool OnUnnaturalDeathisBloodyChanging(UnnaturalDeath instance, Nullable<bool> newValue)
+		private bool OnUnnaturalDeathisBloodyChanging(UnnaturalDeath instance, bool newValue)
 		{
 			return true;
 		}
@@ -11546,9 +11564,11 @@ namespace SampleModel
 		[StructLayoutAttribute(LayoutKind.Auto, CharSet=CharSet.Auto)]
 		private sealed class UnnaturalDeathCore : UnnaturalDeath
 		{
-			public UnnaturalDeathCore(SampleModelContext context, Death Death)
+			public UnnaturalDeathCore(SampleModelContext context, bool isViolent, bool isBloody, Death Death)
 			{
 				this._Context = context;
+				this._isViolent = isViolent;
+				this._isBloody = isBloody;
 				this._Death = Death;
 				context.OnUnnaturalDeathDeathChanged(this, null);
 				context._UnnaturalDeathList.Add(this);
@@ -11562,8 +11582,8 @@ namespace SampleModel
 				}
 			}
 			[AccessedThroughPropertyAttribute("isViolent")]
-			private Nullable<bool> _isViolent;
-			public override Nullable<bool> isViolent
+			private bool _isViolent;
+			public override bool isViolent
 			{
 				get
 				{
@@ -11571,8 +11591,8 @@ namespace SampleModel
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._isViolent;
-					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
+					bool oldValue = this._isViolent;
+					if (oldValue != value)
 					{
 						if (this._Context.OnUnnaturalDeathisViolentChanging(this, value) && base.RaiseisViolentChangingEvent(value))
 						{
@@ -11583,8 +11603,8 @@ namespace SampleModel
 				}
 			}
 			[AccessedThroughPropertyAttribute("isBloody")]
-			private Nullable<bool> _isBloody;
-			public override Nullable<bool> isBloody
+			private bool _isBloody;
+			public override bool isBloody
 			{
 				get
 				{
@@ -11592,8 +11612,8 @@ namespace SampleModel
 				}
 				set
 				{
-					Nullable<bool> oldValue = this._isBloody;
-					if ((oldValue.GetValueOrDefault() != value.GetValueOrDefault()) || (oldValue.HasValue != value.HasValue))
+					bool oldValue = this._isBloody;
+					if (oldValue != value)
 					{
 						if (this._Context.OnUnnaturalDeathisBloodyChanging(this, value) && base.RaiseisBloodyChangingEvent(value))
 						{

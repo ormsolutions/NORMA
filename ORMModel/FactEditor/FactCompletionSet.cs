@@ -469,7 +469,7 @@ namespace Neumont.Tools.ORM.FactEditor
 				// followed by a BinarySearch and Insert if needed.
 				myObjectEntries.Remove(objectType);
 				int newIndex = myObjectEntries.BinarySearch(objectType, myComparer);
-				Debug.Assert(newIndex < 0);
+				//Debug.Assert(newIndex < 0);
 				myObjectEntries.Insert((newIndex < 0) ? ~newIndex : newIndex, objectType);
 			}
 		}

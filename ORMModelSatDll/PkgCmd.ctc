@@ -40,10 +40,10 @@
 CMDS_SECTION guidORMDesignerPackage
 	MENUS_BEGIN
 		// Context menus
-		guidORMDesignerCommandSet:menuIdContextMenu,				guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Designer Context Menu",			"ORMDesignerContextMenu";
-		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0000,	TOOLWINDOWTOOLBAR,	"ORM Verbalization Toolbar",			"ORMDesignerVerbalizationToolbar";
-		guidORMDesignerCommandSet:menuIdErrorList,					guidORMDesignerCommandSet:groupIdErrorList,				0x0000,	CONTEXT,			"ORM Model Error List",					"Validation E&rrors";
-		guidORMDesignerCommandSet:menuIdNewReadingEditorContextMenu,				guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Reading Editor Context Menu",			"ORMNewReadingEditorContextMenu";
+		guidORMDesignerCommandSet:menuIdContextMenu,					guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Designer Context Menu",			"ORMDesignerContextMenu";
+		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,			guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0000,	TOOLWINDOWTOOLBAR,	"ORM Verbalization Toolbar",			"ORMDesignerVerbalizationToolbar";
+		guidORMDesignerCommandSet:menuIdErrorList,						guidORMDesignerCommandSet:groupIdErrorList,				0x0000,	CONTEXT,			"ORM Model Error List",					"Validation E&rrors";
+		guidORMDesignerCommandSet:menuIdNewReadingEditorContextMenu,	guidORMDesignerCommandSet:0,							0x0000,	CONTEXT,			"ORM Reading Editor Context Menu",		"ORMNewReadingEditorContextMenu";
 	MENUS_END
 
 	NEWGROUPS_BEGIN
@@ -81,18 +81,20 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceDown			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0607,		guidOfficeIcon:msotcidDownArrow2,									BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Role Sequence &Down";
 
 		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0610,		guidORMToolWindowIcons:bmpIdToolWindowReadingEditor,				BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Reading Edi&tor";
-		guidORMDesignerCommandSet:cmdIdViewNewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0611,		guidORMToolWindowIcons:bmpIdToolWindowReadingEditor,				BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Reading Editor (ne&w)";
+		guidORMDesignerCommandSet:cmdIdViewNewReadingEditor,		guidORMDesignerCommandSet:groupIdFactCommands,			0x0611,		guidORMToolWindowIcons:bmpIdToolWindowReadingEditor,				BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Reading Editor (ne&w)";
+		guidORMDesignerCommandSet:cmdIdObjectifyFactType,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0010,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Ob&jectify Fact Type";
 		guidORMDesignerCommandSet:cmdIdExtensionManager,			guidORMDesignerCommandSet:groupIdModelCommands,			0x0500,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"E&xtension Manager...";
 		guidORMDesignerCommandSet:cmdIdErrorList,					guidORMDesignerCommandSet:groupIdErrorListTest,			0x0500,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DYNAMICITEMSTART|DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"No Errors &Present";
 		
 	
-		guidORMDesignerCommandSet:cmdIdReadingEditorAddReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextAddDelete,	0x0710,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Add Reading";
-		guidORMDesignerCommandSet:cmdIdReadingEditorAddReadingOrder			guidORMDesignerCommandSet:groupIdNewReadingEditorContextAddDelete,	0x0720,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Add Reading &Order";
-		guidORMDesignerCommandSet:cmdIdReadingEditorDeleteReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextAddDelete,	0x0730,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Delete Reading";
-		guidORMDesignerCommandSet:cmdIdReadingEditorPromoteReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextReadingPromoteDemote,	0x0740,		guidOfficeIcon:msotcidUpArrow2,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading &Up";
-		guidORMDesignerCommandSet:cmdIdReadingEditorDemoteReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextReadingPromoteDemote,	0x0750,		guidOfficeIcon:msotcidDownArrow2,									BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Dow&n";
-		guidORMDesignerCommandSet:cmdIdReadingEditorPromoteReadingOrder			guidORMDesignerCommandSet:groupIdNewReadingEditorContextOrderPromoteDemote,	0x0760,		guidOfficeIcon:msotcidUpArrow2,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Order Up";
-		guidORMDesignerCommandSet:cmdIdReadingEditorDemoteReadingOrder			guidORMDesignerCommandSet:groupIdNewReadingEditorContextOrderPromoteDemote,	0x0770,		guidOfficeIcon:msotcidDownArrow2,									BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Order Down"; //UNDONE: Add menu options for: Delete Reading Order, Set as Primary Reading, & Set as Primary Reading Order
+		guidORMDesignerCommandSet:cmdIdReadingEditorAddReading				guidORMDesignerCommandSet:groupIdNewReadingEditorContextAddDelete,				0x0710,		guidOfficeIcon:msotcidNoIcon,		BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Add Reading";
+		guidORMDesignerCommandSet:cmdIdReadingEditorAddReadingOrder			guidORMDesignerCommandSet:groupIdNewReadingEditorContextAddDelete,				0x0720,		guidOfficeIcon:msotcidNoIcon,		BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Add Reading &Order";
+		guidORMDesignerCommandSet:cmdIdReadingEditorDeleteReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextAddDelete,				0x0730,		guidOfficeIcon:msotcidNoIcon,		BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Delete Reading";
+		guidORMDesignerCommandSet:cmdIdReadingEditorPromoteReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextReadingPromoteDemote,	0x0740,		guidOfficeIcon:msotcidUpArrow2,		BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading &Up";
+		guidORMDesignerCommandSet:cmdIdReadingEditorDemoteReading			guidORMDesignerCommandSet:groupIdNewReadingEditorContextReadingPromoteDemote,	0x0750,		guidOfficeIcon:msotcidDownArrow2,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Dow&n";
+		guidORMDesignerCommandSet:cmdIdReadingEditorPromoteReadingOrder		guidORMDesignerCommandSet:groupIdNewReadingEditorContextOrderPromoteDemote,		0x0760,		guidOfficeIcon:msotcidUpArrow2,		BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Order Up";
+		guidORMDesignerCommandSet:cmdIdReadingEditorDemoteReadingOrder		guidORMDesignerCommandSet:groupIdNewReadingEditorContextOrderPromoteDemote,		0x0770,		guidOfficeIcon:msotcidDownArrow2,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Order Down";
+		//UNDONE: Add menu options for: Delete Reading Order, Set as Primary Reading, & Set as Primary Reading Order
 
 
 		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	0,												"ORM M&odel Browser";
