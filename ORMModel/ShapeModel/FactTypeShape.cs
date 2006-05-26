@@ -3648,10 +3648,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				fact = noReading.FactType;
 				Debug.Assert(fact != null);
-				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
-				window.Show();
-				window.ActivateReading(fact);
 				//UNDONE: remove Old editor Window ^
+				//ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+				//window.Show();
+				//window.ActivateReading(fact);
 				NewORMReadingEditorToolWindow newWindow = ORMDesignerPackage.NewReadingEditorWindow;
 				newWindow.Show();
 				newWindow.ActivateReading(fact);

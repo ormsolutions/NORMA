@@ -39,7 +39,7 @@ namespace Neumont.Tools.ORM.Shell
 	[CLSCompliant(false)]
 	public class ORMReferenceModeEditorToolWindow : ORMToolWindow
 	{
-		private ReferenceModeViewForm myForm = new ReferenceModeViewForm();
+		private ReferenceModeViewForm myForm;
 
 		#region Construction
 		/// <summary>
@@ -60,7 +60,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return myForm.TreeControl;
+				ReferenceModeViewForm form = myForm;
+				return (form != null) ? form.TreeControl : null;
 			}
 		}
 		#endregion // Accessor properties
@@ -93,12 +94,17 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return myForm;
+				ReferenceModeViewForm form = myForm;
+				if (form == null)
+				{
+					myForm = form = new ReferenceModeViewForm();
+				}
+				return form;
 			}
 		}
 		#endregion // ToolWindow overrides
 		#region Nested Class ReadingsViewForm
-		private class ReferenceModeViewForm : Form
+		private class ReferenceModeViewForm : ContainerControl
 		{
 			private CustomReferenceModeEditor myRefModeEditor;
 
@@ -140,6 +146,11 @@ namespace Neumont.Tools.ORM.Shell
 		#region LoadWindow Method
 		private void LoadWindow()
 		{
+			ReferenceModeViewForm form = myForm;
+			if (form == null)
+			{
+				return;
+			}
 			ORMModel model = null;
 			ORMDesignerDocData docData = CurrentDocument;
 			if (docData != null)
@@ -153,7 +164,7 @@ namespace Neumont.Tools.ORM.Shell
 						model = diagram.ModelElement as ORMModel;
 					}
 				}
-				myForm.SetModel(model);
+				form.SetModel(model);
 			}
 		}
 		#endregion // LoadWindow Method

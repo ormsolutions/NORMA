@@ -44,7 +44,7 @@ namespace Neumont.Tools.ORM.Shell
 	public class NewORMReadingEditorToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
 	{
 		#region Member variables
-		private ReadingsViewForm myForm = new ReadingsViewForm();
+		private ReadingsViewForm myForm;
 		/// <summary>
 		/// The Menu Service assigned to this Tool Window
 		/// </summary>
@@ -124,7 +124,12 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return myForm;
+				ReadingsViewForm form = myForm;
+				if (form == null)
+				{
+					myForm = form = new ReadingsViewForm();
+				}
+				return form;
 			}
 		}
 		#endregion
@@ -136,7 +141,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="reading">Reading</param>
 		public void ActivateReading(Reading reading)
 		{
-			myForm.ActivateReading(reading);
+			ReadingsViewForm form = myForm;
+			if (form != null)
+			{
+				form.ActivateReading(reading);
+			}
 		}
 
 		/// <summary>
@@ -147,7 +156,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="fact">FactType</param>
 		public void ActivateReading(FactType fact)
 		{
-			myForm.ActivateReading(fact);
+			ReadingsViewForm form = myForm;
+			if (form != null)
+			{
+				form.ActivateReading(fact);
+			}
 		}
 		#endregion // Reading activation helper
 		#region Selection Monitoring
@@ -232,16 +245,21 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return myForm.EditingFactType;
+				ReadingsViewForm form = myForm;
+				return (form != null) ? form.EditingFactType : ActiveFactType.Empty;
 			}
 			set
 			{
-				myForm.EditingFactType = value;
+				ReadingsViewForm form = myForm;
+				if (form != null)
+				{
+					form.EditingFactType = value;
+				}
 			}
 		}
 		#endregion
 		#region nested class ReadingsViewForm
-		private class ReadingsViewForm : Form
+		private class ReadingsViewForm : ContainerControl
 		{
 			private NewReadingEditor myReadingEditor;
 			private Label myNoSelectionLabel;
@@ -513,7 +531,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void AttachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			NewReadingEditor readingEditor = myForm.ReadingEditor;
+			ReadingsViewForm form = myForm;
+			NewReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
 
 			if (readingEditor != null)
 			{
@@ -527,8 +546,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void DetachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
 		{
-
-			NewReadingEditor readingEditor = myForm.ReadingEditor;
+			ReadingsViewForm form = myForm;
+			NewReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
 			if (readingEditor != null)
 			{
 				readingEditor.DetachEventHandlers(store);

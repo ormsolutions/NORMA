@@ -735,6 +735,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		}
 		private void ReadingLinkAddedEvent(object sender, ElementAddedEventArgs e)
 		{
+			if (myFact == null)
+			{
+				return;
+			}
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 			ReadingOrder readingOrder = link.ReadingOrder;
 			FactType fact = readingOrder.FactType;
@@ -746,6 +750,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		}
 		private void ReadingLinkRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
+			if (myFact == null)
+			{
+				return;
+			}
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 			ReadingOrder order = link.ReadingOrder;
 			// Handled all at once by ReadingOrderLinkRemovedEvent if all are gone.
@@ -759,6 +767,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		}
 		private void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
+			if (myFact == null)
+			{
+				return;
+			}
 			Reading reading = e.ModelElement as Reading;
 			ReadingOrder order = reading.ReadingOrder;
 			Guid attributeId = e.MetaAttribute.Id;
@@ -772,11 +784,19 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		}
 		private void ReadingOrderPositionChangedHandler(object sender, RolePlayerOrderChangedEventArgs e)
 		{
+			if (myFact == null)
+			{
+				return;
+			}
 			myReadingOrderBranch.ReadingOrderLocationUpdate(e.CounterpartRolePlayer as ReadingOrder);
 			this.UpdateContextMenuItems();
 		}
 		private void ReadingPositionChangedHandler(object sender, RolePlayerOrderChangedEventArgs e)
 		{
+			if (myFact == null)
+			{
+				return;
+			}
 			myReadingOrderBranch.ReadingLocationUpdate(e.CounterpartRolePlayer as Reading);
 			this.UpdateContextMenuItems();
 		}
