@@ -1794,10 +1794,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ImpliedUniqueVerbalizer class
 		#region ImpliedMandatoryVerbalizer class
 		/// <summary>
-		/// <summary>
 		/// Non-generated portions of verbalization helper used to verbalize a
 		/// simple mandatory constraint on a proxy role.
-		/// </summary>
 		/// </summary>
 		private partial class ImpliedMandatoryVerbalizer
 		{

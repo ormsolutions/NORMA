@@ -2630,7 +2630,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			bool isDeontic = false;
+			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			RoleBaseMoveableCollection factRoles = null;
@@ -3603,7 +3603,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			bool isDeontic = false;
+			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			RoleBaseMoveableCollection factRoles = null;
