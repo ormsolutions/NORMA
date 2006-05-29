@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define TESTDUMP
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -269,6 +270,23 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 									{
 										// Clean up Guid differences
 										diffStream.Seek(0, SeekOrigin.Begin);
+
+#if TESTDUMP
+										// Code for testing purposes, currentDumpPreGuidScrub will contain the current xml
+										currentStream.Seek(0, SeekOrigin.Begin);
+										string currentDumpPreGuidScrub = null;
+										using (XmlReader debugReader = XmlReader.Create(currentStream, readerSettings))
+										{
+											StringBuilder sb = new StringBuilder();
+											using (XmlWriter debugWriter = XmlWriter.Create(sb))
+											{
+												debugWriter.Settings.Encoding = Encoding.UTF8;
+												FormatXml(debugReader, debugWriter);
+											}
+											currentDumpPreGuidScrub = sb.ToString();
+										}
+#endif // TESTDUMP
+
 										baselineStream.Seek(0, SeekOrigin.Begin);
 										StringMapDictionary idMap = null;
 
@@ -320,6 +338,23 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 														IdMapTransform.Transform(currentReader, args, modifiedCurrentWriter);
 													}
 												}
+
+#if TESTDUMP
+												// Code for testing purposes, currentDumpPostGuidScrub will contain the current xml
+												modifiedCurrentStream.Seek(0, SeekOrigin.Begin);
+												string currentDumpPostGuidScrub = null;
+												using (XmlReader debugReader = XmlReader.Create(modifiedCurrentStream, readerSettings))
+												{
+													StringBuilder sb = new StringBuilder();
+													using (XmlWriter debugWriter = XmlWriter.Create(sb))
+													{
+														debugWriter.Settings.Encoding = Encoding.UTF8;
+														FormatXml(debugReader, debugWriter);
+													}
+													currentDumpPostGuidScrub = sb.ToString();
+												}
+#endif // TESTDUMP
+												
 												modifiedCurrentStream.Seek(0, SeekOrigin.Begin);
 
 												// Repeat the comparison to get a new diffgram
@@ -436,20 +471,26 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				Stack<DiffMatchRecord> diffMatchStack = new Stack<DiffMatchRecord>();
 				diffMatchStack.Push(new DiffMatchRecord(0, 0)); // Seed so we can Peek safely
 				int currentLevel = 0;
+				int docPassPending = 0;
 				diffReader.MoveToContent(); // Jump to root element
 				while (diffReader.Read())
 				{
-				    XmlNodeType diffNodeType = diffReader.NodeType;
+					XmlNodeType diffNodeType = diffReader.NodeType;
 					switch (diffNodeType)
-				    {
-				        case XmlNodeType.Element:
+					{
+						case XmlNodeType.Element:
+							if (docPassPending != 0)
+							{
+								PassEndElement(docReader, docPassPending);
+								docPassPending = 0;
+							}
 							string localName = diffReader.LocalName;
 							if (localName == "node")
 							{
 								// Pull the match value from the Xml document
 								int newDiffMatch = XmlConvert.ToInt32(diffReader.GetAttribute("match"));
 
-								// Increment out level
+								// Increment our level
 								++currentLevel;
 								int lastDiffMatch = 0;
 
@@ -502,7 +543,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 								{
 									// Treat this just like an end element
 									--currentLevel;
-									PassEndElement(docReader);
+									++docPassPending;
 								}
 							}
 							else if (localName == "change")
@@ -545,7 +586,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 							if (diffReader.LocalName == "node")
 							{
 								--currentLevel;
-								PassEndElement(docReader);
+								++docPassPending;
 							}
 							break;
 					}

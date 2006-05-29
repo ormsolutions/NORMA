@@ -503,7 +503,45 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			return object.ReferenceEquals(localName, elementName);
 		}
 		/// <summary>
-		/// Move the reader to the node immediately after the end element corresponding to the current open element
+		/// Move the reader to the end element corresponding to the current open element
+		/// levels above the current element
+		/// </summary>
+		/// <param name="reader">The XmlReader to advance</param>
+		/// <param name="levels">The number of document levels to close</param>
+		private static void PassEndElement(XmlReader reader, int levels)
+		{
+			bool skipNextRead = false;
+			if (reader.IsEmptyElement && levels > 1)
+			{
+				reader.Skip();
+				skipNextRead = true;
+				--levels;
+			}
+			while (levels != 0)
+			{
+				if (!reader.IsEmptyElement)
+				{
+					bool finished = false;
+					while (!finished && (skipNextRead ? !reader.EOF : reader.Read()))
+					{
+						skipNextRead = false;
+						switch (reader.NodeType)
+						{
+							case XmlNodeType.Element:
+								PassEndElement(reader);
+								break;
+
+							case XmlNodeType.EndElement:
+								finished = true;
+								break;
+						}
+					}
+				}
+				--levels;
+			}
+		}
+		/// <summary>
+		/// Move the reader to the end element corresponding to the current open element
 		/// </summary>
 		/// <param name="reader">The XmlReader to advance</param>
 		private static void PassEndElement(XmlReader reader)
