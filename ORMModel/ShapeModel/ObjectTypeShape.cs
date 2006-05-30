@@ -372,10 +372,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 									{
 										PresentationElementMoveableCollection pels = identifierFor.PresentationRolePlayers;
 										int pelCount = pels.Count;
-										ObjectTypeShape ots;
+										ORMBaseShape ots;
 										for (int k = 0; k < pelCount; ++k)
 										{
-											if (null != (ots = pels[k] as ObjectTypeShape))
+											if (null != (ots = pels[k] as ORMBaseShape))
 											{
 												ots.AutoResize();
 											}
@@ -415,18 +415,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					PresentationElementMoveableCollection pels = entityType.PresentationRolePlayers;
 					int pelCount = pels.Count;
-					ObjectTypeShape ots;
-					ObjectifiedFactTypeNameShape objectifiedShape;
+					ORMBaseShape ots; // Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
 					for (int i = 0; i < pelCount; ++i)
 					{
 						PresentationElement pel = pels[i];
-						if (null != (ots = pel as ObjectTypeShape))
+						if (null != (ots = pel as ORMBaseShape))
 						{
 							ots.AutoResize();
-						}
-						else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
-						{
-							objectifiedShape.AutoResize();
 						}
 					}
 				}
@@ -572,15 +567,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								foreach (PresentationElement pel in objectType.PresentationRolePlayers)
 								{
-									ObjectTypeShape objectShape;
-									ObjectifiedFactTypeNameShape objectifiedShape;
-									if (null != (objectShape = pel as ObjectTypeShape))
+									ORMBaseShape objectShape; // Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
+									if (null != (objectShape = pel as ORMBaseShape))
 									{
 										objectShape.AutoResize();
-									}
-									else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
-									{
-										objectifiedShape.AutoResize();
 									}
 								}
 							}
