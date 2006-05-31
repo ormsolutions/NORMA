@@ -111,11 +111,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DataTypesGenerator.xml</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\Editors\NewReadingEditor.cs">
+    <Compile Include="ObjectModel\Editors\ReadingEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ObjectModel\Editors\NewReadingEditor.Designer.cs">
-      <DependentUpon>NewReadingEditor.cs</DependentUpon>
+    <Compile Include="ObjectModel\Editors\ReadingEditor.Designer.cs">
+      <DependentUpon>ReadingEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\Editors\ReadingTextEditor.cs" />
     <Compile Include="ObjectModel\Editors\CustomReferenceModeEditor.cs">
@@ -267,9 +267,9 @@
     <None Include="ObjectModel\VerbalizationGenerator.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="ObjectModel\Editors\NewReadingEditor.resx">
+    <EmbeddedResource Include="ObjectModel\Editors\ReadingEditor.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>NewReadingEditor.cs</DependentUpon>
+      <DependentUpon>ReadingEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
       <DependentUpon>ORMCore.dsldm.cs</DependentUpon>
