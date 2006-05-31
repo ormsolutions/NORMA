@@ -19,7 +19,7 @@
 #define menuIdContextMenu				0x0100
 #define menuIdVerbalizationToolBar		0x0101
 #define menuIdErrorList					0x0102
-#define menuIdNewReadingEditorContextMenu 0x0103
+#define menuIdReadingEditorContextMenu	0x0103
 
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
@@ -35,9 +35,9 @@
 #define groupIdORMToolWindows			0x1006
 #define groupIdErrorList				0x1007
 #define groupIdErrorListTest			0x1008
-#define groupIdNewReadingEditorContextAddDelete		0x1009
-#define groupIdNewReadingEditorContextReadingPromoteDemote 0x1010
-#define groupIdNewReadingEditorContextOrderPromoteDemote		0x10011
+#define groupIdReadingEditorContextAddDelete		0x1009
+#define groupIdReadingEditorContextReadingPromoteDemote 0x1010
+#define groupIdReadingEditorContextOrderPromoteDemote		0x10011
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -75,7 +75,7 @@
 #define cmdIdMoveRoleLeft				0x2915
 #define cmdIdMoveRoleRight				0x2916
 
-#define cmdIdViewNewReadingEditor		0x2917
+// 0x2917 available
 
 #define cmdIdReadingEditorAddReading			0x2918
 #define cmdIdReadingEditorAddReadingOrder		0x2919

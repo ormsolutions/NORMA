@@ -21,7 +21,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	/// <summary>
 	/// Generated code behind for ReadingEditor control.
 	/// </summary>
-	partial class NewReadingEditor : UserControl
+	partial class ReadingEditor : UserControl
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -49,10 +49,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewReadingEditor));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReadingEditor));
 			this.myImageList = new System.Windows.Forms.ImageList(this.components);
 			this.mySplitContainer = new System.Windows.Forms.ContainerControl();
-			this.vtrReadings = new Neumont.Tools.ORM.ObjectModel.Editors.NewReadingEditor.CustomVirtualTreeControl();
+			this.vtrReadings = new Neumont.Tools.ORM.ObjectModel.Editors.ReadingEditor.CustomVirtualTreeControl();
 			this.mySplitContainer.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -91,10 +91,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			this.vtrReadings.ContextMenuInvoked += new ContextMenuEventHandler(this.OnContextMenuInvoked);
 			this.vtrReadings.SelectionChanged += new EventHandler(this.OnTreeControlSelectionChanged);
 			// 
-			// NewReadingEditor
+			// ReadingEditor
 			// 
 			this.Controls.Add(this.mySplitContainer);
-			this.Name = "NewReadingEditor";
+			this.Name = "ReadingEditor";
 			this.Size = new System.Drawing.Size(541, 276);
 			this.mySplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);

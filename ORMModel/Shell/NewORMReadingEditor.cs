@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("1E45D5B8-890A-4ED5-AE1A-80BE221398D2")]
 	[CLSCompliant(false)]
-	public class NewORMReadingEditorToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
+	public class ORMReadingEditorToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
 	{
 		#region Member variables
 		private ReadingsViewForm myForm;
@@ -55,11 +55,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Creates a new instance of the reading editor tool window.
 		/// </summary>
-		public NewORMReadingEditorToolWindow(IServiceProvider serviceProvider)
+		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
 			this.myCtorServiceProvider = serviceProvider;
-			NewORMReadingEditorToolWindow.TheMenuService = this.MenuService;
+			ORMReadingEditorToolWindow.TheMenuService = this.MenuService;
 			
 		}
 		
@@ -113,7 +113,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return "New " + ResourceStrings.ModelReadingEditorWindowTitle;
+				return ResourceStrings.ModelReadingEditorWindowTitle;
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region nested class ReadingsViewForm
 		private class ReadingsViewForm : ContainerControl
 		{
-			private NewReadingEditor myReadingEditor;
+			private ReadingEditor myReadingEditor;
 			private Label myNoSelectionLabel;
 
 			#region construction
@@ -272,7 +272,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			private void Initialize()
 			{
-				myReadingEditor = new NewReadingEditor();
+				myReadingEditor = new ReadingEditor();
 				this.Controls.Add(myReadingEditor);
 				System.Drawing.Point location = this.Controls[this.Controls.Count - 1].Location;
 				myReadingEditor.Dock = DockStyle.Fill;
@@ -303,7 +303,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			
-			public NewReadingEditor ReadingEditor
+			public ReadingEditor ReadingEditor
 			{
 				get
 				{
@@ -432,7 +432,7 @@ namespace Neumont.Tools.ORM.Shell
 			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
 			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
 			{
-				NewReadingEditor myReadingEditor = this.myForm.ReadingEditor;
+				ReadingEditor myReadingEditor = this.myForm.ReadingEditor;
 				// Default to a not-supported status.
 				switch ((VSConstants.VSStd97CmdID)nCmdID)
 				{
@@ -532,7 +532,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void AttachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			ReadingsViewForm form = myForm;
-			NewReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
+			ReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
 
 			if (readingEditor != null)
 			{
@@ -547,7 +547,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void DetachEventHandlers(Microsoft.VisualStudio.Modeling.Store store)
 		{
 			ReadingsViewForm form = myForm;
-			NewReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
+			ReadingEditor readingEditor = (form != null) ? form.ReadingEditor : null;
 			if (readingEditor != null)
 			{
 				readingEditor.DetachEventHandlers(store);
@@ -611,11 +611,11 @@ namespace Neumont.Tools.ORM.Shell
 					return myMenuService;
 				}
 			}
-			protected NewORMReadingEditorToolWindow CurrentToolWindow
+			protected ORMReadingEditorToolWindow CurrentToolWindow
 			{
 				get
 				{
-					return MonitorSelection.CurrentWindow as NewORMReadingEditorToolWindow;
+					return MonitorSelection.CurrentWindow as ORMReadingEditorToolWindow;
 				}
 			}
 			/// <summary>
@@ -651,11 +651,11 @@ namespace Neumont.Tools.ORM.Shell
 			public void OnStatusDelete(Object sender, EventArgs e)
 			{
 				//IMonitorSelectionService service = MonitorSelection;
-				//NewORMReadingEditorToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, service.CurrentWindow as NewORMReadingEditorToolWindow);
+				//ORMReadingEditorToolWindow.OnStatusCommand(sender, ORMDesignerCommands.Delete, service.CurrentWindow as ORMReadingEditorToolWindow);
 			}
 			public void OnMenuDelete(Object sender, EventArgs e)
 			{
-				//NewORMReadingEditorToolWindow currentWindow = CurrentToolWindow;
+				//ORMReadingEditorToolWindow currentWindow = CurrentToolWindow;
 				//if (currentWindow != null)
 				//{
 				//    currentWindow.OnMenuDelete((sender as OleMenuCommand).Text);

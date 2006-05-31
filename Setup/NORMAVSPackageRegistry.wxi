@@ -88,18 +88,9 @@
 				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
 				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
-			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{992C221B-4BE5-4A9B-900D-9882B4FA0F99}">
-				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReadingEditorToolWindow" Type="string"/>
-				<Registry Name="Style" Value="Tabbed" Type="string"/>
-				<Registry Name="Orientation" Value="Right" Type="string"/>
-				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
-				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
-				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
-			</Registry>
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{1E45D5B8-890A-4ED5-AE1A-80BE221398D2}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.NewORMReadingEditorToolWindow" Type="string"/>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReadingEditorToolWindow" Type="string"/>
 				<Registry Name="Style" Value="Tabbed" Type="string"/>
 				<Registry Name="Orientation" Value="Right" Type="string"/>
 				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>

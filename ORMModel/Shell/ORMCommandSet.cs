@@ -104,10 +104,6 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuReadingsWindow),
 				ORMDesignerCommandIds.ViewReadingEditor)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusReadingsWindow),
-				new EventHandler(OnMenuNewReadingsWindow),
-				ORMDesignerCommandIds.ViewNewReadingEditor)
-				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusInsertRole),
 				new EventHandler(OnMenuInsertRoleBefore),
 				ORMDesignerCommandIds.InsertRoleBefore)
@@ -424,14 +420,7 @@ namespace Neumont.Tools.ORM.Shell
 				ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;
 				editorWindow.Show();
 			}
-			/// <summary>
-			/// Menu handler
-			/// </summary>
-			protected void OnMenuNewReadingsWindow(object sender, EventArgs e)
-			{
-				NewORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.NewReadingEditorWindow;
-				editorWindow.Show();
-			}
+
 			private void OnStatusSelectAll(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectAll);
@@ -620,106 +609,106 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			#region NewReadingEditor context menu handlers
+			#region ReadingEditor context menu handlers
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusAddReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.AddReading);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.AddReading);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuAddReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.AddReading();
+				ReadingEditor.Instance.AddReading();
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusAddReadingOrder(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.AddReadingOrder);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.AddReadingOrder);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuAddReadingOrder(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.AddReadingOrder();
+				ReadingEditor.Instance.AddReadingOrder();
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusDeleteReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DeleteReading);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DeleteReading);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuDeleteReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.DeleteSelectedReading();
+				ReadingEditor.Instance.DeleteSelectedReading();
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusPromoteReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.PromoteReading);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.PromoteReading);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuPromoteReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.PromoteReading();
+				ReadingEditor.Instance.PromoteReading();
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusDemoteReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DemoteReading);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DemoteReading);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuDemoteReading(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.DemoteReading();
+				ReadingEditor.Instance.DemoteReading();
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusReadingEditorPromoteReadingOrder(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.PromoteReadingOrder);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.PromoteReadingOrder);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuReadingEditorPromoteReadingOrder(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.PromoteReadingOrder();
+				ReadingEditor.Instance.PromoteReadingOrder();
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
 			private void OnStatusReadingEditorDemoteReadingOrder(object sender, EventArgs e)
 			{
-				NewReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DemoteReadingOrder);
+				ReadingEditor.OnStatusCommand(sender, ReadingEditorCommands.DemoteReadingOrder);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuReadingEditorDemoteReadingOrder(object sender, EventArgs e)
 			{
-				NewReadingEditor.Instance.DemoteReadingOrder();
+				ReadingEditor.Instance.DemoteReadingOrder();
 			}
-			#endregion //NewReadingEditor context menu handlers
+			#endregion // ReadingEditor context menu handlers
 
 			private class DynamicErrorCommand : DynamicStatusMenuCommand
 			{
@@ -1061,10 +1050,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
 			/// <summary>
-			/// The ORM Readings Window item on the fact type context menu
-			/// </summary>
-			public static readonly CommandID ViewNewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewNewReadingEditor);
-			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewNotesWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewNotesWindow);
@@ -1130,31 +1115,31 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID MoveRoleRight = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleRight);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Add a Reading to the Reading Order Selected
+			/// The commands for the ReadingEditor context menu -- Add a Reading to the Reading Order Selected
 			/// </summary>
 			public static readonly CommandID ReadingEditorAddReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorAddReading);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Add a ReadingOrder 
+			/// The commands for the ReadingEditor context menu -- Add a ReadingOrder 
 			/// </summary>
 			public static readonly CommandID ReadingEditorAddReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorAddReadingOrder);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Delete a Reading rom the Reading Order Selected
+			/// The commands for the ReadingEditor context menu -- Delete a Reading rom the Reading Order Selected
 			/// </summary>
 			public static readonly CommandID ReadingEditorDeleteReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDeleteReading);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Move the selected Reading Up
+			/// The commands for the ReadingEditor context menu -- Move the selected Reading Up
 			/// </summary>
 			public static readonly CommandID ReadingEditorPromoteReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorPromoteReading);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Move the selected Reading Down
+			/// The commands for the ReadingEditor context menu -- Move the selected Reading Down
 			/// </summary>
 			public static readonly CommandID ReadingEditorDemoteReading = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDemoteReading);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Move the selected RoleOrder Up
+			/// The commands for the ReadingEditor context menu -- Move the selected RoleOrder Up
 			/// </summary>
 			public static readonly CommandID ReadingEditorPromoteReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorPromoteReadingOrder);
 			/// <summary>
-			/// The commands for the NewReadingEditor context menu -- Move the selected RoleOrder Down
+			/// The commands for the ReadingEditor context menu -- Move the selected RoleOrder Down
 			/// </summary>
 			public static readonly CommandID ReadingEditorDemoteReadingOrder = new CommandID(guidORMDesignerCommandSet, cmdIdReadingEditorDemoteReadingOrder);
 			/// <summary>
@@ -1168,9 +1153,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdContextMenu);
 			/// <summary>
-			/// The context menu for the NewReadingEditor
+			/// The context menu for the ReadingEditor
 			/// </summary>
-			public static readonly CommandID ReadingEditorContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdNewReadingEditorContextMenu);		
+			public static readonly CommandID ReadingEditorContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdReadingEditorContextMenu);		
 			/// <summary>
 			/// The toolbar for the verbalization window
 			/// </summary>
@@ -1221,10 +1206,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
-			/// <summary>
-			/// The ORM Readings Window item on the fact type context menu
-			/// </summary>
-			private const int cmdIdViewNewReadingEditor = 0x2917;
 			/// <summary>
 			/// View the reference mode editor
 			/// </summary>
@@ -1325,7 +1306,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// The context menu for the New Reading Editor
 			/// </summary>
-			private const int menuIdNewReadingEditorContextMenu = 0x0103;
+			private const int menuIdReadingEditorContextMenu = 0x0103;
 			/// <summary>
 			/// Moves the role to the left in its order with the fact type.
 			/// </summary>

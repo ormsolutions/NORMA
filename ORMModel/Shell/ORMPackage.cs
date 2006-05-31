@@ -58,14 +58,12 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMDesignerPackage.FactEditorToolWindowShim), Style=VsDockStyle.Float, Transient=true, PositionX=200, PositionY=500, Width=800, Height=250, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMReferenceModeEditorToolWindow), Style=VsDockStyle.Float, Transient=true, PositionX=200, PositionY=100, Width=500, Height=350, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
-	[ProvideToolWindow(typeof(NewORMReadingEditorToolWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
-	[ProvideToolWindowVisibility(typeof(NewORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMVerbalizationToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
@@ -260,7 +258,6 @@ namespace Neumont.Tools.ORM.Shell
 				// Create tool windows
 				AddToolWindow(typeof(ORMBrowserToolWindow));
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
-				AddToolWindow(typeof(NewORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 				AddToolWindow(typeof(ORMVerbalizationToolWindow));
 				AddToolWindow(typeof(ORMNotesToolWindow));
@@ -474,16 +471,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 
-		/// <summary>
-		/// New Reading editor tool window.
-		/// </summary>
-		public static NewORMReadingEditorToolWindow NewReadingEditorWindow
-		{
-			get
-			{
-				return (NewORMReadingEditorToolWindow)mySingleton.GetToolWindow(typeof(NewORMReadingEditorToolWindow), true);
-			}
-		}
 		/// <summary>
 		/// Notes tool window.
 		/// </summary>

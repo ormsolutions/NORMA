@@ -117,12 +117,6 @@
     <Compile Include="ObjectModel\Editors\NewReadingEditor.Designer.cs">
       <DependentUpon>NewReadingEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\Editors\ReadingEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ObjectModel\Editors\ReadingEditor.Designer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="ObjectModel\Editors\ReadingTextEditor.cs" />
     <Compile Include="ObjectModel\Editors\CustomReferenceModeEditor.cs">
       <SubType>UserControl</SubType>
@@ -251,9 +245,6 @@
       <Link>ORMPackage.snk</Link>
     </None>
     <Compile Include="Shell\IORMSelectionContainer.cs" />
-    <Compile Include="Shell\ORMReadingEditor.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Shell\ORMSerializer.2.cs">
       <SubType>Code</SubType>
     </Compile>

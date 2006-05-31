@@ -240,7 +240,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	}
 	#endregion // ActiveFactType structure
 
-	public partial class NewReadingEditor : UserControl
+	public partial class ReadingEditor : UserControl
 	{
 		#region Enums
 		private enum ColumnIndex
@@ -261,11 +261,11 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// <summary>
 		/// Returns the latest instance of the editor
 		/// </summary>
-		public static NewReadingEditor Instance
+		public static ReadingEditor Instance
 		{
 			get
 			{
-				return NewReadingEditor.instance;
+				return ReadingEditor.instance;
 			}
 		}
 		/// <summary>
@@ -320,7 +320,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// <summary>
 		/// Provides a ref to the Reading Editorl from nested objects
 		/// </summary>
-		private static NewReadingEditor instance;
+		private static ReadingEditor instance;
 		#endregion // Static Variables
 
 		#region Member Variables
@@ -335,12 +335,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public NewReadingEditor()
+		public ReadingEditor()
 		{
 			InitializeComponent();
 
-			NewReadingEditor.instance = this;
-			NewReadingEditor.TreeControl = this.vtrReadings;
+			ReadingEditor.instance = this;
+			ReadingEditor.TreeControl = this.vtrReadings;
 
 			VirtualTreeColumnHeader[] headers = new VirtualTreeColumnHeader[ReadingOrderBranch.COLUMN_COUNT]
 			  {
@@ -529,7 +529,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		#region Tree Context Menu Methods
 		private void OnContextMenuInvoked(object sender, ContextMenuEventArgs e)
 		{
-			NewORMReadingEditorToolWindow.TheMenuService.ShowContextMenu(ORMDesignerDocView.ORMDesignerCommandIds.ReadingEditorContextMenu, e.X, e.Y);
+			ORMReadingEditorToolWindow.TheMenuService.ShowContextMenu(ORMDesignerDocView.ORMDesignerCommandIds.ReadingEditorContextMenu, e.X, e.Y);
 		}
 		/// <summary>
 		/// Event for selection changed
@@ -549,7 +549,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		{
 			MenuCommand command = sender as MenuCommand;
 			Debug.Assert(command != null);
-			command.Enabled = command.Visible = 0 != (commandFlag & NewReadingEditor.instance.myVisibleCommands);
+			command.Enabled = command.Visible = 0 != (commandFlag & ReadingEditor.instance.myVisibleCommands);
 		}
 		/// <summary>
 		/// Call the Drop Down list of Reading Orders to Select a new reading entry
@@ -761,7 +761,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			{
 				if (object.ReferenceEquals(order.FactType, myFact))
 				{
-					NewReadingEditor.myReadingOrderBranch.ReadingRemoved(link.ReadingCollection);
+					ReadingEditor.myReadingOrderBranch.ReadingRemoved(link.ReadingCollection);
 				}
 			}
 		}
@@ -903,7 +903,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			ModelHasFactType link = e.ModelElement as ModelHasFactType;
 			if (object.ReferenceEquals(link.FactTypeCollection, myFact))
 			{
-				ORMDesignerPackage.NewReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
+				ORMDesignerPackage.ReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
 			}
 		}
 		#endregion // FactType Event Handlers
@@ -1524,9 +1524,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				{
 					int newOrder = this.ShowNewOrder(roles as IList);
 
-					if (NewReadingEditor.TreeControl.SelectObject(myReadingOrderBranch, orderInfo, (int)ObjectStyle.TrackingObject, 0))
+					if (ReadingEditor.TreeControl.SelectObject(myReadingOrderBranch, orderInfo, (int)ObjectStyle.TrackingObject, 0))
 					{
-						NewReadingEditor.TreeControl.BeginLabelEdit();
+						ReadingEditor.TreeControl.BeginLabelEdit();
 					}
 				}
 			}
@@ -2119,9 +2119,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					{
 						offset += (collection[i].ReadingOrder != null) ? collection[i].Branch.RowCount : 1;
 					}
-					NewReadingEditor.TreeControl.CurrentIndex = offset -1;
-					NewReadingEditor.TreeControl.CurrentColumn = (int)ColumnIndex.ReadingBranch;
-					NewReadingEditor.TreeControl.BeginLabelEdit();
+					ReadingEditor.TreeControl.CurrentIndex = offset -1;
+					ReadingEditor.TreeControl.CurrentColumn = (int)ColumnIndex.ReadingBranch;
+					ReadingEditor.TreeControl.BeginLabelEdit();
 				}
 				public override bool ShouldSerializeValue(object component)
 				{
@@ -2568,9 +2568,9 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 								break;
 							}		
 						}
-						NewReadingEditor.TreeControl.CurrentIndex = offset - 1;
-						NewReadingEditor.TreeControl.CurrentColumn = (int)ColumnIndex.ReadingBranch;
-						NewReadingEditor.TreeControl.BeginLabelEdit();
+						ReadingEditor.TreeControl.CurrentIndex = offset - 1;
+						ReadingEditor.TreeControl.CurrentColumn = (int)ColumnIndex.ReadingBranch;
+						ReadingEditor.TreeControl.BeginLabelEdit();
 					}
 				}
 				/// <summary>
