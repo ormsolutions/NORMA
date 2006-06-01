@@ -245,6 +245,7 @@
       <Link>ORMPackage.snk</Link>
     </None>
     <Compile Include="Shell\IORMSelectionContainer.cs" />
+    <Compile Include="Shell\ORMReadingEditor.cs" />
     <Compile Include="Shell\ORMSerializer.2.cs">
       <SubType>Code</SubType>
     </Compile>
