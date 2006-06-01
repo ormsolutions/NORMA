@@ -96,6 +96,7 @@
 				<xs:element ref="dcl:table"/>
 				<xs:element ref="dcl:domainDataType"/>
 				<xs:element ref="dcl:trigger"/>
+				<xs:element ref="dcl:procedure"/>
 			</xs:choice>
 		</xs:sequence>
 	</xs:group>
@@ -436,6 +437,53 @@
 			<xs:selector xpath="dcl:columns/dcl:columnRef"/>
 			<xs:field xpath="@name"/>
 		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="procedure">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'PROCEDURE' in the SQL standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="parameter" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="dataType" type="dcl:predefinedDataType"/>
+						</xs:sequence>
+						<xs:attribute name="mode" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="IN"/>
+									<xs:enumeration value="OUT"/>
+									<xs:enumeration value="INOUT"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="name" use="required" type="ddt:identifier">
+							<xs:annotation>
+								<xs:documentation>The name of the parameter.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:group ref="dil:sqlProcedureStatement"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required" type="ddt:identifier">
+				<xs:annotation>
+					<xs:documentation>The name of the procedure.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="sqlDataAccessIndication" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="NO SQL"/>
+						<xs:enumeration value="CONTAINS SQL"/>
+						<xs:enumeration value="READS SQL DATA"/>
+						<xs:enumeration value="MODIFIES SQL DATA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
 	</xs:element>
 
 </xs:schema>

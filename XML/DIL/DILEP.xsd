@@ -388,8 +388,7 @@
 		</xs:choice>
 	</xs:group>
 	<xs:complexType name="booleanLogicalTest">
-		<xs:sequence>
-			<xs:group ref="dep:booleanValueExpression"/>
+		<xs:sequence minOccurs="2" maxOccurs="unbounded">
 			<xs:group ref="dep:booleanValueExpression"/>
 		</xs:sequence>
 	</xs:complexType>

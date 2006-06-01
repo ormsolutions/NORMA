@@ -676,10 +676,22 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
+	<xsl:template match="dep:or">
+		<xsl:for-each select="child::*">
+			<xsl:apply-templates select="."/>
+			<xsl:if test="not(position()=last())">
+				<xsl:text> OR </xsl:text>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+
 	<xsl:template match="dep:and">
-		<xsl:apply-templates select="child::*[1]"/>
-		<xsl:text> AND </xsl:text>
-		<xsl:apply-templates select="child::*[2]"/>
+		<xsl:for-each select="child::*">
+			<xsl:apply-templates select="."/>
+			<xsl:if test="not(position()=last())">
+				<xsl:text> AND </xsl:text>
+			</xsl:if>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="@operator">

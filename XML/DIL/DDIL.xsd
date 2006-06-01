@@ -937,7 +937,7 @@
 
 	<xs:element name="sqlInvokedProcedure">
 		<xs:annotation>
-			<xs:documentation>PROCEDURE &lt;schema qualified name&gt; ( [ &lt;SQL parameter declaration list&gt; ] ) &lt;routine characteristics&gt; &lt;routine body&gt;</xs:documentation>
+			<xs:documentation>CREATE PROCEDURE &lt;schema qualified name&gt; ( [ &lt;SQL parameter declaration list&gt; ] ) &lt;routine characteristics&gt; &lt;routine body&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
@@ -954,7 +954,7 @@
 
 	<xs:element name="sqlInvokedFunction">
 		<xs:annotation>
-			<xs:documentation>&lt;function specification&gt; &lt;routine body&gt;</xs:documentation>
+			<xs:documentation>CREATE &lt;function specification&gt; &lt;routine body&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>

@@ -44,6 +44,9 @@ table factor => table primary
 sql executable statement => sql procedure statement
 drop data type statement => drop user defined type statement
 grouping set => grouping element
+schema routine => SQL-invoked routine
+schema procedure => SQL-invoked procedure
+schema function => SQL-invoked function
 
 
 transcoding => <omitted> F695 Translation support
