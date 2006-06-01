@@ -202,7 +202,6 @@
     <Compile Include="Shell\ExtensionManager.Designer.cs">
       <DependentUpon>ExtensionManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Shell\NewORMReadingEditor.cs" />
     <Compile Include="Shell\ORMDocDataServices.cs" />
     <Compile Include="ObjectModel\ORMModelInterfaces.cs" />
     <Compile Include="ObjectModel\Reading.cs" />
