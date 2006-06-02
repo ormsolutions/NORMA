@@ -30,10 +30,17 @@ using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
-
+using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Shell.Interop;
+using OleInterop = Microsoft.VisualStudio.OLE.Interop;
+using System.Runtime.InteropServices;
+using Microsoft.VisualStudio;
+//temp
+using Neumont.Tools.ORM.FactEditor;
 
 namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
+
 	/// <summary>
 	/// Valid Commands for context menu
 	/// </summary>
@@ -761,7 +768,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			{
 				if (object.ReferenceEquals(order.FactType, myFact))
 				{
-					ReadingEditor.myReadingOrderBranch.ReadingRemoved(link.ReadingCollection);
+					ReadingEditor.myReadingOrderBranch.ReadingRemoved(link.ReadingCollection, order);
 				}
 			}
 		}
@@ -956,6 +963,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			#endregion //Branch Properties
 
 			#region IBranch Member Mirror/Implementations
+	
 			VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
@@ -1456,13 +1464,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			/// Triggers notification that a Reading has been removed from the branch.
 			/// </summary>
 			/// <param name="reading">The Reading which has been removed</param>
-			public void ReadingRemoved(Reading reading)
+			/// <param name="order">The order of the link</param>
+			public void ReadingRemoved(Reading reading, ReadingOrder order)
 			{
-				ReadingOrder order = reading.ReadingOrder;
 				if (myModificationEvents != null)
 				{
 					int location = this.LocateCollectionItem(order);
-					myReadingOrderKeyedCollection[location].Branch.ItemRemoved(reading);
+					if (location >= 0)
+					{
+						myReadingOrderKeyedCollection[location].Branch.ItemRemoved(reading);
+					}
 				}
 			}	
 			/// <summary>
@@ -1777,7 +1788,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			private int LocateCollectionItem(ReadingOrder order)
 			{
 				int retVal = -1;
-				if (myReadingOrderKeyedCollection.Contains(order.RoleCollection)) //UNDONE: need to re-work "IndexOf" to return -1 if non-existent
+				if (order !=null && myReadingOrderKeyedCollection.Contains(order.RoleCollection)) //UNDONE: need to re-work "IndexOf" to return -1 if non-existent
 				{
 					retVal = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[order.RoleCollection]);
 				}
