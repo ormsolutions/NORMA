@@ -128,6 +128,12 @@ namespace Neumont.Tools.ORM.Shell
 				if (form == null)
 				{
 					myForm = form = new ReadingsViewForm();
+					ORMDesignerDocData currentDoc = CurrentDocument;
+					if (currentDoc != null)
+					{
+						AttachEventHandlers(currentDoc.Store);
+						OnORMSelectionContainerChanged();
+					}
 				}
 				return form;
 			}

@@ -73,7 +73,7 @@
 							<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
 								<plx:arrayInitializer>
 									<xsl:variable name="contextClass" select="@class"/>
-									<xsl:for-each select="arg:Rule">
+									<xsl:for-each select="arg:*">
 										<plx:passParam>
 											<xsl:call-template name="GenerateTypeOf">
 												<xsl:with-param name="className" select="@class"/>

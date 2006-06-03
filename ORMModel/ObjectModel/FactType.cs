@@ -1156,6 +1156,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						factType.Name = "";
 					}
 				}
+				store.RaiseCustomModelEvent(store, FactTypeNameChangedEvent.CustomModelEventId, new FactTypeNameChangedEventArgs(factType));
 			}
 		}
 		/// <summary>
@@ -1200,11 +1201,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int k = 0; k < rolesCount; ++k)
 					{
 						ObjectType rolePlayer = roles[k].Role.RolePlayer;
-						replacements[k] = (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+						replacements[k] = (rolePlayer != null) ? rolePlayer.Name.Replace('-', ' ') : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
 					}
 					retVal = (formatText == null) ?
 						string.Concat(replacements) :
-						string.Format(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(formatText), replacements);
+						string.Format(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(formatText.Replace('-', ' ')), replacements);
 					if (!string.IsNullOrEmpty(retVal))
 					{
 						retVal = retVal.Replace(" ", null);
@@ -2165,7 +2166,100 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // DefaultBinaryMissingUniquenessVerbalizer
 	}
-
+	#region FactTypeNameChanged Custom Model Event
+	/// <summary>
+	/// Event args generated when the derived FactType.Name property
+	/// has changed. Note that the Name property on a FactType can
+	/// be expensive to generate, so it is generated on request
+	/// and not with this event.
+	/// </summary>
+	public class FactTypeNameChangedEventArgs : CustomModelEventArgs
+	{
+		private FactType myFactType;
+		/// <summary>
+		/// Create a FactTypeNameChangedEventArgs
+		/// </summary>
+		/// <param name="factType">The modified factType</param>
+		public FactTypeNameChangedEventArgs(FactType factType) : base(factType.Store, FactTypeNameChangedEvent.CustomModelEventId)
+		{
+			myFactType = factType;
+		}
+		private FactTypeNameChangedEventArgs(FactTypeNameChangedEventArgs other)
+			: base(other)
+		{
+			myFactType = other.myFactType;
+		}
+		/// <summary>
+		/// Standard required override
+		/// </summary>
+		public override CustomModelEventArgs CreateUndoArgs()
+		{
+			return new FactTypeNameChangedEventArgs(this);
+		}
+		/// <summary>
+		/// The modified FactType
+		/// </summary>
+		public FactType FactType
+		{
+			get
+			{
+				return myFactType;
+			}
+		}
+	}
+	/// <summary>
+	/// A custom model event raised when a the Name of a FactType
+	/// changes. Allows listeners to listen to a single event
+	/// instead of the dozen or so that can affect the derived
+	/// name of a fact type.
+	/// </summary>
+	[CustomModelEvent(typeof(ORMMetaModel), "F450CFA1-DEE0-41E4-B75B-31F29890986D", typeof(FactTypeNameChangedEventArgs))]
+	public class FactTypeNameChangedEvent : CustomModelEvent
+	{
+		/// <summary>
+		/// The custom event id
+		/// </summary>
+		public static Guid CustomModelEventId = new Guid("F450CFA1-DEE0-41E4-B75B-31F29890986D");
+		/// <summary>
+		/// Custruct a new event
+		/// </summary>
+		/// <param name="store">Standard required parameter</param>
+		public FactTypeNameChangedEvent(Store store) : base(store)
+		{
+		}
+		/// <summary>
+		/// The type of returned arguments
+		/// </summary>
+		public sealed override Type ArgumentsType
+		{
+			get
+			{
+				return typeof(FactTypeNameChangedEventArgs);
+			}
+		}
+		/// <summary>
+		/// The name of this event
+		/// </summary>
+		public sealed override string Name
+		{
+			get
+			{ 
+				// Not localized
+				return "FactTypeNamedChangedEvent";
+			}
+		}
+		/// <summary>
+		/// The Guid uniquely identifying this custom event
+		/// </summary>
+		public sealed override Guid Id
+		{
+			get
+			{
+				return CustomModelEventId;
+			}
+		}
+	}
+	#endregion // FactTypeNameChanged Custom Model Event
 	#region FactType Model Validation Errors
 
 	#region class FactTypeRequiresReadingError
@@ -2309,7 +2403,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion //class NMinusOneError
 
 	#endregion // FactType Model Validation Errors
-
 	#region FactTypeDerivationExpression
 	public partial class FactTypeDerivationExpression
 	{

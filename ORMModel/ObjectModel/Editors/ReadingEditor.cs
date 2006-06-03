@@ -1605,10 +1605,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					int location = this.LocateCollectionItem(order);
 					if (location >= 0) //make sure it was found
 					{
-						myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
 						myReadingOrderKeyedCollection.RemoveAt(location);
-						myModificationEvents(this, BranchModificationEventArgs.Redraw(false));
-						myModificationEvents(this, BranchModificationEventArgs.Redraw(true));
+						myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
 					}
 				}
 			}
@@ -1788,9 +1786,30 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			private int LocateCollectionItem(ReadingOrder order)
 			{
 				int retVal = -1;
-				if (order !=null && myReadingOrderKeyedCollection.Contains(order.RoleCollection)) //UNDONE: need to re-work "IndexOf" to return -1 if non-existent
+				if (order != null)
 				{
-					retVal = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[order.RoleCollection]);
+					ReadingOrderKeyedCollection orders = myReadingOrderKeyedCollection;
+					if (order.IsRemoved)
+					{
+						// The role collection on a removed order will always be empty, just search the list
+						int orderCount = orders.Count;
+						for (int i = 0; i < orderCount; ++i)
+						{
+							if (object.ReferenceEquals(orders[i].ReadingOrder, order))
+							{
+								retVal = i;
+								break;
+							}
+						}
+					}
+					else
+					{
+						RoleBaseMoveableCollection roleCollection = order.RoleCollection;
+						if (orders.Contains(roleCollection)) //UNDONE: need to re-work "IndexOf" to return -1 if non-existent
+						{
+							retVal = orders.IndexOf(orders[roleCollection]);
+						}
+					}
 				}
 				return retVal;
 			}

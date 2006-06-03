@@ -32,6 +32,7 @@
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintAddedRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintRemovedRule"/>
 		<arg:Rule class="FactType.InternalUniquenessConstraintChangeRule"/>
+		<arg:CustomModelEvent class="FactTypeNameChangedEvent"/>
 		<arg:Rule class="FactType.ModelHasFactTypeAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintRemoveRuleModelValidation"/>

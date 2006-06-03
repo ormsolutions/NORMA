@@ -49,7 +49,7 @@
 			<xs:documentation>The meta model to generate rules for.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="Rule" type="RuleType"/>
+			<xs:element ref="ReflectedType"/>
 		</xs:sequence>
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>
@@ -62,7 +62,10 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="RuleType">
+	<xs:element name="ReflectedType" type="ReflectedTypeType" abstract="true"/>
+	<xs:element name="Rule" substitutionGroup="ReflectedType"/>
+	<xs:element name="CustomModelEvent" substitutionGroup="ReflectedType"/>
+	<xs:complexType name="ReflectedTypeType">
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>The simple name of the class without a namespace to treat as a rule class. If the class name contains delimiters (. or +), then the delimited names are treated as nested classes.</xs:documentation>

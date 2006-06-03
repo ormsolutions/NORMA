@@ -390,7 +390,7 @@ namespace Neumont.Tools.ORM.Shell
 			return new ORMModelExplorerTreeContainer(this);
 		}
 		/// <summary>
-		/// Hack override for the framework's incomplete impelementation of OnDocumentWindowChanged
+		/// Hack override for the framework's incomplete implementation of OnDocumentWindowChanged
 		/// </summary>
 		protected override void OnDocumentWindowChanged(DocView oldView, DocView newView)
 		{
@@ -403,16 +403,96 @@ namespace Neumont.Tools.ORM.Shell
 			ModelExplorerTreeContainer container = ObjectModelBrowser;
 			if (container != null)
 			{
+				ModelingDocData oldDocData = container.ModelingDocData;
+				if (oldDocData != null)
+				{
+					DetachModelEvents(oldDocData.Store);
+				}
 				ModelingDocData newDocData = (newView != null) ? (newView.DocData as ModelingDocData) : null;
+				myFactCollectionNode = null;
 				if (newDocData != null)
 				{
 					container.ShowTree();
+					AttachModelEvents(newDocData.Store);
 				}
 				else
 				{
 					container.HideTree();
 				}
 				container.ModelingDocData = newDocData;
+			}
+		}
+		private void AttachModelEvents(Store store)
+		{
+			if (store == null || store.Disposed)
+			{
+				return;
+			}
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+			eventDirectory.CustomModelEventManager.Add(FactTypeNameChangedEvent.CustomModelEventId, new CustomModelEventHandler(FactTypeNameChanged));
+		}
+		private void DetachModelEvents(Store store)
+		{
+			if (store == null || store.Disposed)
+			{
+				return;
+			}
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+			eventDirectory.CustomModelEventManager.Remove(FactTypeNameChangedEvent.CustomModelEventId, new CustomModelEventHandler(FactTypeNameChanged));
+		}
+		private RoleGroupTreeNode myFactCollectionNode;
+		/// <summary>
+		/// Custom handling of fact type name changes. The default implementation
+		/// naively assumes all name updates stem from changes to NamedElement.Name
+		/// and does not give any way to directly attached other events to individual
+		/// nodes, so we have to go hunting to find the facts.
+		/// </summary>
+		private void FactTypeNameChanged(object sender, CustomModelEventArgs e)
+		{
+			FactTypeNameChangedEventArgs args = (FactTypeNameChangedEventArgs)e;
+			FactType fact = args.FactType;
+			if (!fact.IsRemoved)
+			{
+				RoleGroupTreeNode factsNode = myFactCollectionNode;
+				if (factsNode == null)
+				{
+					ModelExplorerTreeContainer treeContainer;
+					TreeView treeControl;
+					TreeNodeCollection rootNodes;
+					ModelElementTreeNode modelNode;
+					if (null != (treeContainer = ObjectModelBrowser) &&
+						null != (treeControl = treeContainer.ObjectModelBrowser) &&
+						0 != (rootNodes = treeControl.Nodes).Count &&
+						null != (modelNode = rootNodes[0] as ModelElementTreeNode))
+					{
+						MetaRoleInfo factRoleInfo = modelNode.ModelElement.Store.MetaDataDirectory.FindMetaRole(ModelHasFactType.FactTypeCollectionMetaRoleGuid);
+						TreeNode testNode = modelNode.FirstNode;
+						while (testNode != null)
+						{
+							RoleGroupTreeNode testRoleNode = testNode as RoleGroupTreeNode;
+							if (testRoleNode != null &&
+								object.ReferenceEquals(testRoleNode.RoleInfo, factRoleInfo))
+							{
+								myFactCollectionNode = factsNode = testRoleNode;
+								break;
+							}
+							testNode = testNode.NextNode;
+						}
+					}
+				}
+				if (factsNode != null)
+				{
+					foreach (TreeNode testNode in factsNode.Nodes)
+					{
+						ModelElementTreeNode elementNode = testNode as ModelElementTreeNode;
+						if (elementNode != null &&
+							object.ReferenceEquals(elementNode.ModelElement, fact))
+						{
+							elementNode.UpdateNodeText();
+							break;
+						}
+					}
+				}
 			}
 		}
 		#endregion
