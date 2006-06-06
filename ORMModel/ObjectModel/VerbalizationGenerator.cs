@@ -794,7 +794,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""predicateText"">{0}</span>{{0}}<span class=""predicateText"">{1}</span>",
+				"{0}{{0}}{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				"{0}",
@@ -877,7 +877,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
-		.predicateText {{ color: #0000ff; }}
+		.predicateText {{ color: {2}; {3} }}
 		.quantifier {{ color: {6}; {7} }}
 		.primaryErrorReport {{ color: red; font-weight: bolder; }}
 		.secondaryErrorReport {{ color: red; }}
@@ -924,7 +924,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">some</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""predicateText"">{0}</span>{{0}}<span class=""predicateText"">{1}</span>",
+				"{0}{{0}}{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
@@ -1007,7 +1007,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
-		.predicateText {{ color: #0000ff; }}
+		.predicateText {{ color: {2}; {3} }}
 		.quantifier {{ color: {6}; {7} }}
 		.primaryErrorReport {{ color: red; font-weight: bolder; }}
 		.secondaryErrorReport {{ color: red; }}
@@ -1054,7 +1054,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">no</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""predicateText"">{0}</span>{{0}}<span class=""predicateText"">{1}</span>",
+				"{0}{{0}}{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">it is impossible that</span> {0}",
@@ -1137,7 +1137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
-		.predicateText {{ color: #0000ff; }}
+		.predicateText {{ color: {2}; {3} }}
 		.quantifier {{ color: {6}; {7} }}
 		.primaryErrorReport {{ color: red; font-weight: bolder; }}
 		.secondaryErrorReport {{ color: red; }}
@@ -1184,7 +1184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">no</span> {0}",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""predicateText"">{0}</span>{{0}}<span class=""predicateText"">{1}</span>",
+				"{0}{{0}}{1}",
 				@"<span class=""quantifier"">the same</span> {0}",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">it is forbidden that</span> {0}",
@@ -1267,7 +1267,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
-		.predicateText {{ color: #0000ff; }}
+		.predicateText {{ color: {2}; {3} }}
 		.quantifier {{ color: {6}; {7} }}
 		.primaryErrorReport {{ color: red; font-weight: bolder; }}
 		.secondaryErrorReport {{ color: red; }}

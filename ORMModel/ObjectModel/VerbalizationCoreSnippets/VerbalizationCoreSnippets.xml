@@ -31,7 +31,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
 			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Snippet>
 			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
-			<Snippet type="HyphenBoundPredicatePart"><![CDATA[<span class="predicateText">{0}</span>{{0}}<span class="predicateText">{1}</span>]]></Snippet>
+			<Snippet type="HyphenBoundPredicatePart"><![CDATA[{0}{{0}}{1}]]></Snippet>
 			<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 
 			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
@@ -159,7 +159,7 @@ You must not remove this notice, or any other, from this software.
 		.objectType {{ color: {4}; {5} }}
 		.objectTypeMissing {{ color: {4}; {5} }}
 		.referenceMode {{ color: {10}; {11} }}
-		.predicateText {{ color: #0000ff; }}
+		.predicateText {{ color: {2}; {3} }}
 		.quantifier {{ color: {6}; {7} }}
 		.primaryErrorReport {{ color: red; font-weight: bolder; }}
 		.secondaryErrorReport {{ color: red; }}

@@ -731,7 +731,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						bool validIndex = replaceIndex < roleCount;
 						if (validIndex)
 						{
-							string boundFormatter = string.Concat(leftWord, groups["AfterLeftHyphen"].Value, "{0}", groups["BeforeRightHyphen"].Value, rightWord);
+							string boundFormatter = string.Format(formatProvider, replacementFormatString, leftWord + groups["AfterLeftHyphen"].Value, groups["BeforeRightHyphen"].Value + rightWord);
 							if (hyphenBoundFormatStrings == null)
 							{
 								hyphenBoundFormatStrings = new string[roleCount];
