@@ -429,8 +429,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return optimalMatch;
 		}
 		/// <summary>
-		/// Populate the predicate text with the supplied in the
-		/// correct order.
+		/// Populate the predicate text with the supplied replacement fields.
 		/// </summary>
 		/// <param name="reading">The reading to populate.</param>
 		/// <param name="defaultOrder">The default role order. Corresponds to the order of the role replacement fields</param>
@@ -468,12 +467,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				try
 				{
-					retVal = string.Format(CultureInfo.InvariantCulture, reading.Text, useReplacements);
+					retVal = string.Format(CultureInfo.CurrentCulture, reading.Text, useReplacements);
 				}
 				catch (FormatException ex)
 				{
 					// UNDONE: Localize
-					retVal = string.Format(CultureInfo.InvariantCulture, "{0} ({1})", reading.Text, ex.Message);
+					retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", reading.Text, ex.Message);
 				}
 			}
 			return retVal;
@@ -575,4 +574,268 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Static verbalization helpers on FactType class
+	#region VerbalizationHyphenBinder struct
+	/// <summary>
+	/// A helper structure to enable hyphen binding
+	/// </summary>
+	public struct VerbalizationHyphenBinder
+	{
+		#region Member Variables
+		/// <summary>
+		/// The reading text modified for verbalization. This will
+		/// always be set if there are any hyphens in the reading's
+		/// format text, and the replacement fields will always correspond
+		/// to the default fact order.
+		/// </summary>
+		private string myModifiedReadingText;
+		/// <summary>
+		/// An array of format strings for individual roles
+		/// </summary>
+		private string[] myFormatReplacementFields;
+		/// <summary>
+		/// A regex pattern to 
+		/// </summary>
+		private static Regex myMainRegex;
+		private static Regex myIndexMapRegex;
+		#endregion // Member Variables
+		#region Constructor
+		/// <summary>
+		/// Initialize a structure to hyphen-bind the verbalization for a reading
+		/// </summary>
+		/// <param name="reading">The reading to test.</param>
+		/// <param name="defaultOrder">The roles from the parent fact type. Provides the order of the expected replacement fields.</param>
+		/// <param name="replacementFormatString">The string used to format replacement fields. The format string is used to build another
+		/// format string with one replacement field. It must consist of a {{0}} representing the eventual replacement field, a {0} for the leading
+		/// hyphen-bound text, and a {1} for the trailing hyphen-bound text.</param>
+		public VerbalizationHyphenBinder(Reading reading, RoleBaseMoveableCollection defaultOrder, string replacementFormatString)
+		{
+			string readingText;
+
+			// First test if there is any hyphen to look for
+			if (reading == null ||
+				-1 == (readingText = reading.Text).IndexOf('-'))
+			{
+				myModifiedReadingText = null;
+				myFormatReplacementFields = null;
+				return;
+			}
+			
+			// Now see the reading has the same order as the fact. If not,
+			// create an indexMap array that maps the reading role order to
+			// the fact role order.
+			int roleCount = defaultOrder.Count;
+			RoleBaseMoveableCollection readingRoles = reading.ReadingOrder.RoleCollection;
+			Debug.Assert(readingRoles.Count == roleCount);
+			int[] indexMap = null;
+			int firstIndexChange = -1;
+			for (int i = 0; i < roleCount; ++i)
+			{
+				RoleBase readingRole = readingRoles[i];
+				if (object.ReferenceEquals(readingRole, defaultOrder[i]))
+				{
+					if (indexMap != null)
+					{
+						indexMap[i] = i;
+					}
+					continue;
+				}
+				if (indexMap == null)
+				{
+					indexMap = new int[roleCount];
+					// Catch up to where we are now
+					for (int j = 0; j < i; ++j)
+					{
+						indexMap[j] = j;
+					}
+					firstIndexChange = i;
+				}
+				for (int j = firstIndexChange; j < roleCount; ++j)
+				{
+					if (object.ReferenceEquals(readingRole, defaultOrder[j]))
+					{
+						indexMap[i] = j;
+						break;
+					}
+				}
+			}
+
+			// Make sure the regex objects are initialied
+			#region Commented main regex pattern
+			//            string mainPatternCommented = @"(?xn)
+			//\G
+			//# Test if there is a hyphen binding match before the next format replacement field
+			//(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))
+			//	# If there is a hyphen bind before the next replacement field then use it
+			//	((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))
+			//	|
+			//	# Otherwise, pick up all text before the next format replacement field
+			//	((?<BeforeLeftHyphenWord>.*?))
+			//)
+			//# Get the format replacement field
+			//((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))
+			//# Get any trailing information if it exists prior to the next format field
+			//(
+			//	(?=
+			//		# Positive lookahead to see if there is a next format string
+			//		(?(.+(?<!\{)\{\d+\}(?!\}))
+			//			# Check before if there is a next format string
+			//			(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))
+			//			|
+			//			# Get any trailer if there is not a next format string
+			//			([^\-]*?\s-\S.*?)
+			//		)
+			//	)
+			//	# Get the before hyphen and right hyphen word if the look ahead succeeded
+			//	(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+)
+			//)?";
+			#endregion // Commented main regex pattern
+			Regex regexMain = myMainRegex;
+			if (regexMain == null)
+			{
+				System.Threading.Interlocked.CompareExchange<Regex>(
+					ref myMainRegex,
+					new Regex(
+						@"(?n)\G(?(.*?\S-\s.*?(?<!\{)\{\d+\}(?!\}))((?<BeforeLeftHyphenWord>.*?\s??)(?<LeftHyphenWord>\S+?)-(?<AfterLeftHyphen>\s.*?))|((?<BeforeLeftHyphenWord>.*?)))((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))((?=(?(.+(?<!\{)\{\d+\}(?!\}))(((?!(?<!\{)\{\d+\}(?!\})).)*?\s-\S.*?(?<!\{)\{\d+\}(?!\}))|([^\-]*?\s-\S.*?)))(?<BeforeRightHyphen>.*?\s+?)-(?<RightHyphenWord>\S+))?",
+						RegexOptions.Compiled),
+					null);
+				regexMain = myMainRegex;
+			}
+			Regex regexIndexMap = myIndexMapRegex;
+			if (regexIndexMap == null)
+			{
+				System.Threading.Interlocked.CompareExchange<Regex>(
+					ref myIndexMapRegex,
+					new Regex(
+						@"(?n)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
+						RegexOptions.Compiled),
+					null);
+				regexIndexMap = myIndexMapRegex;
+			}
+
+			// Build the new format string and do index mapping along the way
+			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+			string[] hyphenBoundFormatStrings = null;
+			myModifiedReadingText = regexMain.Replace(
+				readingText,
+				delegate(Match match)
+				{
+					string retVal;
+					GroupCollection groups = match.Groups;
+					string stringReplaceIndex = groups["ReplaceIndex"].Value;
+					int replaceIndex = int.Parse(stringReplaceIndex, formatProvider);
+					string leftWord = groups["LeftHyphenWord"].Value;
+					string rightWord = groups["RightHyphenWord"].Value;
+					string leadText = groups["BeforeLeftHyphenWord"].Value;
+					if (leftWord.Length != 0 || rightWord.Length != 0)
+					{
+						bool validIndex = replaceIndex < roleCount;
+						if (validIndex)
+						{
+							string boundFormatter = string.Concat(leftWord, groups["AfterLeftHyphen"].Value, "{0}", groups["BeforeRightHyphen"].Value, rightWord);
+							if (hyphenBoundFormatStrings == null)
+							{
+								hyphenBoundFormatStrings = new string[roleCount];
+							}
+							if (indexMap != null)
+							{
+								replaceIndex = indexMap[replaceIndex];
+							}
+							hyphenBoundFormatStrings[replaceIndex] = boundFormatter;
+						}
+						if (leadText.Length != 0 && indexMap != null)
+						{
+							leadText = regexIndexMap.Replace(
+								leadText,
+								delegate(Match innerMatch)
+								{
+									int innerReplaceIndex = int.Parse(innerMatch.Groups["ReplaceIndex"].Value, formatProvider);
+									return (innerReplaceIndex < roleCount) ?
+										string.Concat("{", indexMap[innerReplaceIndex].ToString(formatProvider), "}") :
+										string.Concat("{{", innerReplaceIndex.ToString(formatProvider), "}}");
+								});
+						}
+						retVal = string.Concat(
+							leadText,
+							validIndex ? "{" : "{{",
+							(indexMap == null) ? stringReplaceIndex : replaceIndex.ToString(formatProvider),
+							validIndex ? "}" : "}}");
+					}
+					else if (indexMap != null)
+					{
+						retVal = regexIndexMap.Replace(
+							match.Value,
+							delegate(Match innerMatch)
+							{
+								int innerReplaceIndex = int.Parse(innerMatch.Groups["ReplaceIndex"].Value, formatProvider);
+								return (innerReplaceIndex < roleCount) ?
+									string.Concat("{", indexMap[innerReplaceIndex].ToString(formatProvider), "}") :
+									string.Concat("{{", innerReplaceIndex.ToString(formatProvider), "}}");
+							});
+					}
+					else
+					{
+						retVal = match.Value;
+					}
+					return retVal;
+				});
+			myFormatReplacementFields = hyphenBoundFormatStrings;
+		}
+		#endregion // Constructor
+		#region Member Functions
+		/// <summary>
+		/// Perform any necessary hyphen-binding on the provided role replacement field
+		/// </summary>
+		/// <param name="basicRoleReplacement">The basic replacement field. Generally consists of a formatted object name.</param>
+		/// <param name="roleIndex">The index of the represented role in the fact order</param>
+		/// <returns>A modified replacement</returns>
+		public string HyphenBindRoleReplacement(string basicRoleReplacement, int roleIndex)
+		{
+			string[] formatFields = myFormatReplacementFields;
+			string formatField;
+			if (formatFields != null &&
+				roleIndex < formatFields.Length &&
+				null != (formatField = formatFields[roleIndex]))
+			{
+				return string.Format(CultureInfo.CurrentCulture, formatField, basicRoleReplacement);
+			}
+			return basicRoleReplacement;
+		}
+		/// <summary>
+		/// Populate the predicate text with the supplied replacement fields. Defers to
+		/// FactType.PopulatePredicateText if no hyphen-bind occurred
+		/// </summary>
+		/// <param name="reading">The reading to populate.</param>
+		/// <param name="defaultOrder">The default role order. Corresponds to the order of the role replacement fields</param>
+		/// <param name="roleReplacements">The replacement fields</param>
+		/// <param name="unmodifiedRoleReplacements">The roleReplacements array have not been modified with the HyphenBindRoleReplacement method</param>
+		/// <returns>The populated predicate text</returns>
+		public string PopulatePredicateText(Reading reading, RoleBaseMoveableCollection defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
+		{
+			string formatText = myModifiedReadingText;
+			if (formatText == null)
+			{
+				return FactType.PopulatePredicateText(reading, defaultOrder, roleReplacements);
+			}
+			else
+			{
+				string[] useRoleReplacements = roleReplacements;
+				string[] formatFields;
+				if (unmodifiedRoleReplacements &&
+					(null != (formatFields = myFormatReplacementFields)))
+				{
+					IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+					int count = formatFields.Length;
+					useRoleReplacements = new string[count];
+					for (int i = 0; i < count; ++i)
+					{
+						string useFormat = formatFields[i];
+						useRoleReplacements[i] = (useFormat == null) ? roleReplacements[i] : string.Format(formatProvider, useFormat, roleReplacements[i]);
+					}
+				}
+				return string.Format(CultureInfo.CurrentCulture, formatText, useRoleReplacements);
+			}
+		}
+		#endregion // Member Functions
+	}
+	#endregion // VerbalizationHyphenBinder struct
 }

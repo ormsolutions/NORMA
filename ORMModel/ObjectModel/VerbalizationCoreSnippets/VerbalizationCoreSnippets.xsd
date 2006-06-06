@@ -71,6 +71,11 @@
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeWithSubscript"/>
 				<xs:enumeration value="ObjectTypeMissing"/>
+				<xs:enumeration value="HyphenBoundPredicatePart">
+					<xs:annotation>
+						<xs:documentation>{0}{{0}}{1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ImpersonalPronoun"/>
 				<xs:enumeration value="PersonalPronoun"/>
 				<xs:enumeration value="DefiniteArticle">

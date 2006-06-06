@@ -205,6 +205,7 @@
 				</plx:local>
 				<!--<plx:local name="readingOrder" dataTypeName="ReadingOrder"/>-->
 				<plx:local name="reading" dataTypeName="Reading"/>
+				<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				<xsl:call-template name="PopulateBasicRoleReplacements"/>
 				<xsl:variable name="factMockup">
 					<cvg:Fact/>
@@ -907,6 +908,7 @@
 				</xsl:if>
 				<xsl:if test="descendant::cvg:Fact">
 					<plx:local name="reading" dataTypeName="Reading"/>
+					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				</xsl:if>
 				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint">
 					<plx:local name="ranges" dataTypeName="ValueRangeMoveableCollection">
@@ -2304,6 +2306,7 @@
 				<plx:nullKeyword/>
 			</plx:initialize>
 		</plx:local>
+		<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 		<xsl:choose>
 			<xsl:when test="$NestedFact">
 				<plx:local name="nested" dataTypeName="FactType">
@@ -2674,24 +2677,34 @@
 					</plx:local>
 					<plx:local name="basicReplacement" dataTypeName=".string">
 						<plx:initialize>
-							<plx:callInstance name=".implied" type="arrayIndexer">
+							<plx:callInstance name="HyphenBindRoleReplacement">
 								<plx:callObject>
-									<xsl:choose>
-										<xsl:when test="$PatternGroup='InternalSetConstraint'">
-											<plx:callInstance name=".implied" type="arrayIndexer">
-												<plx:callObject>
-													<plx:nameRef name="allBasicRoleReplacements"/>
-												</plx:callObject>
-												<plx:passParam>
-													<plx:value data="0" type="i4"/>
-												</plx:passParam>
-											</plx:callInstance>
-										</xsl:when>
-										<xsl:otherwise>
-											<plx:nameRef name="basicRoleReplacements"/>
-										</xsl:otherwise>
-									</xsl:choose>
+									<plx:nameRef name="hyphenBinder"/>
 								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<xsl:choose>
+												<xsl:when test="$PatternGroup='InternalSetConstraint'">
+													<plx:callInstance name=".implied" type="arrayIndexer">
+														<plx:callObject>
+															<plx:nameRef name="allBasicRoleReplacements"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:value data="0" type="i4"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</xsl:when>
+												<xsl:otherwise>
+													<plx:nameRef name="basicRoleReplacements"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="{$iterVarName}"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef name="{$iterVarName}"/>
 								</plx:passParam>
@@ -2791,7 +2804,10 @@
 			</xsl:when>
 		</xsl:choose>
 		<xsl:variable name="predicateText">
-			<plx:callStatic name="PopulatePredicateText" dataTypeName="FactType">
+			<plx:callInstance name="PopulatePredicateText">
+				<plx:callObject>
+					<plx:nameRef name="hyphenBinder"/>
+				</plx:callObject>
 				<plx:passParam>
 					<plx:nameRef name="reading"/>
 				</plx:passParam>
@@ -2818,7 +2834,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</plx:passParam>
-			</plx:callStatic>
+				<plx:passParam>
+					<xsl:choose>
+						<xsl:when test="$complexReplacement">
+							<plx:falseKeyword/>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:trueKeyword/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:passParam>
+			</plx:callInstance>
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$TopLevel">
@@ -3902,6 +3928,7 @@
 						<plx:nullKeyword/>
 					</plx:initialize>
 				</plx:local>
+				<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				<!--<plx:local name="currentFactIndex" dataTypeName=".i4">
 					<plx:initialize>
 						<plx:callInstance name="IndexOf">
@@ -5005,6 +5032,26 @@
 						</plx:callInstance>
 					</plx:right>
 				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="hyphenBinder"/>
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="VerbalizationHyphenBinder">
+							<plx:passParam>
+								<plx:nameRef name="reading"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="factRoles"/>
+							</plx:passParam>
+							<plx:passParam>
+								<xsl:call-template name="SnippetFor">
+									<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
+								</xsl:call-template>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:right>
+				</plx:assign>
 			</xsl:when>
 			<xsl:when test="not($ReadingChoice='Conditional')">
 				<plx:assign>
@@ -5106,6 +5153,26 @@
 								</xsl:choose>
 							</plx:passParam>
 						</plx:callStatic>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="hyphenBinder"/>
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="VerbalizationHyphenBinder">
+							<plx:passParam>
+								<plx:nameRef name="reading"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="factRoles"/>
+							</plx:passParam>
+							<plx:passParam>
+								<xsl:call-template name="SnippetFor">
+									<xsl:with-param name="SnippetType" select="'HyphenBoundPredicatePart'"/>
+								</xsl:call-template>
+							</plx:passParam>
+						</plx:callNew>
 					</plx:right>
 				</plx:assign>
 			</xsl:when>

@@ -31,6 +31,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
 			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Snippet>
 			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
+			<Snippet type="HyphenBoundPredicatePart"><![CDATA[<span class="predicateText">{0}</span>{{0}}<span class="predicateText">{1}</span>]]></Snippet>
 			<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 
 			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
