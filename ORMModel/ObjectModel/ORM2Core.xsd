@@ -75,6 +75,7 @@
 			<xs:extension base="ObjectType">
 				<xs:sequence>
 					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
+					<xs:element name="Instances" type="EntityTypeInstances" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 				<!--ReferenceMode is derived.-->
@@ -103,12 +104,88 @@
 				<xs:sequence>
 					<xs:element name="ConceptualDataType" type="DataTypeRef"/>
 					<xs:element name="ValueRestriction" type="ValueRestriction" minOccurs="0"/>
+					<xs:element name="Instances" type="ValueTypeInstances" minOccurs="0"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--End Objects and Object Types-->
+	<!--ObjectTypeInstances-->
+	<xs:complexType name="EntityTypeInstances">
+		<xs:sequence>
+			<xs:element name="EntityTypeInstance" type="EntityTypeInstance" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeInstance">
+		<xs:sequence>
+			<xs:element name="RoleInstances" type="EntityTypeRoleInstances" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeInstanceRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeRoleInstances">
+		<xs:sequence>
+			<xs:element name="EntityTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectTypeRoleInstanceRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="ValueTypeInstances">
+		<xs:sequence>
+			<xs:element name="ValueTypeInstance" type="ValueTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValueTypeInstance">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ValueTypeInstanceRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectTypeRoleInstances">
+		<xs:sequence>
+			<xs:element name="EntityTypeRoleInstance" type="RoleInstance" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ValueTypeRoleInstance" type="RoleInstance" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FactTypeRoleInstance" type="RoleInstance" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleInstance">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="id" type="xs:ID" use="required"/>
+				<xs:attribute name="ref" type="xs:IDREF"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="FactTypeInstances">
+		<xs:sequence>
+			<xs:element name="FactTypeInstance" type="FactTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FactTypeInstance">
+		<xs:sequence>
+			<xs:element name="RoleInstances" type="FactTypeRoleInstances" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="FactTypeInstanceRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="FactTypeRoleInstances">
+		<xs:sequence>
+			<xs:element name="FactTypeRoleInstance" type="ObjectTypeRoleInstanceRef" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--end ObjectTypeInstances-->
 	<!--DataType -->
 	<!--DataTypeRef indicates a reference to a datatype -->
 	<xs:complexType name="DataTypeRef">
@@ -327,6 +404,7 @@
 		<xs:all>
 			<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0"/>
 			<xs:element name="ValueRestriction" type="RoleValueRestriction" minOccurs="0"/>
+			<xs:element name="RoleInstances" type="ObjectTypeRoleInstances" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:all>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
@@ -386,6 +464,7 @@
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
 			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="DerivationRuleType" minOccurs="0"/>
+			<xs:element name="Instances" type="FactTypeInstances" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:ID"/>
@@ -656,6 +735,8 @@
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
 			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
+			<xs:element name="TooFewEntityTypeRoleInstancesError" type="TooFewEntityTypeRoleInstancesError"/>
+			<xs:element name="TooFewFactTypeRoleInstancesError" type="TooFewFactTypeRoleInstancesError"/>
 			<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError"/>
 			<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError"/>
 			<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError"/>
@@ -677,6 +758,7 @@
 			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
 			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesError"/>
+			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -770,6 +852,24 @@
 						<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 						<xs:element name="SetConstraint" type="SetConstraintRef"/>
 					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TooFewEntityTypeRoleInstancesError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="EntityTypeInstance" type="EntityTypeInstanceRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TooFewFactTypeRoleInstancesError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="FactTypeInstance" type="FactTypeInstanceRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -942,9 +1042,18 @@
 			</xs:extension >
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="CompatibleValueTypeInstanceValueError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueTypeInstance" type="ValueTypeInstanceRef"/>
+				</xs:sequence>
+			</xs:extension >
+		</xs:complexContent>
+	</xs:complexType>
 	<!--End ModelErrors-->
-	<!--Custrom Reference Modes-->
-	<!--Reference Mdoes and Kinds-->
+	<!--Custom Reference Modes-->
+	<!--Reference Modes and Kinds-->
 	<xs:complexType name="ReferenceModeKinds">
 		<xs:sequence>
 			<xs:element maxOccurs="unbounded" name="ReferenceModeKind" type="ReferenceModeKind"/>

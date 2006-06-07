@@ -241,13 +241,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -288,13 +281,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -333,13 +319,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return DataTypeRangeSupport.Closed;
 			}
-		}
-		/// <summary>
-		/// Returns true if the string value can be interpreted as this data type
-		/// </summary>
-		public override bool CanParse(string value)
-		{
-			return true;
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
@@ -388,6 +367,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			int result;
 			return int.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
@@ -444,6 +433,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return uint.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -496,6 +495,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ulong result;
 			return ulong.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
@@ -552,6 +561,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return double.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -606,6 +625,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return decimal.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -658,6 +687,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			decimal result;
 			return decimal.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
@@ -969,6 +1008,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return System.DateTime.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -1021,6 +1070,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			System.DateTime result;
 			return System.DateTime.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
@@ -1077,6 +1136,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return System.DateTime.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -1131,6 +1200,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return System.DateTime.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -1183,6 +1262,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			bool result;
 			return bool.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
@@ -1276,6 +1365,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ulong.TryParse(value, out result);
 		}
 		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -1332,6 +1431,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ulong result;
 			return ulong.TryParse(value, out result);
+		}
+		/// <summary>
+		/// Returns false, meaning that CanParse can fail for some values
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Compare two values. Each value should be checked previously with CanParse

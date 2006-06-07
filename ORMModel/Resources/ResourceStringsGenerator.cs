@@ -961,6 +961,76 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.
+		/// </summary>
+		public static string ModelExceptionFactTypeInstanceInconsistentRoleOwners
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.InconsistentRoleOwners");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to store a Role Instance for a role that is already in use within the FactTypeInstance.
+		/// </summary>
+		public static string ModelExceptionFactTypeInstanceDuplicateRoleInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.DuplicateRoleInstance");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to store a Role Instance for a role that is already in use within the EntityTypeInstance.
+		/// </summary>
+		public static string ModelExceptionEntityTypeInstanceDuplicateRoleInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.DuplicateRoleInstance");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.
+		/// </summary>
+		public static string ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.
+		/// </summary>
+		public static string ModelExceptionEntityTypeInstanceInvalidEntityTypeParent
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.InvalidEntityTypeParent");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.
+		/// </summary>
+		public static string ModelExceptionValueTypeInstanceInvalidValueTypeParent
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ValueTypeInstance.InvalidValueTypeParent");
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to set a value of a ValueTypeInstance that isn't of the parent ValueType's data type.
+		/// </summary>
+		public static string ModelExceptionValueTypeInstanceInvalidValue
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ValueTypeInstance.InvalidValue");
+			}
+		}
+		/// <summary>
 		/// This text appears in the edit menu when fact types are selected in the diagram.
 		/// </summary>
 		public static string CommandDeleteFactTypeText
@@ -1218,6 +1288,46 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.UnsupportedSelectionText");
+			}
+		}
+		/// <summary>
+		/// Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.
+		/// </summary>
+		public static string ModelSamplePopulationEditorNewInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NewInstanceTransactionText");
+			}
+		}
+		/// <summary>
+		/// Text used to describe the transaction when editing an instance.  Replacement field 0 is the column name of the instance being edited.
+		/// </summary>
+		public static string ModelSamplePopulationEditorEditInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceTransactionText");
+			}
+		}
+		/// <summary>
+		/// Text used to describe the transaction when removing an instance.  Replacement field 0 is the column name of the instance being removed.
+		/// </summary>
+		public static string ModelSamplePopulationEditorRemoveInstanceTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveInstanceTransactionText");
+			}
+		}
+		/// <summary>
+		/// Text to place in the title bar of the sample population window.
+		/// </summary>
+		public static string ModelSamplePopulationEditorWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.WindowTitle");
 			}
 		}
 		/// <summary>
@@ -1608,6 +1718,36 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
+			}
+		}
+		/// <summary>
+		/// Text displayed when there aren't enough entity type role instances to completely fill a single entity population row.
+		/// </summary>
+		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message");
+			}
+		}
+		/// <summary>
+		/// Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row.
+		/// </summary>
+		public static string ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message");
+			}
+		}
+		/// <summary>
+		/// Text displayed when the data type of the sample data doesn't match it's set data type.
+		/// </summary>
+		public static string ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message");
 			}
 		}
 		/// <summary>

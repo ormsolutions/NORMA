@@ -192,6 +192,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return true;
 		}
 		/// <summary>
+		/// Return true if CanParse always returns true
+		/// </summary>
+		public virtual bool CanParseAnyValue
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
 		/// Specify if a data type supports single values only, closed ranges, or open ranges
 		/// </summary>
 		public abstract DataTypeRangeSupport RangeSupport { get; }
@@ -234,6 +244,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				0 == string.Compare(value, "no", true, CultureInfo.InvariantCulture)));
 		}
 		/// <summary>
+		/// There are values we can't parse
+		/// </summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Returns true if the values are equivalent
 		/// </summary>
 		public override int Compare(string value1, string value2)
@@ -247,66 +267,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return 0;
 			}
 			return 1;
-		}
-	}
-	public partial class VariableLengthRawDataDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class PictureRawDataDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class OleObjectRawDataDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class LargeLengthRawDataDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
-		}
-	}
-	public partial class FixedLengthRawDataDataType
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public override bool CanParse(string value)
-		{
-			return true;
 		}
 	}
 	#endregion // Custom CanParse implementations

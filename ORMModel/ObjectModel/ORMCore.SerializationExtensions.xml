@@ -156,11 +156,31 @@
 		</se:Link>
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
+		<se:ChildElement Name="Instances">
+			<se:Link RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstanceCollection"/>
+			<se:Link RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstanceCollection"/>
+		</se:ChildElement>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
+		<se:Attribute ID="Value" WriteStyle="Element"/>
+		<se:Link Name="ValueTypeRoleInstance" RelationshipName="RoleInstance" RoleName="RoleCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
+		<se:ChildElement Name="RoleInstances">
+			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
+		</se:ChildElement>
+		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
+		<se:Link RelationshipName="RoleInstance" RoleName="RoleCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="TooFewEntityTypeRoleInstancesError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="EntityTypeRoleInstance">
+		<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="EntityTypeInstance" WriteStyle="NotWritten" />
 	</se:Element>
 	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
@@ -246,6 +266,9 @@
 		<se:ChildElement Name="DerivationRule">
 			<se:Link RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
 		</se:ChildElement>
+		<se:ChildElement Name="Instances">
+			<se:Link RelationshipName="FactTypeHasFactTypeInstance" RoleName="FactTypeInstanceCollection"/>
+		</se:ChildElement>
 		<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraintCollection" WriteStyle="NotWritten">
 			<se:ConditionalName Name="UniquenessConstraint" WriteStyle="Element">
 				<plx:binaryOperator type="equality">
@@ -301,12 +324,22 @@
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="FactTypeInstance" Name="FactTypeInstance" Override="true">
+		<se:ChildElement Name="RoleInstances">
+			<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
+		</se:ChildElement>
+		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
+		<se:Link RelationshipName="RoleInstance" RoleName="RoleCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="TooFewFactTypeRoleInstancesError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="FactTypeRoleInstance">
+		<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="FactTypeInstance" WriteStyle="NotWritten" />
+	</se:Element>
 	<se:Element Class="Expression" Override="true" HasMixedTypedAttributes="true">
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Attribute ID="Body" WriteStyle="Element"/>
 	</se:Element>
-	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true">
-	</se:Element>
+	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
 		<se:Attribute ID="IsPrimary">
 			<se:Condition WriteStyle="NotWritten">
@@ -350,6 +383,14 @@
 		<se:ChildElement Name="ValueRestriction">
 			<se:Link RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
+		<se:ChildElement Name="RoleInstances">
+			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="EntityTypeRoleInstance"/>
+			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="FactTypeRoleInstance"/>
+		</se:ChildElement>
+		<se:Link Name="EntityTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="EntityTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="FactTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="FactTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
+		<!--Need to add this attribute as custom storage.-->
+		<!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
@@ -486,6 +527,15 @@
 	</se:Element>
 	<se:Element Class="RingConstraintTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>
+	</se:Element>
+	<se:Element Class="CompatibleValueTypeInstanceValueError" Override="true">
+		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="ValueTypeInstance" Name="ValueTypeInstance"/>
+	</se:Element>
+	<se:Element Class="TooFewEntityTypeRoleInstancesError" Override="true">
+		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="EntityTypeInstance" Name="EntityTypeInstance"/>
+	</se:Element>
+	<se:Element Class="TooFewFactTypeRoleInstancesError" Override="true">
+		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="FactTypeInstance" Name="FactTypeInstance"/>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

@@ -37,6 +37,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierObjectificationAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierRemovingRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleRemoved", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(EntityTypeInstance).GetNestedType("EntityTypeHasEntityTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("FactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -60,6 +65,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(FactType).GetNestedType("ValidateFactNameForRolePlayerAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ValidateFactNameForRolePlayerRemove", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeDerivationExpression).GetNestedType("FactTypeDerivationExpressionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeInstance).GetNestedType("FactTypeHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeInstance).GetNestedType("FactTypeHasRoleRemoved", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeInstance).GetNestedType("FactTypeHasFactTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeInstance).GetNestedType("FactTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactTypeInstance).GetNestedType("FactTypeInstanceHasRoleInstanceRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FrequencyConstraint).GetNestedType("FrequencyConstraintMinMaxRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FrequencyConstraint).GetNestedType("RemoveContradictionErrorsWithFactTypeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(MandatoryConstraint).GetNestedType("MandatoryConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -169,6 +179,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(ValueRange).GetNestedType("ValueRangeAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRange).GetNestedType("ValueRangeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRange).GetNestedType("ValueConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueTypeInstance).GetNestedType("ValueTypeInstanceValueChanged", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueTypeInstance).GetNestedType("ValueTypeHasValueTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueTypeValueConstraint).GetNestedType("ValueTypeValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
 			System.Diagnostics.Debug.Assert(!(((System.Collections.IList)retVal).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to load.");
 			return retVal;

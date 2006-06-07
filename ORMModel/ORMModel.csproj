@@ -104,6 +104,13 @@
     <Compile Include="FactEditor\FactTextViewFilter.cs" />
     <Compile Include="ObjectModel\Editors\Comparers.cs" />
     <Compile Include="Framework\Utility.cs" />
+    <Compile Include="ObjectModel\Editors\SamplePopulationEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ObjectModel\Editors\SamplePopulationEditor.Designer.cs">
+      <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectModel\SamplePopulation.cs" />
     <Compile Include="ObjectModel\VerbalizationSnippetSetsManager.cs" />
     <Compile Include="ObjectModel\CustomSetStringPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\DataType.cs" />
@@ -245,6 +252,7 @@
     </None>
     <Compile Include="Shell\IORMSelectionContainer.cs" />
     <Compile Include="Shell\ORMReadingEditor.cs" />
+    <Compile Include="Shell\ORMSamplePopulationToolWindow.cs" />
     <Compile Include="Shell\ORMSerializer.2.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -373,6 +381,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ObjectModel\Editors\SamplePopulationEditor.resx">
+      <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectSubtypeSearching.cur" />

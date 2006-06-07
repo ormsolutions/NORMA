@@ -22,6 +22,11 @@
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRemovingRule"/>
+		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleRemoved"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeHasEntityTypeInstanceAdded"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceRemoved"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="FactType.FactTypeChangeRule"/>
@@ -45,6 +50,11 @@
 		<arg:Rule class="FactType.ValidateFactNameForRolePlayerAdded"/>
 		<arg:Rule class="FactType.ValidateFactNameForRolePlayerRemove"/>
 		<arg:Rule class="FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule"/>
+		<arg:Rule class="FactTypeInstance.FactTypeHasRoleAdded"/>
+		<arg:Rule class="FactTypeInstance.FactTypeHasRoleRemoved"/>
+		<arg:Rule class="FactTypeInstance.FactTypeHasFactTypeInstanceAdded"/>
+		<arg:Rule class="FactTypeInstance.FactTypeInstanceHasRoleInstanceAdded"/>
+		<arg:Rule class="FactTypeInstance.FactTypeInstanceHasRoleInstanceRemoved"/>
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxRule"/>
 		<arg:Rule class="FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule"/>
 		<arg:Rule class="MandatoryConstraint.MandatoryConstraintChangeRule"/>
@@ -154,6 +164,9 @@
 		<arg:Rule class="ValueRange.ValueRangeAdded"/>
 		<arg:Rule class="ValueRange.ValueRangeChangeRule"/>
 		<arg:Rule class="ValueRange.ValueConstraintAddRule"/>
+		<arg:Rule class="ValueTypeInstance.ValueTypeHasDataTypeAdded"/>
+		<arg:Rule class="ValueTypeInstance.ValueTypeInstanceValueChanged"/>
+		<arg:Rule class="ValueTypeInstance.ValueTypeHasValueTypeInstanceAdded"/>
 		<arg:Rule class="ValueTypeValueConstraint.ValueTypeValueConstraintChangeRule"/>
 	</arg:Model>
 </arg:Rules>

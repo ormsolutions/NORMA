@@ -480,4 +480,7 @@
   <data name="Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsInternal" xml:space="preserve">
     <value>IsInternal</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueTypeInstance.Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
 </root>

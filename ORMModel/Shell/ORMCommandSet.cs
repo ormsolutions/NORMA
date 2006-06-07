@@ -152,6 +152,10 @@ namespace Neumont.Tools.ORM.Shell
 				ORMDesignerCommandIds.ViewVerbalizationBrowser)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusStandardWindow),
+				new EventHandler(OnMenuSamplePopulationEditor),
+				ORMDesignerCommandIds.ViewSamplePopulationEditor)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusStandardWindow),
 				new EventHandler(OnMenuViewORMModelBrowser),
 				ORMDesignerCommandIds.ViewModelBrowser)
 				,new DynamicStatusMenuCommand(
@@ -811,6 +815,14 @@ namespace Neumont.Tools.ORM.Shell
 				verbWin.Show();
 			}
 			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuSamplePopulationEditor(object sender, EventArgs e)
+			{
+				ORMSamplePopulationToolWindow sampleWindow = ORMDesignerPackage.SamplePopulationEditorWindow;
+				sampleWindow.Show();
+			}
+			/// <summary>
 			/// Status callback
 			/// </summary>
 			protected void OnStatusShowPositiveVerbalization(object sender, EventArgs e)
@@ -1050,6 +1062,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
 			/// <summary>
+			/// The sample population editor item on the context menu
+			/// </summary>
+			public static readonly CommandID ViewSamplePopulationEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewSamplePopulationEditor);
+			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewNotesWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewNotesWindow);
@@ -1206,6 +1222,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
+			/// <summary>
+			/// The Sample Population item on the context menu
+			/// </summary>
+			private const int cmdIdViewSamplePopulationEditor = 0x2930;
 			/// <summary>
 			/// View the reference mode editor
 			/// </summary>

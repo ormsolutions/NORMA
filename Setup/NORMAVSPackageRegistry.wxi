@@ -97,6 +97,15 @@
 				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
 				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{051209C1-250B-45A7-B7B1-8AFB50BEC9B7}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMSamplePopulationToolWindow" Type="string"/>
+				<Registry Name="Style" Value="Tabbed" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+			</Registry>
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{C9AA5E71-9193-46C9-971A-CB6365ACA338}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMVerbalizationToolWindow" Type="string"/>

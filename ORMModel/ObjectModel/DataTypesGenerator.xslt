@@ -224,35 +224,41 @@
 									</plx:get>
 								</plx:property>
 								<xsl:if test="string-length($subTypeBackingType)">
-									<plx:function name="CanParse" modifier="override" visibility="public">
-										<plx:leadingInfo>
-											<plx:docComment>
-												<summary>Returns true if the string value can be interpreted as this data type</summary>
-											</plx:docComment>
-										</plx:leadingInfo>
-										<plx:param name="value" dataTypeName=".string"/>
-										<plx:returns dataTypeName=".boolean"/>
-										<xsl:choose>
-											<xsl:when test="$subTypeBackingType='.string'">
+									<xsl:if test="not($subTypeBackingType='.string')">
+										<plx:function name="CanParse" modifier="override" visibility="public">
+											<plx:leadingInfo>
+												<plx:docComment>
+													<summary>Returns true if the string value can be interpreted as this data type</summary>
+												</plx:docComment>
+											</plx:leadingInfo>
+											<plx:param name="value" dataTypeName=".string"/>
+											<plx:returns dataTypeName=".boolean"/>
+											<plx:local name="result" dataTypeName="{$subTypeBackingType}"/>
+											<plx:return>
+												<plx:callStatic name="TryParse" dataTypeName="{$subTypeBackingType}">
+													<plx:passParam>
+														<plx:nameRef name="value" type="parameter"/>
+													</plx:passParam>
+													<plx:passParam type="out">
+														<plx:nameRef name="result"/>
+													</plx:passParam>
+												</plx:callStatic>
+											</plx:return>
+										</plx:function>
+										<plx:property name="CanParseAnyValue" visibility="public" modifier="override">
+											<plx:leadingInfo>
+												<plx:docComment>
+													<summary>Returns false, meaning that CanParse can fail for some values</summary>
+												</plx:docComment>
+											</plx:leadingInfo>
+											<plx:returns dataTypeName=".boolean"/>
+											<plx:get>
 												<plx:return>
-													<plx:trueKeyword/>
+													<plx:falseKeyword/>
 												</plx:return>
-											</xsl:when>
-											<xsl:otherwise>
-												<plx:local name="result" dataTypeName="{$subTypeBackingType}"/>
-												<plx:return>
-													<plx:callStatic name="TryParse" dataTypeName="{$subTypeBackingType}">
-														<plx:passParam>
-															<plx:nameRef name="value" type="parameter"/>
-														</plx:passParam>
-														<plx:passParam type="out">
-															<plx:nameRef name="result"/>
-														</plx:passParam>
-													</plx:callStatic>
-												</plx:return>
-											</xsl:otherwise>
-										</xsl:choose>
-									</plx:function>
+											</plx:get>
+										</plx:property>
+									</xsl:if>
 									<plx:function name="Compare" modifier="override" visibility="public">
 										<plx:leadingInfo>
 											<plx:docComment>

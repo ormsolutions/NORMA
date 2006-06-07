@@ -236,6 +236,18 @@
     <value>A constraint must be attached to a fact in the same model as the constraint.</value>
     <comment>Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
   </data>
+  <data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message" xml:space="preserve">
+    <value>Entity type '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
+    <comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. Replace entitytype, model.</comment>
+  </data>
+  <data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message" xml:space="preserve">
+    <value>Fact type '{0}' in model '{1}' is missing instance data to completely identify a sample instance.</value>
+    <comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. Replace facttype, model.</comment>
+  </data>
+  <data name="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message" xml:space="preserve">
+    <value>Value '{0}' in the sample population for value type '{1}' in model '{2}' is not of the specified data type '{3}'.</value>
+    <comment>Text displayed when the data type of the sample data doesn't match it's set data type. Replace value, valuetype, model.</comment>
+  </data>
   <data name="ModelException.Constraint.EnforceSingleFactForInternalConstraint" xml:space="preserve">
     <value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
     <comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>
@@ -255,6 +267,34 @@
   <data name="ModelException.Objectification.ImpliedMustBeImpliedAndIndependentAndCannotPlayRoleInNonImpliedFact" xml:space="preserve">
     <value>Implied objectifications must be implied, must be independent, and must only play roles in implied fact types.</value>
     <comment>Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent or plays a Role in a non-implied FactType.</comment>
+  </data>
+  <data name="ModelException.FactTypeInstance.InconsistentRoleOwners">
+    <value xml:space="preserve">All roles in a fact type instance must be owned by the same fact type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
+  </data>
+  <data name="ModelException.FactTypeInstance.DuplicateRoleInstance">
+    <value xml:space="preserve">The fact type instance already has a value for the given role.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the FactTypeInstance.</comment>
+  </data>
+  <data name="ModelException.EntityTypeInstance.DuplicateRoleInstance">
+    <value xml:space="preserve">The entity type instance already has a value for the given role.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the EntityTypeInstance.</comment>
+  </data>
+  <data name="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier">
+    <value xml:space="preserve">All sample value roles must be part of the parent entity type's preferred identifier.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
+  </data>
+  <data name="ModelException.EntityTypeInstance.InvalidEntityTypeParent">
+    <value xml:space="preserve">Sample entity instances can only be hooked up to an entity.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.</comment>
+  </data>
+  <data name="ModelException.ValueTypeInstance.InvalidValueTypeParent">
+    <value xml:space="preserve">Sample value instances can only be hooked up to a value type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</comment>
+  </data>
+  <data name="ModelException.ValueTypeInstance.InvalidValue">
+    <value xml:space="preserve">The entered sample value does not match the object's data type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to set a value of a ValueTypeInstance that isn't of the parent ValueType's data type.</comment>
   </data>
   <data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
     <value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>
@@ -443,6 +483,22 @@
   <data name="ModelReferenceModePicker.FormatString" xml:space="preserve">
     <value>{0} ({1})</value>
     <comment>The format string for the reference mode display text in the reference mode picker</comment>
+  </data>
+  <data name="ModelSamplePopulationEditor.NewInstanceTransactionText" xml:space="preserve">
+    <value>Add New {0} Instance</value>
+    <comment>Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</comment>
+  </data>
+  <data name="ModelSamplePopulationEditor.EditInstanceTransactionText" xml:space="preserve">
+    <value>Edit {0} Instance</value>
+    <comment>Text used to describe the transaction when editing an instance.  Replacement field 0 is the column name of the instance being edited.</comment>
+  </data>
+  <data name="ModelSamplePopulationEditor.RemoveInstanceTransactionText" xml:space="preserve">
+    <value>Remove {0} Instance</value>
+    <comment>Text used to describe the transaction when removing an instance.  Replacement field 0 is the column name of the instance being removed.</comment>
+  </data>
+  <data name="ModelSamplePopulationEditor.WindowTitle" xml:space="preserve">
+    <value>Sample Population</value>
+    <comment>Text to place in the title bar of the sample population window.</comment>
   </data>
   <data name="ReferenceMode.PredicateInverseReading" xml:space="preserve">
     <value>{0} is of {1}</value>

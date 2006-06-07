@@ -84,6 +84,7 @@
 #define cmdIdReadingEditorDemoteReading			0x291C
 #define cmdIdReadingEditorPromoteReadingOrder	0x291D
 #define cmdIdReadingEditorDemoteReadingOrder	0x291E
+#define cmdIdViewSamplePopulationEditor	0x2930
 
 #define cmdIdObjectifyFactType			0x291F
 

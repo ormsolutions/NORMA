@@ -353,6 +353,27 @@
 	<ResourceString name="CoreVerbalizationSnippetsTypeDescription" model="Model" resourceName="Verbalization.SnippetsTypeDescription">
 		<comment type="summary">The description for the verbalization snippets associated with the core model.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners">
+		<comment type="summary">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionFactTypeInstanceDuplicateRoleInstance" model="Model" resourceName="ModelException.FactTypeInstance.DuplicateRoleInstance">
+		<comment type="summary">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the FactTypeInstance.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionEntityTypeInstanceDuplicateRoleInstance" model="Model" resourceName="ModelException.EntityTypeInstance.DuplicateRoleInstance">
+		<comment type="summary">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the EntityTypeInstance.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier">
+		<comment type="summary">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidEntityTypeParent" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidEntityTypeParent">
+		<comment type="summary">Exception message when an attempt is made to hook up a ValueType to an EntityTypeInstance.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValueTypeParent" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValueTypeParent">
+		<comment type="summary">Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValue" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValue">
+		<comment type="summary">Exception message when an attempt is made to set a value of a ValueTypeInstance that isn't of the parent ValueType's data type.</comment>
+	</ResourceString>
 	<ResourceString name="CommandDeleteFactTypeText" model="Diagram" resourceName="Command.DeleteFactType.Text">
 		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>
 	</ResourceString>
@@ -430,6 +451,18 @@
 	</ResourceString>
 	<ResourceString name="ModelReadingEditorUnsupportedSelectionText" model="Model" resourceName="ModelReadingEditor.UnsupportedSelectionText">
 		<comment type="summary">Text that will display in the middle of the tool window when the document view currently has an unsuppoted collection.</comment>
+	</ResourceString>
+	<ResourceString name="ModelSamplePopulationEditorNewInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.NewInstanceTransactionText">
+		<comment type="summary">Text used to describe the transaction when creating an instance.  Replacement field 0 is the column name of the instance being created.</comment>
+	</ResourceString>
+	<ResourceString name="ModelSamplePopulationEditorEditInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.EditInstanceTransactionText">
+		<comment type="summary">Text used to describe the transaction when editing an instance.  Replacement field 0 is the column name of the instance being edited.</comment>
+	</ResourceString>
+	<ResourceString name="ModelSamplePopulationEditorRemoveInstanceTransactionText" model="Model" resourceName="ModelSamplePopulationEditor.RemoveInstanceTransactionText">
+		<comment type="summary">Text used to describe the transaction when removing an instance.  Replacement field 0 is the column name of the instance being removed.</comment>
+	</ResourceString>
+	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle">
+		<comment type="summary">Text to place in the title bar of the sample population window.</comment>
 	</ResourceString>
 	<ResourceString name="PackageOfficialName" model="Diagram" resourceName="Package.OfficialName">
 		<comment type="summary">The official name of the package used in the About dialog</comment>
@@ -547,6 +580,15 @@
 	</ResourceString>
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message">
 		<comment type="summary">Text displayed for an unspecified data type.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message">
+		<comment type="summary">Text displayed when there aren't enough entity type role instances to completely fill a single entity population row.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message">
+		<comment type="summary">Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message">
+		<comment type="summary">Text displayed when the data type of the sample data doesn't match it's set data type.</comment>
 	</ResourceString>
 	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
 		<comment type="summary">Pattern showing left- and right-string to use for containing a value range definition.</comment>

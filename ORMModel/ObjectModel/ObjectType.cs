@@ -1937,6 +1937,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return duplicateName;
 				}
+
+				//UNDONE: Eventually this shouldn't be verbalizing
+				foreach (IModelErrorOwner valueTypeInstance in this.ValueTypeInstanceCollection)
+				{
+					foreach (ModelErrorUsage valueTypeInstanceError in valueTypeInstance.GetErrorCollection(filter))
+					{
+						yield return valueTypeInstanceError;
+					}
+				}
+
+				//UNDONE: Eventually this shouldn't be verbalizing
+				foreach (IModelErrorOwner entityTypeInstance in this.EntityTypeInstanceCollection)
+				{
+					foreach (ModelErrorUsage entityTypeInstanceError in entityTypeInstance.GetErrorCollection(filter))
+					{
+						yield return entityTypeInstanceError;
+					}
+				}
 			}
 
 			if (filter == ModelErrorUses.DisplayPrimary || filter == ModelErrorUses.Verbalize)

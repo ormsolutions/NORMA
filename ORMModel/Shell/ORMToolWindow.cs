@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Get the current IORMSelectionContainer. Tracking this separate
 		/// from CurrentDocument allows us to switch between multiple
-		/// different ORM tool windows without changing the current ORM documtn.
+		/// different ORM tool windows without changing the current ORM document.
 		/// </summary>
 		protected virtual IORMSelectionContainer CurrentORMSelectionContainer
 		{
