@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.Shell
 	[CLSCompliant(false)]
 	public class ORMSamplePopulationToolWindow : ORMToolWindow
 	{
-		private ObjectModel.Editors.SamplePopulationEditor myEditor;
+		private SamplePopulationEditor myEditor;
 
 		#region Construction
 		/// <summary>
@@ -107,10 +107,16 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				Neumont.Tools.ORM.ObjectModel.Editors.SamplePopulationEditor editor = myEditor;
+				SamplePopulationEditor editor = myEditor;
 				if (editor == null)
 				{
-					myEditor = editor = new Neumont.Tools.ORM.ObjectModel.Editors.SamplePopulationEditor();
+					myEditor = editor = new SamplePopulationEditor();
+					ORMDesignerDocData currentDoc = CurrentDocument;
+					if (currentDoc != null)
+					{
+						AttachEventHandlers(currentDoc.Store);
+						OnORMSelectionContainerChanged();
+					}
 				}
 				return myEditor;
 			}
@@ -248,14 +254,22 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void AttachEventHandlers(Store store)
 		{
-			myEditor.AttachEventHandlers(store);
+			SamplePopulationEditor editor = myEditor;
+			if (editor != null)
+			{
+				editor.AttachEventHandlers(store);
+			}
 		}
 		/// <summary>
 		/// Unwires event handlers from the store.
 		/// </summary>
 		protected override void DetachEventHandlers(Store store)
 		{
-			myEditor.DetachEventHandlers(store);
+			SamplePopulationEditor editor = myEditor;
+			if (editor != null)
+			{
+				editor.DetachEventHandlers(store);
+			}
 		}
 		#endregion // ORMToolWindow Implementation
 	}

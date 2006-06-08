@@ -1034,7 +1034,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			protected new string GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
-				if (text.Length == 0)
+				if (text != null && text.Length == 0)
 				{
 					text = myValueType.ValueTypeInstanceCollection[row].Value.ToString();
 				}
@@ -1145,7 +1145,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			protected new string GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
-				if (text.Length == 0)
+				if (text!= null && text.Length == 0)
 				{
 					EntityTypeRoleInstanceMoveableCollection entityTypeRoleInstances = myEntityType.EntityTypeInstanceCollection[row].RoleInstanceCollection;
 					if (entityTypeRoleInstances.Count >= column)
@@ -1234,7 +1234,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			protected new string GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
-				if (text.Length == 0)
+				if (text != null && text.Length == 0)
 				{
 					FactTypeRoleInstanceMoveableCollection factTypeRoleInstances = myFactType.FactTypeInstanceCollection[row].RoleInstanceCollection;
 					if (factTypeRoleInstances.Count >= column)
