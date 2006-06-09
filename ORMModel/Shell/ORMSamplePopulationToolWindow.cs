@@ -143,6 +143,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void OnORMSelectionContainerChanged()
 		{
+			if (myEditor == null)
+			{
+				return;
+			}
 			ICollection selectedObjects;
 			if (CurrentORMSelectionContainer != null && (selectedObjects = base.GetSelectedComponents()).Count == 1)
 			{
@@ -235,6 +239,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void NullSelection()
 		{
+			Debug.Assert(myEditor != null, "Don't call before editor is initialized");
 			myEditor.NullSelection();
 		}
 		#endregion // Properties

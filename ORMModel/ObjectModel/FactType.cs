@@ -483,6 +483,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
 		{
 			Guid attributeGuid = attribute.Id;
+			UndoManager undoManager;
 			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid ||
 				attributeGuid == DerivationRuleDisplayMetaAttributeGuid ||
 				attributeGuid == DerivationStorageDisplayMetaAttributeGuid ||
@@ -493,7 +494,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == NameMetaAttributeGuid)
 			{
-				myGeneratedName = (string)newValue;
+				string newName = (string)newValue;
+				if ((newName != null && newName.Length == 0) ||
+					((undoManager = Store.UndoManager).InUndo || undoManager.InRedo))
+				{
+					// We only set this in undo/redo scenarios so that the initial
+					// change on a writable property comes indirectly from the objectifying
+					// type changing its name. Anywhere that sets the Name property to
+					// put a change in the transaction log needs to set myGeneratedName independently
+					// after this call.
+					myGeneratedName = newName;
+				}
 				// Remainder handled by FactTypeChangeRule
 				return;
 			}
@@ -1055,6 +1066,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string oldGeneratedName = factType.myGeneratedName;
 				bool haveNewName = false;
 				string newGeneratedName = null;
+				bool raiseEvent = true;
 
 				// See if the nestedType uses the old automatic name. If it does, then
 				// update the automatic name to the the new name.
@@ -1084,6 +1096,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									factType.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
 								}
 								factType.Name = newGeneratedName;
+								factType.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
 								contextInfo[ObjectType.AllowDuplicateObjectNamesKey] = null;
 								nestingType.Name = newGeneratedName;
 							}
@@ -1095,6 +1108,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 									ruleManager.EnableRule(typeof(FactTypeChangeRule));
 								}
 							}
+						}
+						else
+						{
+							// Rule updates for this case are handled in 
+							haveNewName = false;
+							newGeneratedName = null;
+							raiseEvent = false;
 						}
 					}
 					else
@@ -1134,6 +1154,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											factType.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
 										}
 										factType.Name = newGeneratedName;
+										factType.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
 									}
 									finally
 									{
@@ -1156,7 +1177,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						factType.Name = "";
 					}
 				}
-				store.RaiseCustomModelEvent(store, FactTypeNameChangedEvent.CustomModelEventId, new FactTypeNameChangedEventArgs(factType));
+				if (raiseEvent)
+				{
+					store.RaiseCustomModelEvent(store, FactTypeNameChangedEvent.CustomModelEventId, new FactTypeNameChangedEventArgs(factType));
+				}
 			}
 		}
 		/// <summary>
@@ -1578,6 +1602,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 								null != (factType = proxy.FactType))
 							{
 								ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+							}
+						}
+						FactType nestedFact = objectType.NestedFactType;
+						if (nestedFact != null)
+						{
+							string newName = (string)e.NewValue;
+							if (newName.Length != 0)
+							{
+								// Update model errors on the fact
+								foreach (ModelError error in (nestedFact as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
+								{
+									if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
+									{
+										error.GenerateErrorText();
+									}
+								}
+								Store store = nestedFact.Store;
+								store.RaiseCustomModelEvent(store, FactTypeNameChangedEvent.CustomModelEventId, new FactTypeNameChangedEventArgs(nestedFact));
 							}
 						}
 					}
