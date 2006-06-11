@@ -115,7 +115,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:boolean">
-		<xsl:text>NCHAR</xsl:text>
+		<xsl:text>NCHAR </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="dep:charLengthExpression">

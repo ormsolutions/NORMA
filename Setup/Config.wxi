@@ -97,4 +97,5 @@
 	<?define VSMiscProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3"?>
 	<?define VSSolutionItemsProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235"?>
 	<?define VSOutputWindowGuid="34E76E81-EE4A-11D0-AE2E-00A0C90FFFC3"?>
+	<?define VSSolutionExplorerWindowGuid="3AE79031-E1BC-11D0-8F78-00A0C9110057"?>
 </Include>

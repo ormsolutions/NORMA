@@ -1219,12 +1219,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Toolbox support
 		#region Other base overrides
 		/// <summary>
-		/// Set the initial diagram name. We always set it to 'New Page' for now
+		/// Set the initial diagram name. We always set it to a specific resource string value for now.
 		/// </summary>
 		public override void OnInitialized()
 		{
 			base.OnInitialized();
-			Name = ResourceStrings.DiagramDefaultNewPageName;
+			Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
 		/// <summary>
 		/// Clean up disposable members (connection actions)

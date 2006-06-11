@@ -487,51 +487,45 @@ namespace Neumont.Tools.ORM.Shell
 		#region Tab Restoration Hack
 		private void AddTabRestoreEvents()
 		{
-			// Added events to cater for undo/redo and initial
+			// Add event handlers to cater for undo/redo and initial
 			// add when multiple windows are open
 			Store store = Store;
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(DiagramAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(DiagramRemovedEvent));
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(AddOrRemoveTabForEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(AddOrRemoveTabForEvent));
 		}
 		private void RemoveTabRestoreEvents()
 		{
-			//Added events to cater for undo/redo
+			// Remove event handlers added by AddTabRestoreEvents
 			Store store = Store;
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(DiagramAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(DiagramRemovedEvent));
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(AddOrRemoveTabForEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(AddOrRemoveTabForEvent));
 		}
-		private void DiagramAddedEvent(object sender, ElementAddedEventArgs e)
+		private void AddOrRemoveTabForEvent(object sender, ElementEventArgs e)
 		{
-			AddOrRemoveTabForEvent(e.ModelElement as Diagram, true);
-		}
-		private void DiagramRemovedEvent(object sender, ElementRemovedEventArgs e)
-		{
-			AddOrRemoveTabForEvent(e.ModelElement as Diagram, false);
-		}
-		private void AddOrRemoveTabForEvent(Diagram diagram, bool add)
-		{
+			Diagram diagram = e.ModelElement as Diagram;
+			bool add = e is ElementAddedEventArgs;
 			Store store = diagram.Store;
 			IMonitorSelectionService monitorSelection = (IMonitorSelectionService)ServiceProvider.GetService(typeof(IMonitorSelectionService));
-			TabbedDiagramDocView activeView = (monitorSelection != null) ? (monitorSelection.CurrentDocumentView as TabbedDiagramDocView) : null;
+			MultiDiagramDocView activeView = (monitorSelection != null) ? (monitorSelection.CurrentDocumentView as MultiDiagramDocView) : null;
 			foreach (DocView view in DocViews)
 			{
-				TabbedDiagramDocView tabbedDocView = view as TabbedDiagramDocView;
-				if (tabbedDocView != null)
+				MultiDiagramDocView multiDocView = view as MultiDiagramDocView;
+				if (multiDocView != null)
 				{
 					if (add)
 					{
-						// Activate the tab if this is active window. Otherwise, just readd it.
-						tabbedDocView.Diagrams.Add(diagram, object.ReferenceEquals(tabbedDocView, activeView));
+						// Activate the tab only if this is the active window.
+						multiDocView.AddDiagram(diagram, object.ReferenceEquals(multiDocView, activeView));
 					}
 					else
 					{
-						tabbedDocView.Diagrams.Remove(diagram);
+						multiDocView.RemoveDiagram(diagram);
 					}
 				}
 			}

@@ -2234,13 +2234,33 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// The text shown for a new page on the tabbed diagram.
+		/// The default name for new diagrams and the context menu command text and transaction name for creating a new diagram.
 		/// </summary>
-		public static string DiagramDefaultNewPageName
+		public static string DiagramCommandNewPage
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.DefaultNewPageName");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Command.NewPage");
+			}
+		}
+		/// <summary>
+		/// The context menu command text and transaction name for renaming a diagram.
+		/// </summary>
+		public static string DiagramCommandRenamePage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Command.RenamePage");
+			}
+		}
+		/// <summary>
+		/// The context menu command text and transaction name for deleting diagram.
+		/// </summary>
+		public static string DiagramCommandDeletePage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Command.DeletePage");
 			}
 		}
 		/// <summary>

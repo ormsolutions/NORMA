@@ -195,7 +195,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <see cref="DiagramDocView"/> designed to contain multiple <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
-	public partial class ORMDesignerDocView : TabbedDiagramDocView, IORMSelectionContainer
+	public partial class ORMDesignerDocView : Neumont.Tools.ORM.Framework.MultiDiagramDocView, IORMSelectionContainer
 	{
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
@@ -241,30 +241,57 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
+		
+		#region Context Menu
 		/// <summary>
-		/// See <see cref="TabbedDiagramDocView.CreateDiagram"/>.
+		/// When set as the <see cref="ToolStripItem.Tag"/> for a <see cref="ToolStripItem"/> in <see cref="P:ContextMenuStrip"/>,
+		/// that <see cref="ToolStripItem"/> will be disabled if no tab is selected when the <see cref="T:ContextMenuStrip"/> is
+		/// opened.
 		/// </summary>
-		protected override Diagram CreateDiagram(Store store)
+		public static readonly object ContextMenuItemNeedsSelectedTab = new object();
+		private void ContextMenuOpening(object sender, EventArgs e)
 		{
-			Diagram diagram = ORMDiagram.CreateORMDiagram(store);
-			if (diagram.ModelElement == null)
+			ContextMenuStrip contextMenu = sender as ContextMenuStrip;
+			bool haveSelectedTab = base.GetDesignerAtPoint(contextMenu.Location) != null;
+			foreach (ToolStripItem item in contextMenu.Items)
 			{
-				// Make sure the diagram element is correctly attached to the model, and
-				// create a model if we don't have one yet.
-				IList elements = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid, true);
-				if (elements.Count == 0)
+				if (item.Tag == ContextMenuItemNeedsSelectedTab)
 				{
-					diagram.Associate(ORMModel.CreateORMModel(store));
-				}
-				else
-				{
-					Debug.Assert(elements.Count == 1);
-					diagram.Associate((ModelElement)elements[0]);
+					item.Enabled = haveSelectedTab;
 				}
 			}
-			// Note that adding the diagram to the view(s) is done in events on the docdata
-			return diagram;
 		}
+		private void ContextMenuNewPageORMClick(object sender, EventArgs e)
+		{
+			Store store = ((ModelingDocData)base.DocData).Store;
+			using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandNewPage.Replace("&", "")))
+			{
+				IList models = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
+				ORMDiagram diagram = ORMDiagram.CreateORMDiagram(store);
+				diagram.Associate(models.Count > 0 ? (ModelElement)models[0] : ORMModel.CreateORMModel(store));
+				t.Commit();
+			}
+		}
+		private void ContextMenuDeletePageClick(object sender, EventArgs e)
+		{
+			ToolStrip senderOwner = ((ToolStripItem)sender).Owner;
+			DiagramView designer = base.GetDesignerAtPoint(senderOwner.Location);
+			if (designer != null)
+			{
+				Diagram diagram = designer.Diagram;
+				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandDeletePage.Replace("&", "")))
+				{
+					diagram.Remove();
+					t.Commit();
+				}
+			}
+		}
+		private void ContextMenuRenamePageClick(object sender, EventArgs e)
+		{
+			base.RenameDiagramAtPoint(((ToolStripItem)sender).Owner.Location);
+		}
+		#endregion // Context Menu
+
 		/// <summary>
 		/// See <see cref="TabbedDiagramDocView.LoadView"/>.
 		/// </summary>
@@ -273,34 +300,61 @@ namespace Neumont.Tools.ORM.Shell
 			if (base.LoadView())
 			{
 				ORMDesignerDocData document = (ORMDesignerDocData)this.DocData;
-				// Try to replace the default tab image with our tab image.
-				// HACK: MSBUG: The TabStrip property on TabbedDiagramDocView is private, so we have to use reflection to get it
-				System.Reflection.PropertyInfo tabStripPropertyInfo = typeof(TabbedDiagramDocView).GetProperty("TabStrip", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-				if (tabStripPropertyInfo != null)
-				{
-					TabStrip tabStrip = tabStripPropertyInfo.GetValue(this, null) as TabStrip;
-					if (tabStrip != null)
-					{
-						System.Drawing.Bitmap tabImage = ResourceStrings.DiagramTabImage;
-						tabStrip.TabImageList.Images.Clear();
-						tabStrip.TabImageList.ImageSize = tabImage.Size;
-						tabStrip.TabImageList.Images.Add(tabImage);
-					}
-				}
 
+				base.RegisterImageForDiagramType(typeof(ORMDiagram), ResourceStrings.DiagramTabImage);
+
+				#region Setup context menu
+				ContextMenuStrip contextMenu = base.ContextMenuStrip = new ContextMenuStrip();
+				contextMenu.ShowImageMargin = false;
+				contextMenu.Opening += ContextMenuOpening;
+				ToolStripMenuItem newPageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandNewPage);
+				ToolStripMenuItem deletePageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandDeletePage);
+				ToolStripMenuItem renamePageMenuItem = new ToolStripMenuItem(ResourceStrings.DiagramCommandRenamePage);
+				ToolStripMenuItem ormDiagramMenuItem = new ToolStripMenuItem("&ORM");
+				ormDiagramMenuItem.Image = ResourceStrings.DiagramTabImage;
+				ormDiagramMenuItem.Click += ContextMenuNewPageORMClick;
+				newPageMenuItem.DropDown = new ToolStripDropDown();
+				newPageMenuItem.DropDownItems.Add(ormDiagramMenuItem);
+				newPageMenuItem.DropDown.ImageScalingSize = DiagramImageSize;
+				deletePageMenuItem.Click += ContextMenuDeletePageClick;
+				deletePageMenuItem.Tag = ContextMenuItemNeedsSelectedTab;
+				renamePageMenuItem.Click += ContextMenuRenamePageClick;
+				renamePageMenuItem.Tag = ContextMenuItemNeedsSelectedTab;
+				contextMenu.Items.AddRange(new ToolStripItem[] { newPageMenuItem, new ToolStripSeparator(), deletePageMenuItem, renamePageMenuItem });
+				#endregion // Setup context menu
+
+				Store store = document.Store;
 				// Add our existing diagrams, or make a new one if we don't already have one
-				IList existingDiagrams = document.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true);
+				IList existingDiagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true);
 				if (existingDiagrams.Count > 0)
 				{
 					for (int i = 0; i < existingDiagrams.Count; i++)
 					{
 						// Make the first diagram be selected
-						base.Diagrams.Add((Diagram)existingDiagrams[i], i == 0);
+						base.AddDiagram((Diagram)existingDiagrams[i], i == 0);
 					}
 				}
 				else
 				{
-					base.AddDiagram();
+					Diagram diagram = ORMDiagram.CreateORMDiagram(store);
+					if (diagram.ModelElement == null)
+					{
+						// Make sure the diagram element is correctly attached to the model, and
+						// create a model if we don't have one yet.
+						IList elements = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid, true);
+						if (elements.Count == 0)
+						{
+							diagram.Associate(ORMModel.CreateORMModel(store));
+						}
+						else
+						{
+							Debug.Assert(elements.Count == 1);
+							diagram.Associate((ModelElement)elements[0]);
+						}
+					}
+					// The DocData events for adding new Diagrams to the DocView are not yet hooked up, so
+					// we need to explicitly add it here.
+					base.AddDiagram(diagram, true);
 				}
 
 				// TODO: We don't know where this call should go, because we're not even sure what it does...

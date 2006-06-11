@@ -735,8 +735,14 @@
 		<comment type="summary">The format string for the content of the message shown when a registered extension fails to load.</comment>
 		<comment type="remarks">{0} will be &lt;see cref="System.Environment.NewLine"/&gt;. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling &lt;see cref="System.Exception.ToString"&gt;ToString()&lt;/see&gt; on the &lt;see cref="System.Exception"/&gt; that caused the load failure.</comment>
 	</ResourceString>
-	<ResourceString name="DiagramDefaultNewPageName" model="Diagram" resourceName="Diagram.DefaultNewPageName">
-		<comment type="summary">The text shown for a new page on the tabbed diagram.</comment>
+	<ResourceString name="DiagramCommandNewPage" model="Diagram" resourceName="Diagram.Command.NewPage">
+		<comment type="summary">The default name for new diagrams and the context menu command text and transaction name for creating a new diagram.</comment>
+	</ResourceString>
+	<ResourceString name="DiagramCommandRenamePage" model="Diagram" resourceName="Diagram.Command.RenamePage">
+		<comment type="summary">The context menu command text and transaction name for renaming a diagram.</comment>
+	</ResourceString>
+	<ResourceString name="DiagramCommandDeletePage" model="Diagram" resourceName="Diagram.Command.DeletePage">
+		<comment type="summary">The context menu command text and transaction name for deleting diagram.</comment>
 	</ResourceString>
 	<ResourceString name="SetConstraintStickyRoleFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayFormatString">
 		<comment type="summary">The format string used to combine the sequence and column numbers in the role box of an active set (multicolumn) constraint.</comment>

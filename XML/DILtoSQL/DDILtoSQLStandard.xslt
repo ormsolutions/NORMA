@@ -205,6 +205,7 @@
 
 	<xsl:template match="ddt:boolean">
 		<xsl:value-of select="@type"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:characterString">

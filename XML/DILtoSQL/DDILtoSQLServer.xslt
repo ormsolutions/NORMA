@@ -85,7 +85,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:boolean">
-		<xsl:text>BIT</xsl:text>
+		<xsl:text>BIT </xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="ddt:characterString">

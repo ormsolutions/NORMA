@@ -97,7 +97,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return 0;
+				return -1;
 			}
 		}
 		/// <summary>

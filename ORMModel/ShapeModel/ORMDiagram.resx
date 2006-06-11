@@ -194,9 +194,17 @@
     <value xml:space="preserve">Delete Role Sequence</value>
     <comment xml:space="preserve">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
-  <data name="Diagram.DefaultNewPageName">
-    <value xml:space="preserve">New Page</value>
-    <comment xml:space="preserve">The text shown for a new page on the tabbed diagram.</comment>
+  <data name="Diagram.Command.DeletePage">
+    <value xml:space="preserve">&amp;Delete Page</value>
+    <comment xml:space="preserve">The context menu command text and transaction name for deleting diagram.</comment>
+  </data>
+  <data name="Diagram.Command.NewPage">
+    <value xml:space="preserve">&amp;New Page</value>
+    <comment xml:space="preserve">The default name for new diagrams and the context menu command text and transaction name for creating a new diagram.</comment>
+  </data>
+  <data name="Diagram.Command.RenamePage">
+    <value xml:space="preserve">&amp;Rename Page</value>
+    <comment xml:space="preserve">The context menu command text and transaction name for renaming a diagram.</comment>
   </data>
   <data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Resources/DiagramTabImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

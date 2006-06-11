@@ -83,7 +83,7 @@
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$RightParen"/>
-		<xsl:text> FOR BIT DATA</xsl:text>
+		<xsl:text> FOR BIT DATA </xsl:text>
 	</xsl:template>
 
 	<!-- UNDONE: This isn't going to work for ddl:tableConstraintDefinition elements that are not inside of ddl:tableDefinition elements -->
