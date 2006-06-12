@@ -494,7 +494,6 @@ namespace Neumont.Tools.ORM.Shell
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(AddOrRemoveTabForEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(AddOrRemoveTabForEvent));
 		}
 		private void RemoveTabRestoreEvents()
 		{
@@ -504,12 +503,10 @@ namespace Neumont.Tools.ORM.Shell
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(AddOrRemoveTabForEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(AddOrRemoveTabForEvent));
 		}
-		private void AddOrRemoveTabForEvent(object sender, ElementEventArgs e)
+		private void AddOrRemoveTabForEvent(object sender, ElementAddedEventArgs e)
 		{
 			Diagram diagram = e.ModelElement as Diagram;
-			bool add = e is ElementAddedEventArgs;
 			Store store = diagram.Store;
 			IMonitorSelectionService monitorSelection = (IMonitorSelectionService)ServiceProvider.GetService(typeof(IMonitorSelectionService));
 			MultiDiagramDocView activeView = (monitorSelection != null) ? (monitorSelection.CurrentDocumentView as MultiDiagramDocView) : null;
@@ -518,15 +515,8 @@ namespace Neumont.Tools.ORM.Shell
 				MultiDiagramDocView multiDocView = view as MultiDiagramDocView;
 				if (multiDocView != null)
 				{
-					if (add)
-					{
-						// Activate the tab only if this is the active window.
-						multiDocView.AddDiagram(diagram, object.ReferenceEquals(multiDocView, activeView));
-					}
-					else
-					{
-						multiDocView.RemoveDiagram(diagram);
-					}
+					// Activate the tab only if this is the active window.
+					multiDocView.AddDiagram(diagram, object.ReferenceEquals(multiDocView, activeView));
 				}
 			}
 		}

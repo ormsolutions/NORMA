@@ -319,7 +319,7 @@ namespace Neumont.Tools.ORM.Framework
 				return;
 			}
 			int lastIndex = 0;
-			while ((lastIndex = control.IndexOf(diagram, lastIndex)) > 0)
+			while ((lastIndex = control.IndexOf(diagram, lastIndex)) >= 0)
 			{
 				RemoveAt(lastIndex);
 			}
@@ -347,15 +347,14 @@ namespace Neumont.Tools.ORM.Framework
 				return;
 			}
 			int lastIndex = 0;
-			while ((lastIndex = control.IndexOf(designer, lastIndex)) > 0)
+			while ((lastIndex = control.IndexOf(designer, lastIndex)) >= 0)
 			{
 				RemoveAt(lastIndex);
 			}
 		}
 		private void RemoveAt(int index)
 		{
-			TabControl.TabPageCollection tabPages = myDocViewControl.TabPages;
-			DiagramTabPage tabPage = (DiagramTabPage)tabPages[index];
+			DiagramTabPage tabPage = (DiagramTabPage)myDocViewControl.TabPages[index];
 			Diagram diagram = tabPage.Diagram;
 			if (diagram != null)
 			{
@@ -371,7 +370,9 @@ namespace Neumont.Tools.ORM.Framework
 					diagramRefCounts[diagram] = refCount;
 				}
 			}
-			tabPages.RemoveAt(index);
+			// HACK: Set Parent to null rather than removing the TabPage from the Parent's TabPages collection.
+			// If we do the latter, for some reason another TabPage gets removed in addition to the TabPage we are processing.
+			tabPage.Parent = null;
 			tabPage.Dispose();
 		}
 		#endregion // Remove methods
