@@ -131,7 +131,6 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // Dispose method
 
 			#region OnGotFocus method
-			// We should never be able to get focus anyway, but in case we do, give it to the DiagramClientView
 			protected override void OnGotFocus(EventArgs e)
 			{
 				DiagramView designer = Designer;

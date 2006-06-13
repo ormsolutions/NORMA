@@ -279,7 +279,8 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			EnsureDocViewControl();
 			MultiDiagramDocViewControl docViewControl = myDocViewControl;
-			DiagramTabPage tabPage = new DiagramTabPage(myDocViewControl, designer);
+			int tabCount = docViewControl.TabCount;
+			DiagramTabPage tabPage = new DiagramTabPage(docViewControl, designer);
 			Diagram diagram = designer.Diagram;
 			Dictionary<Diagram, int> diagramRefCounts = myDiagramRefCounts;
 			int refCount;
@@ -288,7 +289,12 @@ namespace Neumont.Tools.ORM.Framework
 				diagram.DiagramRemoved += DiagramRemoved;
 			}
 			diagramRefCounts[diagram] = refCount + 1;
-			if (selectAsCurrent)
+			if (tabCount == 0)
+			{
+				docViewControl.SelectedIndex = -1;
+				docViewControl.SelectTab(tabPage);
+			}
+			else if (selectAsCurrent)
 			{
 				docViewControl.SelectTab(tabPage);
 			}

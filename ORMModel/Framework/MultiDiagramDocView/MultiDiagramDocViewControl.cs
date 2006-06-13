@@ -124,20 +124,6 @@ namespace Neumont.Tools.ORM.Framework
 
 			#region Properties
 
-			#region CreateParams property
-			protected override CreateParams CreateParams
-			{
-				get
-				{
-					const int TCS_FOCUSNEVER = 0x8000;
-
-					CreateParams @params = base.CreateParams;
-					@params.Style |= TCS_FOCUSNEVER;
-					return @params;
-				}
-			}
-			#endregion // CreateParams property
-
 			#region DefaultMargin property
 			protected override Padding DefaultMargin
 			{
@@ -245,10 +231,10 @@ namespace Neumont.Tools.ORM.Framework
 			#region OnGotFocus method
 			protected override void OnGotFocus(EventArgs e)
 			{
-				DiagramView designer = DocView.CurrentDesigner;
-				if (designer != null)
+				TabPage tabPage = base.SelectedTab;
+				if (tabPage != null)
 				{
-					designer.DiagramClientView.Focus();
+					tabPage.Focus();
 				}
 			}
 			#endregion // OnGotFocus method
@@ -308,6 +294,10 @@ namespace Neumont.Tools.ORM.Framework
 					DiagramView designer = tabPage.Designer;
 					DocView.SetSelectedComponents(designer.Selection.RepresentedElements);
 					designer.DiagramClientView.Focus();
+				}
+				else
+				{
+					DocView.SetSelectedComponents(null);
 				}
 			}
 			#endregion // OnSelectedIndexChanged method
