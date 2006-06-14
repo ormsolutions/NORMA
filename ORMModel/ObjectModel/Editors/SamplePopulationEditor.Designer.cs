@@ -37,8 +37,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			this.vtrSamplePopulation.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.vtrSamplePopulation.HasGridLines = true;
 			this.vtrSamplePopulation.HasHorizontalGridLines = true;
-			this.vtrSamplePopulation.HasRootButtons = false;
-			this.vtrSamplePopulation.HasRootLines = false;
 			this.vtrSamplePopulation.HasVerticalGridLines = true;
 			this.vtrSamplePopulation.LabelEditSupport = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Delayed;
 			this.vtrSamplePopulation.Location = new System.Drawing.Point(0, 0);

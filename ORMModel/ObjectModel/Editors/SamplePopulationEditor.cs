@@ -174,7 +174,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				headers[i+1] = new VirtualTreeColumnHeader(mySelectedValueType.Name);
 			}
 			vtrSamplePopulation.SetColumnHeaders(headers, true);
-			myBranch = new SamplePopulationValueTypeBranch(mySelectedValueType, numColumns+1);
+			myBranch = new SamplePopulationValueTypeBranch(mySelectedValueType);
 			ConnectTree();
 		}
 
@@ -447,19 +447,33 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 		private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			EntityTypeModelChangeHandler(link.PreferredIdentifierFor);
+			ObjectType entityType = link.PreferredIdentifierFor;
+			if(entityType != null && object.ReferenceEquals(entityType, mySelectedEntityType))
+			{
+				PopulateControlForEntityType();
+			}
 		}
 
 		private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			EntityTypeModelChangeHandler(link.PreferredIdentifierFor);
+			ObjectType entityType = link.PreferredIdentifierFor;
+			if (entityType != null && object.ReferenceEquals(entityType, mySelectedEntityType))
+			{
+				PopulateControlForEntityType();
+			}
 		}
 
 		private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
-			EntityTypeModelChangeHandler(link.EntityType);
+			ObjectType entityType = link.EntityType;
+			if (entityType != null && object.ReferenceEquals(entityType, mySelectedEntityType))
+			{
+				SamplePopulationEntityTypeBranch entityBranch = myBranch as SamplePopulationEntityTypeBranch;
+				Debug.Assert(entityBranch != null);
+				entityBranch.AddEntityInstanceDisplay(link.EntityTypeInstanceCollection);
+			}
 		}
 
 		private void EntityTypeHasEntityTypeInstanceRemovedEvent(object sender, ElementRemovedEventArgs e)
@@ -590,56 +604,21 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				return BeginLabelEdit(row, column, activationStyle);
 			}
 
-			LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			protected LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
-				bool isNewRow = (row == NewRowIndex);
-				bool textIsEmpty = String.IsNullOrEmpty(newText);
-				// If on the new row and nothing is entered, ignore it.
-				if (isNewRow && textIsEmpty)
-				{
-					return LabelEditResult.CancelEdit;
-				}
-				// Is New Row && Text is Empty = Do Nothing
-				// Is New Row && Text is not empty = Make a new one && set the value
-				// Not New Row && Text is Empty = Delete the object
-				// Not New Row && Text is not empty = set the value
-				string columnName = TreeControl.GetColumnHeader(column).Text;
-				if (isNewRow)
-				{
-					using (Transaction t = myStore.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, columnName)))
-					{
-						AddAndInitializeInstance(row, column, newText);
-						t.Commit();
-					}					
-				}
-				else if (textIsEmpty)
-				{
-					using (Transaction t = myStore.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, columnName)))
-					{
-						RemoveInstance(row, column);
-						t.Commit();
-					}					
-				}
-				else
-				{
-					using (Transaction t = myStore.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, columnName)))
-					{
-						EditInstance(row, column, newText);
-						t.Commit();
-					}
-				}
-				return LabelEditResult.AcceptEdit;
+				return LabelEditResult.CancelEdit;
 			}
 			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				return CommitLabelEdit(row, column, newText);
 			}
 
-			static BranchFeatures Features
+			protected static BranchFeatures Features
 			{
 				get
 				{
-					return	BranchFeatures.DelayedLabelEdits |
+					return	BranchFeatures.ComplexColumns |
+							BranchFeatures.DelayedLabelEdits |
 							BranchFeatures.DefaultPositionTracking |
 							BranchFeatures.ExplicitLabelEdits |
 							BranchFeatures.Realigns |
@@ -654,7 +633,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
-			static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+			protected static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 			{
 				return VirtualTreeAccessibilityData.Empty;
 			}
@@ -718,7 +697,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 
 			protected static bool IsExpandable(int row, int column)
 			{
-				return false;
+				return true;
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
@@ -851,7 +830,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			#endregion
 			#region IMultiColumnBranch Member Mirror/Implementation
-			int ColumnCount
+			protected int ColumnCount
 			{
 				get
 				{
@@ -866,7 +845,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
-			static SubItemCellStyles ColumnStyles(int column)
+			protected static SubItemCellStyles ColumnStyles(int column)
 			{
 				return SubItemCellStyles.Simple;
 			}
@@ -875,7 +854,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				return ColumnStyles(column);
 			}
 
-			int GetJaggedColumnCount(int row)
+			protected int GetJaggedColumnCount(int row)
 			{
 				return ColumnCount;
 			}
@@ -905,35 +884,192 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			{
 				return column == (int)SpecialColumnIndex.FullRowSelectColumn;
 			}
-			protected string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance)
+
+			protected ValueTypeInstance RecurseIdentifyingValueTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, Role identifierRole)
 			{
-				if (objectTypeInstance is ValueTypeInstance)
+				ObjectTypeInstance result = RecurseAndCreateIdentifyingEntityTypeInstance(objectTypeInstance, parentType, identifierRole);
+				ValueTypeInstance selectedValueTypeInstance = RecurseValueTypeInstance(result, identifierRole);
+				return selectedValueTypeInstance;
+			}
+
+			private ValueTypeInstance RecurseValueTypeInstance(ObjectTypeInstance objectTypeInstance, Role identifierRole)
+			{
+				EntityTypeInstance eInstance;
+				ValueTypeInstance vInstance;
+				if (null != (vInstance = objectTypeInstance as ValueTypeInstance))
 				{
-					return (objectTypeInstance as ValueTypeInstance).Value.ToString();
+					return vInstance;
 				}
-				else
+				else if(null != (eInstance = objectTypeInstance as EntityTypeInstance))
 				{
-					Debug.Assert(objectTypeInstance is EntityTypeInstance);
-					EntityTypeInstance entityTypeInstance = (objectTypeInstance as EntityTypeInstance);
-					EntityTypeRoleInstanceMoveableCollection roleInstances = entityTypeInstance.RoleInstanceCollection;
-					StringBuilder outputText = new StringBuilder();
-					if (roleInstances.Count == 1)
+					EntityTypeRoleInstanceMoveableCollection roleInstances = eInstance.RoleInstanceCollection;
+					if (identifierRole == null)
 					{
-						outputText.Append(RecurseObjectTypeInstanceValue(roleInstances[0].ObjectTypeInstanceCollection));
+						return RecurseValueTypeInstance(roleInstances[0].ObjectTypeInstanceCollection, null);
 					}
 					else
 					{
-						outputText.Append("(");
-						string listSeperator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-						foreach (EntityTypeRoleInstance entityTypeRoleInstance in roleInstances)
+						foreach (EntityTypeRoleInstance roleInstance in roleInstances)
 						{
-							outputText.Append(RecurseObjectTypeInstanceValue(entityTypeRoleInstance.ObjectTypeInstanceCollection));
-							outputText.Append(listSeperator + " ");
+							if (object.ReferenceEquals(roleInstance.RoleCollection, identifierRole))
+							{
+								return RecurseValueTypeInstance(roleInstance.ObjectTypeInstanceCollection, null);
+							}
 						}
-						outputText.Remove(outputText.Length - 1, 1);
+					}
+				}
+				return null;
+			}
+
+			private ObjectTypeInstance RecurseAndCreateIdentifyingEntityTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, Role identifierRole)
+			{
+				if (parentType.IsValueType)
+				{
+					if (objectTypeInstance == null)
+					{
+						ValueTypeInstance editInstance = ValueTypeInstance.CreateValueTypeInstance(myStore);
+						editInstance.ValueType = parentType;
+						return editInstance;
+					}
+					return objectTypeInstance;
+				}
+				else
+				{
+					if (identifierRole == null)
+					{
+						identifierRole = parentType.PreferredIdentifier.RoleCollection[0];
+					}
+					EntityTypeInstance editInstance = objectTypeInstance as EntityTypeInstance;
+					if (editInstance == null)
+					{
+						editInstance = EntityTypeInstance.CreateEntityTypeInstance(myStore);
+						editInstance.EntityType = parentType;
+					}
+					EntityTypeRoleInstance editingRoleInstance = null;
+					EntityTypeRoleInstanceMoveableCollection identifierInstances = editInstance.RoleInstanceCollection;
+					foreach (EntityTypeRoleInstance roleInstance in editInstance.RoleInstanceCollection)
+					{
+						if(object.ReferenceEquals(roleInstance.RoleCollection, identifierRole))
+						{
+							editingRoleInstance = roleInstance;
+							break;
+						}
+					}
+					if(editingRoleInstance == null)
+					{
+						EntityTypeRoleInstance identifierInstance = EntityTypeRoleInstance.CreateEntityTypeRoleInstance(myStore,
+							new RoleAssignment[] {
+								new RoleAssignment(EntityTypeRoleInstance.RoleCollectionMetaRoleGuid, identifierRole),
+								new RoleAssignment(EntityTypeRoleInstance.ObjectTypeInstanceCollectionMetaRoleGuid, RecurseAndCreateIdentifyingEntityTypeInstance(null, identifierRole.RolePlayer, null))
+							});
+						identifierInstance.EntityTypeInstance = editInstance;
+						return editInstance;
+					}
+					else
+					{
+						return RecurseAndCreateIdentifyingEntityTypeInstance(editingRoleInstance.ObjectTypeInstanceCollection, identifierRole.RolePlayer, null);
+					}
+				}
+			}
+
+			protected string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, ObjectType parentType)
+			{
+				StringBuilder outputText = null;
+				string retVal = (parentType == null) ? "" : RecurseObjectTypeInstanceValue(objectTypeInstance, parentType, null, ref outputText);
+				return (outputText != null) ? outputText.ToString() : retVal;
+			}
+
+			private string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string listSeparator, ref StringBuilder outputText)
+			{
+				ValueTypeInstance valueInstance;
+				EntityTypeInstance entityTypeInstance;
+				if (parentType.IsValueType)
+				{
+					valueInstance = objectTypeInstance as ValueTypeInstance;
+					string valueText = " ";
+					if (valueInstance != null)
+					{
+						valueText = valueInstance.Value;
+						if (outputText != null)
+						{
+							outputText.Append(valueText);
+							return null;
+						}
+					}
+					return valueText;
+				}
+				else
+				{
+					entityTypeInstance = objectTypeInstance as EntityTypeInstance;
+					UniquenessConstraint identifier = parentType.PreferredIdentifier;
+					RoleMoveableCollection identifierRoles = identifier.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					if (identifierCount == 1)
+					{
+						ObjectTypeInstance nestedInstance = null;
+						if (entityTypeInstance != null)
+						{
+							EntityTypeRoleInstanceMoveableCollection roleInstances = entityTypeInstance.RoleInstanceCollection;
+							if (roleInstances.Count > 0)
+							{
+								nestedInstance = roleInstances[0].ObjectTypeInstanceCollection;
+							}
+						}
+						return RecurseObjectTypeInstanceValue(nestedInstance, identifierRoles[0].RolePlayer, listSeparator, ref outputText);
+					}
+					else
+					{
+						EntityTypeRoleInstanceMoveableCollection roleInstances = null;
+						int roleInstanceCount = 0;
+						if (entityTypeInstance != null)
+						{
+							roleInstances = entityTypeInstance.RoleInstanceCollection;
+							roleInstanceCount = roleInstances.Count;
+						}
+						if (outputText == null)
+						{
+							outputText = new StringBuilder();
+						}
+						outputText.Append("(");
+						if (listSeparator == null)
+						{
+							listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
+						}
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							Role identifierRole = identifierRoles[i];
+							if (i != 0)
+							{
+								outputText.Append(listSeparator);
+							}
+							if (roleInstanceCount != 0)
+							{
+								for (int j = 0; j < roleInstanceCount; ++j)
+								{
+									EntityTypeRoleInstance instance = roleInstances[j];
+									if (object.ReferenceEquals(instance.RoleCollection, identifierRole))
+									{
+										RecurseObjectTypeInstanceValue(instance.ObjectTypeInstanceCollection, identifierRole.RolePlayer, listSeparator, ref outputText);
+										break;
+									}
+									else if (j == roleInstanceCount - 1)
+									{
+										RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer, listSeparator, ref outputText);
+									}
+								}
+							}
+							else
+							{
+								if (i == 0)
+								{
+									outputText.Append(" ");
+								}
+								RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer, listSeparator, ref outputText);
+							}
+						}
 						outputText.Append(")");
 					}
-					return outputText.ToString();
+					return null;
 				}
 			}
 			#endregion
@@ -965,36 +1101,45 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
-			/// <summary>
-			/// Provide a generic interface for creating and initializing an
-			/// Instance, must be called from inside a transaction.
-			/// </summary>
-			/// <param name="row">Row to create the instance at</param>
-			/// <param name="column">Column to create the instance at</param>
-			/// <param name="newText">Default value of the instance</param>
-			protected abstract void AddAndInitializeInstance(int row, int column, string newText);
-			/// <summary>
-			/// Provide a generic interface for editing an
-			/// Instance, must be called from inside a transaction.
-			/// </summary>
-			/// <param name="row">Row to edit at</param>
-			/// <param name="column">Column to edit at</param>
-			/// <param name="newText">New value for the instance</param>
-			protected abstract void EditInstance(int row, int column, string newText);
-			/// <summary>
-			/// Provide a generic interface for removing an
-			/// Instance, must be called from inside a transaction.
-			/// </summary>
-			/// <param name="row">Row to remove at</param>
-			/// <param name="column">Column to remove at</param>
-			protected abstract void RemoveInstance(int row, int column);
+			protected void AddAndInitializeValueTypeInstance(int row, int column, string newText, ObjectType parentValueType)
+			{
+				Debug.Assert(parentValueType.IsValueType);
+				ValueTypeInstance editInstance = ValueTypeInstance.CreateValueTypeInstance(Store);
+				editInstance.ValueType = parentValueType;
+				editInstance.Value = newText;
+			}
+
+			protected void EditValueTypeInstance(int row, int column, string newText, ObjectType parentValueType)
+			{
+				Debug.Assert(parentValueType.IsValueType);
+				ValueTypeInstance instance = parentValueType.ValueTypeInstanceCollection[row];
+				Debug.Assert(instance != null);
+				instance.Value = newText;
+			}
+
+			protected void RemoveValueTypeInstance(int row, int column, ObjectType parentValueType)
+			{
+				Debug.Assert(parentValueType.IsValueType);
+				ValueTypeInstance removeInstance = parentValueType.ValueTypeInstanceCollection[row];
+				Debug.Assert(removeInstance != null);
+				removeInstance.Remove();
+			}
+
+			protected void RemoveEntityTypeInstance(int row, int column, ObjectType parentEntityType)
+			{
+				Debug.Assert(!parentEntityType.IsValueType);
+				EntityTypeInstance removeInstance = parentEntityType.EntityTypeInstanceCollection[row];
+				Debug.Assert(removeInstance != null);
+				removeInstance.Remove();
+			}
 			#endregion
 		}
 		private class SamplePopulationValueTypeBranch : SamplePopulationBaseBranch, IBranch
 		{
 			private ObjectType myValueType;
 			#region Construction
-			public SamplePopulationValueTypeBranch(ObjectType selectedValueType, int numColumns) : base(numColumns, selectedValueType.Store)
+			// Value Type Branches will always have 1 column, plus the full row select column
+			public SamplePopulationValueTypeBranch(ObjectType selectedValueType) : base(2, selectedValueType.Store)
 			{
 				Debug.Assert(selectedValueType.IsValueType);
 				myValueType = selectedValueType;
@@ -1016,6 +1161,51 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				return BeginLabelEdit(row, column, activationStyle);
+			}
+
+			protected new LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			{
+				bool isNewRow = (row == NewRowIndex);
+				bool textIsEmpty = String.IsNullOrEmpty(newText);
+				// If on the new row and nothing is entered, ignore it.
+				if (isNewRow && textIsEmpty)
+				{
+					return LabelEditResult.CancelEdit;
+				}
+				// Is New Row && Text is Empty = Do Nothing
+				// Is New Row && Text is not empty = Make a new one && set the value
+				// Not New Row && Text is Empty = Delete the object
+				// Not New Row && Text is not empty = set the value
+				string columnName = TreeControl.GetColumnHeader(column).Text;
+				if (isNewRow)
+				{
+					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, columnName)))
+					{
+						AddAndInitializeValueTypeInstance(row, column, newText, myValueType);
+						t.Commit();
+					}
+				}
+				else if (textIsEmpty)
+				{
+					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, columnName)))
+					{
+						RemoveValueTypeInstance(row, column, myValueType);
+						t.Commit();
+					}
+				}
+				else
+				{
+					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, columnName)))
+					{
+						EditValueTypeInstance(row, column, newText, myValueType);
+						t.Commit();
+					}
+				}
+				return LabelEditResult.AcceptEdit;
+			}
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+			{
+				return CommitLabelEdit(row, column, newText);
 			}
 
 			protected new object GetObject(int row, int column, ObjectStyle style, ref int options)
@@ -1061,29 +1251,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			#endregion
 			#region Branch Update Methods
-			protected override void AddAndInitializeInstance(int row, int column, string newText)
-			{
-				ValueTypeInstance editInstance = ValueTypeInstance.CreateValueTypeInstance(Store);
-				editInstance.ValueType = myValueType;
-				editInstance.Value = newText;
-			}
-
-			protected override void EditInstance(int row, int column, string newText)
-			{
-				Debug.Assert(row != NewRowIndex);
-				ValueTypeInstance editInstance = myValueType.ValueTypeInstanceCollection[row];
-				Debug.Assert(editInstance != null);
-				editInstance.Value = newText;
-			}
-
-			protected override void RemoveInstance(int row, int column)
-			{
-				Debug.Assert(row != NewRowIndex);
-				ValueTypeInstance removeInstance = myValueType.ValueTypeInstanceCollection[row];
-				Debug.Assert(removeInstance != null);
-				removeInstance.Remove();
-			}
-
 			public void AddValueInstanceDisplay(ValueTypeInstance valueTypeInstance)
 			{
 				int location = myValueType.ValueTypeInstanceCollection.IndexOf(valueTypeInstance);
@@ -1103,39 +1270,161 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			#endregion
 		}
-		private class SamplePopulationEntityTypeBranch : SamplePopulationBaseBranch, IBranch
+		private class SamplePopulationEntityTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
 			private ObjectType myEntityType;
+			private RoleMoveableCollection myIdentifierRoles;
+			private SamplePopulationEntityEditorBranch[,] myEditorBranches;
 			#region Construction
 			public SamplePopulationEntityTypeBranch(ObjectType selectedEntityType, int numColumns)
 				: base(numColumns, selectedEntityType.Store)
 			{
 				Debug.Assert(!selectedEntityType.IsValueType);
 				myEntityType = selectedEntityType;
+				EntityTypeInstanceMoveableCollection instances = selectedEntityType.EntityTypeInstanceCollection;
+				int numInstances = instances.Count;
+				UniquenessConstraint identifier = selectedEntityType.PreferredIdentifier;
+				Debug.Assert(identifier != null);
+				RoleMoveableCollection identifierRoles = myIdentifierRoles = identifier.RoleCollection;
+				int identifierRoleCount = numColumns - 1;
+				myEditorBranches = new SamplePopulationEntityEditorBranch[numInstances+1, identifierRoleCount];
+				if (identifierRoleCount > 1)
+				{
+					for (int row = 0; row < numInstances; ++row)
+					{
+						EntityTypeInstance entityInstance = instances[row];
+						for (int col = 0; col < identifierRoleCount; ++col)
+						{
+							EntityTypeRoleInstanceMoveableCollection roleInstances = entityInstance.RoleInstanceCollection;
+							int roleInstanceCount = roleInstances.Count;
+							Role identifierRole = identifierRoles[col];
+							EntityTypeRoleInstance entityRoleInstance = null;
+							ObjectTypeInstance rolePlayerInstance = null;
+							for (int i = 0; i < roleInstanceCount; ++i)
+							{
+								if (object.ReferenceEquals(roleInstances[i].RoleCollection, identifierRole))
+								{
+									entityRoleInstance = roleInstances[i];
+									break;
+								}
+							}
+							if(entityRoleInstance != null)
+							{
+								rolePlayerInstance = entityRoleInstance.ObjectTypeInstanceCollection;
+							}
+							ObjectType rolePlayer = identifierRole.RolePlayer;
+							UniquenessConstraint roleInstanceIdentifier = rolePlayer.PreferredIdentifier;
+							if (roleInstanceIdentifier != null && roleInstanceIdentifier.RoleCollection.Count > 1)
+							{
+								myEditorBranches[row, col] = new SamplePopulationEntityEditorBranch(rolePlayerInstance as EntityTypeInstance, entityInstance, selectedEntityType, identifierRole, rolePlayer);
+								if (myEditorBranches[numInstances, col] == null)
+								{
+									myEditorBranches[numInstances, col] = new SamplePopulationEntityEditorBranch(null, null, selectedEntityType, identifierRole, rolePlayer);
+								}
+							}
+						}
+					}
+				}
 			}
 			#endregion
 			#region IBranch Member Mirror/Implementations
 			protected new VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
+				//UNDONE: Editing is currently unstable, so will be disabled for now
 				return VirtualTreeLabelEditData.Invalid;
+				//VirtualTreeLabelEditData retval = base.BeginLabelEdit(row, column, activationStyle);
+				//if (retval.IsValid)
+				//{
+				//    if (myEditorBranches[row, column-1] != null)
+				//    {
+				//        retval = VirtualTreeLabelEditData.Invalid;
+				//    }
+				//}
+				//return retval;
 			}
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				return BeginLabelEdit(row, column, activationStyle);
 			}
 
-			protected new object GetObject(int row, int column, ObjectStyle style, ref int options)
+			protected new LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
-				EntityTypeInstanceMoveableCollection entityTypeInstances = myEntityType.EntityTypeInstanceCollection;
-				if (row < entityTypeInstances.Count)
+				if (row != NewRowIndex)
 				{
-					EntityTypeRoleInstanceMoveableCollection entityTypeRoleInstances = entityTypeInstances[row].RoleInstanceCollection;
-					if (column - 1 < entityTypeRoleInstances.Count)
+					ObjectTypeInstance editInstance = myEntityType.EntityTypeInstanceCollection[row];
+					EntityTypeInstance eEditInstance;
+					ValueTypeInstance vEditInstance;
+					bool delete = newText.Length == 0;
+					if (editInstance == null && !delete)
 					{
-						return entityTypeRoleInstances[column - 1];
+						//UNDONE: Localize the transaction name
+						using (Transaction t = Store.TransactionManager.BeginTransaction("Create Recursive Instances"))
+						{
+							ValueTypeInstance instance = RecurseIdentifyingValueTypeInstance(editInstance, myEntityType, myEntityType.PreferredIdentifier.RoleCollection[column-1]);
+							instance.Value = newText;
+							t.Commit();
+						}
+						return LabelEditResult.AcceptEdit;
+					}
+					else if (null != (vEditInstance = editInstance as ValueTypeInstance))
+					{
+						ObjectType parentValueType = vEditInstance.ValueType;
+						if (delete)
+						{
+							using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, parentValueType.Name)))
+							{
+								RemoveValueTypeInstance(row, column-1, parentValueType);
+								t.Commit();
+							}
+						}
+						else
+						{
+							using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, parentValueType.Name)))
+							{
+								EditValueTypeInstance(row, column-1, newText, parentValueType);
+								t.Commit();
+							}
+						}
+						return LabelEditResult.AcceptEdit;
+					}
+					else if (null != (eEditInstance = editInstance as EntityTypeInstance))
+					{
+						if (delete)
+						{
+							ObjectType parentEntityType = eEditInstance.EntityType;
+							using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, parentEntityType.Name)))
+							{
+								RemoveEntityTypeInstance(row, column-1, parentEntityType);
+								t.Commit();
+							}
+						}
+						else
+						{
+							//UNDONE: Localize the transaction name
+							using (Transaction t = Store.TransactionManager.BeginTransaction("Create Recursive Instances"))
+							{
+								vEditInstance = RecurseIdentifyingValueTypeInstance(eEditInstance, eEditInstance.EntityType, null);
+								vEditInstance.Value = newText;
+								t.Commit();
+							}
+						}
+						return LabelEditResult.AcceptEdit;
 					}
 				}
-				return base.GetObject(row, column, style, ref options);
+				return LabelEditResult.CancelEdit;
+			}
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+			{
+				return CommitLabelEdit(row, column, newText);
+			}
+
+			protected new object GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				if (style == ObjectStyle.SubItemExpansion)
+				{
+					return myEditorBranches[row, column-1];
+				}
+				return null;
 			}
 			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
@@ -1145,20 +1434,41 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			protected new string GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
-				if (text!= null && text.Length == 0)
+				if (text == null)
 				{
-					EntityTypeRoleInstanceMoveableCollection entityTypeRoleInstances = myEntityType.EntityTypeInstanceCollection[row].RoleInstanceCollection;
-					if (entityTypeRoleInstances.Count >= column)
+					text = RecurseObjectTypeInstanceValue(null, myIdentifierRoles[column - 1].RolePlayer);
+				}
+				else if (text.Length == 0)
+				{
+					EntityTypeInstance selectedInstance = myEntityType.EntityTypeInstanceCollection[row];
+					EntityTypeRoleInstanceMoveableCollection entityTypeRoleInstances = selectedInstance.RoleInstanceCollection;
+					int roleInstanceCount = entityTypeRoleInstances.Count;
+					EntityTypeRoleInstance roleInstance;
+					Role identifierRole = myIdentifierRoles[column - 1];
+					for (int i = 0; i < roleInstanceCount; ++i)
 					{
-						ObjectTypeInstance cellValue = entityTypeRoleInstances[column - 1].ObjectTypeInstanceCollection;
-						text = RecurseObjectTypeInstanceValue(cellValue);
+						if (object.ReferenceEquals(identifierRole, (roleInstance = entityTypeRoleInstances[i]).RoleCollection))
+						{
+							text = RecurseObjectTypeInstanceValue(roleInstance.ObjectTypeInstanceCollection, identifierRole.RolePlayer);
+							return text;
+						}
 					}
+					text = RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer);
 				}
 				return text;
 			}
 			string IBranch.GetText(int row, int column)
 			{
 				return GetText(row, column);
+			}
+
+			protected new bool IsExpandable(int row, int column)
+			{
+				return myEditorBranches[row, column - 1] != null;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return IsExpandable(row, column);
 			}
 
 			protected new int VisibleItemCount
@@ -1176,31 +1486,79 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 			}
 			#endregion
+			#region IMultiColumnBranch Member Mirror/Implementation
+			protected new static SubItemCellStyles ColumnStyles(int column)
+			{
+				switch (column)
+				{
+					case 0:
+						return SubItemCellStyles.Simple;
+					default:
+						return SubItemCellStyles.Expandable;
+				}
+			}
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+			{
+				return ColumnStyles(column);
+			}
+			#endregion
 			#region Branch Update Methods
-			protected override void AddAndInitializeInstance(int row, int column, string newText)
+			public void AddEntityInstanceDisplay(EntityTypeInstance entityTypeInstance)
 			{
-				// UNDONE: AddAndInitializeInstance
+				int location = myEntityType.EntityTypeInstanceCollection.IndexOf(entityTypeInstance);
+
+				if (location != -1)
+				{
+					base.AddInstanceDisplay(location);
+				}
 			}
 
-			protected override void EditInstance(int row, int column, string newText)
+			public void EditEntityInstanceDisplay(EntityTypeInstance entityTypeInstance)
 			{
-				// UNDONE: EditInstance
-			}
-
-			protected override void RemoveInstance(int row, int column)
-			{
-				// UNDONE: RemoveInstance
+				int location = myEntityType.EntityTypeInstanceCollection.IndexOf(entityTypeInstance);
+				if (location != -1)
+				{
+					base.EditInstanceDisplay(location);
+				}
 			}
 			#endregion
 		}
-		private class SamplePopulationFactTypeBranch : SamplePopulationBaseBranch, IBranch
+		private class SamplePopulationFactTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
 			private FactType myFactType;
+			private RoleBaseMoveableCollection myFactRoles;
+			private SamplePopulationEntityEditorBranch[,] myEditorBranches;
 			#region Construction
 			public SamplePopulationFactTypeBranch(FactType selectedFactType, int numColumns)
 				: base(numColumns, selectedFactType.Store)
 			{
 				myFactType = selectedFactType;
+				FactTypeInstanceMoveableCollection instances = selectedFactType.FactTypeInstanceCollection;
+				int numInstances = instances.Count;
+				RoleBaseMoveableCollection factRoles = myFactRoles = selectedFactType.RoleCollection;
+				int factRoleCount = numColumns - 1;
+				myEditorBranches = new SamplePopulationEntityEditorBranch[numInstances + 1, factRoleCount];
+				for (int row = 0; row < numInstances; ++row)
+				{
+					FactTypeInstance factInstance = instances[row];
+					for (int col = 0; col < factRoleCount; ++col)
+					{
+						FactTypeRoleInstance factRoleInstance = factInstance.RoleInstanceCollection[col];
+						ObjectTypeInstance rolePlayerInstance = factRoleInstance.ObjectTypeInstanceCollection;
+						Role instanceRole = factRoleInstance.RoleCollection;
+						ObjectType rolePlayer = instanceRole.RolePlayer;
+						UniquenessConstraint roleInstanceIdentifier = rolePlayer.PreferredIdentifier;
+						if (roleInstanceIdentifier != null && roleInstanceIdentifier.RoleCollection.Count > 1)
+						{
+							myEditorBranches[row, col] = null;
+							//myEditorBranches[row, col] = new SamplePopulationEntityEditorBranch(rolePlayerInstance as EntityTypeInstance, factInstance, selectedFactType, instanceRole, rolePlayer);
+							//if (myEditorBranches[numInstances, col] == null)
+							//{
+							//    myEditorBranches[numInstances, col] = new SamplePopulationEntityEditorBranch(null, null, selectedEntityType, instanceRole, rolePlayer);
+							//}
+						}
+					}
+				}
 			}
 			#endregion
 			#region IBranch Member Mirror/Implementations
@@ -1234,20 +1592,40 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			protected new string GetText(int row, int column)
 			{
 				string text = base.GetText(row, column);
-				if (text != null && text.Length == 0)
+				if (text == null)
 				{
-					FactTypeRoleInstanceMoveableCollection factTypeRoleInstances = myFactType.FactTypeInstanceCollection[row].RoleInstanceCollection;
-					if (factTypeRoleInstances.Count >= column)
+					text = RecurseObjectTypeInstanceValue(null, myFactType.RoleCollection[column - 1].Role.RolePlayer);
+				}
+				else if (text.Length == 0)
+				{
+					FactTypeInstance factTypeInstance = myFactType.FactTypeInstanceCollection[row];
+					FactTypeRoleInstanceMoveableCollection factTypeRoleInstances = factTypeInstance.RoleInstanceCollection;
+					int roleInstanceCount = factTypeRoleInstances.Count;
+					FactTypeRoleInstance instance;
+					Role factTypeRole = myFactType.RoleCollection[column - 1].Role;
+					for (int i = 0; i < roleInstanceCount; ++i)
 					{
-						ObjectTypeInstance cellValue = factTypeRoleInstances[column - 1].ObjectTypeInstanceCollection;
-						text = RecurseObjectTypeInstanceValue(cellValue);
+						if (object.ReferenceEquals(factTypeRole, (instance = factTypeRoleInstances[i]).RoleCollection))
+						{
+							return RecurseObjectTypeInstanceValue(instance.ObjectTypeInstanceCollection, factTypeRole.RolePlayer);
+						}
 					}
+					text = RecurseObjectTypeInstanceValue(null, factTypeRole.RolePlayer);
 				}
 				return text;
 			}
 			string IBranch.GetText(int row, int column)
 			{
 				return GetText(row, column);
+			}
+
+			protected new bool IsExpandable(int row, int column)
+			{
+				return myEditorBranches[row, column - 1] != null;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return IsExpandable(row, column);
 			}
 
 			protected new int VisibleItemCount
@@ -1265,20 +1643,255 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 			}
 			#endregion
-			#region Branch Update Methods
-			protected override void AddAndInitializeInstance(int row, int column, string newText)
+			#region IMultiColumnBranch Member Mirror/Implementation
+			protected new static SubItemCellStyles ColumnStyles(int column)
 			{
-				// UNDONE: AddAndInitializeInstance
+				switch (column)
+				{
+					case 0:
+						return SubItemCellStyles.Simple;
+					default:
+						return SubItemCellStyles.Expandable;
+				}
+			}
+			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+			{
+				return ColumnStyles(column);
+			}
+			#endregion
+		}
+		private class SamplePopulationEntityEditorBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
+		{
+			#region Member Variables
+			private SamplePopulationEntityEditorBranch[] myEditBranches;
+			private ObjectTypeInstance[] myObjectTypeInstances;
+			private EntityTypeInstance myEditInstance, myParentInstance;
+			private ObjectType myParentType, myInstanceType;
+			private Role myEditRole;
+			private int myVisibleItemCount;
+			#endregion // Member Variables
+			#region Construction
+			/// <summary>
+			/// Create a sub item editing branch
+			/// </summary>
+			/// <param name="editInstance">The EntityTypeInstance which will be edited</param>
+			/// <param name="parentType">The Entity type which contains the given editInstance</param>
+			/// <param name="instanceType">The Entity type of the given editInstance</param>
+			/// <param name="editRole">Role from the parent Entity type which is being edited</param>
+			/// <param name="parentInstance">Instace of the parent Entity type which contains the given editInstance</param>
+			public SamplePopulationEntityEditorBranch(EntityTypeInstance editInstance, EntityTypeInstance parentInstance, ObjectType parentType, Role editRole, ObjectType instanceType) : base(2, parentType.Store)
+			{
+				myParentType = parentType;
+				myInstanceType = instanceType;
+				myEditInstance = editInstance;
+				myEditRole = editRole;
+				myParentInstance = parentInstance;
+				UniquenessConstraint primaryIdentifier = instanceType.PreferredIdentifier;
+				Debug.Assert(primaryIdentifier != null); // Shouldn't be able to get into an edit branch if there isn't an identifier sequence
+				RoleMoveableCollection primaryIdentifierRoles = primaryIdentifier.RoleCollection;
+				int primaryIdentifierRoleCount = myVisibleItemCount = primaryIdentifierRoles.Count;
+				myEditBranches = new SamplePopulationEntityEditorBranch[primaryIdentifierRoleCount];
+				myObjectTypeInstances = new ObjectTypeInstance[primaryIdentifierRoleCount];
+				// For each primary identifier role, set up a row
+				for (int i = 0; i < primaryIdentifierRoleCount; ++i)
+				{
+					ObjectTypeInstance currentInstance = null;
+					Role identifierRole = primaryIdentifierRoles[i];
+					EntityTypeRoleInstanceMoveableCollection roleInstances = null;
+					int roleInstanceCount = 0;
+					if (editInstance != null)
+					{
+						roleInstances = editInstance.RoleInstanceCollection;
+						roleInstanceCount = roleInstances.Count;
+					}
+					RoleMoveableCollection identifierRoles;
+					for(int j = 0; j < roleInstanceCount; j++)
+					{
+						if (object.ReferenceEquals(identifierRole, roleInstances[j].RoleCollection))
+						{
+							myObjectTypeInstances[i] = currentInstance = roleInstances[j].ObjectTypeInstanceCollection;
+							break;
+						}
+					}
+					ObjectType rolePlayer = primaryIdentifierRoles[i].RolePlayer;
+					if(!rolePlayer.IsValueType)
+					{
+						UniquenessConstraint identifier = rolePlayer.PreferredIdentifier;
+						if (identifier != null && (identifierRoles = identifier.RoleCollection).Count > 1)
+						{
+							myEditBranches[i] = new SamplePopulationEntityEditorBranch(currentInstance as EntityTypeInstance, editInstance, instanceType, identifierRole, rolePlayer);
+						}
+					}
+				}
+			}
+			#endregion
+			#region IBranch Member Mirror/Implementations
+
+			/// <summary>
+			/// Make this an expandable branch
+			/// </summary>
+			protected new static BranchFeatures Features
+			{
+				get
+				{
+					return (SamplePopulationBaseBranch.Features & (~BranchFeatures.ComplexColumns)) | BranchFeatures.Expansions;
+				}
+			}
+			BranchFeatures IBranch.Features
+			{
+				get
+				{
+					return Features;
+				}
 			}
 
-			protected override void EditInstance(int row, int column, string newText)
+			protected new VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
-				// UNDONE: EditInstance
+				//UNDONE: Editing is currently unstable, so will be disabled for now
+				return VirtualTreeLabelEditData.Invalid;
+				//if (myEditBranches[row] == null)
+				//{
+				//    return VirtualTreeLabelEditData.Default;
+				//}
+				//return VirtualTreeLabelEditData.Invalid;
+			}
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			{
+				return BeginLabelEdit(row, column, activationStyle);
 			}
 
-			protected override void RemoveInstance(int row, int column)
+			protected new LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
-				// UNDONE: RemoveInstance
+				ObjectTypeInstance editInstance = myObjectTypeInstances[row];
+				EntityTypeInstance eEditInstance;
+				ValueTypeInstance vEditInstance;
+				bool delete = newText.Length == 0;
+				if (editInstance == null && !delete)
+				{
+					//UNDONE: Localize the transaction name
+					using (Transaction t = Store.TransactionManager.BeginTransaction("Create Recursive Instances"))
+					{
+						ValueTypeInstance instance = RecurseIdentifyingValueTypeInstance(myParentInstance, myParentType, myEditRole);
+						instance.Value = newText;
+						t.Commit();
+					}
+					return LabelEditResult.AcceptEdit;
+				}
+				else if (null != (vEditInstance = editInstance as ValueTypeInstance))
+				{
+					ObjectType parentValueType = vEditInstance.ValueType;
+					if(delete)
+					{
+						using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, parentValueType.Name)))
+						{
+							RemoveValueTypeInstance(row, column, parentValueType);
+							t.Commit();
+						}
+					}
+					else
+					{
+						using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, parentValueType.Name)))
+						{
+							EditValueTypeInstance(row, column, newText, parentValueType);
+							t.Commit();
+						}
+					}
+					return LabelEditResult.AcceptEdit;
+				}
+				else if (null != (eEditInstance = editInstance as EntityTypeInstance))
+				{
+					if (delete)
+					{
+						ObjectType parentEntityType = eEditInstance.EntityType;
+						using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, parentEntityType.Name)))
+						{
+							RemoveEntityTypeInstance(row, column, parentEntityType);
+							t.Commit();
+						}
+					}
+					else
+					{
+						//UNDONE: Localize the transaction name
+						using (Transaction t = Store.TransactionManager.BeginTransaction("Create Recursive Instances"))
+						{
+							vEditInstance = RecurseIdentifyingValueTypeInstance(eEditInstance, eEditInstance.EntityType, null);
+							vEditInstance.Value = newText;
+							t.Commit();
+						}
+					}
+					return LabelEditResult.AcceptEdit;
+				}
+				return LabelEditResult.CancelEdit;
+			}
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+			{
+				return CommitLabelEdit(row, column, newText);
+			}
+
+			protected new VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				return VirtualTreeDisplayData.Empty;
+			}
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				return GetDisplayData(row, column, requiredData);
+			}
+
+			protected new object GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				return myEditBranches[row];
+			}
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				return GetObject(row, column, style, ref options);
+			}
+
+			protected new string GetText(int row, int column)
+			{
+				ObjectTypeInstance selectedInstance = myObjectTypeInstances[row];
+				ObjectType identifierType = myInstanceType.PreferredIdentifier.RoleCollection[row].RolePlayer;
+				if(selectedInstance == null)
+				{
+					return RecurseObjectTypeInstanceValue(null, identifierType);
+				}
+				else
+				{
+					return RecurseObjectTypeInstanceValue(selectedInstance, identifierType);
+				}
+			}
+			string IBranch.GetText(int row, int column)
+			{
+				return GetText(row, column);
+			}
+
+			protected new bool IsExpandable(int row, int column)
+			{
+				return myEditBranches[row] != null;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return IsExpandable(row, column);
+			}
+
+			protected new int VisibleItemCount
+			{
+				get
+				{
+					return myVisibleItemCount;
+				}
+			}
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return VisibleItemCount;
+				}
+			}
+			#endregion
+			#region Helper Methods
+			public override bool IsFullRowSelectColumn(int column)
+			{
+				return false;
 			}
 			#endregion
 		}
