@@ -103,10 +103,27 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="ReadingChoicePreferSingleMatchWithContextEnum">
+		<xs:restriction base="xs:string">
+			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoForwardText]} -->
+			<xs:enumeration value="Context">
+				<xs:annotation>
+					<xs:documentation>Use the reading from the current ReadingChoice or ReadingContext elements</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PreferLeadReading"/>
+			<xs:enumeration value="PreferNonLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoForwardText"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Conditional|Prefer[Non][Primary]LeadReading[NoForwardText]} -->
-			<xs:enumeration value="Conditional"/>
+			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoForwardText]} -->
 			<xs:enumeration value="PreferLeadReading"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
@@ -650,7 +667,7 @@
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
+		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchWithContextEnum"/>
 	</xs:complexType>
 	<xs:complexType name="ReferenceSchemeType">
 		<xs:annotation>
@@ -668,6 +685,7 @@
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
+		<xs:attribute name="hyphenBind" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesType">
 		<xs:complexContent>
@@ -682,19 +700,32 @@
 		<xs:attribute name="listStyle" type="ListStyleEnumOrNull" use="required"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
-	<xs:complexType name="ReadingChoiceType">
+	<xs:complexType name="BaseReadingContextType">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
 			<xs:element name="Fact" type="FactType"/>
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="CompositeList" type="CompositeListType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 		</xs:choice>
-		<xs:attribute name="match" use="optional" type="ReadingChoiceFullRequiredMatchEnum"/>
+	</xs:complexType>
+	<xs:complexType name="ReadingChoiceType">
+		<xs:complexContent>
+			<xs:extension base="BaseReadingContextType">
+				<xs:attribute name="match" use="optional" type="ReadingChoiceFullRequiredMatchEnum"/>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ConditionalReadingType">
 		<xs:sequence>
 			<xs:element name="ReadingChoice" type="ReadingChoiceType" minOccurs="2" maxOccurs="unbounded"/>
 		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReadingContextType">
+		<xs:complexContent>
+			<xs:extension base="BaseReadingContextType">
+				<xs:attribute name="match" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="CompositeListType">
 		<xs:sequence>
@@ -730,6 +761,7 @@
 								<xs:field xpath="@match"/>
 							</xs:unique>
 						</xs:element>
+						<xs:element name="ReadingContext" type="ReadingContextType"/>
 					</xs:choice>
 					<xs:attribute name="span" type="SpanEnum" use="optional"/>
 					<xs:attribute name="sign" type="ve:SignEnum" use="optional"/>

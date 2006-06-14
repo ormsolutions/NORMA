@@ -67,7 +67,7 @@
 					<ConditionalReading>
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
+								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
@@ -79,7 +79,7 @@
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles listStyle="SimpleList" match="included"/>
+								<IterateRoles listStyle="SimpleList" match="included" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -101,19 +101,21 @@
 				<ConstrainedRoles constraintArity="1" factArity="2">
 					<!-- sign="negative" is implied by the previous element -->
 					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
-					<Snippet ref="ForEachCompactQuantifier">
-						<IterateRoles match="included" listStyle="CompactSimpleList"/>
-						<Snippet ref="ModalPossibilityOperator">
-							<Fact readingChoice="PreferLeadReading">
-								<PredicateReplacement match="included">
-									<Snippet ref="DefiniteArticle"/>
-								</PredicateReplacement>
-								<PredicateReplacement match="excluded">
-									<Snippet ref="OneQuantifier"/>
-								</PredicateReplacement>
-							</Fact>
+					<ReadingContext match="PreferLeadReading">
+						<Snippet ref="ForEachCompactQuantifier">
+							<IterateRoles match="included" listStyle="CompactSimpleList" hyphenBind="true"/>
+							<Snippet ref="ModalPossibilityOperator">
+								<Fact readingChoice="Context">
+									<PredicateReplacement match="included">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="excluded">
+										<Snippet ref="OneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
 						</Snippet>
-					</Snippet>
+					</ReadingContext>
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- Implied simple mandatory on constraint on proxy role of implied binary fact -->
@@ -126,7 +128,7 @@
 						<!-- Each A R some B -->
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
+								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
@@ -141,7 +143,7 @@
 						<!-- For each A, some B S that A -->
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
+								<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -183,7 +185,7 @@
 						<!-- Each A R some B -->
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
+								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
@@ -198,7 +200,7 @@
 						<!-- For each A, some B S that A -->
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
+								<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -234,7 +236,7 @@
 						<!-- Each A R some B -->
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
+								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
@@ -249,7 +251,7 @@
 						<!-- For each A, some B S that A -->
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
+								<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -276,7 +278,7 @@
 						<!-- Each A R some B1 ... some Bn -->
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
+								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
@@ -292,7 +294,7 @@
 							some B1 R ... that A ... some Bn -->
 						<ReadingChoice>
 							<Snippet ref="ForEachQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
+								<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -337,7 +339,7 @@
 						<ReadingChoice match="RequireAllLeadReading">
 							<CompositeList listStyle="TopLevelIndentedLogicalOrList">
 								<IterateRoles minFactArity="2" match="setConstraintRoles">
-									<Fact readingChoice="Conditional">
+									<Fact readingChoice="Context">
 										<PredicateReplacement match="primary" pass="first">
 											<Snippet ref="UniversalQuantifier"/>
 										</PredicateReplacement>
@@ -350,7 +352,7 @@
 									</Fact>
 								</IterateRoles>
 								<IterateRoles factArity="1" match="setConstraintRoles">
-									<Fact readingChoice="Conditional">
+									<Fact readingChoice="Context">
 										<PredicateReplacement>
 											<!-- UNDONE: Needs conditional snippet catering for forward text-->
 											<Snippet ref="null"/>
@@ -386,7 +388,7 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<!-- Start External Uniqueness Constraint-->
+			<!-- Start Uniqueness Constraint-->
 			<Constraint type="UniquenessConstraint" patternGroup="SetConstraint">
 				<!-- Internal constraints -->
 				<ConstrainedRoles factCount="1" factArity="1" sign="positive">
@@ -402,14 +404,16 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" factArity="1">
 					<!-- span="all" sign="negative" is implicit in the other conditions are previous element-->
-					<Snippet ref="ModalPossibilityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="IdentityReferenceQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
+					<ReadingContext>
+						<Snippet ref="ModalPossibilityOperator">
+							<Snippet ref="OccursInPopulation">
+								<Snippet ref="IdentityReferenceQuantifier">
+									<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
+								</Snippet>
+								<Fact readingChoice="Context"/>
 							</Snippet>
-							<Fact/>
 						</Snippet>
-					</Snippet>
+					</ReadingContext>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" span="all" sign="positive">
 					<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
@@ -443,22 +447,24 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" span="all">
 					<!-- sign="negative" is implied by the previous element -->
-					<Snippet ref="ModalPossibilityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="CombinationIdentifier">
-								<Snippet ref="IdentityReferenceQuantifier">
-									<IterateRoles match="included" listStyle="CompactSimpleList"/>
+					<ReadingContext>
+						<Snippet ref="ModalPossibilityOperator">
+							<Snippet ref="OccursInPopulation">
+								<Snippet ref="CombinationIdentifier">
+									<Snippet ref="IdentityReferenceQuantifier">
+										<IterateRoles match="included" listStyle="CompactSimpleList" hyphenBind="true"/>
+									</Snippet>
 								</Snippet>
+								<Fact readingChoice="Context"/>
 							</Snippet>
-							<Fact/>
 						</Snippet>
-					</Snippet>
+					</ReadingContext>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" factArity="2" sign="positive">
 					<ConditionalReading>
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ImpliedModalNecessityOperator">
-								<Fact readingChoice="Conditional">
+								<Fact readingChoice="Context">
 									<PredicateReplacement match="included">
 										<Snippet ref="UniversalQuantifier"/>
 									</PredicateReplacement>
@@ -470,7 +476,7 @@
 						</ReadingChoice>
 						<ReadingChoice>
 							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles listStyle="SimpleList" match="included"/>
+								<IterateRoles listStyle="SimpleList" match="included" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
 										<PredicateReplacement match="included">
@@ -492,19 +498,21 @@
 				<ConstrainedRoles factCount="1" factArity="2">
 					<!-- sign="negative" is implied by the previous element -->
 					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
-					<Snippet ref="ForEachCompactQuantifier">
-						<IterateRoles match="included" listStyle="CompactSimpleList"/>
-						<Snippet ref="ModalPossibilityOperator">
-							<Fact readingChoice="PreferLeadReading">
-								<PredicateReplacement match="included">
-									<Snippet ref="DefiniteArticle"/>
-								</PredicateReplacement>
-								<PredicateReplacement match="excluded">
-									<Snippet ref="OneQuantifier"/>
-								</PredicateReplacement>
-							</Fact>
+					<ReadingContext match="PreferLeadReading">
+						<Snippet ref="ForEachCompactQuantifier">
+							<IterateRoles match="included" listStyle="CompactSimpleList" hyphenBind="true"/>
+							<Snippet ref="ModalPossibilityOperator">
+								<Fact readingChoice="Context">
+									<PredicateReplacement match="included">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="excluded">
+										<Snippet ref="OneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
 						</Snippet>
-					</Snippet>
+					</ReadingContext>
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1" sign="negative">
 					<Snippet ref="ModalPossibilityOperator">
@@ -520,19 +528,21 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles factCount="1">
 					<!-- sign="positive" is implied by the previous element -->
-					<Snippet ref="ForEachQuantifier">
-						<IterateRoles match="included" listStyle="SimpleList"/>
-						<Snippet ref="ImpliedModalNecessityOperator">
-							<Fact>
-								<PredicateReplacement match="included">
-									<Snippet ref="DefiniteArticle"/>
-								</PredicateReplacement>
-								<PredicateReplacement match="excluded">
-									<Snippet ref="OneQuantifier"/>
-								</PredicateReplacement>
-							</Fact>
+					<ReadingContext>
+						<Snippet ref="ForEachQuantifier">
+							<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Fact readingChoice="Context">
+									<PredicateReplacement match="included">
+										<Snippet ref="DefiniteArticle"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="excluded">
+										<Snippet ref="OneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
 						</Snippet>
-					</Snippet>
+					</ReadingContext>
 				</ConstrainedRoles>
 
 				<!-- External constraints -->
@@ -543,7 +553,7 @@
 							<Snippet ref="ForEachCompactQuantifier">
 								<IterateRoles match="setConstraintRoles" listStyle="SimpleList" />
 								<IterateRoles match="setConstraintRoles" listStyle="IndentedList">
-									<Fact readingChoice="Conditional">
+									<Fact readingChoice="Context">
 										<PredicateReplacement match="excluded" pass="first">
 											<Snippet ref="AtMostOneQuantifier" />
 										</PredicateReplacement>
@@ -565,7 +575,7 @@
 						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
 							<Snippet ref="ModalPossibilityOperator">
 								<IterateRoles match="setConstraintRoles" listStyle="SimpleList">
-									<Fact readingChoice="Conditional">
+									<Fact readingChoice="Context">
 										<PredicateReplacement match="excluded" pass="first">
 											<Snippet ref="MoreThanOneQuantifier" />
 										</PredicateReplacement>
@@ -582,7 +592,7 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<!-- End External Uniqueness Constraint  -->
+			<!-- End Uniqueness Constraint  -->
 			<!-- Begin Role Value Constraint -->
 			<Constraint patternGroup="RoleValueConstraint" type="RoleValueConstraint">
 				<ConditionalSnippet>

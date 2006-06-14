@@ -29,6 +29,7 @@
 	<xsl:param name="ReplaceVariablePart" select="'Replace'"/>
 	<xsl:param name="RoleIterVariablePart" select="'RoleIter'"/>
 	<xsl:param name="FactRoleIterVariablePart" select="'FactRoleIter'"/>
+	<xsl:param name="ResolvedRoleVariablePart" select="'ResolvedRoleIndex'"/>
 
 	<!-- Include templates to generate the shared verbalization classes -->
 	<xsl:include href="VerbalizationGenerator.Sets.xslt"/>
@@ -1845,6 +1846,20 @@
 			<xsl:with-param name="TopLevel" select="true()"/>
 		</xsl:apply-templates>
 	</xsl:template>
+	<xsl:template match="cvg:ReadingContext" mode="ConstraintVerbalization">
+		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:param name="IteratorContext" select="'all'"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:call-template name="PopulateReading">
+			<xsl:with-param name="ReadingChoice" select="@match"/>
+			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+		</xsl:call-template>
+		<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
+			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+			<xsl:with-param name="TopLevel" select="$TopLevel"/>
+		</xsl:apply-templates>
+	</xsl:template>
 	<xsl:template match="cvg:ConditionalReading" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
@@ -1951,7 +1966,7 @@
 							</plx:callInstance>
 						</plx:right>
 					</plx:assign>
-					<xsl:call-template name="PopulateReadingOrder">
+					<xsl:call-template name="PopulateReading">
 						<xsl:with-param name="ReadingChoice" select="$singleMatch"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 					</xsl:call-template>
@@ -2029,7 +2044,7 @@
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:call-template name="PopulateReadingOrder">
+				<xsl:call-template name="PopulateReading">
 					<xsl:with-param name="ReadingChoice" select="$Match"/>
 					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:call-template>
@@ -2624,7 +2639,7 @@
 			</xsl:choose>
 		</xsl:if>
 		<xsl:variable name="complexReplacement" select="0!=count(cvg:PredicateReplacement)"/>
-		<xsl:call-template name="PopulateReadingOrder">
+		<xsl:call-template name="PopulateReading">
 			<xsl:with-param name="ReadingChoice" select="@readingChoice"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="ConditionalReadingOrderIndex">
@@ -3740,6 +3755,7 @@
 		<xsl:variable name="trackFirstPassVarName" select="concat($VariablePrefix,'IsFirstPass',$VariableDecorator)"/>
 		<xsl:variable name="createList" select="not($ListStyle='null')"/>
 		<xsl:variable name="createListOrTrackFirstPass" select="$trackFirstPass or $createList"/>
+		<xsl:variable name="hyphenBind" select="@hyphenBind='true' or @hyphenBind='1'"/>
 
 		<xsl:if test="$trackFirstPass">
 			<plx:local name="{$trackFirstPassVarName}" dataTypeName=".boolean">
@@ -4054,6 +4070,7 @@
 							<!-- Forwarded local parameters -->
 							<xsl:with-param name="contextMatch" select="$contextMatch"/>
 							<xsl:with-param name="iterVarName" select="$iterVarName"/>
+							<xsl:with-param name="hyphenBind" select="$hyphenBind"/>
 						</xsl:call-template>
 						<xsl:if test="$createListOrTrackFirstPass">
 							<plx:assign>
@@ -4100,6 +4117,7 @@
 						<!-- Forwarded local parameters -->
 						<xsl:with-param name="contextMatch" select="$contextMatch"/>
 						<xsl:with-param name="iterVarName" select="$iterVarName"/>
+						<xsl:with-param name="hyphenBind" select="$hyphenBind"/>
 					</xsl:call-template>
 					<xsl:if test="$trackFirstPass">
 						<plx:assign>
@@ -4164,6 +4182,7 @@
 		<!-- Forwarded local parameters -->
 		<xsl:param name="contextMatch"/>
 		<xsl:param name="iterVarName"/>
+		<xsl:param name="hyphenBind" select="false()"/>
 		<!-- Use the current snippets data to open the list -->
 		<xsl:variable name="createList" select="not($ListStyle='null')"/>
 		<xsl:variable name="IterateRanges" select="$contextMatch='rangeCount'"/>
@@ -4314,6 +4333,9 @@
 		<!-- Process the child contents for this role -->
 		<xsl:choose>
 			<xsl:when test="count(child::*)">
+				<xsl:if test="$hyphenBind">
+					<xsl:message terminate="yes">IterateRoles/@hyphenBind only supported if IterateRoles has no children</xsl:message>
+				</xsl:if>
 				<xsl:for-each select="child::*">
 					<!-- Let children assign directly to the normal replacement variable so
 						 that we don't have to communicate down the stack that they should assign
@@ -4356,62 +4378,102 @@
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:variable name="roleIndexExpression">
+					<xsl:choose>
+						<xsl:when test="@match='included' or @match='setConstraintRoles'">
+							<!-- The role index needs to be retrieved from the all roles list -->
+							<plx:callInstance name="IndexOf">
+								<plx:callObject>
+									<plx:nameRef name="factRoles"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="includedRoles">
+												<xsl:if test="@match='setConstraintRoles' or $PatternGroup='InternalSetConstraint'">
+													<xsl:attribute name="name">
+														<xsl:text>allConstraintRoles</xsl:text>
+													</xsl:attribute>
+												</xsl:if>
+											</plx:nameRef>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="{$iterVarName}"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</xsl:when>
+						<!-- UNDONE: Support excluded match -->
+						<xsl:otherwise>
+							<plx:nameRef name="{$iterVarName}"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="roleIndexReference">
+					<xsl:choose>
+						<xsl:when test="not($hyphenBind) or not(@match='included' or @match='setConstraintRoles')">
+							<xsl:copy-of select="$roleIndexExpression"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:nameRef name="{concat($ResolvedRoleVariablePart,$VariableDecorator)}"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:if test="$hyphenBind and (@match='included' or @match='setConstraintRoles')">
+					<plx:local name="{concat($ResolvedRoleVariablePart,$VariableDecorator)}" dataTypeName=".i4">
+						<plx:initialize>
+							<xsl:copy-of select="$roleIndexExpression"/>
+						</plx:initialize>
+					</plx:local>
+				</xsl:if>
+				<xsl:variable name="roleReplacementContents">
+					<plx:callInstance name=".implied" type="arrayIndexer">
+						<plx:callObject>
+							<xsl:choose>
+								<xsl:when test="$PatternGroup='InternalSetConstraint'">
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="allBasicRoleReplacements"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:value data="0" type="i4"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nameRef name="basicRoleReplacements"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:callObject>
+						<plx:passParam>
+							<xsl:copy-of select="$roleIndexReference"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:variable>
 				<plx:callInstance name="Append">
 					<plx:callObject>
 						<plx:nameRef name="sbTemp"/>
 					</plx:callObject>
 					<plx:passParam>
-						<plx:callInstance name=".implied" type="arrayIndexer">
-							<plx:callObject>
-								<xsl:choose>
-									<xsl:when test="$PatternGroup='InternalSetConstraint'">
-										<plx:callInstance name=".implied" type="arrayIndexer">
-											<plx:callObject>
-												<plx:nameRef name="allBasicRoleReplacements"/>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:value data="0" type="i4"/>
-											</plx:passParam>
-										</plx:callInstance>
-									</xsl:when>
-									<xsl:otherwise>
-										<plx:nameRef name="basicRoleReplacements"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</plx:callObject>
-							<plx:passParam>
-								<xsl:choose>
-									<xsl:when test="@match='included' or @match='setConstraintRoles'">
-										<!-- The role index needs to be retrieved from the all roles list -->
-										<plx:callInstance name="IndexOf">
-											<plx:callObject>
-												<plx:nameRef name="factRoles"/>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:callInstance name=".implied" type="arrayIndexer">
-													<plx:callObject>
-														<plx:nameRef name="includedRoles">
-															<xsl:if test="@match='setConstraintRoles' or $PatternGroup='InternalSetConstraint'">
-																<xsl:attribute name="name">
-																	<xsl:text>allConstraintRoles</xsl:text>
-																</xsl:attribute>
-															</xsl:if>
-														</plx:nameRef>
-													</plx:callObject>
-													<plx:passParam>
-														<plx:nameRef name="{$iterVarName}"/>
-													</plx:passParam>
-												</plx:callInstance>
-											</plx:passParam>
-										</plx:callInstance>
-									</xsl:when>
-									<!-- UNDONE: Support excluded match -->
-									<xsl:otherwise>
-										<plx:nameRef name="{$iterVarName}"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</plx:passParam>
-						</plx:callInstance>
+						<xsl:choose>
+							<xsl:when test="$hyphenBind">
+								<plx:callInstance name="HyphenBindRoleReplacement">
+									<plx:callObject>
+										<plx:nameRef name="hyphenBinder"/>
+									</plx:callObject>
+									<plx:passParam>
+										<xsl:copy-of select="$roleReplacementContents"/>
+									</plx:passParam>
+									<plx:passParam>
+										<xsl:copy-of select="$roleIndexReference"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="$roleReplacementContents"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:passParam>
 				</plx:callInstance>
 			</xsl:otherwise>
@@ -4696,8 +4758,8 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	<!-- Ignore the match attribute, it is not used as a filter -->
-	<xsl:template match="@listStyle|@pass|@conditionalMatch" mode="IterateRolesFilterOperator"/>
+	<!-- Ignore attributes that are not used as a filter -->
+	<xsl:template match="@listStyle|@pass|@conditionalMatch|@hyphenBind" mode="IterateRolesFilterOperator"/>
 	<!-- Terminate processing if we see an unrecognized operator -->
 	<xsl:template match="@*" mode="IterateRolesFilterOperator">
 		<xsl:call-template name="TerminateForInvalidAttribute">
@@ -5010,13 +5072,13 @@
 			</plx:assign>
 		</plx:fallbackBranch>
 	</xsl:template>
-	<xsl:template name="PopulateReadingOrder">
-		<!-- Support readings for {Conditional, {Prefer|Require}[Non][Primary]LeadReading[NoForwardText], null} ReadingChoice values -->
+	<xsl:template name="PopulateReading">
+		<!-- Support readings for {Context, {Prefer|Require}[Non][Primary]LeadReading[NoForwardText], null} ReadingChoice values -->
 		<xsl:param name="ReadingChoice"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:param name="ConditionalReadingOrderIndex"/>
 		<xsl:choose>
-			<xsl:when test="$ReadingChoice='Conditional' and $PatternGroup='SetConstraint'">
+			<xsl:when test="$ReadingChoice='Context' and $PatternGroup='SetConstraint'">
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="reading"/>
@@ -5053,7 +5115,7 @@
 					</plx:right>
 				</plx:assign>
 			</xsl:when>
-			<xsl:when test="not($ReadingChoice='Conditional')">
+			<xsl:when test="not($ReadingChoice='Context')">
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="reading"/>
