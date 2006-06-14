@@ -14,6 +14,14 @@
 \**************************************************************************/
 #endregion
 
+// It is much easier to write custom serialization xml if the
+// serializer is allowed to spit the default names for the links.
+// However, if there is no custom information on a link, we always
+// block cross-model link serialization, so any extension models
+// with links back into the core model are not written by default, making
+// it more difficult to custom-serialize extensions than it needs to be.
+// To temporary disable this, uncomment the following line.
+//#define WRITE_ALL_DEFAULT_LINKS
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -75,6 +83,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// Set if some of the attributes are written as elements and others are written as attributes.
 		/// </summary>
 		MixedTypedAttributes = 0x20,
+		/// <summary>
+		/// A child LinkInfo is actually the back link to the aggregating object. These
+		/// elements have an id, but no ref.
+		/// </summary>
+		AggregatingLinkInfo = 0x40,
 	}
 	/// <summary>
 	/// Write style for element custom serialization.
@@ -99,6 +112,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// id, attributes, and referencing child elements at this location.
 		/// </summary>
 		PrimaryLinkElement = 0x02,
+		/// <summary>
+		/// Used for aggregating links. Write as a child element of the
+		/// aggregating object. Writes the link id. Any attributes on the link
+		/// and referencing child elements are written at this location.
+		/// </summary>
+		AggregatingLinkElement = 0x03,
 	}
 	/// <summary>
 	/// Write style for attribute custom serialization.
@@ -1222,14 +1241,17 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			IORMCustomSerializedElement rolePlayerCustomElement = rolePlayer as IORMCustomSerializedElement;
 			IORMCustomSerializedElement customElement = rolePlayerCustomElement;
+			ORMCustomSerializedElementWriteStyle writeStyle;
+			bool aggregatingLink = false;
 			bool writeContents = customElement != null &&
 				0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) &&
-				customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link).WriteStyle == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement;
+				((writeStyle = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link).WriteStyle) == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement ||
+				(aggregatingLink = writeStyle == ORMCustomSerializedElementWriteStyle.AggregatingLinkElement));
 
 			if (writeContents)
 			{
 				customElement = link as IORMCustomSerializedElement;
-				attributes = link.MetaClass.MetaAttributes;
+				attributes = link.MetaClass.AllMetaAttributes;
 				defaultPrefix = DefaultElementPrefix(link);
 			}
 			else
@@ -1267,6 +1289,12 @@ namespace Neumont.Tools.ORM.Shell
 						return;
 					}
 				}
+#if !WRITE_ALL_DEFAULT_LINKS
+				else if (!object.ReferenceEquals(GetParentModel(rolePlayer), GetParentModel(oppositeRolePlayer)))
+				{
+					return;
+				}
+#endif // WRITE_ALL_DEFAULT_LINKS
 			}
 
 			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name)))
@@ -1277,8 +1305,8 @@ namespace Neumont.Tools.ORM.Shell
 			Guid keyId = writeContents ? link.Id : oppositeRolePlayer.Id;
 			if (writeContents)
 			{
-				IList rolesPlayed = link.MetaClass.MetaRolesPlayed;
-				bool writeChildren = rolesPlayed.Count != 0;
+				IList rolesPlayed = link.MetaClass.AllMetaRolesPlayed;
+				bool writeChildren = aggregatingLink || rolesPlayed.Count != 0;
 
 				if (writeChildren)
 				{
@@ -1286,7 +1314,10 @@ namespace Neumont.Tools.ORM.Shell
 					// roles are actually serialized, then we don't need this at all.
 					file.WriteAttributeString("id", ToXML(keyId));
 				}
-				file.WriteAttributeString("ref", ToXML(oppositeRolePlayer.Id));
+				if (!aggregatingLink)
+				{
+					file.WriteAttributeString("ref", ToXML(oppositeRolePlayer.Id));
+				}
 
 				SerializeAttributes(file, link, customElement, rolePlayedInfo, attributes, hasCustomAttributes);
 
@@ -1331,8 +1362,16 @@ namespace Neumont.Tools.ORM.Shell
 			// despite the earlier call to ShouldSerializeMetaRole
 			bool checkSerializeClass = oppositeRoleInfo.RolePlayer.Descendants.Count != 0;
 			Store store = myStore;
+			bool isAggregate = rolePlayedInfo.IsAggregate;
+			bool oppositeIsAggregate = oppositeRoleInfo.IsAggregate;
+			IORMCustomSerializedElement testChildInfo;
 
-			if (!rolePlayedInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
+			if (!isAggregate &&
+				(!oppositeIsAggregate ||
+				(oppositeIsAggregate &&
+				null != (testChildInfo = childElement as IORMCustomSerializedElement) &&
+				0 != (testChildInfo.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.AggregatingLinkInfo) &&
+				testChildInfo.GetCustomSerializedLinkInfo(oppositeRoleInfo, null).WriteStyle == ORMCustomSerializedElementWriteStyle.AggregatingLinkElement))) //write link
 			{
 				IList links = childElement.GetElementLinks(rolePlayedInfo);
 				int linksCount = links.Count;
@@ -1387,7 +1426,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			else if (rolePlayedInfo.IsAggregate) //write child
+			else if (isAggregate) //write child
 			{
 				IList children = childElement.GetCounterpartRolePlayers(rolePlayedInfo, oppositeRoleInfo);
 				int childCount = children.Count;
@@ -2048,7 +2087,7 @@ namespace Neumont.Tools.ORM.Shell
 													if (!classGuid.Equals(Guid.Empty))
 													{
 														processedRootElement = true;
-														ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid));
+														ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid), null);
 													}
 												}
 												if (!processedRootElement)
@@ -2078,6 +2117,7 @@ namespace Neumont.Tools.ORM.Shell
 				RulesSuspended = false;
 			}
 		}
+		private delegate ElementLink CreateAggregatingLink(string idValue);
 		/// <summary>
 		/// Process a newly created element. The element will have an
 		/// Id set only. The id and ref attributes should be ignored.
@@ -2085,11 +2125,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="reader">Reader set to the root node</param>
 		/// <param name="customModel">The custom serialized meta model</param>
 		/// <param name="element">Newly created element</param>
-		private void ProcessClassElement(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element)
+		/// <param name="createAggregatingLinkCallback">A callback to pre-create the aggregating link before the aggregated element has finished processing</param>
+		private void ProcessClassElement(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, CreateAggregatingLink createAggregatingLinkCallback)
 		{
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
 			MetaDataDirectory dataDir = myStore.MetaDataDirectory;
-
 			#region Attribute processing
 			// Process all attributes first
 			if (reader.MoveToFirstAttribute())
@@ -2124,9 +2164,9 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			reader.MoveToElement();
 			#endregion // Attribute processing
-			ProcessChildElements(reader, customModel, element, customElement);
+			ProcessChildElements(reader, customModel, element, customElement, createAggregatingLinkCallback);
 		}
-		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, IORMCustomSerializedElement customElement)
+		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, IORMCustomSerializedElement customElement, CreateAggregatingLink createAggregatingLinkCallback)
 		{
 			if (reader.IsEmptyElement)
 			{
@@ -2137,6 +2177,7 @@ namespace Neumont.Tools.ORM.Shell
 			string namespaceName;
 			string containerName = null;
 			string containerNamespace = null;
+			bool testForAggregatingLink = createAggregatingLinkCallback != null && customElement != null && 0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.AggregatingLinkInfo);
 			IORMCustomSerializedMetaModel containerRestoreCustomModel = null;
 			MetaRoleInfo containerOppositeMetaRole = null;
 			while (reader.Read())
@@ -2157,7 +2198,23 @@ namespace Neumont.Tools.ORM.Shell
 					IList<Guid> oppositeMetaRoleGuids = null;
 					IORMCustomSerializedMetaModel restoreCustomModel = null;
 					bool nodeProcessed = false;
-					if (aggregatedClass && containerName == null)
+					ORMCustomSerializedElementMatch aggregatingLinkMatch;
+					MetaRoleInfo testAggregatingRole;
+					if (aggregatedClass &&
+						testForAggregatingLink &&
+						(aggregatingLinkMatch = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName)).MatchStyle == ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole &&
+						null != (testAggregatingRole = dataDir.FindMetaRole(aggregatingLinkMatch.SingleOppositeMetaRoleGuid)) &&
+						testAggregatingRole.IsAggregate)
+					{
+						testForAggregatingLink = false;
+						ElementLink aggregatingLink = createAggregatingLinkCallback(idValue);
+						if (aggregatingLink != null)
+						{
+							ProcessClassElement(reader, customModel, aggregatingLink, null);
+						}
+						nodeProcessed = true;
+					}
+					else if (aggregatedClass && containerName == null)
 					{
 						// All we have is the class name, go look for an appropriate aggregate
 						if (customModel != null)
@@ -2433,7 +2490,20 @@ namespace Neumont.Tools.ORM.Shell
 							bool createLink = true;
 							if (aggregatedClass)
 							{
-								ProcessClassElement(reader, customModel, oppositeElement);
+								ProcessClassElement(
+									reader,
+									customModel,
+									oppositeElement,
+									delegate(string aggregateIdValue)
+									{
+										ElementLink retVal = null;
+										if (createLink)
+										{
+											createLink = false;
+											retVal = CreateElementLink(aggregateIdValue, element, oppositeElement, oppositeMetaRole, explicitRelationshipType);
+										}
+										return retVal;
+									});
 							}
 							if (!isNewElement)
 							{
@@ -2453,7 +2523,7 @@ namespace Neumont.Tools.ORM.Shell
 								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeMetaRole, explicitRelationshipType);
 								if (!aggregatedClass && idValue != null)
 								{
-									ProcessClassElement(reader, customModel, newLink);
+									ProcessClassElement(reader, customModel, newLink, null);
 								}
 							}
 						}

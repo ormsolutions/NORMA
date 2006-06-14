@@ -67,6 +67,7 @@
 							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
 							<xsl:with-param name="attributes" select="count(se:Attribute)"/>
 							<xsl:with-param name="links" select="count(se:Link)"/>
+							<xsl:with-param name="aggregatingLinks" select="se:Link[@WriteStyle='AggregatingLinkElement']"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
 							<xsl:with-param name="mixedTypedAttributes" select="@HasMixedTypedAttributes='true'"/>
 						</xsl:call-template>
@@ -2274,6 +2275,7 @@
 		<xsl:param name="element"/>
 		<xsl:param name="attributes"/>
 		<xsl:param name="links"/>
+		<xsl:param name="aggregatingLinks"/>
 		<xsl:param name="customSort"/>
 		<xsl:param name="mixedTypedAttributes"/>
 		<xsl:variable name="supportedOperationsFragment">
@@ -2305,6 +2307,11 @@
 			<xsl:if test="$mixedTypedAttributes">
 				<xsl:element name="SupportedOperation">
 					<xsl:text>MixedTypedAttributes</xsl:text>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="$aggregatingLinks">
+				<xsl:element name="SupportedOperation">
+					<xsl:text>AggregatingLinkInfo</xsl:text>
 				</xsl:element>
 			</xsl:if>
 		</xsl:variable>
