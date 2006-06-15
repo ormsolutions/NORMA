@@ -270,7 +270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
 				SetConstraint constraint = link.SetConstraintCollection;
-				if (!constraint.IsRemoved && constraint.Constraint.ConstraintIsInternal)
+				if (!constraint.IsRemoved && !constraint.IsRemoving && constraint.Constraint.ConstraintIsInternal)
 				{
 					constraint.Remove();
 				}
