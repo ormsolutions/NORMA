@@ -23,8 +23,13 @@
 	<xs:element name="ORM2">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="orm:ORMModel" />
-				<xs:element ref="ormDiagram:ORMDiagram" maxOccurs="unbounded" />
+				<!-- What we really want is the following block, but xs:any does
+					 not support excluding namespaces other than targetNamespace -->
+				<!-- <xs:element ref="orm:ORMModel" xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" />
+				<xs:element ref="ormDiagram:ORMDiagram" maxOccurs="unbounded" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" />
+				<xs:any namespace="##other - http://schemas.neumont.edu/ORM/2006-04/ORMCore - http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" processContents="strict" maxOccurs="unbounded"/>
+				-->
+				<xs:any namespace="##other" processContents="strict" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
