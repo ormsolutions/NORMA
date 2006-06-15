@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -50,6 +51,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the VerbalizationSnippets dictionary for this store
 		/// </summary>
 		IDictionary<Type, IVerbalizationSets> VerbalizationSnippetsDictionary { get;}
+		/// <summary>
+		/// Retrieve the INotifySurveyElmentChanged interface for this store
+		/// </summary>
+		INotifySurveyElementChanged NotifySurveyElementChanged { get;}
 	}
 	#endregion // IORMToolServices interface
 	#region IRepresentedModelElements interface

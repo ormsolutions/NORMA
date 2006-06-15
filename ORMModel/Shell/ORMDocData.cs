@@ -391,7 +391,7 @@ namespace Neumont.Tools.ORM.Shell
 				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
 				if (subscriber != null)
 				{
-					subscriber.RemoveModelingEventHandlers(addedPreLoad, addedPostLoad);
+					subscriber.RemoveModelingEventHandlers(addedPreLoad, addedPostLoad, false);
 				}
 			}
 			if (addedPreLoad)

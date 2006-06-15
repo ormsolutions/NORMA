@@ -4,4 +4,5 @@
 	<plixLoader:sourceFile file="ShapeModel\ORMShape.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
 	<plixLoader:sourceFile file="ObjectModel\ORMCore.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
 	<plixLoader:sourceFile file="ShapeModel\ORMShape.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:sourceFile file="ObjectModel\ORMCore.SurveyQuestionProvider.xml" transformFile="Transforms\SurveyQuestionProvider.xslt"/>
 </plixLoader:sourceFiles>

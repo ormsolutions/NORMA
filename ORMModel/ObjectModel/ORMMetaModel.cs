@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -31,7 +32,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <param name="element">The element to validate</param>
 	[CLSCompliant(true)]
 	public delegate void ElementValidator(ModelElement element);
-	public partial class ORMMetaModel : IORMModelEventSubscriber, IVerbalizationSnippetsProvider
+	public partial class ORMMetaModel : IORMModelEventSubscriber, IVerbalizationSnippetsProvider, ISurveyNodeProvider
 	{
 		#region InitializingToolboxItems property
 		private static bool myReflectRulesSuspended;
@@ -153,16 +154,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IORMModelEventSubscriber.RemoveModelingEventHandlers
 		/// </summary>
-		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)
+		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
 		{
 			if (postLoadAdded)
 			{
 				NamedElementDictionary.DetachEventHandlers(Store);
 			}
 		}
-		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)
+		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
 		{
-			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded);
+			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded, surveyHandlerAdded);
+		}
+		/// <summary>
+		/// Implementes IORMModelEventSubscriber.SurveyQuestionLoad
+		/// </summary>
+		protected void SurveyQuestionLoad()
+		{
+			MetaDataDirectory directory = this.Store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = this.Store.EventManagerDirectory;
+			MetaClassInfo classInfo = directory.FindMetaRelationship(ModelHasObjectType.MetaRelationshipGuid);
+
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ModelElementAdded));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ModelElementRemoved));
+			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ModelElementNameChanged));
+			eventDirectory.CustomModelEventManager.Add(FactTypeNameChangedEvent.CustomModelEventId, new CustomModelEventHandler(FactTypeNameChanged));
+		}
+		void IORMModelEventSubscriber.SurveyQuestionLoad()
+		{
+			this.SurveyQuestionLoad();
 		}
 		#endregion // IORMModelEventSubscriber Implementation
 		#region IVerbalizationSnippetsProvider Implementation
@@ -186,5 +205,101 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ProvideVerbalizationSnippets();
 		}
 		#endregion // IVerbalizationSnippetsProvider Implementation
+		#region ISurveyNodeProvider Members
+		IEnumerable<SampleDataElementNode> ISurveyNodeProvider.GetSurveyNodes()
+		{
+			return this.GetSurveyNodes();
+		}
+		/// <summary>
+		/// provides an IEnumerable of sampleDataElementNodes for the SurveyTree
+		/// </summary>
+		/// <returns></returns>
+		protected IEnumerable<SampleDataElementNode> GetSurveyNodes()
+		{
+			Guid[] elementTypes = { FactType.MetaClassGuid, SubtypeFact.MetaClassGuid, ObjectType.MetaClassGuid };
+			for (int i = 0; i < elementTypes.Length; ++i)
+			{
+				IList tempElements = this.Store.ElementDirectory.GetElements(elementTypes[i], true);
+				for (int j = 0; j < tempElements.Count; ++j)
+				{
+					SampleDataElementNode currentElement = new SampleDataElementNode(tempElements[j]);
+					yield return currentElement;
+				}
+			}
+		}
+		#endregion
+		#region SurveyEventHandling
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for ElementAdded events
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void ModelElementAdded(object sender, ElementAddedEventArgs e)
+		{	
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementAdded((object)element);
+			}
+		}
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for ElementRemoved events
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void ModelElementRemoved(object sender, ElementRemovedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementRemoved((object)element);
+			}
+		}
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for ElementChanged events
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void ModelElementChanged(object sender, ElementAttributeChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				ISurveyQuestionTypeInfo[] effectedQuestions = (this as ISurveyQuestionProvider).GetSurveyQuestionTypeInfo();
+				eventNotify.ElementChanged((object)element, effectedQuestions);
+			}
+		}
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for ElementAttributeChanged events
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void ModelElementNameChanged(object sender, ElementAttributeChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementRenamed((object)element);
+			}
+		}
+		/// <summary>
+		/// wired on SurveyQuestionLoad as event handler for FactType Name change events (custom events)
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void FactTypeNameChanged(object sender, CustomModelEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify = (e.Store as IORMToolServices).NotifySurveyElementChanged;
+			if (eventNotify != null)
+			{
+				//TODO: find a way to get the changed model element off of CustomModelEventArgs or the sender
+				eventNotify.ElementRenamed(sender);
+			}
+		}
+		#endregion //SurveyEventHandling
 	}
 }

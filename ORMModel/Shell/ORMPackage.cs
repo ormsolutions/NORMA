@@ -13,7 +13,8 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-
+//NOTICE: if you toggel HIDENEWMODELBROWSER on/off make sure to change it on in ORMCommandSet.cs as well
+//#define HIDENEWMODELBROWSER
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -61,6 +62,9 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style = VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
+#if !HIDENEWMODELBROWSER
+	[ProvideToolWindow(typeof(NewORMModelBrowser), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+#endif
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
@@ -68,6 +72,9 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMVerbalizationToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
+#if !HIDENEWBROWSERWINDOW
+	[ProvideToolWindowVisibility(typeof(NewORMModelBrowser), ORMDesignerEditorFactory.GuidString)]
+#endif
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(1000, 1)]
 	[ProvideToolboxItems(1, true)]
@@ -258,6 +265,9 @@ namespace Neumont.Tools.ORM.Shell
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 
 				// Create tool windows
+#if !HIDENEWMODELBROWSER
+				AddToolWindow(typeof(NewORMModelBrowser));
+#endif
 				AddToolWindow(typeof(ORMBrowserToolWindow));
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
@@ -460,6 +470,16 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return (ORMBrowserToolWindow)mySingleton.GetToolWindow(typeof(ORMBrowserToolWindow), true);
+			}
+		}
+		/// <summary>
+		/// New ORMBrowser tool window
+		/// </summary>
+		public static NewORMModelBrowser NewORMModelBrowserWindow
+		{
+			get
+			{
+				return (NewORMModelBrowser)mySingleton.GetToolWindow(typeof(NewORMModelBrowser), true);
 			}
 		}
 

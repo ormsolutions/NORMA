@@ -18,6 +18,7 @@ using Neumont.Tools.ORM.Framework;
 using System.Xml;
 using System.Xml.Xsl;
 using Microsoft.XmlDiffPatch;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
@@ -63,6 +64,14 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 			}
 			IDictionary<Type, IVerbalizationSets> IORMToolServices.VerbalizationSnippetsDictionary
+			{
+				get
+				{
+					return null;
+				}
+			}
+			//TODO: this needs actual implementation for retrieving the INotifySurveyElementChanged implementation
+			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
 			{
 				get
 				{

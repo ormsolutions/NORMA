@@ -45,6 +45,7 @@
 #ifdef DEBUG
 #define cmdIdDebugViewStore				0x28FF
 #endif
+#define cmdIdViewNewModelBrowser		0x2899
 #define cmdIdViewModelBrowser			0x2900
 #define cmdIdViewReadingEditor			0x2901
 #define cmdIdViewReferenceModeEditor	0x2902
@@ -76,7 +77,6 @@
 #define cmdIdMoveRoleRight				0x2916
 
 // 0x2917 available
-
 #define cmdIdReadingEditorAddReading			0x2918
 #define cmdIdReadingEditorAddReadingOrder		0x2919
 #define cmdIdReadingEditorDeleteReading			0x291A

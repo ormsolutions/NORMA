@@ -23,13 +23,57 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Modeling.Shell;
-using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace Neumont.Tools.ORM.Shell
 {
 	public partial class ORMDesignerDocData : IORMToolServices
 	{
+		#region SurveyTreeSetup
+		private ITree mySurveyTree = null;
+		private MainList myRootBranch;
+		/// <summary>
+		/// property to return the survey tree associated with this DocData
+		/// </summary>
+		public ITree SurveyTree
+		{
+			get
+			{
+				if (mySurveyTree == null)
+				{
+					mySurveyTree = new VirtualTree();
+					IList<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
+					IList<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
+					ICollection substores = this.Store.SubStores.Values;
+					foreach(object o in substores)
+					{
+						ISurveyNodeProvider nodeProvider = o as ISurveyNodeProvider;
+						if (nodeProvider != null)
+						{
+							nodeProviderList.Add(nodeProvider);	
+						}
+						ISurveyQuestionProvider questionProvider = o as ISurveyQuestionProvider;
+						if (questionProvider != null)
+						{
+							questionProviderList.Add(questionProvider);
+						}
+						IORMModelEventSubscriber eventSubscriber = o as IORMModelEventSubscriber;
+						if (eventSubscriber != null)
+						{
+							eventSubscriber.SurveyQuestionLoad();
+						}
+					}
+					myRootBranch = new MainList(nodeProviderList, questionProviderList);
+					mySurveyTree.Root = myRootBranch.RootBranch;
+				}
+				return mySurveyTree;
+			}
+		}
+
+		#endregion //SurveyTreeSetup
 		#region Store services passthrough
 		/// <summary>
 		/// Create a store that implements IORMToolServices by deferring
@@ -139,6 +183,24 @@ namespace Neumont.Tools.ORM.Shell
 					return VerbalizationSnippetsDictionary;
 				}
 			}
+			/// <summary>
+			/// currently unimplemented as this should only be returned from ORMDocDataServices
+			/// </summary>
+			protected INotifySurveyElementChanged NotifySurveyElementChanged
+			{
+				get
+				{
+					return myServices.NotifySurveyElementChanged;
+				}
+			}
+			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+			{
+				get
+				{
+					return NotifySurveyElementChanged;
+				}
+			}
+
 			#endregion // IORMToolServices Implementation
 		}
 		#endregion // Store services passthrough
@@ -229,6 +291,24 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return VerbalizationSnippetsDictionary;
+			}
+		}
+		/// <summary>
+		/// Get the INotifySurveyElementChanged for the SurveyTree of this DocData
+		/// may be null
+		/// </summary>
+		protected INotifySurveyElementChanged NotifySurveyElementChanged
+		{
+			get
+			{
+				return this.myRootBranch as INotifySurveyElementChanged;
+			}
+		}
+		INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+		{
+			get
+			{
+				return NotifySurveyElementChanged;
 			}
 		}
 		#endregion // IORMToolServices Implementation

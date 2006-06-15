@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM;
 using System.Globalization;
 using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {

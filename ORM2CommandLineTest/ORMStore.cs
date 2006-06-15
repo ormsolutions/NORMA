@@ -8,6 +8,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using System.Xml;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
 #endregion
 
@@ -57,6 +58,14 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				get
 				{
 					return myServices.VerbalizationSnippetsDictionary;
+				}
+			}
+			//TODO: anything implmenting IORMToolServices needs this property filled in with correct code
+			INotifySurveyElementChanged IORMToolServices.NotifySurveyElementChanged
+			{
+				get
+				{
+					return null;
 				}
 			}
 			#endregion // IORMToolServices Implementation

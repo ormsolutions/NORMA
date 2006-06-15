@@ -95,8 +95,8 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdReadingEditorDemoteReadingOrder		guidORMDesignerCommandSet:groupIdReadingEditorContextOrderPromoteDemote,		0x0770,		guidOfficeIcon:msotcidDownArrow2,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Reading Order Down";
 		//UNDONE: Add menu options for: Delete Reading Order, Set as Primary Reading, & Set as Primary Reading Order
 
-
-		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	0,												"ORM M&odel Browser";
+		guidORMDesignerCommandSet:cmdIdViewNewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM M&odel Browser (New)";
+		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x00FF,		guidORMToolWindowIcons:bmpIdToolWindowModelBrowser,					BUTTON,	0,												"ORM M&odel Browser";
 		guidORMDesignerCommandSet:cmdIdViewVerbalizationBrowser,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0200,		guidORMToolWindowIcons:bmpIdToolWindowVerbalizationBrowser,			BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Verbalization Browser";
 		guidORMDesignerCommandSet:cmdIdViewFactEditor,				guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0300,		guidORMToolWindowIcons:bmpIdToolWindowFactEditor,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Fact Editor";
 		guidORMDesignerCommandSet:cmdIdViewSamplePopulationEditor,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0400,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Sample Pop&ulation Editor";

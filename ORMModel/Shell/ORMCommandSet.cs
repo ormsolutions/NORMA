@@ -13,7 +13,8 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-
+//NOTICE: if you toggle HIDENEWMODELBROWSER on/off make sure to change it on in ORMPackage.cs as well
+//#define HIDENEWMODELBROWSER 
 using System;
 using System.Collections;
 using System.ComponentModel.Design;
@@ -158,6 +159,14 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusStandardWindow),
 				new EventHandler(OnMenuViewORMModelBrowser),
 				ORMDesignerCommandIds.ViewModelBrowser)
+				,new DynamicStatusMenuCommand(
+#if !HIDENEWMODELBROWSER
+				new EventHandler(OnStatusStandardWindow),
+#else
+				delegate(object sender, EventArgs e){(sender as MenuCommand).Visible = false;},
+#endif
+				new EventHandler(OnMenuViewNewORMModelBrowser),
+				ORMDesignerCommandIds.ViewNewModelBrowser)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusAutoLayout),
 				new EventHandler(OnMenuAutoLayout),
@@ -309,6 +318,14 @@ namespace Neumont.Tools.ORM.Shell
 			protected void OnMenuViewORMModelBrowser(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.BrowserWindow.Show();
+			}
+
+			/// <summary>
+			/// Show the New ORM Model Browser
+			/// </summary>
+			protected void OnMenuViewNewORMModelBrowser(object sender, EventArgs e)
+			{
+				ORMDesignerPackage.NewORMModelBrowserWindow.Show();
 			}
 
 			/// <summary>
@@ -1086,9 +1103,13 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewFactEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewFactEditor);
 			/// <summary>
-			/// The ORM Verbalization Browser Window item on the fact type context menu
+			/// The ORM Verbalization Browser Window item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewVerbalizationBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewVerbalizationBrowser);
+			/// <summary>
+			/// The ORM Model Browser Window item on the context menu
+			/// </summary>
+			public static readonly CommandID ViewNewModelBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewNewModelBrowser);
 			/// <summary>
 			/// The ORM Verbalization Browser toolbar button for positive verbalization
 			/// </summary>
@@ -1214,6 +1235,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdDebugViewStore = 0x28FF;
 #endif // DEBUG
+			/// <summary>
+			/// The NewORM Model Browser item on the view menu
+			/// </summary>
+			private const int cmdIdViewNewModelBrowser = 0x2899;
 			/// <summary>
 			/// The ORM Model Browser item on the view menu
 			/// </summary>

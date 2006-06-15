@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -125,7 +126,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="preLoadAdded">The AddPreLoadModelingEventHandlers was called</param>
 		/// <param name="postLoadAdded">The AddPostLoadModelingEventHandlers was called</param>
-		void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded);
+		/// <param name="surveyHandlerAdded">The SurveyEventHandlers were loaded</param>
+		void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded);
+		/// <summary>
+		/// this method attaches ModelEvents to the MetaModel where they can be passed to the affected store
+		/// </summary>
+		void SurveyQuestionLoad();
 	}
 	#endregion // IORMModelEventSubscriber
 }

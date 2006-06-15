@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMModelEventSubscriber.RemoveModelingEventHandlers
 		/// </summary>
-		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)
+		protected void RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
 		{
 			if (postLoadAdded)
 			{
@@ -68,10 +68,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMBaseShape.DetachEventHandlers(store);
 			}
 		}
-		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded)
+		void IORMModelEventSubscriber.RemoveModelingEventHandlers(bool preLoadAdded, bool postLoadAdded, bool surveyHandlerAdded)
 		{
-			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded);
+			RemoveModelingEventHandlers(preLoadAdded, postLoadAdded, surveyHandlerAdded);
 		}
+		/// <summary>
+		/// Implements IORMModelEvenSubscriber.SurveyQuestionLoad event handlers
+		/// </summary>
+		protected void SurveyQuestionLoad()
+		{
+			//currently unimplimented as the survey doesn't care about shape model changes
+		}
+		void IORMModelEventSubscriber.SurveyQuestionLoad()
+		{
+			SurveyQuestionLoad();
+		}
+
 		#endregion // IORMModelEventSubscriber Implementation
 	}
 }
