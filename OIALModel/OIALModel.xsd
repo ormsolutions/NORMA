@@ -2,6 +2,7 @@
 <xs:schema
 	targetNamespace="http://schemas.neumont.edu/ORM/2006-01/OIALModel"
 	xmlns="http://schemas.neumont.edu/ORM/2006-01/OIALModel"
+	xmlns:ORM2="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -18,18 +19,118 @@
 		</xs:appinfo>
 	</xs:annotation>
 
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore" />
+
 	<xs:element name="Model" type="ModelType" />
 
 	<xs:complexType name="ModelType">
-		<xs:sequence>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="ORMModel" type="RefType" />
+			<xs:element minOccurs="0" name="InformationTypeFormats" type="InformationTypeFormatsType" />
+			<xs:element minOccurs="0" name="ConceptTypes" type="ConceptTypesType" />
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" />
-		<xs:attribute name="Name" type="xs:string" />
+		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
+
+	<xs:complexType name="InformationTypeFormatsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="InformationTypeFormat" type="InformationTypeFormatType" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="InformationTypeFormatType">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="ValueType" type="RefType" />
+			</xs:sequence>
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_Group" />
+	</xs:complexType>
+
+	<xs:complexType name="ConceptTypesType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ConceptType" type="ConceptTypeType" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="ConceptTypeType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ObjectType" type="RefType" />
+			<xs:element name="ContainedTypes" type="ContainedTypesType" />
+			<xs:element name="ConceptTypeLink" type="ConceptTypeLinkType" />
+		</xs:choice>
+		<xs:attributeGroup ref="Id_Name_Group" />
+	</xs:complexType>
+
+	<xs:complexType name="ContainedTypesType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="InformationType" type="InformationTypeType" />
+			<xs:element name="ReferencedConceptType" type="ReferencedConceptTypeType" />
+			<xs:element name="ConceptType" type="ConceptTypeType" />
+		</xs:choice>
+		<xs:attributeGroup ref="Id_Name_Group" />
+	</xs:complexType>
+
+	<xs:complexType name="ReferencedConceptTypeType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="SingleChildConstraints" type="SingleChildConstraintsType" />
+			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" />
+		<xs:attribute name="ref" type="xs:IDREF" />
+		<xs:attribute name="Mandatory" type="ModalityEnum" />
+		<xs:attribute name="OppositeName" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="ConceptTypeLinkType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" />
+	</xs:complexType>
+
+	<xs:complexType name="InformationTypeType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="InformationTypeLink" type="InformationTypeLinkType" />
+			<xs:element name="InformationTypeFormat" type="RefType" />
+		</xs:choice>
+		<xs:attributeGroup ref="Id_Name_Group" />
+	</xs:complexType>
+
+	<xs:complexType name="InformationTypeLinkType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="SingleChildConstraints" type="SingleChildConstraintsType" />
+			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" />
+		<xs:attribute name="Mandatory" type="ModalityEnum" />
+	</xs:complexType>
+
+	<xs:complexType name="SingleChildConstraintsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="SingleChildUniquenessConstraint" type="SingleChildUniquenessConstraintType" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="SingleChildUniquenessConstraintType">
+		<xs:attributeGroup ref="Id_Name_Group" />
+		<xs:attribute name="IsPreferred" type="xs:boolean" />
+	</xs:complexType>
+
+	<xs:simpleType name="ModalityEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Alethic" />
+			<xs:enumeration value="Deontic" />
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:complexType name="RefType">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
+
+	<xs:attributeGroup name="Id_Name_Group">
+		<xs:attribute name="id" type="xs:ID" />
+		<xs:attribute name="Name" type="xs:string" />
+	</xs:attributeGroup>
 
 </xs:schema>
