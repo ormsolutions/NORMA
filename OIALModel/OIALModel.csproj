@@ -81,6 +81,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="OIALModel.cs" />
     <Compile Include="OIALModel.DeserializationFixupListeners.cs" />
     <Compile Include="OIALMetaModel.dsldm.cs">

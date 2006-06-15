@@ -10,6 +10,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SatDll", "ORMModelSatDll\Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionExample", "ExtensionExample\ExtensionExample.csproj", "{7C737995-FC98-488D-A0CE-912FE71FDDB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OIALModel", "OIALModel\OIALModel.csproj", "{C3D65C72-C979-4D83-A16A-288CF5D66517}"
+EndProject
+Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
 	EndGlobalSection
@@ -52,6 +55,16 @@ EndProject
 		{7C737995-FC98-488D-A0CE-912FE71FDDB7}.Release|Mixed platforms.ActiveCfg = Release|Any CPU
 		{7C737995-FC98-488D-A0CE-912FE71FDDB7}.Release|Mixed platforms.Build.0 = Release|Any CPU
 		{7C737995-FC98-488D-A0CE-912FE71FDDB7}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Debug|Mixed platforms.ActiveCfg = Debug|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Debug|Mixed platforms.Build.0 = Debug|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Release|Mixed platforms.ActiveCfg = Release|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Release|Mixed platforms.Build.0 = Release|Any CPU
+		{C3D65C72-C979-4D83-A16A-288CF5D66517}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
