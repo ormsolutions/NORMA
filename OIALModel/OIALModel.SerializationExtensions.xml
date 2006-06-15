@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<se:CustomSerializedElements
+	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<se:Copyright name="Common Public License Copyright Notice">
+		Neumont Object-Role Modeling Architect for Visual Studio
+
+		Copyright © Neumont University. All rights reserved.
+
+		The use and distribution terms for this software are covered by the
+		Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+		can be found in the file CPL.txt at the root of this distribution.
+		By using this software in any fashion, you are agreeing to be bound by
+		the terms of this license.
+
+		You must not remove this notice, or any other, from this software.
+	</se:Copyright>
+	<se:MetaModel Class="OIALMetaModel" DisplayNameResourceId="DisplayName" DescriptionResourceId="Description">
+		<se:Namespaces>
+			<se:Namespace Prefix="oial" URI="http://schemas.neumont.edu/ORM/2006-01/OIALModel" SchemaFile="OIALModel.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="OIALModel" Name="Model"/>
+		</se:RootElements>
+	</se:MetaModel>
+	<!-- OIALModel -->
+	<se:Element Class="OIALModel" Name="Model" Override="false" SortChildElements="true">
+		<se:Link Name="ORMModel" RelationshipName="OIALModelHasORMModel" RoleName="ORMModel"/>
+		<se:ChildElement Name="ChildSequenceConstraints">
+			<se:Link RelationshipName="OIALModelHasChildSequenceConstraint" RoleName="ChildSequenceConstraintCollection"/>
+		</se:ChildElement>
+		<se:ChildElement Name="InformationTypeFormats">
+			<se:Link RelationshipName="OIALHasInformationTypeFormat" RoleName="InformationTypeFormatCollection"/>
+		</se:ChildElement>
+		<se:ChildElement Name="ConceptTypes">
+			<se:Link RelationshipName="OIALModelHasConceptType" RoleName="ConceptTypeCollection"/>
+		</se:ChildElement>
+	</se:Element>
+	<!-- ChildSequenceConstraints and ChildSequences -->
+	<se:Element Class="ChildSequenceConstraint">
+		<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="ConceptTypeHasChild" WriteStyle="NotWritten"/>
+		<se:ChildElement Name="ChildSequence">
+			<se:Link RelationshipName="SingleChildSequenceConstraintHasMinTwoChildrenChildSequence" RoleName="ChildSequence" />
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="ChildSequence">
+		<se:Link Name="ConceptTypeHasChild" RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ConceptTypeHasChildCollection" />
+	</se:Element>
+	<!-- InformationTypeFormats -->
+	<se:Element Class="InformationTypeFormat">
+		<se:Link RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationType" WriteStyle="NotWritten" />
+		<se:Link Name="ValueType" RelationshipName="InformationTypeFormatHasObjectType" RoleName="ValueType" />
+	</se:Element>
+	<!-- Concept Types -->
+	<se:Element Class="ConceptType" SortChildElements="true">
+		<se:Link Name="ObjectType" RelationshipName="ConceptTypeHasObjectType" RoleName="ObjectType" />
+		<se:ChildElement Name="ContainedTypes" SortChildElements="false">
+			<se:Link RelationshipName="ConceptTypeHasInformationType" RoleName="InformationTypeCollection"/>
+			<se:Link RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbedConceptTypeCollection"/>
+			<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptTypeCollection"/>
+		</se:ChildElement>
+		<se:Link Name="ConceptTypeLink" RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbingConceptType" WriteStyle="AggregatingLinkElement"/>
+		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptTypeCollection" Name="ReferencedConceptType" WriteStyle="PrimaryLinkElement"  />
+		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencingConceptType" WriteStyle="NotWritten"/>
+	</se:Element>
+	<!-- InformationTypes -->
+	<se:Element Class="InformationType">
+		<se:Link Name="InformationTypeFormat" RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationTypeFormat" />
+		<se:Link Name="InformationTypeLink" RelationshipName="ConceptTypeHasInformationType" RoleName="ConceptType" WriteStyle="AggregatingLinkElement"/>
+	</se:Element>
+	<!-- ConceptTypeHasChild -->
+	<se:Element Class="ConceptTypeHasChild">
+		<!-- We write the value of the Mandatory property if and only if it is not "NotMandatory" -->
+		<se:Attribute ID="Mandatory" Name="Mandatory">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="Mandatory" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic type="field" dataTypeName="MandatoryConstraintModality" name="NotMandatory"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:ChildElement Name="SingleChildConstraints">
+			<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="SingleChildConstraintCollection"/>
+		</se:ChildElement>
+		<se:ChildElement Name="PathRoles">
+			<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRoleCollection"/>
+		</se:ChildElement>
+		<se:Link RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ChildSequenceCollection" WriteStyle="NotWritten" />
+		<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRoleCollection" Name="Role" Prefix="orm"/>
+	</se:Element>
+</se:CustomSerializedElements>

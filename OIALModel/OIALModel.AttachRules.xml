@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
+	<arg:Copyright name="Common Public License Copyright Notice">
+		Neumont Object-Role Modeling Architect for Visual Studio
+
+		Copyright © Neumont University. All rights reserved.
+
+		The use and distribution terms for this software are covered by the
+		Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+		can be found in the file CPL.txt at the root of this distribution.
+		By using this software in any fashion, you are agreeing to be bound by
+		the terms of this license.
+
+		You must not remove this notice, or any other, from this software.
+	</arg:Copyright>
+	<arg:Model class="OIALMetaModel">
+		<arg:Rule class="OIALModel.ModelHasObjectTypeAddRule"/>
+		<arg:Rule class="OIALModel.ModelHasObjectTypeRemovingRule"/>
+		<arg:Rule class="OIALModel.ObjectTypeChangeRule"/>
+		<arg:Rule class="OIALModel.ObjectTypePlaysRoleAddRule"/>
+		<arg:Rule class="OIALModel.ObjectTypePlaysRoleRemovingRule"/>
+		<arg:Rule class="OIALModel.ModelHasFactTypeAddRule"/>
+		<arg:Rule class="OIALModel.ModelHasFactTypeRemovingRule"/>
+		<arg:Rule class="OIALModel.FactTypeChangeRule"/>
+		<arg:Rule class="OIALModel.ModelHasSetConstraintAddRule"/>
+		<arg:Rule class="OIALModel.ModelHasSetConstraintChangeRule"/>
+		<arg:Rule class="OIALModel.ModelHasSetConstraintRemovingRule"/>
+		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleAddRule"/>
+		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleRemovingRule"/>
+		<arg:Rule class="OIALModel.UniquenessConstraintChangeRule"/>
+		<arg:Rule class="OIALModel.MandatoryConstraintChangeRule"/>
+		<arg:Rule class="OIALModel.RoleBaseChangeRule"/>
+		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeAddRule"/>
+		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeRemoveRule"/>
+		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeAddRule"/>
+		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeRemoveRule"/>
+		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleAddRule"/>-->
+		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleRemoveRule"/>-->
+	</arg:Model>
+</arg:Rules>
