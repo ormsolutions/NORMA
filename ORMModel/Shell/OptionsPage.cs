@@ -30,6 +30,9 @@ using Neumont.Tools.ORM.Shell;
 using System.Globalization;
 using CategoryAttribute = System.ComponentModel.CategoryAttribute;
 using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
+using System.Drawing.Design;
+using Neumont.Tools.ORM.ObjectModel.Editors;
+using System.Collections.Generic;
 namespace Neumont.Tools.ORM.Shell
 {
 	#region Shape enums
@@ -727,6 +730,7 @@ namespace Neumont.Tools.ORM.Shell
 		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDisplayNameId)]
+		[Editor(typeof(VerbalizationSnippetsEditor), typeof(UITypeEditor))]
 		public string CustomVerbalizationSnippets
 		{
 			get { return myCustomVerbalizationSnippets; }
@@ -762,5 +766,97 @@ namespace Neumont.Tools.ORM.Shell
 			get { return myCurrentPreferredInternalUniquenessConstraintDisplay; }
 		}
 		#endregion // Accessor properties
+		#region Custom dropdown for CustomVerbalizationSnippets option
+		/// <summary>
+		/// Options page item for changing the verbalization snippet(s) being used
+		/// </summary>
+		private class VerbalizationSnippetsEditor : ElementPicker
+		{
+			private ICollection<VerbalizationSnippetsIdentifier> myIdentifiers;
+			/// <summary>	
+			/// Populate a list of friendly names for available verbalization snippets
+			/// </summary>
+			/// <param name="context">An instance of the options page</param>
+			/// <param name="value">The currently selected item</param>
+			/// <returns>The items in the drop down list</returns>
+			protected override IList GetContentList(ITypeDescriptorContext context, object value)
+			{
+				IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> snipDict = VerbalizationSnippetSetsManager.LoadAvailableSnippets(
+					GetSnippetsProviders(),
+					ORMDesignerPackage.VerbalizationDirectory);
+
+				ICollection<VerbalizationSnippetsIdentifier> dKeys = snipDict.Keys;
+				string[] displayNames = new string[dKeys.Count];
+				int i = 0;
+				foreach (VerbalizationSnippetsIdentifier id in dKeys)
+				{
+					displayNames[i] = id.Description;
+					++i;
+				}
+				myIdentifiers = dKeys;
+				return displayNames;
+			}
+			/// <summary>
+			/// 
+			/// </summary>
+			/// <param name="initialObject">The string presently selected when the drop down is activated</param>
+			/// <param name="contentList">The contents of the list</param>
+			/// <returns></returns>
+			protected override object TranslateToDisplayObject(object initialObject, IList contentList)
+			{
+				VerbalizationSnippetsIdentifier[] identifiers = VerbalizationSnippetsIdentifier.ParseIdentifiers((string)initialObject);
+				if (identifiers != null && identifiers.Length == 1)
+				{
+					int i = 0;
+					foreach (VerbalizationSnippetsIdentifier testId in myIdentifiers)
+					{
+						if (testId == identifiers[0])
+						{
+							break;
+						}
+						++i;
+					}
+					if (i < myIdentifiers.Count)
+					{
+						return contentList[i];
+					}
+					else
+					{
+						return contentList[0];
+					}
+				}
+				return initialObject;
+			}
+			/// <summary>
+			/// Changes the selected item into text that the program can use
+			/// </summary>
+			/// <param name="newIndex">The selected index</param>
+			/// <param name="newObject">The object at the selected index</param>
+			/// <returns></returns>
+			protected override object TranslateFromDisplayObject(int newIndex, object newObject)
+			{
+				foreach (VerbalizationSnippetsIdentifier id in myIdentifiers)
+				{
+					if (newIndex == 0)
+					{
+						return VerbalizationSnippetsIdentifier.SaveIdentifiers(new VerbalizationSnippetsIdentifier[] { id });
+					}
+					--newIndex;
+				}
+				return "";
+			}
+			private static IEnumerable<IVerbalizationSnippetsProvider> GetSnippetsProviders()
+			{
+				foreach (Type metaModelType in ORMDesignerPackage.GetAvailableMetaModels())
+				{
+					IVerbalizationSnippetsProvider provider = Activator.CreateInstance(metaModelType) as IVerbalizationSnippetsProvider;
+					if (provider != null)
+					{
+						yield return provider;
+					}
+				}
+			}
+		}
+		#endregion // Custom dropdown for CustomVerbalizationSnippets option
 	}
 }

@@ -673,6 +673,19 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
+		/// Enumerate all models available to the ORM designer
+		/// </summary>
+		/// <returns>IEnumerable&lt;Type&gt;</returns>
+		public static IEnumerable<Type> GetAvailableMetaModels()
+		{
+			yield return typeof(Neumont.Tools.ORM.ObjectModel.ORMMetaModel);
+			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeModel);
+			foreach (ORMExtensionType extension in GetAvailableCustomExtensions())
+			{
+				yield return extension.Type;
+			}
+		}
+		/// <summary>
 		/// This method cycles through the registered Custom Extensions.
 		/// It then returns an IList of ORMExtensionType. containing all the Types of the Custome Extensions.
 		/// </summary>

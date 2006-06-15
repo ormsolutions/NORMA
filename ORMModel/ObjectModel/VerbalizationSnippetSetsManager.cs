@@ -725,18 +725,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>Snippets dictionary</returns>
 		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
 		{
+			return LoadSnippetsDictionary(GetSubstoreEnumerator<IVerbalizationSnippetsProvider>(store), customSnippetsDirectory, customIdentifiers);
+		}
+		private static IEnumerable<T> GetSubstoreEnumerator<T>(Store store) where T : class
+		{
+			foreach (object substore in store.SubStores.Values)
+			{
+				T typeTest = substore as T;
+				if (typeTest != null)
+				{
+					yield return typeTest;
+				}
+			}
+		}
+		/// <summary>
+		/// Non-Final method for testing/creation purposes, unfinished and likely buggy
+		/// Load the descriptions and names of all verbalization snippets provided
+		/// </summary>
+		/// <param name="providers">The snippet providers</param>
+		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
+		/// <returns>A dictionary with all the required information</returns>
+		public static IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> LoadAvailableSnippets(IEnumerable<IVerbalizationSnippetsProvider> providers, string customSnippetsDirectory)
+		{
+			Type[] typeArgs = new Type[1];
+			Dictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> allSets = null;
+			foreach (IVerbalizationSnippetsProvider provideSnippets in providers)
+			{
+				VerbalizationSnippetsData[] snippetsData;
+				int snippetsDataCount;
+				if (null != (snippetsData = provideSnippets.ProvideVerbalizationSnippets()) &&
+					0 != (snippetsDataCount = snippetsData.Length))
+				{
+					for (int i = 0; i < snippetsDataCount; ++i)
+					{
+						VerbalizationSnippetsData data = snippetsData[i];
+						if (!data.IsEmpty)
+						{
+							Type enumType = data.EnumType;
+							string enumTypeName = enumType.FullName;
+							typeArgs[0] = enumType;
+							if (allSets == null)
+							{
+								allSets = new Dictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets>();
+							}
+							VerbalizationSnippetsIdentifier defaultSnippetsIdentifier = VerbalizationSnippetsIdentifier.CreateDefaultIdentifier(enumType, data.DefaultSetsDescription);
+							allSets.Add(defaultSnippetsIdentifier, data.DefaultVerbalizationSets);
+							// Call type-bound method through reflection
+							typeof(VerbalizationSnippetSetsManager).GetMethod("LoadVerbalizationFiles", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(typeArgs).Invoke(
+								null,
+								BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
+								null,
+								new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier },
+								null);
+						}
+					}
+				}
+			}
+			return allSets;
+		}
+		
+		/// <summary>
+		/// Load all verbalization snippets provided by substores in the provided store
+		/// </summary>
+		/// <param name="providers">The snippet providers</param>
+		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
+		/// <param name="customIdentifiers">An array of preferred custom identifiers
+		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
+		/// <returns>Snippets dictionary</returns>
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
+		{
 			Dictionary<Type, IVerbalizationSets> retVal = new Dictionary<Type, IVerbalizationSets>();
-			ICollection substores = store.SubStores.Values;
 			Type[] typeArgs = new Type[1];
 			int customIdentifiersCount = (customIdentifiers != null) ? customIdentifiers.Length : 0;
 			Dictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> allSets = null;
-			foreach (object substore in substores)
+			foreach (IVerbalizationSnippetsProvider provideSnippets in providers)
 			{
-				IVerbalizationSnippetsProvider provideSnippets;
 				VerbalizationSnippetsData[] snippetsData;
 				int snippetsDataCount;
-				if (null != (provideSnippets = substore as IVerbalizationSnippetsProvider) &&
-					null != (snippetsData = provideSnippets.ProvideVerbalizationSnippets()) &&
+				if (null != (snippetsData = provideSnippets.ProvideVerbalizationSnippets()) &&
 					0 != (snippetsDataCount = snippetsData.Length))
 				{
 					for (int i = 0; i < snippetsDataCount; ++i)
