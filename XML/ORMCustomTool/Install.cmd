@@ -24,16 +24,29 @@ XCOPY /Y /D /V /Q "%~dp0\..\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoOWL\OIALtoOWL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_Implementation.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
+
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_Abstract.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
+
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".CoRef.orm" "ORM" "CoRefORM" "%ORMTransformsDir%\CoRefORM.xslt"
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt"
 CALL:_AddXslORMGenerator "OIALtoXSD" "OIAL to XSD" "Transforms an OIAL file to XML Schema." ".xsd" "OIAL" "XSD" "%ORMTransformsDir%\OIALtoXSD.xslt"
 CALL:_AddXslORMGenerator "OIALtoOWL" "OIAL to OWL" "Transforms an OIAL file to OWL." ".owl" "OIAL" "OWL" "%ORMTransformsDir%\OIALtoOWL.xslt"
 CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to DCIL." ".DCIL.xml" "OIAL" "DCIL" "%ORMTransformsDir%\OIALtoDCIL.xslt"
-CALL:_AddXslORMGenerator "OIALtoPLiX" "OIAL to PLiX" "Transforms an OIAL file to PLiX." ".PLiX.xml" "OIAL" "PLiX" "%ORMTransformsDir%\OIALtoPLiX_Implementation.xslt"
+
+CALL:_AddXslORMGenerator "OIALtoCLIProperties" "OIAL to CLI Properties" "Transforms an OIAL file to CLI (Common Language Infrastructure) Properties" ".CLIProperties.xml" "OIAL" "CLIProperties" "%ORMTransformsDir%\OIALtoCLIProperties.xslt"
+CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "OIAL" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXAbstract" "CLIProperties to PLiX Abstract" "Transforms a CLI Properties file to Abstract PLiX" ".Abstract.PLiX.xml" "CLIProperties" "PLiX_Abstract" "%ORMTransformsDir%\OIALtoPLiX_Abstract.xslt" "" "OIAL\0" "PLiX_Support\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayer" "CLIProperties to PLiX Data Layer" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "" "OIAL\0" "PLiX_Abstract\0"
+
 
 :: Install and register DIL Transforms
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"
@@ -56,8 +69,13 @@ CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to Tabl
 CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".TableView.html" "TV" "TableViewHTML" "%DILTransformsDir%\TVtoHTML.xslt"
 
 :: Register PLiX Transforms
-CALL:_AddXslORMGenerator "PLiXtoCSharp" "PLiX to C#" "Transforms PLiX to C#." ".cs" "PLiX" "CSharp" "%PLiXDir%\Formatters\PLiXCS.xslt" "1"
-CALL:_AddXslORMGenerator "PLiXtoVisualBasic" "PLiX to Visual Basic" "Transforms PLiX to Visual Basic." ".vb" "PLiX" "VisualBasic" "%PLiXDir%\Formatters\PLiXVB.xslt" "1"
+
+CALL:_AddXslORMGenerator "PLiXtoCSharpSupport" "PLiX to C# Support" "Transforms PLiX to C#." ".Support.cs" "PLiX_Support" "CSharp_Support" "%PLiXDir%\Formatters\PLiXCS.xslt" "1"
+CALL:_AddXslORMGenerator "PLiXtoVisualBasicSupport" "PLiX to Visual Basic Support" "Transforms PLiX to Visual Basic." ".Support.vb" "PLiX_Support" "VisualBasic_Support" "%PLiXDir%\Formatters\PLiXVB.xslt" "1"
+CALL:_AddXslORMGenerator "PLiXtoCSharpAbstract" "PLiX to C# Abstract" "Transforms PLiX to C#." ".Abstract.cs" "PLiX_Abstract" "CSharp_Abstract" "%PLiXDir%\Formatters\PLiXCS.xslt" "1" "" "CSharp_Support\0"
+CALL:_AddXslORMGenerator "PLiXtoVisualBasicAbstract" "PLiX to Visual Basic Abstract" "Transforms PLiX to Visual Basic." ".Abstract.vb" "PLiX_Abstract" "VisualBasic_Abstract" "%PLiXDir%\Formatters\PLiXVB.xslt" "1" "" "VisualBasic_Support\0"
+CALL:_AddXslORMGenerator "PLiXtoCSharpImplementation" "PLiX to C# Implementation" "Transforms PLiX to C#." ".Implementation.cs" "PLiX_Implementation" "CSharp_Implementation" "%PLiXDir%\Formatters\PLiXCS.xslt" "1" "" "CSharp_Abstract\0"
+CALL:_AddXslORMGenerator "PLiXtoVisualBasicImplementation" "PLiX to Visual Basic Implementation" "Transforms PLiX to Visual Basic." ".Implementation.vb" "PLiX_Implementation" "VisualBasic_Implementation" "%PLiXDir%\Formatters\PLiXVB.xslt" "1" "" "VisualBasic_Abstract\0"
 
 GOTO:EOF
 
@@ -110,8 +128,7 @@ REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\Extenders\%~2\ORMCustomTool /f 
 GOTO:EOF
 
 :_AddXslORMGenerator
-:: REG QUERY "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /v "OfficialName" 1>NUL 2>&1
-:: IF NOT ERRORLEVEL 1 (GOTO:EOF)
+REG DELETE "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /va /f 1>NUL 2>&1
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Type" /d "XSLT" 1>NUL
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "OfficialName" /d "%~1" 1>NUL
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "DisplayName" /d "%~2" 1>NUL
@@ -121,4 +138,7 @@ REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "ProvidesOutputFormat" /d "%~6" 1>NUL
 REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "TransformUri" /d "%~7" 1>NUL
 IF NOT "%~8"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "Compilable" /t REG_DWORD /d "%~8") 1>NUL
+IF NOT "%~9"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "ReferenceInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
+SHIFT /8
+IF NOT "%~9"=="" (REG ADD "HKLM\SOFTWARE\Neumont\ORM Architect for Visual Studio\Generators\%~1" /f /v "PrequisiteInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 GOTO:EOF

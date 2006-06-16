@@ -9,10 +9,14 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="OIALtoCLIProperties.xslt" />
+    <Content Include="OIALtoPLiX_Abstract.xslt" />
+    <Content Include="OIALtoPLiX_DataLayer_Implementation.xslt" />
     <Content Include="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" />
     <Content Include="OIALtoPLiX_GenerateTuple.xslt" />
-    <Content Include="OIALtoPLiX_Implementation.xslt" />
-    <Content Include="OIALtoPLiX.xslt" />
+    <Content Include="OIALtoPLiX_GlobalSupportFunctions.xslt" />
+    <Content Include="OIALtoPLiX_GlobalSupportParameters.xslt" />
+    <Content Include="OIALtoPLiX_InMemory_Implementation.xslt" />
     <Content Include="OIALtoPLiX_Properties.xsd">
       <SubType>Designer</SubType>
     </Content>

@@ -34,6 +34,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 	{
 		private sealed class XslORMGenerator : IORMGenerator
 		{
+			private static readonly string[] EmptyStringArray = new string[0];
 			private static readonly XmlResolver XmlResolver = new XmlUrlResolver();
 			private static readonly XmlReaderSettings XmlReaderSettings = new XmlReaderSettings();
 			private static readonly XPathExpression DocumentElementXPathExpression = XPathExpression.Compile("/child::*");
@@ -63,36 +64,18 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 
 				string sourceInputFormat = this._sourceInputFormat = generatorKey.GetValue("SourceInputFormat", null) as string;
 				Debug.Assert(sourceInputFormat != null);
-				string[] referenceInputFormats = this._referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", null) as string[];
-				
-				// This is to save us from having to do both null and length checks later on...
-				if (referenceInputFormats != null && referenceInputFormats.Length <= 0)
-				{
-					referenceInputFormats = this._referenceInputFormats = null;
-				}
+				string[] referenceInputFormats = this._referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", EmptyStringArray) as string[];
+				string[] prequisiteInputFormats = generatorKey.GetValue("PrequisiteInputFormats", EmptyStringArray) as string[];
 
 				List<string> requiresInputFormats;
-				if (referenceInputFormats != null)
-				{
-					if (Array.IndexOf(referenceInputFormats, sourceInputFormat) < 0)
-					{
-						requiresInputFormats = new List<string>(referenceInputFormats.Length + 1);
-						requiresInputFormats.Add(sourceInputFormat);
-						requiresInputFormats.AddRange(referenceInputFormats);
-					}
-					else
-					{
-						requiresInputFormats = new List<string>(referenceInputFormats);
-					}
-				}
-				else
-				{
-					requiresInputFormats = new List<string>(1);
-					requiresInputFormats.Add(sourceInputFormat);
-				}
+
+				requiresInputFormats = new List<string>(referenceInputFormats.Length + prequisiteInputFormats.Length + 1);
+				requiresInputFormats.Add(sourceInputFormat);
+				requiresInputFormats.AddRange(referenceInputFormats);
+				requiresInputFormats.AddRange(prequisiteInputFormats);
 				this._requiresInputFormats = new ReadOnlyCollection<string>(requiresInputFormats);
 
-				this._transform = new XslCompiledTransform(false);
+				this._transform = new XslCompiledTransform(System.Diagnostics.Debugger.IsAttached);
 
 				Uri transformUri = XmlResolver.ResolveUri(null, generatorKey.GetValue("TransformUri", null) as string);
 				this._transformCanonicalUri = transformUri.ToString();

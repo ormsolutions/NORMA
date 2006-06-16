@@ -16,9 +16,28 @@
 	extension-element-prefixes="exsl">
 
 	<xsl:import href="OIALtoPLiX_GenerateTuple.xslt"/>
-	
+	<xsl:import href="OIALtoPLiX_GlobalSupportParameters.xslt"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
+	<xsl:template match="/">
+		<plx:root>
+			<plx:namespaceImport name="System"/>
+			<plx:namespaceImport name="System.Collections.Generic"/>
+			<plx:namespaceImport name="System.Collections.ObjectModel"/>
+			<plx:namespaceImport name="System.ComponentModel"/>
+			<plx:namespaceImport name="System.Xml"/>
+			<xsl:if test="$GenerateCodeAnalysisAttributes">
+				<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
+			</xsl:if>
+			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
+			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
+			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
+			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
+			<xsl:call-template name="GenerateGlobalSupportClasses">
+				<xsl:with-param name="StructLayoutAttribute" select="$StructLayoutAttribute"/>
+			</xsl:call-template>
+		</plx:root>
+	</xsl:template>
 	<!-- TODO: Determine if these classes are already available in the solution (or anything referenced by it) prior to generating them. -->
 	<xsl:template name="GenerateGlobalSupportClasses">
 		<xsl:param name="StructLayoutAttribute"/>
