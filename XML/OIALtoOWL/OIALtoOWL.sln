@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{EAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OIALtoOWL", "OIALtoOWL.csproj", "{EA7D3E27-FA14-4CE4-BC2D-F305CF74CCBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA7D3E27-FA14-4CE4-BC2D-F305CF74CCBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA7D3E27-FA14-4CE4-BC2D-F305CF74CCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

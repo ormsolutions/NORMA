@@ -64,6 +64,11 @@
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoOracle</ORMGenerator>
     </None>
+    <None Include="PersonCountryDemo.owl">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PersonCountryDemo.orm</DependentUpon>
+      <ORMGenerator>OIALtoOWL</ORMGenerator>
+    </None>
     <None Include="PersonCountryDemo.PLiX.xml">
       <AutoGen>True</AutoGen>
       <DependentUpon>PersonCountryDemo.orm</DependentUpon>
@@ -143,6 +148,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoOracle</ORMGenerator>
+    </None>
+    <None Include="SampleModel.owl">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoOWL</ORMGenerator>
     </None>
     <None Include="SampleModel.PLiX.xml">
       <AutoGen>True</AutoGen>

@@ -1,0 +1,14 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EA7D3E27-FA14-4CE4-BC2D-F305CF74CCBB}</ProjectGuid>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="OIALtoOWL.xslt"/>
+  </ItemGroup>
+</Project>
