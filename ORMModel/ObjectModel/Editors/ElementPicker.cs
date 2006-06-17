@@ -28,6 +28,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	/// <summary>
@@ -36,7 +37,6 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	/// method to return items, and alternately the LastControlSize and
 	/// NullItemText getters to control the list contents.
 	/// </summary>
-	[CLSCompliant(true)]
 	public abstract class ElementPicker : UITypeEditor
 	{
 		#region DropDownListBox class. Handles Escape key for ListBox
@@ -358,6 +358,12 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				object value = myInitialSelectionValue;
 				myInitialSelectionValue = null;
 				l.SelectedItem = value;
+				if (l.SelectedItem == null)
+				{
+					// Sometimes this doesn't take
+					myInitialSelectionValue = value;
+					l.BindingContextChanged += new EventHandler(HandleBindingContextChanged);
+				}
 			}
 		}
 
@@ -434,6 +440,248 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			return initialObject;
 		}
 		#endregion // ElementPicker Specifics
+	}
+	/// <summary>
+	/// A base class used to display a list of elements in a
+	/// VirtualTreeGrid control. Override the Get Tree property to
+	/// populate the constrol, and alternately the LastControlSize property.
+	/// </summary>
+	public abstract class TreePicker : UITypeEditor
+	{
+		#region DropDownTreeControl class. Handles Escape key for ListBox
+		private class DropDownTreeControl : VirtualTreeControl
+		{
+			private bool myEscapePressed;
+			private int myLastSelectedRow = -1;
+			private int myLastSelectedColumn = -1;
+			public event DoubleClickEventHandler AfterDoubleClick;
+			protected override bool IsInputKey(Keys keyData)
+			{
+				if ((keyData & Keys.KeyCode) == Keys.Escape)
+				{
+					myEscapePressed = true;
+				}
+				return base.IsInputKey(keyData);
+			}
+			protected override CreateParams CreateParams
+			{
+				[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode), SecurityPermission(SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+				get
+				{
+					CreateParams params1 = base.CreateParams;
+					params1.ExStyle &= ~0x200; // Turn off Fixed3D border style
+					return params1;
+				}
+			}
+			protected override void OnDoubleClick(DoubleClickEventArgs e)
+			{
+				base.OnDoubleClick(e);
+				if (AfterDoubleClick != null)
+				{
+					AfterDoubleClick(this, e);
+				}
+			}
+			public bool EscapePressed
+			{
+				get
+				{
+					return myEscapePressed;
+				}
+			}
+			public int LastSelectedRow
+			{
+				get
+				{
+					return myLastSelectedRow;
+				}
+			}
+			public int LastSelectedColumn
+			{
+				get
+				{
+					return myLastSelectedColumn;
+				}
+			}
+			protected override void  OnSelectionChanged(EventArgs e)
+			{
+				myLastSelectedColumn = CurrentColumn;
+				myLastSelectedRow = CurrentIndex;
+				base.OnSelectionChanged(e);
+			}
+		}
+		#endregion // DropDownTreeControl class. Handles Escape key for VirtualTreeControl
+		#region UITypeEditor overrides
+		private IWindowsFormsEditorService myEditor;
+		private object myInitialSelectionValue;
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Required UITypeEditor override. Opens dropdown modally
+		/// and waits for user input.
+		/// </summary>
+		/// <param name="context">The descriptor context. Used to retrieve
+		/// the live instance and other data.</param>
+		/// <param name="provider">The service provider for the given context.</param>
+		/// <param name="value">The current property value</param>
+		/// <returns>The updated property value, or the orignal value to effect a cancel</returns>
+		[SecurityPermission(SecurityAction.LinkDemand)]
+		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+		{
+			myEditor = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+			if (myEditor != null)
+			{
+				object newObject = value;
+				// Get the list contents and add a null handler if needed
+				ITree tree = GetTree(context, value);
+				// Proceed if there is anything to show
+				if (tree != null) // UNDONE: Turn this back on? && tree.VisibleItemCount != 0)
+				{
+					DropDownTreeControl treeControl = null;
+					try
+					{
+						// Create a listbox with its events
+						treeControl = new DropDownTreeControl();
+						if (UseStandardCheckBoxes)
+						{
+							ImageList images = new ImageList();
+							images.ImageSize = new Size(16, 16);
+							treeControl.ImageList = images;
+							treeControl.StandardCheckBoxes = true;
+						}
+						treeControl.BindingContextChanged += new EventHandler(HandleBindingContextChanged);
+						treeControl.AfterDoubleClick += new DoubleClickEventHandler(HandleDoubleClick);
+
+						// Manage the size of the control
+						Size lastSize = LastControlSize;
+						if (!lastSize.IsEmpty)
+						{
+							treeControl.Size = lastSize;
+						}
+						myInitialSelectionValue = value;
+
+						// Show the dropdown. This is modal.
+						IMultiColumnTree multiTree = tree as IMultiColumnTree;
+						if (multiTree != null)
+						{
+							treeControl.MultiColumnTree = multiTree;
+						}
+						else
+						{
+							treeControl.Tree = tree;
+						}
+						myEditor.DropDownControl(treeControl);
+
+						// Record the final size, we'll use it next time for this type of control
+						LastControlSize = treeControl.Size;
+
+						// Make sure the user didn't cancel, and translate the null placeholder
+						// back to null if necessary
+						if (!treeControl.EscapePressed)
+						{
+							int lastRow = treeControl.LastSelectedRow;
+							int lastColumn = treeControl.LastSelectedColumn;
+							if (lastRow != -1)
+							{
+								newObject = TranslateToValue(context, value, tree, lastRow, lastColumn);
+							}
+						}
+					}
+					finally
+					{
+						if (treeControl != null && !treeControl.IsDisposed)
+						{
+							treeControl.Dispose();
+						}
+					}
+				}
+				return newObject;
+			}
+			return value;
+		}
+		/// <summary>
+		/// Select a drop down style
+		/// </summary>
+		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+		{
+			return UITypeEditorEditStyle.DropDown;
+		}
+		/// <summary>
+		/// Allow resizing
+		/// </summary>
+		public override bool IsDropDownResizable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		#endregion // UITypeEditor overrides
+		#region TreePicker Specifics
+		private void HandleBindingContextChanged(object sender, EventArgs e)
+		{
+			Control l = (Control)sender;
+			if (myInitialSelectionValue != null)
+			{
+				l.BindingContextChanged -= new EventHandler(HandleBindingContextChanged);
+				object value = myInitialSelectionValue;
+				myInitialSelectionValue = null;
+			}
+		}
+
+		private void HandleDoubleClick(object sender, DoubleClickEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				myEditor.CloseDropDown();
+			}
+		}
+		/// <summary>
+		/// Generate the tree to display in the tree control. If the
+		/// control also implements IMultiColumnTree then it will be
+		/// shown as a multi-column tree.
+		/// </summary>
+		/// <param name="context">ITypeDescriptorContext passed in by the system</param>
+		/// <param name="value">The current value</param>
+		/// <returns>A list. An empty list will</returns>
+		protected abstract ITree GetTree(ITypeDescriptorContext context, object value);
+		/// <summary>
+		/// Translate the current state of the tree to a new value for the property
+		/// </summary>
+		/// <param name="context">ITypeDescriptorContext passed in by the system</param>
+		/// <param name="oldValue">The starting value</param>
+		/// <param name="tree">The tree returned by GetTree</param>
+		/// <param name="selectedRow">The last selected row in the tree</param>
+		/// <param name="selectedColumn">The last selected column in the tree</param>
+		/// <returns>Default implementation returns oldValue</returns>
+		protected virtual object TranslateToValue(ITypeDescriptorContext context, object oldValue, ITree tree, int selectedRow, int selectedColumn)
+		{
+			return oldValue;
+		}
+		/// <summary>
+		/// Should standard checkboxes be enabled on the parent tree control. Defaults to true.
+		/// </summary>
+		protected virtual bool UseStandardCheckBoxes
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Controls the size of the dropdown for a given type as it opens and closes. Override
+		/// both the setter and getter to change the value for specific controls
+		/// </summary>
+		protected virtual Size LastControlSize
+		{
+			get
+			{
+				return myLastControlSize;
+			}
+			set
+			{
+				myLastControlSize = value;
+			}
+		}
+		#endregion // TreePicker Specifics
 	}
 	/// <summary>
 	/// Static helper functions to use with UITypeEditor

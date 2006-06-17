@@ -24,6 +24,10 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using System.Xml;
 using System.Reflection;
+using Neumont.Tools.ORM.ObjectModel.Editors;
+using System.ComponentModel;
+using Microsoft.VisualStudio.VirtualTreeGrid;
+using System.Drawing;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -588,6 +592,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Equality overrides
 	}
 	#endregion // VerbalizationSnippetsIdentifier struct
+	#region VerbalizationSnippetSetsManager class
 	/// <summary>
 	/// Class for managing and loading snippet sets
 	/// </summary>
@@ -739,13 +744,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Non-Final method for testing/creation purposes, unfinished and likely buggy
 		/// Load the descriptions and names of all verbalization snippets provided
 		/// </summary>
 		/// <param name="providers">The snippet providers</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
-		/// <returns>A dictionary with all the required information</returns>
-		public static IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> LoadAvailableSnippets(IEnumerable<IVerbalizationSnippetsProvider> providers, string customSnippetsDirectory)
+		/// <returns>An array of available snippets identifiers</returns>
+		public static VerbalizationSnippetsIdentifier[] LoadAvailableSnippets(IEnumerable<IVerbalizationSnippetsProvider> providers, string customSnippetsDirectory)
 		{
 			Type[] typeArgs = new Type[1];
 			Dictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> allSets = null;
@@ -775,13 +779,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 								null,
 								BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 								null,
-								new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier },
+								new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, true },
 								null);
 						}
 					}
 				}
 			}
-			return allSets;
+			VerbalizationSnippetsIdentifier[] retVal;
+			if (allSets == null)
+			{
+				retVal = new VerbalizationSnippetsIdentifier[0];
+			}
+			else
+			{
+				ICollection<VerbalizationSnippetsIdentifier> keys = allSets.Keys;
+				retVal = new VerbalizationSnippetsIdentifier[keys.Count];
+				keys.CopyTo(retVal, 0);
+			}
+			return retVal;
 		}
 		
 		/// <summary>
@@ -836,7 +851,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									null,
 									BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 									null,
-									new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier },
+									new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, false },
 									null);
 								IVerbalizationSets useVerbalization;
 								if (!allSets.TryGetValue(customIdentifiers[customIdentifierIndex], out useVerbalization))
@@ -864,7 +879,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// dictionary will contain the default verbalization set for the given EnumType, which is always provided
 		/// by the snippets provider.</param>
 		/// <param name="defaultSnippetsIdentifier">The default snippets identifier for items of this type</param>
-		private static void LoadVerbalizationFiles<EnumType>(string directoryPath, IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> verbalizationSets, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier) where EnumType : struct
+		/// <param name="identifiersOnly">The populated dictionary will have keys only, skip verbalizationset population.</param>
+		private static void LoadVerbalizationFiles<EnumType>(string directoryPath, IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> verbalizationSets, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly) where EnumType : struct
 		{
 			if (Directory.Exists(directoryPath))
 			{
@@ -878,7 +894,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						using (FileStream stream = new FileStream(currentFile, FileMode.Open, FileAccess.Read, FileShare.Read))
 						{
-							LoadSnippets<EnumType>(stream, ref rawSnippetsList);
+							LoadSnippets<EnumType>(stream, identifiersOnly, ref rawSnippetsList);
 						}
 					}
 				}
@@ -887,7 +903,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int snippetsCount = rawSnippetsList.Count;
 					for (int i = 0; i < snippetsCount; ++i)
 					{
-						rawSnippetsList[i].Process(verbalizationSets, rawSnippetsList, defaultSnippetsIdentifier);
+						rawSnippetsList[i].Process(verbalizationSets, rawSnippetsList, defaultSnippetsIdentifier, identifiersOnly);
 					}
 				}
 			}
@@ -1096,7 +1112,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			#endregion // VerbalizationSets implementation class
 			#region Snippet processing
-			public IVerbalizationSets<EnumType> Process(IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> processedSets, List<RawSnippets<EnumType>> rawSnippetsList, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier)
+			/// <summary>
+			/// A placeholder empty implementaiton of IVerbalizationSets&lt;EnumType&gt;
+			/// to enable cycle detection when we're loading identifiers only
+			/// </summary>
+			private class EmptyVerbalizationSets : IVerbalizationSets<EnumType>
+			{
+				#region IVerbalizationSets<EnumType> Implementation
+				string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative)
+				{
+					return null;
+				}
+				string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType)
+				{
+					return null;
+				}
+				#endregion // IVerbalizationSets<EnumType> Implementation
+			}
+			public IVerbalizationSets<EnumType> Process(IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> processedSets, List<RawSnippets<EnumType>> rawSnippetsList, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly)
 			{
 				VerbalizationSnippetsIdentifier currentId = this.Id;
 				if (processedSets.ContainsKey(currentId))
@@ -1134,7 +1167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							});
 						if (!requiredSnippets.IsEmpty)
 						{
-							baseSnippets = requiredSnippets.Process(processedSets, rawSnippetsList, defaultSnippetsIdentifier);
+							baseSnippets = requiredSnippets.Process(processedSets, rawSnippetsList, defaultSnippetsIdentifier, identifiersOnly);
 						}
 						if (baseSnippets == null)
 						{
@@ -1143,9 +1176,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 					Debug.Assert(baseSnippets != null); // Should always have some base at this point
-					VerbalizationSets<EnumType> retValImpl = new PassthroughVerbalizationSets(baseSnippets);
-					VerbalizationSets<EnumType>.Initialize(retValImpl, Snippets);
-					retVal = retValImpl;
+					if (identifiersOnly)
+					{
+						retVal = new EmptyVerbalizationSets();
+					}
+					else
+					{
+						VerbalizationSets<EnumType> retValImpl = new PassthroughVerbalizationSets(baseSnippets);
+						VerbalizationSets<EnumType>.Initialize(retValImpl, Snippets);
+						retVal = retValImpl;
+					}
 					processingComplete = true;
 				}
 				finally
@@ -1170,8 +1210,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <typeparam name="EnumType">The type of the enum for the values of the Snippet.@type attribute</typeparam>
 		/// <param name="stream">The stream to load</param>
+		/// <param name="identifiersOnly">Load identifiers only.</param>
 		/// <param name="rawSnippetsList">The list to add results to. May be null.</param>
-		private static void LoadSnippets<EnumType>(Stream stream, ref List<RawSnippets<EnumType>> rawSnippetsList) where EnumType : struct
+		private static void LoadSnippets<EnumType>(Stream stream, bool identifiersOnly, ref List<RawSnippets<EnumType>> rawSnippetsList) where EnumType : struct
 		{
 			VerbalizationSnippetSetsNameTable names = VerbalizationSnippetSets.Names;
 			using (XmlTextReader settingsReader = new XmlTextReader(new StreamReader(stream), names))
@@ -1189,7 +1230,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								{
 									if (TestElementName(reader.LocalName, names.LanguageElement))
 									{
-										ProcessLanguage<EnumType>(reader, names, ref rawSnippetsList);
+										ProcessLanguage<EnumType>(reader, names, identifiersOnly, ref rawSnippetsList);
 									}
 									else
 									{
@@ -1207,7 +1248,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private static void ProcessLanguage<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, ref List<RawSnippets<EnumType>> rawSnippetsList) where EnumType : struct
+		private static void ProcessLanguage<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, bool identifiersOnly, ref List<RawSnippets<EnumType>> rawSnippetsList) where EnumType : struct
 		{
 			if (reader.IsEmptyElement)
 			{
@@ -1221,8 +1262,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (TestElementName(reader.LocalName, names.SnippetsElement))
 					{
-						RawSnippets<EnumType> rawSnippets = ProcessSnippets<EnumType>(reader, names, languageId);
-						if (!rawSnippets.IsEmpty)
+						RawSnippets<EnumType> rawSnippets = ProcessSnippets<EnumType>(reader, names, identifiersOnly, languageId);
+						if (identifiersOnly ? !rawSnippets.Id.IsEmpty : !rawSnippets.IsEmpty)
 						{
 							if (rawSnippetsList == null)
 							{
@@ -1243,7 +1284,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private static RawSnippets<EnumType> ProcessSnippets<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, string languageId) where EnumType : struct
+		private static RawSnippets<EnumType> ProcessSnippets<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, bool identifiersOnly, string languageId) where EnumType : struct
 		{
 			RawSnippets<EnumType> retVal = default(RawSnippets<EnumType>);
 			if (reader.IsEmptyElement)
@@ -1254,27 +1295,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string description = reader.GetAttribute(names.DescriptionAttribute);
 			string baseName = reader.GetAttribute(names.BaseSnippetsNameAttribute);
 			string baseLang = reader.GetAttribute(names.BaseSnippetsLanguageAttribute);
-			while (reader.Read())
+			if (identifiersOnly)
 			{
-				XmlNodeType nodeType = reader.NodeType;
-				if (nodeType == XmlNodeType.Element)
+				PassEndElement(reader);
+			}
+			else
+			{
+				while (reader.Read())
 				{
-					if (TestElementName(reader.LocalName, names.SnippetElement))
+					XmlNodeType nodeType = reader.NodeType;
+					if (nodeType == XmlNodeType.Element)
 					{
-						ProcessSnippet<EnumType>(reader, names, ref retVal.Snippets);
+						if (TestElementName(reader.LocalName, names.SnippetElement))
+						{
+							ProcessSnippet<EnumType>(reader, names, ref retVal.Snippets);
+						}
+						else
+						{
+							Debug.Fail("Validating reader should have failed");
+							PassEndElement(reader);
+						}
 					}
-					else
+					else if (nodeType == XmlNodeType.EndElement)
 					{
-						Debug.Fail("Validating reader should have failed");
-						PassEndElement(reader);
+						break;
 					}
-				}
-				else if (nodeType == XmlNodeType.EndElement)
-				{
-					break;
 				}
 			}
-			if (retVal.Snippets != null)
+			if (identifiersOnly || retVal.Snippets != null)
 			{
 				retVal.Id = new VerbalizationSnippetsIdentifier(typeof(EnumType), languageId, name, description);
 				retVal.BaseId = new VerbalizationSnippetsIdentifier(typeof(EnumType), baseLang, baseName);
@@ -1376,4 +1424,443 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // XML Helper Functions
 	}
+	#endregion // VerbalizationSnippetSetsManager class
+	#region AvailableVerbalizationSnippetsEditor class
+	/// <summary>
+	/// An editor class to choose the current verbalization options
+	/// </summary>
+	public abstract class AvailableVerbalizationSnippetsEditor : TreePicker
+	{
+		#region Abstract methods
+		/// <summary>
+		/// The directory containing snippet XML files
+		/// </summary>
+		protected abstract string VerbalizationDirectory { get;}
+		/// <summary>
+		/// An enumerator of snippets providers
+		/// </summary>
+		protected abstract IEnumerable<IVerbalizationSnippetsProvider> SnippetsProviders { get;}
+		#endregion // Abstract methods
+		#region TreePicker overrides
+		/// <summary>
+		/// Get the ITree representing the current verbalization settings
+		/// </summary>
+		protected override ITree GetTree(ITypeDescriptorContext context, object value)
+		{
+			ITree tree = new VirtualTree();
+			IBranch rootBranch = new ProviderBranch((string)value, SnippetsProviders, VerbalizationDirectory);
+			tree.Root = rootBranch;
+			if (rootBranch.VisibleItemCount == 1)
+			{
+				tree.ToggleExpansion(0, 0);
+			}
+			return tree;
+		}
+		/// <summary>
+		/// Translate the tree settings to a useable value
+		/// </summary>
+		protected override object TranslateToValue(ITypeDescriptorContext context, object oldValue, ITree tree, int selectedRow, int selectedColumn)
+		{
+			return VerbalizationSnippetsIdentifier.SaveIdentifiers((tree.Root as ProviderBranch).CurrentIdentifiers);
+		}
+		private static Size myLastControlSize = new Size(272, 128);
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
+		}
+		#endregion // TreePicker overrides
+		#region ProviderBranch class
+		/// <summary>
+		/// A branch class to display snippet types
+		/// </summary>
+		private sealed class ProviderBranch : BaseBranch, IBranch
+		{
+			#region SnippetsType structure
+			private struct SnippetsType
+			{
+				public string TypeDescription;
+				public string EnumTypeName;
+				public int FirstIdentifier;
+				public int LastIdentifier;
+				public int CurrentIdentifier;
+			}
+			#endregion // SnippetsType structure
+			#region Member Variables
+			private List<SnippetsType> myTypes;
+			private VerbalizationSnippetsIdentifier[] myIdentifiers;
+			private string[] myItemStrings;
+			#endregion // Member Variables
+			#region Constructors
+			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationSnippetsProvider> providers, string verbalizationDirectory)
+			{
+				VerbalizationSnippetsIdentifier[] allIdentifiers = VerbalizationSnippetSetsManager.LoadAvailableSnippets(
+					providers,
+					verbalizationDirectory);
+				VerbalizationSnippetsIdentifier[] currentIdentifiers = VerbalizationSnippetsIdentifier.ParseIdentifiers(currentSettings);
+
+				// Gather all types
+				List<SnippetsType> types = new List<SnippetsType>();
+				foreach (IVerbalizationSnippetsProvider provider in providers)
+				{
+					VerbalizationSnippetsData[] currentData = provider.ProvideVerbalizationSnippets();
+					int count = (currentData != null) ? currentData.Length : 0;
+					for (int i = 0; i < count; ++i)
+					{
+						SnippetsType currentType = default(SnippetsType);
+						currentType.TypeDescription = currentData[i].TypeDescription;
+						currentType.EnumTypeName = currentData[i].EnumType.FullName;
+						types.Add(currentType);
+					}
+				}
+
+				// Sort first by type description
+				types.Sort(
+					delegate(SnippetsType type1, SnippetsType type2)
+					{
+						return string.Compare(type1.TypeDescription, type2.TypeDescription, StringComparison.CurrentCultureIgnoreCase);
+					});
+
+				// Sort all identifiers. First by type description on previous sort, then
+				// putting the default identifier first, then by the identifier description
+				int typesCount = types.Count;
+				Array.Sort<VerbalizationSnippetsIdentifier>(
+					allIdentifiers,
+					delegate(VerbalizationSnippetsIdentifier identifier1, VerbalizationSnippetsIdentifier identifier2)
+					{
+						int retVal = 0;
+						string typeName1 = identifier1.EnumTypeName;
+						string typeName2 = identifier2.EnumTypeName;
+						if (typeName1 != typeName2)
+						{
+							int location1 = -1;
+							for (int i = 0; i < typesCount; ++i)
+							{
+								if (0 == string.CompareOrdinal(types[i].EnumTypeName, typeName1))
+								{
+									location1 = i;
+									break;
+								}
+							}
+							int location2 = -1;
+							for (int i = 0; i < typesCount; ++i)
+							{
+								if (0 == string.CompareOrdinal(types[i].EnumTypeName, typeName2))
+								{
+									location2 = i;
+									break;
+								}
+							}
+							retVal = location1.CompareTo(location2);
+						}
+						if (retVal == 0)
+						{
+							bool isDefault1 = identifier1.IsDefaultIdentifier;
+							bool isDefault2 = identifier2.IsDefaultIdentifier;
+							if (isDefault1)
+							{
+								if (!isDefault2)
+								{
+									retVal = -1;
+								}
+							}
+							else if (isDefault2)
+							{
+								retVal = 1;
+							}
+						}
+						if (retVal == 0)
+						{
+							retVal = string.Compare(identifier1.Description, identifier2.Description, StringComparison.CurrentCultureIgnoreCase);
+						}
+						return retVal;
+					});
+
+				// Now, associate indices in the sorted allIdentifiersList with each type
+				int allIdentifiersCount = allIdentifiers.Length;
+				int nextIdentifier = 0;
+				for (int i = 0; i < typesCount; ++i)
+				{
+					SnippetsType currentType = types[i];
+					string matchTypeName = currentType.EnumTypeName;
+					currentType.FirstIdentifier = nextIdentifier;
+					currentType.LastIdentifier = nextIdentifier;
+					currentType.CurrentIdentifier = nextIdentifier;
+					Debug.Assert(allIdentifiers[nextIdentifier].IsDefaultIdentifier && allIdentifiers[nextIdentifier].EnumTypeName == matchTypeName, "No default snippets identifier for " + matchTypeName);
+					++nextIdentifier;
+					bool matchedCurrent = currentIdentifiers == null;
+					for (; nextIdentifier < allIdentifiersCount; ++nextIdentifier)
+					{
+						if (0 != string.CompareOrdinal(allIdentifiers[nextIdentifier].EnumTypeName, matchTypeName))
+						{
+							break;
+						}
+						currentType.LastIdentifier = nextIdentifier;
+						if (!matchedCurrent)
+						{
+							if (((ICollection<VerbalizationSnippetsIdentifier>)currentIdentifiers).Contains(allIdentifiers[nextIdentifier]))
+							{
+								currentType.CurrentIdentifier = nextIdentifier;
+								matchedCurrent = true;
+							}
+						}
+					}
+					types[i] = currentType;
+				}
+				myTypes = types;
+				myIdentifiers = allIdentifiers;
+				myItemStrings = new string[allIdentifiersCount];
+			}
+			#endregion // Constructors
+			#region ProviderBranch specific
+			/// <summary>
+			/// An enumerable of current identifiers
+			/// </summary>
+			public IEnumerable<VerbalizationSnippetsIdentifier> CurrentIdentifiers
+			{
+				get
+				{
+					List<SnippetsType> types = myTypes;
+					if (types != null)
+					{
+						VerbalizationSnippetsIdentifier[] allIdentifiers = myIdentifiers;
+						int typesCount = types.Count;
+						for (int i = 0; i < typesCount; ++i)
+						{
+							yield return allIdentifiers[types[i].CurrentIdentifier];
+						}
+					}
+				}
+			}
+			#endregion // ProviderBranch specific
+			#region IBranch implementation
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					return myTypes.Count;
+				}
+			}
+			BranchFeatures IBranch.Features
+			{
+				get
+				{
+					return BranchFeatures.Expansions;
+				}
+			}
+			string IBranch.GetText(int row, int column)
+			{
+				return myTypes[row].TypeDescription;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return true;
+			}
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				Debug.Assert(style == ObjectStyle.ExpandedBranch);
+				return new Subbranch(this, row);
+			}
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+				retVal.Bold = true;
+				return retVal;
+			}
+			#endregion // IBranch implementation
+			#region Subbranch class
+			private sealed class Subbranch : BaseBranch, IBranch
+			{
+				#region Member Variables
+				private ProviderBranch myParentBranch;
+				private int myTypeIndex;
+				#endregion // Member Variables
+				#region Constructors
+				public Subbranch(ProviderBranch parentBranch, int typeIndex)
+				{
+					myParentBranch = parentBranch;
+					myTypeIndex = typeIndex;
+				}
+				#endregion // Constructors
+				#region IBranch implementation
+				int IBranch.VisibleItemCount
+				{
+					get
+					{
+						SnippetsType type = myParentBranch.myTypes[myTypeIndex];
+						return type.LastIdentifier - type.FirstIdentifier + 1;
+					}
+				}
+				BranchFeatures IBranch.Features
+				{
+					get
+					{
+						return BranchFeatures.StateChanges;
+					}
+				}
+				string IBranch.GetText(int row, int column)
+				{
+					ProviderBranch parentBranch = myParentBranch;
+					string[] itemStrings = parentBranch.myItemStrings;
+					string retVal = itemStrings[row];
+					if (retVal == null)
+					{
+						SnippetsType type = myParentBranch.myTypes[myTypeIndex];
+						VerbalizationSnippetsIdentifier id = myParentBranch.myIdentifiers[type.FirstIdentifier + row];
+						if (id.IsDefaultIdentifier)
+						{
+							retVal = id.Description;
+						}
+						else
+						{
+							string languageName = id.LanguageId;
+							try
+							{
+								languageName = CultureInfo.GetCultureInfoByIetfLanguageTag(id.LanguageId).DisplayName;
+							}
+							catch (ArgumentException)
+							{
+							}
+							// UNDONE: Localize format string
+							retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", id.Description, languageName);
+						}
+						itemStrings[row] = retVal;
+					}
+					return retVal;
+				}
+				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				{
+					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+					SnippetsType type = myParentBranch.myTypes[myTypeIndex];
+					if (type.CurrentIdentifier == (type.FirstIdentifier + row))
+					{
+						retVal.Bold = true;
+						retVal.StateImageIndex = (short)StandardCheckBoxImage.CheckedFlat;
+					}
+					else
+					{
+						retVal.StateImageIndex = (short)StandardCheckBoxImage.UncheckedFlat;
+					}
+					return retVal;
+				}
+				StateRefreshChanges IBranch.ToggleState(int row, int column)
+				{
+					SnippetsType type = myParentBranch.myTypes[myTypeIndex];
+					int identifierIndex = type.FirstIdentifier + row;
+					if (type.CurrentIdentifier != identifierIndex)
+					{
+						type.CurrentIdentifier = identifierIndex;
+						myParentBranch.myTypes[myTypeIndex] = type;
+						return StateRefreshChanges.ParentsChildren;
+					}
+					return StateRefreshChanges.None;
+				}
+				#endregion // IBranch implementation
+			}
+			#endregion // Subbranch class
+		}
+		#endregion // ProviderBranch class
+		#region BaseBranch class
+		/// <summary>
+		/// A helper class to provide a default IBranch implementation
+		/// </summary>
+		private class BaseBranch : IBranch
+		{
+			#region IBranch Implementation
+			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			{
+				return VirtualTreeLabelEditData.Invalid;
+			}
+			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
+			{
+				return LabelEditResult.CancelEdit;
+			}
+			BranchFeatures IBranch.Features
+			{
+				get
+				{
+					return BranchFeatures.None;
+				}
+			}
+			VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
+			{
+				return VirtualTreeAccessibilityData.Empty;
+			}
+			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			{
+				return VirtualTreeDisplayData.Empty;
+			}
+			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
+			{
+				Debug.Fail("Should override.");
+				return null;
+			}
+			string IBranch.GetText(int row, int column)
+			{
+				Debug.Fail("Should override.");
+				return null;
+			}
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+			{
+				return null;
+			}
+			bool IBranch.IsExpandable(int row, int column)
+			{
+				return false;
+			}
+			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
+			{
+				return default(LocateObjectData);
+			}
+			event BranchModificationEventHandler IBranch.OnBranchModification
+			{
+				add { }
+				remove { }
+			}
+			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, System.Windows.Forms.DragEventArgs args)
+			{
+			}
+			void IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs args, int row, int column)
+			{
+			}
+			void IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs args, int row, int column)
+			{
+			}
+			VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
+			{
+				return VirtualTreeStartDragData.Empty;
+			}
+			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return StateRefreshChanges.None;
+			}
+			StateRefreshChanges IBranch.ToggleState(int row, int column)
+			{
+				return StateRefreshChanges.None;
+			}
+
+			int IBranch.UpdateCounter
+			{
+				get
+				{
+					return 0;
+				}
+			}
+
+			int IBranch.VisibleItemCount
+			{
+				get
+				{
+					Debug.Fail("Should override");
+					return 0;
+				}
+			}
+			#endregion // IBranch Implementation
+		}
+		#endregion // BaseBranch class
+	}
+	#endregion // AvailableVerbalizationSnippetsEditor class
 }
