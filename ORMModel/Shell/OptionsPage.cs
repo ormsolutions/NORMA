@@ -730,7 +730,8 @@ namespace Neumont.Tools.ORM.Shell
 		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDisplayNameId)]
-		[Editor(typeof(VerbalizationSnippetsEditor), typeof(UITypeEditor))]
+		[Editor(typeof(CustomVerbalizationSnippetsEditor), typeof(UITypeEditor))]
+		[TypeConverter(typeof(CustomVerbalizationSnippetsConverter))]
 		public string CustomVerbalizationSnippets
 		{
 			get { return myCustomVerbalizationSnippets; }
@@ -767,8 +768,15 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option
-		private class VerbalizationSnippetsEditor : AvailableVerbalizationSnippetsEditor
+		/// <summary>
+		/// Provide context for the AvailableVerbalizationSnippetsEditor
+		/// </summary>
+		private class CustomVerbalizationSnippetsEditor : AvailableVerbalizationSnippetsEditor
 		{
+			/// <summary>
+			/// Provide the root directory for verbalization snippets. Individual packages
+			/// have directories below this.
+			/// </summary>
 			protected override string VerbalizationDirectory
 			{
 				get
@@ -776,6 +784,9 @@ namespace Neumont.Tools.ORM.Shell
 					return ORMDesignerPackage.VerbalizationDirectory;
 				}
 			}
+			/// <summary>
+			/// Enumerate all registered snippets providers
+			/// </summary>
 			protected override IEnumerable<IVerbalizationSnippetsProvider> SnippetsProviders
 			{
 				get
@@ -790,7 +801,44 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
+			/// <summary>
+			/// Get the format string for the dropdown
+			/// </summary>
+			protected override string LanguageFormatString
+			{
+				get
+				{
+					return ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueLanguageFormat;
+				}
+			}
 		}
 		#endregion // Custom dropdown for CustomVerbalizationSnippets option
+		#region Type converter for CustomVerbalizationSnippets option
+		/// <summary>
+		/// Stop live editing of the CustomVerbalizationSnippets property when shown
+		/// in the OptionsPage dialog. Also display the 'Default' string if all defaults
+		/// should be used, and the 'Custom' string if there are any custom settings.
+		/// </summary>
+		private class CustomVerbalizationSnippetsConverter : StringConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+			{
+				if (context != null && context.Instance is OptionsPage && sourceType == typeof(string))
+				{
+					return false;
+				}
+				return base.CanConvertFrom(context, sourceType);
+			}
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				object retVal = base.ConvertTo(context, culture, value, destinationType);
+				if (context != null && context.Instance is OptionsPage && destinationType == typeof(string))
+				{
+					retVal = string.IsNullOrEmpty((string)retVal) ? ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueDefault : ResourceStrings.OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueCustom;
+				}
+				return retVal;
+			}
+		}
+		#endregion // Type converter for CustomVerbalizationSnippets option
 	}
 }

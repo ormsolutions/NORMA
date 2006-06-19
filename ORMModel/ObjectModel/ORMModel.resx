@@ -573,7 +573,7 @@
     <comment>The description for the default verbalization snippets for the core model.</comment>
   </data>
   <data name="Verbalization.SnippetsTypeDescription" xml:space="preserve">
-    <value>Core ORM Model Verbalization Snippets</value>
+    <value>Core ORM Verbalization Snippets</value>
     <comment>The description for the verbalization snippets associated with the core model.</comment>
   </data>
 </root>

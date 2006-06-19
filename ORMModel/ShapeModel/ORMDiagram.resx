@@ -482,6 +482,18 @@
     <value xml:space="preserve">Alternate Verbalization Text</value>
     <comment xml:space="preserve">The display name for the custom verbalization snippets property.</comment>
   </data>
+  <data name="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Custom">
+    <value xml:space="preserve">(Custom)</value>
+    <comment xml:space="preserve">Value displayed for any modified state of the Custom Verbalization Snippets option.</comment>
+  </data>
+  <data name="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Default">
+    <value xml:space="preserve">(Default)</value>
+    <comment xml:space="preserve">Value displayed for the default state of the Custom Verbalization Snippets option.</comment>
+  </data>
+  <data name="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.LanguageFormat">
+    <value xml:space="preserve">{0} ({1})</value>
+    <comment xml:space="preserve">Language format string for the Custom Verbalization Snippets option dropdown.</comment>
+  </data>
   <data name="OptionsPage.Property.DataType.Description">
     <value xml:space="preserve">The data type for objects. This will be the default data type used when creating new value types.</value>
     <comment xml:space="preserve">The data type property description.</comment>

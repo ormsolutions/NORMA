@@ -251,6 +251,15 @@
 	<ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName">
 		<comment type="summary">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
+	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueCustom" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Custom">
+		<comment type="summary">Value displayed for any modified state of the Custom Verbalization Snippets option.</comment>
+	</ResourceString>
+	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueDefault" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Default">
+		<comment type="summary">Value displayed for the default state of the Custom Verbalization Snippets option.</comment>
+	</ResourceString>
+	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueLanguageFormat" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.LanguageFormat">
+		<comment type="summary">Language format string for the Custom Verbalization Snippets option dropdown.</comment>
+	</ResourceString>
 	<ResourceString name="DeleteRoleSequenceTransactionName" model="Diagram" resourceName="DeleteRoleSequence.TransactionName">
 		<comment type="summary">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>

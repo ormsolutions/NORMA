@@ -621,6 +621,36 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Value displayed for any modified state of the Custom Verbalization Snippets option.
+		/// </summary>
+		public static string OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueCustom
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Custom");
+			}
+		}
+		/// <summary>
+		/// Value displayed for the default state of the Custom Verbalization Snippets option.
+		/// </summary>
+		public static string OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueDefault
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Default");
+			}
+		}
+		/// <summary>
+		/// Language format string for the Custom Verbalization Snippets option dropdown.
+		/// </summary>
+		public static string OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueLanguageFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.LanguageFormat");
+			}
+		}
+		/// <summary>
 		/// The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.
 		/// </summary>
 		public static string DeleteRoleSequenceTransactionName

@@ -1431,7 +1431,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// </summary>
 	public abstract class AvailableVerbalizationSnippetsEditor : TreePicker
 	{
-		#region Abstract methods
+		#region Abstract properties
 		/// <summary>
 		/// The directory containing snippet XML files
 		/// </summary>
@@ -1440,7 +1440,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// An enumerator of snippets providers
 		/// </summary>
 		protected abstract IEnumerable<IVerbalizationSnippetsProvider> SnippetsProviders { get;}
-		#endregion // Abstract methods
+		/// <summary>
+		/// A format string indicating how language information should be combined
+		/// with the description of a given snippet. The {0} replacement field gets
+		/// the description, the {1} gets the field value. Return null or empty to
+		/// not display any language information.
+		/// </summary>
+		protected abstract string LanguageFormatString { get;}
+		#endregion // Abstract properties
 		#region TreePicker overrides
 		/// <summary>
 		/// Get the ITree representing the current verbalization settings
@@ -1448,7 +1455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected override ITree GetTree(ITypeDescriptorContext context, object value)
 		{
 			ITree tree = new VirtualTree();
-			IBranch rootBranch = new ProviderBranch((string)value, SnippetsProviders, VerbalizationDirectory);
+			IBranch rootBranch = new ProviderBranch((string)value, SnippetsProviders, VerbalizationDirectory, LanguageFormatString);
 			tree.Root = rootBranch;
 			if (rootBranch.VisibleItemCount == 1)
 			{
@@ -1493,14 +1500,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			private List<SnippetsType> myTypes;
 			private VerbalizationSnippetsIdentifier[] myIdentifiers;
 			private string[] myItemStrings;
+			private string myLanguageFormatString;
 			#endregion // Member Variables
 			#region Constructors
-			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationSnippetsProvider> providers, string verbalizationDirectory)
+			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationSnippetsProvider> providers, string verbalizationDirectory, string languageFormatString)
 			{
 				VerbalizationSnippetsIdentifier[] allIdentifiers = VerbalizationSnippetSetsManager.LoadAvailableSnippets(
 					providers,
 					verbalizationDirectory);
 				VerbalizationSnippetsIdentifier[] currentIdentifiers = VerbalizationSnippetsIdentifier.ParseIdentifiers(currentSettings);
+
+				if (languageFormatString != null)
+				{
+					if (languageFormatString.Length != 0)
+					{
+						myLanguageFormatString = languageFormatString;
+					}
+					else
+					{
+						languageFormatString = null;
+					}
+				}
 
 				// Gather all types
 				List<SnippetsType> types = new List<SnippetsType>();
@@ -1612,7 +1632,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				myTypes = types;
 				myIdentifiers = allIdentifiers;
-				myItemStrings = new string[allIdentifiersCount];
+				if (languageFormatString != null)
+				{
+					myItemStrings = new string[allIdentifiersCount];
+				}
 			}
 			#endregion // Constructors
 			#region ProviderBranch specific
@@ -1705,29 +1728,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					ProviderBranch parentBranch = myParentBranch;
 					string[] itemStrings = parentBranch.myItemStrings;
-					string retVal = itemStrings[row];
-					if (retVal == null)
+					string retVal;
+					if (itemStrings != null)
 					{
-						SnippetsType type = myParentBranch.myTypes[myTypeIndex];
-						VerbalizationSnippetsIdentifier id = myParentBranch.myIdentifiers[type.FirstIdentifier + row];
-						if (id.IsDefaultIdentifier)
+						retVal = itemStrings[row];
+						if (retVal == null)
 						{
-							retVal = id.Description;
-						}
-						else
-						{
-							string languageName = id.LanguageId;
-							try
+							SnippetsType type = parentBranch.myTypes[myTypeIndex];
+							VerbalizationSnippetsIdentifier id = parentBranch.myIdentifiers[type.FirstIdentifier + row];
+							if (id.IsDefaultIdentifier)
 							{
-								languageName = CultureInfo.GetCultureInfoByIetfLanguageTag(id.LanguageId).DisplayName;
+								retVal = id.Description;
 							}
-							catch (ArgumentException)
+							else
 							{
+								string languageName = id.LanguageId;
+								try
+								{
+									languageName = CultureInfo.GetCultureInfoByIetfLanguageTag(id.LanguageId).DisplayName;
+								}
+								catch (ArgumentException)
+								{
+								}
+								retVal = string.Format(CultureInfo.CurrentCulture, parentBranch.myLanguageFormatString, id.Description, languageName);
 							}
-							// UNDONE: Localize format string
-							retVal = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", id.Description, languageName);
+							itemStrings[row] = retVal;
 						}
-						itemStrings[row] = retVal;
+					}
+					else
+					{
+						retVal = parentBranch.myIdentifiers[parentBranch.myTypes[myTypeIndex].FirstIdentifier + row].Description;
 					}
 					return retVal;
 				}
