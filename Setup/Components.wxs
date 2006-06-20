@@ -293,7 +293,7 @@
 							<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIALtoPLiX.xslt" Name="OIAL2PLX.xsl" LongName="OIALtoPLiX.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX.xslt"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-								<File Id="OIALtoPLiX_Implementation.xslt" Name="OIL2PLXi.xsl" LongName="OIALtoPLiX_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_Implementation.xslt"
+								<File Id="OIALtoPLiX_DataLayer_Implementation.xslt" Name="OIL2PLXd.xsl" LongName="OIALtoPLiX_DataLayer_Implementation.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>
 								<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Name="O2P_GGSC.xsl" LongName="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" src="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoPLiX.xslt"/>

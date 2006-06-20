@@ -175,24 +175,27 @@
 			</plx:attribute>
 		</xsl:if>
 	</xsl:template>
-	
+
+	<xsl:template match="/" mode="AddNamespaceImports">
+		<plx:namespaceImport name="System"/>
+		<plx:namespaceImport name="System.Collections.Generic"/>
+		<plx:namespaceImport name="System.Collections.ObjectModel"/>
+		<plx:namespaceImport name="System.ComponentModel"/>
+		<plx:namespaceImport name="System.Xml"/>
+		<xsl:if test="$GenerateCodeAnalysisAttributes">
+			<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
+		</xsl:if>
+		<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
+			<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute"/>
+		</xsl:if>
+		<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
+		<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
+		<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
+		<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
+	</xsl:template>
 	<xsl:template match="/">
 		<plx:root>
-			<plx:namespaceImport name="System"/>
-			<plx:namespaceImport name="System.Collections.Generic"/>
-			<plx:namespaceImport name="System.Collections.ObjectModel"/>
-			<plx:namespaceImport name="System.ComponentModel"/>
-			<plx:namespaceImport name="System.Xml"/>
-			<xsl:if test="$GenerateCodeAnalysisAttributes">
-				<plx:namespaceImport alias="SuppressMessageAttribute" name="System.Diagnostics.CodeAnalysis.SuppressMessageAttribute"/>
-			</xsl:if>
-			<xsl:if test="$GenerateAccessedThroughPropertyAttribute">
-				<plx:namespaceImport alias="AccessedThroughPropertyAttribute" name="System.Runtime.CompilerServices.AccessedThroughPropertyAttribute"/>
-			</xsl:if>
-			<plx:namespaceImport alias="GeneratedCodeAttribute" name="System.CodeDom.Compiler.GeneratedCodeAttribute"/>
-			<plx:namespaceImport alias="StructLayoutAttribute" name="System.Runtime.InteropServices.StructLayoutAttribute"/>
-			<plx:namespaceImport alias="LayoutKind" name="System.Runtime.InteropServices.LayoutKind"/>
-			<plx:namespaceImport alias="CharSet" name="System.Runtime.InteropServices.CharSet"/>
+			<xsl:apply-templates select="." mode="AddNamespaceImports"/>
 			<xsl:if test="$GenerateGlobalSupportClasses">
 				<xsl:call-template name="GenerateGlobalSupportClasses">
 					<xsl:with-param name="StructLayoutAttribute" select="$StructLayoutAttribute"/>
@@ -341,7 +344,7 @@
 				<xsl:variable name="parentConceptTypeName" select="parent::oil:conceptType/@name"/>
 				<xsl:choose>
 					<xsl:when test="$isCollection">
-						<prop:DataType dataTypeName="ICollection">
+						<prop:DataType dataTypeName="IEnumerable">
 							<plx:passTypeParam dataTypeName="{$parentConceptTypeName}"/>
 						</prop:DataType>
 					</xsl:when>
@@ -1507,7 +1510,7 @@
 			<plx:returns dataTypeName="{@name}"/>
 		</plx:function>
 		<plx:property visibility="public" modifier="abstract" name="{@name}Collection">
-				<plx:returns dataTypeName="ReadOnlyCollection">
+				<plx:returns dataTypeName="IEnumerable">
 					<plx:passTypeParam dataTypeName="{@name}"/>
 				</plx:returns>
 				<plx:get/>

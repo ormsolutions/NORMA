@@ -24,7 +24,6 @@ XCOPY /Y /D /V /Q "%~dp0\..\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoOWL\OIALtoOWL.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_Implementation.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
 

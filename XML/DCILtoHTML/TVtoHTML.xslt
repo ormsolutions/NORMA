@@ -62,7 +62,7 @@
 								</xsl:if>
 							</span>
 						<br/>
-						<xsl:text>Foriegn Keys: </xsl:text>
+						<xsl:text>Foreign Keys: </xsl:text>
 						<xsl:if test ="count(//TView/FKeys/tableFKs[@sourceTable = current()/@name]/FK) = '0'">
 							None
 						</xsl:if>
