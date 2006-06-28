@@ -127,6 +127,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 	public partial class FactTypeInstance : IModelErrorOwner
 	{
+		/// <summary>
+		/// Finds the FactTypeRoleInstance for the given Role.
+		/// Returns null if no matching RoleInstance is found.
+		/// </summary>
+		/// <param name="selectedRole">Role to match on</param>
+		/// <returns>FactTypeRoleInstance for the given role, or null if none found.</returns>
+		public FactTypeRoleInstance FindRoleInstance(Role selectedRole)
+		{
+			FactTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
+			int roleInstanceCount = roleInstances.Count;
+			FactTypeRoleInstance roleInstance;
+			for (int i = 0; i < roleInstanceCount; ++i)
+			{
+				if (object.ReferenceEquals((roleInstance = roleInstances[i]).RoleCollection, selectedRole))
+				{
+					return roleInstance;
+				}
+			}
+			return null;
+		}
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -224,20 +244,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						hasError = true;
 					}
-					for (int i = 0; !hasError && i < roleCollectionCount; ++i)
+					else
 					{
-						roleMatch = false;
-						for (int j = 0; !hasError && j < roleInstancesCount; ++j)
+						for (int i = 0; !hasError && i < roleCollectionCount; ++i)
 						{
-							if (object.ReferenceEquals(factRoles[i].Role, roleInstances[j].RoleCollection))
+							roleMatch = false;
+							for (int j = 0; !hasError && j < roleInstancesCount; ++j)
 							{
-								roleMatch = true;
-								break;
+								if (object.ReferenceEquals(factRoles[i].Role, roleInstances[j].RoleCollection))
+								{
+									roleMatch = true;
+									break;
+								}
 							}
-						}
-						if (!roleMatch)
-						{
-							hasError = true;
+							if (!roleMatch)
+							{
+								hasError = true;
+							}
 						}
 					}
 				}
@@ -407,27 +430,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		///// <summary>
-		///// If a FactTypeRoleInstance is removed, revalidate the FactTypeInstance
-		///// to ensure complete population of its roles.
-		///// </summary>
-		//[RuleOn(typeof(FactTypeInstanceHasRoleInstance))]
-		//private class FactTypeInstanceHasRoleInstanceRemoved : RemoveRule
-		//{
-		//    public override void ElementRemoved(ElementRemovedEventArgs e)
-		//    {
-		//        FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
-		//        FactTypeInstance instance = link.FactTypeInstance;
-		//        if (!instance.IsRemoved)
-		//        {
-		//            ORMMetaModel.DelayValidateElement(instance, DelayValidateTooFewFactTypeRoleInstancesError);
-		//        }
-		//    }
-		//}
-
 		/// <summary>
 		/// If a FactTypeRoleInstance is removed, revalidate the FactTypeInstance
-		/// to ensure complete population of its roles.
+		/// to ensure complete population of its roles.  If the FactTypeRoleInstance
+		/// removed was the last one, remove the FactTypeInstance.
 		/// </summary>
 		[RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=TimeToFire.LocalCommit)]
 		private class FactTypeInstanceHasRoleInstanceRemoved : RemoveRule
@@ -453,6 +459,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class EntityTypeInstance : IModelErrorOwner
 	{
+		/// <summary>
+		/// Finds the EntityTypeRoleInstance for the given Role.
+		/// Returns null if no matching RoleInstance is found.
+		/// </summary>
+		/// <param name="selectedRole">Role to match on</param>
+		/// <returns>EntityTypeRoleInstance for the given role, or null if none found.</returns>
+		public EntityTypeRoleInstance FindRoleInstance(Role selectedRole)
+		{
+			EntityTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
+			int roleInstanceCount = roleInstances.Count;
+			EntityTypeRoleInstance roleInstance;
+			for (int i = 0; i < roleInstanceCount; ++i)
+			{
+				if (object.ReferenceEquals((roleInstance = roleInstances[i]).RoleCollection, selectedRole))
+				{
+					return roleInstance;
+				}
+			}
+			return null;
+		}
+
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -551,20 +578,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						hasError = true;
 					}
-					for (int i = 0; !hasError && i < identifierRoleCount; ++i)
+					else
 					{
-						roleMatch = false;
-						for (int j = 0; !hasError && j < roleInstancesCount; ++j)
+						for (int i = 0; !hasError && i < identifierRoleCount; ++i)
 						{
-							if (object.ReferenceEquals(entityPreferredIdentRoles[i], roleInstances[j].RoleCollection))
+							roleMatch = false;
+							for (int j = 0; !hasError && j < roleInstancesCount; ++j)
 							{
-								roleMatch = true;
+								if (object.ReferenceEquals(entityPreferredIdentRoles[i], roleInstances[j].RoleCollection))
+								{
+									roleMatch = true;
+									break;
+								}
+							}
+							if (!roleMatch)
+							{
+								hasError = true;
 								break;
 							}
-						}
-						if (!roleMatch)
-						{
-							hasError = true;
 						}
 					}
 				}
@@ -626,10 +657,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IList links = GetElementLinks(EntityTypeInstanceHasRoleInstance.EntityTypeInstanceMetaRoleGuid);
 			Debug.Assert(object.ReferenceEquals(role, link.RoleInstanceCollection.RoleCollection));
 			int linkCount = links.Count;
+			EntityTypeInstance selectedInstance = link.EntityTypeInstance;
 			for (int i = 0; i < linkCount; ++i)
 			{
 				EntityTypeInstanceHasRoleInstance testLink = (EntityTypeInstanceHasRoleInstance)links[i];
 				if (!object.ReferenceEquals(testLink, link) &&
+					object.ReferenceEquals(testLink.EntityTypeInstance, link.EntityTypeInstance) &&
 					object.ReferenceEquals(role, testLink.RoleInstanceCollection.RoleCollection))
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceDuplicateRoleInstance);
@@ -766,7 +799,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		/// <summary>
 		/// Revalidate the EntityTypeInstance when it loses one of its RoleInstances,
-		/// to ensure that the EntityTypeInstance is fully populated.
+		/// to ensure that the EntityTypeInstance is fully populated.  If the EntityTypeRoleInstance
+		/// removed is the last one, remove the parent EntityTypeInstance.
 		/// </summary>
 		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
 		private class EntityTypeInstanceHasRoleInstanceRemoved : RemoveRule
@@ -774,9 +808,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-				EntityTypeRoleInstance roleInstance = link.RoleInstanceCollection;
-				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
-				ORMMetaModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+				EntityTypeInstance instance = link.EntityTypeInstance;
+				if (!instance.IsRemoved)
+				{
+					if (instance.RoleInstanceCollection.Count == 0)
+					{
+						instance.Remove();
+					}
+					else
+					{
+						ORMMetaModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
+					}
+				}
 			}
 		}
 		#endregion
