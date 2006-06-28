@@ -784,6 +784,214 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
+		#region Helper class for GetNearestCompatibleTypes
+		/// <summary>
+		/// A small helper class for the GetNearestCompatibleTypes function.
+		/// Tracks how many times a given object has been visited while
+		/// walking supertypes of a given object.
+		/// </summary>
+		private class NearestCompatibleTypeNode
+		{
+			public NearestCompatibleTypeNode(ObjectType objectType, int lastVisitedDuring)
+			{
+				ObjectType = objectType;
+				VisitCount = 1;
+				LastVisitedDuring = lastVisitedDuring;
+			}
+			/// <summary>
+			/// Recursively increment all VisitCount fields for this
+			/// node and its children
+			/// </summary>
+			/// <param name="dictionary">Dictionary containing child nodes</param>
+			/// <param name="currentVisitIndex">current visit index</param>
+			public void IncrementVisitCounts(Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary, int currentVisitIndex)
+			{
+				if (LastVisitedDuring != currentVisitIndex)
+				{
+					LastVisitedDuring = currentVisitIndex;
+					++VisitCount;
+					LinkedList<ObjectType> children = ChildNodes;
+					if (children != null)
+					{
+						foreach (ObjectType child in children)
+						{
+							dictionary[child].IncrementVisitCounts(dictionary, currentVisitIndex);
+						}
+					}
+				}
+			}
+			public delegate ObjectTypeVisitorResult NodeVisitor(NearestCompatibleTypeNode node);
+			/// <summary>
+			/// Walk all descendants of this object type
+			/// </summary>
+			/// <param name="dictionary">Dictionary containing other types</param>
+			/// <param name="visitor">ObjectTypeVisitor callback</param>
+			/// <returns>true if walk completed</returns>
+			public bool WalkDescendants(Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary, NodeVisitor visitor)
+			{
+				ObjectTypeVisitorResult result = visitor(this);
+				switch (result)
+				{
+					//case ObjectTypeVisitorResult.Continue:
+					//    break;
+					case ObjectTypeVisitorResult.SkipChildren:
+						return true;
+					case ObjectTypeVisitorResult.Stop:
+						return false;
+				}
+				LinkedList<ObjectType> children = ChildNodes;
+				if (children != null)
+				{
+					foreach (ObjectType child in children)
+					{
+						if (!dictionary[child].WalkDescendants(dictionary, visitor))
+						{
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+			/// <summary>
+			/// The object type being tracked
+			/// </summary>
+			public ObjectType ObjectType;
+			/// <summary>
+			/// The number of times this node has been visited
+			/// </summary>
+			public int VisitCount;
+			/// <summary>
+			/// A linked list of child nodes
+			/// </summary>
+			public LinkedList<ObjectType> ChildNodes;
+			/// <summary>
+			/// An index specifying the last visit so we don't
+			/// increment the VisitCount twice on one pass, or
+			/// count a node reachable through two paths twice.
+			/// </summary>
+			public int LastVisitedDuring;
+		}
+		#endregion // Helper class for GetNearestCompatibleTypes
+		/// <summary>
+		/// Return an ObjectType array containing the nearest compatible
+		/// types for the given role collection.
+		/// </summary>
+		/// <param name="roleCollection">Set of roles to walk</param>
+		/// <returns>ObjectType[]</returns>
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable roleCollection)
+		{
+			int currentRoleIndex = 0;
+			int expectedVisitCount = 0;
+			ObjectType firstObjectType = null;
+			Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary = null;
+			foreach (Role currentRole in roleCollection)
+			{
+				// Increment first so we can use with the LastVisitedDuring field. Otherwise,
+				// this is not used
+				++currentRoleIndex;
+				ObjectType currentObjectType = currentRole.RolePlayer;
+				if (firstObjectType == null)
+				{
+					firstObjectType = currentObjectType;
+				}
+				else if (!object.ReferenceEquals(firstObjectType, currentObjectType))
+				{
+					if (expectedVisitCount == 0)
+					{
+						// First different object, delay add the initial data to the set
+						dictionary = new Dictionary<ObjectType, NearestCompatibleTypeNode>();
+						WalkSupertypesForNearestCompatibleTypes(dictionary, firstObjectType, 1);
+						expectedVisitCount = 1;
+					}
+
+					// Process the current element
+					WalkSupertypesForNearestCompatibleTypes(dictionary, currentObjectType, currentRoleIndex);
+					++expectedVisitCount;
+				}
+			}
+			ObjectType[] retVal;
+			if (dictionary != null)
+			{
+				// Walk the elements. The shallowest node we get down any given path
+				// is a valid node.
+				int total = 0;
+				NearestCompatibleTypeNode firstNode = dictionary[firstObjectType];
+				firstNode.WalkDescendants(
+					dictionary,
+					delegate(NearestCompatibleTypeNode node)
+					{
+						if (node.VisitCount == expectedVisitCount)
+						{
+							if (node.LastVisitedDuring != 0)
+							{
+								node.LastVisitedDuring = 0;
+								++total;
+							}
+							return ObjectTypeVisitorResult.SkipChildren;
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
+				retVal = new ObjectType[total];
+				if (total != 0)
+				{
+					int currentIndex = 0;
+					firstNode.WalkDescendants(
+						dictionary,
+						delegate(NearestCompatibleTypeNode node)
+						{
+							if (node.VisitCount == expectedVisitCount)
+							{
+								if (node.LastVisitedDuring != -1)
+								{
+									node.LastVisitedDuring = -1;
+									retVal[currentIndex] = node.ObjectType;
+									if (++currentIndex == total)
+									{
+										return ObjectTypeVisitorResult.Stop;
+									}
+								}
+								return ObjectTypeVisitorResult.SkipChildren;
+							}
+							return ObjectTypeVisitorResult.Continue;
+						});
+				}
+			}
+			else if (firstObjectType != null)
+			{
+				return new ObjectType[] { firstObjectType };
+			}
+			else
+			{
+				retVal = new ObjectType[0];
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Helper method for GetNearestCompatibleTypes
+		/// </summary>
+		private static void WalkSupertypesForNearestCompatibleTypes(Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary, ObjectType currentType, int currentVisitIndex)
+		{
+			NearestCompatibleTypeNode currentNode;
+			if (dictionary.TryGetValue(currentType, out currentNode))
+			{
+				currentNode.IncrementVisitCounts(dictionary, currentVisitIndex);
+			}
+			else
+			{
+				currentNode = new NearestCompatibleTypeNode(currentType, currentVisitIndex);
+				dictionary[currentType] = currentNode;
+				foreach (ObjectType childType in currentType.SupertypeCollection)
+				{
+					LinkedList<ObjectType> currentChildren = currentNode.ChildNodes;
+					if (currentChildren == null)
+					{
+						currentNode.ChildNodes = currentChildren = new LinkedList<ObjectType>();
+					}
+					currentChildren.AddLast(new LinkedListNode<ObjectType>(childType));
+					WalkSupertypesForNearestCompatibleTypes(dictionary, childType, currentVisitIndex);
+				}
+			}
+		}
 		#endregion // Subtype and Supertype routines
 		#region ObjectTypeChangeRule class
 

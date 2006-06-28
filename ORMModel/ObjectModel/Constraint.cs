@@ -448,14 +448,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return new ModelErrorUsage(tooMany, ModelErrorUses.BlockVerbalization);
 				}
-			}
-			if (0 != (filter & ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary))
-			{
 				CompatibleRolePlayerTypeError typeCompatibility;
 				if (null != (typeCompatibility = CompatibleRolePlayerTypeError))
 				{
 					yield return typeCompatibility;
 				}
+			}
+			if (filter == ModelErrorUses.BlockVerbalization)
+			{
+				// We can't verbalize if there are constrained facts without readings or
+				// any constrained roles without role players
+				FactTypeMoveableCollection facts = FactTypeCollection;
+				int count = facts.Count;
+				for (int i = 0; i < count; ++i)
+				{
+					FactTypeRequiresReadingError noReadingError = facts[i].ReadingRequiredError;
+					if (noReadingError != null)
+					{
+						yield return noReadingError;
+					}
+				}
+				if (!(this as IConstraint).ConstraintIsInternal)
+				{
+					RoleMoveableCollection roles = RoleCollection;
+					count = roles.Count;
+					for (int i = 0; i < count; ++i)
+					{
+						RolePlayerRequiredError noRolePlayerError = roles[i].RolePlayerRequiredError;
+						if (noRolePlayerError != null)
+						{
+							yield return noRolePlayerError;
+						}
+					}
+				}
+			}
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			{
 				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
 				if (duplicateName != null)
 				{

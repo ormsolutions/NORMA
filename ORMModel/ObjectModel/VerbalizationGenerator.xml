@@ -216,7 +216,7 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<Constraint type="MandatoryConstraint" patternGroup="SetConstraint">
+			<Constraint type="MandatoryConstraint" patternGroup="SetConstraint" compatibleColumns="true">
 				<!-- Handle internal constraint patterns first -->
 				<!-- 3.1.1 unary predicate -->
 				<!-- Each A R -->
@@ -293,7 +293,7 @@
 						<!-- For each A,
 							some B1 R ... that A ... some Bn -->
 						<ReadingChoice>
-							<Snippet ref="ForEachQuantifier">
+							<Snippet ref="ForEachIndentedQuantifier">
 								<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
 								<Snippet ref="ImpliedModalNecessityOperator">
 									<Fact>
@@ -315,30 +315,16 @@
 				<ConstrainedRoles sign="negative" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
-							<IterateRoles listStyle="SimpleList" match="setConstraintRoles" pass="first"/>
-							<IterateRoles listStyle="IndentedCompoundList" match="setConstraintRoles">
-								<Fact/>
-							</IterateRoles>
+							<IterateRoles listStyle="null" match="setConstraintRoles" pass="first"/>
+							<IterateFacts listStyle="IndentedCompoundList"/>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive" maxFactArity="1">
-					<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="setConstraintRoles">
-						<Fact>
-							<PredicateReplacement match="primary" pass="first">
-								<Snippet ref="UniversalQuantifier"/>
-							</PredicateReplacement>
-							<PredicateReplacement match="primary">
-								<Snippet ref="null"/>
-							</PredicateReplacement>
-						</Fact>
-					</IterateRoles>
-				</ConstrainedRoles>
-				<ConstrainedRoles sign="positive">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllLeadReading">
-							<CompositeList listStyle="TopLevelIndentedLogicalOrList">
-								<IterateRoles minFactArity="2" match="setConstraintRoles">
+						<ReadingChoice match="RequireAllLeadReadingNoFrontText">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="setConstraintRoles">
 									<Fact readingChoice="Context">
 										<PredicateReplacement match="primary" pass="first">
 											<Snippet ref="UniversalQuantifier"/>
@@ -346,43 +332,78 @@
 										<PredicateReplacement match="primary">
 											<Snippet ref="null"/>
 										</PredicateReplacement>
-										<PredicateReplacement>
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
 									</Fact>
 								</IterateRoles>
-								<IterateRoles factArity="1" match="setConstraintRoles">
-									<Fact readingChoice="Context">
-										<PredicateReplacement>
-											<!-- UNDONE: Needs conditional snippet catering for forward text-->
-											<Snippet ref="null"/>
-										</PredicateReplacement>
-									</Fact>
-								</IterateRoles>
-							</CompositeList>
+							</Snippet>
 						</ReadingChoice>
 						<ReadingChoice>
-							<Snippet ref="ForEachQuantifier">
-								<IterateRoles match="setConstraintRoles" pass="first" listStyle="SimpleList"/>
-								<CompositeList listStyle="IndentedLogicalOrList">
-									<IterateRoles match="setConstraintRoles" minFactArity="2">
-										<Fact readingChoice="PreferPrimaryLeadReadingNoForwardText">
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles listStyle="null" pass="first" match="setConstraintRoles"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<IterateRoles listStyle="SimpleLogicalOrList" match="setConstraintRoles">
+										<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
 											<PredicateReplacement match="included">
 												<Snippet ref="DefiniteArticle"/>
 											</PredicateReplacement>
-											<PredicateReplacement match="excluded">
+										</Fact>
+									</IterateRoles>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="positive">
+					<ConditionalReading>
+						<ReadingChoice match="RequireAllPrimaryLeadReadingNoFrontText">
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<CompositeList listStyle="TopLevelIndentedLogicalOrList">
+									<IterateRoles minFactArity="2" match="setConstraintRoles">
+										<Fact readingChoice="Context">
+											<PredicateReplacement match="primary" pass="first">
+												<Snippet ref="UniversalQuantifier"/>
+											</PredicateReplacement>
+											<PredicateReplacement match="primary">
+												<Snippet ref="null"/>
+											</PredicateReplacement>
+											<PredicateReplacement>
 												<Snippet ref="ExistentialQuantifier"/>
 											</PredicateReplacement>
 										</Fact>
 									</IterateRoles>
 									<IterateRoles factArity="1" match="setConstraintRoles">
-										<Fact>
+										<Fact readingChoice="Context">
 											<PredicateReplacement>
-												<Snippet ref="DefiniteArticle"/>
+												<Snippet ref="null"/>
 											</PredicateReplacement>
 										</Fact>
 									</IterateRoles>
 								</CompositeList>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ForEachCompactQuantifier">
+								<IterateRoles match="setConstraintRoles" pass="first" listStyle="SimpleList"/>
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<CompositeList listStyle="IndentedLogicalOrList">
+										<IterateRoles match="setConstraintRoles" minFactArity="2">
+											<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
+												<PredicateReplacement match="included">
+													<Snippet ref="DefiniteArticle"/>
+												</PredicateReplacement>
+												<PredicateReplacement match="excluded">
+													<Snippet ref="ExistentialQuantifier"/>
+												</PredicateReplacement>
+											</Fact>
+										</IterateRoles>
+										<IterateRoles factArity="1" match="setConstraintRoles">
+											<Fact>
+												<PredicateReplacement>
+													<Snippet ref="DefiniteArticle"/>
+												</PredicateReplacement>
+											</Fact>
+										</IterateRoles>
+									</CompositeList>
+								</Snippet>
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
@@ -529,7 +550,7 @@
 				<ConstrainedRoles factCount="1">
 					<!-- sign="positive" is implied by the previous element -->
 					<ReadingContext>
-						<Snippet ref="ForEachQuantifier">
+						<Snippet ref="ForEachIndentedQuantifier">
 							<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true"/>
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Fact readingChoice="Context">
@@ -549,7 +570,7 @@
 				<!-- Positive Reading -->
 				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
+						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ForEachCompactQuantifier">
 								<IterateRoles match="setConstraintRoles" listStyle="SimpleList" />
 								<IterateRoles match="setConstraintRoles" listStyle="IndentedList">
@@ -567,12 +588,32 @@
 								</IterateRoles>
 							</Snippet>
 						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ContextScope">
+								<!--Need to add the fact reading in "" after Context: "Room is in Building; Room has RoomNr"-->
+								<IterateFacts listStyle="CompoundList"/>
+							</Snippet>
+							<Snippet ref="ContextScopeReference">
+								<Snippet ref="ImpliedModalNecessityOperator">
+									<Snippet ref="UniversalQuantifier">
+										<Snippet ref="CombinationAssociation">
+											<IterateRoles match="setConstraintRoles" listStyle="CompactSimpleList"/>
+											<Snippet ref="OneQuantifier">
+												<IterateRoles match="setConstraintRoles" pass="first" listStyle="null">
+													<IterateContextRoles match="excluded" listStyle="SimpleList"/>
+												</IterateRoles>
+											</Snippet>
+										</Snippet>
+									</Snippet>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
 				<!-- Negative Reading for External Uniqueness Constraint-->
 				<ConstrainedRoles sign="negative" minFactArity="2" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
+						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
 							<Snippet ref="ModalPossibilityOperator">
 								<IterateRoles match="setConstraintRoles" listStyle="SimpleList">
 									<Fact readingChoice="Context">
@@ -589,6 +630,26 @@
 								</IterateRoles>
 							</Snippet>
 						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ContextScope">
+								<!--Need to add the fact reading in "" after Context: "Room is in Building; Room has RoomNr"-->
+								<IterateFacts listStyle="CompoundList"/>
+							</Snippet>
+							<Snippet ref="ContextScopeReference">
+								<Snippet ref="ModalPossibilityOperator">
+									<Snippet ref="CombinationAssociation">
+										<Snippet ref="IdentityReferenceQuantifier">
+											<IterateRoles match="setConstraintRoles" listStyle="CompactSimpleList"/>
+										</Snippet>
+										<Snippet ref="MoreThanOneQuantifier">
+											<IterateRoles match="setConstraintRoles" pass="first" listStyle="null">
+												<IterateContextRoles match="excluded" listStyle="SimpleList"/>
+											</IterateRoles>
+										</Snippet>
+									</Snippet>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
@@ -603,26 +664,24 @@
 						<ConditionalReplacement>
 							<!-- BinaryWithRoleName matches this pattern: The values of [OpposingRolePlayerName.]roleName[(RolePlayerRefMode)] are value-spec. -->
 							<IterateRoles match="included" listStyle="null" conditionalMatch="BinaryWithRoleName">
-								<Snippet ref="PeriodDelimiter">
-									<IterateContextRoles match="excluded" listStyle="null">
-										<RolePlayer/>
-									</IterateContextRoles>
+								<Snippet ref="PeriodSeparator">
+									<IterateContextRoles match="excluded" listStyle="null"/>
 									<ConditionalReplacement>
-										<Snippet ref="NameWithRefMode" conditionalMatch="RolePlayerHasRefScheme">
+										<Snippet ref="ReferenceScheme" conditionalMatch="RolePlayerHasReferenceScheme">
 											<RoleName/>
-											<RolePlayerRefModeScheme/>
+											<RolePlayerReferenceMode/>
 										</Snippet>
-										<Snippet ref="SelfReference">
-											<RoleName/>
-										</Snippet>
+										<RoleName/>
 									</ConditionalReplacement>
 								</Snippet>
 							</IterateRoles>
 							<!-- The fallback pattern is: The values of RolePlayer[sub] in Full Fact Verbalization are value-spec. -->
-							<Snippet ref="InSeparator">
-								<IterateRoles match="included" listStyle="null"/>
-								<Fact/>
-							</Snippet>
+							<ReadingContext>
+								<Snippet ref="InQuantifier">
+									<IterateRoles match="included" listStyle="null" hyphenBind="true"/>
+									<Fact readingChoice="Context"/>
+								</Snippet>
+							</ReadingContext>
 						</ConditionalReplacement>
 						<IterateValueRanges listStyle="CompactSimpleList">
 							<ConditionalSnippet>

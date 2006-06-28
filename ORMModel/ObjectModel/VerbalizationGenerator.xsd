@@ -105,7 +105,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchWithContextEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoForwardText]} -->
+			<!-- Allowable options are {Context|Prefer[Non][Primary]LeadReading[NoFrontText]} -->
 			<xs:enumeration value="Context">
 				<xs:annotation>
 					<xs:documentation>Use the reading from the current ReadingChoice or ReadingContext elements</xs:documentation>
@@ -115,55 +115,58 @@
 			<xs:enumeration value="PreferNonLeadReading"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
-			<xs:enumeration value="PreferLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoForwardText]} -->
+			<!-- Allowable options are {Prefer[Non][Primary]LeadReading[NoFrontText]} -->
 			<xs:enumeration value="PreferLeadReading"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
 			<xs:enumeration value="PreferPrimaryLeadReading"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
-			<xs:enumeration value="PreferLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoFrontText"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoiceFullRequiredMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoForwardText]} -->
+			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoFrontText]} -->
 			<xs:enumeration value="RequireLeadReading"/>
 			<xs:enumeration value="RequireNonLeadReading"/>
 			<xs:enumeration value="RequirePrimaryLeadReading"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
-			<xs:enumeration value="RequireLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequirePrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingNoFrontText"/>
 			<xs:enumeration value="RequireAllLeadReading"/>
 			<xs:enumeration value="RequireAllNonLeadReading"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
 			<xs:enumeration value="RequireAllNonPrimaryLeadReading"/>
-			<xs:enumeration value="RequireAllLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireAllNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireAllPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireAllLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllNonLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingNoFrontText"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoFrontText"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ListStyleEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="CompactSimpleList"/>
 			<xs:enumeration value="CompoundList"/>
+			<xs:enumeration value="IdentityEqualityList"/>
 			<xs:enumeration value="IndentedCompoundList"/>
 			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="IndentedLogicalAndList"/>
 			<xs:enumeration value="IndentedLogicalOrList"/>
 			<xs:enumeration value="SimpleList"/>
+			<xs:enumeration value="SimpleLogicalAndList"/>
+			<xs:enumeration value="SimpleLogicalOrList"/>
 			<xs:enumeration value="TopLevelIndentedLogicalAndList"/>
 			<xs:enumeration value="TopLevelIndentedLogicalOrList"/>
 		</xs:restriction>
@@ -293,7 +296,7 @@
 					<xs:documentation>True if the current role is named and is playing a role within a binary fact type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="RolePlayerHasRefScheme">
+			<xs:enumeration value="RolePlayerHasReferenceScheme">
 				<xs:annotation>
 					<xs:documentation>True if the current role player has a reference scheme</xs:documentation>
 				</xs:annotation>
@@ -389,6 +392,7 @@
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 			<xs:element name="CompositeList" type="CompositeListType"/>
 			<xs:element name="Fact" type="FactType"/>
+			<xs:element name="IterateFacts" type="IterateFactsType"/>
 			<xs:element name="ReferenceScheme" type="ReferenceSchemeType"/>
 			<xs:element name="ConditionalReplacement" type="ConditionalReplacementType"/>
 			<xs:element name="IterateValueRanges" type="IterateValueRangesType"/>
@@ -396,7 +400,8 @@
 			<xs:element name="MaxValue" type="MaxValueType"/>
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
-			<xs:element name="RolePlayerRefModeScheme" type="RolePlayerRefModeSchemeType"/>
+			<xs:element name="RolePlayer" type="RolePlayerType"/>
+			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
 			<xs:element name="ValueRangeValueTypeName" type="ValueRangeValueTypeNameType"/>
 		</xs:choice>
 	</xs:group>
@@ -441,10 +446,37 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="IterateFacts">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IterateFactsType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="ConditionalReplacement">
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="ConditionalReplacementType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReadingContext">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ReadingContextType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ConditionalReading">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ConditionalReadingType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
@@ -495,10 +527,19 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="RolePlayerRefModeScheme">
+			<xs:element name="RolePlayer">
 				<xs:complexType>
 					<xs:complexContent>
-						<xs:extension base="RolePlayerRefModeSchemeType">
+						<xs:extension base="RolePlayerType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RolePlayerReferenceMode">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RolePlayerReferenceModeType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
@@ -622,7 +663,14 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
-	<xs:complexType name="RolePlayerRefModeSchemeType">
+	<xs:complexType name="RolePlayerType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of the current role player role.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RolePlayerReferenceModeType">
 		<xs:annotation>
 			<xs:documentation>
 				Returns the reference mode scheme of the attached role player.
@@ -694,11 +742,29 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="IterateContextRolesType">
+	<xs:complexType name="IterateFactsType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the full verbalization for a list of fact types with the specified list style.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
+		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
+	</xs:complexType>
+	<xs:complexType name="IterateContextRolesNoListType">
 		<xs:group ref="ReplacementElementsGroup" minOccurs="0" maxOccurs="unbounded"/>
 		<xs:attribute name="match" type="RoleIteratorContextMatchEnum" use="optional"/>
-		<xs:attribute name="listStyle" type="ListStyleEnumOrNull" use="required"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
+	</xs:complexType>
+	<xs:complexType name="IterateContextRolesType">
+		<xs:complexContent>
+			<xs:extension base="IterateContextRolesNoListType">
+				<xs:attribute name="listStyle" type="ListStyleEnumOrNull" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="BaseReadingContextType">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -728,9 +794,10 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="CompositeListType">
-		<xs:sequence>
-			<xs:element name="IterateRoles" type="IterateRolesNoListType" minOccurs="1" maxOccurs="unbounded"/>
-		</xs:sequence>
+		<xs:choice>
+			<xs:element name="IterateRoles" type="IterateRolesNoListType" minOccurs="2" maxOccurs="unbounded"/>
+			<xs:element name="IterateContextRoles" type="IterateContextRolesNoListType" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:choice>
 		<xs:attribute name="listStyle" type="ListStyleEnum" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="ConstraintsConstructType">
@@ -772,6 +839,7 @@
 		</xs:choice>
 		<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
+		<xs:attribute name="compatibleColumns" type="xs:boolean" default="false"/>
 		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
 	</xs:complexType>
 	<xs:element name="VerbalizationRoot">

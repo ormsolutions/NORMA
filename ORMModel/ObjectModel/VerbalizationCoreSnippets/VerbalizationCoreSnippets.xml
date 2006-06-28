@@ -42,7 +42,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="AtMostOneQuantifier"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
 			<Snippet type="EachInstanceQuantifier"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Snippet>
 			<Snippet type="ForEachCompactQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, {1}]]></Snippet>
-			<Snippet type="ForEachQuantifier"><![CDATA[<span class="quantifier">for each</span> {0},<br/><span class="smallIndent">{1}</span>]]></Snippet>
+			<Snippet type="ForEachIndentedQuantifier"><![CDATA[<span class="quantifier">for each</span> {0},<br/><span class="smallIndent">{1}</span>]]></Snippet>
 			<Snippet type="ExistentialQuantifier" sign="positive"><![CDATA[<span class="quantifier">some</span> {0}]]></Snippet>
 			<Snippet type="ExistentialQuantifier" sign="negative"><![CDATA[<span class="quantifier">no</span> {0}]]></Snippet>
 			<Snippet type="ExactlyOneQuantifier"><![CDATA[<span class="quantifier">exactly one</span> {0}]]></Snippet>
@@ -72,16 +72,21 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="positive"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Snippet>
 			<Snippet type="ImpliedModalNecessityOperator" modality="alethic" sign="negative"><![CDATA[<span class="quantifier">it is impossible that</span> {0}]]></Snippet>
 			<Snippet type="ImpliedModalNecessityOperator" modality="deontic" sign="negative"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Snippet>
+
+			<Snippet type="ContextScope"><![CDATA[<span class="quantifier">context: </span>{0}]]></Snippet>
+			<Snippet type="ContextScopeReference"><![CDATA[<span class="quantifier">in this context,</span> {0}]]></Snippet>
+			<Snippet type="CombinationAssociation"><![CDATA[{0} <span class="quantifier">combination is associated with</span> {1}]]></Snippet>
+
 			<!-- Used inside a ModalOperator -->
 			<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>
 
 			<!-- Snippets related to value constraint verbalization -->
-			<Snippet type="NameWithRefMode"><![CDATA[{0}(<span class="objectType">{1}</span>)]]></Snippet>
-			<Snippet type="InSeparator"><![CDATA[<span class="objectType">{0}</span> in {1}]]></Snippet>
-			<Snippet type="PeriodDelimiter"><![CDATA[{0}.<span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="ReferenceScheme"><![CDATA[{0}<span class="listSeparator">(</span><span class="referenceMode">{1}</span><span class="listSeparator">)</span>]]></Snippet>
+			<Snippet type="InQuantifier"><![CDATA[{0} <span class="quantifier">in</span> {1}]]></Snippet>
+			<Snippet type="PeriodSeparator"><![CDATA[{0}<span class="listSeparator">.</span>{1}]]></Snippet>
 			<Snippet type="SelfReference"><![CDATA[{0}]]></Snippet>
-			<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of {0} is {1}</span>]]></Snippet>
-			<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of <span class="objectType">{0}</span> are {1}</span>]]></Snippet>
+			<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of</span> {0} <span class="quantifier">are</span> {1}]]></Snippet>
 			<Snippet type="MinClosedMaxClosed"><![CDATA[<span class="quantifier">at least <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span></span>]]></Snippet>
 			<Snippet type="MinClosedMaxOpen"><![CDATA[at least <span class="objectType">{0}</span> to below <span class="objectType">{1}</span>]]></Snippet>
 			<Snippet type="MinClosedMaxUnbounded"><![CDATA[at least <span class="objectType">{0}</span>]]></Snippet>
@@ -90,6 +95,11 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="MinOpenMaxUnbounded"><![CDATA[above <span class="objectType">{0}</span>]]></Snippet>
 			<Snippet type="MinUnboundedMaxClosed"><![CDATA[at most <span class="objectType">{1}</span>]]></Snippet>
 			<Snippet type="MinUnboundedMaxOpen"><![CDATA[below <span class="objectType">{1}</span>]]></Snippet>
+			<Snippet type="IdentityEqualityListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="IdentityEqualityListPairSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
+			<Snippet type="IdentityEqualityListSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
+			<Snippet type="IdentityEqualityListFinalSeparator"><![CDATA[<span class="logicalOperator"> that is a </span>]]></Snippet>
+			<Snippet type="IdentityEqualityListClose"><![CDATA[]]></Snippet>
 			<Snippet type="IndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="IndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 			<Snippet type="IndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
@@ -100,22 +110,31 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 			<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 			<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
-			<Snippet type="IndentedLogicalOrListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+			<Snippet type="IndentedLogicalOrListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="IndentedLogicalOrListPairSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
 			<Snippet type="IndentedLogicalOrListSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
 			<Snippet type="IndentedLogicalOrListFinalSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
 			<Snippet type="IndentedLogicalOrListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="SimpleLogicalOrListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="SimpleLogicalOrListPairSeparator"><![CDATA[<span class="logicalOperator"> or </span>]]></Snippet>
+			<Snippet type="SimpleLogicalOrListSeparator"><![CDATA[<span class="logicalOperator"> or </span>]]></Snippet>
+			<Snippet type="SimpleLogicalOrListFinalSeparator"><![CDATA[<span class="logicalOperator"> or </span>]]></Snippet>
+			<Snippet type="SimpleLogicalOrListClose"><![CDATA[]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalOrListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalOrListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalOrListClose"><![CDATA[</span>]]></Snippet>
-			<Snippet type="TopLevelIndentedLogicalOrListOpen"><![CDATA[<span>]]></Snippet>
-			<Snippet type="IndentedLogicalAndListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+			<Snippet type="IndentedLogicalAndListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="IndentedLogicalAndListPairSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="IndentedLogicalAndListSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="IndentedLogicalAndListFinalSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="IndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
+			<Snippet type="SimpleLogicalAndListOpen"><![CDATA[]]></Snippet>
+			<Snippet type="SimpleLogicalAndListPairSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
+			<Snippet type="SimpleLogicalAndListSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
+			<Snippet type="SimpleLogicalAndListFinalSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
+			<Snippet type="SimpleLogicalAndListClose"><![CDATA[]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>

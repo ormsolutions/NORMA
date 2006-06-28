@@ -91,7 +91,7 @@
 				<xs:enumeration value="ExactlyOneQuantifier"/>
 				<xs:enumeration value="EachInstanceQuantifier"/>
 				<xs:enumeration value="ForEachCompactQuantifier"/>
-				<xs:enumeration value="ForEachQuantifier"/>
+				<xs:enumeration value="ForEachIndentedQuantifier"/>
 				<xs:enumeration value="ExistentialQuantifier"/>
 				<xs:enumeration value="IdentityReferenceQuantifier"/>
 				<xs:enumeration value="ImpliedModalNecessityOperator">
@@ -99,6 +99,9 @@
 						<xs:documentation>No text for alethic, same as ModalNecessityOperator otherwise.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ContextScope"/>
+				<xs:enumeration value="ContextScopeReference"/>
+				<xs:enumeration value="CombinationAssociation"/>
 				<xs:enumeration value="MoreThanOneQuantifier"/>
 				<xs:enumeration value="ModalPossibilityOperator"/>
 				<xs:enumeration value="ModalNecessityOperator"/>
@@ -109,6 +112,12 @@
 				<xs:enumeration value="CompoundListSeparator"/>
 				<xs:enumeration value="CompoundListFinalSeparator"/>
 				<xs:enumeration value="CompoundListClose"/>
+
+				<xs:enumeration value="IdentityEqualityListOpen"/>
+				<xs:enumeration value="IdentityEqualityListPairSeparator"/>
+				<xs:enumeration value="IdentityEqualityListSeparator"/>
+				<xs:enumeration value="IdentityEqualityListFinalSeparator"/>
+				<xs:enumeration value="IdentityEqualityListClose"/>
 
 				<xs:enumeration value="IndentedCompoundListOpen"/>
 				<xs:enumeration value="IndentedCompoundListPairSeparator"/>
@@ -131,11 +140,21 @@
 				<xs:enumeration value="IndentedLogicalOrListFinalSeparator"/>
 				<xs:enumeration value="IndentedLogicalOrListClose"/>
 				<xs:enumeration value="ConstraintProvidesPreferredIdentifier"/>
+				<xs:enumeration value="SimpleLogicalAndListOpen"/>
+				<xs:enumeration value="SimpleLogicalAndListPairSeparator"/>
+				<xs:enumeration value="SimpleLogicalAndListSeparator"/>
+				<xs:enumeration value="SimpleLogicalAndListFinalSeparator"/>
+				<xs:enumeration value="SimpleLogicalAndListClose"/>
 				<xs:enumeration value="TopLevelIndentedLogicalAndListOpen"/>
 				<xs:enumeration value="TopLevelIndentedLogicalAndListPairSeparator"/>
 				<xs:enumeration value="TopLevelIndentedLogicalAndListSeparator"/>
 				<xs:enumeration value="TopLevelIndentedLogicalAndListFinalSeparator"/>
 				<xs:enumeration value="TopLevelIndentedLogicalAndListClose"/>
+				<xs:enumeration value="SimpleLogicalOrListOpen"/>
+				<xs:enumeration value="SimpleLogicalOrListPairSeparator"/>
+				<xs:enumeration value="SimpleLogicalOrListSeparator"/>
+				<xs:enumeration value="SimpleLogicalOrListFinalSeparator"/>
+				<xs:enumeration value="SimpleLogicalOrListClose"/>
 				<xs:enumeration value="TopLevelIndentedLogicalOrListOpen"/>
 				<xs:enumeration value="TopLevelIndentedLogicalOrListPairSeparator"/>
 				<xs:enumeration value="TopLevelIndentedLogicalOrListSeparator"/>
@@ -155,14 +174,14 @@
 				<xs:enumeration value="CombinationIdentifier"/>
 				<xs:enumeration value="OccursInPopulation"/>
 				<xs:enumeration value="OneQuantifier"/>
-				<xs:enumeration value="PeriodDelimiter">
+				<xs:enumeration value="PeriodSeparator">
 					<xs:annotation>
 						<xs:documentation>{0}.{1} :: Used to delimit two snippet replacements by a snippet.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="NameWithRefMode">
+				<xs:enumeration value="ReferenceScheme">
 					<xs:annotation>
-						<xs:documentation>{0}({1}) :: Used to enclose the second snippet replacement in brackets.</xs:documentation>
+						<xs:documentation>{0}({1}) :: Used to enclose and format a reference scheme replacement in brackets.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="SingleValueValueConstraint">
@@ -220,9 +239,9 @@
 						<xs:documentation>below {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="InSeparator">
+				<xs:enumeration value="InQuantifier">
 					<xs:annotation>
-						<xs:documentation>{0} in {1} :: Used to verbalize [RolePlayer in Fact] for role value constraints, e.g. Person in Person has Age.</xs:documentation>
+						<xs:documentation>{0} in {1} :: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ErrorOpenPrimaryReport">

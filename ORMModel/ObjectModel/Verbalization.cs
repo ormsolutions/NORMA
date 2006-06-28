@@ -246,15 +246,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// set and starts with this role and the order is defined, then use it.</param>
 		/// <param name="matchAnyLeadRole">Same as matchAnyLeadRole, except with a set match. An IList of RoleBase elements.</param>
 		/// <param name="invertLeadRoles">Invert the matchLeadRole and matchAnyLeadRole values</param>
-		/// <param name="noForwardText">Match a reading with no forward text if possible</param>
+		/// <param name="noFrontText">Match a reading with no front text if possible</param>
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching reading order. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public static Reading GetMatchingReading(ReadingOrderMoveableCollection readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleBaseMoveableCollection defaultRoleOrder, bool allowAnyOrder)
+		public static Reading GetMatchingReading(ReadingOrderMoveableCollection readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, RoleBaseMoveableCollection defaultRoleOrder, bool allowAnyOrder)
 		{
-			// UNDONE: Implement noForwardText verification
 			int orderCount = readingOrders.Count;
-			ReadingOrder retVal = null;
+			Reading retVal = null;
 			bool blockTestDefault = false; // If we have specific lead role requirements, then default is only used to enforce them, or as the default for any allowed order
 			if (orderCount != 0)
 			{
@@ -275,7 +274,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							RoleBase currentRole = defaultRoleOrder[i];
 							if (currentRole != matchLeadRole)
 							{
-								if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
+								if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, noFrontText, !allowAnyOrder, ref retVal))
 								{
 									break;
 								}
@@ -284,7 +283,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						GetMatchingReading(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, ref retVal);
+						GetMatchingReading(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, noFrontText, !allowAnyOrder, ref retVal);
 					}
 					if (retVal == null && matchAnyLeadRole == null)
 					{
@@ -305,7 +304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								RoleBase currentRole = defaultRoleOrder[i];
 								if (!matchAnyLeadRole.Contains(currentRole.Role))
 								{
-									if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
+									if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, noFrontText, !allowAnyOrder, ref retVal))
 									{
 										break;
 									}
@@ -317,7 +316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						for (int i = 0; i < matchAnyCount; ++i)
 						{
-							if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, (RoleBase)matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
+							if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, (RoleBase)matchAnyLeadRole[i], defaultRoleOrder, noFrontText, !allowAnyOrder, ref retVal))
 							{
 								break;
 							}
@@ -350,7 +349,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (j == testRolesCount)
 						{
-							retVal = testOrder;
+							retVal = testOrder.PrimaryReading;
 							break;
 						}
 					}
@@ -358,10 +357,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (retVal == null && allowAnyOrder)
 				{
-					retVal = readingOrders[(ignoreReadingOrderIndex == 0) ? 1 : 0];
+					retVal = readingOrders[(ignoreReadingOrderIndex == 0) ? 1 : 0].PrimaryReading;
 				}
 			}
-			return (retVal != null) ? retVal.PrimaryReading : null;
+			return retVal;
 		}
 		/// <summary>
 		/// Helper function for public method of the same name
@@ -370,11 +369,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="ignoreReadingOrderIndex">Ignore the reading order at this index</param>
 		/// <param name="matchLeadRole">The role to match as a lead</param>
 		/// <param name="defaultRoleOrder">The default role order. If not specified, any match will be considered optimal</param>
-		/// <param name="matchingOrder">The matching order. Can be non-null to start with</param>
+		/// <param name="testNoFrontText">Test for no front text if true.</param>
+		/// <param name="requireNoFrontText">Ignored if testNoFrontText is false. Otherwise, do not set matchingReading if frontText not satisfied</param>
+		/// <param name="matchingReading">The matching reading. Can be non-null to start with</param>
 		/// <returns>true if an optimal match was found. retVal will be false if a match is found but
 		/// a more optimal match is possible</returns>
-		private static bool GetMatchingReading(ReadingOrderMoveableCollection readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, RoleBaseMoveableCollection defaultRoleOrder, ref ReadingOrder matchingOrder)
+		private static bool GetMatchingReading(ReadingOrderMoveableCollection readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, RoleBaseMoveableCollection defaultRoleOrder, bool testNoFrontText, bool requireNoFrontText, ref Reading matchingReading)
 		{
+			ReadingOrder matchingOrder = null;
 			int orderCount = readingOrders.Count;
 			ReadingOrder testOrder;
 			bool optimalMatch = false;
@@ -423,6 +425,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 								break;
 							}
 						}
+					}
+				}
+			}
+			if (matchingOrder != null)
+			{
+				if (!testNoFrontText)
+				{
+					matchingReading = matchingOrder.PrimaryReading;
+				}
+				else
+				{
+					ReadingMoveableCollection readings = matchingOrder.ReadingCollection;
+					Reading noFrontTextReading = null;
+					int readingCount = readings.Count;
+					for (int i = 0; i < readingCount; ++i)
+					{
+						Reading testReading = readings[i];
+						if (testReading.Text.StartsWith("{0}", StringComparison.Ordinal))
+						{
+							noFrontTextReading = testReading;
+							break;
+						}
+					}
+					if (noFrontTextReading != null)
+					{
+						matchingReading = noFrontTextReading;
+					}
+					else if (requireNoFrontText)
+					{
+						optimalMatch = false;
+					}
+					else
+					{
+						matchingReading = readings[0];
+						optimalMatch = false;
 					}
 				}
 			}
