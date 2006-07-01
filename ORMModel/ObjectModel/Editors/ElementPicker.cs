@@ -77,6 +77,16 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				base.OnSelectedIndexChanged(e);
 			}
 		}
+		private class NullFirstItemDropDownListBox : DropDownListBox
+		{
+			public override string Text
+			{
+				get
+				{
+					return (SelectedIndex == 0) ? null : base.Text;
+				}
+			}
+		}
 		#endregion // DropDownListBox class. Handles Escape key for ListBox
 		#region IList wrapper to automatically display a null element
 		private class NullElementList : IList
@@ -109,7 +119,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			public bool IsNullItem(object test)
 			{
-				return object.ReferenceEquals(test, myPlaceholder);
+				return test == null || object.ReferenceEquals(test, myPlaceholder);
 			}
 			public object NullItem
 			{
@@ -270,7 +280,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					try
 					{
 						// Create a listbox with its events
-						listBox = new DropDownListBox();
+						listBox = (nullList != null) ? new NullFirstItemDropDownListBox() :  new DropDownListBox();
 						listBox.BindingContextChanged += new EventHandler(HandleBindingContextChanged);
 						listBox.MouseDoubleClick += new MouseEventHandler(HandleDoubleClick);
 						listBox.BorderStyle = BorderStyle.None;

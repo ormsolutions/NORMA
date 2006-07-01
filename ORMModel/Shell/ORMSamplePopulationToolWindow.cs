@@ -159,7 +159,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							SelectedValueType = testObjectType;
 						}
-						else if (testObjectType.PreferredIdentifier != null)
+						else if (testObjectType != null)
 						{
 							SelectedEntityType = testObjectType;
 						}

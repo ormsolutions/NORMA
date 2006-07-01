@@ -2155,7 +2155,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 				public override bool ShouldSerializeValue(object component)
 				{
-					throw new Exception("The method or operation is not implemented.");
+					return false;
 				}
 			}
 			#endregion

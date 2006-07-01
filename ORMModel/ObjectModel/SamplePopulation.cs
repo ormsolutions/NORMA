@@ -217,7 +217,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Called inside a transaction to force entity role instance validation
 		/// </summary>
-		public void ValidateTooFewFactTypeRoleInstances()
+		private void ValidateTooFewFactTypeRoleInstances()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateTooFewFactTypeRoleInstancesError);
 		}
@@ -313,24 +313,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		private void EnsureNonDuplicateRoleInstance(Role instanceRole)
+		private void EnsureNonDuplicateRoleInstance(FactTypeInstanceHasRoleInstance link)
 		{
-			FactTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
-			int roleInstanceCount = roleInstances.Count;
-			int roleCount = 0;
-			for (int i = 0; i < roleInstanceCount; ++i)
+			Role role = link.RoleInstanceCollection.RoleCollection;
+			if (role != null)
 			{
-				if (object.ReferenceEquals(roleInstances[i].RoleCollection, instanceRole))
+				IList currentLinks = this.GetElementLinks(FactTypeInstanceHasRoleInstance.FactTypeInstanceMetaRoleGuid);
+				int linkCount = currentLinks.Count;
+				for (int i = linkCount - 1; i >= 0; --i)
 				{
-					++roleCount;
+					FactTypeInstanceHasRoleInstance currentLink = (FactTypeInstanceHasRoleInstance)currentLinks[i];
+					if (!object.ReferenceEquals(link, currentLink) && object.ReferenceEquals(role, currentLink.RoleInstanceCollection.RoleCollection))
+					{
+						currentLink.Remove();
+						break;
+					}
 				}
-			}
-			// Since this checks after the instance has already been added, it needs to see if there are TWO instances that use the role,
-			// one being the current role we're checking the add for, one being a possible duplicate.
-			// UNDONE: Better way/place to check for duplicates?
-			if(roleCount >= 2)
-			{
-				throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeInstanceDuplicateRoleInstance);
 			}
 		}
 		#endregion
@@ -425,7 +423,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactTypeRoleInstance roleInstance = link.RoleInstanceCollection;
 				Role role = roleInstance.RoleCollection;
 				newInstance.EnsureConsistentRoleOwner(existingFactType, role);
-				newInstance.EnsureNonDuplicateRoleInstance(role);
+				newInstance.EnsureNonDuplicateRoleInstance(link);
 				ORMMetaModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 			}
 		}
@@ -550,7 +548,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Called inside a transaction to force entity role instance validation
 		/// </summary>
-		public void ValidateTooFewEntityTypeRoleInstances()
+		private void ValidateTooFewEntityTypeRoleInstances()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
 		}
@@ -652,20 +650,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		private void EnsureNonDuplicateRoleInstance(EntityTypeInstanceHasRoleInstance link, Role role)
+		private void EnsureNonDuplicateRoleInstance(EntityTypeInstanceHasRoleInstance link)
 		{
-			IList links = GetElementLinks(EntityTypeInstanceHasRoleInstance.EntityTypeInstanceMetaRoleGuid);
-			Debug.Assert(object.ReferenceEquals(role, link.RoleInstanceCollection.RoleCollection));
-			int linkCount = links.Count;
-			EntityTypeInstance selectedInstance = link.EntityTypeInstance;
-			for (int i = 0; i < linkCount; ++i)
+			Role role = link.RoleInstanceCollection.RoleCollection;
+			if (role != null)
 			{
-				EntityTypeInstanceHasRoleInstance testLink = (EntityTypeInstanceHasRoleInstance)links[i];
-				if (!object.ReferenceEquals(testLink, link) &&
-					object.ReferenceEquals(testLink.EntityTypeInstance, link.EntityTypeInstance) &&
-					object.ReferenceEquals(role, testLink.RoleInstanceCollection.RoleCollection))
+				IList currentLinks = this.GetElementLinks(EntityTypeInstanceHasRoleInstance.EntityTypeInstanceMetaRoleGuid);
+				int linkCount = currentLinks.Count;
+				for (int i = linkCount - 1; i >= 0; --i)
 				{
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceDuplicateRoleInstance);
+					EntityTypeInstanceHasRoleInstance currentLink = (EntityTypeInstanceHasRoleInstance)currentLinks[i];
+					if (!object.ReferenceEquals(link, currentLink) && object.ReferenceEquals(role, currentLink.RoleInstanceCollection.RoleCollection))
+					{
+						currentLink.Remove();
+						break;
+					}
 				}
 			}
 		}
@@ -792,7 +791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
 				Role role = roleInstance.RoleCollection;
 				entityTypeInstance.EnsureConsistentRoleCollections(entityTypeInstance.EntityType, role);
-				entityTypeInstance.EnsureNonDuplicateRoleInstance(link, role);
+				entityTypeInstance.EnsureNonDuplicateRoleInstance(link);
 				ORMMetaModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 			}
 		}
@@ -826,6 +825,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class ValueTypeInstance : IModelErrorOwner
 	{
+		#region Base overrides
+		/// <summary>
+		/// Display the value for ToString
+		/// </summary>
+		public override string ToString()
+		{
+			return Value;
+		}
+		#endregion // Base overrides
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -892,11 +900,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			(element as ValueTypeInstance).ValidateCompatibleValueTypeInstanceValueError(null);
 		}
-
 		/// <summary>
 		/// Called inside a transaction to force entity role instance validation
 		/// </summary>
-		public void ValidateCompatibleValueTypeInstanceValue()
+		private void ValidateCompatibleValueTypeInstanceValue()
 		{
 			ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleValueTypeInstanceValueError);
 		}
@@ -973,14 +980,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				ValueTypeInstance valueTypeInstance = e.ModelElement as ValueTypeInstance;
-				ObjectType valueType = valueTypeInstance.ValueType;
-				if (valueType != null)
+				if (!valueTypeInstance.IsRemoved)
 				{
-					DataType dataType = valueType.DataType;
-					if (!dataType.CanParse(e.NewValue.ToString()))
-					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionValueTypeInstanceInvalidValue);
-					}
+					ORMMetaModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
 				}
 			}
 		}

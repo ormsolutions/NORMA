@@ -1001,26 +1001,6 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Exception message when an attempt is made to store a Role Instance for a role that is already in use within the FactTypeInstance.
-		/// </summary>
-		public static string ModelExceptionFactTypeInstanceDuplicateRoleInstance
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactTypeInstance.DuplicateRoleInstance");
-			}
-		}
-		/// <summary>
-		/// Exception message when an attempt is made to store a Role Instance for a role that is already in use within the EntityTypeInstance.
-		/// </summary>
-		public static string ModelExceptionEntityTypeInstanceDuplicateRoleInstance
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.EntityTypeInstance.DuplicateRoleInstance");
-			}
-		}
-		/// <summary>
 		/// Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.
 		/// </summary>
 		public static string ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier
@@ -1048,16 +1028,6 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ValueTypeInstance.InvalidValueTypeParent");
-			}
-		}
-		/// <summary>
-		/// Exception message when an attempt is made to set a value of a ValueTypeInstance that isn't of the parent ValueType's data type.
-		/// </summary>
-		public static string ModelExceptionValueTypeInstanceInvalidValue
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ValueTypeInstance.InvalidValue");
 			}
 		}
 		/// <summary>

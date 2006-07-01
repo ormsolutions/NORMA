@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			this.lblNoSelection.Name = "lblNoSelection";
 			this.lblNoSelection.Size = new System.Drawing.Size(407, 179);
 			this.lblNoSelection.TabIndex = 1;
-			this.lblNoSelection.Text = "Please select an object to begin editing instances.";
+			this.lblNoSelection.Text = "Please select a FactType, a ValueType, or an EntityType with a preferred identifier to begin editing instances.";
 			this.lblNoSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// SamplePopulationEditor

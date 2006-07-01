@@ -202,7 +202,7 @@
 										<plx:returns dataTypeName=".i4"/>
 										<plx:callStatic name="Fail" dataTypeName="Debug">
 											<plx:passParam>
-												<plx:string>Don't call Compare if CanCompare returns false</plx:string>
+												<plx:string>Don't call Compare if CanParse returns false</plx:string>
 											</plx:passParam>
 										</plx:callStatic>
 										<plx:return>
@@ -298,7 +298,7 @@
 															</plx:callThis>
 														</plx:passParam>
 														<plx:passParam>
-															<plx:string>Don't call Compare if CanCompare(value<xsl:value-of select="$currentNumber"/>) returns false</plx:string>
+															<plx:string>Don't call Compare if CanParse(value<xsl:value-of select="$currentNumber"/>) returns false</plx:string>
 														</plx:passParam>
 													</plx:callStatic>
 													<!-- Get the typed value -->

@@ -272,14 +272,6 @@
     <value xml:space="preserve">All roles in a fact type instance must be owned by the same fact type.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
   </data>
-  <data name="ModelException.FactTypeInstance.DuplicateRoleInstance">
-    <value xml:space="preserve">The fact type instance already has a value for the given role.</value>
-    <comment xml:space="preserve">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the FactTypeInstance.</comment>
-  </data>
-  <data name="ModelException.EntityTypeInstance.DuplicateRoleInstance">
-    <value xml:space="preserve">The entity type instance already has a value for the given role.</value>
-    <comment xml:space="preserve">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the EntityTypeInstance.</comment>
-  </data>
   <data name="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier">
     <value xml:space="preserve">All sample value roles must be part of the parent entity type's preferred identifier.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
@@ -291,10 +283,6 @@
   <data name="ModelException.ValueTypeInstance.InvalidValueTypeParent">
     <value xml:space="preserve">Sample value instances can only be hooked up to a value type.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</comment>
-  </data>
-  <data name="ModelException.ValueTypeInstance.InvalidValue">
-    <value xml:space="preserve">The entered sample value does not match the object's data type.</value>
-    <comment xml:space="preserve">Exception message when an attempt is made to set a value of a ValueTypeInstance that isn't of the parent ValueType's data type.</comment>
   </data>
   <data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
     <value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>

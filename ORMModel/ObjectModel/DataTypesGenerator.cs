@@ -194,7 +194,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Fail("Don't call Compare if CanCompare returns false");
+			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
 		/// <summary>
@@ -383,10 +383,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			int typedValue1;
 			int.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			int typedValue2;
 			int.TryParse(value2, out typedValue2);
 			return ((IComparable<int>)typedValue1).CompareTo(typedValue2);
@@ -447,10 +447,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			uint typedValue1;
 			uint.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			uint typedValue2;
 			uint.TryParse(value2, out typedValue2);
 			return ((IComparable<uint>)typedValue1).CompareTo(typedValue2);
@@ -511,10 +511,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			ulong typedValue1;
 			ulong.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			ulong typedValue2;
 			ulong.TryParse(value2, out typedValue2);
 			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
@@ -575,10 +575,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			double typedValue1;
 			double.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			double typedValue2;
 			double.TryParse(value2, out typedValue2);
 			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
@@ -639,10 +639,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			decimal typedValue1;
 			decimal.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			decimal typedValue2;
 			decimal.TryParse(value2, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
@@ -703,10 +703,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			decimal typedValue1;
 			decimal.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			decimal typedValue2;
 			decimal.TryParse(value2, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
@@ -749,7 +749,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Fail("Don't call Compare if CanCompare returns false");
+			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
 		/// <summary>
@@ -800,7 +800,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Fail("Don't call Compare if CanCompare returns false");
+			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
 		/// <summary>
@@ -851,7 +851,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Fail("Don't call Compare if CanCompare returns false");
+			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
 		/// <summary>
@@ -902,7 +902,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Fail("Don't call Compare if CanCompare returns false");
+			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
 		/// <summary>
@@ -953,7 +953,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Fail("Don't call Compare if CanCompare returns false");
+			Debug.Fail("Don't call Compare if CanParse returns false");
 			return 0;
 		}
 		/// <summary>
@@ -1022,10 +1022,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(value2, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -1086,10 +1086,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(value2, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -1150,10 +1150,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(value2, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -1214,10 +1214,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(value2, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -1278,10 +1278,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			bool typedValue1;
 			bool.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			bool typedValue2;
 			bool.TryParse(value2, out typedValue2);
 			if (((IEquatable<bool>)typedValue1).Equals(typedValue2))
@@ -1379,10 +1379,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			ulong typedValue1;
 			ulong.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			ulong typedValue2;
 			ulong.TryParse(value2, out typedValue2);
 			if (((IEquatable<ulong>)typedValue1).Equals(typedValue2))
@@ -1447,10 +1447,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override int Compare(string value1, string value2)
 		{
-			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanCompare(value1) returns false");
+			Debug.Assert(this.CanParse(value1), "Don't call Compare if CanParse(value1) returns false");
 			ulong typedValue1;
 			ulong.TryParse(value1, out typedValue1);
-			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanCompare(value2) returns false");
+			Debug.Assert(this.CanParse(value2), "Don't call Compare if CanParse(value2) returns false");
 			ulong typedValue2;
 			ulong.TryParse(value2, out typedValue2);
 			if (((IEquatable<ulong>)typedValue1).Equals(typedValue2))

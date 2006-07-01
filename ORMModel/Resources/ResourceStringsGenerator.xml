@@ -365,12 +365,6 @@
 	<ResourceString name="ModelExceptionFactTypeInstanceInconsistentRoleOwners" model="Model" resourceName="ModelException.FactTypeInstance.InconsistentRoleOwners">
 		<comment type="summary">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by a fact type instance.</comment>
 	</ResourceString>
-	<ResourceString name="ModelExceptionFactTypeInstanceDuplicateRoleInstance" model="Model" resourceName="ModelException.FactTypeInstance.DuplicateRoleInstance">
-		<comment type="summary">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the FactTypeInstance.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionEntityTypeInstanceDuplicateRoleInstance" model="Model" resourceName="ModelException.EntityTypeInstance.DuplicateRoleInstance">
-		<comment type="summary">Exception message when an attempt is made to store a Role Instance for a role that is already in use within the EntityTypeInstance.</comment>
-	</ResourceString>
 	<ResourceString name="ModelExceptionEntityTypeInstanceInvalidRolesPreferredIdentifier" model="Model" resourceName="ModelException.EntityTypeInstance.InvalidRolesPreferredIdentifier">
 		<comment type="summary">Exception message when an attempt is made to hook up role instances to an entity type where the roles are not in the entity type's preferred identifier collection.</comment>
 	</ResourceString>
@@ -379,9 +373,6 @@
 	</ResourceString>
 	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValueTypeParent" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValueTypeParent">
 		<comment type="summary">Exception message when an attempt is made to hook up an EntityType to a ValueTypeInstance.</comment>
-	</ResourceString>
-	<ResourceString name="ModelExceptionValueTypeInstanceInvalidValue" model="Model" resourceName="ModelException.ValueTypeInstance.InvalidValue">
-		<comment type="summary">Exception message when an attempt is made to set a value of a ValueTypeInstance that isn't of the parent ValueType's data type.</comment>
 	</ResourceString>
 	<ResourceString name="CommandDeleteFactTypeText" model="Diagram" resourceName="Command.DeleteFactType.Text">
 		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>
