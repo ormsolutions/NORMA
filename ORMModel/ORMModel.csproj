@@ -194,10 +194,10 @@
     <Compile Include="Design\CustomReferenceModeEditor.Designer.cs">
       <DependentUpon>CustomReferenceModeEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\CustomReferenceModesBranch.cs" />
-    <Compile Include="Design\IntrinsicReferenceModesBranch.cs" />
-    <Compile Include="Design\ReferenceModeHeaderBranch.cs" />
-    <Compile Include="Design\ReferenceModeKindsBranch.cs" />
+    <Compile Include="Shell\CustomReferenceModesBranch.cs" />
+    <Compile Include="Shell\IntrinsicReferenceModesBranch.cs" />
+    <Compile Include="Shell\ReferenceModeHeaderBranch.cs" />
+    <Compile Include="Shell\ReferenceModeKindsBranch.cs" />
     <Compile Include="ObjectModel\Note.cs" />
     <Compile Include="ObjectModel\Objectification.cs" />
     <Compile Include="ObjectModel\ORMElementInterfaces.cs" />
@@ -208,7 +208,7 @@
     <Compile Include="ObjectModel\Constraint.cs" />
     <Compile Include="ObjectModel\FactType.cs" />
     <Compile Include="ObjectModel\ORMCore.DeserializationFixupListeners.cs" />
-    <Compile Include="Design\ORMReferenceModeEditorWindow.cs" />
+    <Compile Include="Shell\ORMReferenceModeEditorWindow.cs" />
     <Compile Include="ObjectModel\ORMCore.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMCore.AttachRules.xml</DependentUpon>
