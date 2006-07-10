@@ -14,21 +14,18 @@
 \**************************************************************************/
 #endregion
 
-#region	Using directives
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 
-#endregion
-
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.Design
 {
 	///	<summary>
 	///	Custom reference mode editor.

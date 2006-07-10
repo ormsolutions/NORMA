@@ -35,7 +35,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 //temp
-using Neumont.Tools.ORM.FactEditor;
+using Neumont.Tools.ORM.Shell.FactEditor;
 
 namespace Neumont.Tools.ORM.Design
 {

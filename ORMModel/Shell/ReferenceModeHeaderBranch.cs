@@ -14,18 +14,17 @@
 \**************************************************************************/
 #endregion
 
-#region Using directives
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.VirtualTreeGrid; 
-#endregion
+using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.ORM.Design;
+using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Represents the Reference Mode Header Branch
@@ -43,11 +42,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			IntrinsicReferenceModes = 2
 		}
 
-		private static string myIntrinsicReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorIntrinsicReferenceModesHeader;
-		private static string myCustomReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorCustomReferenceModesHeader;
-		private static string myReferenceModeKindHeader = ResourceStrings.ModelReferenceModeEditorReferenceModeKindHeader;
+		private static readonly string myIntrinsicReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorIntrinsicReferenceModesHeader;
+		private static readonly string myCustomReferenceModesHeader = ResourceStrings.ModelReferenceModeEditorCustomReferenceModesHeader;
+		private static readonly string myReferenceModeKindHeader = ResourceStrings.ModelReferenceModeEditorReferenceModeKindHeader;
 
-		private string[] myHeaderNames = { myReferenceModeKindHeader, myCustomReferenceModesHeader, myIntrinsicReferenceModesHeader }; 
+		private static readonly string[] myHeaderNames = { myReferenceModeKindHeader, myCustomReferenceModesHeader, myIntrinsicReferenceModesHeader }; 
 
 		/// <summary>
 		/// Default constructor

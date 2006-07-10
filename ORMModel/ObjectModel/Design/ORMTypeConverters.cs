@@ -25,6 +25,7 @@ using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
+
 namespace Neumont.Tools.ORM.Design
 {
 	#region ORMEnumConverter class

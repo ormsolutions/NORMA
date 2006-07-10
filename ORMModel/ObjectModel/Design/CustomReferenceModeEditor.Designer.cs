@@ -14,7 +14,7 @@
 \**************************************************************************/
 #endregion
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.Design
 {
 	/// <summary>
 	/// Customer Reference mode editor usercontrol

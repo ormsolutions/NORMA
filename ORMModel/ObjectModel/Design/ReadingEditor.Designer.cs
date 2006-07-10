@@ -1,20 +1,17 @@
-﻿#region Using directives
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
-using System.Data;
+using System.Drawing.Design;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Diagnostics;
-using Microsoft.VisualStudio.VirtualTreeGrid;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using System.Drawing.Design;
-#endregion
 
 namespace Neumont.Tools.ORM.Design
 {

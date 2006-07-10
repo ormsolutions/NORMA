@@ -14,19 +14,17 @@
 \**************************************************************************/
 #endregion
 
-#region Using directives
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.VirtualTreeGrid;
-using Neumont.Tools.ORM.ObjectModel; 
 using Microsoft.VisualStudio.Modeling;
-#endregion
+using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.ORM.Design;
+using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Branch for all the differnt Reference mode kinds

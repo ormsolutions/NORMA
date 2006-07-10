@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,9 +25,8 @@ using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// The Custom Reference Modes branch;
@@ -51,6 +49,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private bool myIDidIt;
 
 		#endregion // Locals
+
 		#region Methods
 		/// <summary>
 		/// Sets the custom refernce modes.
