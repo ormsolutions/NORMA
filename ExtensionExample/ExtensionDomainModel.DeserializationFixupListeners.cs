@@ -37,7 +37,7 @@ namespace ExtensionExample
 		/// because of the settings in the ExtensionDomainModel.SerializationExtensions.xml file) to
 		/// be readded when the file loads.
 		/// </summary>
-		private class MyCustomExtensionElementFixupListener : DeserializationFixupListener<Role>
+		private sealed class MyCustomExtensionElementFixupListener : DeserializationFixupListener<Role>
 		{
 			/// <summary>
 			/// ExternalConstraintFixupListener constructor
@@ -55,7 +55,7 @@ namespace ExtensionExample
 			/// <param name="element">A Role element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(Role element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(Role element, Store store, INotifyElementAdded notifyAdded)
 			{
 				IORMExtendableElement extendableElement = element as IORMExtendableElement;
 				ModelElementMoveableCollection extensions = extendableElement.ExtensionCollection;

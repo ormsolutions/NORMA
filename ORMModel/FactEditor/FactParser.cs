@@ -364,7 +364,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		}
 
 		/// <summary>
-		/// An array of attributes for colorization
+		/// An array of properties for colorization
 		/// </summary>
 		/// <value></value>
 		[CLSCompliant(false)]

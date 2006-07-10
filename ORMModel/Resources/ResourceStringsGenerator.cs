@@ -1,4 +1,5 @@
-﻿// Common Public License Copyright Notice
+﻿
+// Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
@@ -12,6 +13,7 @@
 // *                                                                          *
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
+
 namespace Neumont.Tools.ORM
 {
 	#region ResourceStrings class
@@ -137,7 +139,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.Design.RolePlayerPicker.NullItemText");
 			}
 		}
 		/// <summary>
@@ -147,7 +149,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.Design.NestedFactTypePicker.NullItemText");
 			}
 		}
 		/// <summary>
@@ -157,7 +159,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.Design.NestingTypePicker.NullItemText");
 			}
 		}
 		/// <summary>

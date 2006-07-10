@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -257,25 +270,25 @@
 					<summary>
 						<xsl:text>An interface representing generic verbalization sets.</xsl:text>
 					</summary>
-					<typeParam>An enumeration representing the verbalization sets</typeParam>
+					<typeParam name="TEnum">An enumeration representing the verbalization sets</typeParam>
 				</plx:docComment>
 			</plx:leadingInfo>
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Genereic I{$VerbalizationSets} interface"/>
 			</plx:trailingInfo>
-			<plx:typeParam name="EnumType" requireValueType="true"/>
+			<plx:typeParam name="TEnum" requireValueType="true"/>
 			<plx:implementsInterface dataTypeName="I{$VerbalizationSets}"/>
 			<plx:function name="GetSnippet" visibility="public">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>Retrieve a snippet for the specified type and criteria.</summary>
-						<param name="snippetType">A value from the EnumType enum.</param>
+						<param name="snippetType">A value from the TEnum enum.</param>
 						<param name="isDeontic">Set to true to retrieve the snippet for a deontic verbalization, false for alethic.</param>
 						<param name="isNegative">Set to true to retrieve the snippet for a negative reading, false for positive.</param>
 						<returns>Snippet string</returns>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:param name="snippetType" dataTypeName="EnumType"/>
+				<plx:param name="snippetType" dataTypeName="TEnum"/>
 				<plx:param name="isDeontic" dataTypeName=".boolean"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".string"/>
@@ -285,12 +298,12 @@
 					<plx:docComment>
 						<summary>Retrieve a snippet for the specified type with default criteria.</summary>
 						<param name="snippetType">
-							<xsl:text>A value from the EnumType enum.</xsl:text>
+							<xsl:text>A value from the TEnum enum.</xsl:text>
 						</param>
 						<returns>Snippet string</returns>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:param name="snippetType" dataTypeName="EnumType"/>
+				<plx:param name="snippetType" dataTypeName="TEnum"/>
 				<plx:returns dataTypeName=".string"/>
 			</plx:function>
 		</plx:interface>
@@ -303,7 +316,7 @@
 						<xsl:value-of select="$VerbalizationSet"/>
 						<xsl:text> structure for each combination of {alethic,deontic} and {positive,negative} snippets.</xsl:text>
 					</summary>
-					<typeparam name="EnumType">
+					<typeparam name="TEnum">
 						<xsl:text>The enumeration type of snippet set</xsl:text>
 					</typeparam>
 				</plx:docComment>
@@ -311,9 +324,9 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="Generic {$VerbalizationSets} class"/>
 			</plx:trailingInfo>
-			<plx:typeParam name="EnumType" requireValueType="1"/>
+			<plx:typeParam name="TEnum" requireValueType="true"/>
 			<plx:implementsInterface dataTypeName="I{$VerbalizationSets}">
-				<plx:passTypeParam dataTypeName="EnumType"/>
+				<plx:passTypeParam dataTypeName="TEnum"/>
 			</plx:implementsInterface>
 			<!-- Spit the VerbalizationSet structure -->
 			<plx:class name="{$VerbalizationSet}" visibility="protected" modifier="abstract">
@@ -345,9 +358,9 @@
 							<returns>Snippet string</returns>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:param name="snippetType" dataTypeName="EnumType"/>
+					<plx:param name="snippetType" dataTypeName="TEnum"/>
 					<plx:param name="owner" dataTypeName="{$VerbalizationSets}">
-						<plx:passTypeParam dataTypeName="EnumType"/>
+						<plx:passTypeParam dataTypeName="TEnum"/>
 					</plx:param>
 					<plx:returns dataTypeName=".string"/>
 				</plx:function>
@@ -408,9 +421,9 @@
 							<returns>Snippet string</returns>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:param name="snippetType" dataTypeName="EnumType"/>
+					<plx:param name="snippetType" dataTypeName="TEnum"/>
 					<plx:param name="owner" dataTypeName="{$VerbalizationSets}">
-						<plx:passTypeParam dataTypeName="EnumType"/>
+						<plx:passTypeParam dataTypeName="TEnum"/>
 					</plx:param>
 					<plx:returns dataTypeName=".string"/>
 					<plx:return>
@@ -448,7 +461,7 @@
 				</plx:trailingInfo>
 				<plx:derivesFromClass dataTypeName="{$VerbalizationSet}"/>
 				<plx:field name="mySnippets" visibility="private" dataTypeName="Dictionary">
-					<plx:passTypeParam dataTypeName="EnumType"/>
+					<plx:passTypeParam dataTypeName="TEnum"/>
 					<plx:passTypeParam dataTypeName="string"/>
 				</plx:field>
 				<plx:property name="Dictionary" visibility="public">
@@ -458,7 +471,7 @@
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:returns dataTypeName="IDictionary">
-						<plx:passTypeParam dataTypeName="EnumType"/>
+						<plx:passTypeParam dataTypeName="TEnum"/>
 						<plx:passTypeParam dataTypeName="string"/>
 					</plx:returns>
 					<plx:get>
@@ -482,7 +495,7 @@
 						</plx:left>
 						<plx:right>
 							<plx:callNew dataTypeName="Dictionary">
-								<plx:passTypeParam dataTypeName="EnumType"/>
+								<plx:passTypeParam dataTypeName="TEnum"/>
 								<plx:passTypeParam dataTypeName="string"/>
 							</plx:callNew>
 						</plx:right>
@@ -503,9 +516,9 @@
 							<returns>Snippet string</returns>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:param name="snippetType" dataTypeName="EnumType"/>
+					<plx:param name="snippetType" dataTypeName="TEnum"/>
 					<plx:param name="owner" dataTypeName="{$VerbalizationSets}">
-						<plx:passTypeParam dataTypeName="EnumType"/>
+						<plx:passTypeParam dataTypeName="TEnum"/>
 					</plx:param>
 					<plx:returns dataTypeName=".string"/>
 					<plx:local name="retVal" dataTypeName=".string">
@@ -543,9 +556,9 @@
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:interfaceMember dataTypeName="I{$VerbalizationSets}" memberName="GetSnippet">
-					<plx:passTypeParam dataTypeName="EnumType"/>
+					<plx:passTypeParam dataTypeName="TEnum"/>
 				</plx:interfaceMember>
-				<plx:param name="snippetType" dataTypeName="EnumType"/>
+				<plx:param name="snippetType" dataTypeName="TEnum"/>
 				<plx:returns dataTypeName=".string"/>
 				<plx:return>
 					<plx:callThis name="GetSnippet">
@@ -576,9 +589,9 @@
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:interfaceMember dataTypeName="I{$VerbalizationSets}" memberName="GetSnippet">
-					<plx:passTypeParam dataTypeName="EnumType"/>
+					<plx:passTypeParam dataTypeName="TEnum"/>
 				</plx:interfaceMember>
-				<plx:param name="snippetType" dataTypeName="EnumType"/>
+				<plx:param name="snippetType" dataTypeName="TEnum"/>
 				<plx:param name="isDeontic" dataTypeName=".boolean"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".string"/>
@@ -590,7 +603,7 @@
 							</plx:callObject>
 							<plx:passParam>
 								<plx:callStatic name="GetSetIndex" type="methodCall" dataTypeName="{$VerbalizationSets}">
-									<plx:passTypeParam dataTypeName="EnumType"/>
+									<plx:passTypeParam dataTypeName="TEnum"/>
 									<plx:passParam>
 										<plx:nameRef name="isDeontic"/>
 									</plx:passParam>
@@ -723,7 +736,7 @@
 						<returns>integer value of enum type</returns>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:param name="enumValue" dataTypeName="EnumType"/>
+				<plx:param name="enumValue" dataTypeName="TEnum"/>
 				<plx:returns dataTypeName=".i4"/>
 			</plx:function>
 			<plx:function modifier="static" name="Create" visibility="public">
@@ -751,15 +764,15 @@
 				</plx:leadingInfo>
 				<plx:typeParam name="DerivedType" requireDefaultConstructor="1">
 					<plx:typeConstraint dataTypeName="{$VerbalizationSets}">
-						<plx:passTypeParam dataTypeName="EnumType"/>
+						<plx:passTypeParam dataTypeName="TEnum"/>
 					</plx:typeConstraint>
 				</plx:typeParam>
 				<plx:param name="userPopulationData" dataTypeName=".object"/>
 				<plx:returns dataTypeName="{$VerbalizationSets}">
-					<plx:passTypeParam dataTypeName="EnumType"/>
+					<plx:passTypeParam dataTypeName="TEnum"/>
 				</plx:returns>
 				<plx:local name="retVal" dataTypeName="{$VerbalizationSets}">
-					<plx:passTypeParam dataTypeName="EnumType"/>
+					<plx:passTypeParam dataTypeName="TEnum"/>
 					<plx:initialize>
 						<plx:callNew dataTypeName="DerivedType"/>
 					</plx:initialize>
@@ -798,7 +811,7 @@
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:param name="target" dataTypeName="{$VerbalizationSets}">
-					<plx:passTypeParam dataTypeName="EnumType"/>
+					<plx:passTypeParam dataTypeName="TEnum"/>
 				</plx:param>
 				<plx:param name="userPopulationData" dataTypeName=".object"/>
 				<plx:local name="newSets" dataTypeName="{$VerbalizationSet}" dataTypeIsSimpleArray="1">

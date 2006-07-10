@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.ORM.ObjectModel;
+
 // Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -20,19 +21,18 @@ using Neumont.Tools.ORM.ObjectModel;
 // *                                                                          *
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
+
 namespace ExtensionExample
 {
 	#region ExtensionDomainModel model serialization
-	[MetaModelDisplayName(typeof(ExtensionDomainModel), "DisplayName")]
-	[MetaModelDescription(typeof(ExtensionDomainModel), "Description")]
-	public partial class ExtensionDomainModel : IORMCustomSerializedMetaModel
+	public partial class ExtensionDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'ExtensionDomainModel' extension model
 		/// </summary>
-		public const string XmlNamespace = "http://schemas.neumont.edu/ORM/ExtensionExample";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/ExtensionExample";
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.DefaultElementPrefix
+		/// Implements IORMCustomSerializedDomainModel.DefaultElementPrefix
 		/// </summary>
 		protected static string DefaultElementPrefix
 		{
@@ -41,7 +41,7 @@ namespace ExtensionExample
 				return "ormExtension";
 			}
 		}
-		string IORMCustomSerializedMetaModel.DefaultElementPrefix
+		string IORMCustomSerializedDomainModel.DefaultElementPrefix
 		{
 			get
 			{
@@ -49,7 +49,7 @@ namespace ExtensionExample
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.GetCustomElementNamespaces
+		/// Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces
 		/// </summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
@@ -59,47 +59,47 @@ namespace ExtensionExample
 			ret[0, 2] = "ExtensionDomainModelTest.xsd";
 			return ret;
 		}
-		string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
+		string[,] IORMCustomSerializedDomainModel.GetCustomElementNamespaces()
 		{
 			return GetCustomElementNamespaces();
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.ShouldSerializeMetaClass
+		/// Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass
 		/// </summary>
-		protected bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			return true;
 		}
-		bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		bool IORMCustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			return this.ShouldSerializeMetaClass(store, classInfo);
+			return this.ShouldSerializeDomainClass(store, classInfo);
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.GetRootElementClasses
+		/// Implements IORMCustomSerializedDomainModel.GetRootElementClasses
 		/// </summary>
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[0];
 		}
-		Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
+		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
 			return GetRootElementClasses();
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.MapRootElement
+		/// Implements IORMCustomSerializedDomainModel.MapRootElement
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedMetaModel.MapRootElement(string xmlNamespace, string elementName)
+		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
 		{
 			return MapRootElement(xmlNamespace, elementName);
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.MapClassName
+		/// Implements IORMCustomSerializedDomainModel.MapClassName
 		/// </summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
@@ -114,8 +114,8 @@ namespace ExtensionExample
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
-				classNameMap.Add("SampleElement", MyCustomExtensionElement.MetaClassGuid);
-				classNameMap.Add("ObjectTypeRequiresMeaningfulNameError", ObjectTypeRequiresMeaningfulNameError.MetaClassGuid);
+				classNameMap.Add("SampleElement", MyCustomExtensionElement.DomainClassId);
+				classNameMap.Add("ObjectTypeRequiresMeaningfulNameError", ObjectTypeRequiresMeaningfulNameError.DomainClassId);
 				ExtensionDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -124,7 +124,7 @@ namespace ExtensionExample
 			}
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedMetaModel.MapClassName(string xmlNamespace, string elementName)
+		Guid IORMCustomSerializedDomainModel.MapClassName(string xmlNamespace, string elementName)
 		{
 			return MapClassName(xmlNamespace, elementName);
 		}
@@ -179,38 +179,38 @@ namespace ExtensionExample
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -275,10 +275,10 @@ namespace ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid)
+			if (roleId == ORMNamedElementHasExtensionModelError.ExtendedElementDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -288,7 +288,7 @@ namespace ExtensionExample
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
@@ -303,7 +303,7 @@ namespace ExtensionExample
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid);
+				match.InitializeRoles(ORMNamedElementHasExtensionModelError.ExtendedElementDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ExtensionExample|ObjectType", match);
 				ObjectTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
 			}

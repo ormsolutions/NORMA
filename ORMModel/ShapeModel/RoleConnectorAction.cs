@@ -93,7 +93,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							IConstraint constraint = constraintShape.AssociatedConstraint;
 							foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 							{
-								if (object.ReferenceEquals(constraint, sequence.Constraint))
+								if (constraint == sequence.Constraint)
 								{
 									ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 									connectAction.ConstraintRoleSequenceToEdit = sequence;
@@ -167,7 +167,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					(null == (objectification = objectType.Objectification) || !objectification.IsImplied)) ||
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
-					return !object.ReferenceEquals(role.FactType, objectType.NestedFactType);
+					return role.FactType != objectType.NestedFactType;
 				}
 				return false;
 			}
@@ -204,7 +204,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					(null != (objectType = action.mySourceObjectType) && null != (role = action.myLastMouseMoveRole)))
 				{
 					// Don't trigger a change if none is indicated. Turn this into a noop
-					if (!object.ReferenceEquals(role.RolePlayer, objectType))
+					if (role.RolePlayer != objectType)
 					{
 						role.RolePlayer = objectType;
 					}

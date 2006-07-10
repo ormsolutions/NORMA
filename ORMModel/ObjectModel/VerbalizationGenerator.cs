@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Modeling;
+
 // Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -16,6 +18,7 @@ using System.Collections.Generic;
 // *                                                                          *
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
+
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region CoreVerbalizationSnippetType enum
@@ -539,17 +542,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An interface representing generic verbalization sets.
 	/// </summary>
-	/// <typeParam>
+	/// <typeParam name="TEnum">
 	/// An enumeration representing the verbalization sets
 	/// </typeParam>
-	public interface IVerbalizationSets<EnumType> : IVerbalizationSets
-		where EnumType : struct
+	public interface IVerbalizationSets<TEnum> : IVerbalizationSets
+		where TEnum : struct
 	{
 		/// <summary>
 		/// Retrieve a snippet for the specified type and criteria.
 		/// </summary>
 		/// <param name="snippetType">
-		/// A value from the EnumType enum.
+		/// A value from the TEnum enum.
 		/// </param>
 		/// <param name="isDeontic">
 		/// Set to true to retrieve the snippet for a deontic verbalization, false for alethic.
@@ -560,28 +563,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// Snippet string
 		/// </returns>
-		string GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative);
+		string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative);
 		/// <summary>
 		/// Retrieve a snippet for the specified type with default criteria.
 		/// </summary>
 		/// <param name="snippetType">
-		/// A value from the EnumType enum.
+		/// A value from the TEnum enum.
 		/// </param>
 		/// <returns>
 		/// Snippet string
 		/// </returns>
-		string GetSnippet(EnumType snippetType);
+		string GetSnippet(TEnum snippetType);
 	}
 	#endregion // Genereic IVerbalizationSets interface
 	#region Generic VerbalizationSets class
 	/// <summary>
 	/// A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.
 	/// </summary>
-	/// <typeparam name="EnumType">
+	/// <typeparam name="TEnum">
 	/// The enumeration type of snippet set
 	/// </typeparam>
-	public abstract class VerbalizationSets<EnumType> : IVerbalizationSets<EnumType>
-		where EnumType : struct
+	public abstract class VerbalizationSets<TEnum> : IVerbalizationSets<TEnum>
+		where TEnum : struct
 	{
 		#region VerbalizationSet class
 		/// <summary>
@@ -601,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>
 			/// Snippet string
 			/// </returns>
-			public abstract string GetSnippet(EnumType snippetType, VerbalizationSets<EnumType> owner);
+			public abstract string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner);
 		}
 		#endregion // VerbalizationSet class
 		#region ArrayVerbalizationSet class
@@ -633,7 +636,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>
 			/// Snippet string
 			/// </returns>
-			public override string GetSnippet(EnumType snippetType, VerbalizationSets<EnumType> owner)
+			public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
 			{
 				return this.mySnippets[owner.ValueToIndex(snippetType)];
 			}
@@ -645,11 +648,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected class DictionaryVerbalizationSet : VerbalizationSet
 		{
-			private Dictionary<EnumType, string> mySnippets;
+			private Dictionary<TEnum, string> mySnippets;
 			/// <summary>
 			/// Retrieves all of the IDictionary snippets in the snippet set
 			/// </summary>
-			public IDictionary<EnumType, string> Dictionary
+			public IDictionary<TEnum, string> Dictionary
 			{
 				get
 				{
@@ -661,7 +664,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public DictionaryVerbalizationSet()
 			{
-				this.mySnippets = new Dictionary<EnumType, string>();
+				this.mySnippets = new Dictionary<TEnum, string>();
 			}
 			/// <summary>
 			/// Retrieve a snippet value
@@ -675,7 +678,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>
 			/// Snippet string
 			/// </returns>
-			public override string GetSnippet(EnumType snippetType, VerbalizationSets<EnumType> owner)
+			public override string GetSnippet(TEnum snippetType, VerbalizationSets<TEnum> owner)
 			{
 				string retVal = null;
 				this.mySnippets.TryGetValue(snippetType, out retVal);
@@ -693,11 +696,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// Snippet string
 		/// </returns>
-		protected string GetSnippet(EnumType snippetType)
+		protected string GetSnippet(TEnum snippetType)
 		{
 			return this.GetSnippet(snippetType, false, false);
 		}
-		string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType)
+		string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType)
 		{
 			return this.GetSnippet(snippetType);
 		}
@@ -716,9 +719,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// Snippet string
 		/// </returns>
-		protected string GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative)
+		protected string GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
 		{
-			VerbalizationSet set = this.mySets[VerbalizationSets<EnumType>.GetSetIndex(isDeontic, isNegative)];
+			VerbalizationSet set = this.mySets[VerbalizationSets<TEnum>.GetSetIndex(isDeontic, isNegative)];
 			if (set != null)
 			{
 				return set.GetSnippet(snippetType, this);
@@ -728,7 +731,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return null;
 			}
 		}
-		string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative)
+		string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
 		{
 			return this.GetSnippet(snippetType, isDeontic, isNegative);
 		}
@@ -776,7 +779,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// integer value of enum type
 		/// </returns>
-		protected abstract int ValueToIndex(EnumType enumValue);
+		protected abstract int ValueToIndex(TEnum enumValue);
 		/// <summary>
 		/// Creates an instance of the VerbalizationSets class and calls the PopulateVerbalizationSets method.
 		/// </summary>
@@ -789,10 +792,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// Returns a generic VerbalizationSetsobject with snippet sets
 		/// </returns>
-		public static VerbalizationSets<EnumType> Create<DerivedType>(object userPopulationData)
-			where DerivedType : VerbalizationSets<EnumType>, new()
+		public static VerbalizationSets<TEnum> Create<DerivedType>(object userPopulationData)
+			where DerivedType : VerbalizationSets<TEnum>, new()
 		{
-			VerbalizationSets<EnumType> retVal = new DerivedType();
+			VerbalizationSets<TEnum> retVal = new DerivedType();
 			Initialize(retVal, userPopulationData);
 			return retVal;
 		}
@@ -808,7 +811,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>
 		/// Returns a generic VerbalizationSets object with snippet sets
 		/// </returns>
-		public static void Initialize(VerbalizationSets<EnumType> target, object userPopulationData)
+		public static void Initialize(VerbalizationSets<TEnum> target, object userPopulationData)
 		{
 			VerbalizationSet[] newSets = new VerbalizationSet[4];
 			target.PopulateVerbalizationSets(newSets, userPopulationData);
@@ -1493,9 +1496,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 			}
-			RoleBaseMoveableCollection factRoles = this.RoleCollection;
+			LinkedElementCollection<RoleBase> factRoles = this.RoleCollection;
 			int factArity = factRoles.Count;
-			ReadingOrderMoveableCollection allReadingOrders = this.ReadingOrderCollection;
+			LinkedElementCollection<ReadingOrder> allReadingOrders = this.ReadingOrderCollection;
 			const bool isDeontic = false;
 			Reading reading;
 			VerbalizationHyphenBinder hyphenBinder;
@@ -1623,9 +1626,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			if (this.NestedFactType != null)
 			{
-				RoleBaseMoveableCollection factRoles = null;
+				LinkedElementCollection<RoleBase> factRoles = null;
 				int factArity = 0;
-				ReadingOrderMoveableCollection allReadingOrders = null;
+				LinkedElementCollection<ReadingOrder> allReadingOrders = null;
 				Reading reading = null;
 				VerbalizationHyphenBinder hyphenBinder;
 				FactType nested = this.NestedFactType;
@@ -1674,15 +1677,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				RoleMoveableCollection includedRoles = ((ConstraintRoleSequence)this.PreferredIdentifier).RoleCollection;
+				LinkedElementCollection<Role> includedRoles = ((ConstraintRoleSequence)this.PreferredIdentifier).RoleCollection;
 				int constraintRoleArity = includedRoles.Count;
 				for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 				{
 					RoleBase primaryRole = includedRoles[RoleIter1];
 					FactType parentFact = primaryRole.FactType;
-					RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
+					LinkedElementCollection<RoleBase> factRoles = parentFact.RoleCollection;
 					int factArity = factRoles.Count;
-					ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+					LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 					Reading reading = null;
 					VerbalizationHyphenBinder hyphenBinder;
 					string[] basicRoleReplacements = new string[factArity];
@@ -1918,10 +1921,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
-				RoleMoveableCollection includedRoles = this.RoleCollection;
-				RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
+				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = parentFact.RoleCollection;
 				int factArity = factRoles.Count;
-				ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if ((allReadingOrders.Count == 0) || (includedArity == 0))
 				{
@@ -1940,7 +1943,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 								++subscript;
@@ -1948,7 +1951,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 							}
@@ -2235,10 +2238,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
-				RoleMoveableCollection includedRoles = this.RoleCollection;
-				RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
+				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = parentFact.RoleCollection;
 				int factArity = factRoles.Count;
-				ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if ((allReadingOrders.Count == 0) || (includedArity == 0))
 				{
@@ -2257,7 +2260,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 								++subscript;
@@ -2265,7 +2268,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 							}
@@ -2442,10 +2445,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				FactType parentFact = this.FactType;
-				RoleMoveableCollection includedRoles = this.RoleCollection;
-				RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
+				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = parentFact.RoleCollection;
 				int factArity = factRoles.Count;
-				ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if ((allReadingOrders.Count == 0) || (includedArity == 0))
 				{
@@ -2464,7 +2467,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 								++subscript;
@@ -2472,7 +2475,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 							}
@@ -2570,10 +2573,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				FactType parentFact = this.FactType;
-				RoleMoveableCollection includedRoles = this.RoleCollection;
-				RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
+				LinkedElementCollection<Role> includedRoles = this.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = parentFact.RoleCollection;
 				int factArity = factRoles.Count;
-				ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 				int includedArity = includedRoles.Count;
 				if ((allReadingOrders.Count == 0) || (includedArity == 0))
 				{
@@ -2592,7 +2595,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 								++subscript;
@@ -2600,7 +2603,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 							}
@@ -2797,11 +2800,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
-			RoleBaseMoveableCollection factRoles = null;
+			LinkedElementCollection<RoleBase> factRoles = null;
 			int factArity = 0;
-			ReadingOrderMoveableCollection allReadingOrders;
-			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
-			FactTypeMoveableCollection allFacts = this.FactTypeCollection;
+			LinkedElementCollection<ReadingOrder> allReadingOrders;
+			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
+			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
 			int allFactsCount = allFacts.Count;
 			if (allFactsCount == 0)
 			{
@@ -2885,7 +2888,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 								++subscript;
@@ -2893,7 +2896,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 							}
@@ -3951,11 +3954,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
-			RoleBaseMoveableCollection factRoles = null;
+			LinkedElementCollection<RoleBase> factRoles = null;
 			int factArity = 0;
-			ReadingOrderMoveableCollection allReadingOrders;
-			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
-			FactTypeMoveableCollection allFacts = this.FactTypeCollection;
+			LinkedElementCollection<ReadingOrder> allReadingOrders;
+			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
+			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
 			int allFactsCount = allFacts.Count;
 			if (allFactsCount == 0)
 			{
@@ -4038,7 +4041,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int j = 0;
 						for (; j < i; ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 								++subscript;
@@ -4046,7 +4049,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 						{
-							if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+							if (rolePlayer == factRoles[j].Role.RolePlayer)
 							{
 								useSubscript = true;
 							}
@@ -5400,9 +5403,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType parentFact = valueRole.FactType;
 			IList<Role> includedRoles = new Role[]{
 				valueRole};
-			RoleBaseMoveableCollection factRoles = parentFact.RoleCollection;
+			LinkedElementCollection<RoleBase> factRoles = parentFact.RoleCollection;
 			int factArity = factRoles.Count;
-			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+			LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 			int includedArity = includedRoles.Count;
 			if ((allReadingOrders.Count == 0) || (includedArity == 0))
 			{
@@ -5443,7 +5446,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int j = 0;
 					for (; j < i; ++j)
 					{
-						if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+						if (rolePlayer == factRoles[j].Role.RolePlayer)
 						{
 							useSubscript = true;
 							++subscript;
@@ -5451,7 +5454,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
 					{
-						if (object.ReferenceEquals(rolePlayer, factRoles[j].Role.RolePlayer))
+						if (rolePlayer == factRoles[j].Role.RolePlayer)
 						{
 							useSubscript = true;
 						}
@@ -5474,7 +5477,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string[] roleReplacements = new string[factArity];
 			Reading reading;
 			VerbalizationHyphenBinder hyphenBinder;
-			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
+			LinkedElementCollection<ValueRange> ranges = this.ValueRangeCollection;
 			bool isSingleValue = (ranges.Count == 1) && (ranges[0].MinValue == ranges[0].MaxValue);
 			CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
 			if (isSingleValue)
@@ -5734,7 +5737,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			const bool isDeontic = false;
 			StringBuilder sbTemp = null;
-			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
+			LinkedElementCollection<ValueRange> ranges = this.ValueRangeCollection;
 			bool isSingleValue = (ranges.Count == 1) && (ranges[0].MinValue == ranges[0].MaxValue);
 			CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
 			if (isSingleValue)

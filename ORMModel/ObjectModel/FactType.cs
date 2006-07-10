@@ -17,11 +17,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.VisualStudio.Modeling;
-using System.Globalization;
-using Neumont.Tools.ORM.Framework;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -57,26 +58,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	#region Derivation Storage Enum
-	/// <summary>
-	/// Derivation Storage Types, used to specify how/whether the contents of the fact should be stored in the database
-	/// </summary>
-	public enum DerivationStorageType
-	{
-		/// <summary>
-		/// Fact is derived but should not be stored
-		/// </summary>
-		Derived,
-		/// <summary>
-		/// Fact is derived and should be stored
-		/// </summary>
-		DerivedAndStored,
-		/// <summary>
-		/// Fact is paritally derived and should be stored
-		/// </summary>
-		PartiallyDerived,
-	}
-	#endregion
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<FactType, Design.FactTypeTypeDescriptor<FactType>>))]
 	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren
 	{
 		#region ReadingOrder acquisition
@@ -103,11 +85,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, IList<RoleBase> roleOrder)
 		{
 			ReadingOrder retval = null;
-			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
+			LinkedElementCollection<ReadingOrder> readingOrders = theFact.ReadingOrderCollection;
 			int roleOrderCount = roleOrder.Count;
 			foreach (ReadingOrder order in readingOrders)
 			{
-				RoleBaseMoveableCollection roles = order.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = order.RoleCollection;
 				int numRoles = roles.Count;
 				if (numRoles == roleOrderCount)
 				{
@@ -137,7 +119,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
 		public static ReadingOrder FindMatchingReadingOrder(FactType theFact)
 		{
-			RoleBaseMoveableCollection factRoles = theFact.RoleCollection;
+			LinkedElementCollection<RoleBase> factRoles = theFact.RoleCollection;
 			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
 			factRoles.CopyTo(roleOrder, 0);
 			return FindMatchingReadingOrder(theFact, roleOrder);
@@ -154,8 +136,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrder retval = null;
 			if (roleOrder.Count > 0)
 			{
-				retval = ReadingOrder.CreateReadingOrder(theFact.Store);
-				RoleBaseMoveableCollection readingRoles = retval.RoleCollection;
+				retval = new ReadingOrder(theFact.Store);
+				LinkedElementCollection<RoleBase> readingRoles = retval.RoleCollection;
 				int numRoles = roleOrder.Count;
 				for (int i = 0; i < numRoles; ++i)
 				{
@@ -211,7 +193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>IEnumerable</returns>
 		public IEnumerable<T> GetInternalConstraints<T>() where T : SetConstraint, IConstraint
 		{
-			IList constraints = SetConstraintCollection;
+			LinkedElementCollection<SetConstraint> constraints = SetConstraintCollection;
 			int constraintCount = constraints.Count;
 			for (int i = 0; i < constraintCount; ++i)
 			{
@@ -246,35 +228,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				IList links = GetElementLinks(Objectification.NestedFactTypeMetaRoleGuid, false);
-				if (links != null && links.Count != 0)
-				{
-					Debug.Assert(links.Count == 1);
-					return (Objectification)links[0];
-				}
-				return null;
+				return Objectification.GetLinkToNestingType(this);
 			}
 		}
 		/// <summary>
-		/// Gets the ObjectType that is objectifying this FactType.
+		/// Gets the <see cref="ObjectType"/> that is objectifying this <see cref="FactType"/>.
 		/// </summary>
 		public ObjectType NestingType
 		{
 			get
 			{
-				return GetCounterpartRolePlayer(Objectification.NestedFactTypeMetaRoleGuid, Objectification.NestingTypeMetaRoleGuid, false) as ObjectType;
+				return Objectification.GetNestingType(this);
 			}
 			set
 			{
-				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestedFactTypeMetaRoleGuid, Objectification.NestingTypeMetaRoleGuid, typeof(Objectification));
+				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestedFactTypeDomainRoleId, Objectification.NestingTypeDomainRoleId, typeof(Objectification));
 			}
 		}
 		#endregion // FactType Specific
 		#region FactConstraintCollection implementation
-		private class FactConstraintCollectionImpl : ICollection<IFactConstraint>
+		private sealed class FactConstraintCollectionImpl : ICollection<IFactConstraint>
 		{
 			#region Member Variables
-			private IList[] myLists;
+			private readonly ReadOnlyCollection<ElementLink>[] myLists;
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -284,37 +260,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="factType">The parent fact type</param>
 			public FactConstraintCollectionImpl(FactType factType)
 			{
-				myLists = new IList[]{
-					factType.GetElementLinks(FactSetConstraint.FactTypeCollectionMetaRoleGuid),
-					factType.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid)};
+				myLists = new ReadOnlyCollection<ElementLink>[]{
+					DomainRoleInfo.GetElementLinks<ElementLink>(factType, FactSetConstraint.FactTypeDomainRoleId),
+					DomainRoleInfo.GetElementLinks<ElementLink>(factType, FactSetComparisonConstraint.FactTypeDomainRoleId)};
 			}
 			#endregion // Constructors
 			#region ICollection<IFactConstraint> Implementation
 			bool ICollection<IFactConstraint>.Contains(IFactConstraint item)
 			{
-				IList[] lists = myLists;
-				int listCount = lists.Length;
-				for (int i = 0; i < listCount; ++i)
+				ElementLink link = item as ElementLink;
+				if (link != null)
 				{
-					if (lists[i].Contains(item))
+					ReadOnlyCollection<ElementLink>[] lists = myLists;
+					for (int i = 0; i < lists.Length; ++i)
 					{
-						return true;
+						if (lists[i].Contains(link))
+						{
+							return true;
+						}
 					}
 				}
 				return false;
 			}
 			void ICollection<IFactConstraint>.CopyTo(IFactConstraint[] array, int arrayIndex)
 			{
-				IList[] lists = myLists;
-				int listCount = lists.Length;
+				ReadOnlyCollection<ElementLink>[] lists = myLists;
 				int prevTotal = 0;
-				for (int i = 0; i < listCount; ++i)
+				for (int i = 0; i < lists.Length; ++i)
 				{
-					IList curList = lists[i];
+					ReadOnlyCollection<ElementLink> curList = lists[i];
 					int curTotal = curList.Count;
 					if (curTotal != 0)
 					{
-						curList.CopyTo(array, prevTotal);
+						((IList)curList).CopyTo(array, prevTotal);
 						prevTotal += curTotal;
 					}
 				}
@@ -323,10 +301,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				get
 				{
-					IList[] lists = myLists;
-					int listCount = lists.Length;
+					ReadOnlyCollection<ElementLink>[] lists = myLists;
 					int total = 0;
-					for (int i = 0; i < listCount; ++i)
+					for (int i = 0; i < lists.Length; ++i)
 					{
 						total += lists[i].Count;
 					}
@@ -340,27 +317,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool ICollection<IFactConstraint>.Remove(IFactConstraint item)
 			{
 				// Not supported for read-only
-				throw new InvalidOperationException();
+				throw new NotSupportedException();
 			}
 			void ICollection<IFactConstraint>.Add(IFactConstraint item)
 			{
 				// Not supported for read-only
-				throw new InvalidOperationException();
+				throw new NotSupportedException();
 			}
 			void ICollection<IFactConstraint>.Clear()
 			{
 				// Not supported for read-only
-				throw new InvalidOperationException();
+				throw new NotSupportedException();
 			}
 			#endregion // ICollection<IFactConstraint> Implementation
 			#region IEnumerable<IFactConstraint> Implementation
 			IEnumerator<IFactConstraint> IEnumerable<IFactConstraint>.GetEnumerator()
 			{
-				IList[] lists = myLists;
-				int listCount = lists.Length;
-				for (int i = 0; i < listCount; ++i)
+				ReadOnlyCollection<ElementLink>[] lists = myLists;
+				for (int i = 0; i < lists.Length; ++i)
 				{
-					IList curList = lists[i];
+					ReadOnlyCollection<ElementLink> curList = lists[i];
 					int curTotal = curList.Count;
 					for (int j = 0; j < curTotal; ++j)
 					{
@@ -377,15 +353,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // FactConstraintCollection implementation
 		#region Customize property display
 		/// <summary>
-		/// Distinguish between an objectified and a
-		/// normal fact type.
-		/// </summary>
-		public override string GetClassName()
-		{
-			Objectification objectification = Objectification;
-			return (objectification == null || objectification.IsImplied) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
-		}
-		/// <summary>
 		/// Return a simple name instead of a name decorated with the type (the
 		/// default for a ModelElement). This is the easiest way to display
 		/// clean names in the property grid when we reference properties.
@@ -394,55 +361,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return Name;
 		}
-		/// <summary>
-		/// Return our customized name for the component name
-		/// </summary>
-		public override string GetComponentName()
-		{
-			return Name;
-		}
-		/// <summary>
-		/// Standard override. Stop the DerivationStorage property from
-		/// displaying if no derivation rule is specified
-		/// </summary>
-		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
-		{
-			Guid attributeId = metaAttrInfo.Id;
-			if (attributeId == DerivationStorageDisplayMetaAttributeGuid)
-			{
-				return DerivationRule != null;
-			}
-			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
-		}
-		/// <summary>
-		/// Standard override. Stop the Name attribute from being writable on
-		/// non-objectified facts
-		/// </summary>
-		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
-		{
-			ElementPropertyDescriptor descriptor = propertyDescriptor as ElementPropertyDescriptor;
-			if (descriptor != null && descriptor.MetaAttributeInfo.Id == NameMetaAttributeGuid)
-			{
-				return Objectification == null;
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
-		}
 		#endregion // Customize property display
 		#region MergeContext functions
+		// UNDONE: 2006-06 DSL Tools port: Is this needed any more? (It used to be named "CanAddChildElement")
 		/// <summary>
 		/// Support adding root elements and constraints directly to the design surface
 		/// </summary>
-		/// <param name="elementGroupPrototype">The object representing the serialized data being added to this FactType.</param>
-		/// <param name="protoElement">The element to add.</param>
-		/// <returns>True if addition is allowed; otherwise, false.</returns>
-		protected override bool CanAddChildElement(ElementGroupPrototype elementGroupPrototype, ProtoElementBase protoElement)
+		/// <param name="rootElement">The element to add.</param>
+		/// <param name="elementGroupPrototype">The object representing the serialized data being added to this <see cref="FactType"/>.</param>
+		/// <returns><see langword="true"/> if addition is allowed; otherwise, <see langword="false"/>.</returns>
+		protected override bool CanMerge(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
 		{
-			if (protoElement != null)
+			if (rootElement != null)
 			{
-				MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-				if (classInfo.IsDerivedFrom(UniquenessConstraint.MetaClassGuid))
+				DomainClassInfo classInfo = Store.DomainDataDirectory.FindDomainClass(rootElement.DomainClassId);
+				if (classInfo.IsDerivedFrom(UniquenessConstraint.DomainClassId))
 				{
-					return "INTERNALUNIQUENESSCONSTRAINT" == (string)elementGroupPrototype.UserData;
+					return elementGroupPrototype.UserData == ORMMetaModelToolboxHelper.InternalUniquenessConstraintUserDataKey;
 				}
 			}
 			return false;
@@ -455,7 +390,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="sourceElement">The element being added</param>
 		/// <param name="elementGroup">The element describing all of the created elements</param>
-		public override void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
+		protected override void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
 		{
 			base.MergeRelate(sourceElement, elementGroup);
 			UniquenessConstraint internalConstraint;
@@ -468,141 +403,139 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (null != (model = Model))
 				{
-					model.MergeRelate(sourceElement, elementGroup);
+					// UNDONE: 2006-06 DSL Tools port: MergeRelate is protected and can't be called from here. It is just commented out for now.
+					//model.MergeRelate(sourceElement, elementGroup);
 				}
 			}
 		}
 		#endregion // MergeContext functions
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in FactTypeChangeRule.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <param name="newValue">object</param>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private void SetNestingTypeDisplayValue(ObjectType newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			UndoManager undoManager;
-			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid ||
-				attributeGuid == DerivationRuleDisplayMetaAttributeGuid ||
-				attributeGuid == DerivationStorageDisplayMetaAttributeGuid ||
-				attributeGuid == NoteTextMetaAttributeGuid)
-			{
-				// Handled by FactTypeChangeRule
-				return;
-			}
-			else if (attributeGuid == NameMetaAttributeGuid)
-			{
-				string newName = (string)newValue;
-				if ((newName != null && newName.Length == 0) ||
-					((undoManager = Store.UndoManager).InUndo || undoManager.InRedo))
-				{
-					// We only set this in undo/redo scenarios so that the initial
-					// change on a writable property comes indirectly from the objectifying
-					// type changing its name. Anywhere that sets the Name property to
-					// put a change in the transaction log needs to set myGeneratedName independently
-					// after this call.
-					myGeneratedName = newName;
-				}
-				// Remainder handled by FactTypeChangeRule
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			// Handled by FactTypeChangeRule
 		}
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private void SetDerivationRuleDisplayValue(string newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == NestingTypeDisplayMetaAttributeGuid)
+			// Handled by FactTypeChangeRule
+		}
+		private void SetDerivationStorageDisplayValue(DerivationStorageType newValue)
+		{
+			// Handled by FactTypeChangeRule
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			// Handled by FactTypeChangeRule
+		}
+		private void SetNameValue(string newValue)
+		{
+			UndoManager undoManager;
+			if ((newValue != null && newValue.Length == 0) ||
+					((undoManager = Store.UndoManager).InUndo || undoManager.InRedo))
 			{
-				Objectification objectification = Objectification;
-				return (objectification != null && !objectification.IsImplied) ? objectification.NestingType : null;
+				// We only set this in undo/redo scenarios so that the initial
+				// change on a writable property comes indirectly from the objectifying
+				// type changing its name. Anywhere that sets the Name property to
+				// put a change in the transaction log needs to set myGeneratedName independently
+				// after this call.
+				myGeneratedName = newValue;
 			}
-			else if (attributeGuid == DerivationRuleDisplayMetaAttributeGuid)
+			// Remainder handled by FactTypeChangeRule
+		}
+		private ObjectType GetNestingTypeDisplayValue()
+		{
+			Objectification objectification = Objectification;
+			return (objectification != null && !objectification.IsImplied) ? objectification.NestingType : null;
+		}
+		private string GetDerivationRuleDisplayValue()
+		{
+			FactTypeDerivationExpression derivation = DerivationRule;
+			return (derivation == null || derivation.IsDeleted) ? String.Empty : derivation.Body;
+		}
+		private DerivationStorageType GetDerivationStorageDisplayValue()
+		{
+			FactTypeDerivationExpression derivation = DerivationRule;
+			return (derivation == null || derivation.IsDeleted) ? DerivationStorageType.Derived : derivation.DerivationStorage;
+		}
+		private string GetNoteTextValue()
+		{
+			Note currentNote = Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
+		}
+		private string GetNameValue()
+		{
+			Objectification objectification;
+			ObjectType nestingType;
+			Store store = Store;
+			if (store.InUndo || store.InRedo)
 			{
-				FactTypeDerivationExpression derivation = DerivationRule;
-
-				if (null == derivation || derivation.IsRemoved)
-				{
-					return string.Empty;
-				}
-				return derivation.Body;
+				return myGeneratedName;
 			}
-			else if (attributeGuid == DerivationStorageDisplayMetaAttributeGuid)
+			else if ((objectification = Objectification) != null && (nestingType = objectification.NestingType) != null)
 			{
-				FactTypeDerivationExpression derivation = DerivationRule;
-				if (null == derivation || derivation.IsRemoved)
-				{
-					return DerivationStorageType.Derived;
-				}
-				return derivation.DerivationStorage;
+				// Use the name from the nesting type
+				return nestingType.Name;
 			}
-			else if (attributeGuid == NoteTextMetaAttributeGuid)
+			else if (!store.TransactionManager.InTransaction)
 			{
-				Note currentNote = Note;
-				return (currentNote != null) ? currentNote.Text : "";
+				string generatedName = myGeneratedName;
+				return String.IsNullOrEmpty(generatedName) ? myGeneratedName = GenerateName() : generatedName;
 			}
-			else if (attributeGuid == NameMetaAttributeGuid)
+			else
 			{
-				Objectification objectificationLink;
-				ObjectType nestingType;
-				Store store = Store;
-				string retVal = null;
-				if (store.InUndo || store.InRedo)
+				string generatedName = myGeneratedName;
+				if ((object)generatedName != null && generatedName.Length == 0)
 				{
-					retVal = myGeneratedName;
+					// The == null here is a hack. Use myGeneratedName = null before calling to skip setting this during a transaction
+					return myGeneratedName = GenerateName();
 				}
-				else if (null != (objectificationLink = Objectification) &&
-					null != (nestingType = objectificationLink.NestingType))
-				{
-					// Use the name from the nesting type
-					retVal = nestingType.Name;
-				}
-				else if (!store.TransactionManager.InTransaction)
-				{
-					retVal = myGeneratedName;
-					if (string.IsNullOrEmpty(retVal))
-					{
-						myGeneratedName = retVal = GenerateName();
-					}
-				}
-				else
-				{
-					retVal = myGeneratedName;
-					if (retVal != null && retVal.Length == 0) // The == null here is a hack. Use myGeneratedName = null before calling to skip setting this during a transaction
-					{
-						myGeneratedName = retVal = GenerateName();
-					}
-				}
-				return (retVal != null) ? retVal : "";
+				return generatedName ?? String.Empty;
 			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+		}
+		private void OnFactTypeNameChanged()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				NameChanged = tmgr.CurrentTransaction.SequenceNumber;
+			}
+		}
+		private long GetNameChangedValue()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				// Subtract 1 so that we get a difference in the transaction log
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 1);
+			}
+			else
+			{
+				return 0L;
+			}
+		}
+		private void SetNameChangedValue(long newValue)
+		{
+			// Nothing to do, we're just trying to create a transaction log entry
 		}
 		#endregion // CustomStorage handlers
 		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
 		/// this child as participating in the 'ModelHasFactType' naming set.
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentMetaRoleGuid = ModelHasFactType.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasFactType.FactTypeCollectionMetaRoleGuid;
+			parentDomainRoleId = ModelHasFactType.ModelDomainRoleId;
+			childDomainRoleId = ModelHasFactType.FactTypeDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasRole.FactTypeMetaRoleGuid };
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasRole.FactTypeDomainRoleId };
 		/// <summary>
 		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set.
@@ -619,21 +552,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // INamedElementDictionaryRemoteParent implementation
 		#region RoleChangeRule class
 		[RuleOn(typeof(FactType))]
-		private class FactTypeChangeRule : ChangeRule
+		private sealed class FactTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Forward through the property grid property to the underlying
 			/// nesting type property
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == FactType.NestingTypeDisplayMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == FactType.NestingTypeDisplayDomainPropertyId)
 				{
 					Objectification.CreateExplicitObjectification(e.ModelElement as FactType, e.NewValue as ObjectType);
 				}
-				else if (attributeGuid == FactType.DerivationRuleDisplayMetaAttributeGuid)
+				else if (attributeGuid == FactType.DerivationRuleDisplayDomainPropertyId)
 				{
 					FactType factType = e.ModelElement as FactType;
 					string newVal = e.NewValue as string;
@@ -649,13 +582,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (null == currentRule)
 						{
-							currentRule = FactTypeDerivationExpression.CreateFactTypeDerivationExpression(factType.Store);
+							currentRule = new FactTypeDerivationExpression(factType.Store);
 							factType.DerivationRule = currentRule;
 						}
 						currentRule.Body = newVal;
 					}
 				}
-				else if (attributeGuid == FactType.DerivationStorageDisplayMetaAttributeGuid)
+				else if (attributeGuid == FactType.DerivationStorageDisplayDomainPropertyId)
 				{
 					FactType factType = e.ModelElement as FactType;
 					if (factType.DerivationRule != null)
@@ -663,7 +596,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						factType.DerivationRule.DerivationStorage = (DerivationStorageType)e.NewValue;
 					}
 				}
-				else if (attributeGuid == FactType.NoteTextMetaAttributeGuid)
+				else if (attributeGuid == FactType.NoteTextDomainPropertyId)
 				{
 					// cache the text.
 					string newText = (string)e.NewValue;
@@ -678,13 +611,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					else if (!string.IsNullOrEmpty(newText))
 					{
 						// Otherwise, create the note and set the text,
-						note = Note.CreateNote(factType.Store);
+						note = new Note(factType.Store);
 						note.Text = newText;
 						// then attach the note to the RootType.
 						factType.Note = note;
 					}
 				}
-				else if (attributeGuid == FactType.NameMetaAttributeGuid)
+				else if (attributeGuid == FactType.NameDomainPropertyId)
 				{
 					FactType factType = e.ModelElement as FactType;
 					Objectification objectificationLink;
@@ -872,12 +805,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void ValidateRequiresReading(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = true;
 				Store theStore = Store;
 				ORMModel theModel = Model;
-				ReadingOrderMoveableCollection readingOrders = ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
 				if (readingOrders.Count > 0)
 				{
 					foreach (ReadingOrder order in readingOrders)
@@ -895,7 +828,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noReadingError == null)
 					{
-						noReadingError = FactTypeRequiresReadingError.CreateFactTypeRequiresReadingError(theStore);
+						noReadingError = new FactTypeRequiresReadingError(theStore);
 						noReadingError.FactType = this;
 						noReadingError.Model = theModel;
 						noReadingError.GenerateErrorText();
@@ -909,7 +842,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noReadingError != null)
 					{
-						noReadingError.Remove();
+						noReadingError.Delete();
 					}
 				}
 			}
@@ -924,7 +857,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void ValidateRequiresInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
 			ORMModel theModel;
-			if (!IsRemoved && (null != (theModel = Model)))
+			if (!IsDeleted && (null != (theModel = Model)))
 			{
 				bool hasError = RoleCollection.Count > 1;
 				Store theStore = Store;
@@ -947,7 +880,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noUniquenessError == null)
 					{
-						noUniquenessError = FactTypeRequiresInternalUniquenessConstraintError.CreateFactTypeRequiresInternalUniquenessConstraintError(theStore);
+						noUniquenessError = new FactTypeRequiresInternalUniquenessConstraintError(theStore);
 						noUniquenessError.FactType = this;
 						noUniquenessError.Model = theModel;
 						noUniquenessError.GenerateErrorText();
@@ -959,7 +892,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (noUniquenessError != null)
 				{
-					noUniquenessError.Remove();
+					noUniquenessError.Delete();
 				}
 			}
 		}
@@ -974,10 +907,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 
 			ORMModel theModel;
-			if (!IsRemoved && (null != (theModel = Model)))
+			if (!IsDeleted && (null != (theModel = Model)))
 			{
 				Store theStore = Store;
-				RoleBaseMoveableCollection factRoles = RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
 				bool hasError = false;
 				int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
 				if (iucCount != 0)
@@ -988,7 +921,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					foreach (UniquenessConstraint ic in GetInternalConstraints<UniquenessConstraint>())
 					{
 						uint bits = 0;
-						RoleMoveableCollection constraintRoles = ic.RoleCollection;
+						LinkedElementCollection<Role> constraintRoles = ic.RoleCollection;
 						int roleCount = constraintRoles.Count;
 						for (int i = 0; i < roleCount; ++i)
 						{
@@ -1039,7 +972,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (impConstraint == null)
 					{
-						impConstraint = ImpliedInternalUniquenessConstraintError.CreateImpliedInternalUniquenessConstraintError(theStore);
+						impConstraint = new ImpliedInternalUniquenessConstraintError(theStore);
 						impConstraint.FactType = this;
 						impConstraint.Model = theModel;
 						impConstraint.GenerateErrorText();
@@ -1051,7 +984,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (impConstraint != null)
 				{
-					impConstraint.Remove();
+					impConstraint.Delete();
 				}
 			}
 		}
@@ -1060,7 +993,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void DelayValidateFactTypeNamePartChanged(ModelElement element)
 		{
 			FactType factType = element as FactType;
-			if (!factType.IsRemoved)
+			if (!factType.IsDeleted)
 			{
 				Store store = element.Store;
 				string oldGeneratedName = factType.myGeneratedName;
@@ -1074,7 +1007,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Objectification objectificationLink;
 				if (null != (objectificationLink = factType.Objectification) &&
 					null != (nestingType = objectificationLink.NestingType) &&
-					!nestingType.IsRemoved)
+					!nestingType.IsDeleted)
 				{
 					newGeneratedName = factType.GenerateName();
 					haveNewName = true;
@@ -1082,7 +1015,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (nestingType.Name == oldGeneratedName)
 						{
-							IDictionary contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 							RuleManager ruleManager = store.RuleManager;
 							bool ruleDisabled = false;
 							try
@@ -1179,7 +1112,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (raiseEvent)
 				{
-					store.RaiseCustomModelEvent(store, FactTypeNameChangedEvent.CustomModelEventId, new FactTypeNameChangedEventArgs(factType));
+					factType.OnFactTypeNameChanged();
 				}
 			}
 		}
@@ -1189,19 +1122,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private string GenerateName()
 		{
 			string retVal = "";
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				// Grab the first reading with no errors from the first reading order
 				// Note that the first reading in the first reading order is considered
 				// to be the default reading order
-				RoleBaseMoveableCollection roles = null;
+				LinkedElementCollection<RoleBase> roles = null;
 				string formatText = null;
-				ReadingOrderMoveableCollection readingOrders = ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
 				int readingOrdersCount = readingOrders.Count;
 				for (int i = 0; i < readingOrdersCount && formatText == null; ++i)
 				{
 					ReadingOrder order = readingOrders[i];
-					ReadingMoveableCollection readings = order.ReadingCollection;
+					LinkedElementCollection<Reading> readings = order.ReadingCollection;
 					int readingsCount = readings.Count;
 					for (int j = 0; j < readingsCount; ++j)
 					{
@@ -1238,7 +1171,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return retVal;
 		}
-		private string myGeneratedName = "";
+		private string myGeneratedName = String.Empty;
 		/// <summary>
 		/// The auto-generated name for this fact type. Based on the
 		/// first reading in the first reading order.
@@ -1255,7 +1188,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (Store.TransactionManager.InTransaction)
 						{
-							myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
+							myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
 							Name = retVal;
 						}
 						else
@@ -1264,7 +1197,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				return (retVal != null) ? retVal : "";
+				return retVal ?? String.Empty;
 			}
 		}
 		#endregion // Automatic Name Generation
@@ -1274,9 +1207,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// validation when roles are added and removed.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class FactTypeHasRoleAddRule : AddRule
+		private sealed class FactTypeHasRoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 				ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
@@ -1288,12 +1221,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// validation when roles are added and removed.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class FactTypeHasRoleRemoveRule : RemoveRule
+		private sealed class FactTypeHasRoleDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-				if (!factType.IsRemoved)
+				if (!factType.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
@@ -1304,14 +1237,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class ModelHasInternalConstraintAddRuleModelValidation : AddRule
+		private sealed class ModelHasInternalConstraintAddRuleModelValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				if (link.SetConstraintCollection.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+				if (link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 				{
-					FactType fact = link.FactTypeCollection;
+					FactType fact = link.FactType;
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
@@ -1321,14 +1254,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class ModelHasInternalConstraintRemoveRuleModelValidation : RemoveRule
+		private sealed class ModelHasInternalConstraintDeleteRuleModelValidation : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				FactType fact = link.FactTypeCollection;
-				if (!fact.IsRemoved &&
-					link.SetConstraintCollection.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+				FactType fact = link.FactType;
+				if (!fact.IsDeleted &&
+					link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 				{
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
@@ -1336,16 +1269,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(UniquenessConstraint))]
-		private class InternalUniquenessConstraintChangeRule : ChangeRule
+		private sealed class InternalUniquenessConstraintChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == UniquenessConstraint.ModalityMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
 				{
 					UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
-					FactTypeMoveableCollection facts;
-					if (!constraint.IsRemoved &&
+					LinkedElementCollection<FactType> facts;
+					if (!constraint.IsDeleted &&
 						constraint.IsInternal &&
 						1 == (facts = constraint.FactTypeCollection).Count)
 					{
@@ -1357,13 +1290,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class InternalConstraintCollectionHasConstraintAddedRule : AddRule
+		private sealed class InternalConstraintCollectionHasConstraintAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as UniquenessConstraint;
-				FactTypeMoveableCollection facts;
+				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+				LinkedElementCollection<FactType> facts;
 				if (constraint != null &&
 					constraint.IsInternal &&
 					1 == (facts = constraint.FactTypeCollection).Count)
@@ -1374,19 +1307,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class InternalConstraintCollectionHasConstraintRemovedRule : RemoveRule
+		private sealed class InternalConstraintCollectionHasConstraintDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as UniquenessConstraint;
-				FactTypeMoveableCollection facts;
+				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+				LinkedElementCollection<FactType> facts;
 				FactType fact;
 				if (constraint != null &&
-					!constraint.IsRemoved &&
+					!constraint.IsDeleted &&
 					constraint.IsInternal &&
 					1 == (facts = constraint.FactTypeCollection).Count &&
-					!(fact = facts[0]).IsRemoved)
+					!(fact = facts[0]).IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
@@ -1398,14 +1331,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Calls the validation of all FactType related errors
 		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))]
-		private class ModelHasFactTypeAddRuleModelValidation : AddRule
+		private sealed class ModelHasFactTypeAddRuleModelValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasFactType link = e.ModelElement as ModelHasFactType;
 				if (link != null)
 				{
-					FactType fact = link.FactTypeCollection;
+					FactType fact = link.FactType;
 					if (fact != null)
 					{
 						fact.DelayValidateErrors();
@@ -1418,9 +1351,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasReadingOrder))]
-		private class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
+		private sealed class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
 				ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
@@ -1431,12 +1364,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasReadingOrder))]
-		private class FactTypeHasReadingOrderRemovedRuleModelValidation : RemoveRule
+		private sealed class FactTypeHasReadingOrderDeleteRuleModelValidation : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
-				if (!factType.IsRemoved)
+				if (!factType.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
@@ -1448,9 +1381,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading))]
-		private class ReadingOrderHasReadingAddRuleModelValidation : AddRule
+		private sealed class ReadingOrderHasReadingAddRuleModelValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as ReadingOrderHasReading).ReadingOrder.FactType;
 				if (factType != null)
@@ -1464,15 +1397,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading))]
-		private class ReadingOrderHasReadingRemoveRuleModelValidation : RemoveRule
+		private sealed class ReadingOrderHasReadingDeleteRuleModelValidation : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ReadingOrder ord = (e.ModelElement as ReadingOrderHasReading).ReadingOrder;
 				FactType factType;
-				if (!ord.IsRemoved &&
+				if (!ord.IsDeleted &&
 					null != (factType = ord.FactType) &&
-					!factType.IsRemoved)
+					!factType.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
@@ -1480,21 +1413,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(Reading))]
-		private class ValidateFactNameForReadingChange : ChangeRule
+		private sealed class ValidateFactNameForReadingChange : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == Reading.TextMetaAttributeGuid)
+				if (e.DomainProperty.Id == Reading.TextDomainPropertyId)
 				{
 					Reading reading = e.ModelElement as Reading;
 					ReadingOrder order;
 					FactType factType;
 					if (null != reading &&
-						!reading.IsRemoved &&
+						!reading.IsDeleted &&
 						null != (order = reading.ReadingOrder) &&
-						!order.IsRemoved &&
+						!order.IsDeleted &&
 						null != (factType = order.FactType) &&
-						!factType.IsRemoved)
+						!factType.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
@@ -1502,14 +1435,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(FactTypeHasReadingOrder))]
-		private class ValidateFactNameForReadingOrderReorder : RolePlayerPositionChangeRule
+		private sealed class ValidateFactNameForReadingOrderReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
-				if (e.SourceMetaRole.Id == FactTypeHasReadingOrder.FactTypeMetaRoleGuid)
+				if (e.SourceDomainRole.Id == FactTypeHasReadingOrder.FactTypeDomainRoleId)
 				{
 					FactType factType = (FactType)e.SourceElement;
-					if (!factType.IsRemoved)
+					if (!factType.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
@@ -1517,17 +1450,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ReadingOrderHasReading))]
-		private class ValidateFactNameForReadingReorder : RolePlayerPositionChangeRule
+		private sealed class ValidateFactNameForReadingReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
-				if (e.SourceMetaRole.Id == ReadingOrderHasReading.ReadingOrderMetaRoleGuid)
+				if (e.SourceDomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId)
 				{
 					ReadingOrder order = (ReadingOrder)e.SourceElement;
 					FactType factType;
-					if (!order.IsRemoved &&
+					if (!order.IsDeleted &&
 						null != (factType = order.FactType) &&
-						!factType.IsRemoved)
+						!factType.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
@@ -1535,18 +1468,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class ValidateFactNameForRolePlayerAdded : AddRule
+		private sealed class ValidateFactNameForRolePlayerAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				FactType factType = link.PlayedRoleCollection.FactType;
+				FactType factType = link.PlayedRole.FactType;
 				if (factType != null)
 				{
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 				RoleProxy proxy;
-				if (null != (proxy = link.PlayedRoleCollection.Proxy) &&
+				if (null != (proxy = link.PlayedRole.Proxy) &&
 					null != (factType = proxy.FactType))
 				{
 					ORMMetaModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
@@ -1554,14 +1487,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class ValidateFactNameForRolePlayerRemove : RemoveRule
+		private sealed class ValidateFactNameForRolePlayerDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				FactType factType;
-				if (!role.IsRemoved)
+				if (!role.IsDeleted)
 				{
 					if (null != (factType = role.FactType))
 					{
@@ -1577,17 +1510,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectType))]
-		private class ValidateFactNameForObjectTypeNameChange : ChangeRule
+		private sealed class ValidateFactNameForObjectTypeNameChange : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == ObjectType.NameMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == ObjectType.NameDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					if (!objectType.IsRemoved)
+					if (!objectType.IsDeleted)
 					{
-						RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+						LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 						int playedRolesCount = playedRoles.Count;
 						for (int i = 0; i < playedRolesCount; ++i)
 						{
@@ -1618,8 +1551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										error.GenerateErrorText();
 									}
 								}
-								Store store = nestedFact.Store;
-								store.RaiseCustomModelEvent(store, FactTypeNameChangedEvent.CustomModelEventId, new FactTypeNameChangedEventArgs(nestedFact));
+								nestedFact.OnFactTypeNameChanged();
 							}
 						}
 					}
@@ -1643,7 +1575,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.RemoveImpliedInternalUniquenessConstraintsTransactionName))
 			{
-				RoleBaseMoveableCollection factRoles = RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
 				UniquenessConstraint[] iuc = new UniquenessConstraint[iucCount];
 				const uint deonticBit = 1U << 31;
 				uint[] roleBits = new uint[iucCount];
@@ -1652,7 +1584,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					iuc[index] = ic;
 					uint bits = 0;
-					RoleMoveableCollection constraintRoles = ic.RoleCollection;
+					LinkedElementCollection<Role> constraintRoles = ic.RoleCollection;
 					int roleCount = constraintRoles.Count;
 					for (int i = 0; i < roleCount; ++i)
 					{
@@ -1698,14 +1630,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// Found a duplicate. Remove the deontic one
 								if (0 != (left & deonticBit))
 								{
-									leftIUC.Remove();
+									leftIUC.Delete();
 									iuc[i] = null;
 									left = 0;
 									break;
 								}
 								else
 								{
-									rightIUC.Remove();
+									rightIUC.Delete();
 									iuc[j] = null;
 								}
 							}
@@ -1717,7 +1649,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// found a duplicate.
 								// Remove the one on the right so we can
 								// keep processing this element
-								rightIUC.Remove();
+								rightIUC.Delete();
 								iuc[j] = null;
 							}
 						}
@@ -1746,7 +1678,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// left implies right unless left is deontic
 								if (0 == (left & deonticBit))
 								{
-									rightIUC.Remove();
+									rightIUC.Delete();
 									iuc[j] = null;
 								}
 							}
@@ -1755,7 +1687,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// right implies left unless right is deontic
 								if (0 == (right & deonticBit))
 								{
-									leftIUC.Remove();
+									leftIUC.Delete();
 									iuc[i] = null;
 									break;
 								}
@@ -1766,13 +1698,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (compare == left)
 							{
 								// left implies right
-								rightIUC.Remove();
+								rightIUC.Delete();
 								iuc[j] = null;
 							}
 							else if (compare == right)
 							{
 								// right implies left
-								leftIUC.Remove();
+								leftIUC.Delete();
 								iuc[i] = null;
 								break;
 							}
@@ -1812,7 +1744,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return myFact;
 				}
 			}
-			private RoleMoveableCollection RoleCollection
+			private LinkedElementCollection<Role> RoleCollection
 			{
 				get
 				{
@@ -1861,7 +1793,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return myFact;
 				}
 			}
-			private RoleMoveableCollection RoleCollection
+			private LinkedElementCollection<Role> RoleCollection
 			{
 				get
 				{
@@ -1903,7 +1835,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return myFact;
 				}
 			}
-			private RoleMoveableCollection RoleCollection
+			private LinkedElementCollection<Role> RoleCollection
 			{
 				get
 				{
@@ -1926,7 +1858,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
 		{
-			SetConstraintMoveableCollection setConstraints = SetConstraintCollection;
+			LinkedElementCollection<SetConstraint> setConstraints = SetConstraintCollection;
 			int setConstraintCount = setConstraints.Count;
 			if (setConstraintCount == 0)
 			{
@@ -1938,7 +1870,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool lookForDefault = !isNegative && Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization;
 			bool lookForCombined = !isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
 
-			RoleBaseMoveableCollection factRoles = RoleCollection;
+			LinkedElementCollection<RoleBase> factRoles = RoleCollection;
 			if (2 == factRoles.Count)
 			{
 				// UNDONE: Internal verbalization of proxy roles
@@ -1984,7 +1916,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IConstraint iConstraint = constraint.Constraint;
 					if (iConstraint.ConstraintIsInternal)
 					{
-						RoleMoveableCollection constraintRoles = constraint.RoleCollection;
+						LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
 						if (constraintRoles.Count == 1)
 						{
 							// Handle singles specially at the end so that
@@ -1993,7 +1925,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							Role constraintRole = constraintRoles[0];
 							for (int iRole = 0; iRole < primaryRoleCount; ++iRole)
 							{
-								if (object.ReferenceEquals(constraintRole, roles[iRole]))
+								if (constraintRole == roles[iRole])
 								{
 									int modalityIndex = (constraint.Modality == ConstraintModality.Alethic) ? 0 : 1;
 									int constraintIndex = (iConstraint.ConstraintType == ConstraintType.InternalUniqueness) ? 0 : 1;
@@ -2028,7 +1960,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					// Pick up single role internal constraints from the proxy target role and
 					// add them to the second column
-					ConstraintRoleSequenceMoveableCollection sequences = proxy.TargetRole.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = proxy.TargetRole.ConstraintRoleSequenceCollection;
 					int sequenceCount = sequences.Count;
 					for (int i = 0; i < sequenceCount; ++i)
 					{
@@ -2191,7 +2123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return myFact;
 				}
 			}
-			private RoleMoveableCollection RoleCollection
+			private LinkedElementCollection<Role> RoleCollection
 			{
 				get
 				{
@@ -2208,100 +2140,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // DefaultBinaryMissingUniquenessVerbalizer
 	}
-	#region FactTypeNameChanged Custom Model Event
-	/// <summary>
-	/// Event args generated when the derived FactType.Name property
-	/// has changed. Note that the Name property on a FactType can
-	/// be expensive to generate, so it is generated on request
-	/// and not with this event.
-	/// </summary>
-	public class FactTypeNameChangedEventArgs : CustomModelEventArgs
-	{
-		private FactType myFactType;
-		/// <summary>
-		/// Create a FactTypeNameChangedEventArgs
-		/// </summary>
-		/// <param name="factType">The modified factType</param>
-		public FactTypeNameChangedEventArgs(FactType factType) : base(factType.Store, FactTypeNameChangedEvent.CustomModelEventId)
-		{
-			myFactType = factType;
-		}
-		private FactTypeNameChangedEventArgs(FactTypeNameChangedEventArgs other)
-			: base(other)
-		{
-			myFactType = other.myFactType;
-		}
-		/// <summary>
-		/// Standard required override
-		/// </summary>
-		public override CustomModelEventArgs CreateUndoArgs()
-		{
-			return new FactTypeNameChangedEventArgs(this);
-		}
-		/// <summary>
-		/// The modified FactType
-		/// </summary>
-		public FactType FactType
-		{
-			get
-			{
-				return myFactType;
-			}
-		}
-	}
-	/// <summary>
-	/// A custom model event raised when a the Name of a FactType
-	/// changes. Allows listeners to listen to a single event
-	/// instead of the dozen or so that can affect the derived
-	/// name of a fact type.
-	/// </summary>
-	[CustomModelEvent(typeof(ORMMetaModel), "F450CFA1-DEE0-41E4-B75B-31F29890986D", typeof(FactTypeNameChangedEventArgs))]
-	public class FactTypeNameChangedEvent : CustomModelEvent
-	{
-		/// <summary>
-		/// The custom event id
-		/// </summary>
-		public static Guid CustomModelEventId = new Guid("F450CFA1-DEE0-41E4-B75B-31F29890986D");
-		/// <summary>
-		/// Custruct a new event
-		/// </summary>
-		/// <param name="store">Standard required parameter</param>
-		public FactTypeNameChangedEvent(Store store) : base(store)
-		{
-		}
-		/// <summary>
-		/// The type of returned arguments
-		/// </summary>
-		public sealed override Type ArgumentsType
-		{
-			get
-			{
-				return typeof(FactTypeNameChangedEventArgs);
-			}
-		}
-		/// <summary>
-		/// The name of this event
-		/// </summary>
-		public sealed override string Name
-		{
-			get
-			{ 
-				// Not localized
-				return "FactTypeNamedChangedEvent";
-			}
-		}
-		/// <summary>
-		/// The Guid uniquely identifying this custom event
-		/// </summary>
-		public sealed override Guid Id
-		{
-			get
-			{
-				return CustomModelEventId;
-			}
-		}
-	}
-	#endregion // FactTypeNameChanged Custom Model Event
 	#region FactType Model Validation Errors
 
 	#region class FactTypeRequiresReadingError
@@ -2449,21 +2287,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactTypeDerivationExpression
 	{
 		[RuleOn(typeof(FactTypeDerivationExpression))]
-		private class FactTypeDerivationExpressionChangeRule : ChangeRule
+		private sealed class FactTypeDerivationExpressionChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 
 			/// if Body is empty
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == FactTypeDerivationExpression.BodyMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == FactTypeDerivationExpression.BodyDomainPropertyId)
 				{
 					FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
-					if (!ftde.IsRemoved && string.IsNullOrEmpty(ftde.Body))
+					if (!ftde.IsDeleted && string.IsNullOrEmpty(ftde.Body))
 					{
-						ftde.Remove();
+						ftde.Delete();
 					}
 				}
 			}

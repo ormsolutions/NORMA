@@ -73,7 +73,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// The source and target shapes are allowed here so we can display instructions in CanCreateConnection
 					retVal = targetShapeElement is FactTypeShape ||
 						targetShapeElement is SubtypeLink ||
-						object.ReferenceEquals(sourceShapeElement, targetShapeElement);
+						sourceShapeElement == targetShapeElement;
 				}
 				return retVal;
 			}
@@ -132,9 +132,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// Add a new role set
 						if (null == constraintRoleSequenceBeingEdited)
 						{
-							SetComparisonConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
-							SetComparisonConstraintRoleSequence roleSequence = SetComparisonConstraintRoleSequence.CreateSetComparisonConstraintRoleSequence(mcConstraint.Store);
-							RoleMoveableCollection roles = roleSequence.RoleCollection;
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcConstraint.RoleSequenceCollection;
+							SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(mcConstraint.Store);
+							LinkedElementCollection<Role> roles = roleSequence.RoleCollection;
 							for (int i = 0; i < rolesCount; ++i)
 							{
 								roles.Add(selectedRoles[i]);
@@ -157,7 +157,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// Note that we don't just blow away the collection here, there are too
 						// many side effects (such as removing the preferred identifier when a compatible
 						// link is added)
-						RoleMoveableCollection roles = modifyRoleSequence.RoleCollection;
+						LinkedElementCollection<Role> roles = modifyRoleSequence.RoleCollection;
 						int existingRolesCount = roles.Count;
 						for (int i = existingRolesCount - 1; i >= 0; --i)
 						{
@@ -423,7 +423,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactType factType = role.FactType;
 			if (factType != null)
 			{
-				PresentationElementMoveableCollection pels = factType.PresentationRolePlayers;
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(factType);
 				int pelsCount = pels.Count;
 				for (int i = 0; i < pelsCount; ++i)
 				{
@@ -546,7 +546,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			set
 			{
 				myConstraintRoleSequence = value;
-				RoleMoveableCollection roleCollection = myConstraintRoleSequence.RoleCollection;
+				LinkedElementCollection<Role> roleCollection = myConstraintRoleSequence.RoleCollection;
 				IList<Role> selectedRoleCollection = SelectedRoleCollection;
 				IList<Role> initialRoles = InitialRoles;
 				foreach (Role r in roleCollection)
@@ -669,11 +669,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="store">Store</param>
 		protected virtual void AddStoreEvents(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ExternalConstraintShape.MetaClassGuid);
-			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ExternalConstraintShapeAddedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ExternalConstraintShape.DomainClassId);
+			eventManager.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent));
 		}
 		/// <summary>
 		/// Removed any events added during the AddStoreEvents methods
@@ -681,11 +681,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="store">Store</param>
 		protected virtual void RemoveStoreEvents(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ExternalConstraintShape.MetaClassGuid);
-			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ExternalConstraintShapeAddedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ExternalConstraintShape.DomainClassId);
+			eventManager.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ExternalConstraintShapeAddedEvent));
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated

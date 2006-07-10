@@ -20,18 +20,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
+using System.Xml;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.ArtifactMapper;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Framework;
 using EnvDTE;
-using Microsoft.VisualStudio.Shell.Interop;
-using System.Xml;
-using System.Reflection;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -76,12 +75,10 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
-		/// Standard DocData constructor, called by the editor factory
+		/// Standard <see cref="DocData"/> constructor, called by <see cref="Microsoft.VisualStudio.Package.EditorFactory"/>.
 		/// </summary>
-		/// <param name="serviceProvider">IServiceProvider</param>
-		/// <param name="editorFactory">EditorFactory</param>
-		public ORMDesignerDocData(IServiceProvider serviceProvider, EditorFactory editorFactory)
-			: base(serviceProvider, editorFactory)
+		public ORMDesignerDocData(IServiceProvider serviceProvider, Guid editorId)
+			: base(serviceProvider, editorId)
 		{
 		}
 		/// <summary>
@@ -99,8 +96,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Return array of types of the substores used by the designer
 		/// </summary>
-		/// <returns></returns>
-		protected override System.Type[] GetSubStores(object storeKey)
+		protected override IList<Type> GetDomainModels(object storeKey)
 		{
 			if (storeKey == PrimaryStoreKey)
 			{
@@ -113,12 +109,12 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					count += extensionSubstores.Count;
 				}
-				Type[] retVal = new Type[count];
-				retVal[0] = typeof(CoreDesignSurface);
-				myStandardSubStores.Values.CopyTo(retVal, 1);
+				List<Type> retVal = new List<Type>(count);
+				retVal.Add(typeof(CoreDesignSurface));
+				retVal.AddRange(myStandardSubStores.Values);
 				if (extensionSubstores != null)
 				{
-					extensionSubstores.Values.CopyTo(retVal, knownCount);
+					retVal.AddRange(extensionSubstores.Values);
 				}
 				return retVal;
 			}
@@ -192,12 +188,12 @@ namespace Neumont.Tools.ORM.Shell
 
 					if (isReload)
 					{
-						foreach (DocView view in DocViews)
+						foreach (ModelingDocView view in DocViews)
 						{
-							TabbedDiagramDocView tabbedView = view as TabbedDiagramDocView;
-							if (tabbedView != null)
+							MultiDiagramDocView multiDiagramDocView = view as MultiDiagramDocView;
+							if (multiDiagramDocView != null)
 							{
-								tabbedView.Diagrams.Clear();
+								multiDiagramDocView.RemoveAllDiagrams();
 							}
 						}
 						// Remove items from the ErrorList (TaskList) when isReload is true.
@@ -254,7 +250,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void Load(string fileName, bool isReload)
 		{
-			if (fileName == null)
+			if ((object)fileName == null)
 			{
 				return;
 			}
@@ -273,7 +269,7 @@ namespace Neumont.Tools.ORM.Shell
 				(new ORMSerializer(store)).Load(stream, fixupManager);
 			}
 
-			foreach (ORMDiagram diagram in store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true))
+			foreach (ORMDiagram diagram in store.ElementDirectory.FindElements<ORMDiagram>(true))
 			{
 				if (diagram.AutoPopulateShapes)
 				{
@@ -288,8 +284,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="fileName"></param>
 		protected override void Save(string fileName)
 		{
+			// UNDONE: 2006-06 DSL Tools port: Synchronize() method doesn't appear to exist any more.
 			// sync the model to any artifacts.
-			Synchronize();
+			//Synchronize();
 
 			// Save it out.
 #if OLDSERIALIZE
@@ -335,21 +332,14 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Set the document scope to ProjectScope for the element provider mechanism
-		/// </summary>
-		protected override IArtifactScope DocumentScope
-		{
-			get { return this.ProjectScope; }
-		}
-		/// <summary>
 		/// Defer event handling to the loaded models
 		/// </summary>
 		protected override void AddPreLoadModelingEventHandlers()
 		{
 			base.AddPreLoadModelingEventHandlers();
-			foreach (object subStore in Store.SubStores.Values)
+			foreach (DomainModel domainModel in Store.DomainModels)
 			{
-				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
+				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
 				if (subscriber != null)
 				{
 					subscriber.AddPreLoadModelingEventHandlers();
@@ -364,9 +354,9 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void AddPostLoadModelingEventHandlers()
 		{
 			base.AddPostLoadModelingEventHandlers();
-			foreach (object subStore in Store.SubStores.Values)
+			foreach (DomainModel domainModel in Store.DomainModels)
 			{
-				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
+				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
 				if (subscriber != null)
 				{
 					subscriber.AddPostLoadModelingEventHandlers();
@@ -386,9 +376,9 @@ namespace Neumont.Tools.ORM.Shell
 			bool addedPreLoad = GetFlag(PrivateFlags.AddedPreLoadEvents);
 			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
 			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents, false);
-			foreach (object subStore in Store.SubStores.Values)
+			foreach (DomainModel domainModel in Store.DomainModels)
 			{
-				IORMModelEventSubscriber subscriber = subStore as IORMModelEventSubscriber;
+				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
 				if (subscriber != null)
 				{
 					subscriber.RemoveModelingEventHandlers(addedPreLoad, addedPostLoad, false);
@@ -437,34 +427,34 @@ namespace Neumont.Tools.ORM.Shell
 		private void AddErrorReportingEvents()
 		{
 			Store store = Store;
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ModelHasError.MetaRelationshipGuid);
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ModelHasError.DomainClassId);
 
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ErrorAddedEvent));
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent));
 
-			classInfo = dataDirectory.FindMetaClass(ModelError.MetaClassGuid);
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ErrorRemovedEvent));
-			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ErrorChangedEvent));
+			classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent));
+			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent));
 		}
 		private void RemoveErrorReportingEvents()
 		{
 			Store store = Store;
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ModelHasError.MetaRelationshipGuid);
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ModelHasError.DomainClassId);
 
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ErrorAddedEvent));
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent));
 
-			classInfo = dataDirectory.FindMetaClass(ModelError.MetaClassGuid);
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ErrorRemovedEvent));
-			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ErrorChangedEvent));
+			classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent));
+			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent));
 		}
 		private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ModelError.AddToTaskProvider(e.ModelElement as ModelHasError);
 		}
-		private void ErrorRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private void ErrorRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ModelError error = e.ModelElement as ModelError;
 			IORMToolTaskItem taskData = error.TaskData as IORMToolTaskItem;
@@ -474,7 +464,7 @@ namespace Neumont.Tools.ORM.Shell
 				(this as IORMToolServices).TaskProvider.RemoveTask(taskData);
 			}
 		}
-		private void ErrorChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private void ErrorChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			ModelError error = e.ModelElement as ModelError;
 			IORMToolTaskItem taskData = error.TaskData as IORMToolTaskItem;
@@ -490,19 +480,19 @@ namespace Neumont.Tools.ORM.Shell
 			// Add event handlers to cater for undo/redo and initial
 			// add when multiple windows are open
 			Store store = Store;
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(AddOrRemoveTabForEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(Diagram.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(AddOrRemoveTabForEvent));
 		}
 		private void RemoveTabRestoreEvents()
 		{
 			// Remove event handlers added by AddTabRestoreEvents
 			Store store = Store;
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(AddOrRemoveTabForEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(Diagram.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(AddOrRemoveTabForEvent));
 		}
 		private void AddOrRemoveTabForEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -510,13 +500,13 @@ namespace Neumont.Tools.ORM.Shell
 			Store store = diagram.Store;
 			IMonitorSelectionService monitorSelection = (IMonitorSelectionService)ServiceProvider.GetService(typeof(IMonitorSelectionService));
 			MultiDiagramDocView activeView = (monitorSelection != null) ? (monitorSelection.CurrentDocumentView as MultiDiagramDocView) : null;
-			foreach (DocView view in DocViews)
+			foreach (ModelingDocView view in DocViews)
 			{
 				MultiDiagramDocView multiDocView = view as MultiDiagramDocView;
 				if (multiDocView != null)
 				{
 					// Activate the tab only if this is the active window.
-					multiDocView.AddDiagram(diagram, object.ReferenceEquals(multiDocView, activeView));
+					multiDocView.AddDiagram(diagram, multiDocView == activeView);
 				}
 			}
 		}
@@ -540,9 +530,9 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				foreach (object subStore in Store.SubStores.Values)
+				foreach (DomainModel domainModel in Store.DomainModels)
 				{
-					IDeserializationFixupListenerProvider provider = subStore as IDeserializationFixupListenerProvider;
+					IDeserializationFixupListenerProvider provider = domainModel as IDeserializationFixupListenerProvider;
 					if (provider != null)
 					{
 						foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
@@ -556,8 +546,8 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // ORMDesignerDocData specific
 		#region Automation support
 		/// <summary>
-		/// Implements IExtensibleObject.GetAutomationObject. Returns the ORM2 stream for
-		/// the "ORM2Stream" object name and the this object for everything else.
+		/// Implements IExtensibleObject.GetAutomationObject. Returns the ORM XML stream for
+		/// the "ORMXmlStream" object name and the this object for everything else.
 		/// </summary>
 		protected void GetAutomationObject(string name, IExtensibleObjectSite parent, out object result)
 		{

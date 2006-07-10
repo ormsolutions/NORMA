@@ -17,8 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Design;
 
 namespace ExtensionExample
 {
@@ -30,7 +31,7 @@ namespace ExtensionExample
 	/// The user is allowed to specify a value that is not in the drop down list by typing it in.
 	/// If the current value is not in the list of predefined values, it is added to the drop down list.
 	/// </remarks>
-	public class TestElementPicker : Neumont.Tools.ORM.ObjectModel.Editors.ElementPicker
+	public class TestElementPicker : Neumont.Tools.ORM.Design.ElementPicker
 	{
 		private static readonly string[] predefinedValues =
 			new string[] { "Default value", "Not the default value", "Another value" };
@@ -84,12 +85,11 @@ namespace ExtensionExample
 		/// </summary>
 		public override void OnCreated()
 		{
-			int randomNumber = -1;
+			int randomNumber;
 			lock (random)
 			{
 				randomNumber = random.Next(0, 4);
 			}
-			System.Diagnostics.Debug.Assert(randomNumber != -1);
 			switch (randomNumber)
 			{
 				case 0:
@@ -101,13 +101,13 @@ namespace ExtensionExample
 					// including it as a possible return value in order to test the handling
 					// of invalid Guids. The result in this case should be the same as if we specified
 					// Guid.Empty.
-					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.MetaClassGuid;
+					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.DomainClassId;
 					break;
 				case 2:
-					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.TestPropertyMetaAttributeGuid;
+					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.TestPropertyDomainPropertyId;
 					break;
 				case 3:
-					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.CustomEnumMetaAttributeGuid;
+					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.CustomEnumDomainPropertyId;
 					break;
 			}
 		}
@@ -115,7 +115,7 @@ namespace ExtensionExample
 		#region IORMPropertyExtension Members
 
 		/// <summary>
-		/// Implements <see cref="IORMPropertyExtension.ExtensionPropertySettings"/>/
+		/// Implements <see cref="IORMPropertyExtension.ExtensionPropertySettings"/>.
 		/// </summary>
 		/// <value>
 		/// Show this extension's properties both as a single expandable property and as individual
@@ -169,15 +169,10 @@ namespace ExtensionExample
 		/// <summary>
 		/// Add our custom extension properties to a role when it is added to a fact type
 		/// </summary>
-		public override void ElementAdded(ElementAddedEventArgs e)
+		public sealed override void ElementAdded(ElementAddedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			IORMExtendableElement extendableElement = link.RoleCollection as IORMExtendableElement;
-			if (extendableElement != null)
-			{
-				MyCustomExtensionElement customElement = MyCustomExtensionElement.CreateMyCustomExtensionElement(e.ModelElement.Store);
-				ExtensionElementUtility.AddExtensionElement(extendableElement, customElement);
-			}
+			FactTypeHasRole factTypeHasRole = (FactTypeHasRole)e.ModelElement;
+			ExtensionElementUtility.AddExtensionElement(factTypeHasRole.Role, new MyCustomExtensionElement(sactTypeHasRole.Store));
 		}
 	}
 	#endregion // ExtensionAddRule class

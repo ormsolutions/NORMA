@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.ORM.ObjectModel;
+
 // Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -20,19 +21,18 @@ using Neumont.Tools.ORM.ObjectModel;
 // *                                                                          *
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
+
 namespace Neumont.Tools.ORM.OIALModel
 {
 	#region OIALMetaModel model serialization
-	[MetaModelDisplayName(typeof(OIALMetaModel), "DisplayName")]
-	[MetaModelDescription(typeof(OIALMetaModel), "Description")]
-	public partial class OIALMetaModel : IORMCustomSerializedMetaModel
+	public partial class OIALMetaModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// The default XmlNamespace associated with the 'OIALMetaModel' extension model
 		/// </summary>
-		public const string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/OIALModel";
+		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/OIALModel";
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.DefaultElementPrefix
+		/// Implements IORMCustomSerializedDomainModel.DefaultElementPrefix
 		/// </summary>
 		protected static string DefaultElementPrefix
 		{
@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				return "oial";
 			}
 		}
-		string IORMCustomSerializedMetaModel.DefaultElementPrefix
+		string IORMCustomSerializedDomainModel.DefaultElementPrefix
 		{
 			get
 			{
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.GetCustomElementNamespaces
+		/// Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces
 		/// </summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
@@ -59,52 +59,52 @@ namespace Neumont.Tools.ORM.OIALModel
 			ret[0, 2] = "OIALModel.xsd";
 			return ret;
 		}
-		string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
+		string[,] IORMCustomSerializedDomainModel.GetCustomElementNamespaces()
 		{
 			return GetCustomElementNamespaces();
 		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.ShouldSerializeMetaClass
+		/// Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass
 		/// </summary>
-		protected bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
 			return true;
 		}
-		bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		bool IORMCustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			return this.ShouldSerializeMetaClass(store, classInfo);
+			return this.ShouldSerializeDomainClass(store, classInfo);
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.GetRootElementClasses
+		/// Implements IORMCustomSerializedDomainModel.GetRootElementClasses
 		/// </summary>
 		protected static Guid[] GetRootElementClasses()
 		{
 			return new Guid[]{
-				OIALModel.MetaClassGuid};
+				OIALModel.DomainClassId};
 		}
-		Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
+		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
 			return GetRootElementClasses();
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.MapRootElement
+		/// Implements IORMCustomSerializedDomainModel.MapRootElement
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
 			if ((elementName == "Model") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-01/OIALModel"))
 			{
-				return OIALModel.MetaClassGuid;
+				return OIALModel.DomainClassId;
 			}
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedMetaModel.MapRootElement(string xmlNamespace, string elementName)
+		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
 		{
 			return MapRootElement(xmlNamespace, elementName);
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedMetaModel.MapClassName
+		/// Implements IORMCustomSerializedDomainModel.MapClassName
 		/// </summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
@@ -119,13 +119,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
-				classNameMap.Add("Model", OIALModel.MetaClassGuid);
-				classNameMap.Add("ChildSequenceConstraint", ChildSequenceConstraint.MetaClassGuid);
-				classNameMap.Add("ChildSequence", ChildSequence.MetaClassGuid);
-				classNameMap.Add("InformationTypeFormat", InformationTypeFormat.MetaClassGuid);
-				classNameMap.Add("ConceptType", ConceptType.MetaClassGuid);
-				classNameMap.Add("InformationType", InformationType.MetaClassGuid);
-				classNameMap.Add("ConceptTypeHasChild", ConceptTypeHasChild.MetaClassGuid);
+				classNameMap.Add("Model", OIALModel.DomainClassId);
+				classNameMap.Add("ChildSequenceConstraint", ChildSequenceConstraint.DomainClassId);
+				classNameMap.Add("ChildSequence", ChildSequence.DomainClassId);
+				classNameMap.Add("InformationTypeFormat", InformationTypeFormat.DomainClassId);
+				classNameMap.Add("ConceptType", ConceptType.DomainClassId);
+				classNameMap.Add("InformationType", InformationType.DomainClassId);
+				classNameMap.Add("ConceptTypeHasChild", ConceptTypeHasChild.DomainClassId);
 				OIALMetaModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -134,7 +134,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			return default(Guid);
 		}
-		Guid IORMCustomSerializedMetaModel.MapClassName(string xmlNamespace, string elementName)
+		Guid IORMCustomSerializedDomainModel.MapClassName(string xmlNamespace, string elementName)
 		{
 			return MapClassName(xmlNamespace, elementName);
 		}
@@ -170,9 +170,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[3];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionMetaRoleGuid);
-				ret[1] = new ORMCustomSerializedChildElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALHasInformationTypeFormat.InformationTypeFormatCollectionMetaRoleGuid);
-				ret[2] = new ORMCustomSerializedChildElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasConceptType.ConceptTypeCollectionMetaRoleGuid);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId);
+				ret[1] = new ORMCustomSerializedChildElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId);
+				ret[2] = new ORMCustomSerializedChildElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId);
 				OIALModel.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -199,82 +199,80 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == OIALModelHasORMModel.ORMModelMetaRoleGuid)
+			if (roleId == OIALModelHasORMModel.ORMModelDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ORMModel", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
 		{
-			private Dictionary<string, int> myRoleOrderDictionary;
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
 			public CustomSortChildComparer(Store store)
 			{
-				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
-				MetaRoleInfo metaRole;
-				metaRole = metaDataDir.FindMetaRole(OIALModelHasORMModel.ORMModelMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
-				metaRole = metaDataDir.FindMetaRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
-				metaRole = metaDataDir.FindMetaRole(OIALHasInformationTypeFormat.InformationTypeFormatCollectionMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
-				metaRole = metaDataDir.FindMetaRole(OIALModelHasConceptType.ConceptTypeCollectionMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasORMModel.ORMModelDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
-				if (xPos == yPos)
-				{
-					return 0;
-				}
-				else if (xPos < yPos)
-				{
-					return -1;
-				}
-				return 1;
+				return xPos.CompareTo(yPos);
 			}
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
-				IComparer<MetaRoleInfo> retVal = OIALModel.myCustomSortChildComparer;
+				IComparer<DomainRoleInfo> retVal = OIALModel.myCustomSortChildComparer;
 				if (null == retVal)
 				{
 					retVal = new CustomSortChildComparer(this.Store);
@@ -283,7 +281,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -301,13 +299,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(OIALModelHasORMModel.ORMModelMetaRoleGuid);
+				match.InitializeRoles(OIALModelHasORMModel.ORMModelDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ORMModel", match);
-				match.InitializeRoles(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionMetaRoleGuid);
+				match.InitializeRoles(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ChildSequenceConstraints||", match);
-				match.InitializeRoles(OIALHasInformationTypeFormat.InformationTypeFormatCollectionMetaRoleGuid);
+				match.InitializeRoles(OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|InformationTypeFormats||", match);
-				match.InitializeRoles(OIALModelHasConceptType.ConceptTypeCollectionMetaRoleGuid);
+				match.InitializeRoles(OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypes||", match);
 				OIALModel.myChildElementMappings = childElementMappings;
 			}
@@ -373,7 +371,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[1];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceMetaRoleGuid);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceDomainRoleId);
 				ChildSequenceConstraint.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -400,43 +398,43 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ChildHasSingleChildConstraint.ConceptTypeHasChildMetaRoleGuid)
+			if (roleId == ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -454,7 +452,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceMetaRoleGuid);
+				match.InitializeRoles(SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ChildSequence||", match);
 				ChildSequenceConstraint.myChildElementMappings = childElementMappings;
 			}
@@ -539,43 +537,43 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildCollectionMetaRoleGuid)
+			if (roleId == ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildCollectionDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ConceptTypeHasChild", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -593,7 +591,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildCollectionMetaRoleGuid);
+				match.InitializeRoles(ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildCollectionDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypeHasChild", match);
 				ChildSequence.myChildElementMappings = childElementMappings;
 			}
@@ -678,47 +676,47 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == InformationTypeHasInformationTypeFormat.InformationTypeMetaRoleGuid)
+			if (roleId == InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == InformationTypeFormatHasObjectType.ValueTypeMetaRoleGuid)
+			if (roleId == InformationTypeFormatHasObjectType.ValueTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ValueType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -736,7 +734,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(InformationTypeFormatHasObjectType.ValueTypeMetaRoleGuid);
+				match.InitializeRoles(InformationTypeFormatHasObjectType.ValueTypeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ValueType", match);
 				InformationTypeFormat.myChildElementMappings = childElementMappings;
 			}
@@ -802,7 +800,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[1];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ContainedTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasInformationType.InformationTypeCollectionMetaRoleGuid, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionMetaRoleGuid, ConceptTypeRef.ReferencedConceptTypeCollectionMetaRoleGuid);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ContainedTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId, ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId);
 				ConceptType.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -829,98 +827,98 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ConceptTypeHasObjectType.ObjectTypeMetaRoleGuid)
+			if (roleId == ConceptTypeHasObjectType.ObjectTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeMetaRoleGuid)
+			if (roleId == ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ConceptTypeLink", null, ORMCustomSerializedElementWriteStyle.AggregatingLinkElement, null);
 			}
-			if (roleId == ConceptTypeRef.ReferencedConceptTypeCollectionMetaRoleGuid)
+			if (roleId == ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ReferencedConceptType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
-			if (roleId == ConceptTypeRef.ReferencingConceptTypeMetaRoleGuid)
+			if (roleId == ConceptTypeRef.ReferencingConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
-		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
 		{
-			private Dictionary<string, int> myRoleOrderDictionary;
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
 			public CustomSortChildComparer(Store store)
 			{
-				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
-				MetaRoleInfo metaRole;
-				metaRole = metaDataDir.FindMetaRole(ConceptTypeHasObjectType.ObjectTypeMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
-				metaRole = metaDataDir.FindMetaRole(ConceptTypeHasInformationType.InformationTypeCollectionMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
-				metaRole = metaDataDir.FindMetaRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
-				metaRole = metaDataDir.FindMetaRole(ConceptTypeRef.ReferencedConceptTypeCollectionMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
-				metaRole = metaDataDir.FindMetaRole(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
-				metaRole = metaDataDir.FindMetaRole(ConceptTypeRef.ReferencingConceptTypeMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasObjectType.ObjectTypeDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencingConceptTypeDomainRoleId);
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
+				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
+				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
-				if (xPos == yPos)
-				{
-					return 0;
-				}
-				else if (xPos < yPos)
-				{
-					return -1;
-				}
-				return 1;
+				return xPos.CompareTo(yPos);
 			}
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
-				IComparer<MetaRoleInfo> retVal = ConceptType.myCustomSortChildComparer;
+				IComparer<DomainRoleInfo> retVal = ConceptType.myCustomSortChildComparer;
 				if (null == retVal)
 				{
 					retVal = new CustomSortChildComparer(this.Store);
@@ -929,7 +927,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -947,13 +945,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ConceptTypeHasObjectType.ObjectTypeMetaRoleGuid);
+				match.InitializeRoles(ConceptTypeHasObjectType.ObjectTypeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ObjectType", match);
-				match.InitializeRoles(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeMetaRoleGuid);
+				match.InitializeRoles(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypeLink", match);
-				match.InitializeRoles(ConceptTypeRef.ReferencedConceptTypeCollectionMetaRoleGuid);
+				match.InitializeRoles(ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ContainedTypes|http://schemas.neumont.edu/ORM/2006-01/OIALModel|ReferencedConceptType", match);
-				match.InitializeRoles(ConceptTypeHasInformationType.InformationTypeCollectionMetaRoleGuid, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionMetaRoleGuid);
+				match.InitializeRoles(ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ContainedTypes||", match);
 				ConceptType.myChildElementMappings = childElementMappings;
 			}
@@ -1038,47 +1036,47 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == InformationTypeHasInformationTypeFormat.InformationTypeFormatMetaRoleGuid)
+			if (roleId == InformationTypeHasInformationTypeFormat.InformationTypeFormatDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "InformationTypeFormat", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == ConceptTypeHasInformationType.ConceptTypeMetaRoleGuid)
+			if (roleId == ConceptTypeHasInformationType.ConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "InformationTypeLink", null, ORMCustomSerializedElementWriteStyle.AggregatingLinkElement, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -1096,9 +1094,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(InformationTypeHasInformationTypeFormat.InformationTypeFormatMetaRoleGuid);
+				match.InitializeRoles(InformationTypeHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|InformationTypeFormat", match);
-				match.InitializeRoles(ConceptTypeHasInformationType.ConceptTypeMetaRoleGuid);
+				match.InitializeRoles(ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|InformationTypeLink", match);
 				InformationType.myChildElementMappings = childElementMappings;
 			}
@@ -1144,7 +1142,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1164,8 +1162,8 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[2];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "SingleChildConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, ChildHasSingleChildConstraint.SingleChildConstraintCollectionMetaRoleGuid);
-				ret[1] = new ORMCustomSerializedChildElementInfo(null, "PathRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasChildHasPathRole.PathRoleCollectionMetaRoleGuid);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "SingleChildConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, ChildHasSingleChildConstraint.SingleChildConstraintCollectionDomainRoleId);
+				ret[1] = new ORMCustomSerializedChildElementInfo(null, "PathRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasChildHasPathRole.PathRoleCollectionDomainRoleId);
 				ConceptTypeHasChild.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -1192,55 +1190,55 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == ConceptTypeHasChild.MandatoryMetaAttributeGuid)
+			if (attributeInfo.Id == ConceptTypeHasChild.MandatoryDomainPropertyId)
 			{
 				if (this.Mandatory == MandatoryConstraintModality.NotMandatory)
 				{
-					return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+					return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new ORMCustomSerializedAttributeInfo(null, "Mandatory", null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+				return new ORMCustomSerializedPropertyInfo(null, "Mandatory", null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
-			return ORMCustomSerializedAttributeInfo.Default;
+			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ChildSequenceHasConceptTypeHasChild.ChildSequenceCollectionMetaRoleGuid)
+			if (roleId == ChildSequenceHasConceptTypeHasChild.ChildSequenceCollectionDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == ConceptTypeHasChildHasPathRole.PathRoleCollectionMetaRoleGuid)
+			if (roleId == ConceptTypeHasChildHasPathRole.PathRoleCollectionDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo("orm", "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get
 			{
 				return null;
 			}
 		}
-		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		{
 			get
 			{
@@ -1258,9 +1256,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ConceptTypeHasChildHasPathRole.PathRoleCollectionMetaRoleGuid);
+				match.InitializeRoles(ConceptTypeHasChildHasPathRole.PathRoleCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|PathRoles|http://schemas.neumont.edu/ORM/2006-01/OIALModel|Role", match);
-				match.InitializeRoles(ChildHasSingleChildConstraint.SingleChildConstraintCollectionMetaRoleGuid);
+				match.InitializeRoles(ChildHasSingleChildConstraint.SingleChildConstraintCollectionDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|SingleChildConstraints||", match);
 				ConceptTypeHasChild.myChildElementMappings = childElementMappings;
 			}
@@ -1282,7 +1280,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
-				customSerializedAttributes.Add("Mandatory", ConceptTypeHasChild.MandatoryMetaAttributeGuid);
+				customSerializedAttributes.Add("Mandatory", ConceptTypeHasChild.MandatoryDomainPropertyId);
 				ConceptTypeHasChild.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

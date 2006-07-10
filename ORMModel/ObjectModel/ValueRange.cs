@@ -26,29 +26,6 @@ using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region RangeInclusion enum
-	/// <summary>
-	/// Standard range value inclusion categories
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum RangeInclusion
-	{
-		/// <summary>
-		/// Default inclusion type
-		/// </summary>
-		NotSet,
-		/// <summary>
-		/// Indicates the specific value is not included
-		/// in the range.
-		/// </summary>
-		Open,
-		/// <summary>
-		/// Indicates the specific value is included
-		/// in the range.
-		/// </summary>
-		Closed
-	}
-	#endregion // RangeInclusion enum
 	public partial class ValueRange : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region variables
@@ -132,7 +109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueConstraintHasValueRange.ValueRangeDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -163,7 +140,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					minMismatch = MinValueMismatchError;
 					if (minMismatch == null)
 					{
-						minMismatch = MinValueMismatchError.CreateMinValueMismatchError(Store);
+						minMismatch = new MinValueMismatchError(Store);
 						minMismatch.ValueRange = this;
 						minMismatch.Model = dataType.Model;
 						minMismatch.GenerateErrorText();
@@ -182,7 +159,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						maxMismatch = MaxValueMismatchError;
 						if (maxMismatch == null)
 						{
-							maxMismatch = MaxValueMismatchError.CreateMaxValueMismatchError(Store);
+							maxMismatch = new MaxValueMismatchError(Store);
 							maxMismatch.ValueRange = this;
 							maxMismatch.Model = dataType.Model;
 							maxMismatch.GenerateErrorText();
@@ -197,11 +174,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (!needMinError && null != (minMismatch = MinValueMismatchError))
 			{
-				minMismatch.Remove();
+				minMismatch.Delete();
 			}
 			if (!needMaxError && null != (maxMismatch = MaxValueMismatchError))
 			{
-				maxMismatch.Remove();
+				maxMismatch.Delete();
 			}
 		}
 		private static void ValidateValueConstraintForRule(ValueConstraint valueConstraint)
@@ -210,7 +187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return;
 			}
-			ValueRangeMoveableCollection ranges = valueConstraint.ValueRangeCollection;
+			LinkedElementCollection<ValueRange> ranges = valueConstraint.ValueRangeCollection;
 			int rangesCount = ranges.Count;
 			for (int i = 0; i < rangesCount; ++i)
 			{
@@ -219,18 +196,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#region ValueTypeHasDataType rule
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
-		private class DataTypeAddRule : AddRule
+		private sealed class DataTypeAddRule : AddRule
 		{
 			/// <summary>
 			/// Test if the changed value does not match the specified data type.
 			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType valueType = link.ValueTypeCollection;
+				ObjectType valueType = link.ValueType;
 				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
@@ -241,19 +217,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueTypeHasDataType rule
 		#region DataTypeChangeRule rule
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class DataTypeChangeRule : ChangeRule
+		private sealed class DataTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// checks first if the data type has been chagned and then test if the 
 			/// value matches the datatype
 			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType valueType = link.ValueTypeCollection;
+				ObjectType valueType = link.ValueType;
 				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
@@ -264,18 +239,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // DataTypeChangeRule rule
 		#region ValueConstraintAddRule rule
 		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class ValueConstraintAddRule : AddRule
+		private sealed class ValueConstraintAddRule : AddRule
 		{
 			/// <summary>
 			/// checks if the new value range definition matches the data type
 			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
 				ObjectType valueType = link.ValueType;
 				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
@@ -286,18 +260,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueConstraintAddRule rule
 		#region RoleValueConstraintAdded rule
 		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class RoleValueConstraintAdded : AddRule
+		private sealed class RoleValueConstraintAdded : AddRule
 		{
 			/// <summary>
 			/// checks if the the value range matches the specified date type
 			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
 				ObjectType valueType = link.Role.RolePlayer;
 				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
@@ -308,18 +281,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // RoleValueConstraintAdded rule
 		#region ObjectTypeRoleAdded rule
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime= TimeToFire.LocalCommit)]
-		private class ObjectTypeRoleAdded : AddRule
+		private sealed class ObjectTypeRoleAdded : AddRule
 		{
 			/// <summary>
 			/// checks to see if the value on the role added matches the specified data type
 			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType valueType = link.RolePlayer;
 				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
@@ -330,27 +302,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ObjectTypeRoleAdded rule
 		#region ValueRangeAdded rule
 		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)]
-		private class ValueRangeAdded : AddRule
+		private sealed class ValueRangeAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
-				link.ValueRangeCollection.VerifyValueMatch(null);
+				link.ValueRange.VerifyValueMatch(null);
 			}
 		}
 		#endregion // ValueRangeAdded rule
 		#region ValueRangeChangeRule rule
 		[RuleOn(typeof(ValueRange))]
-		private class ValueRangeChangeRule : ChangeRule
+		private sealed class ValueRangeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueRange.TextMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == ValueRange.TextDomainPropertyId)
 				{
 					ValueRange vr = e.ModelElement as ValueRange;
 					Debug.Assert(vr != null);
@@ -388,50 +360,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueRangeChangeRule rule
 		#endregion // ValueMatch Validation
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private string GetTextValue()
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == TextMetaAttributeGuid)
+			string minInclusionMarkToUse = minInclusionMarks[(int)this.MinInclusion];
+			string maxInclusionMarkToUse = maxInclusionMarks[(int)this.MaxInclusion];
+			string minValue = MinValue;
+			string maxValue = MaxValue;
+			bool minExists = (minValue.Length != 0);
+			bool maxExists = (maxValue.Length != 0);
+			bool isText = IsText();
+			// put values in string container if need to
+			if (minExists && isText)
 			{
-				string retVal;
-				string minInclusionMarkToUse = minInclusionMarks[(int)this.MinInclusion];
-				string maxInclusionMarkToUse = maxInclusionMarks[(int)this.MaxInclusion];
-				string minValue = MinValue;
-				string maxValue = MaxValue;
-				bool minExists = (minValue.Length != 0);
-				bool maxExists = (maxValue.Length != 0);
-				// put values in string container if need to
-				if (minExists && IsText())
-				{
-					minValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, minValue);
-				}
-				if (maxExists && IsText())
-				{
-					maxValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, maxValue);
-				}
-				// Assemble values into a value range text
-				if (minExists && maxExists && !minValue.Equals(maxValue))
-				{
-					retVal = string.Concat(minInclusionMarkToUse, minValue, valueDelim, maxValue, maxInclusionMarkToUse);
-				}
-				else if (minExists && !maxExists)
-				{
-					retVal = string.Concat(minInclusionMarkToUse, minValue, valueDelim, maxInclusionMarkToUse);
-				}
-				else if (minExists && ((maxExists && minValue.Equals(maxValue)) || !maxExists))
-				{
-					retVal = minValue;
-				}
-				else
-				{
-					retVal = string.Concat(minInclusionMarkToUse, valueDelim, maxValue, maxInclusionMarkToUse);
-				}
-				return retVal;
+				minValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, minValue);
 			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			if (maxExists && isText)
+			{
+				maxValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, maxValue);
+			}
+			// Assemble values into a value range text
+			if (minExists && maxExists && !minValue.Equals(maxValue))
+			{
+				return string.Concat(minInclusionMarkToUse, minValue, valueDelim, maxValue, maxInclusionMarkToUse);
+			}
+			else if (minExists && !maxExists)
+			{
+				return string.Concat(minInclusionMarkToUse, minValue, valueDelim, maxInclusionMarkToUse);
+			}
+			else if (minExists && ((maxExists && minValue.Equals(maxValue)) || !maxExists))
+			{
+				return minValue;
+			}
+			else
+			{
+				return string.Concat(minInclusionMarkToUse, valueDelim, maxValue, maxInclusionMarkToUse);
+			}
+		}
+		private void SetTextValue(string newValue)
+		{
+			// Handled by ValueRangeChangeRule
 		}
 		/// <summary>
 		/// Tests if the associated data type is a text type.
@@ -448,20 +415,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return ValueConstraint.IsText();
 			}
 			return false;
-		}
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in FactTypeChangeRule.
-		/// </summary>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
-		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == TextMetaAttributeGuid)
-			{
-				// Handled by ValueRangeChangeRule
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
 		/// <summary>
 		/// Removes the left- and right-strings which denote a value as a string.
@@ -550,7 +503,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			ValueRangeMoveableCollection ranges = ValueRangeCollection;
+			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
 			int rangeCount = ranges.Count;
 			for (int i = 0; i < rangeCount; ++i)
 			{
@@ -658,7 +611,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void VerifyValueRangeOverlapError(INotifyElementAdded notifyAdded)
 		{
 			bool hasError = false;
-			if (IsRemoved)
+			if (IsDeleted)
 			{
 				return;
 			}
@@ -666,7 +619,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (dataType != null && dataType.CanCompare == true)
 			{
 				DataTypeRangeSupport rangeSupport = dataType.RangeSupport;
-				ValueRangeMoveableCollection ranges = ValueRangeCollection;
+				LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
 				int rangeCount = ranges.Count;
 				string minValue;
 				string maxValue;
@@ -838,7 +791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (error == null)
 				{
-					error = ValueRangeOverlapError.CreateValueRangeOverlapError(Store);
+					error = new ValueRangeOverlapError(Store);
 					error.ValueConstraint = this;
 					error.Model = DataType.Model;
 					error.GenerateErrorText();
@@ -850,58 +803,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (error != null)
 			{
-				error.Remove();
+				error.Delete();
 			}
 		}
 		#endregion // VerifyValueRangeOverlapError
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private string GetTextValue()
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == TextMetaAttributeGuid)
+			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
+			int rangeCount = ranges.Count;
+			if (rangeCount <= 0)
 			{
-				ValueRangeMoveableCollection ranges = ValueRangeCollection;
-				int rangeCount = ranges.Count;
-				string retVal = "";
-				if (rangeCount == 1)
+				return String.Empty;
+			}
+			else if (rangeCount == 1)
+			{
+				return string.Concat(leftContainerMark, ranges[0].Text, rightContainerMark);
+			}
+			else
+			{
+				StringBuilder valueRangeText = new StringBuilder();
+				valueRangeText.Append(leftContainerMark);
+				for (int i = 0; i < rangeCount; ++i)
 				{
-					retVal = string.Concat(leftContainerMark, ranges[0].Text, rightContainerMark);
-				}
-				else if (rangeCount > 1)
-				{
-					StringBuilder valueRangeText = new StringBuilder();
-					valueRangeText.Append(leftContainerMark);
-					for (int i = 0; i < rangeCount; ++i)
+					if (i != 0)
 					{
-						if (i != 0)
-						{
-							valueRangeText.Append(rangeDelim);
-						}
-						valueRangeText.Append(ranges[i].Text);
+						valueRangeText.Append(rangeDelim);
 					}
-					valueRangeText.Append(rightContainerMark);
-					retVal = valueRangeText.ToString();
+					valueRangeText.Append(ranges[i].Text);
 				}
-				return retVal;
+				valueRangeText.Append(rightContainerMark);
+				return valueRangeText.ToString();
 			}
-			return base.GetValueForCustomStoredAttribute(attribute);
 		}
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in FactTypeChangeRule.
-		/// </summary>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private void SetTextValue(string newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == TextMetaAttributeGuid)
-			{
-				// Handled by ValueConstraintChangeRule
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			// Handled by ValueConstraintChangeRule
 		}
 		#endregion // CustomStorage handlers
 		#region ValueConstraint specific
@@ -920,7 +857,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="newDefinition">The string containing a value range definition.</param>
 		protected void ParseDefinition(string newDefinition)
 		{
-			ValueRangeMoveableCollection vrColl = this.ValueRangeCollection;
+			LinkedElementCollection<ValueRange> vrColl = this.ValueRangeCollection;
 			// First, remove the container strings from the ends of the definition string
 			newDefinition = TrimDefinitionMarkers(newDefinition);
 			// Second, find the value ranges in the definition string
@@ -932,7 +869,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int i = 0; i < ranges.Length; ++i)
 				{
 					string s = ranges[i].Trim();
-					ValueRange valueRange = ValueRange.CreateValueRange(Store);
+					ValueRange valueRange = new ValueRange(Store);
 					valueRange.Text = s;
 					vrColl.Add(valueRange);
 				}
@@ -987,23 +924,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 		#region ValueTypeValueConstraintChangeRule class
 		[RuleOn(typeof(ValueTypeValueConstraint))]
-		private class ValueTypeValueConstraintChangeRule : ChangeRule
+		private sealed class ValueTypeValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueTypeValueConstraint.TextMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == ValueTypeValueConstraint.TextDomainPropertyId)
 				{
 					ValueTypeValueConstraint valueRangeDefn = e.ModelElement as ValueTypeValueConstraint;
 					//Set the new definition
 					string newText = (string)e.NewValue;
 					if (newText.Length == 0)
 					{
-						valueRangeDefn.Remove();
+						valueRangeDefn.Delete();
 					}
 					else
 					{
@@ -1014,7 +951,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ValueTypeValueConstraintChangeRule class
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueTypeHasValueConstraint.ValueConstraintDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -1068,22 +1005,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Base overrides
 		#region RoleValueConstraintChangeRule class
 		[RuleOn(typeof(RoleValueConstraint))]
-		private class RoleValueConstraintChangeRule : ChangeRule
+		private sealed class RoleValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueConstraint.TextMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == ValueConstraint.TextDomainPropertyId)
 				{
 					RoleValueConstraint valueRangeDefn = e.ModelElement as RoleValueConstraint;
 					string newText = (string)e.NewValue;
 					if (newText.Length == 0)
 					{
-						valueRangeDefn.Remove();
+						valueRangeDefn.Delete();
 					}
 					else
 					{
@@ -1094,7 +1031,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // RoleValueConstraintChangeRule class
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { RoleHasValueConstraint.ValueConstraintMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { RoleHasValueConstraint.ValueConstraintDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -1151,13 +1088,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
 				string name = roleFact.Name;
 				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeMinValueMismatchError, model, name, index);
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueRangeMinValueMismatchError, model, name, index);
 			}
 			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
 			{
 				value = valueDefn.ValueType.Name;
 				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorValueRangeMinValueMismatchError, value, model);
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMinValueMismatchError, value, model);
 			}
 			if (currentText != newText)
 			{
@@ -1201,13 +1138,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
 				string name = roleFact.Name;
 				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeMaxValueMismatchError, model, name, index);
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueRangeMaxValueMismatchError, model, name, index);
 			}
 			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
 			{
 				value = valueDefn.ValueType.Name;
 				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorValueRangeMaxValueMismatchError, value, model);
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMaxValueMismatchError, value, model);
 			}
 			if (currentText != newText)
 			{
@@ -1251,13 +1188,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
 				string name = roleFact.Name;
 				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeOverlapError, model, name, index);
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorRoleValueRangeOverlapError, model, name, index);
 			}
 			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
 			{
 				value = valueDefn.ValueType.Name;
 				string model = this.Model.Name;
-				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorValueTypeValueRangeOverlapError, value, model);
+				newText = string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueTypeValueRangeOverlapError, value, model);
 			}
 			if (currentText != newText)
 			{

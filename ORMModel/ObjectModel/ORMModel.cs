@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
@@ -117,72 +118,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				foreach (object error in GetCounterpartRolePlayers(ModelHasError.ModelMetaRoleGuid, ModelHasError.ErrorCollectionMetaRoleGuid))
+				foreach (ModelError modelError in ModelHasError.GetErrorCollection(this))
 				{
-					yield return (ModelError)error;
+					yield return modelError;
 				}
-				// Get errors off the base
-				foreach (ModelErrorUsage baseError in base.GetErrorCollection(ModelErrorUses.None))
+				foreach (ModelError modelError in base.GetErrorCollection(ModelErrorUses.None))
 				{
-					yield return baseError;
+					yield return modelError;
 				}
 			}
 		}
 		#endregion
 		#endregion // ErrorCollection
 		#region MergeContext functions
+		// UNDONE: 2006-06 DSL Tools port: Is this needed any more? (It used to be named "CanAddChildElement")
 		/// <summary>
-		/// Support adding root elements and constraints directly to the design surface
+		/// Support adding root elements and constraints directly to the design surface.
 		/// </summary>
-		/// <param name="elementGroupPrototype"></param>
-		/// <param name="protoElement"></param>
-		/// <returns></returns>
-		protected override bool CanAddChildElement(ElementGroupPrototype elementGroupPrototype, ProtoElementBase protoElement)
+		/*protected override bool CanMerge(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
 		{
-			if (protoElement == null)
+			if (rootElement == null)
 			{
 				return false;
 			}
-			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-			return classInfo.IsDerivedFrom(ObjectType.MetaClassGuid) ||
-				classInfo.IsDerivedFrom(FactType.MetaClassGuid) ||
-				classInfo.IsDerivedFrom(SetComparisonConstraint.MetaClassGuid) ||
-				(classInfo.IsDerivedFrom(SetConstraint.MetaClassGuid) && !("INTERNALUNIQUENESSCONSTRAINT" == (string)elementGroupPrototype.UserData));
-		}
-		/// <summary>
-		/// Attach a deserialized ObjectType, FactType, or external constraint to the model.
-		/// Called after prototypes for these items are dropped onto the diagram
-		/// from the toolbox.
-		/// </summary>
-		/// <param name="sourceElement">The element being added</param>
-		/// <param name="elementGroup">The element describing all of the created elements</param>
-		public override void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
+			DomainClassInfo classInfo = Store.DomainDataDirectory.FindDomainClass(rootElement.MetaClassId);
+			return classInfo.IsDerivedFrom(ObjectType.DomainClassId) ||
+				classInfo.IsDerivedFrom(FactType.DomainClassId) ||
+				classInfo.IsDerivedFrom(SetComparisonConstraint.DomainClassId) ||
+				(classInfo.IsDerivedFrom(SetConstraint.DomainClassId) && elementGroupPrototype.UserData != ORMMetaModelToolboxHelper.InternalUniquenessConstraintUserDataKey);
+		}*/
+
+		// Called from MergeRelate method in generated code.
+		private void MergeRelateObjectType(ModelElement objectType, ElementGroup elementGroup)
 		{
-			base.MergeRelate(sourceElement, elementGroup);
-			ObjectType objectType;
-			FactType factType;
-			SetConstraint SetConstraint;
-			SetComparisonConstraint SetComparisonConstraint;
-			if (null != (objectType = sourceElement as ObjectType))
+			// This is to work around a bug in the generated code.
+			// It is passing us the reference typed as ModelElement rather than ObjectType.
+			this.MergeRelateObjectType((ObjectType)objectType, elementGroup);
+		}
+		private void MergeRelateObjectType(ObjectType objectType, ElementGroup elementGroup)
+		{
+			if (elementGroup.UserData == ORMMetaModelToolboxHelper.ValueTypeUserDataKey)
 			{
-				if ("VALUETYPE" == (string) elementGroup.UserData)
-				{
-					objectType.DataType = DefaultDataType;
-				}
-				objectType.Model = this;
+				objectType.DataType = DefaultDataType;
 			}
-			else if (null != (factType = sourceElement as FactType))
-			{
-				factType.Model = this;
-			}
-			else if (null != (SetConstraint = sourceElement as SetConstraint))
-			{
-				SetConstraint.Model = this;
-			}
-			else if (null != (SetComparisonConstraint = sourceElement as SetComparisonConstraint))
-			{
-				SetComparisonConstraint.Model = this;
-			}
+			this.ObjectTypeCollection.Add(objectType);
 		}
 		#endregion // MergeContext functions
 	}
@@ -227,44 +206,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+			return GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
 		/// <returns>Dictionaries for object types, fact types, and constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			if (parentMetaRoleGuid == ModelHasObjectType.ModelMetaRoleGuid)
+			if (parentDomainRoleId == ModelHasObjectType.ModelDomainRoleId)
 			{
 				return ObjectTypesDictionary;
 			}
-			else if (parentMetaRoleGuid == ModelHasSetComparisonConstraint.ModelMetaRoleGuid ||
-					 parentMetaRoleGuid == ModelHasSetConstraint.ModelMetaRoleGuid ||
-					 parentMetaRoleGuid == ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid ||
-					 parentMetaRoleGuid == RoleHasValueConstraint.RoleMetaRoleGuid)
+			else if (parentDomainRoleId == ModelHasSetComparisonConstraint.ModelDomainRoleId ||
+					 parentDomainRoleId == ModelHasSetConstraint.ModelDomainRoleId ||
+					 parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId ||
+					 parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
 			{
 				return ConstraintsDictionary;
 			}
 			return null;
 		}
-		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
+			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
 		/// </summary>
-		protected object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		protected object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			object retVal = null;
-			IDictionary contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-			if (!contextInfo.Contains(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
-				contextInfo.Contains(ObjectType.AllowDuplicateObjectNamesKey))
+			Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			if (!contextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
+				contextInfo.ContainsKey(ObjectType.AllowDuplicateObjectNamesKey))
 			{
 				// Use to their value so they don't have to look up ours again
 				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
@@ -274,25 +253,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // INamedElementDictionaryParent implementation
 		#region Rules to remove duplicate name errors
 		[RuleOn(typeof(ObjectTypeHasDuplicateNameError))]
-		private class RemoveDuplicateObjectTypeNameErrorRule : RemoveRule
+		private sealed class RemoveDuplicateObjectTypeNameErrorRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypeHasDuplicateNameError link = e.ModelElement as ObjectTypeHasDuplicateNameError;
 				ObjectTypeDuplicateNameError error = link.DuplicateNameError;
-				if (!error.IsRemoved)
+				if (!error.IsDeleted)
 				{
 					if (error.ObjectTypeCollection.Count < 2)
 					{
-						error.Remove();
+						error.Delete();
 					}
 				}
 			}
 		}
 		[RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError)), RuleOn(typeof(SetConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))]
-		private class RemoveDuplicateConstraintNameErrorRule : RemoveRule
+		private sealed class RemoveDuplicateConstraintNameErrorRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ModelElement link = e.ModelElement;
 				SetComparisonConstraintHasDuplicateNameError mcLink;
@@ -311,11 +290,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					error = vLink.DuplicateNameError;
 				}
-				if (error != null && !error.IsRemoved)
+				if (error != null && !error.IsDeleted)
 				{
 					if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
 					{
-						error.Remove();
+						error.Delete();
 					}
 				}
 			}
@@ -330,17 +309,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected class ObjectTypeNamedElementDictionary : NamedElementDictionary
 		{
-			private class DuplicateNameManager : IDuplicateNameCollectionManager
+			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
 				#region TrackingList class
-				private class TrackingList : List<ObjectType>
+				private sealed class TrackingList : List<ObjectType>
 				{
-					private ObjectTypeMoveableCollection myNativeCollection;
+					private readonly LinkedElementCollection<ObjectType> myNativeCollection;
 					public TrackingList(ObjectTypeDuplicateNameError error)
 					{
 						myNativeCollection = error.ObjectTypeCollection;
 					}
-					public ObjectTypeMoveableCollection NativeCollection
+					public LinkedElementCollection<ObjectType> NativeCollection
 					{
 						get
 						{
@@ -350,7 +329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ORMNamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					ObjectType objectType = (ObjectType)element;
 					if (afterTransaction)
@@ -394,7 +373,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							if (error == null)
 							{
-								error = ObjectTypeDuplicateNameError.CreateObjectTypeDuplicateNameError(objectType.Store);
+								error = new ObjectTypeDuplicateNameError(objectType.Store);
 								objectType.DuplicateNameError = error;
 								error.Model = objectType.Model;
 								error.GenerateErrorText();
@@ -413,7 +392,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							trackingList.Add(objectType);
 							// During deserialization fixup (notifyAdded != null), we need
 							// to make sure that the element is not already in the collection
-							ObjectTypeMoveableCollection typedCollection = trackingList.NativeCollection;
+							LinkedElementCollection<ObjectType> typedCollection = trackingList.NativeCollection;
 							if (notifyAdded == null || !typedCollection.Contains(objectType))
 							{
 								typedCollection.Add(objectType);
@@ -422,7 +401,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						return elementCollection;
 					}
 				}
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ORMNamedElement element, bool afterTransaction)
 				{
 					TrackingList trackingList = (TrackingList)elementCollection;
 					ObjectType objectType = (ObjectType)element;
@@ -451,14 +430,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">The element to test</param>
 			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(NamedElement element)
+			protected override string GetRootNamePattern(ORMNamedElement element)
 			{
 				return ((ObjectType)element).IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
 			}
 			/// <summary>
 			/// Return a default name and allow duplicates for auto-generated names on objectifying types
 			/// </summary>
-			protected override string GetDefaultName(NamedElement element)
+			protected override string GetDefaultName(ORMNamedElement element)
 			{
 				ObjectType objectType = (ObjectType)element;
 				Objectification objectificationLink;
@@ -475,7 +454,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void ThrowDuplicateNameException(NamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(ORMNamedElement element, string requestedName)
 			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
@@ -490,35 +469,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected class ConstraintNamedElementDictionary : NamedElementDictionary
 		{
-			private class DuplicateNameManager : IDuplicateNameCollectionManager
+			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
 				#region TrackingList class
-				private class TrackingList : List<NamedElement>
+				private sealed class TrackingList : List<ORMNamedElement>
 				{
-					private SetComparisonConstraintMoveableCollection myNativeMCCollection;
-					private SetConstraintMoveableCollection myNativeSCCollection;
-					private ValueConstraintMoveableCollection myNativeVCCollection;
+					private readonly LinkedElementCollection<SetComparisonConstraint> myNativeMCCollection;
+					private readonly LinkedElementCollection<SetConstraint> myNativeSCCollection;
+					private readonly LinkedElementCollection<ValueConstraint> myNativeVCCollection;
 					public TrackingList(ConstraintDuplicateNameError error)
 					{
 						myNativeMCCollection = error.SetComparisonConstraintCollection;
 						myNativeSCCollection = error.SetConstraintCollection;
 						myNativeVCCollection = error.ValueConstraintCollection;
 					}
-					public SetComparisonConstraintMoveableCollection NativeMultiColumnCollection
+					public LinkedElementCollection<SetComparisonConstraint> NativeMultiColumnCollection
 					{
 						get
 						{
 							return myNativeMCCollection;
 						}
 					}
-					public SetConstraintMoveableCollection NativeSingleColumnCollection
+					public LinkedElementCollection<SetConstraint> NativeSingleColumnCollection
 					{
 						get
 						{
 							return myNativeSCCollection;
 						}
 					}
-					public ValueConstraintMoveableCollection NativeValueCollection
+					public LinkedElementCollection<ValueConstraint> NativeValueCollection
 					{
 						get
 						{
@@ -528,7 +507,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ORMNamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					SetConstraint scConstraint = null;
 					SetComparisonConstraint mcConstraint = null;
@@ -587,7 +566,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							if (error == null)
 							{
-								error = ConstraintDuplicateNameError.CreateConstraintDuplicateNameError(element.Store);
+								error = new ConstraintDuplicateNameError(element.Store);
 								if (scConstraint != null)
 								{
 									scConstraint.DuplicateNameError = error;
@@ -630,7 +609,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// to make sure that the element is not already in the collection
 							if (null != mcConstraint)
 							{
-								SetComparisonConstraintMoveableCollection typedCollection = trackingList.NativeMultiColumnCollection;
+								LinkedElementCollection<SetComparisonConstraint> typedCollection = trackingList.NativeMultiColumnCollection;
 								if (notifyAdded == null || !typedCollection.Contains(mcConstraint))
 								{
 									typedCollection.Add(mcConstraint);
@@ -638,7 +617,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else if (null != scConstraint)
 							{
-								SetConstraintMoveableCollection typedCollection = trackingList.NativeSingleColumnCollection;
+								LinkedElementCollection<SetConstraint> typedCollection = trackingList.NativeSingleColumnCollection;
 								if (notifyAdded == null || !typedCollection.Contains(scConstraint))
 								{
 									typedCollection.Add(scConstraint);
@@ -646,7 +625,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else if (null != vConstraint)
 							{
-								ValueConstraintMoveableCollection typedCollection = trackingList.NativeValueCollection;
+								LinkedElementCollection<ValueConstraint> typedCollection = trackingList.NativeValueCollection;
 								if (notifyAdded == null || !typedCollection.Contains(vConstraint))
 								{
 									typedCollection.Add(vConstraint);
@@ -656,7 +635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						return elementCollection;
 					}
 				}
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ORMNamedElement element, bool afterTransaction)
 				{
 					TrackingList trackingList = (TrackingList)elementCollection;
 					trackingList.Remove(element);
@@ -698,7 +677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Ignored. Should be a FactType</param>
 			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(NamedElement element)
+			protected override string GetRootNamePattern(ORMNamedElement element)
 			{
 				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
 				// UNDONE: How explicit do we want to be on constraint naming?
@@ -709,7 +688,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void ThrowDuplicateNameException(NamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(ORMNamedElement element, string requestedName)
 			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
@@ -743,7 +722,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return ObjectTypeCollection; }
+			get { return ObjectType; }
 		}
 		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
 		{
@@ -755,7 +734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
-			get { return ObjectTypeCollection; }
+			get { return ObjectType; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
@@ -784,7 +763,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return FactTypeCollection; }
+			get { return FactType; }
 		}
 		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
 		{
@@ -796,7 +775,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
-			get { return FactTypeCollection; }
+			get { return FactType; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
@@ -825,7 +804,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return SetComparisonConstraintCollection; }
+			get { return SetComparisonConstraint; }
 		}
 		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
 		{
@@ -844,20 +823,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class SetComparisonConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
 		/// this child as participating in the 'ModelHasObjectType' naming set.
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentMetaRoleGuid = ModelHasSetComparisonConstraint.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid;
+			parentDomainRoleId = ModelHasSetComparisonConstraint.ModelDomainRoleId;
+			childDomainRoleId = ModelHasSetComparisonConstraint.SetComparisonConstraintDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
@@ -886,7 +865,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return SetConstraintCollection; }
+			get { return SetConstraint; }
 		}
 		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
 		{
@@ -1021,67 +1000,67 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
-			get { return RoleCollection as INamedElementDictionaryRemoteParent; }
+			get { return Role as INamedElementDictionaryRemoteParent; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	public partial class SetConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
 		/// this child as participating in the 'ModelHasObjectType' naming set.
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentMetaRoleGuid = ModelHasSetConstraint.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasSetConstraint.SetConstraintCollectionMetaRoleGuid;
+			parentDomainRoleId = ModelHasSetConstraint.ModelDomainRoleId;
+			childDomainRoleId = ModelHasSetConstraint.SetConstraintDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
 	public partial class ValueTypeValueConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
 		/// this child as participating in the 'ModelHasConstraint' naming set.
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentMetaRoleGuid = ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid;
-			childMetaRoleGuid = ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid;
+			parentDomainRoleId = ValueTypeHasValueConstraint.ValueTypeDomainRoleId;
+			childDomainRoleId = ValueTypeHasValueConstraint.ValueConstraintDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
 	public partial class RoleValueConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
 		/// this child as participating in the 'ModelHasConstraint' naming set.
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentMetaRoleGuid = RoleHasValueConstraint.RoleMetaRoleGuid;
-			childMetaRoleGuid = RoleHasValueConstraint.ValueConstraintMetaRoleGuid;
+			parentDomainRoleId = RoleHasValueConstraint.RoleDomainRoleId;
+			childDomainRoleId = RoleHasValueConstraint.ValueConstraintDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
@@ -1093,7 +1072,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// returned elements will all come from a
 		/// generated metarole collections.
 		/// </summary>
-		protected abstract IList DuplicateElements{ get;}
+		protected abstract IList<ORMNamedElement> DuplicateElements{ get;}
 		/// <summary>
 		/// Get the text to display the duplicate error information. Replacement
 		/// field {0} is replaced by the model name, field {1} is replaced by the
@@ -1104,10 +1083,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Verify that all of the duplicate elements attached to
 		/// this error actually have the same name.
 		/// </summary>
-		/// <param name="testElement"></param>
 		/// <returns>true if validation succeeded. false is
 		/// returned if testElement does not have a name specified</returns>
-		public bool ValidateDuplicates(NamedElement testElement)
+		public bool ValidateDuplicates(ORMNamedElement testElement)
 		{
 			return ValidateDuplicates(testElement, null);
 		}
@@ -1120,7 +1098,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="duplicates">Pre-fetched duplicates, or null</param>
 		/// <returns>true if validation succeeded. false is
 		/// returned if testElement does not have a name specified</returns>
-		private bool ValidateDuplicates(NamedElement testElement, IList duplicates)
+		private bool ValidateDuplicates(ORMNamedElement testElement, IList<ORMNamedElement> duplicates)
 		{
 			string testName = testElement.Name;
 			if (testName.Length > 0)
@@ -1132,9 +1110,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int duplicatesCount = duplicates.Count;
 				for (int i = 0; i < duplicatesCount; ++i)
 				{
-					NamedElement compareTo = (NamedElement)duplicates[i];
-					if (!object.ReferenceEquals(compareTo, testElement) &&
-						compareTo.Name != testElement.Name)
+					ORMNamedElement compareTo = duplicates[i];
+					if (compareTo != testElement && compareTo.Name != testElement.Name)
 					{
 						return false;
 					}
@@ -1150,10 +1127,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			IList elements = DuplicateElements;
-			string elementName = (elements.Count != 0) ? ((NamedElement)elements[0]).Name : "";
+			IList<ORMNamedElement> elements = DuplicateElements;
+			string elementName = (elements.Count != 0) ? (elements[0]).Name : string.Empty;
 			ORMModel model = Model;
-			string modelName = (model != null) ? model.Name : "";
+			string modelName = (model != null) ? model.Name : string.Empty;
 			string newText = string.Format(CultureInfo.InvariantCulture, ErrorFormatText, modelName, elementName);
 			string currentText = Name;
 			if (currentText != newText)
@@ -1179,18 +1156,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Implements IRepresentModelElements.GetRepresentedElements
 		/// </summary>
 		/// <returns></returns>
-		protected ModelElement[] GetRepresentedElements()
+		protected ORMNamedElement[] GetRepresentedElements()
 		{
 			// Pick up all roles played directly by this element. This
 			// will get ObjectTypeCollection, FactTypeCollection, etc, but
 			// not the owning model. These are non-aggregating roles.
-			ICollection elements = DuplicateElements;
+			IList<ORMNamedElement> elements = DuplicateElements;
 			int count = elements.Count;
 			if (count == 0)
 			{
 				return null;
 			}
-			ModelElement[] retVal = new ModelElement[count];
+			ORMNamedElement[] retVal = new ORMNamedElement[count];
 			elements.CopyTo(retVal, 0);
 			return retVal;
 		}
@@ -1205,11 +1182,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
 		{
-			yield return this;
-			// Get errors off the base
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			yield return new ModelErrorUsage(this);
+			foreach (ModelErrorUsage modelErrorUsage in base.GetErrorCollection(filter))
 			{
-				yield return baseError;
+				yield return modelErrorUsage;
 			}
 		}
 		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
@@ -1224,18 +1200,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the caller of all objects that are added.</param>
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
-				IList duplicates = DuplicateElements;
+				IList<ORMNamedElement> duplicates = DuplicateElements;
 				// Note that existing name error links are validated when
 				// the element is loaded via the IDuplicateNameCollectionManager
 				// implementation(s) on the model itself. All remaining duplicate
 				// name errors should be errors that are attached to elements whose
 				// named was changed externally.
 				if (duplicates.Count < 2 ||
-					!ValidateDuplicates((NamedElement)duplicates[0], duplicates))
+					!ValidateDuplicates(duplicates[0], duplicates))
 				{
-					Remove();
+					Delete();
 				}
 			}
 		}
@@ -1263,11 +1239,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the duplicate elements represented by this DuplicateNameError
 		/// </summary>
 		/// <returns>ObjectTypeCollection</returns>
-		protected override IList DuplicateElements
+		protected override IList<ORMNamedElement> DuplicateElements
 		{
 			get
 			{
-				return ObjectTypeCollection;
+				return ObjectTypeCollection.ToArray();
 			}
 		}
 		/// <summary>
@@ -1283,7 +1259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -1303,7 +1279,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the duplicate elements represented by this DuplicateNameError
 		/// </summary>
 		/// <returns>ConstraintCollection</returns>
-		protected override IList DuplicateElements
+		protected override IList<ORMNamedElement> DuplicateElements
 		{
 			get
 			{
@@ -1324,30 +1300,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#region ConstraintCollection Implementation
 		[NonSerialized]
-		private IList myCompositeList;
+		private CompositeCollection myCompositeList;
 		/// <summary>
 		/// Return a constraint collection encompassing
 		/// single column external, multi column external, internal constraints, and value constraints
 		/// </summary>
 		/// <value></value>
-		public IList ConstraintCollection
+		public IList<ORMNamedElement> ConstraintCollection
 		{
 			get
 			{
-				IList retVal = myCompositeList;
-				if (retVal == null)
-				{
-					myCompositeList = retVal = new CompositeCollection(this);
-				}
-				return retVal;
+				return myCompositeList ?? (myCompositeList = new CompositeCollection(this));
 			}
 		}
-		private class CompositeCollection : IList
+		private sealed class CompositeCollection : IList<ORMNamedElement>
 		{
 			#region Member Variables
-			private IList myList1;
-			private IList myList2;
-			private IList myList3;
+			private readonly LinkedElementCollection<SetComparisonConstraint> myList1;
+			private readonly LinkedElementCollection<SetConstraint> myList2;
+			private readonly LinkedElementCollection<ValueConstraint> myList3;
 			#endregion // Member Variables
 			#region Constructors
 			public CompositeCollection(ConstraintDuplicateNameError error)
@@ -1357,206 +1328,151 @@ namespace Neumont.Tools.ORM.ObjectModel
 				myList3 = error.ValueConstraintCollection;
 			}
 			#endregion // Constructors
-			#region ICollection Implementation
-			void ICollection.CopyTo(Array array, int index)
+			#region IList<ORMNamedElement> Implementation
+			int IList<ORMNamedElement>.IndexOf(ORMNamedElement value)
+			{
+				SetComparisonConstraint setComparisonConstraint;
+				SetConstraint setConstraint;
+				ValueConstraint valueConstraint;
+				if ((setComparisonConstraint = value as SetComparisonConstraint) != null)
+				{
+					return myList1.IndexOf(setComparisonConstraint);
+				}
+				else if ((setConstraint = value as SetConstraint) != null)
+				{
+					return myList2.IndexOf(setConstraint);
+				}
+				else if ((valueConstraint = value as ValueConstraint) != null)
+				{
+					return myList3.IndexOf(valueConstraint);
+				}
+				return -1;
+			}
+			ORMNamedElement IList<ORMNamedElement>.this[int index]
+			{
+				get
+				{
+					int list1Count = myList1.Count;
+					if (index >= list1Count)
+					{
+						index -= list1Count;
+						int list2Count = myList2.Count;
+						return (index >= list2Count) ? (ORMNamedElement)myList3[index - list2Count] : myList2[index];
+					}
+					return myList1[index];
+				}
+				set
+				{
+					throw new NotSupportedException(); // Not supported for readonly list
+				}
+			}
+			void IList<ORMNamedElement>.Insert(int index, ORMNamedElement value)
+			{
+				throw new NotSupportedException(); // Not supported for readonly list
+			}
+			void IList<ORMNamedElement>.RemoveAt(int index)
+			{
+				throw new NotSupportedException(); // Not supported for readonly list
+			}
+			#endregion // IList<ORMNamedElement> Implementation
+			#region ICollection<ORMNamedElement> Implementation
+			void ICollection<ORMNamedElement>.CopyTo(ORMNamedElement[] array, int index)
 			{
 				int baseIndex = index;
 				int nextCount = myList1.Count;
 				if (nextCount != 0)
 				{
-					myList1.CopyTo(array, baseIndex);
+					((ICollection)myList1).CopyTo(array, baseIndex);
 					baseIndex += nextCount;
 				}
 				nextCount = myList2.Count;
 				if (nextCount != 0)
 				{
-					myList2.CopyTo(array, baseIndex);
+					((ICollection)myList2).CopyTo(array, baseIndex);
 					baseIndex += nextCount;
 				}
 				nextCount = myList3.Count;
 				if (nextCount != 0)
 				{
-					myList3.CopyTo(array, baseIndex);
+					((ICollection)myList3).CopyTo(array, baseIndex);
 				}
 			}
-			int ICollection.Count
+			int ICollection<ORMNamedElement>.Count
 			{
 				get
 				{
 					return myList1.Count + myList2.Count + myList3.Count;
 				}
 			}
-			bool ICollection.IsSynchronized
+			bool ICollection<ORMNamedElement>.Contains(ORMNamedElement value)
 			{
-				get
+				SetComparisonConstraint setComparisonConstraint;
+				SetConstraint setConstraint;
+				ValueConstraint valueConstraint;
+				if ((setComparisonConstraint = value as SetComparisonConstraint) != null)
 				{
-					return false;
+					return myList1.Contains(setComparisonConstraint);
 				}
-			}
-			object ICollection.SyncRoot
-			{
-				get
+				else if ((setConstraint = value as SetConstraint) != null)
 				{
-					throw new NotImplementedException();
+					return myList2.Contains(setConstraint);
 				}
-			}
-			#endregion // ICollection Implementation
-			#region IEnumerable Implementation
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				foreach (object obj in myList1)
+				else if ((valueConstraint = value as ValueConstraint) != null)
 				{
-					yield return obj;
-				}
-				foreach (object obj in myList2)
-				{
-					yield return obj;
-				}
-				foreach (object obj in myList3)
-				{
-					yield return obj;
-				}
-			}
-			#endregion // IEnumerable Implementation
-			#region IList Implementation
-			bool IList.Contains(object value)
-			{
-				if (value is SetComparisonConstraint)
-				{
-					if (myList1.Contains(value))
-					{
-						return true;
-					}
-				}
-				else if (value is SetConstraint)
-				{
-					if (myList2.Contains(value))
-					{
-						return true;
-					}
-				}
-				else if (value is ValueConstraint)
-				{
-					return myList3.Contains(value);
+					return myList3.Contains(valueConstraint);
 				}
 				return false;
 			}
-			int IList.IndexOf(object value)
-			{
-				int retVal = myList1.IndexOf(value);
-				if (retVal == -1)
-				{
-					retVal = myList2.IndexOf(value);
-					if (retVal != -1)
-					{
-						retVal += myList1.Count;
-					}
-					else
-					{
-						retVal = myList3.IndexOf(value);
-						if (retVal != -1)
-						{
-							retVal += myList1.Count + myList2.Count;
-						}
-					}
-				}
-				return retVal;
-			}
-			bool IList.IsFixedSize
-			{
-				get
-				{
-					return false;
-				}
-			}
-			bool IList.IsReadOnly
+			bool ICollection<ORMNamedElement>.IsReadOnly
 			{
 				get
 				{
 					return true;
 				}
 			}
-			object IList.this[int index]
+			void ICollection<ORMNamedElement>.Add(ORMNamedElement value)
 			{
-				get
+				throw new NotSupportedException(); // Not supported for readonly list
+			}
+			void ICollection<ORMNamedElement>.Clear()
+			{
+				throw new NotSupportedException(); // Not supported for readonly list
+			}
+			bool ICollection<ORMNamedElement>.Remove(ORMNamedElement value)
+			{
+				throw new NotSupportedException(); // Not supported for readonly list
+			}
+			#endregion // ICollection<ORMNamedElement> Implementation
+			#region IEnumerable<ORMNamedElement> Implementation
+			IEnumerator<ORMNamedElement> IEnumerable<ORMNamedElement>.GetEnumerator()
+			{
+				foreach (ORMNamedElement element in myList1)
 				{
-					int list1Count = myList1.Count;
-					if (index >= list1Count)
-					{
-						index -= list1Count;
-						int list2Count = myList2.Count;
-						return (index >= list2Count) ? myList3[index - list2Count] : myList2[index];
-					}
-					return myList1[index];
+					yield return element;
 				}
-				set
+				foreach (ORMNamedElement element in myList2)
 				{
-					int list1Count = myList1.Count;
-					if (index >= list1Count)
-					{
-						index -= list1Count;
-						int list2Count = myList2.Count;
-						if (index >= list2Count)
-						{
-							myList3[index - list2Count] = value;
-						}
-						else
-						{
-							myList2[index] = value;
-						}
-					}
-					else
-					{
-						myList1[index] = value;
-					}
+					yield return element;
+				}
+				foreach (ORMNamedElement element in myList3)
+				{
+					yield return element;
 				}
 			}
-			int IList.Add(object value)
+			#endregion // IEnumerable<ORMNamedElement> Implementation
+			#region IEnumerable Implementation
+			IEnumerator IEnumerable.GetEnumerator()
 			{
-				SetComparisonConstraint mcec;
-				SetConstraint scec;
-				ValueConstraint vc;
-				if (null != (scec = value as SetConstraint))
-				{
-					return myList2.Add(scec) + myList1.Count;
-				}
-				else if (null != (mcec = value as SetComparisonConstraint))
-				{
-					return myList1.Add(mcec);
-				}
-				else if (null != (vc = value as ValueConstraint))
-				{
-					return myList3.Add(vc) + myList1.Count + myList2.Count;
-				}
-				else
-				{
-					throw new InvalidCastException();
-				}
+				return ((IEnumerable<ORMNamedElement>)this).GetEnumerator();
 			}
-			void IList.Clear()
-			{
-				throw new NotImplementedException(); // Not supported for readonly list
-			}
-			void IList.Insert(int index, object value)
-			{
-				throw new NotImplementedException(); // Not supported for readonly list
-			}
-			void IList.Remove(object value)
-			{
-				throw new NotImplementedException(); // Not supported for readonly list
-			}
-			void IList.RemoveAt(int index)
-			{
-				throw new NotImplementedException(); // Not supported for readonly list
-			}
-			#endregion // IList Implementation
+			#endregion // IEnumerable Implementation
 		}
 		#endregion // ConstraintCollection Implementation
 		#region IHasIndirectModelErrorOwner Implementation
 		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[]{
-			SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
-			SetConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid,
-			ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid};
+			SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId,
+			SetConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId,
+			ValueConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId};
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>

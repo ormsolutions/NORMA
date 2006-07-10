@@ -146,7 +146,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else
 					{
-						FactTypeMoveableCollection facts = null;
+						LinkedElementCollection<FactType> facts = null;
 						switch (testConstraint.ConstraintStorageStyle)
 						{
 							case ConstraintStorageStyle.SetConstraint:
@@ -168,17 +168,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A filled arrow decorator drawn with sticky pens and brushes
 		/// </summary>
-		private class StickyFilledArrowDecorator : DecoratorFilledArrow
+		private sealed class StickyFilledArrowDecorator : DecoratorFilledArrow
 		{
 			public static readonly LinkDecorator Decorator = new StickyFilledArrowDecorator();
-			public override StyleSetResourceId BrushId
+			public sealed override StyleSetResourceId BrushId
 			{
 				get
 				{
 					return ORMDiagram.StickyConnectionLineDecoratorResource;
 				}
 			}
-			public override StyleSetResourceId PenId
+			public sealed override StyleSetResourceId PenId
 			{
 				get
 				{
@@ -189,17 +189,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A filled arrow decorator drawn with active pens and brushes
 		/// </summary>
-		private class ActiveFilledArrowDecorator : DecoratorFilledArrow
+		private sealed class ActiveFilledArrowDecorator : DecoratorFilledArrow
 		{
 			public static readonly LinkDecorator Decorator = new ActiveFilledArrowDecorator();
-			public override StyleSetResourceId BrushId
+			public sealed override StyleSetResourceId BrushId
 			{
 				get
 				{
 					return ORMDiagram.ActiveConnectionLineDecoratorResource;
 				}
 			}
-			public override StyleSetResourceId PenId
+			public sealed override StyleSetResourceId PenId
 			{
 				get
 				{
@@ -400,34 +400,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SubtypeFact.IsPrimaryMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(IsPrimaryChangedEvent));
+			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
 		public static void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SubtypeFact.IsPrimaryMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(IsPrimaryChangedEvent));
+			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(SubtypeFact.IsPrimaryDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(IsPrimaryChangedEvent));
 		}
 		/// <summary>
 		/// Event handler for IsPrimary property on the associated subtype fact
 		/// </summary>
-		private static void IsPrimaryChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void IsPrimaryChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			SubtypeFact fact;
 			if (null != (fact = e.ModelElement as SubtypeFact))
 			{
-				if (!fact.IsRemoved)
+				if (!fact.IsDeleted)
 				{
-					foreach (PresentationElement pel in fact.PresentationRolePlayers)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(fact))
 					{
 						SubtypeLink linkShape;
 						if (null != (linkShape = pel as SubtypeLink))
@@ -468,7 +468,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to display subtype links
 		/// </summary>
-		private class DisplaySubtypeLinkFixupListener : DeserializationFixupListener<ModelHasFactType>
+		private sealed class DisplaySubtypeLinkFixupListener : DeserializationFixupListener<ModelHasFactType>
 		{
 			/// <summary>
 			/// Create a new DisplaySubtypeLinkFixupListener
@@ -483,10 +483,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">An ModelHasFactType instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ModelHasFactType element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ModelHasFactType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				SubtypeFact subTypeFact = element.FactTypeCollection as SubtypeFact;
-				if (subTypeFact != null && !subTypeFact.IsRemoved)
+				SubtypeFact subTypeFact = element.FactType as SubtypeFact;
+				if (subTypeFact != null && !subTypeFact.IsDeleted)
 				{
 					ORMModel model = subTypeFact.Model;
 					ObjectType rolePlayer = subTypeFact.Subtype;

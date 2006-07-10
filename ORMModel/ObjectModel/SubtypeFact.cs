@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
@@ -24,6 +25,7 @@ using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<SubtypeFact, Design.SubtypeFactTypeDescriptor<SubtypeFact>>))]
 	public partial class SubtypeFact
 	{
 		#region Create functions
@@ -36,7 +38,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static SubtypeFact Create(ObjectType subtype, ObjectType supertype)
 		{
 			Debug.Assert(subtype != null && supertype != null);
-			SubtypeFact retVal = SubtypeFact.CreateSubtypeFact(subtype.Store);
+			SubtypeFact retVal = new SubtypeFact(subtype.Store);
 			retVal.Model = subtype.Model;
 			retVal.Subtype = subtype;
 			retVal.Supertype = supertype;
@@ -82,7 +84,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleBaseMoveableCollection roles = RoleCollection;
+				LinkedElementCollection<RoleBase> roles = RoleCollection;
 				SubtypeMetaRole retVal = null;
 				if (roles.Count == 2)
 				{
@@ -103,7 +105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleBaseMoveableCollection roles = RoleCollection;
+				LinkedElementCollection<RoleBase> roles = RoleCollection;
 				// Start with checking role 1, not 0. This corresponds
 				// to the indices we set in the InitializeSubtypeAddRule.
 				// This is not guaranteed (the user can switch them in the xml),
@@ -122,63 +124,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Accessor functions
-		#region Customize property display
-		/// <summary>
-		/// Display this type with a different name than a fact type
-		/// </summary>
-		public override string GetClassName()
-		{
-			return ResourceStrings.SubtypeFact;
-		}
-		/// <summary>
-		/// Hide the NestingType property (cannot be set for a SubtypeFact)
-		/// </summary>
-		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
-		{
-			Guid attributeId = metaAttrInfo.Id;
-			if (attributeId == FactType.NestingTypeDisplayMetaAttributeGuid)
-			{
-				return false;
-			}
-			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
-		}
-		/// <summary>
-		/// Display a formatted string defining the relationship
-		/// for the component name
-		/// </summary>
-		public override string GetComponentName()
-		{
-			ObjectType subType;
-			ObjectType superType;
-			if (null != (subType = Subtype) &&
-				null != (superType = Supertype))
-			{
-				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.SubtypeFactComponentNameFormat, subType.GetComponentName(), superType.GetComponentName());
-			}
-			return base.GetComponentName();
-		}
-		#endregion // Customize property display
 		#region Initialize pattern rules
 		/// <summary>
 		/// A rule to create a subtype-style FactType with all
 		/// of the required roles and constraints.
 		/// </summary>
 		[RuleOn(typeof(SubtypeFact))]
-		private class InitializeSubtypeAddRule : AddRule
+		private sealed class InitializeSubtypeAddRule : AddRule
 		{
 			/// <summary>
 			/// Make sure a Subtype is a 1-1 fact with a mandatory role
 			/// on the base type (role 0)
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactType fact = e.ModelElement as FactType;
 				Store store = fact.Store;
 			
 				// Establish role collecton
-				RoleBaseMoveableCollection roles = fact.RoleCollection;
-				SubtypeMetaRole subTypeMetaRole = SubtypeMetaRole.CreateSubtypeMetaRole(store);
-				SupertypeMetaRole superTypeMetaRole = SupertypeMetaRole.CreateSupertypeMetaRole(store);
+				LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
+				SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(store);
+				SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(store);
 				roles.Add(subTypeMetaRole);
 				roles.Add(superTypeMetaRole);
 			
@@ -187,23 +153,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
 
 				// Add forward reading
-				ReadingOrderMoveableCollection readingOrders = fact.ReadingOrderCollection;
-				ReadingOrder order = ReadingOrder.CreateReadingOrder(store);
+				LinkedElementCollection<ReadingOrder> readingOrders = fact.ReadingOrderCollection;
+				ReadingOrder order = new ReadingOrder(store);
 				readingOrders.Add(order);
 				roles = order.RoleCollection;
 				roles.Add(subTypeMetaRole);
 				roles.Add(superTypeMetaRole);
-				Reading reading = Reading.CreateReading(store);
+				Reading reading = new Reading(store);
 				order.ReadingCollection.Add(reading);
 				reading.Text = ResourceStrings.SubtypeFactPredicateReading;
 				
 				// Add inverse reading
-				order = ReadingOrder.CreateReadingOrder(store);
+				order = new ReadingOrder(store);
 				readingOrders.Add(order);
 				roles = order.RoleCollection;
 				roles.Add(superTypeMetaRole);
 				roles.Add(subTypeMetaRole);
-				reading = Reading.CreateReading(store);
+				reading = new Reading(store);
 				order.ReadingCollection.Add(reading);
 				reading.Text = ResourceStrings.SubtypeFactPredicateInverseReading;
 			}
@@ -219,17 +185,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class LimitSubtypeConstraintsAddRule : AddRule
+		private sealed class LimitSubtypeConstraintsAddRule : AddRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				if (link.SetConstraintCollection.Constraint.ConstraintIsInternal)
+				if (link.SetConstraint.Constraint.ConstraintIsInternal)
 				{
-					SubtypeFact subtypeFact = link.FactTypeCollection as SubtypeFact;
+					SubtypeFact subtypeFact = link.FactType as SubtypeFact;
 					if (subtypeFact != null)
 					{
 						if (subtypeFact.Model != null)
@@ -246,18 +212,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class LimitSubtypeConstraintsRemoveRule : RemoveRule
+		private sealed class LimitSubtypeConstraintsDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				if (link.SetConstraintCollection.Constraint.ConstraintIsInternal)
+				if (link.SetConstraint.Constraint.ConstraintIsInternal)
 				{
-					SubtypeFact subtypeFact = link.FactTypeCollection as SubtypeFact;
-					if (subtypeFact != null && !subtypeFact.IsRemoved)
+					SubtypeFact subtypeFact = link.FactType as SubtypeFact;
+					if (subtypeFact != null && !subtypeFact.IsDeleted)
 					{
 						if (subtypeFact.Model != null)
 						{
@@ -273,12 +239,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class LimitSubtypeRolesAddRule : AddRule
+		private sealed class LimitSubtypeRolesAddRule : AddRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
@@ -292,7 +258,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					RoleBase role = link.RoleCollection;
+					RoleBase role = link.Role;
 					if (role is SubtypeMetaRole || role is SupertypeMetaRole)
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactMustBeParentOfMetaRole);
@@ -305,16 +271,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class LimitSubtypeRolesRemoveRule : RemoveRule
+		private sealed class LimitSubtypeRolesDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Block internal role modification on subtypes
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				SubtypeFact subtypeFact = link.FactType as SubtypeFact;
-				if (subtypeFact != null && !subtypeFact.IsRemoved)
+				if (subtypeFact != null && !subtypeFact.IsDeleted)
 				{
 					if (subtypeFact.Model != null)
 					{
@@ -328,16 +294,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block internal constraints from being modified on a subtype.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class LimitSubtypeConstraintRolesAddRule : AddRule
+		private sealed class LimitSubtypeConstraintRolesAddRule : AddRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint ic = link.ConstraintRoleSequenceCollection as SetConstraint;
-				FactTypeMoveableCollection facts;
+				SetConstraint ic = link.ConstraintRoleSequence as SetConstraint;
+				LinkedElementCollection<FactType> facts;
 				if (ic != null &&
 					ic.Constraint.ConstraintIsInternal &&
 					1 == (facts = ic.FactTypeCollection).Count)
@@ -359,23 +325,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class LimitSubtypeConstraintRolesRemoveRule : RemoveRule
+		private sealed class LimitSubtypeConstraintRolesDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Block internal role modification on subtypes
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint ic = link.ConstraintRoleSequenceCollection as SetConstraint;
-				FactTypeMoveableCollection facts;
+				SetConstraint ic = link.ConstraintRoleSequence as SetConstraint;
+				LinkedElementCollection<FactType> facts;
 				if (ic != null &&
-					!ic.IsRemoved &&
+					!ic.IsDeleted &&
 					ic.Constraint.ConstraintIsInternal &&
 					1 == (facts = ic.FactTypeCollection).Count)
 				{
 					SubtypeFact subtypeFact = facts[0] as SubtypeFact;
-					if (subtypeFact != null && !subtypeFact.IsRemoved)
+					if (subtypeFact != null && !subtypeFact.IsDeleted)
 					{
 						if (subtypeFact.Model != null)
 						{
@@ -391,24 +357,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// on subtype facts
 		/// </summary>
 		[RuleOn(typeof(SetConstraint))]
-		private class LimitSubtypeConstraintChangeRule : ChangeRule
+		private sealed class LimitSubtypeConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
-			/// Block internal attribute modification on implicit subtype constraints
+			/// Block internal property modification on implicit subtype constraints
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
+				Guid attributeId = e.DomainProperty.Id;
 				SetConstraint constraint = e.ModelElement as SetConstraint;
-				if (!constraint.IsRemoved)
+				if (!constraint.IsDeleted)
 				{
-					FactTypeMoveableCollection testFacts = null;
-					if (attributeId == UniquenessConstraint.IsInternalMetaAttributeGuid ||
-						attributeId == MandatoryConstraint.IsSimpleMetaAttributeGuid)
+					LinkedElementCollection<FactType> testFacts = null;
+					if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId ||
+						attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
 					{
 						testFacts = constraint.FactTypeCollection;
 					}
-					else if (attributeId == SetConstraint.ModalityMetaAttributeGuid)
+					else if (attributeId == SetConstraint.ModalityDomainPropertyId)
 					{
 						if (constraint.Constraint.ConstraintIsInternal)
 						{
@@ -436,21 +402,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// of the subtype itself.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
-		private class RemoveSubtypeWhenRolePlayerRemoved : RemoveRule
+		private sealed class DeleteSubtypeWhenRolePlayerDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove the full SubtypeFact when a role player is removed
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				if (role != null && !role.IsRemoved)
+				Role role = link.PlayedRole;
+				if (role != null && !role.IsDeleted)
 				{
 					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					if (subtypeFact != null && !subtypeFact.IsRemoved)
+					if (subtypeFact != null && !subtypeFact.IsDeleted)
 					{
-						subtypeFact.Remove();
+						subtypeFact.Delete();
 					}
 				}
 			}
@@ -466,14 +432,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// players in a subtyping relationship
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
-		private class EnsureConsistentRolePlayerTypesAddRule : AddRule
+		private sealed class EnsureConsistentRolePlayerTypesAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				SubtypeMetaRole subtypeRole;
 				SubtypeFact subtypeFact;
-				if (null != (subtypeRole = link.PlayedRoleCollection as SubtypeMetaRole) &&
+				if (null != (subtypeRole = link.PlayedRole as SubtypeMetaRole) &&
 					null != (subtypeFact = subtypeRole.FactType as SubtypeFact))
 				{
 					ObjectType superType = subtypeFact.Supertype;
@@ -490,13 +456,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// added if an ObjectType participates in a subtyping relationship
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class EnsureConsistentDataTypesAddRule : AddRule
+		private sealed class EnsureConsistentDataTypesAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType objectType = link.ValueTypeCollection;
-				RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+				ObjectType objectType = link.ValueType;
+				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
 				for (int i = 0; i < playedRoleCount; ++i)
 				{
@@ -517,15 +483,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// removed if an ObjectType participates in a subtyping relationship
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class EnsureConsistentDataTypesRemoveRule : RemoveRule
+		private sealed class EnsureConsistentDataTypesDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType objectType = link.ValueTypeCollection;
-				if (!objectType.IsRemoved)
+				ObjectType objectType = link.ValueType;
+				if (!objectType.IsDeleted)
 				{
-					RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 					int playedRoleCount = playedRoles.Count;
 					for (int i = 0; i < playedRoleCount; ++i)
 					{
@@ -545,12 +511,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Mixed role player types rules
 		#region Circular reference check rule
 		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.LocalCommit)]
-		private class BlockCircularSubtypesAddRule : AddRule
+		private sealed class BlockCircularSubtypesAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				SubtypeFact newSubtypeFact = link.FactTypeCollection as SubtypeFact;
+				SubtypeFact newSubtypeFact = link.FactType as SubtypeFact;
 				if (newSubtypeFact != null)
 				{
 					ObjectType superType = newSubtypeFact.Supertype;
@@ -564,7 +530,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				foreach (ObjectType nestedSuper in iterateOn.SupertypeCollection)
 				{
-					if (object.ReferenceEquals(nestedSuper, startingSuper))
+					if (nestedSuper == startingSuper)
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
 					}
@@ -573,22 +539,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Circular reference check rule
-		#region override property readOnly
-		/// <summary>
-		/// Checks to see if subtype is set as primary, if so makes it's property descriptor read only
-		/// </summary>
-		/// <param name="propertyDescriptor"></param>
-		/// <returns>whether or not property descriptor is read only</returns>
-		public override bool IsPropertyDescriptorReadOnly(System.ComponentModel.PropertyDescriptor propertyDescriptor)
-		{
-			ElementPropertyDescriptor elementDescriptor = propertyDescriptor as ElementPropertyDescriptor;
-			if(elementDescriptor != null && elementDescriptor.MetaAttributeInfo.Id == IsPrimaryMetaAttributeGuid)
-			{
-				return IsPrimary;
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
-		}
-		#endregion //property readOnly
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -606,7 +556,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Invalid subtype patterns will either be fixed up or completely
 		/// removed.
 		/// </summary>
-		private class SubtypeFactFixupListener : DeserializationFixupListener<SubtypeFact>
+		private sealed class SubtypeFactFixupListener : DeserializationFixupListener<SubtypeFact>
 		{
 			/// <summary>
 			/// Create a new SubtypeFactFixupListener
@@ -622,7 +572,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="element">An SubtypeFact instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(SubtypeFact element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(SubtypeFact element, Store store, INotifyElementAdded notifyAdded)
 			{
 				// Note that the arity and types of the subtype/supertype roles are
 				// enforced by the schema.
@@ -641,7 +591,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					// Note that rules aren't on, so we can read the Multiplicity attributes,
+					// Note that rules aren't on, so we can read the Multiplicity properties,
 					// but we can't set them. All changes must be made explicitly.
 					if (superTypeMetaRole.Multiplicity != RoleMultiplicity.ExactlyOne)
 					{
@@ -661,27 +611,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="fact">The fact to clear of external constraints</param>
 			private static void RemoveFact(FactType fact)
 			{
-				RoleBaseMoveableCollection factRoles = fact.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = fact.RoleCollection;
 				int roleCount = factRoles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
 					Role role = factRoles[i].Role;
-					ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 					int sequenceCount = sequences.Count;
 					for (int j = sequenceCount - 1; j >= 0; --j)
 					{
 						SetConstraint ic = sequences[j] as SetConstraint;
 						if (ic != null && ic.Constraint.ConstraintIsInternal)
 						{
-							ic.Remove();
+							ic.Delete();
 						}
 					}
 				}
-				fact.Remove();
+				fact.Delete();
 			}
 			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
 			{
-				ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+				LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 				int sequenceCount = sequences.Count;
 				bool haveUniqueness = false;
 				bool haveMandatory = !requireMandatory;
@@ -698,7 +648,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								case ConstraintType.InternalUniqueness:
 									if (haveUniqueness)
 									{
-										ic.Remove();
+										ic.Delete();
 									}
 									else
 									{
@@ -708,7 +658,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								case ConstraintType.SimpleMandatory:
 									if (haveMandatory)
 									{
-										ic.Remove();
+										ic.Delete();
 									}
 									else
 									{
@@ -719,7 +669,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							ic.Remove();
+							ic.Delete();
 						}
 					}
 				}

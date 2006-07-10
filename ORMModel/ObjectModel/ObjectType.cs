@@ -17,11 +17,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM;
 using System.Globalization;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.Framework;
 using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 
@@ -57,6 +60,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SkipChildren,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<ObjectType, Design.ObjectTypeTypeDescriptor<ObjectType>>))]
 	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Public token values
@@ -76,116 +80,117 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly object AllowDuplicateObjectNamesKey = new object();
 		#endregion // Public token values
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in ObjectTypeChangeRule.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <param name="newValue">object</param>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private void SetIsValueTypeValue(bool newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == IsValueTypeMetaAttributeGuid ||
-				attributeGuid == ScaleMetaAttributeGuid ||
-				attributeGuid == DataTypeDisplayMetaAttributeGuid ||
-				attributeGuid == LengthMetaAttributeGuid ||
-				attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
-				attributeGuid == ReferenceModeDisplayMetaAttributeGuid ||
-				attributeGuid == ReferenceModeMetaAttributeGuid ||
-				attributeGuid == ReferenceModeStringMetaAttributeGuid ||
-				attributeGuid == ValueRangeTextMetaAttributeGuid ||
-				attributeGuid == NoteTextMetaAttributeGuid)
-			{
-				// Handled by ObjectTypeChangeRule
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			// Handled by ObjectTypeChangeRule
 		}
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private void SetScaleValue(int newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == IsValueTypeMetaAttributeGuid)
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetLengthValue(int newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetDataTypeDisplayValue(DataType newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetNestedFactTypeDisplayValue(FactType newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetReferenceModeDisplayValue(object newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetReferenceModeValue(ReferenceMode newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetReferenceModeStringValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetValueRangeTextValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+		private void SetNoteTextValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
+
+		private bool GetIsValueTypeValue()
+		{
+			return this.DataType != null;
+		}
+		private int GetScaleValue()
+		{
+			ValueTypeHasDataType link = GetDataTypeLink();
+			if (link == null)
 			{
-				return this.DataType != null;
-			}
-			else if (attributeGuid == ObjectType.ScaleMetaAttributeGuid)
-			{
-				ValueTypeHasDataType link = GetDataTypeLink();
-				if (link == null)
-				{
-					ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
-					if (refModeRolePlayer != null)
-					{
-						link = refModeRolePlayer.GetDataTypeLink();
-					}
-				}
-				return (link == null) ? 0 : link.Scale;
-			}
-			else if (attributeGuid == ObjectType.LengthMetaAttributeGuid)
-			{
-				ValueTypeHasDataType link = GetDataTypeLink();
-				if (link == null)
-				{
-					ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
-					if (refModeRolePlayer != null)
-					{
-						link = refModeRolePlayer.GetDataTypeLink();
-					}
-				}
-				return (link == null) ? 0 : link.Length;
-			}
-			else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
-			{
-				//If this objectype has a reference mode, return the datatype corresponding
-				//to the ref mode's datatype.
 				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
 				if (refModeRolePlayer != null)
 				{
-					return refModeRolePlayer.DataType;
+					link = refModeRolePlayer.GetDataTypeLink();
 				}
-				return this.DataType;
 			}
-			else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
+			return (link == null) ? 0 : link.Scale;
+		}
+		private int GetLengthValue()
+		{
+			ValueTypeHasDataType link = GetDataTypeLink();
+			if (link == null)
 			{
-				ReferenceMode refMode;
-				string referenceModeString;
-				this.GetReferenceMode(out refMode, out referenceModeString);
-				return (refMode != null) ? (object)refMode : referenceModeString;
+				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+				if (refModeRolePlayer != null)
+				{
+					link = refModeRolePlayer.GetDataTypeLink();
+				}
 			}
-			else if (attributeGuid == ObjectType.ReferenceModeStringMetaAttributeGuid)
-			{
-				ReferenceMode refMode;
-				string referenceModeString;
-				this.GetReferenceMode(out refMode, out referenceModeString);
-				return referenceModeString;
-			}
-			else if (attributeGuid == ObjectType.ReferenceModeMetaAttributeGuid)
-			{
-				ReferenceMode refMode;
-				string referenceModeString;
-				GetReferenceMode(out refMode, out referenceModeString);
-				return refMode;
-			}
-			else if (attributeGuid == ObjectType.NestedFactTypeDisplayMetaAttributeGuid)
-			{
-				return NestedFactType;
-			}
-			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
-			{
-				ValueConstraint valueConstraint = FindValueConstraint(false);
-				return (valueConstraint == null) ? "" : valueConstraint.Text;
-			}
-			else if (attributeGuid == NoteTextMetaAttributeGuid)
-			{
-				Note currentNote = Note;
-				return (currentNote != null) ? currentNote.Text : "";
-			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			return (link == null) ? 0 : link.Length;
+		}
+		private DataType GetDataTypeDisplayValue()
+		{
+			// If this ObjecType has a reference mode, return its DataType.
+			ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+			return (refModeRolePlayer != null) ? refModeRolePlayer.DataType : this.DataType;
+		}
+		private object GetReferenceModeDisplayValue()
+		{
+			ReferenceMode refMode;
+			string referenceModeString;
+			this.GetReferenceMode(out refMode, out referenceModeString);
+			return (object)refMode ?? referenceModeString;
+		}
+		private string GetReferenceModeStringValue()
+		{
+			ReferenceMode refMode;
+			string referenceModeString;
+			this.GetReferenceMode(out refMode, out referenceModeString);
+			return referenceModeString;
+		}
+		private ReferenceMode GetReferenceModeValue()
+		{
+			ReferenceMode refMode;
+			string referenceModeString;
+			GetReferenceMode(out refMode, out referenceModeString);
+			return refMode;
+		}
+		private FactType GetNestedFactTypeDisplayValue()
+		{
+			return NestedFactType;
+		}
+		private string GetValueRangeTextValue()
+		{
+			ValueConstraint valueConstraint = FindValueConstraint(false);
+			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
+		}
+		private string GetNoteTextValue()
+		{
+			Note currentNote = Note;
+			return (currentNote != null) ? currentNote.Text : String.Empty;
 		}
 		/// <summary>
 		/// Return the link object between a value type and its referenced
@@ -194,81 +199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>ValueTypeHasDataType relationship</returns>
 		public ValueTypeHasDataType GetDataTypeLink()
 		{
-			ElementLink goodLink = null;
-			System.Collections.IList links = GetElementLinks(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid);
-			foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-			{
-				if (!link.IsRemoved)
-				{
-					goodLink = link;
-					break;
-				}
-			}
-			return goodLink as ValueTypeHasDataType;
-		}
-		/// <summary>
-		/// Standard override determine when derived attributes are
-		/// displayed in the property grid. Called for all attributes.
-		/// </summary>
-		/// <param name="metaAttrInfo">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
-		{
-			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == DataTypeDisplayMetaAttributeGuid ||
-				attributeGuid == ScaleMetaAttributeGuid ||
-				attributeGuid == LengthMetaAttributeGuid ||
-				attributeGuid == ValueRangeTextMetaAttributeGuid)
-			{
-				return IsValueType || HasReferenceMode;
-			}
-			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
-				attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
-			{
-				return !IsValueType;
-			}
-			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
-		}
-
-		/// <summary>
-		/// Return a custom property descriptor for the ReferenceModeDisplay property
-		/// </summary>
-		/// <param name="modelElement"></param>
-		/// <param name="metaAttributeInfo"></param>
-		/// <param name="requestor"></param>
-		/// <param name="attributes"></param>
-		/// <returns></returns>
-		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
-		{
-			if (metaAttributeInfo.Id == ReferenceModeDisplayMetaAttributeGuid)
-			{
-				return new ReferenceModeDisplayPropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
-			}
-			return base.CreatePropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
-		}
-		/// <summary>
-		/// Standard override. Determines when derived properties are read-only. Called
-		/// if the ReadOnly setting on the element is one of the SometimesUIReadOnly* values.
-		/// Currently, IsValueType is readonly if there is a nested fact type.
-		/// </summary>
-		/// <param name="propertyDescriptor">PropertyDescriptor</param>
-		/// <returns></returns>
-		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
-		{
-			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
-			if (elemDesc != null)
-			{
-				Guid attributeId = elemDesc.MetaAttributeInfo.Id;
-				if (attributeId == IsValueTypeMetaAttributeGuid)
-				{
-					return NestedFactType != null || PreferredIdentifier != null || IsSubtypeOrSupertype;
-				}
-				else if (attributeId == ValueRangeTextMetaAttributeGuid)
-				{
-					return !(IsValueType || HasReferenceMode);
-				}
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+			return ValueTypeHasDataType.GetLinkToDataType(this);
 		}
 		#endregion // CustomStorage handlers
 		#region Objectification Property
@@ -280,13 +211,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				IList links = GetElementLinks(Objectification.NestingTypeMetaRoleGuid, false);
-				if (links != null && links.Count != 0)
-				{
-					Debug.Assert(links.Count == 1);
-					return (Objectification)links[0];
-				}
-				return null;
+				return Neumont.Tools.ORM.ObjectModel.Objectification.GetLinkToNestedFactType(this);
 			}
 		}
 		#endregion // Objectification Property
@@ -304,7 +229,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// code spit by hand.
 			get
 			{
-				return GetCounterpartRolePlayer(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, false) as UniquenessConstraint;
+				return EntityTypeHasPreferredIdentifier.GetPreferredIdentifier(this);
 			}
 			set
 			{
@@ -312,7 +237,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// which is guaranteed to run for all object model modifications. We defer validation of the constraint
 				// types to that routine. However, the IConstraint passed in must be an ORMNamedElement, so we
 				// use an exception cast here to do a minimal sanity check before proceeding.
-				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, typeof(EntityTypeHasPreferredIdentifier));
+				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId, EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId, typeof(EntityTypeHasPreferredIdentifier));
 			}
 		}
 		#endregion // PreferredIdentifier Property
@@ -324,23 +249,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return GetCounterpartRolePlayer(Objectification.NestingTypeMetaRoleGuid, Objectification.NestedFactTypeMetaRoleGuid, false) as FactType;
+				return Objectification.GetNestedFactType(this);
 			}
 			set
 			{
-				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestingTypeMetaRoleGuid, Objectification.NestedFactTypeMetaRoleGuid, typeof(Objectification));
+				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestingTypeDomainRoleId, Objectification.NestedFactTypeDomainRoleId, typeof(Objectification));
 			}
 		}
 		#endregion // NestedFactType Property
 		#region Customize property display
-		/// <summary>
-		/// Distinguish between a value type and object
-		/// type in the property grid display.
-		/// </summary>
-		public override string GetClassName()
-		{
-			return IsValueType ? ResourceStrings.ValueType : ResourceStrings.EntityType;
-		}
 		/// <summary>
 		/// Return a simple name instead of a name decorated with the type (the
 		/// default for a ModelElement). This is the easiest way to display
@@ -362,23 +279,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Store store = model.Store;
 			ObjectType valueType = FindValueType(valueTypeName, model);
 
-			FactType refFact = FactType.CreateFactType(store);
+			FactType refFact = new FactType(store);
 			refFact.Model = model;
 
 			if (valueType == null)
 			{
-				valueType = ObjectType.CreateObjectType(store);
+				valueType = new ObjectType(store);
 				valueType.Name = valueTypeName;
 				valueType.Model = model;
 				valueType.IsValueType = true;
 			}
 
-			Role objectTypeRole = Role.CreateRole(store);
+			Role objectTypeRole = new Role(store);
 			objectTypeRole.RolePlayer = this;
-			RoleBaseMoveableCollection roleCollection = refFact.RoleCollection;
+			LinkedElementCollection<RoleBase> roleCollection = refFact.RoleCollection;
 			roleCollection.Add(objectTypeRole);
 
-			Role valueTypeRole = Role.CreateRole(store);
+			Role valueTypeRole = new Role(store);
 			valueTypeRole.RolePlayer = valueType;
 			roleCollection.Add(valueTypeRole);
 
@@ -386,15 +303,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ic.RoleCollection.Add(valueTypeRole); // Automatically sets FactType
 			this.PreferredIdentifier = ic;
 
-			ReadingOrder readingOrder1 = ReadingOrder.CreateReadingOrder(store);
-			RoleBaseMoveableCollection roles = refFact.RoleCollection;
-			RoleBaseMoveableCollection readingRoles = readingOrder1.RoleCollection;
+			ReadingOrder readingOrder1 = new ReadingOrder(store);
+			LinkedElementCollection<RoleBase> roles = refFact.RoleCollection;
+			LinkedElementCollection<RoleBase> readingRoles = readingOrder1.RoleCollection;
 			readingRoles.Add(roles[0]);
 			readingRoles.Add(roles[1]);
 			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading);
 			readingOrder1.FactType = refFact;
 
-			ReadingOrder readingOrder2 = ReadingOrder.CreateReadingOrder(store);
+			ReadingOrder readingOrder2 = new ReadingOrder(store);
 			readingRoles = readingOrder2.RoleCollection;
 			readingRoles.Add(roles[1]);
 			readingRoles.Add(roles[0]);
@@ -415,14 +332,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ORMModel model = this.Model;
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
 			Objectification objectification = Objectification;
-			RoleMoveableCollection constraintRoles;
+			LinkedElementCollection<Role> constraintRoles;
 			RoleProxy proxy;
 			FactType impliedFact;
 			if (objectification != null &&
 				1 == (constraintRoles = preferredConstraint.RoleCollection).Count &&
 				null != (proxy = constraintRoles[0].Proxy) &&
 				null != (impliedFact = proxy.FactType) &&
-				object.ReferenceEquals(impliedFact.ImpliedByObjectification, objectification))
+				impliedFact.ImpliedByObjectification == objectification)
 			{
 				CreateReferenceMode(valueTypeName);
 				return;
@@ -441,7 +358,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (valueType == null)
 				{
 					Store store = model.Store;
-					valueType = ObjectType.CreateObjectType(store);
+					valueType = new ObjectType(store);
 					valueType.Name = valueTypeName;
 					valueType.Model = model;
 					valueType.IsValueType = true;
@@ -449,7 +366,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (!IsValueTypeShared(preferredConstraint))
 				{
-					preferredConstraint.RoleCollection[0].RolePlayer.Remove();
+					preferredConstraint.RoleCollection[0].RolePlayer.Delete();
 				}
 
 				preferredConstraint.RoleCollection[0].RolePlayer = valueType;
@@ -472,9 +389,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType refFact = preferredConstraint.RoleCollection[0].FactType;
 					if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
 					{
-						valueType.Remove();
+						valueType.Delete();
 					}
-					refFact.Remove();
+					refFact.Delete();
 				}
 			}
 		}
@@ -497,15 +414,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
 				{
-					IList links = valueType.GetElementLinks();
+					ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(valueType);
 					int linkCount = links.Count;
 					if (linkCount > 3) // Easy initial check
 					{
 						int count = 0;
 						for (int i = 0; i < linkCount; ++i)
 						{
-							ElementLink link = (ElementLink)links[i];
-							if (!link.IsRemoving && !(link is SubjectHasPresentation) && !(link is ORMExtendableElementHasExtensionElement))
+							ElementLink link = links[i];
+							if (!link.IsDeleting && !(link is PresentationViewsSubject) && !(link is ORMModelElementHasExtensionElement))
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,
@@ -638,14 +555,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (HasReferenceMode)
 			{
-				RoleMoveableCollection roleCollection = PreferredIdentifier.RoleCollection;
+				LinkedElementCollection<Role> roleCollection = PreferredIdentifier.RoleCollection;
 				if (roleCollection.Count == 1)
 				{
 					Role role = roleCollection[0];
 					RoleValueConstraint roleValueConstraint = role.ValueConstraint;
 					if (roleValueConstraint == null && autoCreate)
 					{
-						role.ValueConstraint = roleValueConstraint = RoleValueConstraint.CreateRoleValueConstraint(role.Store);
+						role.ValueConstraint = roleValueConstraint = new RoleValueConstraint(role.Store);
 					}
 					return roleValueConstraint as ValueConstraint;
 				}
@@ -653,7 +570,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValueTypeValueConstraint valueConstraint = this.ValueConstraint;
 			if (valueConstraint == null && autoCreate)
 			{
-				this.ValueConstraint = valueConstraint = ValueTypeValueConstraint.CreateValueTypeValueConstraint(this.Store);
+				this.ValueConstraint = valueConstraint = new ValueTypeValueConstraint(this.Store);
 			}
 			return valueConstraint as ValueConstraint;
 		}
@@ -667,7 +584,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleMoveableCollection playedRoles = PlayedRoleCollection;
+				LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
 				for (int i = 0; i < playedRoleCount; ++i)
 				{
@@ -687,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleMoveableCollection playedRoles = PlayedRoleCollection;
+				LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
 				for (int i = 0; i < playedRoleCount; ++i)
 				{
@@ -707,7 +624,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				RoleMoveableCollection playedRoles = PlayedRoleCollection;
+				LinkedElementCollection<Role> playedRoles = PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
 				for (int i = 0; i < playedRoleCount; ++i)
 				{
@@ -790,7 +707,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Tracks how many times a given object has been visited while
 		/// walking supertypes of a given object.
 		/// </summary>
-		private class NearestCompatibleTypeNode
+		private sealed class NearestCompatibleTypeNode
 		{
 			public NearestCompatibleTypeNode(ObjectType objectType, int lastVisitedDuring)
 			{
@@ -855,7 +772,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// The object type being tracked
 			/// </summary>
-			public ObjectType ObjectType;
+			public readonly ObjectType ObjectType;
 			/// <summary>
 			/// The number of times this node has been visited
 			/// </summary>
@@ -894,7 +811,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					firstObjectType = currentObjectType;
 				}
-				else if (!object.ReferenceEquals(firstObjectType, currentObjectType))
+				else if (firstObjectType != currentObjectType)
 				{
 					if (expectedVisitCount == 0)
 					{
@@ -999,17 +916,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Enforces Change Rules
 		/// </summary>
 		[RuleOn(typeof(ObjectType))]
-		private class ObjectTypeChangeRule : ChangeRule
+		private sealed class ObjectTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Add or remove a ValueTypeHasDataType link depending on the value
 			/// of the IsValueType property.
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ObjectType.IsValueTypeMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == ObjectType.IsValueTypeDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					bool newValue = (bool)e.NewValue;
@@ -1020,7 +937,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					objectType.DataType = dataType;
 				}
-				else if (attributeGuid == ObjectType.ScaleMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.ScaleDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueTypeHasDataType link = objectType.GetDataTypeLink();
@@ -1038,7 +955,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.DataTypeDisplayDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					//If this objectype has a reference mode, return the datatype corresponding
@@ -1050,7 +967,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					objectType.DataType = e.NewValue as DataType;
 				}
-				else if (attributeGuid == ObjectType.LengthMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.LengthDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueTypeHasDataType link = objectType.GetDataTypeLink();
@@ -1068,7 +985,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeGuid == ObjectType.NestedFactTypeDisplayMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.NestedFactTypeDisplayDomainPropertyId)
 				{
 					FactType nestedFactType = e.NewValue as FactType;
 					if (nestedFactType != null)
@@ -1080,7 +997,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						(e.ModelElement as ObjectType).NestedFactType = null;
 					}
 				}
-				else if (attributeGuid == ObjectType.NameMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.NameDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					UniquenessConstraint prefConstraint = objectType.PreferredIdentifier;
@@ -1089,7 +1006,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						string newValue = (string)e.NewValue;
 						string oldValue = (string)e.OldValue;
-						string oldReferenceModeName = "";
+						string oldReferenceModeName = string.Empty;
 
 						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
 
@@ -1106,12 +1023,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.ReferenceModeDisplayDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string);
 				}
-				else if (attributeGuid == ObjectType.ReferenceModeStringMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.ReferenceModeStringDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					string newName = (string)e.NewValue;
@@ -1131,18 +1048,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string);
 				}
-				else if (attributeGuid == ObjectType.ReferenceModeMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.ReferenceModeDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null);
 				}
-				else if (attributeGuid == ObjectType.ValueRangeTextMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.ValueRangeTextDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
 					valueConstraint.Text = (string)e.NewValue;
 				}
-				else if (attributeGuid == ObjectType.NoteTextMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.NoteTextDomainPropertyId)
 				{
 					// cache the text.
 					string newText = (string)e.NewValue;
@@ -1157,7 +1074,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					else if (!string.IsNullOrEmpty(newText))
 					{
 						// Otherwise, create the note and set the text,
-						note = Note.CreateNote(objectType.Store);
+						note = new Note(objectType.Store);
 						note.Text = newText;
 						// then attach the note to the RootType.
 						objectType.Note = note;
@@ -1177,18 +1094,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName)
 			{
 				Store store = objectType.Store;
-				bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
+				bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
 
-				string newValue = newModeName;
-				if (newValue == null)
-				{
-					newValue = "";
-				}
-				string oldValue = oldModeName;
-				if (oldValue == null)
-				{
-					oldValue = "";
-				}
+				string newValue = newModeName ?? string.Empty;
+				string oldValue = oldModeName ?? string.Empty;
 
 				string name = newValue;
 				if (newMode != null)
@@ -1242,44 +1151,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ObjectTypeChangeRule class
-		#region ObjectTypeRemoveRule class
+		#region ObjectTypeDeleteRule class
 
 		/// <summary>
 		/// Enforces Delete Rules
 		/// </summary>
 		[RuleOn(typeof(ObjectType))]
-		private class ObjectTypeRemoveRule : RemovingRule
+		private sealed class ObjectTypeDeleteRule : DeletingRule
 		{
 			/// <summary>
 			/// Executes when an object is removing
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectType objectType = (ObjectType)e.ModelElement;
-				objectType.ReferenceModeDisplay = "";
+				objectType.ReferenceModeDisplay = string.Empty;
 			}
 		}
-		#endregion //ObjectTypeRemoveRule class
+		#endregion //ObjectTypeDeleteRule class
 		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
 		/// this child as participating in the 'ModelHasObjectType' naming set.
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
 		{
-			parentMetaRoleGuid = ModelHasObjectType.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
+			parentDomainRoleId = ModelHasObjectType.ModelDomainRoleId;
+			childDomainRoleId = ModelHasObjectType.ObjectTypeDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid };
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { ValueTypeHasValueConstraint.ValueTypeDomainRoleId };
 		/// <summary>
 		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set.
@@ -1295,24 +1204,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
 		#region INamedElementDictionaryParent implementation
-		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+			return GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
 		/// <returns>Model-owned dictionary for constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			if (parentMetaRoleGuid == ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid)
+			if (parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId)
 			{
 				ORMModel model = Model;
 				if (model != null)
 				{
-					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 				}
 			}
 			return null;
@@ -1320,14 +1229,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
 		/// </summary>
-		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		protected static object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			// Use the default settings (allow duplicates during load time only)
 			return null;
 		}
-		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
+			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		#endregion // INamedElementDictionaryParent implementation
 		#region DataTypeNotSpecifiedError retrieval and validation
@@ -1340,17 +1249,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				IList list = GetElementLinks(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid);
-				if (list.Count != 0)
-				{
-					ValueTypeHasDataType link = (ValueTypeHasDataType)list[0];
-					UnspecifiedDataType dataType = link.DataType as UnspecifiedDataType;
-					if (dataType != null)
-					{
-						return link.DataTypeNotSpecifiedError;
-					}
-				}
-				return null;
+				ValueTypeHasDataType valueTypeHasDataType = ValueTypeHasDataType.GetLinkToDataType(this);
+				return (valueTypeHasDataType != null && valueTypeHasDataType.DataType is UnspecifiedDataType) ?
+					valueTypeHasDataType.DataTypeNotSpecifiedError : null;
 			}
 		}
 		/// <summary>
@@ -1366,22 +1267,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private void ValidateDataTypeNotSpecifiedError(INotifyElementAdded notifyAdded)
 		{
-			IList list = GetElementLinks(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid);
-			if (list.Count != 0)
+			ValueTypeHasDataType link = ValueTypeHasDataType.GetLinkToDataType(this);
+			if (link != null)
 			{
-				ValueTypeHasDataType link = (ValueTypeHasDataType)list[0];
 				DataTypeNotSpecifiedError error = link.DataTypeNotSpecifiedError;
-				UnspecifiedDataType dataType = link.DataType as UnspecifiedDataType;
-				if (dataType == null)
+				if (!(link.DataType is UnspecifiedDataType))
 				{
 					if (error != null)
 					{
-						error.Remove();
+						error.Delete();
 					}
 				}
 				else if (error == null)
 				{
-					error = DataTypeNotSpecifiedError.CreateDataTypeNotSpecifiedError(Store);
+					error = new DataTypeNotSpecifiedError(Store);
 					link.DataTypeNotSpecifiedError = error;
 					error.Model = Model;
 					error.GenerateErrorText();
@@ -1403,7 +1302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void ValidateRequiresReferenceScheme(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = true;
 				Store theStore = Store;
@@ -1427,7 +1326,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noRefSchemeError == null)
 					{
-						noRefSchemeError = EntityTypeRequiresReferenceSchemeError.CreateEntityTypeRequiresReferenceSchemeError(theStore);
+						noRefSchemeError = new EntityTypeRequiresReferenceSchemeError(theStore);
 						noRefSchemeError.ObjectType = this;
 						noRefSchemeError.Model = theModel;
 						noRefSchemeError.GenerateErrorText();
@@ -1441,7 +1340,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (noRefSchemeError != null)
 					{
-						noRefSchemeError.Remove();
+						noRefSchemeError.Delete();
 					}
 				}
 			}
@@ -1463,10 +1362,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded"></param>
 		private void ValidateObjectTypeRequiresPrimarySupertypeError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = false;
-				IList links = GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid);
+				ReadOnlyCollection<ObjectTypePlaysRole> links = ObjectTypePlaysRole.GetLinksToPlayedRoleCollection(this);
 				int linkCount = links.Count;
 				if (linkCount != 0)
 				{
@@ -1476,8 +1375,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int primaryFactCount = 0;
 					for (int i = 0; i < linkCount; ++i)
 					{
-						ObjectTypePlaysRole link = links[i] as ObjectTypePlaysRole;
-						SubtypeMetaRole subtypeRole = link.PlayedRoleCollection as SubtypeMetaRole;
+						ObjectTypePlaysRole link = links[i];
+						SubtypeMetaRole subtypeRole = link.PlayedRole as SubtypeMetaRole;
 						if (subtypeRole != null)
 						{
 							SubtypeFact subtypeFact = subtypeRole.FactType as SubtypeFact;
@@ -1495,8 +1394,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 									{
 										for (int j = 0; j < linkCount; ++j)
 										{
-											link = links[j] as ObjectTypePlaysRole;
-											subtypeRole = link.PlayedRoleCollection as SubtypeMetaRole;
+											link = links[j];
+											subtypeRole = link.PlayedRole as SubtypeMetaRole;
 
 											if (subtypeRole != null)
 											{
@@ -1540,7 +1439,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (primaryRequired == null)
 					{
-						primaryRequired = ObjectTypeRequiresPrimarySupertypeError.CreateObjectTypeRequiresPrimarySupertypeError(this.Store);
+						primaryRequired = new ObjectTypeRequiresPrimarySupertypeError(this.Store);
 						primaryRequired.ObjectType = this;
 						primaryRequired.Model = this.Model;
 						primaryRequired.GenerateErrorText();
@@ -1552,7 +1451,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (primaryRequired != null)
 				{
-					primaryRequired.Remove();
+					primaryRequired.Delete();
 				}
 			}
 		}
@@ -1579,7 +1478,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Element notification, set during deserialization</param>
 		private void ValidatePreferredIdentifierRequiresMandatoryError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = false;
 				UniquenessConstraint pid = PreferredIdentifier;
@@ -1587,7 +1486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					hasError = true;
 					Objectification objectification = pid.PreferredIdentifierFor.Objectification;
-					RoleMoveableCollection constraintRoles = pid.RoleCollection;
+					LinkedElementCollection<Role> constraintRoles = pid.RoleCollection;
 					int constraintRoleCount = constraintRoles.Count;
 					for (int i = 0; hasError && i < constraintRoleCount; ++i)
 					{
@@ -1597,21 +1496,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (null != objectification &&
 							null != (proxyRole = constrainedRole.Proxy) &&
 							null != (impliedFactType = proxyRole.FactType) &&
-							object.ReferenceEquals(impliedFactType.ImpliedByObjectification, objectification))
+							impliedFactType.ImpliedByObjectification == objectification)
 						{
 							// The opposite role will always have a simple mandatory on it
 							hasError = false;
 							break;
 						}
 
-						RoleBaseMoveableCollection factRoles = constrainedRole.FactType.RoleCollection;
+						LinkedElementCollection<RoleBase> factRoles = constrainedRole.FactType.RoleCollection;
 						Debug.Assert(factRoles.Count == 2); // Should not be a preferred identifier otherwise
 						Role oppositeRole = factRoles[0].Role;
-						if (object.ReferenceEquals(oppositeRole, constrainedRole))
+						if (oppositeRole == constrainedRole)
 						{
 							oppositeRole = factRoles[1].Role;
 						}
-						ConstraintRoleSequenceMoveableCollection constraintRoleSequences = oppositeRole.ConstraintRoleSequenceCollection;
+						LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = oppositeRole.ConstraintRoleSequenceCollection;
 						int roleSequenceCount = constraintRoleSequences.Count;
 						for (int j = 0; hasError && j < roleSequenceCount; ++j)
 						{
@@ -1627,21 +1526,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 									// identifier then this is sufficient to satisfy the
 									// mandatory condition.
 									{
-										RoleMoveableCollection intersectingRoles = roleSequence.RoleCollection;
+										LinkedElementCollection<Role> intersectingRoles = roleSequence.RoleCollection;
 										int intersectingRolesCount = intersectingRoles.Count;
 										int k = 0;
 										for (; k < intersectingRolesCount; ++k)
 										{
 											Role testRole = intersectingRoles[k];
-											if (!object.ReferenceEquals(oppositeRole, testRole))
+											if (oppositeRole != testRole)
 											{
-												RoleBaseMoveableCollection testRoles = testRole.FactType.RoleCollection;
+												LinkedElementCollection<RoleBase> testRoles = testRole.FactType.RoleCollection;
 												if (testRoles.Count != 2)
 												{
 													break;
 												}
 												Role testOppositeRole = testRoles[0].Role;
-												if (object.ReferenceEquals(testOppositeRole, testRole))
+												if (testOppositeRole == testRole)
 												{
 													testOppositeRole = testRoles[1].Role;
 												}
@@ -1666,7 +1565,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (mandatoryRequired == null)
 					{
-						mandatoryRequired = PreferredIdentifierRequiresMandatoryError.CreatePreferredIdentifierRequiresMandatoryError(this.Store);
+						mandatoryRequired = new PreferredIdentifierRequiresMandatoryError(this.Store);
 						mandatoryRequired.ObjectType = this;
 						mandatoryRequired.Model = this.Model;
 						mandatoryRequired.GenerateErrorText();
@@ -1678,7 +1577,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (mandatoryRequired != null)
 				{
-					mandatoryRequired.Remove();
+					mandatoryRequired.Delete();
 				}
 			}
 		}
@@ -1698,7 +1597,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Element notification, set during deserialization</param>
 		private void ValidateCompatibleSupertypesError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = false;
 				Dictionary<ObjectType, int> visitedNodes = null;
@@ -1769,7 +1668,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (incompatibleSupertypes == null)
 					{
-						incompatibleSupertypes = CompatibleSupertypesError.CreateCompatibleSupertypesError(this.Store);
+						incompatibleSupertypes = new CompatibleSupertypesError(this.Store);
 						incompatibleSupertypes.ObjectType = this;
 						incompatibleSupertypes.Model = this.Model;
 						incompatibleSupertypes.GenerateErrorText();
@@ -1781,16 +1680,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (incompatibleSupertypes != null)
 				{
-					incompatibleSupertypes.Remove();
+					incompatibleSupertypes.Delete();
 				}
 			}
 		}
 		#endregion // CompatibleSupertypesError Validation
 		#region EntityTypeRequiresReferenceSchemeError Rules
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
-		private class VerifyReferenceSchemeAddRule : AddRule
+		private sealed class VerifyReferenceSchemeAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType objectType = link.PreferredIdentifierFor;
@@ -1802,13 +1701,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
-		private class VerifyReferenceSchemeRemoveRule : RemoveRule
+		private sealed class VerifyReferenceSchemeDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType objectType = link.PreferredIdentifierFor;
-				if (!objectType.IsRemoved)
+				if (!objectType.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 					if (!link.PreferredIdentifier.IsInternal)
@@ -1819,45 +1718,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class VerifyValueTypeHasDataTypeAddRule : AddRule
+		private sealed class VerifyValueTypeHasDataTypeAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ORMMetaModel.DelayValidateElement(link.ValueTypeCollection, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				ORMMetaModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class VerifyValueTypeHasDataTypeRemoveRule : RemoveRule
+		private sealed class VerifyValueTypeHasDataTypeDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ORMMetaModel.DelayValidateElement(link.ValueTypeCollection, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				ORMMetaModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
 		/// <summary>
 		/// Calls the validation of all FactType related errors
 		/// </summary>
 		[RuleOn(typeof(ModelHasObjectType))]
-		private class ModelHasObjectTypeAddRuleModelValidation : AddRule
+		private sealed class ModelHasObjectTypeAddRuleModelValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-				link.ObjectTypeCollection.DelayValidateErrors();
+				link.ObjectType.DelayValidateErrors();
 			}
 		}
 		/// <summary>
 		/// The reference scheme requirements change when the supertype changes
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class SupertypeAddedRule : AddRule
+		private sealed class SupertypeAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				if (role is SubtypeMetaRole)
 				{
 					ObjectType objectType = link.RolePlayer;
@@ -1887,16 +1786,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The reference scheme requirements change when the supertype changes
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class SupertypeRemoveRule : RemoveRule
+		private sealed class SupertypeDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				SubtypeMetaRole role = link.PlayedRoleCollection as SubtypeMetaRole;
+				SubtypeMetaRole role = link.PlayedRole as SubtypeMetaRole;
 				if (role != null)
 				{
 					ObjectType objectType = link.RolePlayer;
-					if (!objectType.IsRemoved)
+					if (!objectType.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 						ORMMetaModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
@@ -1908,12 +1807,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Subtypes need to check super type compatibility when a subtype link is removing
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class SupertypeRemovingRule : RemovingRule
+		private sealed class SupertypeDeletingRule : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				if (role is SubtypeMetaRole)
 				{
 					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth)
@@ -1938,24 +1837,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Helper function for SupertypeRemovingRule
+		/// Helper function for SupertypeDeletingRule
 		/// </summary>
 		/// <param name="type"></param>
 		private static void ValidateAttachedConstraintColumnCompatibility(ObjectType type)
 		{
-			RoleMoveableCollection playedRoles = type.PlayedRoleCollection;
+			LinkedElementCollection<Role> playedRoles = type.PlayedRoleCollection;
 			int playedRoleCount = playedRoles.Count;
 			for (int i = 0; i < playedRoleCount; ++i)
 			{
 				Role playedRole = playedRoles[i];
-				if (!playedRole.IsRemoving)
+				if (!playedRole.IsDeleting)
 				{
-					ConstraintRoleSequenceMoveableCollection sequences = playedRole.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = playedRole.ConstraintRoleSequenceCollection;
 					int sequenceCount = sequences.Count;
 					for (int j = 0; j < sequenceCount; ++j)
 					{
 						ConstraintRoleSequence sequence = sequences[j];
-						if (!sequence.IsRemoving)
+						if (!sequence.IsDeleting)
 						{
 							IConstraint constraint = sequence.Constraint;
 							if (constraint != null &&
@@ -1969,12 +1868,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class MandatoryRoleAddedRule : AddRule
+		private sealed class MandatoryRoleAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 				if (sequence is SetComparisonConstraintRoleSequence)
 				{
 					return;
@@ -1984,7 +1883,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					case ConstraintType.SimpleMandatory:
 					case ConstraintType.DisjunctiveMandatory:
-						RoleMoveableCollection roles = sequence.RoleCollection;
+						LinkedElementCollection<Role> roles = sequence.RoleCollection;
 						int roleCount = roles.Count;
 						for (int i = 0; i < roleCount; ++i)
 						{
@@ -2004,12 +1903,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class MandatoryRoleRemovingRule : RemovingRule
+		private sealed class MandatoryRoleDeletingRule : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 				if (sequence is SetComparisonConstraintRoleSequence)
 				{
 					return;
@@ -2019,7 +1918,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					case ConstraintType.SimpleMandatory:
 					case ConstraintType.DisjunctiveMandatory:
-						RoleMoveableCollection roles = sequence.RoleCollection;
+						LinkedElementCollection<Role> roles = sequence.RoleCollection;
 						int roleCount = roles.Count;
 						for (int i = 0; i < roleCount; ++i)
 						{
@@ -2027,9 +1926,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 							ObjectType objectType;
 							UniquenessConstraint pid;
 							if (null != (objectType = role.RolePlayer) &&
-								!objectType.IsRemoving &&
+								!objectType.IsDeleting &&
 								null != (pid = objectType.PreferredIdentifier) &&
-								!pid.IsRemoving &&
+								!pid.IsDeleting &&
 								!pid.IsInternal &&
 								pid.FactTypeCollection.Contains(role.FactType))
 							{
@@ -2047,17 +1946,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// subtype from other facts.
 		/// </summary>
 		[RuleOn(typeof(SubtypeFact))]
-		private class SubtypeFactChangeRule : ChangeRule
+		private sealed class SubtypeFactChangeRule : ChangeRule
 		{
 			private bool myIgnoreRule;
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				if (myIgnoreRule)
 				{
 					return;
 				}
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == SubtypeFact.IsPrimaryMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == SubtypeFact.IsPrimaryDomainPropertyId)
 				{
 					bool newValue = (bool)e.NewValue;
 					if (!newValue)
@@ -2074,7 +1973,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (role is SubtypeMetaRole)
 							{
 								SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-								if (!object.ReferenceEquals(subtypeFact, changedFact))
+								if (subtypeFact != changedFact)
 								{
 									subtypeFact.IsPrimary = false;
 								}
@@ -2226,8 +2125,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles1 = new Guid[] { Objectification.NestingTypeMetaRoleGuid };
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles2 = new Guid[] { ObjectTypePlaysRole.RolePlayerMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles1 = new Guid[] { Objectification.NestingTypeDomainRoleId };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles2 = new Guid[] { ObjectTypePlaysRole.RolePlayerDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -2257,13 +2156,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// conditions to the user.
 		/// </summary>
 		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole))]
-		private class CheckForIncompatibleRelationshipRule : AddRule
+		private sealed class CheckForIncompatibleRelationshipRule : AddRule
 		{
 			/// <summary>
 			/// Called when an attempt is made to turn an ObjectType into either
 			/// a value type or a nesting type.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				Objectification nester;
 				ValueTypeHasDataType valType;
@@ -2300,14 +2199,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (null != (valType = element as ValueTypeHasDataType))
 				{
-					if (!(incompatibleValueTypeCombination = valType.ValueTypeCollection.NestedFactType != null))
+					if (!(incompatibleValueTypeCombination = valType.ValueType.NestedFactType != null))
 					{
-						incompatiblePreferredIdentifierCombination = null != valType.ValueTypeCollection.PreferredIdentifier;
+						incompatiblePreferredIdentifierCombination = null != valType.ValueType.PreferredIdentifier;
 					}
 				}
 				else if (null != (roleLink = element as ObjectTypePlaysRole))
 				{
-					FactType fact = roleLink.PlayedRoleCollection.FactType;
+					FactType fact = roleLink.PlayedRole.FactType;
 					if (fact != null)
 					{
 						incompatibleNestingAndRoleCombination = fact.NestingType == roleLink.RolePlayer;
@@ -2315,7 +2214,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (null != (newRole = element as FactTypeHasRole))
 				{
-					ObjectType player = newRole.RoleCollection.Role.RolePlayer;
+					ObjectType player = newRole.Role.Role.RolePlayer;
 					if (player != null)
 					{
 						incompatibleNestingAndRoleCombination = player == newRole.FactType.NestingType;
@@ -2350,7 +2249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// Fire early. There is no reason to put this in the transaction log
 			/// if it isn't valid.
 			/// </summary>
-			public override bool FireBefore
+			public sealed override bool FireBefore
 			{
 				get
 				{
@@ -2359,98 +2258,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // CheckForIncompatibleRelationshipRule class
-		#region ReferenceModeDisplayPropertyDescriptor class
-		/// <summary>
-		/// A property descriptor that filters out some standard values from
-		/// the type converter.
-		/// </summary>
-		protected class ReferenceModeDisplayPropertyDescriptor : ElementPropertyDescriptor
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			/// <param name="modelElement">Passed to base</param>
-			/// <param name="metaAttributeInfo">Passed to base</param>
-			/// <param name="requestor">Passed to base</param>
-			/// <param name="attributes">Passed to base</param>
-			public ReferenceModeDisplayPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
-				: base (modelElement , metaAttributeInfo, requestor, attributes)
-			{
-			}
-			/// <summary>
-			/// Return a custom typeconverter that
-			/// limits the predefined values.
-			/// </summary>
-			/// <value></value>
-			public override TypeConverter Converter
-			{
-				get
-				{
-					return new ReferenceModeDisplayConverter();
-				}
-			}
-			#region ReferenceModeDisplayConverter class
-			private class ReferenceModeDisplayConverter : TypeConverter
-			{
-				public ReferenceModeDisplayConverter()
-				{
-				}
-
-				public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-				{
-					if (sourceType == typeof(string))
-					{
-						return true;
-					}
-					return false;
-				}
-				public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-				{
-					string refMode = value as string;
-					ObjectType instance = (ObjectType)Editors.EditorUtility.ResolveContextInstance(context.Instance, true);
-					IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(refMode, instance.Model);
-
-					int modeCount = referenceModes.Count;
-					if (modeCount == 0)
-					{
-						return refMode;
-					}
-					else if (modeCount == 1)
-					{
-						return referenceModes[0] as ReferenceMode;
-					}
-					else
-					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
-					}
-				}
-				public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-				{
-					if (destinationType == typeof(ReferenceMode))
-					{
-						return true;
-					}
-					return false;
-				}
-				public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
-				{
-					if (destinationType == typeof(string))
-					{
-						ReferenceMode mode = value as ReferenceMode;
-						return (mode != null) ? mode.Name : value.ToString();
-					}
-					return null;
-				}
-			}
-			#endregion // ReferenceModeDisplayConverter class
-		}
-		#endregion // ReferenceModeDisplayPropertyDescriptor class
 	}
 	#region ValueTypeHasDataType class
 	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { new Guid(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuidString) };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueTypeHasDataType.ValueTypeDomainRoleId };
 		/// <summary>
 		/// Implements IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
 		/// </summary>

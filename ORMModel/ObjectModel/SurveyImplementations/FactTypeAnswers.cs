@@ -1,9 +1,26 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
 using System.ComponentModel;
+using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -58,8 +75,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				MetaAttributeInfo info = this.Store.MetaDataDirectory.FindMetaAttribute(FactType.NameMetaAttributeGuid);
-				return this.IsPropertyDescriptorReadOnly(this.CreatePropertyDescriptor(info, this));
+				// UNDONE: 2006-06 DSL Tools port: This seemed to be returning the same value as IsReadOnly, rather than its opposite,
+				// which seemed to be rather backwards. For now, I've changed it to return !IsReadOnly...
+				return !ORMTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
 			}
 		}
 		/// <summary>

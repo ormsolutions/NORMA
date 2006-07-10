@@ -1,4 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -13,22 +26,20 @@
 			<plx:namespaceImport name="System"/>
 			<plx:namespaceImport name="System.Diagnostics"/>
 			<plx:namespace name="{$CustomToolNamespace}">
-				<plx:leadingInfo>
-					<plx:comment>Common Public License Copyright Notice</plx:comment>
-					<plx:comment>/**************************************************************************\</plx:comment>
-					<plx:comment>* Neumont Object-Role Modeling Architect for Visual Studio                 *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* The use and distribution terms for this software are covered by the      *</plx:comment>
-					<plx:comment>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</plx:comment>
-					<plx:comment>* can be found in the file CPL.txt at the root of this distribution.       *</plx:comment>
-					<plx:comment>* By using this software in any fashion, you are agreeing to be bound by   *</plx:comment>
-					<plx:comment>* the terms of this license.                                               *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* You must not remove this notice, or any other, from this software.       *</plx:comment>
-					<plx:comment>\**************************************************************************/</plx:comment>
-				</plx:leadingInfo>
+				<xsl:if test="Copyright">
+					<plx:leadingInfo>
+						<plx:comment blankLine="true"/>
+						<plx:comment>
+							<xsl:value-of select="Copyright/@name"/>
+						</plx:comment>
+						<xsl:for-each select="Copyright/CopyrightLine">
+							<plx:comment>
+								<xsl:value-of select="."/>
+							</plx:comment>
+						</xsl:for-each>
+						<plx:comment blankLine="true"/>
+					</plx:leadingInfo>
+				</xsl:if>
 				<plx:enum name="PortableDataType" visibility="public">
 					<plx:leadingInfo>
 						<plx:pragma type="region" data="PortableDataType Enum"/>

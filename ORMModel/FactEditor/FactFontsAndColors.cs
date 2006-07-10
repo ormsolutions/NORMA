@@ -115,7 +115,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		};
 		#endregion // Default Settings
 		#region IVsColorableItem Implementation Class
-		private class ColorableItemImpl : IVsColorableItem
+		private sealed class ColorableItemImpl : IVsColorableItem
 		{
 			DefaultColorSetting mySetting;
 			public ColorableItemImpl(DefaultColorSetting setting)

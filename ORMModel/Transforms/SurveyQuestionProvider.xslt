@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -16,24 +29,35 @@
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="public">
 					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider"/>
-					<plx:function visibility="protected" name="GetSurveyQuestionTypeInfo">
+					<plx:field name="SurveyQuestionTypeInfo" visibility="private" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+								<plx:arrayInitializer>
+									<xsl:for-each select="qp:provideSurveyQuestion">
+										<plx:passParam>
+											<plx:callStatic type="field" name="Instance" dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
+										</plx:passParam>
+									</xsl:for-each>
+								</plx:arrayInitializer>
+							</plx:callNew>
+						</plx:initialize>
+					</plx:field>
+					<plx:function visibility="protected" modifier="static" name="GetSurveyQuestionTypeInfo">
 						<plx:leadingInfo>
 							<plx:docComment>
-								<summary>Returns an array of ISurveyQuestionTypeInfo representing the questions that can be	asked of objects in this MetaModel</summary>
+								<summary>Returns an array of ISurveyQuestionTypeInfo representing the questions that can be asked of objects in this DomainModel</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
 						<plx:interfaceMember dataTypeName="ISurveyQuestionProvider" memberName="GetSurveyQuestionTypeInfo"/>
 						<plx:returns dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true"/>
 						<plx:return>
-							<plx:callNew dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
-								<plx:arrayInitializer>
-									<xsl:for-each select="qp:provideSurveyQuestion">
-										<plx:passParam>
-											<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
-										</plx:passParam>
-									</xsl:for-each>
-								</plx:arrayInitializer>
-							</plx:callNew>
+							<plx:cast type="exceptionCast" dataTypeName="ISurveyQuestionTypeInfo" dataTypeIsSimpleArray="true">
+								<plx:callInstance name="Clone">
+									<plx:callObject>
+										<plx:callStatic type="field" dataTypeName="{@class}" name="SurveyQuestionTypeInfo"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:cast>
 						</plx:return>
 					</plx:function>
 					<xsl:apply-templates select="qp:provideSurveyQuestion"/>
@@ -42,9 +66,15 @@
 		</plx:root>
 	</xsl:template>
 	<xsl:template match="qp:provideSurveyQuestion">
-		<plx:class name="ProvideSurveyQuestionFor{@questionType}" visibility="private">
+		<plx:class name="ProvideSurveyQuestionFor{@questionType}" visibility="private" modifier="sealed">
 			<plx:implementsInterface dataTypeName="ISurveyQuestionTypeInfo"/>
-			<plx:property name="QuestionType" visibility="protected">
+			<plx:function name=".construct" visibility="private"/>
+			<plx:field name="Instance" visibility="public" static="true" readOnly="true" dataTypeName="ISurveyQuestionTypeInfo">
+				<plx:initialize>
+					<plx:callNew dataTypeName="ProvideSurveyQuestionFor{@questionType}"/>
+				</plx:initialize>
+			</plx:field>
+			<plx:property name="QuestionType" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="QuestionType"/>
 				<plx:returns dataTypeName="Type"/>
 				<plx:get>
@@ -53,7 +83,7 @@
 					</plx:return>
 				</plx:get>
 			</plx:property>
-			<plx:function name="AskQuestion" visibility="protected">
+			<plx:function name="AskQuestion" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="AskQuestion"/>
 				<plx:param name="data" dataTypeName=".object"/>
 				<plx:returns dataTypeName=".i4"/>
@@ -78,20 +108,16 @@
 						</plx:binaryOperator>
 					</plx:condition>
 					<plx:return>
-						<plx:cast type="exceptionCast" dataTypeName=".i4">
-							<plx:callInstance name="AskQuestion" type="methodCall">
-								<plx:callObject>
-									<plx:nameRef name="typedData"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:cast>
+						<plx:callInstance name="AskQuestion" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="typedData"/>
+							</plx:callObject>
+						</plx:callInstance>
 					</plx:return>
 				</plx:branch>
 				<plx:fallbackBranch>
 					<plx:return>
-						<plx:unaryOperator type="negative">
-							<plx:value data="1" type="i4"/>
-						</plx:unaryOperator>
+						<plx:value type="i4" data="-1"/>
 					</plx:return>
 				</plx:fallbackBranch>
 			</plx:function>

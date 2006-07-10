@@ -527,7 +527,7 @@ Removed for FxCop compliance, not currently used */
 		#endregion
 
 		#region FactTextMarkerClient nested class
-//		private class FactTextMarkerClient : IVsTextMarkerClient
+//		private sealed class FactTextMarkerClient : IVsTextMarkerClient
 //		{
 //			public FactTextMarkerClient()
 //			{

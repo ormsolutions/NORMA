@@ -32,9 +32,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -44,50 +46,61 @@
   <ItemGroup>
     <Compile Include="CustomExtensionElement.cs" />
     <Compile Include="CustomExtensionError.cs" />
-    <Compile Include="ExtensionDomainModel.dsldm.cs">
-      <DependentUpon>ExtensionDomainModel.dsldm.dsldmt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="ExtensionDomainModel.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ExtensionDomainModel.AttachRules.xml</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionDomainModel.SerializationExtensions.cs">
-      <DependentUpon>ExtensionDomainModel.SerializationExtensions.xml</DependentUpon>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="ExtensionDomainModel.DeserializationFixupListeners.cs" />
+    <Compile Include="ExtensionDomainModel.SerializationExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExtensionDomainModel.SerializationExtensions.xml</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainClasses.cs">
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainModel.cs">
+      <DependentUpon>DomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ExtensionDomainModel.dsldm" />
-    <None Include="ExtensionDomainModel.dsldm.dsldmt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ExtensionDomainModel.dsldm.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ExtensionDomainModel.dsldm.resx">
-      <DependentUpon>ExtensionDomainModel.dsldm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ExtensionDomainModel.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ExtensionDomainModel.AttachRules.cs</LastGenOutput>
     </Content>
-    <None Include="ExtensionDomainModel.SerializationExtensions.xml">
+    <Content Include="ExtensionDomainModel.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ExtensionDomainModel.SerializationExtensions.cs</LastGenOutput>
-    </None>
+    </Content>
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
     <EmbeddedResource Include="ExtensionDomainModelTest.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Designer</SubType>
+      <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <None Include="ExtensionExample.dsl" />
+    <None Include="GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+    </None>
     <None Include="Plix.xml">
     </None>
   </ItemGroup>

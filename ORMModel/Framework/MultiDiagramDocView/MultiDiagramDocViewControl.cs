@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.Framework

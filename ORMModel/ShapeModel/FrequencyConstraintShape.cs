@@ -144,7 +144,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				else
 				{
-					Debug.Assert(false); // Model should have prevented this
+					Debug.Fail("Model should have prevented this");
 				}
 			}
 			return freqString;
@@ -161,22 +161,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Customize appearance
 		#region Shape display update rules
-		#region FrequencyConstraintAttributeChangeRule class
+		#region FrequencyConstraintPropertyChangeRule class
 		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class FrequencyConstraintAttributeChangeRule : ChangeRule
+		private sealed class FrequencyConstraintPropertyChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == FrequencyConstraint.MinFrequencyMetaAttributeGuid ||
-					attributeId == FrequencyConstraint.MaxFrequencyMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
+					attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
 				{
 					FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
-					if (!fc.IsRemoved)
+					if (!fc.IsDeleted)
 					{
 						// Resize the frequency constraint wherever it is displayed, and make sure
 						// the object type is made visible in the same location.
-						foreach (PresentationElement pel in fc.PresentationRolePlayers)
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(fc))
 						{
 							ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
 							if (externalConstraintShape != null)
@@ -189,7 +189,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // FrequencyConstraintAttributeChangeRule class
+		#endregion // FrequencyConstraintPropertyChangeRule class
 		#endregion // Shape display update rules
 	}
 }

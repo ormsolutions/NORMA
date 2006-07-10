@@ -14,8 +14,8 @@
 \**************************************************************************/
 #endregion
 
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.Win32;
 using System;
 using System.Collections;
@@ -29,37 +29,34 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
-using Microsoft.VisualStudio.Modeling.Shell;
+using Neumont.Tools.ORM.Design;
 using Microsoft.VisualStudio.Shell;
 
 namespace Neumont.Tools.ORM.Shell
 {
 	public partial class ORMBrowserToolWindow : ModelExplorerToolWindow
 	{
-		private class ORMModelBrowserCommandSet : MarshalByRefObject, IDisposable
+		private sealed class ORMModelBrowserCommandSet : MarshalByRefObject, IDisposable
 		{
 			private IMenuCommandService myMenuService;
 			private IMonitorSelectionService myMonitorSelection;
 			private IServiceProvider myServiceProvider;
-			
-
 			private MenuCommand[] myCommands;
 
 			public ORMModelBrowserCommandSet(IServiceProvider provider, IMenuCommandService menuService)
 			{
 				myServiceProvider = provider;
 				myMenuService = menuService;
-#region command array
+				#region command array
 				myCommands = new MenuCommand[]{
 					new DynamicStatusMenuCommand(
 					new EventHandler(OnStatusDelete),
 					new EventHandler(OnMenuDelete),
 					StandardCommands.Delete)};
-#endregion //command array
+				#endregion //command array
 				AddCommands(myCommands);
 			}
-			protected virtual void AddCommands(MenuCommand[] commands)
+			private void AddCommands(MenuCommand[] commands)
 			{
 				IMenuCommandService menuService = MenuService; //force creation of myMenuService
 				if (menuService != null)
@@ -71,7 +68,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			protected virtual void RemoveCommands(MenuCommand[] commands)
+			private void RemoveCommands(MenuCommand[] commands)
 			{
 				IMenuCommandService menuService = myMenuService;
 				if (menuService != null)
@@ -83,7 +80,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			protected IMenuCommandService MenuService
+			private IMenuCommandService MenuService
 			{
 				get 
 				{
@@ -91,7 +88,7 @@ namespace Neumont.Tools.ORM.Shell
 					return myMenuService;
 				}
 			}
-			protected ORMBrowserToolWindow CurrentToolWindow
+			private ORMBrowserToolWindow CurrentToolWindow
 			{
 				get 
 				{

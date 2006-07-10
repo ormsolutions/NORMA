@@ -25,7 +25,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// framework and would be more consistent there because virtual methods
 	/// for these events could appear directly on ShapeSubField.
 	/// </summary>
-	public partial class ORMBaseShape
+	public partial class ORMBaseShape : IHandleSubFieldMoveMove
 	{
 		#region Extension to add SubShape Enter/Leave/Hover events
 		/// <summary>
@@ -80,33 +80,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// A helper class to enable distinguishing between a null
 		/// and a pending shape field.
 		/// </summary>
-		private class PendingShapeSubField : ShapeSubField
+		private sealed class PendingShapeSubField : ORMBaseShapeSubField
 		{
 			public static readonly PendingShapeSubField Token = new PendingShapeSubField();
 			private PendingShapeSubField()
 			{
 			}
-			public override bool SubFieldEquals(object obj)
+			public sealed override bool SubFieldEquals(object obj)
 			{
 				// Only one instance is created, so there is not much to do
-				return object.ReferenceEquals(this, obj);
+				return this == obj;
 			}
-			public override int SubFieldHashCode
+			public sealed override int SubFieldHashCode
 			{
 				get
 				{
 					return 1;
 				}
 			}
-			public override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
+			public sealed override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
 			{
 				return false;
 			}
-			public override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
+			public sealed override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
 			{
 				return false;
 			}
-			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
+			public sealed override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
 			{
 				return RectangleD.Empty;
 			}
@@ -185,14 +185,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public virtual void OnSubFieldMouseHover(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
 		{
 		}
+		// UNDONE: 2006-06 DSL Tools port: This used to be inherited from ShapeElement.
 		/// <summary>
 		/// Translate OnSubFieldMouseMove events into OnSubFieldMouseEnter and OnSubFieldMouseMove
 		/// events
 		/// </summary>
-		/// <param name="field"></param>
-		/// <param name="subField"></param>
-		/// <param name="e"></param>
-		public override void OnSubFieldMouseMove(ShapeField field, ShapeSubField subField, DiagramMouseEventArgs e)
+		public virtual void OnSubFieldMouseMove(ShapeField field, ShapeSubField subField, DiagramMouseEventArgs e)
 		{
 			if (HasSubFieldMouseEnterLeaveHover)
 			{
@@ -221,7 +219,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					OnSubFieldMouseEnter(field, subField, e);
 				}
 			}
-			base.OnSubFieldMouseMove(field, subField, e);
 		}
 		/// <summary>
 		/// Translate mouse events into OnSubFieldMouseEnter/OnSubFieldMouseLeave events

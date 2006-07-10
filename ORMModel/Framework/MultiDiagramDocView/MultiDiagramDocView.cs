@@ -21,8 +21,8 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.Framework
@@ -37,9 +37,9 @@ namespace Neumont.Tools.ORM.Framework
 		/// Instantiates a new instance of <see cref="MultiDiagramDocView"/>.
 		/// </summary>
 		/// <remarks>
-		/// For parameter descriptions, see <see cref="DiagramDocView(DocData,IServiceProvider)"/>.
+		/// For parameter descriptions, see <see cref="DiagramDocView(ModelingDocData,IServiceProvider)"/>.
 		/// </remarks>
-		protected MultiDiagramDocView(DocData docData, IServiceProvider serviceProvider) : base(docData, serviceProvider)
+		protected MultiDiagramDocView(ModelingDocData docData, IServiceProvider serviceProvider) : base(docData, serviceProvider)
 		{
 			myDiagramRefCounts = new Dictionary<Diagram, int>();
 		}
@@ -303,6 +303,22 @@ namespace Neumont.Tools.ORM.Framework
 
 		#region Remove methods
 		/// <summary>
+		/// Removes all <see cref="Diagram"/>s from this <see cref="MultiDiagramDocView"/>.
+		/// </summary>
+		public void RemoveAllDiagrams()
+		{
+			MultiDiagramDocViewControl control = myDocViewControl;
+			if (control == null)
+			{
+				return;
+			}
+			int tabCount;
+			while ((tabCount = control.TabCount) > 0)
+			{
+				RemoveAt(tabCount - 1);
+			}
+		}
+		/// <summary>
 		/// Removes the <see cref="Diagram"/> specified by <see cref="CurrentDiagram"/> from this <see cref="MultiDiagramDocView"/>.
 		/// </summary>
 		public void RemoveCurrentDiagram()
@@ -384,7 +400,7 @@ namespace Neumont.Tools.ORM.Framework
 		#endregion // Remove methods
 
 		#region DiagramRemoved event handler
-		private void DiagramRemoved(object sender, ElementRemovedEventArgs e)
+		private void DiagramRemoved(object sender, ElementDeletedEventArgs e)
 		{
 			RemoveDiagram(e.ModelElement as Diagram);
 		}

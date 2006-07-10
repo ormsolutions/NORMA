@@ -190,18 +190,17 @@
 			<xs:sequence>
 				<xs:element name="Copyright" minOccurs="0">
 					<xs:annotation>
-						<xs:documentation>Copyright notice.</xs:documentation>
+						<xs:documentation>Copyright notice which applies to both the source document and anything generated from it.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:simpleContent>
-							<xs:extension base="xs:string">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-							</xs:extension>
-						</xs:simpleContent>
+						<xs:sequence>
+							<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:choice maxOccurs="unbounded">
-					<xs:element name="MetaModel">
+					<xs:element name="DomainModel">
 						<xs:annotation>
 							<xs:documentation>Add model-level custom serialization settings.</xs:documentation>
 						</xs:annotation>
@@ -230,7 +229,7 @@
 													</xs:attribute>
 													<xs:attribute name="SchemaFile" type="xs:string">
 														<xs:annotation>
-															<xs:documentation>A schema file name with no path. The file must be built into the model's assembly as an embedded resource with the same namespace as the metamodel. This is most easily done by placing the schema file in the same directory as the model file, and making the namespace for the model file correspond to the default namespace for the directory (the project default namespace with the directory path appended)</xs:documentation>
+															<xs:documentation>A schema file name with no path. The file must be built into the model's assembly as an embedded resource with the same namespace as the DomainModel. This is most easily done by placing the schema file in the same directory as the model file, and making the namespace for the model file correspond to the default namespace for the directory (the project default namespace with the directory path appended)</xs:documentation>
 														</xs:annotation>
 													</xs:attribute>
 													<xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
@@ -253,7 +252,7 @@
 												<xs:complexType>
 													<xs:attribute name="Class" type="xs:string" use="required">
 														<xs:annotation>
-															<xs:documentation>The name of a class that corresponds to an xml root element for this meta model</xs:documentation>
+															<xs:documentation>The name of a class that corresponds to an xml root element for this DomainModel</xs:documentation>
 														</xs:annotation>
 													</xs:attribute>
 													<xs:attribute name="Name" type="xs:string" use="optional">
@@ -271,9 +270,9 @@
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>
-								<xs:element name="OmittedMetaElements" minOccurs="0">
+								<xs:element name="OmittedDomainElements" minOccurs="0">
 									<xs:annotation>
-										<xs:documentation>Block elements and links from serializating at the meta level.</xs:documentation>
+										<xs:documentation>Block elements and links from serializating at the domain level.</xs:documentation>
 									</xs:annotation>
 									<xs:complexType>
 										<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -318,16 +317,6 @@
 							<xs:attribute name="Class" type="xs:string" use="required">
 								<xs:annotation>
 									<xs:documentation>The class to add the namespaces to.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="DisplayNameResourceId" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>The display name resource id.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="DescriptionResourceId" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>The resource id of the description.</xs:documentation>
 								</xs:annotation>
 							</xs:attribute>
 						</xs:complexType>

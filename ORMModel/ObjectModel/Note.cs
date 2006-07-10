@@ -16,10 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagnostics;
-using System.ComponentModel;
+using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -50,16 +51,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Enforces Change Rules
 		/// </summary>
 		[RuleOn(typeof(Note))]
-		private class NoteChangeRule : ChangeRule
+		private sealed class NoteChangeRule : ChangeRule
 		{
 			/// <summary>
-			/// Handle custom storage attributes on Note
+			/// Handle custom storage properties on Note
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
+				Guid attributeGuid = e.DomainProperty.Id;
 				// If what was changed was the note's Text property,
-				if (attributeGuid == Note.TextMetaAttributeGuid)
+				if (attributeGuid == Note.TextDomainPropertyId)
 				{
 					// cache the value.
 					string newText = (string)e.NewValue;
@@ -69,7 +70,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (string.IsNullOrEmpty(newText))
 					{
 						// get rid of the note.
-						note.Remove();
+						note.Delete();
 					}
 				}
 			}
@@ -86,7 +87,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return CreatePropertyDescriptor(Store.MetaDataDirectory.FindMetaAttribute(NoteTextMetaAttributeGuid), this);
+				return ORMTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
 			}
 		}
 		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
@@ -108,7 +109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return CreatePropertyDescriptor(Store.MetaDataDirectory.FindMetaAttribute(NoteTextMetaAttributeGuid), this);
+				return ORMTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
 			}
 		}
 		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor

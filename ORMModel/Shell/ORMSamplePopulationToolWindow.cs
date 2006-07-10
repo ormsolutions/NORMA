@@ -26,11 +26,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {

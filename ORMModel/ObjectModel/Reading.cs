@@ -26,6 +26,7 @@ using Neumont.Tools.ORM.Framework;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region Reading class
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<Reading, Design.ReadingTypeDescriptor<Reading>>))]
 	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
@@ -44,7 +45,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			//as strings this will likely need to change.
 			if (IsValidReadingText())
 			{
-				RoleBaseMoveableCollection roles = ReadingOrder.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = ReadingOrder.RoleCollection;
 				int roleCount = roles.Count;
 				string[] roleNames = new string[roleCount];
 				for (int i = 0; i < roleCount; ++i)
@@ -58,45 +59,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.Text;
 			}
 		}
-
-		/// <summary>
-		/// Standard override. Determines when derived properties are read-only. Called
-		/// if the ReadOnly setting on the element is one of the SometimesUIReadOnly* values.
-		/// Currently, IsPrimary is read-only if true.
-		/// </summary>
-		/// <param name="propertyDescriptor">PropertyDescriptor</param>
-		/// <returns></returns>
-		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
-		{
-			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
-			if (elemDesc != null)
-			{
-				Guid attributeId = elemDesc.MetaAttributeInfo.Id;
-				if (attributeId == IsPrimaryForReadingOrderMetaAttributeGuid)
-				{
-					return IsPrimaryForReadingOrder;
-				}
-				else if (attributeId == IsPrimaryForFactTypeMetaAttributeGuid)
-				{
-					return IsPrimaryForFactType;
-				}
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
-		}
-		/// <summary>
-		/// Identify the reading for the property grid component dropdown
-		/// </summary>
-		/// <returns></returns>
-		public override string GetComponentName()
-		{
-			ReadingOrder readOrd = ReadingOrder;
-			if (readOrd != null)
-			{
-				// UNDONE: Localize the format string
-				return string.Format(CultureInfo.InvariantCulture, "{0} {1}{2}", readOrd.FactType.Name, ResourceStrings.ReadingType, readOrd.ReadingCollection.IndexOf(this) + 1);
-			}
-			return base.GetComponentName();
-		}
 		#endregion // Base overrides
 		#region IsValidReadingText methods
 		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
@@ -109,7 +71,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public bool IsValidReadingText()
 		{
 			ReadingOrder readOrd = ReadingOrder;
-			RoleBaseMoveableCollection roles = readOrd.RoleCollection;
+			LinkedElementCollection<RoleBase> roles = readOrd.RoleCollection;
 //			Debug.Assert(readOrd.FactType.RoleCollection.Count == roles.Count);
 			return IsValidReadingText(Text, roles.Count);
 		}
@@ -189,53 +151,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private bool GetIsPrimaryForReadingOrderValue()
 		{
-			Guid attributeId = attribute.Id;
-			bool checkFact = false;
-			if (attributeId == IsPrimaryForReadingOrderMetaAttributeGuid ||
-				(checkFact = (attributeId == IsPrimaryForFactTypeMetaAttributeGuid)))
-			{
-				ReadingOrder order;
-				if (!IsRemoved &&
-					null != (order = ReadingOrder) &&
-					object.ReferenceEquals(this, order.ReadingCollection[0]))
-				{
-					if (checkFact)
-					{
-						FactType factType = order.FactType;
-						if (factType != null &&
-							object.ReferenceEquals(order, factType.ReadingOrderCollection[0]))
-						{
-							return true;
-						}
-					}
-					else
-					{
-						return true;
-					}
-				}
-				return false;
-			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			ReadingOrder order;
+			return !IsDeleted && (order = ReadingOrder) != null && order.ReadingCollection[0] == this;
 		}
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in ReadingPropertiesChanged rule class.
-		/// </summary>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private bool GetIsPrimaryForFactTypeValue()
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == IsPrimaryForReadingOrderMetaAttributeGuid ||
-				attributeGuid == IsPrimaryForFactTypeMetaAttributeGuid)
-			{
-				// Handled by ReadingPropertiesChanged
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			ReadingOrder order;
+			FactType factType;
+			return GetIsPrimaryForReadingOrderValue() && (factType = (order = ReadingOrder).FactType) != null && factType.ReadingOrderCollection[0] == order;
+		}
+		private void SetIsPrimaryForReadingOrderValue(bool newValue)
+		{
+			// Handled by ReadingPropertiesChanged
+		}
+		private void SetIsPrimaryForFactTypeValue(bool newValue)
+		{
+			// Handled by ReadingPropertiesChanged
 		}
 		#endregion // CustomStorage handlers
 		#region rule classes and helpers
@@ -246,7 +179,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private void ValidateRoleCountError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool removeTooFew = false;
 				bool removeTooMany = false;
@@ -268,7 +201,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					removeTooMany = true;
 					if (null == TooFewRolesError)
 					{
-						tooFewError = TooFewReadingRolesError.CreateTooFewReadingRolesError(store);
+						tooFewError = new TooFewReadingRolesError(store);
 						tooFewError.Reading = this;
 						tooFewError.Model = theModel;
 						tooFewError.GenerateErrorText();
@@ -284,7 +217,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					removeTooFew = true;
 					if (null == TooManyRolesError)
 					{
-						tooManyError = TooManyReadingRolesError.CreateTooManyReadingRolesError(store);
+						tooManyError = new TooManyReadingRolesError(store);
 						tooManyError.Reading = this;
 						tooManyError.Model = theModel;
 						tooManyError.GenerateErrorText();
@@ -297,11 +230,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (removeTooFew && null != (tooFewError = TooFewRolesError))
 				{
-					tooFewError.Remove();
+					tooFewError.Delete();
 				}
 				if (removeTooMany && null != (tooManyError = TooManyRolesError))
 				{
-					tooManyError.Remove();
+					tooManyError.Delete();
 				}
 			}
 		}
@@ -313,19 +246,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validates that the reading text has the necessary number of placeholders.
 		/// </summary>
 		[RuleOn(typeof(Reading))]
-		private class ReadingPropertiesChanged : ChangeRule
+		private sealed class ReadingPropertiesChanged : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
+				Guid attributeGuid = e.DomainProperty.Id;
 				Reading changedReading = e.ModelElement as Reading;
-				if (changedReading.IsRemoved)
+				if (changedReading.IsDeleted)
 				{
 					return;
 				}
 				bool moveReadingOrder = false;
-				if (attributeGuid == Reading.IsPrimaryForReadingOrderMetaAttributeGuid ||
-					(moveReadingOrder = (attributeGuid == Reading.IsPrimaryForFactTypeMetaAttributeGuid)))
+				if (attributeGuid == Reading.IsPrimaryForReadingOrderDomainPropertyId ||
+					(moveReadingOrder = (attributeGuid == Reading.IsPrimaryForFactTypeDomainPropertyId)))
 				{
 					if (!((bool)e.NewValue))
 					{
@@ -334,8 +267,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ReadingOrder order;
 					if (null != (order = changedReading.ReadingOrder))
 					{
-						ReadingMoveableCollection readings = order.ReadingCollection;
-						if (readings.Count > 1 && !object.ReferenceEquals(readings[0], changedReading))
+						LinkedElementCollection<Reading> readings = order.ReadingCollection;
+						if (readings.Count > 1 && readings[0] != changedReading)
 						{
 							readings.Move(changedReading, 0);
 						}
@@ -344,8 +277,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							FactType factType;
 							if (null != (factType = order.FactType))
 							{
-								ReadingOrderMoveableCollection readingOrders = factType.ReadingOrderCollection;
-								if (readingOrders.Count > 1 && !object.ReferenceEquals(readingOrders[0], order))
+								LinkedElementCollection<ReadingOrder> readingOrders = factType.ReadingOrderCollection;
+								if (readingOrders.Count > 1 && readingOrders[0] != order)
 								{
 									readingOrders.Move(order, 0);
 								}
@@ -353,12 +286,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeGuid == Reading.TextMetaAttributeGuid)
+				else if (attributeGuid == Reading.TextDomainPropertyId)
 				{
 					string newValue = (string)e.NewValue;
 					if (newValue.Length == 0)
 					{
-						changedReading.Remove();
+						changedReading.Delete();
 					}
 					else
 					{
@@ -381,17 +314,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region ReadingOrderHasRoleRemoved rule class
 		[RuleOn(typeof(ReadingOrderHasRole))]
-		private class ReadingOrderHasRoleRemoved : RemoveRule
+		private sealed class ReadingOrderHasRoleDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				if (!link.IsRemoved)
+				if (!link.IsDeleted)
 				{
 					ReadingOrder ord = link.ReadingOrder;
-					if (!ord.IsRemoved)
+					if (!ord.IsDeleted)
 					{
-						ReadingMoveableCollection readings = ord.ReadingCollection;
+						LinkedElementCollection<Reading> readings = ord.ReadingCollection;
 						foreach (Reading read in readings)
 						{
 							read.ValidateRoleCountError(null);
@@ -463,7 +396,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ReadingOrderHasReading.ReadingCollectionMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ReadingOrderHasReading.ReadingDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>

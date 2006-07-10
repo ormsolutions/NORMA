@@ -69,7 +69,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override bool IsValidSourceAndTarget(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
 			{
 				// The source and target shapes are allowed here so we can display instructions in CanCreateConnection
-				return (object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram) || object.ReferenceEquals(targetShapeElement, sourceShapeElement));
+				return (targetShapeElement == sourceShapeElement.Diagram || targetShapeElement == sourceShapeElement);
 			}
 			/// <summary>
 			/// Used for more in-depth checking before ConnectionType.CreateConnection is called, and
@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool retVal = false;
 				if (sourceShapeElement is FactTypeShape)
 				{
-					if (object.ReferenceEquals(sourceShapeElement, targetShapeElement))
+					if (sourceShapeElement == targetShapeElement)
 					{
 						// UNDONE: Constrain this, this is overly generous
 						retVal = true;
@@ -92,7 +92,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					else
 					{
 						Debug.Assert(IsValidSourceAndTarget(sourceShapeElement, targetShapeElement)); // The condition that got us here
-						if (object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram))
+						if (targetShapeElement == sourceShapeElement.Diagram)
 						{
 							connectionWarning = ResourceStrings.InternalUniquenessConstraintConnectActionInstructions;
 						}
@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						iuConstraint.IsInternal)
 					{
 						// The single-column constraint is its own role set, just add the roles
-						RoleMoveableCollection roles = iuConstraint.RoleCollection;
+						LinkedElementCollection<Role> roles = iuConstraint.RoleCollection;
 						int currentCount = roles.Count;
 						int removedCount = 0;
 						for (int i = currentCount - 1; i >= 0; --i)
@@ -339,7 +339,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					if (null != (role = currentElement as Role))
 					{
-						if (object.ReferenceEquals(role.FactType, mySourceShape.AssociatedFactType))
+						if (role.FactType == mySourceShape.AssociatedFactType)
 						{
 							// Add or remove the role
 							IList<Role> roles = SelectedRoleCollection;
@@ -558,11 +558,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="store">Store</param>
 		protected virtual void AddStoreEvents(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(UniquenessConstraint.MetaClassGuid);
-			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(InternalConstraintAddedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(UniquenessConstraint.DomainClassId);
+			eventManager.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintAddedEvent));
 		}
 		/// <summary>
 		/// Removed any events added during the AddStoreEvents methods
@@ -570,11 +570,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="store">Store</param>
 		protected virtual void RemoveStoreEvents(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(UniquenessConstraint.MetaClassGuid);
-			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(InternalConstraintAddedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(UniquenessConstraint.DomainClassId);
+			eventManager.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintAddedEvent));
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated
@@ -593,7 +593,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (d != null)
 					{
 						// Find the shape associated with the fact type we added to
-						FactTypeMoveableCollection candidateFacts = candidate.FactTypeCollection;
+						LinkedElementCollection<FactType> candidateFacts = candidate.FactTypeCollection;
 						if (candidateFacts.Count != 0)
 						{
 							FactTypeShape shape = d.FindShapeForElement(candidateFacts[0]) as FactTypeShape;

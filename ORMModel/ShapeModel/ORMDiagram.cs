@@ -21,18 +21,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Design;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region IStickyObject interface
@@ -40,7 +43,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky
 	/// will maintain their selected status when compatible objects are clicked.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IStickyObject
 	{
 		/// <summary>
@@ -62,8 +64,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 		void StickyRedraw();
 	}
 	#endregion // IStickyObject interface
+
+	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
+	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMDiagram, ORMModel, Design.ORMDiagramTypeDescriptor<ORMDiagram, ORMModel>>))]
+	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider
 	{
+		#region Constructors
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store"><see cref="Store"/> where new <see cref="ORMDiagram"/> is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMDiagram(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+			// We don't need to do anything here, since our custom constructor in ORMDiagramBase already did what we need
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition"><see cref="Partition"/> where new <see cref="ORMDiagram"/> is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			// We don't need to do anything here, since our custom constructor in ORMDiagramBase already did what we need
+		}
+		#endregion
 		# region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
@@ -110,7 +138,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (multiCol = dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
 			{
-				FactTypeMoveableCollection factTypeList = multiCol.FactTypeCollection;
+				LinkedElementCollection<FactType> factTypeList = multiCol.FactTypeCollection;
 				factsContained = new bool[factTypeList.Count];
 				factsRemaining = factTypeList.Count;
 				FactType fact;
@@ -137,7 +165,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (singleCol = dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
 			{
-				FactTypeMoveableCollection factTypeList = singleCol.FactTypeCollection;
+				LinkedElementCollection<FactType> factTypeList = singleCol.FactTypeCollection;
 				factsContained = new bool[factTypeList.Count];
 				factsRemaining = factTypeList.Count;
 				FactType fact;
@@ -166,7 +194,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
-				using (Transaction transaction = this.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
+				using (Transaction transaction = this.Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
 				{
 					ModelElement droppedOnElement = this.ModelElement;
 					DropTargetContext.Set(transaction, Id, e.MousePosition, null);
@@ -176,19 +204,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 						foreach (RoleBase roleBase in factType.RoleCollection)
 						{
 							Role role = roleBase.Role;
-							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid));
-							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(FactSetConstraint.FactTypeCollectionMetaRoleGuid));
-							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid));
+							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
+							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
 						}
 					}
 					else if (objectType != null)
 					{
-						IList rolePlayerLinks = objectType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid);
+						ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(objectType, ObjectTypePlaysRole.RolePlayerDomainRoleId);
 						int linksCount = rolePlayerLinks.Count;
 						for (int i = 0; i < linksCount; ++i)
 						{
-							ObjectTypePlaysRole link = rolePlayerLinks[i] as ObjectTypePlaysRole;
-							Role role = link.PlayedRoleCollection;
+							ObjectTypePlaysRole link = rolePlayerLinks[i];
+							Role role = link.PlayedRole;
 							SubtypeMetaRole subRole;
 							SupertypeMetaRole superRole;
 							FactType subtypeFact = null;
@@ -212,23 +240,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else if (singleCol != null)
 					{
-						FixupRelatedLinks(droppedOnElement, singleCol.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid));
+						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(singleCol, FactSetConstraint.SetConstraintDomainRoleId));
 					}
 					else if (multiCol != null)
 					{
-						FixupRelatedLinks(droppedOnElement, multiCol.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid));
+						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId));
 					}
 					transaction.Commit();
 				}
 			}
 			base.OnDragDrop(e);
 		}
-		private static void FixupRelatedLinks(ModelElement droppedOnElement, IList links)
+		private static void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links)
 		{
 			int linksCount = links.Count;
 			for (int i = 0; i < linksCount; ++i)
 			{
-				FixUpDiagram(droppedOnElement, (ModelElement)links[i]);
+				FixUpDiagram(droppedOnElement, links[i]);
 			}
 		}
 		# endregion // DragDrop overrides
@@ -237,15 +265,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Key used to add a DiagramItemCollection to the current top-level
 		/// transaction's ContextInfo when elements are being moved on the diagram.
 		/// </summary>
-		public static readonly string MovingDiagramItemsContextKey = Guid.NewGuid().ToString("B", CultureInfo.InvariantCulture);
+		public static readonly object MovingDiagramItemsContextKey = new object();
 		/// <summary>
 		/// Hack override to handle MSBUG that moves child shapes twice on the diagram. Combined
 		/// with ORMBaseShape.CanMove to limit moving of child shapes during a transaction.
 		/// </summary>
-		public override void MoveByRepositioning(ElementGroupPrototype elementGroupPrototype, DiagramItemCollection topLevelItems, PointD moveDelta)
+		public override void MoveByRepositioning(ElementGroupPrototype elementGroupPrototype, DiagramItemCollection topLevelItems, PointD moveDelta, DiagramItem hitDiagramItem)
 		{
 			Store store = Store;
-			IDictionary contextInfo = null;
+			Dictionary<object, object> contextInfo = null;
 			if (store.TransactionActive)
 			{
 				contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
@@ -253,7 +281,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			try
 			{
-				base.MoveByRepositioning(elementGroupPrototype, topLevelItems, moveDelta);
+				base.MoveByRepositioning(elementGroupPrototype, topLevelItems, moveDelta, hitDiagramItem);
 			}
 			finally
 			{
@@ -265,10 +293,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Hack to block child shape moving twice
 		#region Toolbox filter strings
+		// UNDONE: 2006-06 DSL Tools port: Some of these toolbox filter strings have been changed to point to the filter strings
+		// in ToolboxHelper. Is this the correct thing to do, and does anything else need to be done? (The original versions of
+		// the changed filter strings are below, commented out.)
 		/// <summary>
 		/// The filter string used for simple actions
 		/// </summary>
-		public const string ORMDiagramDefaultFilterString = "ORMDiagramDefaultFilterString";
+		public const string ORMDiagramDefaultFilterString = ORMMetaModelToolboxHelper.ToolboxFilterString;
+		//public const string ORMDiagramDefaultFilterString = "ORMDiagramDefaultFilterString";
+
 		/// <summary>
 		/// The filter string used to create an external constraint. Very similar to a
 		/// normal action, except the external constraint connector is activated on completion
@@ -278,11 +311,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to connect role sequences to external constraints
 		/// </summary>
-		public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
+		public const string ORMDiagramConnectExternalConstraintFilterString = ORMMetaModelToolboxHelper.ExternalConstraintConnectorFilterString;
+		//public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		/// <summary>
 		/// The filter string used to create subtype relationships between object types
 		/// </summary>
-		public const string ORMDiagramCreateSubtypeFilterString = "ORMDiagramCreateSubtypeFilterString";
+		public const string ORMDiagramCreateSubtypeFilterString = ORMMetaModelToolboxHelper.SubtypeConnectorFilterString;
+		//public const string ORMDiagramCreateSubtypeFilterString = "ORMDiagramCreateSubtypeFilterString";
 		/// <summary>
 		/// The filter string used to create an internal constraint. Very similar to a
 		/// normal action, except the internal constraint connector is activated on completion
@@ -296,7 +331,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to connect a role to its role player object type
 		/// </summary>
-		public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
+		public const string ORMDiagramConnectRoleFilterString = ORMMetaModelToolboxHelper.RoleConnectorFilterString;
+		//public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
 		#endregion // Toolbox filter strings
 		#region StickyEditObject
 		/// <summary>
@@ -355,13 +391,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ModelElement element2 = null;
 			if (link != null)
 			{
-				element1 = link.GetRolePlayer(0);
+				element1 = DomainRoleInfo.GetSourceRolePlayer(link);
 				Role role1 = element1 as Role;
 				if (role1 != null)
 				{
 					element1 = role1.FactType;
 				}
-				element2 = link.GetRolePlayer(1);
+				element2 = DomainRoleInfo.GetTargetRolePlayer(link);
 				Role role2 = element2 as Role;
 				if (role2 != null)
 				{
@@ -404,7 +440,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if (null == (serviceProvider = (Store as IORMToolServices).ServiceProvider) ||
 						null == (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) ||
 						null == (currentView = selectionService.CurrentDocumentView as DiagramDocView) ||
-						!object.ReferenceEquals(currentView.CurrentDesigner, activeDiagramView))
+						currentView.CurrentDesigner != activeDiagramView)
 					{
 						return false;
 					}
@@ -446,7 +482,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return false;
 				}
 #else
-				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
+				FactType fact = objectTypePlaysRole.PlayedRole.FactType;
 				if (fact is SubtypeFact || fact.ImpliedByObjectification != null)
 				{
 					return false;
@@ -501,7 +537,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				ObjectType entity = constraint.PreferredIdentifierFor;
 				// We only consider this to be a collapsible ref mode if its roleplayer is a value type
-				RoleMoveableCollection constraintRoles;
+				LinkedElementCollection<Role> constraintRoles;
 				ObjectType rolePlayer;
 				Role role;
 				RoleProxy proxy;
@@ -512,7 +548,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					rolePlayer.IsValueType &&
 					(null == (proxy = role.Proxy) ||
 					!(null != (impliedFact = proxy.FactType) &&
-					object.ReferenceEquals(impliedFact.ImpliedByObjectification, entity.Objectification))))
+					impliedFact.ImpliedByObjectification == entity.Objectification)))
 				{
 					return !ShouldCollapseReferenceMode(entity);
 				}
@@ -526,7 +562,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private bool ShouldDisplayPartOfReferenceMode(ObjectTypePlaysRole objectTypePlaysRole)
 		{
-			Role role = objectTypePlaysRole.PlayedRoleCollection;
+			Role role = objectTypePlaysRole.PlayedRole;
 			FactType factType = role.FactType;
 			return (factType != null) ? ShouldDisplayPartOfReferenceMode(factType) : true;
 		}
@@ -541,7 +577,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			if (objectType.IsValueType)
 			{
-				RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
 				if (playedRoleCount > 0)
 				{
@@ -599,58 +635,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return objectType.HasReferenceMode;
 		}
-		/// <summary>
-		/// An object type is displayed as an ObjectTypeShape unless it is
-		/// objectified, in which case we display it as an ObjectifiedFactTypeNameShape
-		/// </summary>
-		/// <param name="element">The element to test. Expecting an ObjectType.</param>
-		/// <param name="shapeTypes">The choice of shape types</param>
-		/// <returns></returns>
-		protected override MetaClassInfo ChooseShape(ModelElement element, IList shapeTypes)
-		{
-			Guid classId = element.MetaClassId;
-			if (classId == ObjectType.MetaClassGuid)
-			{
-				return ChooseShapeTypeForObjectType((ObjectType)element, shapeTypes);
-			}
 #if SHOW_FACTSHAPE_FOR_SUBTYPE
-			if (classId == SubtypeFact.MetaClassGuid)
-			{
-				foreach (MetaClassInfo classInfo in shapeTypes)
-				{
-					if (classInfo.Id == FactTypeShape.MetaClassGuid)
-					{
-						return classInfo;
-					}
-				}
-			}
-#endif // SHOW_FACTSHAPE_FOR_SUBTYPE
-			Debug.Assert(false); // We're only expecting an ObjectType here
-			return base.ChooseShape(element, shapeTypes);
-		}
-		/// <summary>
-		/// Helper function to choose the appropriate shape for an ObjectType
-		/// UNDONE: The original plan was to override ChooseParentShape here to switch the
-		/// parent to a FactType. However, the childShape passed to ChooseParentShape is not
-		/// yet attached to its backing ModelElement, so the override is essentially useless,
-		/// and we need to duplicate the ChooseShape code on FactTypeShape itself.
-		/// </summary>
-		/// <param name="element">ObjectType</param>
-		/// <param name="shapeTypes">IList of MetaClassInfo</param>
-		/// <returns></returns>
-		public static MetaClassInfo ChooseShapeTypeForObjectType(ObjectType element, IList shapeTypes)
+		/// <summary>See <see cref="ORMDiagramBase.CreateChildShape"/>.</summary>
+		protected override ShapeElement CreateChildShape(ModelElement element)
 		{
-			Guid shapeClassId = FactTypeShape.ShouldDrawObjectification(element.NestedFactType) ? ObjectifiedFactTypeNameShape.MetaClassGuid : ObjectTypeShape.MetaClassGuid;
-			foreach (MetaClassInfo classInfo in shapeTypes)
+			if (element is SubtypeFact)
 			{
-				if (classInfo.Id == shapeClassId)
-				{
-					return classInfo;
-				}
+				return new FactTypeShape(this.Partition);
 			}
-			Debug.Assert(false); // Missed a shape associated with ObjectType
-			return null;
+			return base.CreateChildShape(element);
 		}
+#endif // SHOW_FACTSHAPE_FOR_SUBTYPE
 		/// <summary>
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape and ORMBaseBinaryLinkShape children
 		/// </summary>
@@ -665,10 +660,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (baseLinkShape = child as ORMBaseBinaryLinkShape))
 			{
+				// UNDONE: 2006-06 DSL Tools port: Old RouteJumpType setting code. Hopefully can be permanently removed now...
 				// ORM lines cross, they don't jump. However, the RouteJumpType cannot
 				// be set before the diagram is in place, so this property cannot be set
 				// from initialization code in the shape itself.
-				baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+				//baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+				baseLinkShape.InitializeLineRouting();
+				baseLinkShape.RecalculateRoute();
 				baseLinkShape.ConfiguringAsChildOf(this);
 			}
 		}
@@ -689,7 +687,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>An existing shape, or null if not found</returns>
 		public TShape FindShapeForElement<TShape>(ModelElement element) where TShape : ShapeElement
 		{
-			foreach (PresentationElement pel in element.PresentationRolePlayers)
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
 			{
 				TShape shape = pel as TShape;
 				if (shape != null && shape.Diagram == this)
@@ -770,157 +768,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return .05;
 			}
 		}
-		/// <summary>
-		/// Overrides the OnCreated to set the snaptogrid to false;
-		/// </summary>
-		public override void OnCreated()
-		{
-			base.OnCreated();
-			//turned snap to grid off because we are aligning the facttypes based
-			//on the center of the roles. Since the center of the roles is not necessarily
-			//going to be located in alignment on the grid we had to turn this off so facttypes
-			//would get properly aligned with other objects.
-			SnapToGrid = false;  
-		}
 		#endregion // Customize appearance
-		#region Toolbox initialization
-		/// <summary>
-		/// Initialize toolbox items. All items are thrown on the diagram (it doesn't
-		/// really matter what object we put them on).
-		/// </summary>
-		/// <param name="toolboxItem"></param>
-		/// <returns></returns>
-		public override ElementGroupPrototype InitializeToolboxItem(ModelingToolboxItem toolboxItem)
-		{
-			Store store = Store;
-			string itemId = toolboxItem.Id;
-			ElementGroup group = new ElementGroup(store);
-			ElementGroupPrototype retVal = null;
-			int roleArity = 0;
-			switch (itemId)
-			{
-				case ResourceStrings.ToolboxEntityTypeItemId:
-					ObjectType entityType = ObjectType.CreateObjectType(store);
-					group.AddGraph(entityType);
-					retVal = group.CreatePrototype(entityType);
-					break;
-				case ResourceStrings.ToolboxValueTypeItemId:
-					ObjectType valueType = ObjectType.CreateObjectType(store);
-					group.AddGraph(valueType);
-					// Do not try to set the IsValueType property here. IsValueType picks
-					// up the default data type for the model, which can only be done
-					// when the model is known. Instead, flag the element so that it
-					// can be set during MergeRelate on the model.
-					group.UserData = "VALUETYPE";
-					retVal = group.CreatePrototype(valueType);
-					break;
-				case ResourceStrings.ToolboxObjectifiedFactTypeItemId:
-					roleArity = 2;
-					break;
-				case ResourceStrings.ToolboxUnaryFactTypeItemId:
-					roleArity = 1;
-					break;
-				case ResourceStrings.ToolboxBinaryFactTypeItemId:
-					roleArity = 2;
-					break;
-				case ResourceStrings.ToolboxTernaryFactTypeItemId:
-					roleArity = 3;
-					break;
-				case ResourceStrings.ToolboxInternalUniquenessConstraintItemId:
-					UniquenessConstraint iuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-					group.AddGraph(iuc);
-					// Add this here so that we can distinguish between internal and external uniqueness
-					// constraints without unpacking the model. We want to merge internals into a fact
-					// and externals into the model.
-					group.UserData = "INTERNALUNIQUENESSCONSTRAINT";
-					retVal = group.CreatePrototype(iuc);
-					break;
-				case ResourceStrings.ToolboxExternalUniquenessConstraintItemId:
-					UniquenessConstraint euc = UniquenessConstraint.CreateUniquenessConstraint(store);
-					group.AddGraph(euc);
-					retVal = group.CreatePrototype(euc);
-					break;
-				case ResourceStrings.ToolboxEqualityConstraintItemId:
-					EqualityConstraint eqc = EqualityConstraint.CreateEqualityConstraint(store);
-					group.AddGraph(eqc);
-					retVal = group.CreatePrototype(eqc);
-					break;
-				case ResourceStrings.ToolboxExclusionConstraintItemId:
-					ExclusionConstraint exc = ExclusionConstraint.CreateExclusionConstraint(store);
-					group.AddGraph(exc);
-					retVal = group.CreatePrototype(exc);
-					break;
-				case ResourceStrings.ToolboxInclusiveOrConstraintItemId:
-					MandatoryConstraint dmc = MandatoryConstraint.CreateMandatoryConstraint(store);
-					group.AddGraph(dmc);
-					retVal = group.CreatePrototype(dmc);
-					break;
-				case ResourceStrings.ToolboxExclusiveOrConstraintItemId:
-					// Intentionally unprototyped item (for now)
-					break;
-				case ResourceStrings.ToolboxSubsetConstraintItemId:
-					SubsetConstraint sc = SubsetConstraint.CreateSubsetConstraint(store);
-					group.AddGraph(sc);
-					retVal = group.CreatePrototype(sc);
-					break;
-				case ResourceStrings.ToolboxFrequencyConstraintItemId:
-					FrequencyConstraint fc = FrequencyConstraint.CreateFrequencyConstraint(store);
-					group.AddGraph(fc);
-					retVal = group.CreatePrototype(fc);
-					break;
-				case ResourceStrings.ToolboxRingConstraintItemId:
-					RingConstraint ring = RingConstraint.CreateRingConstraint(store);
-					group.AddGraph(ring);
-					retVal = group.CreatePrototype(ring);
-					break;
-				case ResourceStrings.ToolboxRoleConnectorItemId:
-				case ResourceStrings.ToolboxExternalConstraintConnectorItemId:
-				case ResourceStrings.ToolboxSubtypeConnectorItemId:
-					// Intentionally unprototyped item
-					break;
-				default:
-					Debug.Assert(false, "Unknown ResourceString Id"); // Unknown Id
-					break;
-			}
-			if (retVal == null)
-			{
-				if (roleArity != 0)
-				{
-					FactType factType = FactType.CreateFactType(store);
-					RoleBaseMoveableCollection roles = factType.RoleCollection;
-					for (int i = 0; i < roleArity; ++i)
-					{
-						Role role = Role.CreateRole(store);
-						roles.Add(role);
-						group.AddGraph(role);
-					}
-					group.AddGraph(factType);
-					if (itemId == ResourceStrings.ToolboxObjectifiedFactTypeItemId)
-					{
-						// Create the relationship between the FactType and ObjectType for Objectified Fact Types
-						ObjectType objectifiedObjectType = ObjectType.CreateObjectType(store);
-						group.AddGraph(objectifiedObjectType);
-						Objectification objectification = Objectification.CreateObjectification(store, new RoleAssignment[]
-							{
-								new RoleAssignment(Objectification.NestingTypeMetaRoleGuid, objectifiedObjectType),
-								new RoleAssignment(Objectification.NestedFactTypeMetaRoleGuid, factType)
-							});
-						group.AddGraph(objectification);
-						retVal = group.CreatePrototype(new ModelElement[] { factType, objectifiedObjectType });
-					}
-					else
-					{
-						retVal = group.CreatePrototype(factType);
-					}
-				}
-			}
-			return retVal;
-		}
-		#endregion // Toolbox initialization
 		#region Toolbox support
 		/// <summary>
 		/// Enable our toolbox actions. Additional filters recognized in this
-		/// routine are added in ORMEditorFactory.GetToolboxItems.
+		/// routine are added in ORMDesignerPackage.CreateToolboxItems.
 		/// </summary>
 		public override void OnViewMouseEnter(DiagramPointEventArgs pointArgs)
 		{
@@ -1219,14 +1071,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Toolbox support
 		#region Other base overrides
 		/// <summary>
-		/// Set the initial diagram name. We always set it to a specific resource string value for now.
-		/// </summary>
-		public override void OnInitialized()
-		{
-			base.OnInitialized();
-			Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
-		}
-		/// <summary>
 		/// Clean up disposable members (connection actions)
 		/// </summary>
 		/// <param name="disposing">Do stuff if true</param>
@@ -1317,41 +1161,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return null;
 		}
 		#endregion // Other base overrides
-		#region Display Properties
-		/// <summary>
-		/// Retrieve the component name for the property grid. The
-		/// component name is displayed bolded in the property grid dropdown
-		/// before the class name (retrieved from GetClassName)
-		/// </summary>
-		/// <returns></returns>
-		public override string GetComponentName()
-		{
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetComponentName() : base.GetComponentName();
-		}
-		/// <summary>
-		/// Crash fix, the shell is calling back after the store is disposed. Catch the case.
-		/// </summary>
-		public override string GetClassName()
-		{
-			return Store.Disposed ? GetType().Name : base.GetClassName();
-		}
-		/// <summary>
-		/// Block display of the diagram's name, which is displayed beside the
-		/// Name for the underlying model if we let it through
-		/// </summary>
-		/// <param name="metaAttrInfo">MetaAttributeInfo</param>
-		/// <returns>false for Diagram.Name, defers to base for all other attributes</returns>
-		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
-		{
-			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == Diagram.NameMetaAttributeGuid)
-			{
-				return false;
-			}
-			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
-		}
-		#endregion // Display Properties
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the class name as the accessible name
@@ -1360,7 +1169,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return GetClassName();
+				return TypeDescriptor.GetClassName(this);
 			}
 		}
 		/// <summary>
@@ -1370,7 +1179,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return GetComponentName();
+				return TypeDescriptor.GetComponentName(this);
 			}
 		}
 		#endregion // Accessibility Properties
@@ -1457,13 +1266,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // IProxyDisplayProvider Implementation
 	}
-	#region Extra conditional attribute on FactTypeShape to show fact shape instead of subtype link
-#if SHOW_FACTSHAPE_FOR_SUBTYPE
-	// This forces a call to ORMDiagram.ChooseShape
-	[ShapeForAttribute(typeof(SubtypeFact))]
-	public partial class FactTypeShape
+
+	#region ORMDiagramBase class
+	public partial class ORMDiagramBase
 	{
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition"><see cref="Partition"/> where new <see cref="ORMDiagramBase"/> is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ORMDiagramBase(Partition partition, PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			//turned snap to grid off because we are aligning the facttypes based
+			//on the center of the roles. Since the center of the roles is not necessarily
+			//going to be located in alignment on the grid we had to turn this off so facttypes
+			//would get properly aligned with other objects.
+			base.SnapToGrid = false;
+			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
+		}
+		private ShapeElement CreateShapeForObjectType(ObjectType newElement)
+		{
+			return FactTypeShape.ShouldDrawObjectification(newElement.NestedFactType) ? (ShapeElement)new ObjectifiedFactTypeNameShape(this.Partition) : new ObjectTypeShape(this.Partition);
+		}
 	}
-#endif // SHOW_FACTSHAPE_FOR_SUBTYPE
-	#endregion // Extra conditional attribute on FactTypeShape to show fact shape instead of subtype link
+	#endregion // ORMDiagramBase class
 }

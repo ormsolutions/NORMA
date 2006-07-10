@@ -1095,38 +1095,38 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // SettingsCategory class
 		#region EditorColors class
-		private class EditorColors : SettingsCategory
+		private sealed class EditorColors : SettingsCategory
 		{
 			#region Constructor
 			public EditorColors(IServiceProvider serviceProvider) : base(serviceProvider) { }
 			#endregion // Constructor
 			#region Base Overrides
 			// Required overrides for SettingsCache
-			protected override Guid CategoryGuid
+			protected sealed override Guid CategoryGuid
 			{
 				get { return FontAndColorEditorCategory; }
 			}
-			protected override int FirstDefaultColorIndex
+			protected sealed override int FirstDefaultColorIndex
 			{
 				get { return (int)ORMDesignerColor.FirstEditorColor; }
 			}
-			protected override int LastDefaultColorIndex
+			protected sealed override int LastDefaultColorIndex
 			{
 				get { return (int)ORMDesignerColor.LastEditorColor; }
 			}
-			protected override string NameFromItemIndex(int itemIndex)
+			protected sealed override string NameFromItemIndex(int itemIndex)
 			{
 				return NameFromItemIndex((ORMDesignerColor)(itemIndex + ORMDesignerColor.FirstEditorColor));
 			}
-			protected override string CategoryName
+			protected sealed override string CategoryName
 			{
 				get { return ResourceStrings.GetColorNameString(ResourceStrings.FontsAndColorsEditorCategoryNameId); }
 			}
-			protected override __FONTCOLORFLAGS FontColorFlags
+			protected sealed override __FONTCOLORFLAGS FontColorFlags
 			{
 				get { return __FONTCOLORFLAGS.FCF_MUSTRESTART; }
 			}
-			protected override FontInfo DefaultFont
+			protected sealed override FontInfo DefaultFont
 			{
 				get
 				{
@@ -1140,7 +1140,7 @@ namespace Neumont.Tools.ORM.Shell
 					return info;
 				}
 			}
-			protected override void ApplySettingsChange(IServiceProvider serviceProvider)
+			protected sealed override void ApplySettingsChange(IServiceProvider serviceProvider)
 			{
 				OptionsPage.NotifySettingsChange(serviceProvider, ChangeDocumentFontAndColors);
 			}
@@ -1151,7 +1151,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// and color changes are applied.
 			/// </summary>
 			/// <param name="docData">Currently running docdata</param>
-			protected static void ChangeDocumentFontAndColors(ORMDesignerDocData docData)
+			private static void ChangeDocumentFontAndColors(ORMDesignerDocData docData)
 			{
 				foreach (ORMDesignerDocView docView in docData.DocViews)
 				{
@@ -1194,7 +1194,7 @@ namespace Neumont.Tools.ORM.Shell
 						retVal = ActiveConstraintColorName;
 						break;
 					default:
-						Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.
+						Debug.Fail("The cases may not match all of the ORMDesignerColor enums.");
 						throw new ArgumentOutOfRangeException();
 				}
 				return retVal;
@@ -1203,38 +1203,38 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // EditorColors class
 		#region VerbalizerColors class
-		private class VerbalizerColors : SettingsCategory
+		private sealed class VerbalizerColors : SettingsCategory
 		{
 			#region Constructor
 			public VerbalizerColors(IServiceProvider serviceProvider) : base(serviceProvider) { }
 			#endregion // Constructor
 			#region Base Overrides
 			// Required overrides for SettingsCache
-			protected override Guid CategoryGuid
+			protected sealed override Guid CategoryGuid
 			{
 				get { return FontAndColorVerbalizerCategory; }
 			}
-			protected override int FirstDefaultColorIndex
+			protected sealed override int FirstDefaultColorIndex
 			{
 				get { return (int)ORMDesignerColor.FirstVerbalizerColor; }
 			}
-			protected override int LastDefaultColorIndex
+			protected sealed override int LastDefaultColorIndex
 			{
 				get { return (int)ORMDesignerColor.LastVerbalizerColor; }
 			}
-			protected override string NameFromItemIndex(int itemIndex)
+			protected sealed override string NameFromItemIndex(int itemIndex)
 			{
 				return NameFromItemIndex((ORMDesignerColor)(itemIndex + ORMDesignerColor.FirstVerbalizerColor));
 			}
-			protected override string CategoryName
+			protected sealed override string CategoryName
 			{
 				get { return ResourceStrings.GetColorNameString(ResourceStrings.FontsAndColorsVerbalizerCategoryNameId); }
 			}
-			protected override __FONTCOLORFLAGS FontColorFlags
+			protected sealed override __FONTCOLORFLAGS FontColorFlags
 			{
 				get { return 0; }
 			}
-			protected override FontInfo DefaultFont
+			protected sealed override FontInfo DefaultFont
 			{
 				get
 				{
@@ -1248,7 +1248,7 @@ namespace Neumont.Tools.ORM.Shell
 					return info;
 				}
 			}
-			protected override void ApplySettingsChange(IServiceProvider serviceProvider)
+			protected sealed override void ApplySettingsChange(IServiceProvider serviceProvider)
 			{
 				ORMDesignerPackage.VerbalizationWindowSettingsChanged();
 			}
@@ -1280,7 +1280,7 @@ namespace Neumont.Tools.ORM.Shell
 						retVal = VerbalizerRefModeColorName;
 						break;
 					default:
-						Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.
+						Debug.Fail("The cases may not match all of the ORMDesignerColor enums.");
 						throw new ArgumentOutOfRangeException();
 				}
 				return retVal;

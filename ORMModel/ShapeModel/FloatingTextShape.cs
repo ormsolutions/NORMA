@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
@@ -31,12 +32,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				Debug.Assert(false); // Must override
+				Debug.Fail("Must override");
 				return null;
 			}
 			set
 			{
-				Debug.Assert(false); // Must override
+				Debug.Fail("Must override");
 			}
 		}
 
@@ -45,10 +46,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// specified by the derived class. Called one per class type.
 		/// </summary>
 		/// <param name="shapeFields">ShapeFieldCollection to initialized</param>
-		protected override void InitializeShapeFields(ShapeFieldCollection shapeFields)
+		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
+			Store store = Store;
 			AutoSizeTextField textField = CreateAutoSizeTextField();
-			textField.AssociateValueWith(Store, AssociatedShapeMetaAttributeGuid, AssociatedModelMetaAttributeGuid);
+			textField.AssociateValueWith(Store, AssociatedModelDomainPropertyId);
 			textField.DefaultFocusable = true;
 			shapeFields.Add(textField);
 
@@ -79,7 +81,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Don't outline the text
 		/// </summary>
-		/// <value></value>
 		public override bool HasOutline
 		{
 			get
@@ -92,28 +93,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public override bool HasFilledBackground
 		{
-			get { return false; }
+			get
+			{
+				return false;
+			}
 		}
 
-
-
 		/// <summary>
-		/// Retrieve the attribute on the shape field to be associated with the
-		/// text field. This attribute should be an xpath-bound property to
-		/// the attribute specified in the AssociatedModelMetaAttributeGuid override
-		/// </summary>
-		protected abstract Guid AssociatedShapeMetaAttributeGuid { get;}
-		/// <summary>
-		/// Retrieve the attribute on the associated model element to be bound to
-		/// the text field. This attribute should be xpath-bound to a property on
+		/// Retrieve the property on the associated model element to be bound to
+		/// the text field. This property should be xpath-bound to a property on
 		/// the derived shape class. The opposite property is specified with the
-		/// AssociatedShapeMetaAttributeGuid override. Defaults to NamedElement.NameMetaAttributeGuid
+		/// AssociatedShapeDomainPropertyId override. Defaults to NamedElement.NameDomainPropertyId
 		/// </summary>
-		protected virtual Guid AssociatedModelMetaAttributeGuid
+		protected virtual Guid AssociatedModelDomainPropertyId
 		{
 			get
 			{
-				return NamedElement.NameMetaAttributeGuid;
+				return ORMNamedElement.NameDomainPropertyId;
 			}
 		}
 

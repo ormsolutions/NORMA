@@ -17,35 +17,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
-using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region ReferenceModeType enum
-	/// <summary>
-	/// Standard reference mode categories
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum ReferenceModeType
-	{
-		/// <summary>
-		/// Used for custom refmode formats
-		/// </summary>
-		General,
-		/// <summary>
-		/// Standard popular reference mode
-		/// </summary>
-		Popular,
-		/// <summary>
-		/// Standard unit-based reference mode
-		/// </summary>
-		UnitBased,
-	}
-	#endregion // ReferenceModeType enum
 	#region ReferenceMode class
+	[TypeConverter(typeof(Design.ReferenceModeConverter))]
 	public abstract partial class ReferenceMode : IComparable<ReferenceMode>
 	{
 		private PortableDataType dataType = PortableDataType.Unspecified;
@@ -128,56 +111,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public ReferenceModeKind Kind
 		{
+			// UNDONE: 2006-06 DSL Tools port: Does this property even need to exist?
 			get
 			{
-				Object o = null;
-				ElementLink goodLink = null;
-				IList links = this.GetElementLinks(ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
-				foreach (ElementLink link in links)
+				ReferenceModeHasReferenceModeKind goodLink = null;
+				ReadOnlyCollection<ReferenceModeHasReferenceModeKind> links = DomainRoleInfo.GetElementLinks<ReferenceModeHasReferenceModeKind>(this, ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId);
+				foreach (ReferenceModeHasReferenceModeKind link in links)
 				{
-					if (!link.IsRemoved)
+					if (!link.IsDeleted)
 					{
 						goodLink = link;
 						break;
 					}
 				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
-				}
-				return (ReferenceModeKind)o;
+				return (goodLink != null) ? goodLink.Kind : null;
 			}
 			set
 			{
-				IList links = this.GetElementLinks(ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
-				foreach (ElementLink link in links)
+				ReadOnlyCollection<ReferenceModeHasReferenceModeKind> links = DomainRoleInfo.GetElementLinks<ReferenceModeHasReferenceModeKind>(this, ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId);
+				foreach (ReferenceModeHasReferenceModeKind link in links)
 				{
-					if (!link.IsRemoved)
+					if (!link.IsDeleted)
 					{
 						if (value == null)
 						{
-							link.Remove();
+							link.Delete();
 						}
-						else if (value != link.GetRolePlayer(ReferenceModeHasReferenceModeKind.KindMetaRoleGuid))
+						else if (value != link.Kind)
 						{
 							// Trigger a role player change instead of an add/remove
-							link.SetRolePlayer(ReferenceModeHasReferenceModeKind.KindMetaRoleGuid, value);
+							link.Kind = value;
 						}
 						return;
 					}
 				}
 				if (value != null)
 				{
-					RoleAssignment[] newRoles = new RoleAssignment[2];
-					newRoles[0] = new RoleAssignment(ReferenceModeHasReferenceModeKind.KindMetaRoleGuid, value);
-					newRoles[1] = new RoleAssignment(ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(ReferenceModeHasReferenceModeKind), newRoles);
+					new ReferenceModeHasReferenceModeKind(this, value);
 				}
 			}
 		}
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary/>
 		public PortableDataType Type
 		{
 			get
@@ -190,24 +164,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region Customize property display
-		/// <summary>
-		/// Return a custom property descriptor for the Kind Display property
-		/// </summary>
-		/// <param name="modelElement"></param>
-		/// <param name="metaAttributeInfo"></param>
-		/// <param name="requestor"></param>
-		/// <param name="attributes"></param>
-		/// <returns></returns>
-		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
-		{
-			if (metaAttributeInfo.Id == KindDisplayMetaAttributeGuid)
-			{
-				return new CustomSetStringPropertyDescriptor(ResourceStrings.ModelReferenceModeEditorChangeReferenceModeKindTransaction, modelElement, metaAttributeInfo, requestor, attributes);
-			}
-			return base.CreatePropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
-		}
-		#endregion // Customize property display
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -248,14 +204,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (phase == myPhase)
 				{
-					foreach (ORMModel model in store.ElementDirectory.GetElements(ORMModel.MetaClassGuid))
+					foreach (ORMModel model in store.ElementDirectory.FindElements<ORMModel>())
 					{
 						// Ensure that each model has a reference mode kind for each
 						// reference mode type
 						ReferenceModeKind generalKind = null;
 						ReferenceModeKind popularKind = null;
 						ReferenceModeKind unitBasedKind = null;
-						foreach (ReferenceModeKind kind in model.GetCounterpartRolePlayers(ModelHasReferenceModeKind.ModelMetaRoleGuid, ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid))
+						foreach (ReferenceModeKind kind in ModelHasReferenceModeKind.GetReferenceModeKindCollection(model))
 						{
 							// UNDONE: Decide what to do with multiple kinds. Recoverable IF the
 							// format strings are the same, otherwise this is a bogus model.
@@ -274,21 +230,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (generalKind == null)
 						{
-							generalKind = ReferenceModeKind.CreateReferenceModeKind(store);
+							generalKind = new ReferenceModeKind(store);
 							generalKind.ReferenceModeType = ReferenceModeType.General;
 							generalKind.Model = model;
 							generalKind.FormatString = "{1}";
 						}
 						if (popularKind == null)
 						{
-							popularKind = ReferenceModeKind.CreateReferenceModeKind(store);
+							popularKind = new ReferenceModeKind(store);
 							popularKind.ReferenceModeType = ReferenceModeType.Popular;
 							popularKind.Model = model;
 							popularKind.FormatString = "{0}_{1}";
 						}
 						if (unitBasedKind == null)
 						{
-							unitBasedKind = ReferenceModeKind.CreateReferenceModeKind(store);
+							unitBasedKind = new ReferenceModeKind(store);
 							unitBasedKind.ReferenceModeType = ReferenceModeType.UnitBased;
 							unitBasedKind.Model = model;
 							unitBasedKind.FormatString = "{1}Value";
@@ -324,7 +280,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			private static void CreateIntrinsicReferenceMode(Store store, ORMModel model, ReferenceModeKind kind, string referenceModeName, PortableDataType dataType)
 			{
-				IntrinsicReferenceMode refMode = IntrinsicReferenceMode.CreateIntrinsicReferenceMode(store);
+				IntrinsicReferenceMode refMode = new IntrinsicReferenceMode(store);
 				refMode.Name = referenceModeName;
 				refMode.Kind = kind;
 				refMode.Model = model;
@@ -446,13 +402,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, ORMModel model)
 		{
-			IList links = model.Store.ElementDirectory.GetElements(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
-			foreach (EntityTypeHasPreferredIdentifier link in links)
+			foreach (EntityTypeHasPreferredIdentifier link in model.Store.ElementDirectory.FindElements<EntityTypeHasPreferredIdentifier>())
 			{
 				ObjectType entity = link.PreferredIdentifierFor;
-				if (object.ReferenceEquals(model, entity.Model))
+				if (model == entity.Model)
 				{
-					if (object.ReferenceEquals(entity.GetReferenceMode(formatString), mode))
+					if (entity.GetReferenceMode(formatString) == mode)
 					{
 						yield return entity;
 					}
@@ -470,13 +425,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, string oldReferenceModeName, ORMModel model)
 		{
-			IList links = model.Store.ElementDirectory.GetElements(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
-			foreach (EntityTypeHasPreferredIdentifier link in links)
+			foreach (EntityTypeHasPreferredIdentifier link in model.Store.ElementDirectory.FindElements<EntityTypeHasPreferredIdentifier>())
 			{
 				ObjectType entity = link.PreferredIdentifierFor;
-				if (object.ReferenceEquals(model, entity.Model))
+				if (model == entity.Model)
 				{
-					if (object.ReferenceEquals(entity.GetReferenceMode(formatString, mode.Name, oldReferenceModeName), mode))
+					if (entity.GetReferenceMode(formatString, mode.Name, oldReferenceModeName) == mode)
 					{
 						yield return entity;
 					}
@@ -535,35 +489,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //Reference Mode Name Generation
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in ObjectTypeChangeRule.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <param name="newValue">object</param>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private ReferenceModeKind GetKindDisplayValue()
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == KindDisplayMetaAttributeGuid)
-			{
-				// Handled by ReferenceModeChangeRule
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			return Kind;
 		}
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private void SetKindDisplayValue(ReferenceModeKind newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == KindDisplayMetaAttributeGuid)
-			{
-				return Kind;
-			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			// Handled by ReferenceModeChangeRule
 		}
 		#endregion // CustomStorage handlers
 		#region IComparable<ReferenceMode> Members
@@ -589,11 +521,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// Forward KindDisplay change value to Kind
 			/// </summary>
-			/// <param name="e">ElementAttributeChangedEventArgs</param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			/// <param name="e">ElementPropertyChangedEventArgs</param>
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == KindDisplayMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == KindDisplayDomainPropertyId)
 				{
 					(e.ModelElement as ReferenceMode).Kind = (ReferenceModeKind)e.NewValue;
 				}
@@ -613,10 +545,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// added reference mode
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasReferenceMode link = e.ModelElement as ModelHasReferenceMode;
-				ReferenceMode mode = link.ReferenceModeCollection;
+				ReferenceMode mode = link.ReferenceMode;
 				// Make sure we have a reference kind
 				if (mode.Kind == null)
 				{
@@ -692,15 +624,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// Update value types when format string changes
 			/// </summary>
-			/// <param name="e">ElementAttributeChangedEventArgs</param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			/// <param name="e">ElementPropertyChangedEventArgs</param>
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				CustomReferenceMode mode = e.ModelElement as CustomReferenceMode;
 				ORMModel model = mode.Model;
 				EnsureUnique(mode,model);
 
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == CustomFormatStringMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == CustomFormatStringDomainPropertyId)
 				{
 					string customFormatString = (string)e.NewValue;
 					if (customFormatString.Length > 0)
@@ -724,7 +656,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeId == NameMetaAttributeGuid)
+				else if (attributeId == NameDomainPropertyId)
 				{
 					string newRefModeName = (string)e.NewValue;
 					if (newRefModeName.Length > 0)
@@ -797,11 +729,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <summary>
 			/// Update value types when format string changes
 			/// </summary>
-			/// <param name="e">ElementAttributeChangedEventArgs</param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			/// <param name="e">ElementPropertyChangedEventArgs</param>
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == FormatStringMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == FormatStringDomainPropertyId)
 				{
 					string oldFormatString = (string)e.OldValue;
 					ReferenceModeKind kind = e.ModelElement as ReferenceModeKind;
@@ -865,15 +797,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="e"></param>
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
 			{
-				Guid roleId = e.MetaRole.Id;
-				if (roleId == ReferenceModeHasReferenceModeKind.KindMetaRoleGuid)
+				if (e.DomainRole.Id.Equals(ReferenceModeHasReferenceModeKind.KindDomainRoleId))
 				{
 					ReferenceModeHasReferenceModeKind link = e.ElementLink as ReferenceModeHasReferenceModeKind;
 					ReferenceModeKind newKind = (ReferenceModeKind)e.NewRolePlayer;
 					Debug.Assert(newKind == link.Kind);
 					ReferenceModeKind oldKind = (ReferenceModeKind)e.OldRolePlayer;
 
-					ReferenceMode mode = link.ReferenceModeCollection;
+					ReferenceMode mode = link.ReferenceMode;
 					CustomReferenceMode customReferenceMode = mode as CustomReferenceMode;
 					if (customReferenceMode != null)
 					{
@@ -901,33 +832,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ReferenceModeHasReferenceModeKindChangeRule class
-		#region ReferenceModeHasReferenceModeKindRemovingRule class
+		#region ReferenceModeHasReferenceModeKindDeletingRule class
 		// UNDONE: If we make this a Remove instead of a Removing, then
-		// mode.IsRemoved is false even if a mode.Remove triggered this.
+		// mode.IsDeleted is false even if a mode.Remove triggered this.
 		// This looks alot like an IMS bug.
 		/// <summary>
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
 		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))]
-		protected class ReferenceModeHasReferenceModeKindRemovingRule : RemovingRule
+		protected class ReferenceModeHasReferenceModeKindDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// Disallow removal of kind
 			/// </summary>
-			/// <param name="e">ElementAttributeChangedEventArgs</param>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			/// <param name="e">ElementPropertyChangedEventArgs</param>
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ReferenceModeHasReferenceModeKind link = e.ModelElement as ReferenceModeHasReferenceModeKind;
 
-				ReferenceMode mode = link.ReferenceModeCollection as ReferenceMode;
-				if (mode != null && !mode.IsRemoving)
+				ReferenceMode mode = link.ReferenceMode as ReferenceMode;
+				if (mode != null && !mode.IsDeleting)
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeReferenceModesKindNotEmpty);
 				}
 			}
 		}
-		#endregion // ReferenceModeHasReferenceModeKindRemovingRule class
+		#endregion // ReferenceModeHasReferenceModeKindDeletingRule class
 	}
 	#endregion
 }

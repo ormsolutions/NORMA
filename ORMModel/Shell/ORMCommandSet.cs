@@ -19,7 +19,6 @@ using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -28,7 +27,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 using Microsoft.VisualStudio;
 
 namespace Neumont.Tools.ORM.Shell
@@ -354,7 +353,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuDebugViewStore(object sender, EventArgs e)
 			{
-				Microsoft.VisualStudio.Modeling.Diagnostics.Debug.Assert(((ModelingDocData)CurrentORMView.DocData).Store);
+				Microsoft.VisualStudio.Modeling.Diagnostics.StoreViewer.Show(((ModelingDocData)CurrentORMView.DocData).Store);
 			}
 #endif // DEBUG
 
@@ -731,13 +730,13 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // ReadingEditor context menu handlers
 
-			private class DynamicErrorCommand : DynamicStatusMenuCommand
+			private sealed class DynamicErrorCommand : DynamicStatusMenuCommand
 			{
 				public DynamicErrorCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id) : base(statusHandler, invokeHandler, id)
 				{
 					//Declare class variable with object containing error list
 				}
-				public override bool DynamicItemMatch(int cmdId)
+				public sealed override bool DynamicItemMatch(int cmdId)
 				{
 					int baseCmdId = CommandID.ID;
 					int testId = cmdId - baseCmdId;
@@ -989,7 +988,7 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						catch (InvalidCastException)
 						{
-							Debug.Assert(false, "CommandSet relies on the menu command service, which is unavailable.");
+							Debug.Fail("CommandSet relies on the menu command service, which is unavailable.");
 							throw;
 						}
 					}

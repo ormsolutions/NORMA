@@ -17,25 +17,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM;
+using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
-using Microsoft.VisualStudio.Shell.Interop;
 
-using System.Windows.Forms;
-using System.Globalization;
-using Microsoft.VisualStudio;
-using System.Runtime.InteropServices;
 namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerCommands enum
@@ -235,7 +236,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="docData">DocData</param>
 		/// <param name="serviceProvider">IServiceProvider</param>
-		public ORMDesignerDocView(DocData docData, IServiceProvider serviceProvider) : base(docData, serviceProvider)
+		public ORMDesignerDocView(ModelingDocData docData, IServiceProvider serviceProvider) : base(docData, serviceProvider)
 		{
 			myCtorServiceProvider = serviceProvider;
 		}
@@ -266,9 +267,9 @@ namespace Neumont.Tools.ORM.Shell
 			Store store = ((ModelingDocData)base.DocData).Store;
 			using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandNewPage.Replace("&", "")))
 			{
-				IList models = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
-				ORMDiagram diagram = ORMDiagram.CreateORMDiagram(store);
-				diagram.Associate(models.Count > 0 ? (ModelElement)models[0] : ORMModel.CreateORMModel(store));
+				ReadOnlyCollection<ORMModel> models = store.ElementDirectory.FindElements<ORMModel>();
+				ORMDiagram diagram = new ORMDiagram(store);
+				diagram.Associate(models.Count > 0 ? (ModelElement)models[0] : new ORMModel(store));
 				t.Commit();
 			}
 		}
@@ -281,7 +282,7 @@ namespace Neumont.Tools.ORM.Shell
 				Diagram diagram = designer.Diagram;
 				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandDeletePage.Replace("&", "")))
 				{
-					diagram.Remove();
+					diagram.Delete();
 					t.Commit();
 				}
 			}
@@ -293,7 +294,7 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Context Menu
 
 		/// <summary>
-		/// See <see cref="TabbedDiagramDocView.LoadView"/>.
+		/// See <see cref="ModelingDocView.LoadView"/>.
 		/// </summary>
 		protected override bool LoadView()
 		{
@@ -325,7 +326,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				Store store = document.Store;
 				// Add our existing diagrams, or make a new one if we don't already have one
-				IList existingDiagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true);
+				IList existingDiagrams = store.ElementDirectory.FindElements(ORMDiagram.DomainClassId, true);
 				if (existingDiagrams.Count > 0)
 				{
 					for (int i = 0; i < existingDiagrams.Count; i++)
@@ -336,15 +337,15 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					Diagram diagram = ORMDiagram.CreateORMDiagram(store);
+					Diagram diagram = new ORMDiagram(store);
 					if (diagram.ModelElement == null)
 					{
 						// Make sure the diagram element is correctly attached to the model, and
 						// create a model if we don't have one yet.
-						IList elements = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid, true);
+						IList elements = store.ElementDirectory.FindElements(ORMModel.DomainClassId, true);
 						if (elements.Count == 0)
 						{
-							diagram.Associate(ORMModel.CreateORMModel(store));
+							diagram.Associate(new ORMModel(store));
 						}
 						else
 						{
@@ -476,7 +477,7 @@ namespace Neumont.Tools.ORM.Shell
 						PresentationElement pel = mel as PresentationElement;
 						if (pel != null)
 						{
-							isPrimarySelection = primaryShape != null && object.ReferenceEquals(primaryShape, pel);
+							isPrimarySelection = primaryShape != null && primaryShape == pel;
 							mel = pel.ModelElement;
 						}
 						if (mel != null)
@@ -505,7 +506,7 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									firstType = currentType;
 								}
-								else if (!object.ReferenceEquals(firstType, currentType))
+								else if (firstType != currentType)
 								{
 									isComplex = true;
 									enabledCommands &= EnabledComplexMultiSelectCommandFilter;
@@ -758,7 +759,7 @@ namespace Neumont.Tools.ORM.Shell
 							case ConstraintStorageStyle.SetComparisonConstraint:
 								SetComparisonConstraint mcec = constraint as SetComparisonConstraint;
 								int indexOfRole = -1;
-								RoleMoveableCollection currentRoleSequence = null;
+								LinkedElementCollection<Role> currentRoleSequence = null;
 								foreach (SetComparisonConstraintRoleSequence rs in mcec.RoleSequenceCollection)
 								{
 									currentRoleSequence = rs.RoleCollection;
@@ -815,7 +816,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
-			RoleBaseMoveableCollection roles = factShape.DisplayedRoleOrder;
+			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
 			enabledCommands &= ~(ORMDesignerCommands.MoveRoleRight | ORMDesignerCommands.MoveRoleLeft);
 			visibleCommands |= ORMDesignerCommands.MoveRoleLeft | ORMDesignerCommands.MoveRoleRight;
 			int roleIndex = roles.IndexOf(role);
@@ -852,7 +853,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (docView != null)
 			{
 				IMonitorSelectionService monitorService = docView.MonitorSelectionService;
-				if (monitorService != null && !object.ReferenceEquals(monitorService.CurrentSelectionContainer, docView))
+				if (monitorService != null && monitorService.CurrentSelectionContainer != docView)
 				{
 					ORMDesignerCommands activeFilter = ORMDesignerCommands.DisplayStandardWindows;
 					commandFlag &= activeFilter;
@@ -959,7 +960,7 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								fact = testFact;
 							}
-							else if (!object.ReferenceEquals(fact, testFact))
+							else if (fact != testFact)
 							{
 								fact = null;
 								break;
@@ -971,7 +972,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							foreach (UniquenessConstraint iuc in fact.GetInternalConstraints<UniquenessConstraint>())
 							{
-								RoleMoveableCollection factRoles = iuc.RoleCollection;
+								LinkedElementCollection<Role> factRoles = iuc.RoleCollection;
 								if (factRoles.Count == selCount)
 								{
 									int i = 0;
@@ -1134,8 +1135,11 @@ namespace Neumont.Tools.ORM.Shell
 				// Use the localized text from the command for our transaction name
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
 				{
-					IDictionary contextInfo = t.TopLevelTransaction.Context.ContextInfo;
-					IList queuedSelection = docData.QueuedSelection as IList;
+					Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
+					// UNDONE: 2006-06 DSL Tools port: QueuedSelection doesn't seem to exist any more. What do we replace it with?
+					//IList queuedSelection = docData.QueuedSelection as IList;
+					IList queuedSelection = null;
+					Debug.Fail("UNDONE: 2006-06 DSL Tool port: QueuedSelection has not yet been replaced, so this code will most likely crash.");
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
 					{
@@ -1144,7 +1148,7 @@ namespace Neumont.Tools.ORM.Shell
 						bool deleteReferenceModeValueTypeInContext = false;
 						if (null != (pel = selectedObject as ShapeElement))
 						{
-							if (pel.IsRemoved)
+							if (pel.IsDeleted)
 							{
 								continue;
 							}
@@ -1158,7 +1162,7 @@ namespace Neumont.Tools.ORM.Shell
 							mel = pel.ModelElement;
 
 							// Remove the actual object in the model
-							if (mel != null && !mel.IsRemoved && !(mel is ReadingOrder)) // Reading orders tolerate delete, but are not deleted directly
+							if (mel != null && !mel.IsDeleted && !(mel is ReadingOrder)) // Reading orders tolerate delete, but are not deleted directly
 							{
 								// Check if the object shape was in expanded mode
 								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
@@ -1185,20 +1189,20 @@ namespace Neumont.Tools.ORM.Shell
 
 								// get rid of all visual shapes corresponding to this
 								// model element. pel removal is done in the PresentationLinkRemoved rule
-								mel.PresentationRolePlayers.Clear();
+								PresentationViewsSubject.GetPresentation(mel).Clear();
 
 								// Get rid of the model element
-								mel.Remove();
+								mel.Delete();
 							}
 						}
-						else if (null != (mel = selectedObject as ModelElement) && !mel.IsRemoved)
+						else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)
 						{
 							// The object was selected directly (through a shape field or sub field element)
 							ModelElement shapeAssociatedMel = null;
 							if (complexSelection)
 							{
 								SetConstraint ic;
-								FactTypeMoveableCollection facts;
+								LinkedElementCollection<FactType> facts;
 								Role role;
 								if (null != (ic = selectedObject as SetConstraint) &&
 									ic.Constraint.ConstraintIsInternal &&
@@ -1221,7 +1225,7 @@ namespace Neumont.Tools.ORM.Shell
 									case ORMDesignerCommands.DeleteConstraint:
 										{
 											SetConstraint setConstraint;
-											FactTypeMoveableCollection facts;
+											LinkedElementCollection<FactType> facts;
 											if (null != (setConstraint = selectedObject as SetConstraint) &&
 												setConstraint.Constraint.ConstraintIsInternal &&
 												1 == (facts = setConstraint.FactTypeCollection).Count)
@@ -1237,14 +1241,14 @@ namespace Neumont.Tools.ORM.Shell
 							if (shapeAssociatedMel != null)
 							{
 								pel = (CurrentDiagram as ORMDiagram).FindShapeForElement(shapeAssociatedMel);
-								if (pel != null && !pel.IsRemoved)
+								if (pel != null && !pel.IsDeleted)
 								{
 									queuedSelection.Add(pel);
 								}
 							}
 
 							// Remove the item
-							mel.Remove();
+							mel.Delete();
 						}
 					}
 
@@ -1254,7 +1258,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							for (int i = queuedSelection.Count - 1; i >= 0; --i)
 							{
-								if (((ModelElement)queuedSelection[i]).IsRemoved)
+								if (((ModelElement)queuedSelection[i]).IsDeleted)
 								{
 									queuedSelection.RemoveAt(i);
 								}
@@ -1313,7 +1317,7 @@ namespace Neumont.Tools.ORM.Shell
 						ObjectType backingObjectifiedType = null;
 						// ReadingShape and ValueConstraintShape tolerate deletion, but the
 						// shapes cannot be deleted individually
-						if (pel != null && !pel.IsRemoved)
+						if (pel != null && !pel.IsDeleted)
 						{
 							ObjectifiedFactTypeNameShape objectifiedObjectShape;
 							if (pel is ReadingShape || pel is ValueConstraintShape)
@@ -1340,8 +1344,8 @@ namespace Neumont.Tools.ORM.Shell
 									backingObjectifiedType = fact.NestingType;
 								}
 							}
-							pel.Remove();
-							if (backingMel != null && !backingMel.IsRemoved && backingMel.PresentationRolePlayers.Count == 0)
+							pel.Delete();
+							if (backingMel != null && !backingMel.IsDeleted && PresentationViewsSubject.GetPresentation(backingMel).Count == 0)
 							{
 								if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt)
 								{
@@ -1351,7 +1355,7 @@ namespace Neumont.Tools.ORM.Shell
 										Guid g = new Guid();
 										int pnResult;
 										shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
-											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, backingMel.GetClassName(), backingMel.GetComponentName()),
+											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, TypeDescriptor.GetClassName(backingMel), TypeDescriptor.GetComponentName(backingMel)),
 											"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
 											OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
 										if (pnResult == (int)DialogResult.No)
@@ -1360,12 +1364,12 @@ namespace Neumont.Tools.ORM.Shell
 										}
 									}
 								}
-								backingMel.Remove();
-								if (backingObjectifiedType != null && !backingObjectifiedType.IsRemoved && backingObjectifiedType.PresentationRolePlayers.Count <= 1)
+								backingMel.Delete();
+								if (backingObjectifiedType != null && !backingObjectifiedType.IsDeleted && PresentationViewsSubject.GetPresentation(backingObjectifiedType).Count <= 1)
 								{
 									// Remove the corresponding backing objectified type. Removing the facttype shape pel
 									// added a new shape for the object, so we expect 1 presentation role player here.
-									backingObjectifiedType.Remove();
+									backingObjectifiedType.Delete();
 								}
 							}
 						}
@@ -1387,7 +1391,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Diagram diagram;
 			DiagramView designer;
-			ShapeElementMoveableCollection nestedShapes;
+			LinkedElementCollection<ShapeElement> nestedShapes;
 			int shapeCount;
 
 			if (null != (diagram = CurrentDiagram) &&
@@ -1522,7 +1526,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						NodeShape shape = component as NodeShape;
 						if (shape != null &&
-							!object.ReferenceEquals(shape, matchShape) &&
+							shape != matchShape &&
 							shape.ParentShape is Diagram)
 						{
 							RectangleD bounds = shape.AbsoluteBoundingBox;
@@ -1578,12 +1582,12 @@ namespace Neumont.Tools.ORM.Shell
 				if (role != null &&
 					null != (factType = role.FactType))
 				{
-					RoleBaseMoveableCollection roles = factType.RoleCollection;
+					LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 					int insertIndex = roles.IndexOf(role);
 					Store store = factType.Store;
 					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InsertRoleTransactionName))
 					{
-						IDictionary contextInfo = t.TopLevelTransaction.Context.ContextInfo;
+						Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
 						if (insertAfter)
 						{
 							++insertIndex;
@@ -1593,9 +1597,9 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							contextInfo[FactTypeShape.InsertBeforeRoleKey] = role;
 						}
-						//bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
+						//bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
 
-						Role newRole = Role.CreateRole(store);
+						Role newRole = new Role(store);
 						roles.Insert(insertIndex, newRole);
 						t.Commit();
 					}
@@ -1620,7 +1624,7 @@ namespace Neumont.Tools.ORM.Shell
 					// Use the standard property descriptor to pick up the
 					// same transaction name, etc. This emulates toggling the
 					// property in the properties window.
-					role.CreatePropertyDescriptor(role.Store.MetaDataDirectory.FindMetaAttribute(Role.IsMandatoryMetaAttributeGuid), role).SetValue(role, !role.IsMandatory);
+					ORMTypeDescriptor.CreatePropertyDescriptor(role, Role.IsMandatoryDomainPropertyId).SetValue(role, !role.IsMandatory);
 				}
 			}
 		}
@@ -1638,7 +1642,7 @@ namespace Neumont.Tools.ORM.Shell
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
 				{
 					FactType parentFact = null;
-					RoleMoveableCollection constraintRoles = null;
+					LinkedElementCollection<Role> constraintRoles = null;
 					bool abort = false;
 					foreach (ModelElement mel in GetSelectedComponents())
 					{
@@ -1652,7 +1656,7 @@ namespace Neumont.Tools.ORM.Shell
 								UniquenessConstraint iuc = UniquenessConstraint.CreateInternalUniquenessConstraint(parentFact);
 								constraintRoles = iuc.RoleCollection;
 							}
-							else if (!object.ReferenceEquals(testFact, parentFact))
+							else if (testFact != parentFact)
 							{
 								abort = true; // Transaction will rollback when it disposes if we don't commit
 								break;
@@ -1879,7 +1883,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					else
 					{
-						if (element.IsRemoved)
+						if (element.IsDeleted)
 						{
 							continue;
 						}
@@ -1894,32 +1898,33 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						elementsToDraw.Add(element);
 
-						foreach (ElementLink link in element.ModelElement.GetElementLinks())
+						foreach (ElementLink link in DomainRoleInfo.GetAllElementLinks(element.ModelElement))
 						{
 							ModelElement element1;
 							ModelElement element2;
-							element1 = link.GetRolePlayer(0);
+							ReadOnlyCollection<DomainRoleInfo> domainRoles = link.GetDomainRelationship().DomainRoles;
+							element1 = domainRoles[0].GetRolePlayer(link);
 							Role role1 = element1 as Role;
 							if (role1 != null)
 							{
 								element1 = role1.FactType;
 							}
-							element2 = link.GetRolePlayer(1);
+							element2 = domainRoles[1].GetRolePlayer(link);
 							Role role2 = element2 as Role;
 							if (role2 != null)
 							{
 								element2 = role2.FactType;
 							}
 
-							foreach (PresentationElement presentationElement1 in element1.PresentationRolePlayers)
+							foreach (PresentationElement presentationElement1 in PresentationViewsSubject.GetPresentation(element1))
 							{
 								if (selectedElements.Contains(presentationElement1))
 								{
-									foreach (PresentationElement presentationElement2 in element2.PresentationRolePlayers)
+									foreach (PresentationElement presentationElement2 in PresentationViewsSubject.GetPresentation(element2))
 									{
 										if (selectedElements.Contains(presentationElement2))
 										{
-											elementsToDraw.AddRange(link.PresentationRolePlayers);
+											elementsToDraw.AddRange(PresentationViewsSubject.GetPresentation(link));
 											break;
 										}
 									}
@@ -1975,7 +1980,7 @@ namespace Neumont.Tools.ORM.Shell
 
 					foreach (ShapeElement shapeElement in shapesToDraw)
 					{
-						if (!shapeElement.IsRemoved)
+						if (!shapeElement.IsDeleted)
 						{
 							shapeElement.OnPaintShape(diagramPaintEventArgs);
 						}
@@ -2007,7 +2012,7 @@ namespace Neumont.Tools.ORM.Shell
 				ConstraintRoleSequence selectedSequence = null;
 				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 				{
-					if (object.ReferenceEquals(constraint, sequence.Constraint))
+					if (constraint == sequence.Constraint)
 					{
 						selectedSequence = sequence;
 						break;
@@ -2039,7 +2044,7 @@ namespace Neumont.Tools.ORM.Shell
 					// walking the RoleSequenceCollection and killing any RoleSequence that has
 					// reference to this role.
 
-					ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> roleConstraints = role.ConstraintRoleSequenceCollection;
 
 					int constraintCount = roleConstraints.Count;
 					using (Transaction t = role.Store.TransactionManager.BeginTransaction(ResourceStrings.DeleteRoleSequenceTransactionName))
@@ -2047,10 +2052,10 @@ namespace Neumont.Tools.ORM.Shell
 						for (int i = constraintCount - 1; i >= 0; --i)
 						{
 							// The current ConstraintRoleSequence is the one associated with the current StickyObject.
-							if (object.ReferenceEquals((roleConstraints[i]).Constraint, mcec))
+							if ((roleConstraints[i]).Constraint == mcec)
 							{
 								// TODO: Remove the ConstraintRoleSequence from this role.
-								roleConstraints[i].Remove();
+								roleConstraints[i].Delete();
 							}
 						}
 						if (t.HasPendingChanges)
@@ -2091,7 +2096,7 @@ namespace Neumont.Tools.ORM.Shell
 				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
 				&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
 			{
-				SetComparisonConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcec.RoleSequenceCollection;
 				SetComparisonConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
 				int sequenceNewPosition = -1;
@@ -2151,7 +2156,7 @@ namespace Neumont.Tools.ORM.Shell
 				&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
 			{
 
-				SetComparisonConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcec.RoleSequenceCollection;
 				SetComparisonConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
 				int sequenceNewPosition = -1;

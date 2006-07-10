@@ -15,31 +15,80 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
+using System.Reflection.Emit;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
+	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseBinaryLinkShape, ElementLink, ORMPresentationElementTypeDescriptor<ORMBaseBinaryLinkShape, ElementLink>>))]
 	public partial class ORMBaseBinaryLinkShape
 	{
-		#region Customize appearance
-		/// <summary>
-		/// Use a center to center routing style
-		/// </summary>
-		[CLSCompliant(false)]
-		protected override VGRoutingStyle DefaultRoutingStyle
+		#region GetVGEdge method
+		private delegate VGEdge GetVGEdgeDelegate(LinkShape @this);
+		private static readonly GetVGEdgeDelegate GetVGEdgeInternal = InitializeGetVGEdgeInternal();
+		private static GetVGEdgeDelegate InitializeGetVGEdgeInternal()
 		{
-			get
+			Type linkShapeType = typeof(LinkShape);
+			MethodInfo graphEdgeMethodInfo = linkShapeType.GetMethod("GraphEdge", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding);
+			if (graphEdgeMethodInfo == null)
 			{
-				return VGRoutingStyle.VGRouteCenterToCenter;
+				return null;
 			}
+			Type graphEdgeType = linkShapeType.Assembly.GetType(linkShapeType.Namespace + Type.Delimiter + "GraphEdge", false, false);
+			if (graphEdgeType == null)
+			{
+				return null;
+			}
+			PropertyInfo edgePropertyInfo = graphEdgeType.GetProperty("Edge", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding);
+			if (edgePropertyInfo == null)
+			{
+				return null;
+			}
+			MethodInfo edgePropertyGetMethod = edgePropertyInfo.GetGetMethod(true);
+			if (edgePropertyGetMethod == null)
+			{
+				return null;
+			}
+
+			DynamicMethod dynamicMethod = new DynamicMethod("GetVGEdge", typeof(VGEdge), new Type[] { linkShapeType }, linkShapeType, true);
+			// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for a bit more than we really need
+			// (which is 18 bytes) in order to avoid it resizing its buffer towards the end when it looks like we're running low
+			ILGenerator ilGenerator = dynamicMethod.GetILGenerator(24);
+			Label returnNullLabel = ilGenerator.DefineLabel();
+			ilGenerator.Emit(OpCodes.Ldarg_0);
+			ilGenerator.EmitCall(OpCodes.Call, graphEdgeMethodInfo, null);
+			ilGenerator.Emit(OpCodes.Dup);
+			ilGenerator.Emit(OpCodes.Brfalse_S, returnNullLabel);
+			ilGenerator.EmitCall(OpCodes.Call, edgePropertyGetMethod, null);
+			ilGenerator.Emit(OpCodes.Ret);
+			ilGenerator.MarkLabel(returnNullLabel);
+			ilGenerator.Emit(OpCodes.Pop);
+			ilGenerator.Emit(OpCodes.Ldnull);
+			ilGenerator.Emit(OpCodes.Ret);
+
+			return (GetVGEdgeDelegate)dynamicMethod.CreateDelegate(typeof(GetVGEdgeDelegate));
 		}
+		private VGEdge GetVGEdge()
+		{
+			GetVGEdgeDelegate getVGEdgeInternal = GetVGEdgeInternal;
+			// If GetVGEdgeInternal is null, the internals of one of the DSL Tools assemblies may have changed.
+			// If that is the case, GetVGEdgeInternal needs to be updated...
+			System.Diagnostics.Debug.Assert(getVGEdgeInternal != null);
+			return (getVGEdgeInternal != null) ? getVGEdgeInternal(this) : null;
+		}
+		#endregion // GetVGEdge method
+
+		#region Customize appearance
 		/// <summary>
 		/// Selecting links gets in the way of selecting roleboxes, etc.
 		/// It is best just to turn them off. This also eliminates a bunch of unnamed
@@ -64,26 +113,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Display the name of the underlying element as the
-		/// component name in the property grid.
+		/// Calls <see cref="InitializeLineRouting()"/>.
 		/// </summary>
-		public override string GetComponentName()
+		public override void OnInitialize()
 		{
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetComponentName() : base.GetComponentName();
+			base.OnInitialize();
+			this.InitializeLineRouting();
 		}
 		/// <summary>
-		/// Display the class of the underlying element as the
-		/// component name in the property grid.
+		/// Calls <see cref="InitializeLineRouting()"/>.
 		/// </summary>
-		public override string GetClassName()
+		public override void OnShapeInserted()
 		{
-			if (Store.Disposed)
+			base.OnShapeInserted();
+			this.InitializeLineRouting();
+		}
+		/// <summary>
+		/// Initializes line routing with correct settings.
+		/// </summary>
+		public void InitializeLineRouting()
+		{
+			VGEdge vgEdge = GetVGEdge();
+			if (vgEdge != null)
 			{
-				return GetType().Name;
+				// ORM lines cross, they don't jump.
+				vgEdge.RouteJumpType = (int)VGObjectLineJumpCode.VGObjectJumpCodeNever;
+				vgEdge.RoutingStyle = VGRoutingStyle.VGRouteCenterToCenter;
+
+				// This call will be ignored if we're not in a transaction, but that's OK...
+				base.RecalculateRoute();
 			}
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}
 		/// <summary>
 		/// Abstract method to configure this link after it has been added to
@@ -98,12 +157,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// for the specified element
 		/// </summary>
 		/// <param name="targetElement">The underlying model element with a name property</param>
-		protected void ActivateNameProperty(NamedElement targetElement)
+		protected void ActivateNameProperty(ORMNamedElement targetElement)
 		{
 			Store store = Store;
 			EditorUtility.ActivatePropertyEditor(
 				(store as IORMToolServices).ServiceProvider,
-				targetElement.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), this),
+				ORMTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
 				false);
 		}
 		#endregion // DuplicateNameError Activation Helper
@@ -135,7 +194,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public LinkConnectorShape EnsureLinkConnectorShape()
 		{
 			LinkConnectorShape retVal = null;
-			ShapeElementMoveableCollection childShapes = RelativeChildShapes;
+			LinkedElementCollection<ShapeElement> childShapes = RelativeChildShapes;
 			foreach (ShapeElement shape in childShapes)
 			{
 				retVal = shape as LinkConnectorShape;
@@ -145,7 +204,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			Store store = this.Store;
-			retVal = LinkConnectorShape.CreateLinkConnectorShape(store);
+			retVal = new LinkConnectorShape(store);
 			RectangleD bounds = AbsoluteBoundingBox;
 			childShapes.Add(retVal);
 			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
@@ -157,15 +216,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when the shape changes.
 		/// </summary>
 		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private class LinkChangeRule : ChangeRule
+		private sealed class LinkChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == ORMBaseBinaryLinkShape.EdgePointsMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == ORMBaseBinaryLinkShape.EdgePointsDomainPropertyId)
 				{
 					ORMBaseBinaryLinkShape parentShape = e.ModelElement as ORMBaseBinaryLinkShape;
-					ShapeElementMoveableCollection childShapes = parentShape.RelativeChildShapes;
+					LinkedElementCollection<ShapeElement> childShapes = parentShape.RelativeChildShapes;
 					int childCount = childShapes.Count;
 					for (int i = 0; i < childCount; ++i)
 					{
@@ -174,17 +233,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							RectangleD bounds = parentShape.AbsoluteBoundingBox;
 							linkConnector.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
-							IList links = linkConnector.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid);
+							ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(linkConnector, LinkConnectsToNode.NodesDomainRoleId);
 							int linksCount = links.Count;
 							for (int j = 0; j < linksCount; ++j)
 							{
-								LinkConnectsToNode link = links[j] as LinkConnectsToNode;
+								LinkConnectsToNode link = links[j];
 								BinaryLinkShape linkShape = link.Link as BinaryLinkShape;
 								if (linkShape != null)
 								{
 									// Changing the location is not reliably reconnecting all shapes, especially
-									// during load. Force the link to reconnect with a RipUp call
-									linkShape.RipUp();
+									// during load. Force the link to reconnect with a RecalculateRoute call
+									linkShape.RecalculateRoute();
 								}
 								
 							}
@@ -198,9 +257,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // LinkConnectorShape management
 		#region Accessibility Properties
 		/// <summary>
-		/// Return the localized accessible value. Obtained by combining
-		/// the accessible name of the from shape with the accessible name
-		/// of the to shape.
+		/// Return the localized <see cref="AccessibleValue"/>. Obtained by combining
+		/// <see cref="FromAccessibleValue"/> with <see cref="ToAccessibleValue"/>.
 		/// </summary>
 		public override string AccessibleValue
 		{
@@ -210,30 +268,68 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Combined with the ToAccessibleValue to form an AccessibleValue for
-		/// the link. Defaults to the accessible value for the model element
-		/// associated with the FromShape.
+		/// Combined with the <see cref="ToAccessibleValue"/> to form an AccessibleValue for
+		/// the link. Defaults to the component name of the <see cref="ModelElement"/>
+		/// associated with the <see cref="BinaryLinkShapeBase.FromShape"/>.
 		/// </summary>
 		protected virtual string FromAccessibleValue
 		{
 			get
 			{
-				return FromShape.ModelElement.AccessibleValue;
+				return TypeDescriptor.GetComponentName(FromShape.ModelElement);
 			}
 		}
 		/// <summary>
-		/// Combined with the FromAccessibleValue to form an AccessibleValue for
-		/// the link. Defaults to the accessible value for the model element
-		/// associated with the ToShape.
+		/// Combined with the <see cref="FromAccessibleValue"/> to form an AccessibleValue for
+		/// the link. Defaults to the component name of the <see cref="ModelElement"/>
+		/// associated with the <see cref="BinaryLinkShapeBase.ToShape"/>.
 		/// </summary>
 		protected virtual string ToAccessibleValue
 		{
 			get
 			{
-				return ToShape.ModelElement.AccessibleValue;
+				return TypeDescriptor.GetComponentName(ToShape.ModelElement);
 			}
 		}
 		#endregion // Accessibility Properties
+		#region HACK: BackgroundGradient properties for SubtypeLink
+		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
+		// since links must be related to DomainRelationship elements, not DomainClass elements.
+
+		/// <summary>HACK: Pretend this property isn't here.</summary>
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public virtual bool HasBackgroundGradient
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		/// <summary>HACK: Pretend this property isn't here.</summary>
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public virtual System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		/// <summary>HACK: Pretend this property isn't here.</summary>
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		internal SizeD Size
+		{
+			get
+			{
+				return SizeD.Empty;
+			}
+			set
+			{
+			}
+		}
+		#endregion HACK: BackgroundGradient properties for SubtypeLink
 	}
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape
@@ -268,7 +364,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return false;
 			}
 		}
-		/// <summary>
+		// UNDONE: 2006-06 DSL Tools port: Commented out to get rid of duplicate definition error so we can compile...
+		/*/// <summary>
 		/// Dummy shapes have no size
 		/// </summary>
 		public override SizeD DefaultSize
@@ -277,7 +374,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return SizeD.Empty;
 			}
-		}
+		}*/
 	}
 	#endregion // LinkConnectorShape class
 }

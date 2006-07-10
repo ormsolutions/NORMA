@@ -86,10 +86,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// A structure defining how a model error is being used.
 	/// </summary>
-	public struct ModelErrorUsage
+	public struct ModelErrorUsage : IEquatable<ModelErrorUsage>
 	{
-		private ModelError myError;
-		private ModelErrorUses myUses;
+		private readonly ModelError myError;
+		private readonly ModelErrorUses myUses;
 		/// <summary>
 		/// Create a ModelErrorUsage structure
 		/// </summary>
@@ -156,9 +156,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Typed Equals method
 		/// </summary>
-		public bool Equals(ModelErrorUsage obj)
+		public bool Equals(ModelErrorUsage other)
 		{
-			return object.ReferenceEquals(myError, obj.myError) && (myUses == obj.myUses);
+			return myError == other.myError && myUses == other.myUses;
 		}
 		/// <summary>
 		/// Equality operator
@@ -330,8 +330,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="errorLink"></param>
 		public static void AddToTaskProvider(ModelHasError errorLink)
 		{
-			ModelError error = errorLink.ErrorCollection;
-			if (error.IsRemoved)
+			ModelError error = errorLink.Error;
+			if (error.IsDeleted)
 			{
 				return;
 			}
@@ -369,7 +369,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// A listener class to validate and/or populate the ModelError
 		/// collection on load, as well as populating the task list.
 		/// </summary>
-		private class ModelErrorFixupListener : DeserializationFixupListener<IModelErrorOwner>
+		private sealed class ModelErrorFixupListener : DeserializationFixupListener<IModelErrorOwner>
 		{
 			/// <summary>
 			/// Create a new ModelErrorFixupListener
@@ -384,7 +384,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="element">An IModelErrorOwner instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(IModelErrorOwner element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(IModelErrorOwner element, Store store, INotifyElementAdded notifyAdded)
 			{
 				element.ValidateErrors(notifyAdded);
 			}
@@ -393,15 +393,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// the task list.
 			/// </summary>
 			/// <param name="store">The context store</param>
-			protected override void PhaseCompleted(Store store)
+			protected sealed override void PhaseCompleted(Store store)
 			{
-				IList errorLinks = store.ElementDirectory.GetElements(ModelHasError.MetaClassGuid);
+				IList<ModelHasError> errorLinks = store.ElementDirectory.FindElements<ModelHasError>();
 				int linkCount = errorLinks.Count;
 				for (int i = 0; i < linkCount; ++i)
 				{
-					ModelHasError errorLink = (ModelHasError)errorLinks[i];
-					ModelError error = errorLink.ErrorCollection;
-					if (!errorLink.IsRemoved && !error.IsRemoved)
+					ModelHasError errorLink = errorLinks[i];
+					ModelError error = errorLink.Error;
+					if (!errorLink.IsDeleted && !error.IsDeleted)
 					{
 						// Make sure the text is up to date
 						error.GenerateErrorText();
@@ -413,15 +413,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion Deserialization Fixup
 		#region Rule to update error text on model name change
 		[RuleOn(typeof(ORMModel))]
-		private class SynchronizeErrorTextForModelRule : ChangeRule
+		private sealed class SynchronizeErrorTextForModelRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == NamedElement.NameMetaAttributeGuid)
+				if (e.DomainProperty.Id.Equals(ORMModel.NameDomainPropertyId))
 				{
-					ORMModel model = e.ModelElement as ORMModel;
-					foreach (ModelError error in model.ErrorCollection)
+					foreach (ModelError error in ((ORMModel)e.ModelElement).ErrorCollection)
 					{
 						if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.ModelNameChange))
 						{
@@ -433,23 +431,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Rule to update error text on model name change
 		#region Rule to update error text on owner name change
-		[RuleOn(typeof(NamedElement))]
-		private class SynchronizeErrorForOwnerRule : ChangeRule
+		[RuleOn(typeof(ORMNamedElement))]
+		private sealed class SynchronizeErrorForOwnerRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				IModelErrorOwner owner = e.ModelElement as IModelErrorOwner;
-				if (owner != null)
+				if (e.DomainProperty.Id.Equals(ORMNamedElement.NameDomainPropertyId))
 				{
-					Guid attributeGuid = e.MetaAttribute.Id;
-					if (attributeGuid == NamedElement.NameMetaAttributeGuid)
+					foreach (ModelError error in ((IModelErrorOwner)e.ModelElement).GetErrorCollection(ModelErrorUses.None))
 					{
-						foreach (ModelError error in owner.GetErrorCollection(ModelErrorUses.None))
+						if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
 						{
-							if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
-							{
-								error.GenerateErrorText();
-							}
+							error.GenerateErrorText();
 						}
 					}
 				}

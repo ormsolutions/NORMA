@@ -15,8 +15,10 @@
 #endregion
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 
@@ -86,17 +88,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			NodeShape shape = geometryHost as NodeShape;
 			if (shape != null)
 			{
-				IList links = shape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid);
+				ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(shape, LinkConnectsToNode.NodesDomainRoleId);
 				int linksCount = links.Count;
 				for (int i = 0; i < linksCount; ++i)
 				{
-					LinkConnectsToNode link = (LinkConnectsToNode)links[i];
+					LinkConnectsToNode link = links[i];
 					BinaryLinkShape linkShape = link.Link as BinaryLinkShape;
 					if (link != null)
 					{
 						// Get the opposite shape
 						NodeShape testShape;
-						if (object.ReferenceEquals(linkShape.FromLinkConnectsToNode, link))
+						if (linkShape.FromLinkConnectsToNode == link)
 						{
 							testShape = linkShape.ToShape;
 						}

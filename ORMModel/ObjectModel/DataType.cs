@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
@@ -84,17 +85,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			void IDeserializationFixupListener.ProcessElements(int phase, Store store, INotifyElementAdded notifyAdded)
 			{
-				Debug.Assert(false); // Shouldn't be called if HasElements returns false
+				Debug.Fail("Shouldn't be called if HasElements returns false");
 			}
 			void IDeserializationFixupListener.PhaseCompleted(int phase, Store store)
 			{
 				if (phase == myPhase)
 				{
-					foreach (ORMModel model in store.ElementDirectory.GetElements(ORMModel.MetaClassGuid))
+					foreach (ORMModel model in store.ElementDirectory.FindElements<ORMModel>())
 					{
 						int knownTypesCount = (int)PortableDataType.UserDefined;
 						DataType[] knownTypes = new DataType[knownTypesCount];
-						DataTypeMoveableCollection currentDataTypes = model.DataTypeCollection;
+						LinkedElementCollection<DataType> currentDataTypes = model.DataTypeCollection;
 						int startingCount = currentDataTypes.Count;
 						for (int i = 0; i < startingCount; ++i)
 						{
@@ -117,7 +118,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 									newType = typeArray[i];
 								}
 								Debug.Assert(newType != null);
-								DataType newDataType = (DataType)factory.CreateElement(newType);
+								DomainObjectIdAttribute newTypeDomainObjectIdAttribute = (DomainObjectIdAttribute)newType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false)[0];
+								DataType newDataType = (DataType)factory.CreateElement(newTypeDomainObjectIdAttribute.Id);
 								newDataType.Model = model;
 								knownTypes[i] = newDataType;
 							}
@@ -135,7 +137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			void INotifyElementAdded.ElementAdded(ModelElement element, bool addLinks)
 			{
-				Debug.Assert(false); // Not used on the listeners
+				Debug.Fail("Not used on the listeners");
 			}
 			#endregion // INotifyElementAdded Implementation
 		}
@@ -163,6 +165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // DataTypeRangeSupport enum
 	#region DataType class
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<DataType, Design.DataTypeTypeDescriptor<DataType>>))]
 	public abstract partial class DataType
 	{
 		/// <summary>
@@ -173,14 +176,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Override ToString() to localize the property descriptor.
 		/// </summary>
 		public abstract override string ToString();
-		/// <summary>
-		/// Defines property descriptor read only status.
-		/// </summary>
-		/// <returns>True</returns>
-		public override bool IsPropertyDescriptorReadOnly(System.ComponentModel.PropertyDescriptor propertyDescriptor)
-		{
-			return true;
-		}
 		/// <summary>
 		/// Virtual function to determine if string data can be interpreted
 		/// as a value in this data type.
@@ -277,20 +272,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// A class to add unspecified data type errors
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class UnspecifiedTypeAddedRule : AddRule
+		private sealed class UnspecifiedTypeAddedRule : AddRule
 		{
 			/// <summary>
 			/// Test if an added data type relationship points to
 			/// an unspecified type
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				UnspecifiedDataType unspecifiedType = link.DataType as UnspecifiedDataType;
 				if (unspecifiedType != null)
 				{
-					DataTypeNotSpecifiedError error = DataTypeNotSpecifiedError.CreateDataTypeNotSpecifiedError(link.Store);
+					DataTypeNotSpecifiedError error = new DataTypeNotSpecifiedError(link.Store);
 					link.DataTypeNotSpecifiedError = error;
 					error.Model = unspecifiedType.Model;
 					error.GenerateErrorText();
@@ -307,7 +302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				ValueTypeHasDataType link = ValueTypeHasDataType;
-				return (link != null) ? link.ValueTypeCollection : null;
+				return (link != null) ? link.ValueType : null;
 			}
 		}
 		#endregion // Accessor Properties

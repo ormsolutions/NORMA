@@ -23,9 +23,8 @@
 // To temporary disable this, uncomment the following line.
 //#define WRITE_ALL_DEFAULT_LINKS
 using System;
-using System.Collections;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -33,17 +32,18 @@ using System.IO;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Xsl;
 using System.Xml.XPath;
-using System.Threading;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Shell;
+using Neumont.Tools.ORM.Framework;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -52,7 +52,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// Supported operations for element custom serialization.
 	/// </summary>
 	[Flags]
-	[CLSCompliant(true)]
 	public enum ORMCustomSerializedElementSupportedOperations
 	{
 		/// <summary>
@@ -68,9 +67,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		ElementInfo = 0x02,
 		/// <summary>
-		/// Custom attribute information is supported.
+		/// Custom property information is supported.
 		/// </summary>
-		AttributeInfo = 0x04,
+		PropertyInfo = 0x04,
 		/// <summary>
 		/// Custom link information is supported.
 		/// </summary>
@@ -80,19 +79,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		CustomSortChildRoles = 0x10,
 		/// <summary>
-		/// Set if some of the attributes are written as elements and others are written as attributes.
+		/// Set if some of the properties are written as elements and others are written as properties.
 		/// </summary>
 		MixedTypedAttributes = 0x20,
 		/// <summary>
 		/// A child LinkInfo is actually the back link to the aggregating object. These
 		/// elements have an id, but no ref.
 		/// </summary>
-		AggregatingLinkInfo = 0x40,
+		EmbeddingLinkInfo = 0x40,
 	}
 	/// <summary>
 	/// Write style for element custom serialization.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ORMCustomSerializedElementWriteStyle
 	{
 		/// <summary>
@@ -109,18 +107,18 @@ namespace Neumont.Tools.ORM.Shell
 		DoubleTaggedElement = 0x01,
 		/// <summary>
 		/// Used for links. Write as an element, but write the link
-		/// id, attributes, and referencing child elements at this location.
+		/// id, properties, and referencing child elements at this location.
 		/// </summary>
 		PrimaryLinkElement = 0x02,
 		/// <summary>
 		/// Used for aggregating links. Write as a child element of the
-		/// aggregating object. Writes the link id. Any attributes on the link
+		/// aggregating object. Writes the link id. Any properties on the link
 		/// and referencing child elements are written at this location.
 		/// </summary>
 		AggregatingLinkElement = 0x03,
 	}
 	/// <summary>
-	/// Write style for attribute custom serialization.
+	/// Write style for property custom serialization.
 	/// </summary>
 	[CLSCompliant(true)]
 	public enum ORMCustomSerializedAttributeWriteStyle
@@ -130,7 +128,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		NotWritten = 0xFF,
 		/// <summary>
-		/// Write as an attribute.
+		/// Write as an property.
 		/// </summary>
 		Attribute = 0x00,
 		/// <summary>
@@ -147,7 +145,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// an element name and namespace is recognized by a
 	/// custom serialized element.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ORMCustomSerializedElementMatchStyle
 	{
 		/// <summary>
@@ -155,37 +152,37 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		None,
 		/// <summary>
-		/// The element matched an attribute written out as an element.
+		/// The element matched an property written out as an element.
 		/// The DoubleTageName property (if it is not null) specifies the
-		/// double tag name (the tag inside this element where the attribute
-		/// data is stored). The guid identifying the MetaAttributeInfo is
+		/// double tag name (the tag inside this element where the property
+		/// data is stored). The guid identifying the DomainPropertyInfo is
 		/// returned in the Guid property.
 		/// </summary>
-		Attribute,
+		Property,
 		/// <summary>
 		/// The element matches a single contained role. The guid identifying
-		/// the MetaRoleInfo is returned in the SingleOppositeMetaRoleGuid property.
+		/// the DomainPropertyInfo is returned in the SingleOppositeDomainRoleGuid property.
 		/// </summary>
-		SingleOppositeMetaRole,
+		SingleOppositeDomainRole,
 		/// <summary>
 		/// The element matches a single contained role and the link must
 		/// be created as an explicit subtype of the relationship specified by the
-		/// meta role. The guid identifying the MetaRoleInfo is returned in the
-		/// SingleOppositeMetaRoleGuid property and the guid identifying the MetaRelationshipInfo
+		/// domain role. The guid identifying the DomainPropertyInfo is returned in the
+		/// SingleOppositeDomainRoleGuid property and the guid identifying the DomainRelationshipInfo
 		/// is returned by the ExplicitRelationshipGuid property.
 		/// </summary>
-		SingleOppositeMetaRoleExplicitRelationshipType,
+		SingleOppositeDomainRoleExplicitRelationshipType,
 		/// <summary>
 		/// The element matches more than one contained role. The guids identifying
-		/// the roles are returned in the OppositeMetaRoleGuidCollection property
+		/// the roles are returned in the OppositeDomainRoleGuidCollection property
 		/// </summary>
-		MultipleOppositeMetaRoles,
+		MultipleOppositeDomainRoles,
 		/// <summary>
 		/// The element matches more than one contained role and the link must
 		/// be created as an explicit subtype of the relationship specified by the
 		/// meta role. The guids identifying the roles are returned in the
-		/// OppositeMetaRoleGuidCollection property. The guid identifying the
-		/// MetaRelationshipInfo is returned by the ExplicitRelationshipGuid property.
+		/// OppositeDomainRoleGuidCollection property. The guid identifying the
+		/// DomainRelationshipInfo is returned by the ExplicitRelationshipGuid property.
 		/// </summary>
 		MultipleOppositeMetaRolesExplicitRelationshipType,
 	}
@@ -334,22 +331,22 @@ namespace Neumont.Tools.ORM.Shell
 		}
 	}
 	/// <summary>
-	/// Custom serialization information for attributes.
+	/// Custom serialization information for properties.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class ORMCustomSerializedAttributeInfo : ORMCustomSerializedInfo
+	public class ORMCustomSerializedPropertyInfo : ORMCustomSerializedInfo
 	{
 		/// <summary>
 		/// Default Constructor
 		/// </summary>
-		protected ORMCustomSerializedAttributeInfo()
+		protected ORMCustomSerializedPropertyInfo()
 		{
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="writeStyle">The style to use when writting.</param>
-		public ORMCustomSerializedAttributeInfo(ORMCustomSerializedAttributeWriteStyle writeStyle)
+		public ORMCustomSerializedPropertyInfo(ORMCustomSerializedAttributeWriteStyle writeStyle)
 		{
 			myWriteStyle = writeStyle;
 		}
@@ -362,7 +359,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="writeCustomStorage">true to write when custom storage.</param>
 		/// <param name="writeStyle">The style to use when writting.</param>
 		/// <param name="doubleTagName">The name of the double tag.</param>
-		public ORMCustomSerializedAttributeInfo(string customPrefix, string customName, string customNamespace, bool writeCustomStorage, ORMCustomSerializedAttributeWriteStyle writeStyle, string doubleTagName)
+		public ORMCustomSerializedPropertyInfo(string customPrefix, string customName, string customNamespace, bool writeCustomStorage, ORMCustomSerializedAttributeWriteStyle writeStyle, string doubleTagName)
 			: base(customPrefix, customName, customNamespace, doubleTagName)
 		{
 			myWriteCustomStorage = writeCustomStorage;
@@ -373,9 +370,9 @@ namespace Neumont.Tools.ORM.Shell
 		private ORMCustomSerializedAttributeWriteStyle myWriteStyle;
 
 		/// <summary>
-		/// Default ORMCustomSerializedAttributeInfo
+		/// Default ORMCustomSerializedPropertyInfo
 		/// </summary>
-		public static readonly ORMCustomSerializedAttributeInfo Default = new ORMCustomSerializedAttributeInfo();
+		public static readonly ORMCustomSerializedPropertyInfo Default = new ORMCustomSerializedPropertyInfo();
 
 		/// <summary>
 		/// true to write when custom storage.
@@ -466,34 +463,34 @@ namespace Neumont.Tools.ORM.Shell
 		private ORMCustomSerializedElementMatchStyle myMatchStyle;
 		private string myDoubleTagName;
 		/// <summary>
-		/// The element was recognized as a meta attribute.
+		/// The element was recognized as a meta property.
 		/// </summary>
-		/// <param name="metaAttributeGuid">The guid identifying the meta attribute</param>
+		/// <param name="metaAttributeGuid">The guid identifying the meta property</param>
 		/// <param name="doubleTagName">the name of the double tag, if any</param>
 		public void InitializeAttribute(Guid metaAttributeGuid, string doubleTagName)
 		{
 			mySingleGuid = metaAttributeGuid;
-			myMatchStyle = ORMCustomSerializedElementMatchStyle.Attribute;
+			myMatchStyle = ORMCustomSerializedElementMatchStyle.Property;
 			myDoubleTagName = (doubleTagName != null && doubleTagName.Length != 0) ? doubleTagName : null;
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player
 		/// </summary>
-		/// <param name="oppositeMetaRoleGuids">1 or more opposite meta role guids</param>
-		public void InitializeRoles(params Guid[] oppositeMetaRoleGuids)
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRoles(params Guid[] oppositeDomainRoleIds)
 		{
-			Debug.Assert(oppositeMetaRoleGuids != null && oppositeMetaRoleGuids.Length != 0);
-			if (oppositeMetaRoleGuids.Length == 1)
+			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
+			if (oppositeDomainRoleIds.Length == 1)
 			{
-				mySingleGuid = oppositeMetaRoleGuids[0];
+				mySingleGuid = oppositeDomainRoleIds[0];
 				myMultiGuids = null;
-				myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole;
+				myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole;
 			}
 			else
 			{
 				mySingleGuid = Guid.Empty;
-				myMultiGuids = oppositeMetaRoleGuids;
-				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles;
+				myMultiGuids = oppositeDomainRoleIds;
+				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeDomainRoles;
 			}
 			myDoubleTagName = null;
 		}
@@ -501,31 +498,31 @@ namespace Neumont.Tools.ORM.Shell
 		/// The element was recognized as an opposite role player. Optimized overload
 		/// for 1 element.
 		/// </summary>
-		/// <param name="oppositeMetaRoleGuid">The opposite meta role guid</param>
-		public void InitializeRoles(Guid oppositeMetaRoleGuid)
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRoles(Guid oppositeDomainRoleId)
 		{
-			mySingleGuid = oppositeMetaRoleGuid;
+			mySingleGuid = oppositeDomainRoleId;
 			myMultiGuids = null;
-			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole;
+			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole;
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type
 		/// </summary>
 		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
-		/// <param name="oppositeMetaRoleGuids">1 or more opposite meta role guids</param>
-		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, params Guid[] oppositeMetaRoleGuids)
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, params Guid[] oppositeDomainRoleIds)
 		{
-			Debug.Assert(oppositeMetaRoleGuids != null && oppositeMetaRoleGuids.Length != 0);
-			if (oppositeMetaRoleGuids.Length == 1)
+			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
+			if (oppositeDomainRoleIds.Length == 1)
 			{
 				mySingleGuid = explicitRelationshipGuid;
-				myMultiGuids = oppositeMetaRoleGuids;
-				myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType;
+				myMultiGuids = oppositeDomainRoleIds;
+				myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType;
 			}
 			else
 			{
 				mySingleGuid = explicitRelationshipGuid;
-				myMultiGuids = oppositeMetaRoleGuids;
+				myMultiGuids = oppositeDomainRoleIds;
 				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType;
 			}
 			myDoubleTagName = null;
@@ -535,37 +532,37 @@ namespace Neumont.Tools.ORM.Shell
 		/// Optimized overload for 1 element.
 		/// </summary>
 		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
-		/// <param name="oppositeMetaRoleGuid">The opposite meta role guid</param>
-		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, Guid oppositeMetaRoleGuid)
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, Guid oppositeDomainRoleId)
 		{
 			mySingleGuid = explicitRelationshipGuid;
-			myMultiGuids = new Guid[] { oppositeMetaRoleGuid };
-			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType;
+			myMultiGuids = new Guid[] { oppositeDomainRoleId };
+			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType;
 		}
 		/// <summary>
-		/// The guid identifying the meta attribute. Valid for a match
-		/// style of Attribute.
+		/// The guid identifying the meta property. Valid for a match
+		/// style of Property.
 		/// </summary>
-		public Guid MetaAttributeGuid
+		public Guid DomainPropertyId
 		{
 			get
 			{
-				return (myMatchStyle == ORMCustomSerializedElementMatchStyle.Attribute) ? mySingleGuid : Guid.Empty;
+				return (myMatchStyle == ORMCustomSerializedElementMatchStyle.Property) ? mySingleGuid : Guid.Empty;
 			}
 		}
 		/// <summary>
 		/// The guid identifying the opposite meta role if there is only
-		/// one matching meta role. Valid for a match style of SingleOppositeMetaRole.
+		/// one matching meta role. Valid for a match style of SingleOppositeDomainRole.
 		/// </summary>
-		public Guid SingleOppositeMetaRoleGuid
+		public Guid SingleOppositeDomainRoleId
 		{
 			get
 			{
 				switch (myMatchStyle)
 				{
-					case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole:
+					case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole:
 						return mySingleGuid;
-					case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType:
+					case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
 						return myMultiGuids[0];
 					default:
 						return Guid.Empty;
@@ -574,15 +571,15 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		/// <summary>
 		/// The guids identifying multiple opposite meta roles. Valid for a match
-		/// style of MultipleOppositeMetaRoles.
+		/// style of MultipleOppositeDomainRoles.
 		/// </summary>
-		public IList<Guid> OppositeMetaRoleGuidCollection
+		public IList<Guid> OppositeDomainRoleIdCollection
 		{
 			get
 			{
 				switch (myMatchStyle)
 				{
-					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
+					case ORMCustomSerializedElementMatchStyle.MultipleOppositeDomainRoles:
 					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
 						return myMultiGuids;
 					default:
@@ -592,7 +589,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		/// <summary>
 		/// The guid identifying the meta relationship of the explicit relationship
-		/// type to create. Validate for match styles of SingleOppositeMetaRoleExplicitRelationshipType
+		/// type to create. Validate for match styles of SingleOppositeDomainRoleExplicitRelationshipType
 		/// and MultipleOppositeMetaRolesExplicitRelationshipType.
 		/// </summary>
 		public Guid ExplicitRelationshipGuid
@@ -601,7 +598,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				switch (myMatchStyle)
 				{
-					case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType:
+					case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
 					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
 						return mySingleGuid;
 					default:
@@ -621,8 +618,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// The double tag name for an attribute. null if the MatchStyle
-		/// is not Attribute or if there is no double tag for this element.
+		/// The double tag name for an property. null if the MatchStyle
+		/// is not Property or if there is no double tag for this element.
 		/// </summary>
 		public string DoubleTagName
 		{
@@ -637,7 +634,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// The interface for getting custom element namespaces.
 	/// </summary>
-	public interface IORMCustomSerializedMetaModel
+	public interface IORMCustomSerializedDomainModel
 	{
 		/// <summary>
 		/// Return all namespaces used by custom elements in this model.
@@ -669,14 +666,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="store">The store to check</param>
 		/// <param name="classInfo">The class or relationship to test</param>
 		/// <returns>true if the element should be serialized</returns>
-		bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo);
+		bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo);
 		/// <summary>
 		/// Map an xml namespace name and element name to a meta class guid
 		/// </summary>
 		/// <param name="xmlNamespace">The namespace of a top-level element (directly
 		/// inside the ORM2 tag)</param>
 		/// <param name="elementName">The name of the element to match</param>
-		/// <returns>The guid of a MetaClassInfo, or Guid.Empty if not recognized</returns>
+		/// <returns>The guid of a DomainClassInfo, or Guid.Empty if not recognized</returns>
 		Guid MapRootElement(string xmlNamespace, string elementName);
 		/// <summary>
 		/// Map an xml namespace name and element name to a meta class guid
@@ -705,26 +702,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		ORMCustomSerializedElementInfo CustomSerializedElementInfo { get;}
 		/// <summary>
-		/// Returns custom serialization information for attributes.
+		/// Returns custom serialization information for properties.
 		/// </summary>
-		/// <param name="attributeInfo">The attribute info.</param>
+		/// <param name="domainPropertyInfo">The property info.</param>
 		/// <param name="rolePlayedInfo">If this is implemented on a ElementLink-derived class, then the
 		/// played role is the role player containing the reference to the opposite role. Always null for a
 		/// class element.</param>
-		/// <returns>Custom serialization information for attributes.</returns>
-		ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo);
+		/// <returns>Custom serialization information for properties.</returns>
+		ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo);
 		/// <summary>
 		/// Returns custom serialization information for links.
 		/// </summary>
 		/// <param name="rolePlayedInfo">The role played.</param>
 		/// <param name="elementLink">The link instance</param>
 		/// <returns>Custom serialization information for links.</returns>
-		ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink);
+		ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink);
 		/// <summary>
 		/// Get a comparer to sort custom role elements. Affects the element order
 		/// for nested child (aggregated) and link (referenced) elements
 		/// </summary>
-		IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer { get;}
+		IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer { get;}
 		/// <summary>
 		/// Attempt to map an element name to a custom serialized child element.
 		/// </summary>
@@ -737,13 +734,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>ORMCustomSerializedElementMatch. Use the MatchStyle property to determine levels of success.</returns>
 		ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName);
 		/// <summary>
-		/// Attempt to map an attribute name to a custom serialized attribute
+		/// Attempt to map an property name to a custom serialized property
 		/// for this element.
 		/// </summary>
 		/// <param name="xmlNamespace">The full xml namespace of the element to match. Note
 		/// that using prefixes is not robust, so the full namespace needs to be specified.</param>
-		/// <param name="attributeName">The local name of the attribute</param>
-		/// <returns>A MetaAttributeGuid, or Guid.Empty. Use Guid.IsEmpty to test.</returns>
+		/// <param name="attributeName">The local name of the property</param>
+		/// <returns>A DomainPropertyId, or Guid.Empty. Use Guid.IsEmpty to test.</returns>
 		Guid MapAttribute(string xmlNamespace, string attributeName);
 		/// <summary>
 		/// Check the current state of the object to determine
@@ -759,25 +756,30 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	public partial class ORMSerializer
 	{
+		#region Constants
+		// These need to be "static readonly" rather than "const" so that other assemblies compiled against us
+		// can detect the latest version at runtime.
+
 		/// <summary>
 		/// The standard prefix for the prefix used on the root node of the ORM document
 		/// </summary>
-		public const string RootXmlPrefix = "ormRoot";
+		public static readonly string RootXmlPrefix = "ormRoot";
 		/// <summary>
 		/// The tag name for the element used as the root node of the ORM document
 		/// </summary>
-		public const string RootXmlElementName = "ORM2";
+		public static readonly string RootXmlElementName = "ORM2";
 		/// <summary>
 		/// The namespace for the root node of the ORM document
 		/// </summary>
-		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMRoot";
+		public static readonly string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMRoot";
+		#endregion // Constants
 
 		/// <summary>
 		/// Used for sorting.
 		/// </summary>
-		/// <param name="writeStyle">An attribute write style.</param>
+		/// <param name="writeStyle">An property write style.</param>
 		/// <returns>A number to sort with.</returns>
-		private static int AttributeWriteStylePriority(ORMCustomSerializedAttributeWriteStyle writeStyle)
+		private static int PropertyWriteStylePriority(ORMCustomSerializedAttributeWriteStyle writeStyle)
 		{
 			switch (writeStyle)
 			{
@@ -791,39 +793,32 @@ namespace Neumont.Tools.ORM.Shell
 			return 3;
 		}
 		/// <summary>
-		/// Used for serializing attributes.
+		/// Used for serializing properties.
 		/// </summary>
 		/// <param name="guid">The GUID to convert.</param>
 		/// <returns>An XML encoded string.</returns>
-		private static string ToXML(System.Guid guid)
+		private static string ToXml(Guid guid)
 		{
-			return '_' + System.Xml.XmlConvert.ToString(guid).ToUpper(CultureInfo.InvariantCulture);
+			return '_' + XmlConvert.ToString(guid).ToUpperInvariant();
 		}
 		/// <summary>
-		/// Used for serializing attributes.
+		/// Serializes a property value to XML.
 		/// </summary>
-		/// <param name="value">The attribute's value.</param>
-		/// <param name="typeConvert">true to type convert the value (value is an object type).</param>
-		/// <returns>An XML encoded string.</returns>
-		private static string ToXML(object value, bool typeConvert)
+		/// <param name="element">The <see cref="ModelElement"/> containing the property to be serialized.</param>
+		/// <param name="property">The <see cref="DomainPropertyInfo"/> to be serialized.</param>
+		/// <param name="typeConvert"><see langword="true"/> to type convert the value.</param>
+		/// <returns>An XML-encoded <see cref="String"/> that represents the serialized value of the property.</returns>
+		private static string ToXml(ModelElement element, DomainPropertyInfo property, bool typeConvert)
 		{
+			object value = property.GetValue(element);
+			Type type;
 			if (value == null)
 			{
 				return null;
 			}
-			else if (typeConvert)
+			else if (typeConvert || (type = property.PropertyType).IsEnum)
 			{
-				TypeConverter converter = GetTypeConverter(value.GetType());
-				if (converter != null)
-				{
-					return converter.ConvertToInvariantString(value);
-				}
-			}
-
-			Type type = value.GetType();
-			if (type.IsEnum)
-			{
-				return Enum.GetName(type, value);
+				goto L_TypeConvert;
 			}
 			else
 			{
@@ -831,78 +826,48 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					case TypeCode.Empty:
 					case TypeCode.DBNull:
-						{
-							return null;
-						}
+						return null;
 					case TypeCode.DateTime:
-						{
-							return System.Xml.XmlConvert.ToString((System.DateTime)value, XmlDateTimeSerializationMode.Utc);
-						}
+						return XmlConvert.ToString((DateTime)value, XmlDateTimeSerializationMode.Utc);
 					case TypeCode.UInt64:
-						{
-							return System.Xml.XmlConvert.ToString((ulong)value);
-						}
+						return XmlConvert.ToString((ulong)value);
 					case TypeCode.Int64:
-						{
-							return System.Xml.XmlConvert.ToString((long)value);
-						}
+						return XmlConvert.ToString((long)value);
 					case TypeCode.UInt32:
-						{
-							return System.Xml.XmlConvert.ToString((uint)value);
-						}
+						return XmlConvert.ToString((uint)value);
 					case TypeCode.Int32:
-						{
-							return System.Xml.XmlConvert.ToString((int)value);
-						}
+						return XmlConvert.ToString((int)value);
 					case TypeCode.UInt16:
-						{
-							return System.Xml.XmlConvert.ToString((ushort)value);
-						}
+						return XmlConvert.ToString((ushort)value);
 					case TypeCode.Int16:
-						{
-							return System.Xml.XmlConvert.ToString((short)value);
-						}
+						return XmlConvert.ToString((short)value);
 					case TypeCode.Byte:
-						{
-							return System.Xml.XmlConvert.ToString((byte)value);
-						}
+						return XmlConvert.ToString((byte)value);
 					case TypeCode.SByte:
-						{
-							return System.Xml.XmlConvert.ToString((sbyte)value);
-						}
+						return XmlConvert.ToString((sbyte)value);
 					case TypeCode.Char:
-						{
-							return System.Xml.XmlConvert.ToString((char)value);
-						}
+						return XmlConvert.ToString((char)value);
 					case TypeCode.Boolean:
-						{
-							return System.Xml.XmlConvert.ToString((bool)value);
-						}
+						return XmlConvert.ToString((bool)value);
 					case TypeCode.Decimal:
-						{
-							return System.Xml.XmlConvert.ToString((decimal)value);
-						}
+						return XmlConvert.ToString((decimal)value);
 					case TypeCode.Double:
-						{
-							return System.Xml.XmlConvert.ToString((double)value);
-						}
+						return XmlConvert.ToString((double)value);
 					case TypeCode.Single:
-						{
-							return System.Xml.XmlConvert.ToString((float)value);
-						}
+						return XmlConvert.ToString((float)value);
 				}
-
-				if (type == typeof(System.Guid))
+				if (type == typeof(Guid))
 				{
-					return ToXML((System.Guid)value);
+					return ToXml((Guid)value);
 				}
-				else if (type == typeof(System.TimeSpan))
+				else if (type == typeof(TimeSpan))
 				{
-					return System.Xml.XmlConvert.ToString((System.TimeSpan)value);
+					return XmlConvert.ToString((TimeSpan)value);
 				}
-
-				return value.ToString();
 			}
+		L_TypeConvert:
+			Design.ORMTypeDescriptor.TypeDescriptorContext context = Design.ORMTypeDescriptor.CreateTypeDescriptorContext(element, property);
+			return context.PropertyDescriptor.Converter.ConvertToInvariantString(context, value);
 		}
 		/// <summary>
 		/// Used for serializing child elements.
@@ -925,29 +890,29 @@ namespace Neumont.Tools.ORM.Shell
 			return -1;
 		}
 		/// <summary>
-		/// Sorts mixed typed attributes.
+		/// Sorts mixed typed properties.
 		/// </summary>
 		/// <param name="customElement">The element.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		/// <param name="attributes">The element's attributes.</param>
-		private static void SortAttributes(IORMCustomSerializedElement customElement, MetaRoleInfo rolePlayedInfo, ref IList attributes)
+		/// <param name="properties">The element's properties.</param>
+		private static void SortProperties(IORMCustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, ref IList<DomainPropertyInfo> properties)
 		{
-			int attrCount = attributes.Count;
-			if (attrCount != 0)
+			int propertyCount = properties.Count;
+			if (propertyCount > 0)
 			{
-				ORMCustomSerializedAttributeInfo[] customInfo = new ORMCustomSerializedAttributeInfo[attrCount];
-				int[] indices = new int[attrCount];
-				for (int i = 0; i < attrCount; ++i)
+				ORMCustomSerializedPropertyInfo[] customInfo = new ORMCustomSerializedPropertyInfo[propertyCount];
+				int[] indices = new int[propertyCount];
+				for (int i = 0; i < propertyCount; ++i)
 				{
 					indices[i] = i;
-					customInfo[i] = customElement.GetCustomSerializedAttributeInfo((MetaAttributeInfo)attributes[i], rolePlayedInfo);
+					customInfo[i] = customElement.GetCustomSerializedPropertyInfo(properties[i], rolePlayedInfo);
 				}
 				Array.Sort<int>(indices, delegate(int index1, int index2)
 				{
-					ORMCustomSerializedAttributeInfo customInfo1 = customInfo[index1];
-					ORMCustomSerializedAttributeInfo customInfo2 = customInfo[index2];
-					int ws0 = AttributeWriteStylePriority(customInfo1.WriteStyle);
-					int ws1 = AttributeWriteStylePriority(customInfo2.WriteStyle);
+					ORMCustomSerializedPropertyInfo customInfo1 = customInfo[index1];
+					ORMCustomSerializedPropertyInfo customInfo2 = customInfo[index2];
+					int ws0 = PropertyWriteStylePriority(customInfo1.WriteStyle);
+					int ws1 = PropertyWriteStylePriority(customInfo2.WriteStyle);
 
 					if (ws0 > ws1)
 					{
@@ -960,16 +925,16 @@ namespace Neumont.Tools.ORM.Shell
 
 					return 0;
 				});
-				for (int i = 0; i < attrCount; ++i)
+				for (int i = 0; i < propertyCount; ++i)
 				{
 					if (indices[i] != i)
 					{
-						MetaAttributeInfo[] reorderedList = new MetaAttributeInfo[attrCount];
-						for (int j = 0; j < attrCount; ++j)
+						DomainPropertyInfo[] reorderedList = new DomainPropertyInfo[propertyCount];
+						for (int j = 0; j < propertyCount; ++j)
 						{
-							reorderedList[indices[j]] = (MetaAttributeInfo)attributes[j];
+							reorderedList[indices[j]] = properties[j];
 						}
-						attributes = reorderedList;
+						properties = reorderedList;
 						break;
 					}
 				}
@@ -984,7 +949,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="defaultName">The default tag name.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private static bool WriteCustomizedStartElement(System.Xml.XmlWriter file, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, string defaultName)
+		private static bool WriteCustomizedStartElement(XmlWriter file, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, string defaultName)
 		{
 			if (customInfo != null)
 			{
@@ -1034,7 +999,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="customInfo">The customized tag info.</param>
-		private static void WriteCustomizedEndElement(System.Xml.XmlWriter file, ORMCustomSerializedElementInfo customInfo)
+		private static void WriteCustomizedEndElement(XmlWriter file, ORMCustomSerializedElementInfo customInfo)
 		{
 			if (customInfo != null)
 			{
@@ -1043,8 +1008,8 @@ namespace Neumont.Tools.ORM.Shell
 #if DEBUG
 					case ORMCustomSerializedElementWriteStyle.NotWritten:
 						{
-							System.Diagnostics.Debug.Fail("WriteCustomizedEndElement - ORMCustomSerializedElementWriteStyle.DontWrite");
-							throw new System.InvalidOperationException();
+							Debug.Fail("WriteCustomizedEndElement - ORMCustomSerializedElementWriteStyle.DontWrite");
+							throw new InvalidOperationException();
 						}
 #endif
 					case ORMCustomSerializedElementWriteStyle.DoubleTaggedElement:
@@ -1063,10 +1028,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Find the parent model for this element.
 		/// </summary>
 		/// <param name="element">A ModelElement being serialized</param>
-		/// <returns>IORMCustomSerializedMetaModel, or null</returns>
-		private static IORMCustomSerializedMetaModel GetParentModel(ModelElement element)
+		/// <returns>IORMCustomSerializedDomainModel, or null</returns>
+		private static IORMCustomSerializedDomainModel GetParentModel(ModelElement element)
 		{
-			return element.Store.SubStores[element.MetaClass.MetaModel.Id] as IORMCustomSerializedMetaModel;
+			return element.Store.GetDomainModel(element.GetDomainClass().DomainModel.Id) as IORMCustomSerializedDomainModel;
 		}
 		/// <summary>
 		/// Determine based on the type of role and opposite role player if any elements of
@@ -1075,14 +1040,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="parentModel">The parent model of an element</param>
 		/// <param name="role">The role played</param>
 		/// <returns>true if serialization should continue</returns>
-		private static bool ShouldSerializeMetaRole(IORMCustomSerializedMetaModel parentModel, MetaRoleInfo role)
+		private static bool ShouldSerializeDomainRole(IORMCustomSerializedDomainModel parentModel, DomainRoleInfo role)
 		{
 			if (parentModel == null)
 			{
 				return true;
 			}
-			Store store = ((SubStore)parentModel).Store;
-			return parentModel.ShouldSerializeMetaClass(store, role.MetaRelationship) && parentModel.ShouldSerializeMetaClass(store, role.OppositeMetaRole.RolePlayer);
+			Store store = ((DomainModel)parentModel).Store;
+			return parentModel.ShouldSerializeDomainClass(store, role.DomainRelationship) && parentModel.ShouldSerializeDomainClass(store, role.OppositeDomainRole.RolePlayer);
 		}
 		/// <summary>
 		/// Determine if an element should be serialized
@@ -1100,7 +1065,7 @@ namespace Neumont.Tools.ORM.Shell
 		private static string DefaultElementPrefix(ModelElement element)
 		{
 			string retVal = null;
-			IORMCustomSerializedMetaModel parentModel = GetParentModel(element);
+			IORMCustomSerializedDomainModel parentModel = GetParentModel(element);
 			if (parentModel != null)
 			{
 				retVal = parentModel.DefaultElementPrefix;
@@ -1108,34 +1073,34 @@ namespace Neumont.Tools.ORM.Shell
 			return retVal;
 		}
 		/// <summary>
-		/// Serializes an attribute.
+		/// Serializes a property.
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="element">The element.</param>
 		/// <param name="customElement">The element as a custom element.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		/// <param name="attribute">The element's attribute to write.</param>
-		/// <param name="isCustomAttribute">true if the attribute has custom info.</param>
-		private static void SerializeAttribute(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, MetaRoleInfo rolePlayedInfo, MetaAttributeInfo attribute, bool isCustomAttribute)
+		/// <param name="property">The element's property to write.</param>
+		/// <param name="isCustomProperty">true if the property has custom info.</param>
+		private static void SerializeProperties(XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, DomainPropertyInfo property, bool isCustomProperty)
 		{
-			if (!isCustomAttribute)
+			if (!isCustomProperty)
 			{
-				if (!attribute.CustomStorage)
+				if (property.Kind != DomainPropertyKind.CustomStorage)
 				{
 					file.WriteAttributeString
 					(
-						attribute.Name,
-						ToXML(element.GetAttributeValue(attribute), false)
+						property.Name,
+						ToXml(element, property, false)
 					);
 				}
 				return;
 			}
 
-			ORMCustomSerializedAttributeInfo customInfo = customElement.GetCustomSerializedAttributeInfo(attribute, rolePlayedInfo);
+			ORMCustomSerializedPropertyInfo customInfo = customElement.GetCustomSerializedPropertyInfo(property, rolePlayedInfo);
 
-			if (!attribute.CustomStorage || customInfo.WriteCustomStorage)
+			if (property.Kind != DomainPropertyKind.CustomStorage || customInfo.WriteCustomStorage)
 			{
-				if (customInfo.WriteStyle != ORMCustomSerializedAttributeWriteStyle.Attribute || file.WriteState != System.Xml.WriteState.Element)
+				if (customInfo.WriteStyle != ORMCustomSerializedAttributeWriteStyle.Attribute || file.WriteState != WriteState.Element)
 				{
 					switch (customInfo.WriteStyle)
 					{
@@ -1144,9 +1109,9 @@ namespace Neumont.Tools.ORM.Shell
 								file.WriteElementString
 								(
 									customInfo.CustomPrefix != null ? customInfo.CustomPrefix : DefaultElementPrefix(element),
-									customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
+									customInfo.CustomName != null ? customInfo.CustomName : property.Name,
 									customInfo.CustomNamespace,
-									ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
+									ToXml(element, property, property.Kind == DomainPropertyKind.CustomStorage)
 								);
 								break;
 							}
@@ -1157,7 +1122,7 @@ namespace Neumont.Tools.ORM.Shell
 						case ORMCustomSerializedAttributeWriteStyle.DoubleTaggedElement:
 							{
 								string prefix = (customInfo.CustomPrefix != null ? customInfo.CustomPrefix : DefaultElementPrefix(element));
-								string name = (customInfo.CustomName != null ? customInfo.CustomName : attribute.Name);
+								string name = (customInfo.CustomName != null ? customInfo.CustomName : property.Name);
 
 								file.WriteStartElement
 								(
@@ -1170,7 +1135,7 @@ namespace Neumont.Tools.ORM.Shell
 									prefix,
 									customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
 									customInfo.CustomNamespace,
-									ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
+									ToXml(element, property, property.Kind == DomainPropertyKind.CustomStorage)
 								);
 								file.WriteEndElement();
 
@@ -1183,9 +1148,9 @@ namespace Neumont.Tools.ORM.Shell
 					file.WriteAttributeString
 					(
 						customInfo.CustomPrefix,
-						customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
+						customInfo.CustomName != null ? customInfo.CustomName : property.Name,
 						customInfo.CustomNamespace,
-						ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
+						ToXml(element, property, property.Kind == DomainPropertyKind.CustomStorage)
 					);
 				}
 			}
@@ -1193,27 +1158,27 @@ namespace Neumont.Tools.ORM.Shell
 			return;
 		}
 		/// <summary>
-		/// Serializes all attributes of an element.
+		/// Serializes all properties of an element.
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="element">The element.</param>
 		/// <param name="customElement">The element as a custom element.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		/// <param name="attributes">The element's attributes.</param>
-		/// <param name="hasCustomAttributes">true if the element has attributes with custom info.</param>
-		private static void SerializeAttributes(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, MetaRoleInfo rolePlayedInfo, IList attributes, bool hasCustomAttributes)
+		/// <param name="properties">The element's properties.</param>
+		/// <param name="hasCustomAttributes">true if the element has properties with custom info.</param>
+		private static void SerializeProperties(XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, DomainRoleInfo rolePlayedInfo, IList<DomainPropertyInfo> properties, bool hasCustomAttributes)
 		{
-			for (int index = 0, count = attributes.Count; index < count; ++index)
+			for (int index = 0, count = properties.Count; index < count; ++index)
 			{
-				MetaAttributeInfo attribute = (MetaAttributeInfo)attributes[index];
+				DomainPropertyInfo property = properties[index];
 
-				SerializeAttribute
+				SerializeProperties
 				(
 					file,
 					element,
 					customElement,
 					rolePlayedInfo,
-					attribute,
+					property,
 					hasCustomAttributes
 				);
 			}
@@ -1227,11 +1192,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="rolePlayer">The role player.</param>
 		/// <param name="oppositeRolePlayer">The opposite role player.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo rolePlayedInfo)
+		private void SerializeLink(XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, DomainRoleInfo rolePlayedInfo)
 		{
 			ORMCustomSerializedElementSupportedOperations supportedOperations = ORMCustomSerializedElementSupportedOperations.None;
 			ORMCustomSerializedElementInfo customInfo = ORMCustomSerializedElementInfo.Default;
-			IList attributes = null;
+			IList<DomainPropertyInfo> properties = null;
 			string defaultPrefix;
 			bool hasCustomAttributes = false;
 
@@ -1245,13 +1210,13 @@ namespace Neumont.Tools.ORM.Shell
 			bool aggregatingLink = false;
 			bool writeContents = customElement != null &&
 				0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) &&
-				((writeStyle = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link).WriteStyle) == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement ||
+				((writeStyle = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link).WriteStyle) == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement ||
 				(aggregatingLink = writeStyle == ORMCustomSerializedElementWriteStyle.AggregatingLinkElement));
 
 			if (writeContents)
 			{
 				customElement = link as IORMCustomSerializedElement;
-				attributes = link.MetaClass.AllMetaAttributes;
+				properties = link.GetDomainClass().AllDomainProperties;
 				defaultPrefix = DefaultElementPrefix(link);
 			}
 			else
@@ -1263,11 +1228,11 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				supportedOperations = customElement.SupportedCustomSerializedOperations;
 
-				if (0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.MixedTypedAttributes) && attributes != null)
+				if (0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.MixedTypedAttributes) && properties != null)
 				{
-					SortAttributes(customElement, rolePlayedInfo, ref attributes);
+					SortProperties(customElement, rolePlayedInfo, ref properties);
 				}
-				hasCustomAttributes = (supportedOperations & ORMCustomSerializedElementSupportedOperations.AttributeInfo) != 0;
+				hasCustomAttributes = (supportedOperations & ORMCustomSerializedElementSupportedOperations.PropertyInfo) != 0;
 
 				IORMCustomSerializedElement tagCustomElement = customElement;
 				if (writeContents)
@@ -1277,27 +1242,27 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						if (0 != (tagCustomElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo))
 						{
-							customInfo = tagCustomElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link);
+							customInfo = tagCustomElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link);
 						}
 					}
 				}
 				else if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) != 0)
 				{
-					customInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link);
-					if (customInfo.IsDefault && !object.ReferenceEquals(GetParentModel(rolePlayer), GetParentModel(oppositeRolePlayer)))
+					customInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link);
+					if (customInfo.IsDefault && GetParentModel(rolePlayer) != GetParentModel(oppositeRolePlayer))
 					{
 						return;
 					}
 				}
 #if !WRITE_ALL_DEFAULT_LINKS
-				else if (!object.ReferenceEquals(GetParentModel(rolePlayer), GetParentModel(oppositeRolePlayer)))
+				else if (GetParentModel(rolePlayer) != GetParentModel(oppositeRolePlayer))
 				{
 					return;
 				}
 #endif // WRITE_ALL_DEFAULT_LINKS
 			}
 
-			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name)))
+			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
 			{
 				return;
 			}
@@ -1305,21 +1270,21 @@ namespace Neumont.Tools.ORM.Shell
 			Guid keyId = writeContents ? link.Id : oppositeRolePlayer.Id;
 			if (writeContents)
 			{
-				IList rolesPlayed = link.MetaClass.AllMetaRolesPlayed;
+				ReadOnlyCollection<DomainRoleInfo> rolesPlayed = link.GetDomainClass().AllDomainRolesPlayed;
 				bool writeChildren = aggregatingLink || rolesPlayed.Count != 0;
 
 				if (writeChildren)
 				{
 					// UNDONE: Be smarter here. If none of the relationships for the played
 					// roles are actually serialized, then we don't need this at all.
-					file.WriteAttributeString("id", ToXML(keyId));
+					file.WriteAttributeString("id", ToXml(keyId));
 				}
 				if (!aggregatingLink)
 				{
-					file.WriteAttributeString("ref", ToXML(oppositeRolePlayer.Id));
+					file.WriteAttributeString("ref", ToXml(oppositeRolePlayer.Id));
 				}
 
-				SerializeAttributes(file, link, customElement, rolePlayedInfo, attributes, hasCustomAttributes);
+				SerializeProperties(file, link, customElement, rolePlayedInfo, properties, hasCustomAttributes);
 
 				if (writeChildren)
 				{
@@ -1334,7 +1299,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else
 			{
-				file.WriteAttributeString("ref", ToXML(keyId));
+				file.WriteAttributeString("ref", ToXml(keyId));
 			}
 
 			WriteCustomizedEndElement(file, customInfo);
@@ -1352,63 +1317,63 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="writeBeginElement">true to write the begin element tag.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, MetaRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, bool writeBeginElement)
+		private bool SerializeChildElement(XmlWriter file, ModelElement childElement, DomainRoleInfo rolePlayedInfo, DomainRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, bool writeBeginElement)
 		{
 			bool ret = false;
-			MetaClassInfo lastChildClass = null;
-			IORMCustomSerializedMetaModel parentModel = null;
+			DomainClassInfo lastChildClass = null;
+			IORMCustomSerializedDomainModel parentModel = null;
 			// If there class derived from the role player, then the class-level serialization settings may be
 			// different than they were on the class specified on the role player, we need to check explicitly,
-			// despite the earlier call to ShouldSerializeMetaRole
-			bool checkSerializeClass = oppositeRoleInfo.RolePlayer.Descendants.Count != 0;
+			// despite the earlier call to ShouldSerializeDomainRole
+			bool checkSerializeClass = oppositeRoleInfo.RolePlayer.AllDescendants.Count != 0;
 			Store store = myStore;
-			bool isAggregate = rolePlayedInfo.IsAggregate;
-			bool oppositeIsAggregate = oppositeRoleInfo.IsAggregate;
+			bool isAggregate = rolePlayedInfo.IsEmbedding;
+			bool oppositeIsAggregate = oppositeRoleInfo.IsEmbedding;
 			IORMCustomSerializedElement testChildInfo;
 
 			if (!isAggregate &&
 				(!oppositeIsAggregate ||
 				(oppositeIsAggregate &&
 				null != (testChildInfo = childElement as IORMCustomSerializedElement) &&
-				0 != (testChildInfo.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.AggregatingLinkInfo) &&
+				0 != (testChildInfo.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.EmbeddingLinkInfo) &&
 				testChildInfo.GetCustomSerializedLinkInfo(oppositeRoleInfo, null).WriteStyle == ORMCustomSerializedElementWriteStyle.AggregatingLinkElement))) //write link
 			{
-				IList links = childElement.GetElementLinks(rolePlayedInfo);
+				ReadOnlyCollection<ElementLink> links = rolePlayedInfo.GetElementLinks<ElementLink>(childElement);
 				int linksCount = links.Count;
 				if (links.Count != 0)
 				{
-					bool checkSerializeLinkClass = rolePlayedInfo.MetaRelationship.Descendants.Count != 0;
-					MetaRelationshipInfo lastLinkClass = null;
-					IORMCustomSerializedMetaModel linkParentModel = null;
+					bool checkSerializeLinkClass = rolePlayedInfo.DomainRelationship.AllDescendants.Count != 0;
+					DomainRelationshipInfo lastLinkClass = null;
+					IORMCustomSerializedDomainModel linkParentModel = null;
 					for (int i = 0; i < linksCount; ++i)
 					{
 						// Verify that the link itself should be serialized
-						ElementLink link = (ElementLink)links[i];
+						ElementLink link = links[i];
 						if (checkSerializeLinkClass)
 						{
-							MetaRelationshipInfo linkClass = link.MetaRelationship;
+							DomainRelationshipInfo linkClass = link.GetDomainRelationship();
 							if (linkClass != lastLinkClass)
 							{
 								lastLinkClass = linkClass;
 								linkParentModel = GetParentModel(link);
 							}
-							if (linkParentModel != null && !linkParentModel.ShouldSerializeMetaClass(store, linkClass))
+							if (linkParentModel != null && !linkParentModel.ShouldSerializeDomainClass(store, linkClass))
 							{
 								continue;
 							}
 						}
 
 						// Verify that the opposite role player class should be serialized
-						ModelElement oppositeRolePlayer = link.GetRolePlayer(oppositeRoleInfo);
+						ModelElement oppositeRolePlayer = oppositeRoleInfo.GetRolePlayer(link);
 						if (checkSerializeClass)
 						{
-							MetaClassInfo childClass = oppositeRolePlayer.MetaClass;
+							DomainClassInfo childClass = oppositeRolePlayer.GetDomainClass();
 							if (childClass != lastChildClass)
 							{
 								lastChildClass = childClass;
 								parentModel = GetParentModel(oppositeRolePlayer);
 							}
-							if (parentModel != null && !parentModel.ShouldSerializeMetaClass(store, childClass))
+							if (parentModel != null && !parentModel.ShouldSerializeDomainClass(store, childClass))
 							{
 								continue;
 							}
@@ -1428,7 +1393,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (isAggregate) //write child
 			{
-				IList children = childElement.GetCounterpartRolePlayers(rolePlayedInfo, oppositeRoleInfo);
+				LinkedElementCollection<ModelElement> children = rolePlayedInfo.GetLinkedElements(childElement);
 				int childCount = children.Count;
 
 				if (childCount != 0)
@@ -1438,17 +1403,17 @@ namespace Neumont.Tools.ORM.Shell
 
 					for (int iChild = 0; iChild < childCount; ++iChild)
 					{
-						ModelElement child = (ModelElement)children[iChild];
+						ModelElement child = children[iChild];
 
 						if (checkSerializeClass)
 						{
-							MetaClassInfo childClass = child.MetaClass;
+							DomainClassInfo childClass = child.GetDomainClass();
 							if (childClass != lastChildClass)
 							{
 								lastChildClass = childClass;
 								parentModel = GetParentModel(child);
 							}
-							if (parentModel != null && !parentModel.ShouldSerializeMetaClass(store, childClass))
+							if (parentModel != null && !parentModel.ShouldSerializeDomainClass(store, childClass))
 							{
 								continue;
 							}
@@ -1462,7 +1427,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							if (!initializedContainerName)
 							{
-								containerName = string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name);
+								containerName = string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name);
 								initializedContainerName = true;
 							}
 							if (!SerializeElement(file, child, customInfo, defaultPrefix, ref containerName))
@@ -1476,21 +1441,18 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return ret;
 		}
-		private void SerializeChildElements(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedChildElementInfo[] childElementInfo, IList rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
+		private void SerializeChildElements(XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedChildElementInfo[] childElementInfo, IList<DomainRoleInfo> rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
 		{
 			int rolesPlayedCount = rolesPlayed.Count;
-			IORMCustomSerializedMetaModel parentModel = GetParentModel(element);
+			IORMCustomSerializedDomainModel parentModel = GetParentModel(element);
 
 			//sort played roles
 			if (sortRoles && rolesPlayedCount != 0)
 			{
-				IComparer<MetaRoleInfo> comparer = customElement.CustomSerializedChildRoleComparer;
+				IComparer<DomainRoleInfo> comparer = customElement.CustomSerializedChildRoleComparer;
 				if (comparer != null)
 				{
-					MetaRoleInfo[] sortedRoles = new MetaRoleInfo[rolesPlayedCount];
-					rolesPlayed.CopyTo(sortedRoles, 0);
-					Array.Sort(sortedRoles, comparer);
-					rolesPlayed = sortedRoles;
+					((List<DomainRoleInfo>)(rolesPlayed = new List<DomainRoleInfo>(rolesPlayed))).Sort(comparer);
 				}
 			}
 
@@ -1503,13 +1465,13 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					if (!written[index0])
 					{
-						MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index0];
-						if (!ShouldSerializeMetaRole(parentModel, rolePlayedInfo))
+						DomainRoleInfo rolePlayedInfo = rolesPlayed[index0];
+						if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 						{
 							written[index0] = true;
 							continue;
 						}
-						MetaRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
+						DomainRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
 						ORMCustomSerializedChildElementInfo customChildInfo;
 						bool writeEndElement = false;
 
@@ -1529,13 +1491,13 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								if (!written[index1])
 								{
-									rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index1];
-									if (!ShouldSerializeMetaRole(parentModel, rolePlayedInfo))
+									rolePlayedInfo = rolesPlayed[index1];
+									if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 									{
 										written[index1] = true;
 										continue;
 									}
-									oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
+									oppositeRoleInfo = rolePlayedInfo.OppositeDomainRole;
 
 									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
 									{
@@ -1560,12 +1522,12 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				for (int index = 0; index < rolesPlayedCount; ++index)
 				{
-					MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index];
-					if (!ShouldSerializeMetaRole(parentModel, rolePlayedInfo))
+					DomainRoleInfo rolePlayedInfo = rolesPlayed[index];
+					if (!ShouldSerializeDomainRole(parentModel, rolePlayedInfo))
 					{
 						continue;
 					}
-					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeMetaRole, null, null, true))
+					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeDomainRole, null, null, true))
 					{
 						WriteCustomizedEndElement(file, null);
 					}
@@ -1583,16 +1545,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="containerPrefix">The container element's prefix.</param>
 		/// <param name="containerName">The container element's name.</param>
 		/// <returns>false if the container element was not written.</returns>
-		private bool SerializeElement(System.Xml.XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, ref string containerName)
+		private bool SerializeElement(XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, ref string containerName)
 		{
 			if (!ShouldSerializeElement(element)) return true;
 			ORMCustomSerializedElementSupportedOperations supportedOperations;
 			ORMCustomSerializedChildElementInfo[] childElementInfo = null;
-			MetaClassInfo classInfo = element.MetaClass;
+			DomainClassInfo classInfo = element.GetDomainClass();
 			ORMCustomSerializedElementInfo customInfo;
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
-			IList attributes = classInfo.AllMetaAttributes;
-			IList rolesPlayed = classInfo.AllMetaRolesPlayed;
+			IList<DomainPropertyInfo> properties = classInfo.AllDomainProperties;
+			ReadOnlyCollection<DomainRoleInfo> rolesPlayed = classInfo.AllDomainRolesPlayed;
 			string defaultPrefix = DefaultElementPrefix(element);
 			bool roleGrouping = false;
 			bool isCustom = (customElement != null);
@@ -1604,7 +1566,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				if (0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.MixedTypedAttributes))
 				{
-					SortAttributes(customElement, null, ref attributes);
+					SortProperties(customElement, null, ref properties);
 				}
 				if (roleGrouping = (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.ChildElementInfo)))
 				{
@@ -1638,17 +1600,17 @@ namespace Neumont.Tools.ORM.Shell
 
 			//write begin element tag
 			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return true;
-			file.WriteAttributeString("id", ToXML(element.Id));
+			file.WriteAttributeString("id", ToXml(element.Id));
 
-			//write attributes
-			SerializeAttributes
+			//write properties
+			SerializeProperties
 			(
 				file,
 				element,
 				customElement,
 				null,
-				attributes,
-				(supportedOperations & ORMCustomSerializedElementSupportedOperations.AttributeInfo) != 0
+				properties,
+				(supportedOperations & ORMCustomSerializedElementSupportedOperations.PropertyInfo) != 0
 			);
 
 			//write children
@@ -1664,7 +1626,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="element">The element.</param>
-		private void SerializeElement(System.Xml.XmlWriter file, ModelElement element)
+		private void SerializeElement(XmlWriter file, ModelElement element)
 		{
 			string containerName = null;
 			SerializeElement(file, element, null, null, ref containerName);
@@ -1675,21 +1637,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public void Save(Stream stream)
 		{
-			System.Xml.XmlWriterSettings xmlSettings = new XmlWriterSettings();
-			System.Xml.XmlWriter file;
+			XmlWriterSettings xmlSettings = new XmlWriterSettings();
+			XmlWriter file;
 			Store store = myStore;
-			ICollection values = store.SubStores.Values;
+			ICollection<DomainModel> values = store.DomainModels;
 
 			xmlSettings.IndentChars = "\t";
 			xmlSettings.Indent = true;
 
-			file = System.Xml.XmlWriter.Create(stream, xmlSettings);
+			file = XmlWriter.Create(stream, xmlSettings);
 			file.WriteStartElement(RootXmlPrefix, RootXmlElementName, RootXmlNamespace);
 
 			//serialize namespaces
-			foreach (object value in values)
+			foreach (DomainModel value in values)
 			{
-				IORMCustomSerializedMetaModel ns = value as IORMCustomSerializedMetaModel;
+				IORMCustomSerializedDomainModel ns = value as IORMCustomSerializedDomainModel;
 
 				if (ns != null)
 				{
@@ -1704,10 +1666,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			//serialize all root elements
-			ElementDirectory elementDir = myStore.ElementDirectory;
-			foreach (object value in values)
+			IElementDirectory elementDir = myStore.ElementDirectory;
+			foreach (DomainModel value in values)
 			{
-				IORMCustomSerializedMetaModel ns = value as IORMCustomSerializedMetaModel;
+				IORMCustomSerializedDomainModel ns = value as IORMCustomSerializedDomainModel;
 
 				if (ns != null)
 				{
@@ -1717,11 +1679,11 @@ namespace Neumont.Tools.ORM.Shell
 						int classCount = metaClasses.Length;
 						for (int i = 0; i < classCount; ++i)
 						{
-							IList elements = elementDir.GetElements(metaClasses[i]);
+							ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(metaClasses[i]);
 							int elementCount = elements.Count;
 							for (int j = 0; j < elementCount; ++j)
 							{
-								SerializeElement(file, (ModelElement)elements[j]);
+								SerializeElement(file, elements[j]);
 							}
 						}
 					}
@@ -1761,7 +1723,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// that it is very possible that the classInfo will be abstract. The
 			/// descendants are searched to find the first non-abstract class</param>
 			/// <returns>A new model element, or an existing placeholder.</returns>
-			public ModelElement CreatePlaceholderElement(Store store, MetaClassInfo classInfo)
+			public ModelElement CreatePlaceholderElement(Store store, DomainClassInfo classInfo)
 			{
 				ModelElement retVal = FindElementOfType(classInfo);
 				if (retVal == null)
@@ -1791,12 +1753,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="elementFactory">The ElementFactory from the context store</param>
 			/// <param name="classInfo">The meta information for the class to create</param>
 			/// <returns>ModelElement</returns>
-			private ModelElement RealizeClassInfo(ElementFactory elementFactory, MetaClassInfo classInfo)
+			private ModelElement RealizeClassInfo(ElementFactory elementFactory, DomainClassInfo classInfo)
 			{
 				Type implClass = classInfo.ImplementationClass;
 				if (implClass.IsAbstract || implClass == typeof(ModelElement)) // The class factory won't create a raw model element
 				{
-					MetaClassInfo descendantInfo = FindCreatableClass(classInfo.Descendants); // Try the cheap search first
+					DomainClassInfo descendantInfo = FindCreatableClass(classInfo.AllDescendants); // Try the cheap search first
 					if (descendantInfo != null)
 					{
 						descendantInfo = FindCreatableClass(classInfo.AllDescendants);
@@ -1804,40 +1766,40 @@ namespace Neumont.Tools.ORM.Shell
 					Debug.Assert(descendantInfo != null); // Some descendant should always be creatable, otherwise there could not be a valid link
 					classInfo = descendantInfo;
 				}
-				MetaRelationshipInfo relationshipInfo;
+				DomainRelationshipInfo relationshipInfo;
 				ModelElement retVal = null;
-				int metaRoleCount;
-				IList metaRoles;
-				if (null != (relationshipInfo = classInfo as MetaRelationshipInfo) &&
-					0 != (metaRoleCount = (metaRoles = relationshipInfo.MetaRoles).Count))
+				int domainRoleCount;
+				ReadOnlyCollection<DomainRoleInfo> domainRoles;
+				if (null != (relationshipInfo = classInfo as DomainRelationshipInfo) &&
+					0 != (domainRoleCount = (domainRoles = relationshipInfo.DomainRoles).Count))
 				{
 					// If this is a link element, then we need to create it with dummy role players
 					// to go along with the dummy element. The framework will allow the create of
 					// an ElementLink using CreateElement, but there is no way to remove that element
 					// unless it has the correct roles players attached to it.
-					RoleAssignment[] assignments = new RoleAssignment[metaRoleCount];
-					for (int i = 0; i < metaRoleCount; ++i)
+					RoleAssignment[] assignments = new RoleAssignment[domainRoleCount];
+					for (int i = 0; i < domainRoleCount; ++i)
 					{
-						MetaRoleInfo roleInfo = (MetaRoleInfo)metaRoles[i];
-						assignments[i] = new RoleAssignment(roleInfo, RealizeClassInfo(elementFactory, roleInfo.RolePlayer));
+						DomainRoleInfo roleInfo = domainRoles[i];
+						assignments[i] = new RoleAssignment(roleInfo.Id, RealizeClassInfo(elementFactory, roleInfo.RolePlayer));
 					}
-					retVal = elementFactory.CreateElementLink(classInfo.ImplementationClass, assignments);
+					retVal = elementFactory.CreateElementLink(relationshipInfo, assignments);
 				}
 				else
 				{
-					retVal = elementFactory.CreateElement(false, classInfo.ImplementationClass);
+					retVal = elementFactory.CreateElement(classInfo);
 				}
 				return retVal;
 			}
-			private static MetaClassInfo FindCreatableClass(IList classInfos)
+			private static DomainClassInfo FindCreatableClass(IList<DomainClassInfo> classInfos)
 			{
-				MetaClassInfo retVal = null;
+				DomainClassInfo retVal = null;
 				int count = classInfos.Count;
 				if (count != 0)
 				{
 					for (int i = 0; i < count; ++i)
 					{
-						MetaClassInfo testInfo = (MetaClassInfo)classInfos[i];
+						DomainClassInfo testInfo = classInfos[i];
 						if (!testInfo.ImplementationClass.IsAbstract)
 						{
 							retVal = testInfo;
@@ -1852,16 +1814,16 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			/// <param name="classInfo">The type to search for</param>
 			/// <returns>The matching element, or null</returns>
-			private ModelElement FindElementOfType(MetaClassInfo classInfo)
+			private ModelElement FindElementOfType(DomainClassInfo classInfo)
 			{
-				MetaRelationshipInfo relInfo = classInfo as MetaRelationshipInfo;
+				DomainRelationshipInfo relInfo = classInfo as DomainRelationshipInfo;
 				if (relInfo != null)
 				{
 					ElementLink link;
 					if (mySingleElement != null)
 					{
 						if (null != (link = mySingleElement as ElementLink) &&
-							link.MetaRelationship == relInfo)
+							link.GetDomainRelationship() == relInfo)
 						{
 							return mySingleElement;
 						}
@@ -1871,7 +1833,7 @@ namespace Neumont.Tools.ORM.Shell
 						foreach (ModelElement mel in myMultipleElements)
 						{
 							if (null != (link = mel as ElementLink) &&
-								link.MetaRelationship == relInfo)
+								link.GetDomainRelationship() == relInfo)
 							{
 								return mel;
 							}
@@ -1882,7 +1844,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					if (mySingleElement != null)
 					{
-						if (mySingleElement.MetaClass == classInfo)
+						if (mySingleElement.GetDomainClass() == classInfo)
 						{
 							return mySingleElement;
 						}
@@ -1891,7 +1853,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						foreach (ModelElement mel in myMultipleElements)
 						{
-							if (mel.MetaClass == classInfo)
+							if (mel.GetDomainClass() == classInfo)
 							{
 								return mel;
 							}
@@ -1924,19 +1886,19 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			private static void FulfilPlaceholderRoles(ModelElement realElement, ModelElement placeholder)
 			{
-				IList links = placeholder.GetElementLinks();
+				ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(placeholder);
 				int linkCount = links.Count;
 				for (int i = linkCount - 1; i >= 0; --i) // Walk backwards, we're messing with the list contents
 				{
-					ElementLink link = (ElementLink)links[i];
-					IList metaRoles = link.MetaRelationship.MetaRoles;
-					int metaRoleCount = metaRoles.Count;
-					for (int j = 0; j < metaRoleCount; ++j)
+					ElementLink link = links[i];
+					ReadOnlyCollection<DomainRoleInfo> domainRoles = link.GetDomainRelationship().DomainRoles;
+					int domainRoleCount = domainRoles.Count;
+					for (int j = 0; j < domainRoleCount; ++j)
 					{
-						MetaRoleInfo roleInfo = (MetaRoleInfo)metaRoles[j];
-						if ((object)link.GetRolePlayer(roleInfo) == placeholder)
+						DomainRoleInfo roleInfo = domainRoles[j];
+						if (roleInfo.GetRolePlayer(link) == placeholder)
 						{
-							link.SetRolePlayer(roleInfo, realElement);
+							roleInfo.SetRolePlayer(link, realElement);
 						}
 					}
 				}
@@ -1953,15 +1915,15 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					placeholder.Remove();
+					placeholder.Delete();
 				}
 			}
 			private static void RemoveDetachedLinkPlaceholder(ElementLink linkPlaceholder)
 			{
-				MetaRelationshipInfo relationshipInfo = linkPlaceholder.MetaRelationship;
-				IList metaRoles = relationshipInfo.MetaRoles;
-				int metaRoleCount = metaRoles.Count;
-				if (metaRoleCount != 0)
+				DomainRelationshipInfo relationshipInfo = linkPlaceholder.GetDomainRelationship();
+				ReadOnlyCollection<DomainRoleInfo> domainRoles = relationshipInfo.DomainRoles;
+				int domainRoleCount = domainRoles.Count;
+				if (domainRoleCount != 0)
 				{
 					// Cache the role players up front so we can recursively delete them
 					// Note that deleting a role player before deleting the link is likely to
@@ -1971,25 +1933,30 @@ namespace Neumont.Tools.ORM.Shell
 					// do not delete automatically. To handle this case, we cache the role
 					// players, delete the link without propagating deletion to the
 					// roles, then delete the role players explicitly.
-					ModelElement[] rolePlayers = new ModelElement[metaRoleCount];
-					for (int i = 0; i < metaRoleCount; ++i)
+					ModelElement[] rolePlayers = new ModelElement[domainRoleCount];
+					for (int i = 0; i < domainRoleCount; ++i)
 					{
-						rolePlayers[i] = linkPlaceholder.GetRolePlayer((MetaRoleInfo)metaRoles[i]);
+						rolePlayers[i] = domainRoles[i].GetRolePlayer(linkPlaceholder);
 					}
 
 					// Remove the link without removing the role players
-					linkPlaceholder.Remove(metaRoles);
+					Guid[] domainRoleGuids = new Guid[domainRoles.Count];
+					for (int i = 0; i < domainRoleGuids.Length; ++i)
+					{
+						domainRoleGuids[i] = domainRoles[i].Id;
+					}
+					linkPlaceholder.Delete(domainRoleGuids);
 
 					// Remove the role players
-					for (int i = 0; i < metaRoleCount; ++i)
+					for (int i = 0; i < domainRoleCount; ++i)
 					{
-						Debug.Assert(!rolePlayers[i].IsRemoved);
+						Debug.Assert(!rolePlayers[i].IsDeleted);
 						RemoveDetachedPlaceholder(rolePlayers[i]);
 					}
 				}
 				else
 				{
-					linkPlaceholder.Remove();
+					linkPlaceholder.Delete();
 				}
 
 			}
@@ -1997,13 +1964,7 @@ namespace Neumont.Tools.ORM.Shell
 		private Dictionary<string, Guid> myCustomIdToGuidMap;
 		private INotifyElementAdded myNotifyAdded;
 		private Dictionary<Guid, PlaceholderElement> myPlaceholderElementMap;
-		private Dictionary<string, IORMCustomSerializedMetaModel> myXmlNamespaceToModelMap;
-		private static Dictionary<Type, TypeConverter> myTypeConverterCache;
-#if DEBUG
-		// Used for skipping schema validation on load if the shift key is down
-		[System.Runtime.InteropServices.DllImport("user32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
-		private static extern short GetKeyState(System.Windows.Forms.Keys nVirtKey);
-#endif
+		private Dictionary<string, IORMCustomSerializedDomainModel> myXmlNamespaceToModelMap;
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
@@ -2023,23 +1984,23 @@ namespace Neumont.Tools.ORM.Shell
 				schemas.Add(RootXmlNamespace, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, "ORM2Root.xsd")));
 
 				// Extract namespace and schema information from the different meta models
-				ICollection substores = myStore.SubStores.Values;
-				Dictionary<string, IORMCustomSerializedMetaModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedMetaModel>();
-				foreach (object substore in substores)
+				ICollection<DomainModel> domainModels = myStore.DomainModels;
+				Dictionary<string, IORMCustomSerializedDomainModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedDomainModel>();
+				foreach (DomainModel domainModel in domainModels)
 				{
-					IORMCustomSerializedMetaModel metaModel = substore as IORMCustomSerializedMetaModel;
-					if (metaModel != null)
+					IORMCustomSerializedDomainModel customSerializedDomainModel = domainModel as IORMCustomSerializedDomainModel;
+					if (customSerializedDomainModel != null)
 					{
-						string[,] namespaces = metaModel.GetCustomElementNamespaces();
+						string[,] namespaces = customSerializedDomainModel.GetCustomElementNamespaces();
 						int namespaceCount = namespaces.GetLength(0);
 						for (int i = 0; i < namespaceCount; ++i)
 						{
 							string namespaceURI = namespaces[i, 1];
-							namespaceToModelMap.Add(namespaceURI, metaModel);
+							namespaceToModelMap.Add(namespaceURI, customSerializedDomainModel);
 							string schemaFile = namespaces[i, 2];
 							if (schemaFile != null && schemaFile.Length != 0)
 							{
-								schemaResourcePathType = substore.GetType();
+								schemaResourcePathType = domainModel.GetType();
 								schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
 							}
 						}
@@ -2050,7 +2011,7 @@ namespace Neumont.Tools.ORM.Shell
 				settings.NameTable = nameTable;
 #if DEBUG
 				// Skip validation when the shift key is down in debug mode
-				if (0 == (0xff00 & GetKeyState(System.Windows.Forms.Keys.ShiftKey)))
+				if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.ShiftKey) != 0)
 				{
 #endif // DEBUG
 					settings.ValidationType = ValidationType.Schema;
@@ -2080,7 +2041,7 @@ namespace Neumont.Tools.ORM.Shell
 											if (nodeType == XmlNodeType.Element)
 											{
 												bool processedRootElement = false;
-												IORMCustomSerializedMetaModel metaModel;
+												IORMCustomSerializedDomainModel metaModel;
 												if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
 												{
 													Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
@@ -2120,18 +2081,18 @@ namespace Neumont.Tools.ORM.Shell
 		private delegate ElementLink CreateAggregatingLink(string idValue);
 		/// <summary>
 		/// Process a newly created element. The element will have an
-		/// Id set only. The id and ref attributes should be ignored.
+		/// Id set only. The id and ref properties should be ignored.
 		/// </summary>
 		/// <param name="reader">Reader set to the root node</param>
 		/// <param name="customModel">The custom serialized meta model</param>
 		/// <param name="element">Newly created element</param>
 		/// <param name="createAggregatingLinkCallback">A callback to pre-create the aggregating link before the aggregated element has finished processing</param>
-		private void ProcessClassElement(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, CreateAggregatingLink createAggregatingLinkCallback)
+		private void ProcessClassElement(XmlReader reader, IORMCustomSerializedDomainModel customModel, ModelElement element, CreateAggregatingLink createAggregatingLinkCallback)
 		{
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
-			MetaDataDirectory dataDir = myStore.MetaDataDirectory;
-			#region Attribute processing
-			// Process all attributes first
+			DomainDataDirectory dataDir = myStore.DomainDataDirectory;
+			#region Property processing
+			// Process all properties first
 			if (reader.MoveToFirstAttribute())
 			{
 				do
@@ -2142,44 +2103,57 @@ namespace Neumont.Tools.ORM.Shell
 					if (!(namespaceName.Length == 0 && (attributeName == "id" || attributeName == "ref" || attributeName[0] == '_')))
 					{
 						Guid attributeGuid = new Guid();
-						MetaAttributeInfo attributeInfo = null;
+						DomainPropertyInfo attributeInfo = null;
 						if (customElement != null)
 						{
 							attributeGuid = customElement.MapAttribute(namespaceName, attributeName);
 							if (!attributeGuid.Equals(Guid.Empty))
 							{
-								attributeInfo = dataDir.FindMetaAttribute(attributeGuid);
+								attributeInfo = dataDir.FindDomainProperty(attributeGuid);
 							}
 						}
 						if (attributeInfo == null && namespaceName.Length == 0)
 						{
-							attributeInfo = element.MetaClass.FindMetaAttribute(attributeName);
+							attributeInfo = element.GetDomainClass().FindDomainProperty(attributeName, true);
 						}
 						if (attributeInfo != null)
 						{
-							SetAttributeValue(element, attributeInfo, reader.Value);
+							SetPropertyValue(element, attributeInfo, reader.Value);
 						}
 					}
 				} while (reader.MoveToNextAttribute());
 			}
 			reader.MoveToElement();
-			#endregion // Attribute processing
+			#endregion // Property processing
 			ProcessChildElements(reader, customModel, element, customElement, createAggregatingLinkCallback);
 		}
-		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, IORMCustomSerializedElement customElement, CreateAggregatingLink createAggregatingLinkCallback)
+		private static Guid GetDomainObjectIdFromTypeName(string typeName)
+		{
+			Type type = Type.GetType(typeName, false, false);
+			if (type != null)
+			{
+				object[] domainObjectIdAttributeArray = type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+				if (domainObjectIdAttributeArray.Length > 0)
+				{
+					return ((DomainObjectIdAttribute)domainObjectIdAttributeArray[0]).Id;
+				}
+			}
+			return Guid.Empty;
+		}
+		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedDomainModel customModel, ModelElement element, IORMCustomSerializedElement customElement, CreateAggregatingLink createAggregatingLinkCallback)
 		{
 			if (reader.IsEmptyElement)
 			{
 				return;
 			}
-			MetaDataDirectory dataDir = myStore.MetaDataDirectory;
+			DomainDataDirectory dataDir = myStore.DomainDataDirectory;
 			string elementName;
 			string namespaceName;
 			string containerName = null;
 			string containerNamespace = null;
-			bool testForAggregatingLink = createAggregatingLinkCallback != null && customElement != null && 0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.AggregatingLinkInfo);
-			IORMCustomSerializedMetaModel containerRestoreCustomModel = null;
-			MetaRoleInfo containerOppositeMetaRole = null;
+			bool testForAggregatingLink = createAggregatingLinkCallback != null && customElement != null && 0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.EmbeddingLinkInfo);
+			IORMCustomSerializedDomainModel containerRestoreCustomModel = null;
+			DomainRoleInfo containerOppositeDomainRole = null;
 			while (reader.Read())
 			{
 				XmlNodeType outerNodeType = reader.NodeType;
@@ -2189,22 +2163,22 @@ namespace Neumont.Tools.ORM.Shell
 					namespaceName = reader.NamespaceURI;
 					string idValue = reader.GetAttribute("id");
 					string refValue = reader.GetAttribute("ref");
-					bool aggregatedClass = idValue != null && refValue == null;
-					MetaRoleInfo oppositeMetaRole = null;
-					MetaClassInfo oppositeMetaClass = null;
-					MetaRelationshipInfo explicitRelationshipType = null;
-					bool oppositeMetaClassFullyDeterministic = false;
-					bool resolveOppositeMetaClass = false;
-					IList<Guid> oppositeMetaRoleGuids = null;
-					IORMCustomSerializedMetaModel restoreCustomModel = null;
+					bool aggregatedClass = (object)idValue != null && (object)refValue == null;
+					DomainRoleInfo oppositeDomainRole = null;
+					DomainClassInfo oppositeDomainClass = null;
+					DomainRelationshipInfo explicitRelationshipType = null;
+					bool oppositeDomainClassFullyDeterministic = false;
+					bool resolveOppositeDomainClass = false;
+					IList<Guid> oppositeDomainRoleIds = null;
+					IORMCustomSerializedDomainModel restoreCustomModel = null;
 					bool nodeProcessed = false;
 					ORMCustomSerializedElementMatch aggregatingLinkMatch;
-					MetaRoleInfo testAggregatingRole;
+					DomainRoleInfo testAggregatingRole;
 					if (aggregatedClass &&
 						testForAggregatingLink &&
-						(aggregatingLinkMatch = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName)).MatchStyle == ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole &&
-						null != (testAggregatingRole = dataDir.FindMetaRole(aggregatingLinkMatch.SingleOppositeMetaRoleGuid)) &&
-						testAggregatingRole.IsAggregate)
+						(aggregatingLinkMatch = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName)).MatchStyle == ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole &&
+						null != (testAggregatingRole = dataDir.FindDomainRole(aggregatingLinkMatch.SingleOppositeDomainRoleId)) &&
+						testAggregatingRole.IsEmbedding)
 					{
 						testForAggregatingLink = false;
 						ElementLink aggregatingLink = createAggregatingLinkCallback(idValue);
@@ -2219,28 +2193,29 @@ namespace Neumont.Tools.ORM.Shell
 						// All we have is the class name, go look for an appropriate aggregate
 						if (customModel != null)
 						{
-							Guid metaClassGuid = customModel.MapClassName(namespaceName, elementName);
-							if (!metaClassGuid.Equals(Guid.Empty))
+							Guid domainClassId = customModel.MapClassName(namespaceName, elementName);
+							if (!domainClassId.Equals(Guid.Empty))
 							{
-								oppositeMetaClass = dataDir.FindMetaClass(metaClassGuid);
+								oppositeDomainClass = dataDir.FindDomainClass(domainClassId);
 							}
 						}
-						if (oppositeMetaClass == null)
+						if (oppositeDomainClass == null)
 						{
 							Type namespaceType = (customModel != null) ? customModel.GetType() : element.GetType();
-							oppositeMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
+							oppositeDomainClass = dataDir.FindDomainClass(string.Concat(namespaceType.Namespace, ".", elementName));
 						}
-						if (oppositeMetaClass != null)
+						if (oppositeDomainClass != null)
 						{
 							// Find the aggregating role that maps to this class
-							IList aggregatedRoles = element.MetaClass.AggregatedRoles;
+							// UNDONE: 2006-06 DSL Tools port: Is AggregatedRoles --> AllEmbeddedByDomainRoles correct?
+							ReadOnlyCollection<DomainRoleInfo> aggregatedRoles = element.GetDomainClass().AllEmbeddedByDomainRoles;
 							int rolesCount = aggregatedRoles.Count;
 							for (int i = 0; i < rolesCount; ++i)
 							{
-								MetaRoleInfo testRole = (MetaRoleInfo)aggregatedRoles[i];
-								if (testRole.RolePlayer == oppositeMetaClass)
+								DomainRoleInfo testRole = aggregatedRoles[i];
+								if (testRole.RolePlayer == oppositeDomainClass)
 								{
-									oppositeMetaRole = testRole;
+									oppositeDomainRole = testRole;
 									break;
 								}
 							}
@@ -2264,29 +2239,29 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							switch (match.MatchStyle)
 							{
-								case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole:
-									oppositeMetaRole = dataDir.FindMetaRole(match.SingleOppositeMetaRoleGuid);
-									resolveOppositeMetaClass = true;
+								case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole:
+									oppositeDomainRole = dataDir.FindDomainRole(match.SingleOppositeDomainRoleId);
+									resolveOppositeDomainClass = true;
 									break;
-								case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRoleExplicitRelationshipType:
-									explicitRelationshipType = dataDir.FindMetaRelationship(match.ExplicitRelationshipGuid);
-									oppositeMetaRole = dataDir.FindMetaRole(match.SingleOppositeMetaRoleGuid);
-									resolveOppositeMetaClass = true;
+								case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
+									explicitRelationshipType = dataDir.FindDomainRelationship(match.ExplicitRelationshipGuid);
+									oppositeDomainRole = dataDir.FindDomainRole(match.SingleOppositeDomainRoleId);
+									resolveOppositeDomainClass = true;
 									break;
-								case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
-									oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
+								case ORMCustomSerializedElementMatchStyle.MultipleOppositeDomainRoles:
+									oppositeDomainRoleIds = match.OppositeDomainRoleIdCollection;
 									break;
 								case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
-									explicitRelationshipType = dataDir.FindMetaRelationship(match.ExplicitRelationshipGuid);
-									oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
+									explicitRelationshipType = dataDir.FindDomainRelationship(match.ExplicitRelationshipGuid);
+									oppositeDomainRoleIds = match.OppositeDomainRoleIdCollection;
 									break;
-								case ORMCustomSerializedElementMatchStyle.Attribute:
+								case ORMCustomSerializedElementMatchStyle.Property:
 									{
-										MetaAttributeInfo attributeInfo = dataDir.FindMetaAttribute(match.MetaAttributeGuid);
+										DomainPropertyInfo attributeInfo = dataDir.FindDomainProperty(match.DomainPropertyId);
 										if (match.DoubleTagName == null)
 										{
 											// Reader the value off directly
-											SetAttributeValue(element, attributeInfo, reader.ReadString());
+											SetPropertyValue(element, attributeInfo, reader.ReadString());
 											nodeProcessed = true;
 										}
 										else
@@ -2300,7 +2275,7 @@ namespace Neumont.Tools.ORM.Shell
 												{
 													if (reader.LocalName == matchName && reader.NamespaceURI == namespaceName)
 													{
-														SetAttributeValue(element, attributeInfo, reader.ReadString());
+														SetPropertyValue(element, attributeInfo, reader.ReadString());
 														nodeProcessed = true;
 													}
 													else
@@ -2325,15 +2300,15 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							if (aggregatedClass)
 							{
-								if (containerOppositeMetaRole != null)
+								if (containerOppositeDomainRole != null)
 								{
-									oppositeMetaRole = containerOppositeMetaRole;
-									resolveOppositeMetaClass = true;
+									oppositeDomainRole = containerOppositeDomainRole;
+									resolveOppositeDomainClass = true;
 								}
 							}
 							else if (refValue != null)
 							{
-								IORMCustomSerializedMetaModel childModel;
+								IORMCustomSerializedDomainModel childModel;
 								if (elementName.IndexOf('.') > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
 								{
 									if (childModel != customModel && customModel != null)
@@ -2341,20 +2316,20 @@ namespace Neumont.Tools.ORM.Shell
 										restoreCustomModel = customModel;
 										customModel = childModel;
 									}
-									MetaRoleInfo metaRole = dataDir.FindMetaRole(string.Concat(childModel.GetType().Namespace, ".", elementName));
+									DomainRoleInfo domainRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(childModel.GetType().Namespace + "." + elementName));
 									// Fallback on the two standard meta models
-									if (metaRole == null)
+									if (domainRole == null)
 									{
-										metaRole = dataDir.FindMetaRole(string.Concat(typeof(ModelElement).Namespace, ".", elementName));
-										if (metaRole == null)
+										domainRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(ModelElement).Namespace + "." + elementName));
+										if (domainRole == null)
 										{
-											metaRole = dataDir.FindMetaRole(string.Concat(typeof(Diagram).Namespace, ".", elementName));
+											domainRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(Diagram).Namespace + "." + elementName));
 										}
 									}
-									if (metaRole != null)
+									if (domainRole != null)
 									{
-										oppositeMetaRole = metaRole;
-										resolveOppositeMetaClass = true;
+										oppositeDomainRole = domainRole;
+										resolveOppositeDomainClass = true;
 									}
 								}
 							}
@@ -2364,25 +2339,25 @@ namespace Neumont.Tools.ORM.Shell
 								// is in the same namespace as the model associated with the xml namespace.
 								// Models can nest elements inside base models, so we can't assume the node
 								// is in the same code namespace as the parent. Also, if the implementation
-								// class of the parent element has been upgraded (with MetaClassInfo.UpgradeImplementationClass)
+								// class of the parent element has been upgraded (with DomainClassInfo.UpgradeImplementationClass)
 								// then the ImplemtationClass of the parent node will be in the wrong namespace.
 								// The model elements themselves are more stable, use them.
-								IORMCustomSerializedMetaModel childModel;
+								IORMCustomSerializedDomainModel childModel;
 								if (elementName.IndexOf('.') > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
 								{
-									MetaRoleInfo metaRole = dataDir.FindMetaRole(string.Concat(childModel.GetType().Namespace, ".", elementName));
+									DomainRoleInfo metaRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(childModel.GetType().Namespace + "." + elementName));
 									// Fallback on the two standard meta models
 									if (metaRole == null)
 									{
-										metaRole = dataDir.FindMetaRole(string.Concat(typeof(ModelElement).Namespace, ".", elementName));
+										metaRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(ModelElement).Namespace + "." + elementName));
 										if (metaRole == null)
 										{
-											metaRole = dataDir.FindMetaRole(string.Concat(typeof(Diagram).Namespace, ".", elementName));
+											metaRole = dataDir.FindDomainRole(GetDomainObjectIdFromTypeName(typeof(Diagram).Namespace + "." + elementName));
 										}
 									}
 									if (metaRole != null)
 									{
-										containerOppositeMetaRole = metaRole;
+										containerOppositeDomainRole = metaRole;
 										containerRestoreCustomModel = customModel;
 										customModel = childModel;
 									}
@@ -2401,20 +2376,20 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					if (!nodeProcessed)
 					{
-						if (oppositeMetaRole != null)
+						if (oppositeDomainRole != null)
 						{
-							if (resolveOppositeMetaClass)
+							if (resolveOppositeDomainClass)
 							{
-								oppositeMetaClass = oppositeMetaRole.RolePlayer;
+								oppositeDomainClass = oppositeDomainRole.RolePlayer;
 								// If the opposite role player does not have any derived class in
 								// the model then we know what type of element to create. Otherwise,
 								// we need to create the element as a pending element if it doesn't exist
 								// already.
-								oppositeMetaClassFullyDeterministic = oppositeMetaClass.Descendants.Count == 0;
-								if (aggregatedClass && !oppositeMetaClassFullyDeterministic)
+								oppositeDomainClassFullyDeterministic = oppositeDomainClass.AllDescendants.Count == 0;
+								if (aggregatedClass && !oppositeDomainClassFullyDeterministic)
 								{
-									MetaClassInfo testMetaClass = null;
-									IORMCustomSerializedMetaModel elementModel = myXmlNamespaceToModelMap[namespaceName];
+									DomainClassInfo testMetaClass = null;
+									IORMCustomSerializedDomainModel elementModel = myXmlNamespaceToModelMap[namespaceName];
 									if (elementModel == null)
 									{
 										elementModel = customModel;
@@ -2424,20 +2399,20 @@ namespace Neumont.Tools.ORM.Shell
 										Guid mappedGuid = elementModel.MapClassName(namespaceName, elementName);
 										if (!mappedGuid.Equals(Guid.Empty))
 										{
-											testMetaClass = dataDir.FindMetaClass(mappedGuid);
+											testMetaClass = dataDir.FindDomainClass(mappedGuid);
 										}
 									}
 									if (testMetaClass == null)
 									{
 										Type namespaceType = (elementModel != null) ? elementModel.GetType() : element.GetType();
-										testMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
+										testMetaClass = dataDir.FindDomainClass(string.Concat(namespaceType.Namespace, ".", elementName));
 									}
-									oppositeMetaClass = testMetaClass;
-									oppositeMetaClassFullyDeterministic = true;
+									oppositeDomainClass = testMetaClass;
+									oppositeDomainClassFullyDeterministic = true;
 								}
 							}
 						}
-						else if (oppositeMetaRoleGuids != null)
+						else if (oppositeDomainRoleIds != null)
 						{
 							// In this case we have multiple opposite meta role guids, so we
 							// always have to rely on the aggregated element to find the data
@@ -2447,29 +2422,29 @@ namespace Neumont.Tools.ORM.Shell
 								Guid mappedGuid = customModel.MapClassName(namespaceName, elementName);
 								if (!mappedGuid.Equals(Guid.Empty))
 								{
-									oppositeMetaClass = dataDir.FindMetaClass(mappedGuid);
+									oppositeDomainClass = dataDir.FindDomainClass(mappedGuid);
 								}
 							}
-							if (oppositeMetaClass == null)
+							if (oppositeDomainClass == null)
 							{
 								Type namespaceType = (customModel != null) ? customModel.GetType() : element.GetType();
-								oppositeMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
+								oppositeDomainClass = dataDir.FindDomainClass(string.Concat(namespaceType.Namespace, ".", elementName));
 							}
-							if (oppositeMetaClass != null)
+							if (oppositeDomainClass != null)
 							{
-								oppositeMetaClassFullyDeterministic = true;
-								int roleGuidCount = oppositeMetaRoleGuids.Count;
+								oppositeDomainClassFullyDeterministic = true;
+								int roleGuidCount = oppositeDomainRoleIds.Count;
 								for (int i = 0; i < roleGuidCount; ++i)
 								{
-									MetaRoleInfo testRoleInfo = dataDir.FindMetaRole(oppositeMetaRoleGuids[i]);
-									if (oppositeMetaClass.IsDerivedFrom(testRoleInfo.RolePlayer.Id))
+									DomainRoleInfo testRoleInfo = dataDir.FindDomainRole(oppositeDomainRoleIds[i]);
+									if (oppositeDomainClass.IsDerivedFrom(testRoleInfo.RolePlayer.Id))
 									{
-										oppositeMetaRole = testRoleInfo;
+										oppositeDomainRole = testRoleInfo;
 #if DEBUG
 										for (int j = i + 1; j < roleGuidCount; ++j)
 										{
-											testRoleInfo = dataDir.FindMetaRole(oppositeMetaRoleGuids[j]);
-											Debug.Assert(testRoleInfo == null || !oppositeMetaClass.IsDerivedFrom(testRoleInfo.RolePlayer.Id), "Custom serialization data does not provide a unique deserialization map for a combined element.");
+											testRoleInfo = dataDir.FindDomainRole(oppositeDomainRoleIds[j]);
+											Debug.Assert(testRoleInfo == null || !oppositeDomainClass.IsDerivedFrom(testRoleInfo.RolePlayer.Id), "Custom serialization data does not provide a unique deserialization map for a combined element.");
 										}
 #endif // DEBUG
 										break;
@@ -2477,16 +2452,16 @@ namespace Neumont.Tools.ORM.Shell
 								}
 							}
 						}
-						if (oppositeMetaClass != null)
+						if (oppositeDomainClass != null)
 						{
-							Debug.Assert(oppositeMetaRole != null);
+							Debug.Assert(oppositeDomainRole != null);
 							// Create a new element and make sure the relationship
 							// to this element does not already exist. This obviously requires one
 							// relationship of each type between any two objects, which is a reasonable assumption
 							// for a well-formed model.
 							bool isNewElement;
 							string elementId = aggregatedClass ? idValue : refValue;
-							ModelElement oppositeElement = CreateElement(elementId, oppositeMetaClass, Guid.Empty, !oppositeMetaClassFullyDeterministic, out isNewElement);
+							ModelElement oppositeElement = CreateElement(elementId, oppositeDomainClass, Guid.Empty, !oppositeDomainClassFullyDeterministic, out isNewElement);
 							bool createLink = true;
 							if (aggregatedClass)
 							{
@@ -2500,18 +2475,18 @@ namespace Neumont.Tools.ORM.Shell
 										if (createLink)
 										{
 											createLink = false;
-											retVal = CreateElementLink(aggregateIdValue, element, oppositeElement, oppositeMetaRole, explicitRelationshipType);
+											retVal = CreateElementLink(aggregateIdValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
 										}
 										return retVal;
 									});
 							}
 							if (!isNewElement)
 							{
-								IList oppositeRolePlayers = oppositeElement.GetCounterpartRolePlayers(oppositeMetaRole, oppositeMetaRole.OppositeMetaRole);
+								LinkedElementCollection<ModelElement> oppositeRolePlayers = oppositeDomainRole.GetLinkedElements(oppositeElement);
 								int oppositeCount = oppositeRolePlayers.Count;
 								for (int i = 0; i < oppositeCount; ++i)
 								{
-									if (object.ReferenceEquals(element, oppositeRolePlayers[i]))
+									if (element == oppositeRolePlayers[i])
 									{
 										createLink = false;
 										break;
@@ -2520,7 +2495,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							if (createLink)
 							{
-								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeMetaRole, explicitRelationshipType);
+								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeDomainRole, explicitRelationshipType);
 								if (!aggregatedClass && idValue != null)
 								{
 									ProcessClassElement(reader, customModel, newLink, null);
@@ -2544,7 +2519,7 @@ namespace Neumont.Tools.ORM.Shell
 						// Pop the container node
 						containerName = null;
 						containerNamespace = null;
-						containerOppositeMetaRole = null;
+						containerOppositeDomainRole = null;
 						if (containerRestoreCustomModel != null)
 						{
 							customModel = containerRestoreCustomModel;
@@ -2559,50 +2534,17 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Retrieve a type converter for the specified type
-		/// </summary>
-		/// <param name="propertyType">The type of the property to convert</param>
-		/// <returns>TypeConverter, or null</returns>
-		private static TypeConverter GetTypeConverter(Type propertyType)
-		{
-			TypeConverter retVal = null;
-			if (myTypeConverterCache == null)
-			{
-				myTypeConverterCache = new Dictionary<Type, TypeConverter>();
-			}
-			else if (myTypeConverterCache.TryGetValue(propertyType, out retVal))
-			{
-				return retVal;
-			}
-			object[] typeConverters = propertyType.GetCustomAttributes(typeof(TypeConverterAttribute), false);
-
-			if (typeConverters != null && typeConverters.Length != 0)
-			{
-				Type converterType = Type.GetType(((TypeConverterAttribute)typeConverters[0]).ConverterTypeName, false, false);
-				if (converterType != null)
-				{
-					retVal = (TypeConverter)Activator.CreateInstance(converterType);
-				}
-			}
-			myTypeConverterCache[propertyType] = retVal;
-			return retVal;
-		}
-		/// <summary>
-		/// Set the value of the specified attribute on the model element
+		/// Set the value of the specified property on the model element
 		/// </summary>
 		/// <param name="element">The element to modify</param>
-		/// <param name="attributeInfo">The meta attribute to set</param>
-		/// <param name="stringValue">The new value of the attribute</param>
-		private static void SetAttributeValue(ModelElement element, MetaAttributeInfo attributeInfo, string stringValue)
+		/// <param name="domainPropertyInfo">The meta property to set</param>
+		/// <param name="stringValue">The new value of the property</param>
+		private static void SetPropertyValue(ModelElement element, DomainPropertyInfo domainPropertyInfo, string stringValue)
 		{
-			PropertyInfo propertyInfo = attributeInfo.PropertyInfo;
-			Type propertyType = propertyInfo.PropertyType;
+			PropertyInfo propertyInfo = domainPropertyInfo.PropertyInfo;
+			Type propertyType = domainPropertyInfo.PropertyType;
 			object objectValue = null;
-			if (propertyType.IsEnum)
-			{
-				objectValue = Enum.Parse(propertyType, stringValue);
-			}
-			else
+			if (!propertyType.IsEnum)
 			{
 				switch (Type.GetTypeCode(propertyType))
 				{
@@ -2661,21 +2603,17 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								objectValue = XmlConvert.ToTimeSpan(stringValue);
 							}
-							else
-							{
-								TypeConverter converter = GetTypeConverter(propertyType);
-								if (converter != null)
-								{
-									objectValue = converter.ConvertFromInvariantString(stringValue);
-								}
-							}
 							break;
 						}
 				}
 			}
+			if (objectValue == null)
+			{
+				objectValue = Design.ORMTypeDescriptor.CreatePropertyDescriptor(element, domainPropertyInfo).Converter.ConvertFromInvariantString(stringValue);
+			}
 			if (objectValue != null)
 			{
-				element.SetAttributeValue(attributeInfo, objectValue);
+				domainPropertyInfo.SetValue(element, objectValue);
 			}
 		}
 		/// <summary>
@@ -2688,7 +2626,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="explicitMetaRelationshipInfo">The relationship type to create.
 		/// Derived from oppositeMetaRoleInfo if not specified.</param>
 		/// <returns>The newly created element link</returns>
-		private ElementLink CreateElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo oppositeMetaRoleInfo, MetaRelationshipInfo explicitMetaRelationshipInfo)
+		private ElementLink CreateElementLink(string idValue, ModelElement rolePlayer, ModelElement oppositeRolePlayer, DomainRoleInfo oppositeMetaRoleInfo, DomainRelationshipInfo explicitMetaRelationshipInfo)
 		{
 			// Create an element link. There is no attempt here to determine if the link already
 			// exists in the store;
@@ -2711,14 +2649,9 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
-				false,
-				(explicitMetaRelationshipInfo == null) ?
-					oppositeMetaRoleInfo.MetaRelationship.ImplementationClass :
-					explicitMetaRelationshipInfo.ImplementationClass,
-				id,
-				new RoleAssignment[]{
-					new RoleAssignment(oppositeMetaRoleInfo.OppositeMetaRole, rolePlayer),
-					new RoleAssignment(oppositeMetaRoleInfo, oppositeRolePlayer)});
+				explicitMetaRelationshipInfo ?? oppositeMetaRoleInfo.DomainRelationship,
+				new RoleAssignment(oppositeMetaRoleInfo.OppositeDomainRole.Id, rolePlayer),
+				new RoleAssignment(oppositeMetaRoleInfo.Id, oppositeRolePlayer));
 			if (myNotifyAdded != null)
 			{
 				myNotifyAdded.ElementAdded(retVal);
@@ -2734,22 +2667,22 @@ namespace Neumont.Tools.ORM.Shell
 		/// Create a class element with the id specified in the reader
 		/// </summary>
 		/// <param name="idValue">The id for this element in the xml file</param>
-		/// <param name="metaClassInfo">The meta class info of the element to create. If null,
-		/// the metaClassId is used to find the class info</param>
-		/// <param name="metaClassId">The identifier for the class</param>
+		/// <param name="domainClassInfo">The meta class info of the element to create. If null,
+		/// the domainClassId is used to find the class info</param>
+		/// <param name="domainClassId">The identifier for the class</param>
 		/// <returns>A new ModelElement</returns>
-		private ModelElement CreateElement(string idValue, MetaClassInfo metaClassInfo, Guid metaClassId)
+		private ModelElement CreateElement(string idValue, DomainClassInfo domainClassInfo, Guid domainClassId)
 		{
 			bool isNewElement;
-			return CreateElement(idValue, metaClassInfo, metaClassId, false, out isNewElement);
+			return CreateElement(idValue, domainClassInfo, domainClassId, false, out isNewElement);
 		}
 		/// <summary>
 		/// Create a class element with the id specified in the reader
 		/// </summary>
 		/// <param name="idValue">The id for this element in the xml file</param>
-		/// <param name="metaClassInfo">The meta class info of the element to create. If null,
-		/// the metaClassId is used to find the class info</param>
-		/// <param name="metaClassId">The identifier for the class</param>
+		/// <param name="domainClassInfo">The meta class info of the element to create. If null,
+		/// the domainClassId is used to find the class info</param>
+		/// <param name="domainClassId">The identifier for the class</param>
 		/// <param name="createAsPlaceholder">The provided meta class information is not unique.
 		/// If this element is not already created then add it with a separate tracked id so it can
 		/// be replaced later by the fully resolved type. All role players will be automatically
@@ -2757,7 +2690,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="isNewElement">true if the element is actually created, as opposed
 		/// to being identified as an existing element</param>
 		/// <returns>A new ModelElement</returns>
-		private ModelElement CreateElement(string idValue, MetaClassInfo metaClassInfo, Guid metaClassId, bool createAsPlaceholder, out bool isNewElement)
+		private ModelElement CreateElement(string idValue, DomainClassInfo domainClassInfo, Guid domainClassId, bool createAsPlaceholder, out bool isNewElement)
 		{
 			isNewElement = false;
 
@@ -2773,27 +2706,27 @@ namespace Neumont.Tools.ORM.Shell
 				bool existingPlaceholder = placeholderMap != null && placeholderMap.TryGetValue(id, out placeholder);
 				// The false parameter indicates that OnInitialize should not be called, which
 				// is standard fare for deserialization routines.
-				if (metaClassInfo == null)
+				if (domainClassInfo == null)
 				{
-					metaClassInfo = myStore.MetaDataDirectory.FindMetaClass(metaClassId);
+					domainClassInfo = myStore.DomainDataDirectory.GetDomainClass(domainClassId);
 				}
-				Type implClass = metaClassInfo.ImplementationClass;
-				// Any request to create a MetaRelationshipInfo as an element instead of
+				Type implClass = domainClassInfo.ImplementationClass;
+				// Any request to create a DomainRelationshipInfo as an element instead of
 				// an element link means a forward reference to a link object. Always create
 				// this as a placeholder, given that we will eventually realize this as
 				// a real link.
-				if (createAsPlaceholder || implClass.IsAbstract || metaClassInfo is MetaRelationshipInfo)
+				if (createAsPlaceholder || implClass.IsAbstract || domainClassInfo is DomainRelationshipInfo)
 				{
 					if (placeholderMap == null)
 					{
 						myPlaceholderElementMap = placeholderMap = new Dictionary<Guid, PlaceholderElement>();
 					}
-					retVal = placeholder.CreatePlaceholderElement(myStore, metaClassInfo);
+					retVal = placeholder.CreatePlaceholderElement(myStore, domainClassInfo);
 					placeholderMap[id] = placeholder;
 				}
 				else
 				{
-					retVal = myStore.ElementFactory.CreateElement(false, implClass, id);
+					retVal = myStore.ElementFactory.CreateElement(domainClassInfo, new PropertyAssignment(ElementFactory.IdPropertyAssignment, id));
 					isNewElement = true;
 					if (myNotifyAdded != null)
 					{
@@ -2835,7 +2768,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				if (myCustomIdToGuidMap == null)
 				{
-					myCustomIdToGuidMap = new Dictionary<string, Guid>();
+					myCustomIdToGuidMap = new Dictionary<string, Guid>(StringComparer.Ordinal);
 				}
 				else
 				{
@@ -2875,96 +2808,4 @@ namespace Neumont.Tools.ORM.Shell
 		}
 	}
 	#endregion // New Deserialization
-	#region MetaModelAttributes
-	#region MetaModelAttributesUtility
-	/// <summary>
-	/// Grabs a Singleton ResourceManager.
-	/// </summary>
-	public static class MetaModelAttributesUtility
-	{
-		/// <summary>
-		/// The class that actually returns a ResourceManager.
-		/// </summary>
-		/// <param name="metaModelType">The type of MetaModel.</param>
-		/// <returns>The ResourceManager.</returns>
-		public static ResourceManager GetSingletonResourceManager(Type metaModelType)
-		{
-			PropertyInfo propertyInfo = metaModelType.GetProperty("SingletonResourceManager", BindingFlags.Static | BindingFlags.Public);
-			if (propertyInfo != null)
-			{
-				return propertyInfo.GetValue(null, null) as ResourceManager;
-			}
-			return null;
-		}
-	}
-	#endregion MetaModelAttributesUtility
-	#region MetaModelDescriptionAttribute
-	/// <summary>
-	/// This is a description attribute for the MetaModel.
-	/// </summary>s
-	public class MetaModelDescriptionAttribute : System.ComponentModel.DescriptionAttribute
-	{
-		private string _description;
-		private readonly Type _ownerType;
-		/// <summary>
-		/// MetaModelDescriptionAttribute constructor.
-		/// </summary>
-		/// <param name="ownerType">The owner</param>
-		/// <param name="resourceId">the resource id you wish to be returned.</param>
-		public MetaModelDescriptionAttribute(Type ownerType, string resourceId)
-			: base(resourceId)
-		{
-			this._ownerType = ownerType;
-		}
-		/// <summary>
-		/// Gets the Description from the Resource manager.
-		/// </summary>
-		public override string Description
-		{
-			get
-			{
-				if (this._description == null)
-				{
-					this._description = MetaModelAttributesUtility.GetSingletonResourceManager(this._ownerType).GetString(base.DescriptionValue, CultureInfo.CurrentUICulture);
-				}
-				return this._description;
-			}
-		}
-	}
-	#endregion // MetaModelDescriptionAttribute
-	#region MetaModelDisplayNameAttribute
-	/// <summary>
-	/// This class defines a MetaModelDisplayNameAttribute.
-	/// </summary>
-	public class MetaModelDisplayNameAttribute : DisplayNameAttribute
-	{
-		private string _displayName;
-		private readonly Type _ownerType;
-		/// <summary>
-		/// Constructor for a MetaModelDisplayNameAttribute.
-		/// </summary>
-		/// <param name="ownerType">The owner of the Attribute.</param>
-		/// <param name="resourceId">The resource id of the attribute you are trying to retrieve.</param>
-		public MetaModelDisplayNameAttribute(Type ownerType, string resourceId)
-			: base(resourceId)
-		{
-			this._ownerType = ownerType;
-		}
-		/// <summary>
-		/// Getter for the DisplayName of the MetaModelDisplayName attribute.
-		/// </summary>
-		public override string DisplayName
-		{
-			get
-			{
-				if (this._displayName == null)
-				{
-					this._displayName = MetaModelAttributesUtility.GetSingletonResourceManager(this._ownerType).GetString(base.DisplayNameValue, CultureInfo.CurrentUICulture);
-				}
-				return this._displayName;
-			}
-		}
-	}
-	#endregion // MetaModelDisplayNameAttribute
-	#endregion // MetaModelAttributes
 }

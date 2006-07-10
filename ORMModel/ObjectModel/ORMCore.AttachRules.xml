@@ -1,161 +1,162 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
-		Neumont Object-Role Modeling Architect for Visual Studio
-
-		Copyright © Neumont University. All rights reserved.
-
-		The use and distribution terms for this software are covered by the
-		Common Public License 1.0 (http://opensource.org/licenses/cpl) which
-		can be found in the file CPL.txt at the root of this distribution.
-		By using this software in any fashion, you are agreeing to be bound by
-		the terms of this license.
-
-		You must not remove this notice, or any other, from this software.
+		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
+		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* The use and distribution terms for this software are covered by the      *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</arg:CopyrightLine>
+		<arg:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</arg:CopyrightLine>
+		<arg:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</arg:CopyrightLine>
+		<arg:CopyrightLine>* the terms of this license.                                               *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
+		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMMetaModel">
-		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleRemoved"/>
+		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="DataTypeNotSpecifiedError.UnspecifiedTypeAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule"/>
-		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRemovingRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule"/>
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleAdded"/>
-		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleRemoved"/>
+		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeHasEntityTypeInstanceAdded"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
-		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceRemoved"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeleted"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
-		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleRemoved"/>
+		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleDeleting"/>
 		<arg:Rule class="FactType.FactTypeChangeRule"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderAddRuleModelValidation"/>
-		<arg:Rule class="FactType.FactTypeHasReadingOrderRemovedRuleModelValidation"/>
+		<arg:Rule class="FactType.FactTypeHasReadingOrderDeleteRuleModelValidation"/>
 		<arg:Rule class="FactType.FactTypeHasRoleAddRule"/>
-		<arg:Rule class="FactType.FactTypeHasRoleRemoveRule"/>
+		<arg:Rule class="FactType.FactTypeHasRoleDeleteRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintAddedRule"/>
-		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintRemovedRule"/>
+		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintDeleteRule"/>
 		<arg:Rule class="FactType.InternalUniquenessConstraintChangeRule"/>
-		<arg:CustomModelEvent class="FactTypeNameChangedEvent"/>
 		<arg:Rule class="FactType.ModelHasFactTypeAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintAddRuleModelValidation"/>
-		<arg:Rule class="FactType.ModelHasInternalConstraintRemoveRuleModelValidation"/>
+		<arg:Rule class="FactType.ModelHasInternalConstraintDeleteRuleModelValidation"/>
 		<arg:Rule class="FactType.ReadingOrderHasReadingAddRuleModelValidation"/>
-		<arg:Rule class="FactType.ReadingOrderHasReadingRemoveRuleModelValidation"/>
+		<arg:Rule class="FactType.ReadingOrderHasReadingDeleteRuleModelValidation"/>
 		<arg:Rule class="FactType.ValidateFactNameForObjectTypeNameChange"/>
 		<arg:Rule class="FactType.ValidateFactNameForReadingChange"/>
 		<arg:Rule class="FactType.ValidateFactNameForReadingOrderReorder"/>
 		<arg:Rule class="FactType.ValidateFactNameForReadingReorder"/>
 		<arg:Rule class="FactType.ValidateFactNameForRolePlayerAdded"/>
-		<arg:Rule class="FactType.ValidateFactNameForRolePlayerRemove"/>
+		<arg:Rule class="FactType.ValidateFactNameForRolePlayerDelete"/>
 		<arg:Rule class="FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule"/>
 		<arg:Rule class="FactTypeInstance.FactTypeHasRoleAdded"/>
-		<arg:Rule class="FactTypeInstance.FactTypeHasRoleRemoved"/>
+		<arg:Rule class="FactTypeInstance.FactTypeHasRoleDeleted"/>
 		<arg:Rule class="FactTypeInstance.FactTypeHasFactTypeInstanceAdded"/>
 		<arg:Rule class="FactTypeInstance.FactTypeInstanceHasRoleInstanceAdded"/>
-		<arg:Rule class="FactTypeInstance.FactTypeInstanceHasRoleInstanceRemoved"/>
+		<arg:Rule class="FactTypeInstance.FactTypeInstanceHasRoleInstanceDeleted"/>
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxRule"/>
 		<arg:Rule class="FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule"/>
 		<arg:Rule class="MandatoryConstraint.MandatoryConstraintChangeRule"/>
 		<arg:Rule class="MandatoryConstraint.VerifyImpliedMandatoryRoleAdd"/>
-		<arg:Rule class="MandatoryConstraint.VerifyImpliedMandatoryRoleRemoved"/>
+		<arg:Rule class="MandatoryConstraint.VerifyImpliedMandatoryRoleDeleting"/>
 		<arg:Rule class="ModelError.SynchronizeErrorForOwnerRule"/>
 		<arg:Rule class="ModelError.SynchronizeErrorTextForModelRule"/>
 		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.ORM.Framework"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Neumont.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkDeleteRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="Note.NoteChangeRule"/>
 		<arg:Rule class="Objectification.ImpliedFactTypeAddRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule"/>
-		<arg:Rule class="Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule"/>
+		<arg:Rule class="Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationFactTypeHasRoleAddRule"/>
-		<arg:Rule class="Objectification.ImpliedObjectificationFactTypeHasRoleRemovingRule"/>
+		<arg:Rule class="Objectification.ImpliedObjectificationFactTypeHasRoleDeletingRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationIsImpliedChangeRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationObjectifyingTypePlaysRoleAddRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationUniquenessConstraintIsInternalChangeRule"/>
 		<arg:Rule class="Objectification.InternalConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>
-		<arg:Rule class="Objectification.ObjectificationRemoveRule"/>
+		<arg:Rule class="Objectification.ObjectificationDeleteRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>
-		<arg:Rule class="Objectification.RoleRemovingRule"/>
-		<arg:Rule class="Objectification.RolePlayerRemovingRule"/>
+		<arg:Rule class="Objectification.RoleDeletingRule"/>
+		<arg:Rule class="Objectification.RolePlayerDeletingRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
 		<arg:Rule class="ObjectType.MandatoryRoleAddedRule"/>
-		<arg:Rule class="ObjectType.MandatoryRoleRemovingRule"/>
+		<arg:Rule class="ObjectType.MandatoryRoleDeletingRule"/>
 		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
 		<arg:Rule class="ObjectType.ObjectTypeChangeRule"/>
-		<arg:Rule class="ObjectType.ObjectTypeRemoveRule"/>
+		<arg:Rule class="ObjectType.ObjectTypeDeleteRule"/>
 		<arg:Rule class="ObjectType.SubtypeFactChangeRule"/>
 		<arg:Rule class="ObjectType.SupertypeAddedRule"/>
-		<arg:Rule class="ObjectType.SupertypeRemoveRule"/>
-		<arg:Rule class="ObjectType.SupertypeRemovingRule"/>
+		<arg:Rule class="ObjectType.SupertypeDeleteRule"/>
+		<arg:Rule class="ObjectType.SupertypeDeletingRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>
-		<arg:Rule class="ObjectType.VerifyReferenceSchemeRemoveRule"/>
+		<arg:Rule class="ObjectType.VerifyReferenceSchemeDeleteRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>
-		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeRemoveRule"/>
+		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeDeleteRule"/>
 		<arg:Rule class="ORMMetaModel.DelayValidateElements"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateConstraintNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>
-		<arg:Rule class="Reading.ReadingOrderHasRoleRemoved"/>
+		<arg:Rule class="Reading.ReadingOrderHasRoleDeleted"/>
 		<arg:Rule class="Reading.ReadingPropertiesChanged"/>
 		<arg:Rule class="ReadingOrder.EnforceNoEmptyReadingOrder"/>
 		<arg:Rule class="ReadingOrder.FactTypeHasRoleAddedRule"/>
-		<arg:Rule class="ReadingOrder.ReadingOrderHasRoleRemoving"/>
+		<arg:Rule class="ReadingOrder.ReadingOrderHasRoleDeleting"/>
 		<arg:Rule class="ReferenceMode.ReferenceModeAddedRule"/>
 		<arg:Rule class="ReferenceMode.ReferenceModeChangeRule"/>
 		<arg:Rule class="ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindChangeRule"/>
-		<arg:Rule class="ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRemovingRule"/>
+		<arg:Rule class="ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindDeletingRule"/>
 		<arg:Rule class="ReferenceModeKind.ReferenceModeKindChangeRule"/>
 		<arg:Rule class="RingConstraint.RingConstraintTypeChangeRule"/>
 		<arg:Rule class="Role.RoleChangeRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredAddRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredForNewRoleAddRule"/>
-		<arg:Rule class="Role.RolePlayerRequiredRemovedRule"/>
-		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsRemovedRule"/>
+		<arg:Rule class="Role.RolePlayerRequiredDeleteRule"/>
+		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsDeleteRule"/>
 		<arg:Rule class="RoleValueConstraint.RoleValueConstraintChangeRule"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintHasRoleSequenceAdded"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForAdd"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForConstraintAdd"/>
-		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForRemove"/>
+		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForDelete"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForAdd"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForFactTypeAdd"/>
-		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
-		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForRemove"/>
+		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForFactTypeDelete"/>
+		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForDelete"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceValidityForReorder"/>
-		<arg:Rule class="SetComparisonConstraint.ExternalRoleConstraintRemoved"/>
+		<arg:Rule class="SetComparisonConstraint.ExternalRoleConstraintDeleted"/>
 		<arg:Rule class="SetComparisonConstraint.FactAdded"/>
 		<arg:Rule class="SetComparisonConstraint.FactSetComparisonConstraintAdded"/>
 		<arg:Rule class="SetConstraint.ConstraintAdded"/>
 		<arg:Rule class="SetConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForAdd"/>
 		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForFactTypeAdd"/>
-		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
-		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForRemove"/>
+		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForFactTypeDelete"/>
+		<arg:Rule class="SetConstraint.EnforceRoleSequenceValidityForDelete"/>
 		<arg:Rule class="SetConstraint.FactAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintAdded"/>
-		<arg:Rule class="SetConstraint.FactSetConstraintRemoved"/>
+		<arg:Rule class="SetConstraint.FactSetConstraintDeleted"/>
 		<arg:Rule class="SubtypeFact.BlockCircularSubtypesAddRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesAddRule"/>
-		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesRemoveRule"/>
+		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesDeleteRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentRolePlayerTypesAddRule"/>
 		<arg:Rule class="SubtypeFact.InitializeSubtypeAddRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintChangeRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesAddRule"/>
-		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesRemoveRule"/>
+		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesDeleteRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintsAddRule"/>
-		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintsRemoveRule"/>
+		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintsDeleteRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeRolesAddRule"/>
-		<arg:Rule class="SubtypeFact.LimitSubtypeRolesRemoveRule"/>
-		<arg:Rule class="SubtypeFact.RemoveSubtypeWhenRolePlayerRemoved"/>
+		<arg:Rule class="SubtypeFact.LimitSubtypeRolesDeleteRule"/>
+		<arg:Rule class="SubtypeFact.DeleteSubtypeWhenRolePlayerDeleted"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneAddRuleModelConstraintAddValidation"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneAddRuleModelFactAddValidation"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneAddRuleModelValidation"/>
-		<arg:Rule class="UniquenessConstraint.NMinusOneRemoveRuleModelConstraintRemoveValidation"/>
-		<arg:Rule class="UniquenessConstraint.NMinusOneRemoveRuleModelFactRemoveValidation"/>
+		<arg:Rule class="UniquenessConstraint.NMinusOneDeleteRuleModelConstraintDeleteValidation"/>
+		<arg:Rule class="UniquenessConstraint.NMinusOneDeleteRuleModelFactDeleteValidation"/>
 		<arg:Rule class="UniquenessConstraint.UniquenessConstraintChangeRule"/>
 		<arg:Rule class="ValueRange.DataTypeAddRule"/>
 		<arg:Rule class="ValueRange.DataTypeChangeRule"/>

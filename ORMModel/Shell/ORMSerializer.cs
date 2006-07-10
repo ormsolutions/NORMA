@@ -24,8 +24,8 @@ using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Threading;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagnostics;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
@@ -83,19 +83,8 @@ namespace Neumont.Tools.ORM.Shell
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable
-		private static object myLockObject;
+		private static readonly object LockObject = new object();
 		private static XslCompiledTransform myTrimMdfOrmTransform;
-		private static object LockObject
-		{
-			get
-			{
-				if (myLockObject == null)
-				{
-					Interlocked.CompareExchange(ref myLockObject, new object(), null);
-				}
-				return myLockObject;
-			}
-		}
 		private static XslCompiledTransform EnsureTransform(ref XslCompiledTransform transform, string xsl)
 		{
 			if (transform == null)
@@ -134,7 +123,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		/// <summary>
 		/// Track when we've seen a diagram. We only want
-		/// to record SubjectHasPresentation elements after
+		/// to record PresentationViewsSubject elements after
 		/// a diagram to keep the object and shape portions
 		/// of the model separate.
 		/// </summary>
@@ -150,7 +139,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Current store object. Set in constructor
 		/// </summary>
-		private Store myStore;
+		private readonly Store myStore;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -271,7 +260,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				mySeenDiagram = true;
 			}
-			else if (modelElement is SubjectHasPresentation)
+			else if (modelElement is PresentationViewsSubject)
 			{
 				return mySeenDiagram;
 			}
@@ -316,7 +305,7 @@ namespace Neumont.Tools.ORM.Shell
 						writer.WriteComment(reader.Value);
 						break;
 					case XmlNodeType.Document:
-						System.Diagnostics.Debug.Assert(false, "Hit XmlNodeType.Document, not expected"); // Not expected
+						System.Diagnostics.Debug.Fail("Hit XmlNodeType.Document, not expected");
 						break;
 					case XmlNodeType.Whitespace:
 						break;

@@ -17,10 +17,12 @@
 //#define IMPLIEDJOINPATH
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
@@ -53,19 +55,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return new LinkDecorator[] { new InnerCircle(), new OuterCircle() };
 			}
 		}
-		private class OuterCircle : LinkDecorator
+		private sealed class OuterCircle : LinkDecorator
 		{
 			public OuterCircle()
 			{
 				FillDecorator = true;
 			}
-			protected override GraphicsPath GetPath(RectangleD bounds)
+			protected sealed override GraphicsPath GetPath(RectangleD bounds)
 			{
 				GraphicsPath path = new GraphicsPath();
 				path.AddArc(RectangleD.ToRectangleF(bounds), 0, 360);
 				return path;
 			}
-			public override StyleSetResourceId BrushId
+			public sealed override StyleSetResourceId BrushId
 			{
 				get
 				{
@@ -73,13 +75,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		private class InnerCircle : LinkDecorator
+		private sealed class InnerCircle : LinkDecorator
 		{
 			public InnerCircle()
 			{
 				FillDecorator = true;
 			}
-			protected override GraphicsPath GetPath(RectangleD bounds)
+			protected sealed override GraphicsPath GetPath(RectangleD bounds)
 			{
 				GraphicsPath path = new GraphicsPath();
 				float inflateBy = -(float)(bounds.Width / 4);
@@ -317,7 +319,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectTypePlaysRole link;
 				Role role;
 				if ((null != (link = AssociatedRolePlayerLink)) &&
-					(null != (role = link.PlayedRoleCollection)) &&
+					(null != (role = link.PlayedRole)) &&
 					role.IsMandatory)
 				{
 					retVal = true;
@@ -336,7 +338,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Role role;
 				ObjectTypePlaysRole link;
 				if ((null != (link = AssociatedRolePlayerLink)) &&
-					(null != (role = link.PlayedRoleCollection)) &&
+					(null != (role = link.PlayedRole)) &&
 					role.IsMandatory &&
 					role.MandatoryConstraintModality == ConstraintModality.Deontic)
 				{
@@ -423,7 +425,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactType nestedFact = rolePlayer.NestedFactType;
 				NodeShape fromShape;
 				NodeShape toShape;
-				if (null != (fromShape = diagram.FindShapeForElement(modelLink.PlayedRoleCollection.FactType) as NodeShape) &&
+				if (null != (fromShape = diagram.FindShapeForElement(modelLink.PlayedRole.FactType) as NodeShape) &&
 					null != (toShape = diagram.FindShapeForElement((nestedFact == null) ? rolePlayer as ModelElement : nestedFact) as NodeShape))
 				{
 					Connect(fromShape, toShape);
@@ -460,7 +462,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				ObjectTypePlaysRole link = ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				FactType fact = role.FactType;
 				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.RolePlayerLinkAccessibleFromValueFormat, fact.Name, role.Name, (fact.RoleCollection.IndexOf(role) + 1).ToString(CultureInfo.CurrentCulture));
 			}
@@ -472,9 +474,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void UpdateDotDisplayOnMandatoryConstraintChange(Role role)
 		{
-			foreach (ModelElement mel in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+			foreach (ObjectTypePlaysRole objectTypePlaysRole in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
 			{
-				foreach (PresentationElement pel in mel.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(objectTypePlaysRole))
 				{
 					ShapeElement shape = pel as ShapeElement;
 					if (shape != null)
@@ -489,40 +491,40 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MandatoryConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
-			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactSetConstraint.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(relInfo, new ElementAddedEventHandler(InternalConstraintRoleSequenceAddedEvent));
-			relInfo = dataDirectory.FindMetaRelationship(ConstraintRoleSequenceHasRole.MetaRelationshipGuid);
-			eventDirectory.ElementRemoved.Add(relInfo, new ElementRemovedEventHandler(InternalConstraintRoleSequenceRoleRemovedEvent));
+			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
+			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId);
+			eventDirectory.ElementAdded.Add(relInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent));
+			relInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+			eventDirectory.ElementDeleted.Add(relInfo, new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
 		public static void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MandatoryConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
-			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactSetConstraint.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(relInfo, new ElementAddedEventHandler(InternalConstraintRoleSequenceAddedEvent));
-			relInfo = dataDirectory.FindMetaRelationship(ConstraintRoleSequenceHasRole.MetaRelationshipGuid);
-			eventDirectory.ElementRemoved.Remove(relInfo, new ElementRemovedEventHandler(InternalConstraintRoleSequenceRoleRemovedEvent));
+			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(MandatoryConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
+			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(FactSetConstraint.DomainClassId);
+			eventDirectory.ElementAdded.Remove(relInfo, new EventHandler<ElementAddedEventArgs>(InternalConstraintRoleSequenceAddedEvent));
+			relInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+			eventDirectory.ElementDeleted.Remove(relInfo, new EventHandler<ElementDeletedEventArgs>(InternalConstraintRoleSequenceRoleRemovedEvent));
 		}
 		/// <summary>
 		/// Update the link displays when the modality of a simple mandatory constraint changes
 		/// </summary>
-		private static void InternalConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void InternalConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			MandatoryConstraint smc = e.ModelElement as MandatoryConstraint;
-			if (smc != null && !smc.IsRemoved && smc.IsSimple)
+			if (smc != null && !smc.IsDeleted && smc.IsSimple)
 			{
-				RoleMoveableCollection roles = smc.RoleCollection;
+				LinkedElementCollection<Role> roles = smc.RoleCollection;
 				if (roles.Count != 0)
 				{
 					UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
@@ -535,10 +537,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static void InternalConstraintRoleSequenceAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			FactSetConstraint link = e.ModelElement as FactSetConstraint;
-			MandatoryConstraint constraint = link.SetConstraintCollection as MandatoryConstraint;
-			if (constraint != null && !constraint.IsRemoved && constraint.IsSimple)
+			MandatoryConstraint constraint = link.SetConstraint as MandatoryConstraint;
+			if (constraint != null && !constraint.IsDeleted && constraint.IsSimple)
 			{
-				RoleMoveableCollection roles = constraint.RoleCollection;
+				LinkedElementCollection<Role> roles = constraint.RoleCollection;
 				if (roles.Count > 0)
 				{
 					Debug.Assert(roles.Count == 1); // Mandatory constraints have a single role only
@@ -549,15 +551,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Update the link display when a mandatory constraint role is removed
 		/// </summary>
-		private static void InternalConstraintRoleSequenceRoleRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private static void InternalConstraintRoleSequenceRoleRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			Role role;
 			MandatoryConstraint constraint;
-			if (null != (constraint = link.ConstraintRoleSequenceCollection as MandatoryConstraint) &&
+			if (null != (constraint = link.ConstraintRoleSequence as MandatoryConstraint) &&
 				constraint.IsSimple &&
-				(null != (role = link.RoleCollection)) &&
-				!role.IsRemoved)
+				(null != (role = link.Role)) &&
+				!role.IsDeleted)
 			{
 				UpdateDotDisplayOnMandatoryConstraintChange(role);
 			}
@@ -588,15 +590,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Microsoft passes link information into DoFoldToShape
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class RolePlayerRemoving : RemovingRule
+		private sealed class RolePlayerDeleting : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				FactType fact = role.FactType;
-				if (fact != null && !fact.IsRemoving)
+				if (fact != null && !fact.IsDeleting)
 				{
 					IList roles = fact.RoleCollection;
 					int rolesCount = roles.Count;
@@ -604,20 +606,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					for (int i = 0; i < rolesCount; ++i)
 					{
 						Role currentRole = roles[i] as Role;
-						if (currentRole != null && !currentRole.IsRemoving)
+						if (currentRole != null && !currentRole.IsDeleting)
 						{
-							IList rolePlayerLinks = currentRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+							ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(currentRole, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 							if (rolePlayerLinks.Count != 0)
 							{
-								ObjectTypePlaysRole playerLink = (ObjectTypePlaysRole)rolePlayerLinks[0];
-								if (!playerLink.IsRemoving && object.ReferenceEquals(playerLink.RolePlayer, rolePlayer))
+								ObjectTypePlaysRole playerLink = rolePlayerLinks[0];
+								if (!playerLink.IsDeleting && playerLink.RolePlayer == rolePlayer)
 								{
-									foreach (PresentationElement pel in playerLink.PresentationRolePlayers)
+									foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(playerLink))
 									{
 										RolePlayerLink displayLink = pel as RolePlayerLink;
 										if (displayLink != null)
 										{
-											displayLink.RipUp();
+											displayLink.RecalculateRoute();
 										}
 									}
 								}

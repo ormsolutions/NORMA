@@ -248,7 +248,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				/// <summary>
 				/// When the ConceptType is added we need to process it.
 				/// </summary>
-				public override void ElementAdded(ElementAddedEventArgs e)
+				public sealed override void ElementAdded(ElementAddedEventArgs e)
 				{
 					ProcessConceptType((e.ModelElement as OIALModelHasConceptType).ConceptTypeCollection);
 				}
@@ -262,7 +262,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				/// <summary>
 				/// When the ConcepType is removed we process it.
 				/// </summary>
-				public override void ElementRemoved(ElementRemovedEventArgs e)
+				public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 				{
 					ProcessConceptType((e.ModelElement as OIALModelHasConceptType).ConceptTypeCollection);
 				}
@@ -276,7 +276,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				/// <summary>
 				/// When a ConceptType absorbed another ConceptType we process it.
 				/// </summary>
-				public override void ElementAdded(ElementAddedEventArgs e)
+				public sealed override void ElementAdded(ElementAddedEventArgs e)
 				{
 					ProcessConceptType((e.ModelElement as ConceptTypeAbsorbedConceptType).AbsorbedConceptTypeCollection);
 				}
@@ -290,7 +290,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				/// <summary>
 				/// When an concepttype is removed we need to process it.
 				/// </summary>
-				public override void ElementRemoved(ElementRemovedEventArgs e)
+				public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 				{
 					ProcessConceptType((e.ModelElement as ConceptTypeAbsorbedConceptType).AbsorbedConceptTypeCollection);
 				}
@@ -305,7 +305,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When an ObjectType is added we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).Model, DelayValidateModel);
 			}
@@ -319,7 +319,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When an ObjectType is removed from a model we DelayValidate the Model.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectType objectType = (e.ModelElement as ModelHasObjectType).ObjectTypeCollection;
 				ORMModel model = objectType.Model;
@@ -335,7 +335,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When an ObjectType is changes we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ORMModel model = (e.ModelElement as ObjectType).Model;
 				if (model != null)
@@ -353,7 +353,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a FactType is added to the Model we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasFactType).Model, DelayValidateModel);
 			}
@@ -367,7 +367,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a FactType is removed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				FactType fact = (e.ModelElement as ModelHasFactType).FactTypeCollection;
 				ORMModel model = fact.Model;
@@ -383,7 +383,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a FactType is changed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ORMModel model = (e.ModelElement as FactType).Model;
 				if (model != null)
@@ -401,7 +401,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a SetConstraint is added we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
 				ORMMetaModel.DelayValidateElement(setConstraint.Model, DelayValidateModel);
@@ -416,7 +416,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a SetConstraint is changed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
 				ORMModel model = setConstraint.Model;
@@ -435,7 +435,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a SetConstraint is removed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
 				ORMModel model = setConstraint.Model;
@@ -452,7 +452,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// When an ObjectType plays a role we DelayValidate the Model.
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType objectType = objectRole.RolePlayer;
@@ -468,7 +468,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When an ObjectType plays role is removed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType objectType = objectRole.RolePlayer;
@@ -485,7 +485,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// When a ConstraintRoleSequence is added to a Role we DelayValidate the Model.
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
 				RoleBase rolebase = constraintSequence.RoleCollection;
@@ -502,7 +502,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a ConstraintRoleSeqeunce is removed from a Role we DelayValidate the Model.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
 				RoleBase rolebase = constraintSequence.RoleCollection;
@@ -519,7 +519,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a UniquenessConstraint is changed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
 				RoleMoveableCollection roles = constraint.RoleCollection;
@@ -545,7 +545,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a MandatoryConstraint is changed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				MandatoryConstraint constraint = e.ModelElement as MandatoryConstraint;
 				RoleMoveableCollection roles = constraint.RoleCollection;
@@ -571,7 +571,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a RoleBase is changed we DelayValidate the Model.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				RoleBase role = e.ModelElement as RoleBase;
 				FactType fact = role.FactType;
@@ -595,7 +595,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This class is the ObjectType fixuplistener.
 		/// We listen for ObjectTypes as they deserialize and DelayValidate the Model.
 		/// </summary>
-		private class OialObjectTypeFixupListener : DeserializationFixupListener<ObjectType>
+		private sealed class OialObjectTypeFixupListener : DeserializationFixupListener<ObjectType>
 		{
 			/// <summary>
 			/// OialObjectTypeFixupListener Constructor.
@@ -607,7 +607,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When an ObjectType is deserialized we DelayValidate the Model.
 			/// </summary>
-			protected override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ObjectType objectType = element as ObjectType;
 				ORMModel model = objectType.Model;
@@ -634,7 +634,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This FixupListener listens for FactTypes that are being Deserialized.
 		/// </summary>
-		private class OialFactTypeFixupListener : DeserializationFixupListener<FactType>
+		private sealed class OialFactTypeFixupListener : DeserializationFixupListener<FactType>
 		{
 			/// <summary>
 			/// OialFactTypeFixupListener Constructor.
@@ -646,7 +646,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a FactType is deserialized we DelayValidate the Model.
 			/// </summary>
-			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FactType fact = element as FactType;
 				ORMModel model = fact.Model;
@@ -673,7 +673,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This FixupListener listens for SetConstraints during deserialization.
 		/// </summary>
-		private class OialModelHasSetConstraintFixupListener : DeserializationFixupListener<ModelHasSetConstraint>
+		private sealed class OialModelHasSetConstraintFixupListener : DeserializationFixupListener<ModelHasSetConstraint>
 		{
 			/// <summary>
 			/// OialModelHasSetConstraintFixupListener Constructor.
@@ -685,7 +685,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a SetConstraint is deserialized we DelayValidate the Model.
 			/// </summary>
-			protected override void ProcessElement(ModelHasSetConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ModelHasSetConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ModelHasSetConstraint setConstraint = element as ModelHasSetConstraint;
 				ORMModel model = setConstraint.Model;
@@ -1185,7 +1185,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					RoleBase oppositeRoleBase = role.OppositeRole;
 					if (oppositeRoleBase != null)
 					{
-						if (object.ReferenceEquals(parentObject, oppositeRoleBase.Role.RolePlayer))
+						if (parentObject == oppositeRoleBase.Role.RolePlayer)
 						{
 							conceptTypeAbsorbedConceptType.PathRoleCollection.Add(role);
 							break;
@@ -1281,7 +1281,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				RoleBaseMoveableCollection factRoles = currentFact.RoleCollection;
 				Role firstRole = factRoles[0].Role;
 				Role secondRole = factRoles[1].Role;
-				if (object.ReferenceEquals(firstRole.RolePlayer, conceptObjectType))
+				if (firstRole.RolePlayer == conceptObjectType)
 				{
 					oppositeRole = secondRole;
 					thisRole = firstRole;
@@ -1720,7 +1720,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			for (int i = 0; i < count; ++i)
 			{
 				ConceptType currentConceptType = conceptTypes[i];
-				if (object.ReferenceEquals(currentConceptType.ObjectType, objectType))
+				if (currentConceptType.ObjectType == objectType)
 				{
 					return currentConceptType;
 				}
@@ -1750,7 +1750,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			for (int i = 0; i < informationTypeCount; ++i)
 			{
 				InformationTypeFormat currentInformationTypeFormat = thisInformationTypeFormats[i];
-				if (object.ReferenceEquals(valueType, currentInformationTypeFormat.ValueType))
+				if (valueType == currentInformationTypeFormat.ValueType)
 				{
 					return currentInformationTypeFormat;
 				}
@@ -1887,12 +1887,12 @@ namespace Neumont.Tools.ORM.OIALModel
 				{
 					ConceptType conceptType = conceptTypes[i];
 					ObjectType conceptObjectType = conceptType.ObjectType;
-					if (object.ReferenceEquals(conceptObjectType, nonMandatoryRolePlayer))
+					if (conceptObjectType == nonMandatoryRolePlayer)
 					{
 						absorberConceptType = conceptType;
 						continue;
 					}
-					if (object.ReferenceEquals(conceptObjectType, mandatoryRolePlayer))
+					if (conceptObjectType == mandatoryRolePlayer)
 					{
 						absorbingConceptType = conceptType;
 					}

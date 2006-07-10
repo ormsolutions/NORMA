@@ -26,7 +26,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Drawing;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Modeling.Shell;
 
 #endregion
 
@@ -49,23 +49,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static new void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			// Track ElementLink changes
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReadingAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingRemovedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingAddedEvent));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingRemovedEvent));
 
-			classInfo = dataDirectory.FindMetaClass(Reading.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ReadingAttributeChangedEvent));
+			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
+			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent));
 
-			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
+			classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasRole.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(RoleAddedEvent));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(RoleRemovedEvent));
 
-			classInfo = dataDirectory.FindMetaRelationship(FactTypeShapeHasRoleDisplayOrder.MetaRelationshipGuid);
-			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedHandler));
+			classInfo = dataDirectory.FindDomainRelationship(FactTypeShapeHasRoleDisplayOrder.DomainClassId);
+			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedHandler));
 		}
 		/// <summary>
 		/// Detaches event listeners for the purpose of notifying the
@@ -77,23 +77,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return;
 			}
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			// Track ElementLink changes
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReadingAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingRemovedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ReadingAddedEvent));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingRemovedEvent));
 
-			classInfo = dataDirectory.FindMetaClass(Reading.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ReadingAttributeChangedEvent));
+			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
+			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent));
 
-			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
+			classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasRole.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(RoleAddedEvent));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(RoleRemovedEvent));
 
-			classInfo = dataDirectory.FindMetaRelationship(FactTypeShapeHasRoleDisplayOrder.MetaRelationshipGuid);
-			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedHandler));
+			classInfo = dataDirectory.FindDomainRelationship(FactTypeShapeHasRoleDisplayOrder.DomainClassId);
+			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedHandler));
 		}
 		#endregion // Event Hookup
 		#region Reading Events
@@ -108,11 +108,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactType factType = factShape.ModelElement as FactType;
 				if (factType != null)
 				{
-					ReadingOrderMoveableCollection readings = factType.ReadingOrderCollection;
+					LinkedElementCollection<ReadingOrder> readings = factType.ReadingOrderCollection;
 					int readingCount = readings.Count;
 					for (int i = 0; i < readingCount; ++i)
 					{
-						RefreshPresentationElements(readings[i].PresentationRolePlayers);
+						RefreshPresentationElements(PresentationViewsSubject.GetPresentation(readings[i]));
 					}
 				}
 			}
@@ -128,7 +128,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// The primary reading is the first reading in the reading order.
 			// Note: this is done inline here because we already have the link,
 			// which would need to be requeried in the IsPrimaryForReadingOrder property
-			if (object.ReferenceEquals(order.ReadingCollection[0], link.ReadingCollection))
+			if (order.ReadingCollection[0] == link.Reading)
 			{
 				RefreshPresentationElements(order);
 			}
@@ -138,10 +138,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Event handler that listens for when ReadingOrderHasReading link is being removed
 		/// and then tells associated model elements to invalidate their cache
 		/// </summary>
-		private static void ReadingRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private static void ReadingRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ReadingOrder ord = (e.ModelElement as ReadingOrderHasReading).ReadingOrder;
-			if (!ord.IsRemoved)
+			if (!ord.IsDeleted)
 			{
 				// There is no way to test for primary after the element is removed, so
 				// always attempt a refresh on a delete
@@ -150,17 +150,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		/// <summary>
-		/// Event handler that listens for when a Reading attribute is changed
+		/// Event handler that listens for when a Reading property is changed
 		/// and then tells associated model elements to invalidate their cache
 		/// </summary>
-		private static void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void ReadingAttributeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			Guid attributeId = e.MetaAttribute.Id;
+			Guid attributeId = e.DomainProperty.Id;
 
-			if (attributeId == Reading.TextMetaAttributeGuid)
+			if (attributeId == Reading.TextDomainPropertyId)
 			{
 				Reading reading = e.ModelElement as Reading;
-				if (!reading.IsRemoved &&
+				if (!reading.IsDeleted &&
 					reading.IsPrimaryForReadingOrder)
 				{
 					RefreshPresentationElements(reading.ReadingOrder);
@@ -185,12 +185,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Event handler that listens for when ReadingOrderHasRole link is being removed
 		/// and then tells associated model elements to invalidate their cache
 		/// </summary>
-		public static void RoleRemovedEvent(object sender, ElementRemovedEventArgs e)
+		public static void RoleRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
 			ReadingOrder ord = link.ReadingOrder;
 
-			if (!ord.IsRemoved)
+			if (!ord.IsDeleted)
 			{
 				RefreshPresentationElements(ord);
 			}
@@ -206,21 +206,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// presentation element, so we need to look across pels
 			// on all reading orders associated with this fact, not
 			// just the one passed in.
-			if (RefreshPresentationElements(order.PresentationRolePlayers))
+			if (RefreshPresentationElements(PresentationViewsSubject.GetPresentation(order)))
 			{
 				return;
 			}
 			FactType fact = order.FactType;
-			if (fact != null && !fact.IsRemoved)
+			if (fact != null && !fact.IsDeleted)
 			{
-				ReadingOrderMoveableCollection orders = fact.ReadingOrderCollection;
+				LinkedElementCollection<ReadingOrder> orders = fact.ReadingOrderCollection;
 				int orderCount = orders.Count;
 				for (int i = 0; i < orderCount; ++i)
 				{
 					ReadingOrder currentOrder = orders[i];
-					if (!object.ReferenceEquals(currentOrder, order))
+					if (currentOrder != order)
 					{
-						if (RefreshPresentationElements(currentOrder.PresentationRolePlayers))
+						if (RefreshPresentationElements(PresentationViewsSubject.GetPresentation(currentOrder)))
 						{
 							break;
 						}
@@ -234,7 +234,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="pels"></param>
 		/// <returns>true if shape invalidated</returns>
-		private static bool RefreshPresentationElements(PresentationElementMoveableCollection pels)
+		private static bool RefreshPresentationElements(LinkedElementCollection<PresentationElement> pels)
 		{
 			bool retVal = false;
 			ReadingShape rs;
@@ -256,19 +256,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Model Event Hookup and Handlers
 		#region overrides
 		/// <summary>
-		/// Associate the reading text with this shape
+		/// Associate to the reading's text property
 		/// </summary>
-		protected override Guid AssociatedShapeMetaAttributeGuid
+		protected override Guid AssociatedModelDomainPropertyId
 		{
-			get { return ReadingTextMetaAttributeGuid; }
-		}
-
-		/// <summary>
-		/// Associate to the readints text attribute
-		/// </summary>
-		protected override Guid AssociatedModelMetaAttributeGuid
-		{
-			get { return ReadingOrder.ReadingTextMetaAttributeGuid; }
+			get { return ReadingOrder.ReadingTextDomainPropertyId; }
 		}
 
 		/// <summary>
@@ -354,7 +346,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (ft != null)
 			{
 				FactTypeDerivationExpression derivation = ft.DerivationRule;
-				if (derivation != null && !derivation.IsRemoved)
+				if (derivation != null && !derivation.IsDeleted)
 				{
 					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
 					string decorator = null;
@@ -387,7 +379,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static void InvalidateReadingShape(FactType factType)
 		{
-			foreach (ShapeElement se in factType.PresentationRolePlayers)
+			foreach (ShapeElement se in PresentationViewsSubject.GetPresentation(factType))
 			{
 				FactTypeShape factShape = se as FactTypeShape;
 				if (factShape != null)
@@ -422,11 +414,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 					FactType factType = readingOrd.FactType;
 					FactTypeShape factShape = this.ParentShape as FactTypeShape;
-					if (factType == null || factType.IsRemoved)
+					if (factType == null || factType.IsDeleted)
 					{
 						return "";
 					}
-					ReadingOrderMoveableCollection readingOrderCollection = factType.ReadingOrderCollection;
+					LinkedElementCollection<ReadingOrder> readingOrderCollection = factType.ReadingOrderCollection;
 					ReadingOrder primaryReadingOrder = FactTypeShape.FindMatchingReadingOrder(factShape);
 					int numReadingOrders = readingOrderCollection.Count;
 					for (int i = 0; i < numReadingOrders; ++i)
@@ -441,7 +433,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						ReadingOrder readingOrder = readingOrderCollection[i];
 						string aReading = readingOrder.ReadingText;
-						RoleBaseMoveableCollection roleCollection = readingOrder.RoleCollection;
+						LinkedElementCollection<RoleBase> roleCollection = readingOrder.RoleCollection;
 						int roleCount = roleCollection.Count;
 						if (roleCount <= 2 || (numReadingOrders > 1 && i == 0))
 						{
@@ -461,9 +453,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
-							RoleBaseMoveableCollection factRoleCollection = factShape.DisplayedRoleOrder;
-							//RoleMoveableCollection factRoleCollection = factType.RoleCollection;
-							bool primaryOrder = object.ReferenceEquals(primaryReadingOrder, readingOrder);
+							LinkedElementCollection<RoleBase> factRoleCollection = factShape.DisplayedRoleOrder;
+							//LinkedElementCollection<Role> factRoleCollection = factType.RoleCollection;
+							bool primaryOrder = primaryReadingOrder == readingOrder;
 							//UNDONE: the roleCount should be factRoleCollection.Count. However, this causes
 							//an error when a role is added to a factType because the factType attempts to
 							//update the ReadingShape before the ReadingOrders have had the role added to them.
@@ -513,13 +505,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrder))] is in the ORMShapeModel
 		// for easy sharing with the deserialization fixup process
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class ReadingOrderRemoved : RemoveRule
+		private sealed class ReadingOrderDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
 				FactType factType = link.FactType;
-				foreach (PresentationElement pel in factType.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
 					FactTypeShape factShape = pel as FactTypeShape;
 					if (factShape != null)
@@ -541,7 +533,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Contains code to replace RolePlayer place holders with an ellipsis.
 		/// </summary>
-		private class ReadingAutoSizeTextField : AutoSizeTextField
+		private sealed class ReadingAutoSizeTextField : AutoSizeTextField
 		{
 			/// <summary>
 			/// Initialize a ReadingAutoSizeTextField
@@ -588,7 +580,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// primary reading for that order, requiring a redraw
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ReadingPositionChanged : RolePlayerPositionChangeRule
+		private sealed class ReadingPositionChanged : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -596,7 +588,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					ReadingOrder order = e.SourceElement as ReadingOrder;
 					FactType factType = order.FactType;
-					foreach (PresentationElement pel in factType.PresentationRolePlayers)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 					{
 						FactTypeShape factShape = pel as FactTypeShape;
 						if (factShape != null)
@@ -615,9 +607,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class RoleDisplayOrderAdded : AddRule
+		private sealed class RoleDisplayOrderAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeShape factShape = (e.ModelElement as FactTypeShapeHasRoleDisplayOrder).FactTypeShape;
 				foreach (ShapeElement shape in factShape.RelativeChildShapes)
@@ -631,7 +623,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class RoleDisplayOrderPositionChanged : RolePlayerPositionChangeRule
+		private sealed class RoleDisplayOrderPositionChanged : RolePlayerPositionChangeRule
 		{
 			public override void  RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -653,33 +645,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// reading shapes can have their display text invalidated.
 		/// </summary>
 		[RuleOn(typeof(Reading))]
-		private class ReadingTextChanged : ChangeRule
+		private sealed class ReadingTextChanged : ChangeRule
 		{
 			/// <summary>
-			/// Notice when Text attribute is changed and invalidate display text of the ReadingShapes
+			/// Notice when Text property is changed and invalidate display text of the ReadingShapes
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == Reading.TextMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == Reading.TextDomainPropertyId)
 				{
 					Reading reading = e.ModelElement as Reading;
 					ReadingOrder readingOrder;
 					FactType factType;
-					if (!reading.IsRemoved &&
+					if (!reading.IsDeleted &&
 						null != (readingOrder = reading.ReadingOrder) &&
 						null != (factType = readingOrder.FactType))
 					{
 						// UNDONE: We're using this and similar foreach constructs all over this
 						// file. Put some clean helper functions together and start using them.
-						PresentationElementMoveableCollection pelList = factType.PresentationRolePlayers;
+						LinkedElementCollection<PresentationElement> pelList = PresentationViewsSubject.GetPresentation(factType);
 						int pelCount = pelList.Count;
 						for (int i = 0; i < pelCount; ++i)
 						{
 							FactTypeShape factShape = pelList[i] as FactTypeShape;
 							if (factShape != null)
 							{
-								ShapeElementMoveableCollection childShapes = factShape.RelativeChildShapes;
+								LinkedElementCollection<ShapeElement> childShapes = factShape.RelativeChildShapes;
 								int childPelCount = childShapes.Count;
 								for (int j = 0; j < childPelCount; ++j)
 								{

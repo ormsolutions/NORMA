@@ -18,11 +18,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
@@ -47,20 +46,20 @@ namespace Neumont.Tools.ORM.Shell
 					mySurveyTree = new VirtualTree();
 					IList<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
 					IList<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
-					ICollection substores = this.Store.SubStores.Values;
-					foreach(object o in substores)
+					ICollection<DomainModel> domainModels = this.Store.DomainModels;
+					foreach(DomainModel domainModel in domainModels)
 					{
-						ISurveyNodeProvider nodeProvider = o as ISurveyNodeProvider;
+						ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
 						if (nodeProvider != null)
 						{
 							nodeProviderList.Add(nodeProvider);	
 						}
-						ISurveyQuestionProvider questionProvider = o as ISurveyQuestionProvider;
+						ISurveyQuestionProvider questionProvider = domainModel as ISurveyQuestionProvider;
 						if (questionProvider != null)
 						{
 							questionProviderList.Add(questionProvider);
 						}
-						IORMModelEventSubscriber eventSubscriber = o as IORMModelEventSubscriber;
+						IORMModelEventSubscriber eventSubscriber = domainModel as IORMModelEventSubscriber;
 						if (eventSubscriber != null)
 						{
 							eventSubscriber.SurveyQuestionLoad();
@@ -433,7 +432,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						// Second pass, we were unable to find a suitable shape for the first
 						selectElement = proxyProvider.ElementDisplayedAs(element);
-						if (selectElement != null && object.ReferenceEquals(selectElement, element))
+						if (selectElement != null && selectElement == element)
 						{
 							selectElement = null;
 						}
@@ -444,7 +443,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (selectElement != null)
 					{
 						bool continueNow = false;
-						foreach (PresentationElement pel in selectElement.PresentationRolePlayers)
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
 						{
 							ShapeElement shape = pel as ShapeElement;
 							if (shape != null)
@@ -453,7 +452,7 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									proxyProvider = shape as IProxyDisplayProvider;
 								}
-								if (element is ORMModel && !useProxy && !object.ReferenceEquals(element, startElement))
+								if (element is ORMModel && !useProxy && element != startElement)
 								{
 									if (proxyProvider != null)
 									{
@@ -487,16 +486,16 @@ namespace Neumont.Tools.ORM.Shell
 					element = null;
 
 					// If we could not select the current element, then go up the aggregation chain
-					foreach (MetaRoleInfo role in nextElement.MetaClass.AllMetaRolesPlayed)
+					foreach (DomainRoleInfo role in nextElement.GetDomainClass().AllDomainRolesPlayed)
 					{
-						MetaRoleInfo oppositeRole = role.OppositeMetaRole;
-						if (oppositeRole.IsAggregate)
+						DomainRoleInfo oppositeRole = role.OppositeDomainRole;
+						if (oppositeRole.IsEmbedding)
 						{
-							IList parents = nextElement.GetCounterpartRolePlayers(role, oppositeRole);
+							LinkedElementCollection<ModelElement> parents = role.GetLinkedElements(nextElement);
 							if (parents.Count > 0)
 							{
 								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
-								element = (ModelElement)parents[0];
+								element = parents[0];
 								break;
 							}
 						}

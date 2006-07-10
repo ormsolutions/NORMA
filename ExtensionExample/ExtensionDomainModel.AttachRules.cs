@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+
 // Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -14,26 +15,59 @@ using System.Reflection;
 // *                                                                          *
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
+
 namespace ExtensionExample
 {
 	#region Attach rules to ExtensionDomainModel model
 	public partial class ExtensionDomainModel
 	{
+		private static Type[] myCustomDomainModelTypes;
+		private static Type[] CustomDomainModelTypes
+		{
+			get
+			{
+				Type[] retVal = ExtensionDomainModel.myCustomDomainModelTypes;
+				if (retVal == null)
+				{
+					// No synchronization is needed here.
+					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
+					// This would have a slightly negative impact on performance, but the result would still be correct.
+					// Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.
+					retVal = new Type[]{
+						typeof(ExtensionAddRule),
+						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
+					ExtensionDomainModel.myCustomDomainModelTypes = retVal;
+					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
+				}
+				return retVal;
+			}
+		}
 		/// <summary>
-		/// Generated code to attach rules to the store.
+		/// Generated code to attach s to the .
 		/// </summary>
-		protected override Type[] AllMetaModelTypes()
+		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
+		/// 
+		/// </seealso>
+		protected override Type[] GetCustomDomainModelTypes()
 		{
 			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}
-			Type[] retVal = new Type[]{
-				typeof(ExtensionAddRule),
-				typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
-			System.Diagnostics.Debug.Assert(!(((System.Collections.IList)retVal).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to load.");
-			return retVal;
+			Type[] retVal = base.GetCustomDomainModelTypes();
+			int baseLength = retVal.Length;
+			Type[] customDomainModelTypes = ExtensionDomainModel.CustomDomainModelTypes;
+			if (baseLength <= 0)
+			{
+				return customDomainModelTypes;
+			}
+			else
+			{
+				Array.Resize<Type>(ref retVal, baseLength + customDomainModelTypes.Length);
+				customDomainModelTypes.CopyTo(retVal, baseLength);
+				return retVal;
+			}
 		}
 	}
 	#endregion // Attach rules to ExtensionDomainModel model

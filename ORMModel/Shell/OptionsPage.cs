@@ -16,23 +16,23 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Drawing.Design;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
-using System.Globalization;
-using CategoryAttribute = System.ComponentModel.CategoryAttribute;
-using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
-using System.Drawing.Design;
-using Neumont.Tools.ORM.ObjectModel.Editors;
-using System.Collections.Generic;
+using Neumont.Tools.ORM.Design;
+
 namespace Neumont.Tools.ORM.Shell
 {
 	#region Shape enums
@@ -227,33 +227,36 @@ namespace Neumont.Tools.ORM.Shell
 	public class OptionsPage : DialogPage
 	{
 		#region Localized PropertyDescriptor attribute classes
+		//UNDONE: [Obsolete("UNDONE: 2006-06 DSL Tools port: This should probably be replaced with Microsoft.VisualStudio.Modeling.Design.CategoryResourceAttribute")]
 		private sealed class LocalizedCategoryAttribute : CategoryAttribute
 		{
 			public LocalizedCategoryAttribute(string category) : base(category)
 			{
 			}
-			protected override string GetLocalizedString(string value)
+			protected sealed override string GetLocalizedString(string value)
 			{
 				return ResourceStrings.GetOptionsPageString(value);
 			}
 		}
+		//UNDONE: [Obsolete("UNDONE: 2006-06 DSL Tools port: This should probably be replaced with Microsoft.VisualStudio.Modeling.Design.DescriptionResourceAttribute")]
 		private sealed class LocalizedDescriptionAttribute : DescriptionAttribute
 		{
 			public LocalizedDescriptionAttribute(string description) : base(description)
 			{
 			}
 
-			public override string Description
+			public sealed override string Description
 			{
 				get { return ResourceStrings.GetOptionsPageString(base.Description); }
 			}
 		}
+		//UNDONE: [Obsolete("UNDONE: 2006-06 DSL Tools port: This should probably be replaced with Microsoft.VisualStudio.Modeling.Design.DisplayNameResourceAttribute")]
 		private sealed class LocalizedDisplayNameAttribute : DisplayNameAttribute
 		{
 			public LocalizedDisplayNameAttribute(string displayName) : base(displayName)
 			{
 			}
-			public override string DisplayName
+			public sealed override string DisplayName
 			{
 				get { return ResourceStrings.GetOptionsPageString(base.DisplayName); }
 			}
@@ -406,28 +409,28 @@ namespace Neumont.Tools.ORM.Shell
 				Site,
 				delegate(ORMDesignerDocData docData)
 			{
-				IList diagrams = docData.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
+				ReadOnlyCollection<ORMDiagram> diagrams = docData.Store.ElementDirectory.FindElements<ORMDiagram>();
 				int diagramCount = diagrams.Count;
 				for (int i = 0; i < diagramCount; ++i)
 				{
-					ORMDiagram diagram = (ORMDiagram)diagrams[i];
+					ORMDiagram diagram = diagrams[i];
 					using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
 					{
 						Store store = diagram.Store;
-						foreach (BinaryLinkShape link in store.ElementDirectory.GetElements(BinaryLinkShape.MetaClassGuid, true))
+						foreach (BinaryLinkShape link in store.ElementDirectory.FindElements<BinaryLinkShape>(true))
 						{
-							link.RipUp();
+							link.RecalculateRoute();
 						}
 						if (resizeFactShapes)
 						{
-							foreach (FactTypeShape factShape in store.ElementDirectory.GetElements(FactTypeShape.MetaClassGuid, true))
+							foreach (FactTypeShape factShape in store.ElementDirectory.FindElements<FactTypeShape>(true))
 							{
 								factShape.AutoResize();
 							}
 						}
 						if (updateRoleNames)
 						{
-							foreach (Role role in store.ElementDirectory.GetElements(Role.MetaClassGuid, false))
+							foreach (Role role in store.ElementDirectory.FindElements<Role>(true))
 							{
 								RoleNameShape.SetRoleNameDisplay(role.FactType);
 							}
@@ -771,13 +774,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Provide context for the AvailableVerbalizationSnippetsEditor
 		/// </summary>
-		private class CustomVerbalizationSnippetsEditor : AvailableVerbalizationSnippetsEditor
+		private sealed class CustomVerbalizationSnippetsEditor : AvailableVerbalizationSnippetsEditor
 		{
 			/// <summary>
 			/// Provide the root directory for verbalization snippets. Individual packages
 			/// have directories below this.
 			/// </summary>
-			protected override string VerbalizationDirectory
+			protected sealed override string VerbalizationDirectory
 			{
 				get
 				{
@@ -787,11 +790,11 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Enumerate all registered snippets providers
 			/// </summary>
-			protected override IEnumerable<IVerbalizationSnippetsProvider> SnippetsProviders
+			protected sealed override IEnumerable<IVerbalizationSnippetsProvider> SnippetsProviders
 			{
 				get
 				{
-					foreach (Type metaModelType in ORMDesignerPackage.GetAvailableMetaModels())
+					foreach (Type metaModelType in ORMDesignerPackage.GetAvailableDomainModels())
 					{
 						IVerbalizationSnippetsProvider provider = Activator.CreateInstance(metaModelType) as IVerbalizationSnippetsProvider;
 						if (provider != null)
@@ -804,7 +807,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Get the format string for the dropdown
 			/// </summary>
-			protected override string LanguageFormatString
+			protected sealed override string LanguageFormatString
 			{
 				get
 				{
@@ -819,9 +822,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// in the OptionsPage dialog. Also display the 'Default' string if all defaults
 		/// should be used, and the 'Custom' string if there are any custom settings.
 		/// </summary>
-		private class CustomVerbalizationSnippetsConverter : StringConverter
+		private sealed class CustomVerbalizationSnippetsConverter : StringConverter
 		{
-			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+			public sealed override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 			{
 				if (context != null && context.Instance is OptionsPage && sourceType == typeof(string))
 				{
@@ -829,7 +832,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				return base.CanConvertFrom(context, sourceType);
 			}
-			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 			{
 				object retVal = base.ConvertTo(context, culture, value, destinationType);
 				if (context != null && context.Instance is OptionsPage && destinationType == typeof(string))

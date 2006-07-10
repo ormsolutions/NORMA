@@ -22,75 +22,67 @@ using System.Diagnostics;
 using System.IO;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region RoleMultiplicity enum
-	/// <summary>
-	/// Define the multiplicity for the roles. The role
-	/// multiplicity is currently displayed only on roles
-	/// associated with binary fact types and is calculated
-	/// based on the existing mandatory and internal uniqueness
-	/// constraints associated with the fact.
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum RoleMultiplicity
-	{
-		/// <summary>
-		/// Insufficient constraints are present to
-		/// determine the user intention.
-		/// </summary>
-		Unspecified,
-		/// <summary>
-		/// Too many constraints are present to determine
-		/// the user intention.
-		/// </summary>
-		Indeterminate,
-		/// <summary>
-		/// 0...1
-		/// </summary>
-		ZeroToOne,
-		/// <summary>
-		/// 0...n
-		/// </summary>
-		ZeroToMany,
-		/// <summary>
-		/// 1
-		/// </summary>
-		ExactlyOne,
-		/// <summary>
-		/// 1...n
-		/// </summary>
-		OneToMany,
-	}
-	#endregion // RoleMultiplicity enum
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<Role, Design.RoleTypeDescriptor<Role>>))]
 	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner
 	{
-		#region CustomStorage handlers
+		#region IndexOf helper method for LinkedElementCollection<RoleBase>
 		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in RoleChangeRule.
+		/// Determines the index of a specific Role in the list, resolving
+		/// RoleProxy elements as needed
 		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <param name="newValue">object</param>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		/// <param name="roleBaseCollection">The list in which to locate the role</param>
+		/// <param name="value">The Role to locate in the list</param>
+		/// <returns>index of object</returns>
+		public static int IndexOf(LinkedElementCollection<RoleBase> roleBaseCollection, Role value)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == RolePlayerDisplayMetaAttributeGuid ||
-				attributeGuid == IsMandatoryMetaAttributeGuid ||
-				attributeGuid == MandatoryConstraintNameMetaAttributeGuid ||
-				attributeGuid == MultiplicityMetaAttributeGuid ||
-				attributeGuid == ValueRangeTextMetaAttributeGuid ||
-				attributeGuid == MandatoryConstraintModalityMetaAttributeGuid ||
-				attributeGuid == ObjectificationOppositeRoleNameMetaAttributeGuid)
+			int count = roleBaseCollection.Count;
+			for (int i = 0; i < count; ++i)
 			{
-				// Handled by RoleChangeRule
-				return;
+				if (roleBaseCollection[i].Role == value)
+				{
+					return i;
+				}
 			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			return -1;
 		}
-		private RoleMultiplicity GetReverseMultiplicity(FactType factType, RoleBaseMoveableCollection roles)
+		#endregion // IndexOf helper method for LinkedElementCollection<RoleBase>
+		#region CustomStorage handlers
+		#region CustomStorage setters
+		private void SetRolePlayerDisplayValue(ObjectType newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		private void SetIsMandatoryValue(bool newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		private void SetMandatoryConstraintNameValue(string newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		private void SetMultiplicityValue(RoleMultiplicity newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		private void SetValueRangeTextValue(string newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		private void SetMandatoryConstraintModalityValue(ConstraintModality newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		private void SetObjectificationOppositeRoleNameValue(string newValue)
+		{
+			// Handled by RoleChangeRule
+		}
+		#endregion // CustomStorage setters
+		private RoleMultiplicity GetReverseMultiplicity(FactType factType, LinkedElementCollection<RoleBase> roles)
 		{
 			RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
 			bool haveMandatory = false;
@@ -136,7 +128,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				bool haveOppositeUniqueness = false;
 				Role oppositeRole = roles[0].Role;
-				if (object.ReferenceEquals(oppositeRole, this))
+				if (oppositeRole == this)
 				{
 					oppositeRole = roles[1].Role;
 				}
@@ -164,13 +156,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return retVal;
 		}
 		/// <summary>
-		/// Retrieve the mandatory constraint associated with this role, if any
+		/// Gets the <see cref="MandatoryConstraint"/> associated with this <see cref="Role"/>, if any.
 		/// </summary>
-		private MandatoryConstraint SimpleMandatoryConstraint
+		public MandatoryConstraint SimpleMandatoryConstraint
 		{
 			get
 			{
-				ConstraintRoleSequenceMoveableCollection constraintRoleSequences = ConstraintRoleSequenceCollection;
+				LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = ConstraintRoleSequenceCollection;
 				int roleSequenceCount = constraintRoleSequences.Count;
 				for (int i = 0; i < roleSequenceCount; ++i)
 				{
@@ -184,216 +176,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return null;
 			}
 		}
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+
+		private ObjectType GetRolePlayerDisplayValue()
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == RolePlayerDisplayMetaAttributeGuid)
+			return RolePlayer;
+		}
+		private bool GetIsMandatoryValue()
+		{
+			return SimpleMandatoryConstraint != null;
+		}
+		private string GetMandatoryConstraintNameValue()
+		{
+			MandatoryConstraint smc = SimpleMandatoryConstraint;
+			return (smc != null) ? smc.Name : String.Empty;
+		}
+		private RoleMultiplicity GetMultiplicityValue()
+		{
+			RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
+			FactType fact = FactType;
+			if (fact != null)
 			{
-				return RolePlayer;
-			}
-			else if (attributeGuid == IsMandatoryMetaAttributeGuid)
-			{
-				return SimpleMandatoryConstraint != null;
-			}
-			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid)
-			{
-				MandatoryConstraint smc = SimpleMandatoryConstraint;
-				return (smc != null) ? smc.Name : "";
-			}
-			else if (attributeGuid == MultiplicityMetaAttributeGuid)
-			{
-				RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
-				FactType fact = FactType;
-				if (fact != null)
+				LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
+				if (roles.Count == 2)
 				{
-					RoleBaseMoveableCollection roles = fact.RoleCollection;
-					if (roles.Count == 2)
+					RoleBase oppositeRole = roles[0];
+					if (oppositeRole == this)
 					{
-						RoleBase oppositeRole = roles[0];
-						if (object.ReferenceEquals(oppositeRole, this))
-						{
-							oppositeRole = roles[1];
-						}
-						retVal = oppositeRole.Role.GetReverseMultiplicity(fact, roles);
+						oppositeRole = roles[1];
 					}
+					retVal = oppositeRole.Role.GetReverseMultiplicity(fact, roles);
 				}
-				return retVal;
 			}
-			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
-			{
-				RoleValueConstraint valueConstraint = ValueConstraint;
-				return (valueConstraint == null) ? "" : valueConstraint.Text;
-			}
-			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
-			{
-				MandatoryConstraint smc = SimpleMandatoryConstraint;
-				return (smc != null) ? smc.Modality : ConstraintModality.Alethic;
-			}
-			else if (attributeGuid == ObjectificationOppositeRoleNameMetaAttributeGuid)
-			{
-				RoleProxy roleProxy = Proxy;
-				Role proxyOppositeRole;
-				return (roleProxy != null && (proxyOppositeRole = roleProxy.OppositeRole as Role) != null) ? proxyOppositeRole.Name : "";
-			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			return retVal;
 		}
-		/// <summary>
-		/// Standard override determine when derived attributes are
-		/// displayed in the property grid. Called for all attributes.
-		/// </summary>
-		/// <param name="metaAttrInfo">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
+		private string GetValueRangeTextValue()
 		{
-			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == MultiplicityMetaAttributeGuid)
-			{
-				FactType fact = FactType;
-				// Display for binary fact types
-				return fact != null && fact.RoleCollection.Count == 2;
-			}
-			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid || attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
-			{
-				return SimpleMandatoryConstraint != null;
-			}
-			else if (attributeGuid == ObjectificationOppositeRoleNameMetaAttributeGuid)
-			{
-				FactType fact = FactType;
-				return fact != null && fact.Objectification != null;
-			}
-			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
+			RoleValueConstraint valueConstraint = ValueConstraint;
+			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
 		}
-		/// <summary>
-		/// Standard override. Determines when derived properties are read-only. Called
-		/// if the ReadOnly setting on the element is one of the SometimesUIReadOnly* values.
-		/// Currently, ValueRangeText is readonly if the role player is an entity type without
-		/// a reference mode.
-		/// </summary>
-		/// <param name="propertyDescriptor">PropertyDescriptor</param>
-		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
+		private ConstraintModality GetMandatoryConstraintModalityValue()
 		{
-			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
-			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
-			{
-				bool readOnly = true;
-				FactType fact = this.FactType;
-				ObjectType rolePlayer = RolePlayer;
-				if (fact != null && rolePlayer != null)
-				{
-					readOnly = !(rolePlayer.IsValueType || rolePlayer.HasReferenceMode);
-				}
-				return readOnly;
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+			MandatoryConstraint smc = SimpleMandatoryConstraint;
+			return (smc != null) ? smc.Modality : ConstraintModality.Alethic;
+		}
+		private string GetObjectificationOppositeRoleNameValue()
+		{
+			RoleProxy roleProxy = Proxy;
+			Role proxyOppositeRole;
+			return (roleProxy != null && (proxyOppositeRole = roleProxy.OppositeRole as Role) != null) ? proxyOppositeRole.Name : String.Empty;
 		}
 		#endregion // CustomStorage handlers
-		#region Multiplicity Display
-		/// <summary>
-		/// Override to create a custom property descriptor for
-		/// multiplicity that does not include the Indeterminate
-		/// and Unspecified values in the dropdown, unless either
-		/// of these is the current value.
-		/// </summary>
-		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
-		{
-			if (metaAttributeInfo.Id == MultiplicityMetaAttributeGuid)
-			{
-				return new MultiplicityPropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
-			}
-			return base.CreatePropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
-		}
-		/// <summary>
-		/// A property descriptor that filters out some standard values from
-		/// the type converter.
-		/// </summary>
-		protected class MultiplicityPropertyDescriptor : ElementPropertyDescriptor
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			/// <param name="modelElement">Passed to base</param>
-			/// <param name="metaAttributeInfo">Passed to base</param>
-			/// <param name="requestor">Passed to base</param>
-			/// <param name="attributes">Passed to base</param>
-			public MultiplicityPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
-				: base(modelElement, metaAttributeInfo, requestor, attributes)
-			{
-			}
-			/// <summary>
-			/// Return a custom typeconverter that
-			/// limits the predefined values.
-			/// </summary>
-			/// <value></value>
-			public override TypeConverter Converter
-			{
-				get
-				{
-					return new FilteredMultiplicityConverter((EnumerationDomain)MetaAttributeInfo.Domain);
-				}
-			}
-			private class FilteredMultiplicityConverter : ModelingEnumerationConverter
-			{
-				public FilteredMultiplicityConverter(EnumerationDomain domain)
-					: base(domain)
-				{
-				}
-				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-				{
-					// We look at the role multiplicity and modify the collection for StandardValuesCollection
-					// so double-clicking the properties list will work when the role multiplicity is unspecified
-					// or indeterminate.
-					Role role = (Role)Editors.EditorUtility.ResolveContextInstance(context.Instance, false);
-					RoleMultiplicity[] roles;
-					switch (role.Multiplicity)
-					{
-						case RoleMultiplicity.Unspecified:
-							roles = new RoleMultiplicity[] { RoleMultiplicity.Unspecified, RoleMultiplicity.ZeroToOne, RoleMultiplicity.ZeroToMany, RoleMultiplicity.ExactlyOne, RoleMultiplicity.OneToMany };
-							break;
-						case RoleMultiplicity.Indeterminate:
-							roles = new RoleMultiplicity[] { RoleMultiplicity.Indeterminate, RoleMultiplicity.ZeroToOne, RoleMultiplicity.ZeroToMany, RoleMultiplicity.ExactlyOne, RoleMultiplicity.OneToMany };
-							break;
-						default:
-							roles = new RoleMultiplicity[] { RoleMultiplicity.ZeroToOne, RoleMultiplicity.ZeroToMany, RoleMultiplicity.ExactlyOne, RoleMultiplicity.OneToMany };
-							break;
-					}
-					return new StandardValuesCollection(roles);
-				}
-			}
-		}
-		#endregion // Multiplicity Display
 		#region RoleChangeRule class
 		[RuleOn(typeof(Role))]
-		private class RoleChangeRule : ChangeRule
+		private sealed class RoleChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Forward through the property grid property to the underlying
 			/// generating role property
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == Role.RolePlayerDisplayMetaAttributeGuid)
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == Role.RolePlayerDisplayDomainPropertyId)
 				{
 					(e.ModelElement as Role).RolePlayer = e.NewValue as ObjectType;
 				}
-				else if (attributeGuid == Role.ValueRangeTextMetaAttributeGuid)
+				else if (attributeGuid == Role.ValueRangeTextDomainPropertyId)
 				{
 					Role role = e.ModelElement as Role;
 					RoleValueConstraint valueConstraint = role.ValueConstraint;
 					if (valueConstraint == null)
 					{
-						role.ValueConstraint = valueConstraint = RoleValueConstraint.CreateRoleValueConstraint(role.Store);
+						role.ValueConstraint = valueConstraint = new RoleValueConstraint(role.Store);
 					}
 					valueConstraint.Text = (string)e.NewValue;
 				}
-				#region Handle IsMandatory attribute changes
-				else if (attributeGuid == Role.IsMandatoryMetaAttributeGuid)
+				#region Handle IsMandatory property changes
+				else if (attributeGuid == Role.IsMandatoryDomainPropertyId)
 				{
 					Role role = e.ModelElement as Role;
 					if ((bool)e.NewValue)
@@ -410,23 +270,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 					else
 					{
 						// Find and remove the mandatory constraint
-						ConstraintRoleSequenceMoveableCollection constraintRoleSequences = role.ConstraintRoleSequenceCollection;
+						LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = role.ConstraintRoleSequenceCollection;
 						int roleSequenceCount = constraintRoleSequences.Count;
 						for (int i = roleSequenceCount - 1; i >= 0; --i) // The indices may change, go backwards
 						{
 							IConstraint constraint = constraintRoleSequences[i].Constraint;
 							if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
 							{
-								(constraint as ModelElement).Remove();
+								(constraint as ModelElement).Delete();
 								// Should only have one of these, but we might as well keep going
 								// because any of them would make the property appear to be true
 							}
 						}
 					}
 				}
-				#endregion // Handle IsMandatory attribute changes
-				#region Handle MandatoryConstraintName attribute changes
-				else if (attributeGuid == Role.MandatoryConstraintNameMetaAttributeGuid)
+				#endregion // Handle IsMandatory property changes
+				#region Handle MandatoryConstraintName property changes
+				else if (attributeGuid == Role.MandatoryConstraintNameDomainPropertyId)
 				{
 					Role role = e.ModelElement as Role;
 					MandatoryConstraint smc = role.SimpleMandatoryConstraint;
@@ -435,9 +295,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						smc.Name = (string)e.NewValue;
 					}
 				}
-				#endregion // Handle MandatoryConstraintName attribute changes
-				#region Handle Multiplicity attribute changes
-				else if (attributeGuid == Role.MultiplicityMetaAttributeGuid)
+				#endregion // Handle MandatoryConstraintName property changes
+				#region Handle Multiplicity property changes
+				else if (attributeGuid == Role.MultiplicityDomainPropertyId)
 				{
 					RoleMultiplicity oldMultiplicity = (RoleMultiplicity)e.OldValue;
 					RoleMultiplicity newMultiplicity = (RoleMultiplicity)e.NewValue;
@@ -446,7 +306,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						Role role = e.ModelElement as Role;
 						FactType factType = role.FactType;
-						RoleBaseMoveableCollection factRoles = factType.RoleCollection;
+						LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
 						if (factType == null || factRoles.Count != 2)
 						{
 							return; // Ignore the request
@@ -454,7 +314,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 						// We implemented this backwards, so switch to the opposite role
 						Role testRole = factRoles[0].Role;
-						if (object.ReferenceEquals(role, testRole))
+						if (role == testRole)
 						{
 							role = factRoles[1].Role;
 						}
@@ -534,7 +394,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// If there are multiple uniqueness constraints, then remove
 							// all but one. Prefer a single-role constraint to a double-role
 							// constraint and pretend that our old value is a many.
-							ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+							LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 							int roleSequenceCount = roleSequences.Count;
 							// Go backwards so we can remove constraints
 							IConstraint keepCandidate = null;
@@ -559,7 +419,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									else if (currentMultiplicity < keepRoleMultiplicity)
 									{
 										keepRoleMultiplicity = currentMultiplicity;
-										(keepCandidate as ModelElement).Remove();
+										(keepCandidate as ModelElement).Delete();
 										keepCandidate = constraint;
 									}
 									else
@@ -570,13 +430,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 											currentMultiplicity == 1 &&
 											(constraint as UniquenessConstraint).IsPreferred)
 										{
-											(keepCandidate as ModelElement).Remove();
+											(keepCandidate as ModelElement).Delete();
 											keepCandidate = constraint;
 											keepCandidateIsPreferred = true;
 										}
 										else
 										{
-											(constraint as ModelElement).Remove();
+											(constraint as ModelElement).Delete();
 										}
 									}
 								}
@@ -606,7 +466,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									if (spanningConstraint.ConstraintType == ConstraintType.InternalUniqueness)
 									{
 										Debug.Assert(roleSequence.RoleCollection.Count == 2);
-										(spanningConstraint as ModelElement).Remove();
+										(spanningConstraint as ModelElement).Delete();
 										// There will only be one of these because we
 										// already fixed any 'broken' states earlier.
 										break;
@@ -632,13 +492,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 										if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 										{
 											Debug.Assert(roleSequence.RoleCollection.Count == 1);
-											(constraint as ModelElement).Remove();
+											(constraint as ModelElement).Delete();
 											break;
 										}
 									}
 								}
 								RoleBase oppositeBaseRole = factRoles[0];
-								if (object.ReferenceEquals(oppositeBaseRole.Role, role))
+								if (oppositeBaseRole.Role == role)
 								{
 									oppositeBaseRole = factRoles[1];
 								}
@@ -658,7 +518,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (!oppositeHasUnique)
 								{
 									// Now create a new uniqueness constraint containing both roles
-									RoleMoveableCollection constraintRoles = UniquenessConstraint.CreateInternalUniquenessConstraint(factType).RoleCollection;
+									LinkedElementCollection<Role> constraintRoles = UniquenessConstraint.CreateInternalUniquenessConstraint(factType).RoleCollection;
 									constraintRoles.Add(role);
 									constraintRoles.Add(oppositeRole);
 								}
@@ -666,9 +526,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				#endregion // Handle Multiplicity attribute changes
-				#region Handle MandatoryConstraintModality attribute changes
-				else if (attributeGuid == Role.MandatoryConstraintModalityMetaAttributeGuid)
+				#endregion // Handle Multiplicity property changes
+				#region Handle MandatoryConstraintModality property changes
+				else if (attributeGuid == Role.MandatoryConstraintModalityDomainPropertyId)
 				{
 					Role role = e.ModelElement as Role;
 					MandatoryConstraint smc = role.SimpleMandatoryConstraint;
@@ -677,9 +537,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						smc.Modality = (ConstraintModality)e.NewValue;
 					}
 				}
-				#endregion // Handle MandatoryConstraintModality attribute changes
-				#region Handle ObjectificationOppositeRoleName attribute changes
-				else if (attributeGuid == Role.ObjectificationOppositeRoleNameMetaAttributeGuid)
+				#endregion // Handle MandatoryConstraintModality property changes
+				#region Handle ObjectificationOppositeRoleName property changes
+				else if (attributeGuid == Role.ObjectificationOppositeRoleNameDomainPropertyId)
 				{
 					RoleProxy roleProxy = (e.ModelElement as Role).Proxy;
 					Role oppositeRole;
@@ -688,7 +548,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						oppositeRole.Name = (string)e.NewValue;
 					}
 				}
-				#endregion // Handle ObjectificationOppositeRoleName attribute changes
+				#endregion // Handle ObjectificationOppositeRoleName property changes
 			}
 		}
 		#endregion // RoleChangeRule class
@@ -766,7 +626,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasRole.RoleCollectionMetaRoleGuid, ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasRole.RoleDomainRoleId, ConstraintRoleSequenceHasRole.RoleDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -781,39 +641,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region RolePlayer validation rules
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
-		private class RolePlayerRequiredAddRule : AddRule
+		private sealed class RolePlayerRequiredAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				link.PlayedRoleCollection.VerifyRolePlayerRequiredForRule(null);
+				link.PlayedRole.VerifyRolePlayerRequiredForRule(null);
 			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class RolePlayerRequiredRemovedRule : RemoveRule
+		private sealed class RolePlayerRequiredDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				if (!role.IsRemoved)
+				Role role = link.PlayedRole;
+				if (!role.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(role, DelayValidateRolePlayerRequiredError);
 				}
 			}
 		}
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class RolePlayerRequiredForNewRoleAddRule : AddRule
+		private sealed class RolePlayerRequiredForNewRoleAddRule : AddRule
 		{
 			/// <summary>
 			/// Verify that the role has a role player attached to it, and
 			/// renumber other role player required error messages when roles are added
 			/// and removed.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				Role addedRole = link.RoleCollection as Role;
+				Role addedRole = link.Role as Role;
 				if (addedRole != null)
 				{
 					ORMMetaModel.DelayValidateElement(addedRole, DelayValidateRolePlayerRequiredError);
@@ -822,17 +682,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class UpdatedRolePlayerRequiredErrorsRemovedRule : RemoveRule
+		private sealed class UpdatedRolePlayerRequiredErrorsDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Renumber role player required error messages when roles are added
 			/// and removed.
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
-				if (!factType.IsRemoved)
+				if (!factType.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(factType, DelayRenumberErrorsWithRoleNumbers);
 				}
@@ -846,7 +706,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Role role = (Role)element;
 			FactType fact;
-			if (!role.IsRemoved &&
+			if (!role.IsDeleted &&
 				(null != (fact = role.FactType)))
 			{
 				RenumberErrorsWithRoleNumbers(fact, role);
@@ -861,9 +721,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="roleAdded">The added role, or null if a role was removed.</param>
 		private static void RenumberErrorsWithRoleNumbers(FactType factType, RoleBase roleAdded)
 		{
-			if (!factType.IsRemoved)
+			if (!factType.IsDeleted)
 			{
-				RoleBaseMoveableCollection roles = factType.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 				bool regenerate = roleAdded == null;
 				int roleCount = roles.Count;
 				for (int i = 0; i < roleCount; ++i)
@@ -919,7 +779,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private void VerifyRolePlayerRequiredForRule(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasRolePlayer = true;
 				RolePlayerRequiredError rolePlayerRequired;
@@ -934,7 +794,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						hasRolePlayer = false;
 						if (null == RolePlayerRequiredError)
 						{
-							rolePlayerRequired = RolePlayerRequiredError.CreateRolePlayerRequiredError(Store);
+							rolePlayerRequired = new RolePlayerRequiredError(Store);
 							rolePlayerRequired.Role = this;
 							rolePlayerRequired.Model = fact.Model;
 							rolePlayerRequired.GenerateErrorText();
@@ -949,7 +809,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (null != (rolePlayerRequired = RolePlayerRequiredError))
 					{
-						rolePlayerRequired.Remove();
+						rolePlayerRequired.Delete();
 					}
 				}
 			}
@@ -975,26 +835,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRedirectVerbalization Implementation
 		#region INamedElementDictionaryParent implementation
-		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+			return GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
 		/// <returns>Model-owned dictionary for constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			if (parentMetaRoleGuid == RoleHasValueConstraint.RoleMetaRoleGuid)
+			if (parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
 			{
 				FactType fact;
 				ORMModel model;
 				if ((null != (fact = FactType)) &&
 					(null != (model = fact.Model)))
 				{
-					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 				}
 			}
 			return null;
@@ -1002,18 +862,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
 		/// </summary>
-		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		protected static object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			// Use the default settings (allow duplicates during load time only)
 			return null;
 		}
-		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
+			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		#endregion // INamedElementDictionaryParent implementation
 		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { RoleHasValueConstraint.RoleMetaRoleGuid };
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { RoleHasValueConstraint.RoleDomainRoleId };
 		/// <summary>
 		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set.
@@ -1059,12 +919,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				// Only do this if it's a binary fact
-				RoleBaseMoveableCollection roles = this.FactType.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = this.FactType.RoleCollection;
 				if (roles.Count == 2)
 				{
 					// loop over the collection and get the other role
 					RoleBase oppositeRole = roles[0];
-					if (object.ReferenceEquals(oppositeRole, this))
+					if (oppositeRole == this)
 					{
 						return roles[1];
 					}
@@ -1075,27 +935,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return null;
 				}
 			}
-		}
-	}
-	public partial class RoleBaseMoveableCollection
-	{
-		/// <summary>
-		/// Determines the index of a specific Role in the list, resolving
-		/// RoleProxy elements as needed
-		/// </summary>
-		/// <param name="value">The Role to locate in the list</param>
-		/// <returns>index of object</returns>
-		public int IndexOf(Role value)
-		{
-			int count = Count;
-			for (int i = 0; i < count; ++i)
-			{
-				if (object.ReferenceEquals(this[i].Role, value))
-				{
-					return i;
-				}
-			}
-			return -1;
 		}
 	}
 	public partial class RolePlayerRequiredError : IRepresentModelElements

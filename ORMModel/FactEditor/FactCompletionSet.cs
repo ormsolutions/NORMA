@@ -14,27 +14,24 @@
 \**************************************************************************/
 #endregion
 
-#region Using directives
-
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Collections;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
-using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.TextManager.Interop;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
-#endregion
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
+using Neumont.Tools.ORM.Design;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.FactEditor
 {
@@ -43,12 +40,12 @@ namespace Neumont.Tools.ORM.FactEditor
 	/// </summary>
 	public class FactCompletionSet : IVsCompletionSet
 	{
-		private ORMDesignerPackage myPackage;
-		private IVsTextView myTextView;
-		private List<ObjectType> myObjectEntries;
+		private readonly ORMDesignerPackage myPackage;
+		private readonly IVsTextView myTextView;
+		private readonly List<ObjectType> myObjectEntries;
+		private readonly ImageList myImageList;
+		private readonly IComparer<ObjectType> myComparer;
 		private ORMDesignerDocView myCurrentDocView;
-		private ImageList myImageList;
-		private IComparer<ObjectType> myComparer;
 		private FactType myEditFact;
 
 		/// <summary>
@@ -61,41 +58,37 @@ namespace Neumont.Tools.ORM.FactEditor
 		{
 			myTextView = textView;
 			myPackage = package;
-			IServiceProvider serviceProvider = (IServiceProvider)myPackage;
-			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
-			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
-			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
-			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 			
 			// initialize the comparer used for sorting
-			myComparer = new ObjectTypeNameComparer();
+			myComparer = Design.NamedElementComparer<ObjectType>.CurrentCulture;
+
+			// create the list of object types in the model
+			myObjectEntries = new List<ObjectType>();
 
 			// create image list for intellisense
-			InitializeImageList();
-
-			// Create the list of object types in the model
-			LoadModelElements();
-		}
-
-		private void InitializeImageList()
-		{
 			myImageList = new ImageList();
 			myImageList.ImageSize = new Size(16, 16);
 			myImageList.TransparentColor = System.Drawing.Color.Lime;
 			myImageList.ImageStream = ResourceStrings.FactEditorIntellisenseImageList;
+
+			IMonitorSelectionService monitor = (IMonitorSelectionService)((IServiceProvider)package).GetService(typeof(IMonitorSelectionService));
+			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
+			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
+			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 		}
 
-		private void LoadModelElements()
+		private void ReloadModelElements()
 		{
-			if (myCurrentDocView != null)
+			List<ObjectType> objectEntries = myObjectEntries;
+			if (objectEntries.Count > 0)
 			{
-				IList objectList = (myCurrentDocView.DocData as ModelingDocData).Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
-				myObjectEntries = new List<ObjectType>();
-				foreach (ObjectType ot in objectList)
-				{
-					myObjectEntries.Add(ot);
-				}
-				myObjectEntries.Sort(myComparer);
+				objectEntries.Clear();
+			}
+			ORMDesignerDocView currentDocView = myCurrentDocView;
+			if (currentDocView != null)
+			{
+				objectEntries.AddRange(currentDocView.DocData.Store.ElementDirectory.FindElements<ObjectType>());
+				objectEntries.Sort(myComparer);
 			}
 		}
 
@@ -137,7 +130,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		[CLSCompliant(false)]
 		protected static int GetBestMatch(string pszSoFar, int iLength, out int piIndex, out uint pdwFlags)
 		{
-			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMMATCHING is set
+			Debug.Fail("Only called if UpdateCompletionFlags.CSF_CUSTOMMATCHING is set");
 			piIndex = 0;
 			pdwFlags = 0;
 			return VSConstants.E_NOTIMPL;
@@ -283,7 +276,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// </summary>
 		protected int GetInitialExtent(out int piLine, out int piStartCol, out int piEndCol)
 		{
-			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_INITIALEXTENTKNOWN is set
+			Debug.Fail("Only called if UpdateCompletionFlags.CSF_INITIALEXTENTKNOWN is set");
 			piLine = piStartCol = piEndCol = 0;
 
 			int hr = VSConstants.S_OK;
@@ -307,7 +300,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		[CLSCompliant(false)]
 		protected static int OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
 		{
-			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMCOMMIT is set
+			Debug.Fail("Only called if UpdateCompletionFlags.CSF_CUSTOMCOMMIT is set");
 			pbstrCompleteWord = pszSoFar;
 			return VSConstants.S_OK;
 		}
@@ -336,26 +329,27 @@ namespace Neumont.Tools.ORM.FactEditor
 				{
 					if (value != null)
 					{
-						if (object.ReferenceEquals(oldView, value))
+						if (oldView == value)
 						{
 							return;
 						}
-						else if (object.ReferenceEquals(oldView.DocData, value.DocData))
+						else if (oldView.DocData == value.DocData)
 						{
 							myCurrentDocView = value;
 							return;
 						}
 					}
-					ModelingDocData docData = oldView.DocData as ModelingDocData;
+					ModelingDocData docData = oldView.DocData;
 					if (docData != null)
 					{
 						DetachEventHandlers(docData.Store);
 					}
 				}
 				myCurrentDocView = value;
+				ReloadModelElements();
 				if (value != null)
 				{
-					AttachEventHandlers((value.DocData as ModelingDocData).Store);
+					AttachEventHandlers(value.DocData.Store);
 				}
 			}
 		}
@@ -383,22 +377,21 @@ namespace Neumont.Tools.ORM.FactEditor
 		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
 			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
-			LoadModelElements();
 		}
 
 		private void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
 			// Track ObjectType changes
-			classInfo = dataDirectory.FindMetaRelationship(ModelHasObjectType.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ObjectTypeAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ObjectTypeRemovedEvent));
+			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent));
 			
-			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeChangedEvent));
+			classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent));
 		}
 
 		private void DetachEventHandlers(Store store)
@@ -407,23 +400,23 @@ namespace Neumont.Tools.ORM.FactEditor
 			{
 				return; // Bail out
 			}
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ReadingOrderHasReading.DomainClassId);
 
 			// Track ObjectType changes
-			classInfo = dataDirectory.FindMetaRelationship(ModelHasObjectType.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ObjectTypeAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ObjectTypeRemovedEvent));
+			classInfo = dataDirectory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeRemovedEvent));
 
-			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeChangedEvent));
+			classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeChangedEvent));
 		}
 
 		private void ObjectTypeAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-			ObjectType objectType = link.ObjectTypeCollection;
+			ObjectType objectType = link.ObjectType;
 			Debug.Assert(objectType != null);
 
 			// Add the object to our list of valid objects, BinarySearch saves an extra Sort
@@ -438,10 +431,10 @@ namespace Neumont.Tools.ORM.FactEditor
 			}
 		}
 
-		private void ObjectTypeRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private void ObjectTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-			ObjectType objectType = link.ObjectTypeCollection;
+			ObjectType objectType = link.ObjectType;
 			Debug.Assert(objectType != null);
 
 			// Remove the object from our list of valid objects if it exists
@@ -450,19 +443,19 @@ namespace Neumont.Tools.ORM.FactEditor
 				myObjectEntries.Remove(objectType);
 			}
 		}
-		private void ObjectTypeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private void ObjectTypeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			ObjectType objectType = e.ModelElement as ObjectType;
 			Debug.Assert(objectType != null);
 			// we don't want to process Removed objects because it will cause an exception
 			// with the undo stack
-			if (objectType.IsRemoved)
+			if (objectType.IsDeleted)
 			{
 				return;
 			}
 
-			Guid attributeId = e.MetaAttribute.Id;
-			if (attributeId == ObjectType.NameMetaAttributeGuid)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ObjectType.NameDomainPropertyId)
 			{
 				// UNDONE: We could do this a little better. Find the old index,
 				// compare the new string to the before/after elements, and RemoveAt
@@ -496,7 +489,7 @@ namespace Neumont.Tools.ORM.FactEditor
 						{
 							fact = testFact;
 						}
-						else if (!object.ReferenceEquals(testFact, fact))
+						else if (testFact != fact)
 						{
 							fact = null;
 							break;
@@ -518,7 +511,7 @@ namespace Neumont.Tools.ORM.FactEditor
 			myEditFact = fact;
 			if (reading != null)
 			{
-				RoleBaseMoveableCollection roles = readingOrder.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = readingOrder.RoleCollection;
 				int roleCount = roles.Count;
 				fullReading = regCountPlaces.Replace(
 					reading.Text,
@@ -561,27 +554,5 @@ namespace Neumont.Tools.ORM.FactEditor
 			ErrorHandler.ThrowOnFailure(textLines.ReplaceLines(0, 0, 0, lineLength, initialText, fullReading.Length, null));
 		}
 		#endregion // Event Handlers
-
-		#region ObjectTypeNameComparer private class
-		/// <summary>
-		/// Compare ObjectType objects by their name
-		/// </summary>
-		private class ObjectTypeNameComparer : IComparer<ObjectType>
-		{
-			/// <summary>
-			/// Default constructor
-			/// </summary>
-			public ObjectTypeNameComparer()
-			{
-			}
-
-			#region IComparer<ObjectType> Members
-			int IComparer<ObjectType>.Compare(ObjectType x, ObjectType y)
-			{
-				return x.Name.CompareTo(y.Name);
-			}
-			#endregion // IComparer<ObjectType> Members
-		}
-		#endregion // ObjectTypeNameComparer private class
 	}
 }

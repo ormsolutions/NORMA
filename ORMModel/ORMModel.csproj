@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <DocumentationFile>.\bin\Debug\Neumont.Tools.ORM.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
@@ -42,14 +42,13 @@
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -82,6 +81,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Design\ORMTypeConverters.cs" />
+    <Compile Include="Design\ORMTypeDescriptors.cs" />
     <Compile Include="FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="FactEditor\FactColorizer.cs" />
     <Compile Include="FactEditor\FactCompletionSet.cs" />
@@ -107,8 +108,14 @@
     <Compile Include="Framework\MultiDiagramDocView\DiagramTabPage.cs" />
     <Compile Include="Framework\MultiDiagramDocView\MultiDiagramDocViewControl.cs" />
     <Compile Include="Framework\MultiDiagramDocView\MultiDiagramDocView.cs" />
-    <Compile Include="ObjectModel\Editors\Comparers.cs" />
+    <Compile Include="Design\Comparers.cs" />
     <Compile Include="Framework\Utility.cs" />
+    <Compile Include="GeneratedCode\PropertiesGrid.cs">
+      <DependentUpon>PropertiesGrid.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="ObjectModel\ORMCore.SurveyQuestionProvider.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMCore.SurveyQuestionProvider.xml</DependentUpon>
@@ -116,53 +123,92 @@
     <Compile Include="ObjectModel\SurveyImplementations\FactTypeAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ORMNamedElement.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ObjectTypeAnswers.cs" />
-    <Compile Include="ObjectModel\Editors\SamplePopulationEditor.cs">
+    <Compile Include="Design\SamplePopulationEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ObjectModel\Editors\SamplePopulationEditor.Designer.cs">
+    <Compile Include="Design\SamplePopulationEditor.Designer.cs">
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ConnectionBuilders.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConnectionBuilders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Connectors.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connectors.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Diagram.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Diagram.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainClasses.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainRelationships.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainRelationships.tt</DependentUpon>
+    </Compile>
+    <None Include="GeneratedCode\MultiplicityValidation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MultiplicityValidation.tt</DependentUpon>
+    </None>
+    <Compile Include="GeneratedCode\Shapes.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shapes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ToolboxHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolboxHelper.tt</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\SamplePopulation.cs" />
     <Compile Include="ObjectModel\VerbalizationSnippetSetsManager.cs" />
-    <Compile Include="ObjectModel\CustomSetStringPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\DataType.cs" />
     <Compile Include="ObjectModel\DataTypesGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>DataTypesGenerator.xml</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\Editors\ReadingEditor.cs">
+    <Compile Include="Design\ReadingEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ObjectModel\Editors\ReadingEditor.Designer.cs">
+    <Compile Include="Design\ReadingEditor.Designer.cs">
       <DependentUpon>ReadingEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\Editors\ReadingTextEditor.cs" />
-    <Compile Include="ObjectModel\Editors\CustomReferenceModeEditor.cs">
+    <Compile Include="Design\ReadingTextEditor.cs" />
+    <Compile Include="Design\CustomReferenceModeEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ObjectModel\Editors\CustomReferenceModeEditor.Designer.cs">
+    <Compile Include="Design\CustomReferenceModeEditor.Designer.cs">
       <DependentUpon>CustomReferenceModeEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\Editors\CustomReferenceModesBranch.cs" />
-    <Compile Include="ObjectModel\Editors\IntrinsicReferenceModesBranch.cs" />
-    <Compile Include="ObjectModel\Editors\ReferenceModeHeaderBranch.cs" />
-    <Compile Include="ObjectModel\Editors\ReferenceModeKindsBranch.cs" />
+    <Compile Include="Design\CustomReferenceModesBranch.cs" />
+    <Compile Include="Design\IntrinsicReferenceModesBranch.cs" />
+    <Compile Include="Design\ReferenceModeHeaderBranch.cs" />
+    <Compile Include="Design\ReferenceModeKindsBranch.cs" />
     <Compile Include="ObjectModel\Note.cs" />
     <Compile Include="ObjectModel\Objectification.cs" />
     <Compile Include="ObjectModel\ORMElementInterfaces.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
     <Compile Include="Framework\NamedElementDictionary.cs" />
-    <Compile Include="ObjectModel\Editors\ElementPicker.cs" />
-    <Compile Include="ObjectModel\Editors\TypedElementPickers.cs" />
+    <Compile Include="Design\ElementPicker.cs" />
+    <Compile Include="Design\TypedElementPickers.cs" />
     <Compile Include="ObjectModel\Constraint.cs" />
     <Compile Include="ObjectModel\FactType.cs" />
     <Compile Include="ObjectModel\ORMCore.DeserializationFixupListeners.cs" />
-    <Compile Include="ObjectModel\ORMCore.dsldm.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ORMCore.dsldm.dsldmt</DependentUpon>
-    </Compile>
-    <Compile Include="ObjectModel\Editors\ORMReferenceModeEditorWindow.cs" />
+    <Compile Include="Design\ORMReferenceModeEditorWindow.cs" />
     <Compile Include="ObjectModel\ORMCore.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMCore.AttachRules.xml</DependentUpon>
@@ -187,6 +233,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\ORMBaseShapeSubField.cs" />
+    <Compile Include="ShapeModel\ORMShapeModel.cs" />
+    <Compile Include="ShapeModel\ORMShape.SerializationExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ORMShape.SerializationExtensions.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\ORMToolboxHelper.cs" />
     <Compile Include="ShapeModel\ORMShape.EventSubscriber.cs" />
     <Compile Include="ShapeModel\ORMBaseBinaryLinkShape.Extensions.cs" />
     <Compile Include="ShapeModel\ORMBaseBinaryLinkShape.cs" />
@@ -195,10 +248,6 @@
       <DependentUpon>ORMShape.AttachRules.xml</DependentUpon>
     </Compile>
     <Compile Include="ShapeModel\ORMShape.DeserializationFixupListeners.cs" />
-    <Compile Include="ShapeModel\ORMShape.SerializationExtensions.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ORMShape.SerializationExtensions.xml</DependentUpon>
-    </Compile>
     <Compile Include="ShapeModel\RingConstraintShape.cs" />
     <Compile Include="ShapeModel\RoleNameShape.cs" />
     <Compile Include="ShapeModel\SubtypeLink.cs" />
@@ -208,11 +257,6 @@
     <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
     <Compile Include="ShapeModel\FrequencyConstraintShape.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
-    <Compile Include="ShapeModel\ORMShape.dsldm.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ORMShape.dsldm.dsldmt</DependentUpon>
-    </Compile>
     <Compile Include="Framework\DeserializationManager.cs" />
     <Compile Include="ShapeModel\RoleConnectorAction.cs" />
     <Compile Include="Shell\ExtensionManager.cs">
@@ -272,29 +316,17 @@
     <Compile Include="Shell\ORMSerializer.cs" />
     <Compile Include="Shell\ORMDesignerSettings.cs" />
     <Compile Include="Shell\ORMToolWindow.cs" />
-    <Compile Include="Verbalizer\ORMVerbalizationToolWindow.cs" />
+    <Compile Include="Shell\ORMVerbalizationToolWindow.cs" />
     <None Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ObjectModel\ORMCore.dsldm">
-      <SubType>
-      </SubType>
-    </None>
-    <None Include="ObjectModel\ORMCore.dsldm.dsldmt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ORMCore.dsldm.cs</LastGenOutput>
-    </None>
     <None Include="ObjectModel\VerbalizationGenerator.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="ObjectModel\Editors\ReadingEditor.resx">
+    <EmbeddedResource Include="Design\ReadingEditor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ReadingEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
-      <DependentUpon>ORMCore.dsldm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\ORMModel.resx">
       <DependentUpon>ORMModel.cs</DependentUpon>
@@ -302,10 +334,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORMDiagram.resx">
       <DependentUpon>ORMDiagram.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShapeModel\ORMShape.dsldm.resx">
-      <DependentUpon>ORMShape.dsldm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml" />
@@ -385,26 +413,18 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMShape.AttachRules.cs</LastGenOutput>
     </None>
-    <None Include="ShapeModel\ORMShape.dsldm">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ORMShape.ims</DependentUpon>
-    </None>
-    <None Include="ShapeModel\ORMShape.dsldm.dsldmt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ORMShape.dsldm.cs</LastGenOutput>
-    </None>
-    <None Include="ShapeModel\ORMShape.ims">
-      <Generator>NUImsToDmdGenerator</Generator>
-      <LastGenOutput>ORMShape.dsldm</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Framework\DynamicSurveyTreeGrid\SurveyTreeControl.resx">
+    <EmbeddedResource Include="ObjectModel\ORMMetaModel.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>SurveyTreeControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ObjectModel\Editors\SamplePopulationEditor.resx">
-      <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
+    <EmbeddedResource Include="ShapeModel\ORMShapeModel.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintAllowed.cur" />
@@ -418,9 +438,54 @@
     <EmbeddedResource Include="ObjectModel\VerbalizationUntypedSnippets.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="GeneratedCode\ConnectionBuilders.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConnectionBuilders.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\Connectors.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Connectors.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\Diagram.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Diagram.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\MultiplicityValidation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MultiplicityValidation.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\PropertiesGrid.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PropertiesGrid.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\Shapes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Shapes.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\ToolboxHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToolboxHelper.cs</LastGenOutput>
+    </None>
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ORM.dsl" />
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />

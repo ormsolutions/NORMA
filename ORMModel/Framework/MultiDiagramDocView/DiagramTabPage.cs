@@ -22,8 +22,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.Framework
@@ -58,13 +59,13 @@ namespace Neumont.Tools.ORM.Framework
 				docViewControl.TabPages.Add(this);
 				base.ImageKey = diagram.GetType().GUID.ToString("N", null);
 				base.ResumeLayout(false);
-				diagram.NameChanged += DiagramNameChanged;
+				diagram.Store.EventManagerDirectory.ElementPropertyChanged.Add(diagram.GetDomainClass().NameDomainProperty, diagram.Id, (EventHandler<ElementPropertyChangedEventArgs>)DiagramNameChanged);
 				designer.DiagramClientView.DiagramDisassociating += DiagramDisassociating;
 			}
 			#endregion // Constructor
 			
 			#region Event handlers
-			private void DiagramNameChanged(object sender, ElementAttributeChangedEventArgs e)
+			private void DiagramNameChanged(object sender, ElementPropertyChangedEventArgs e)
 			{
 				string newName = ((Diagram)e.ModelElement).Name;
 				if (base.Name != newName)
@@ -89,7 +90,7 @@ namespace Neumont.Tools.ORM.Framework
 						Diagram diagram = designer.Diagram;
 						if (diagram != null)
 						{
-							diagram.NameChanged -= DiagramNameChanged;
+							diagram.Store.EventManagerDirectory.ElementPropertyChanged.Remove(diagram.GetDomainClass().NameDomainProperty, diagram.Id, (EventHandler<ElementPropertyChangedEventArgs>)DiagramNameChanged);
 						}
 						myDocViewControl.DocView.RemoveDesigner(designer);
 					}
@@ -157,7 +158,6 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion
 
 			#region Text property
-			private static ElementPropertyDescriptor DiagramNamePropertyDescriptor;
 			public override string Text
 			{
 				get
@@ -188,12 +188,7 @@ namespace Neumont.Tools.ORM.Framework
 							Debug.Assert(diagram.Name == base.Text);
 							if (diagram.Name != value)
 							{
-								ElementPropertyDescriptor diagramNamePropertyDescriptor = DiagramNamePropertyDescriptor;
-								if (diagramNamePropertyDescriptor == null)
-								{
-									diagramNamePropertyDescriptor = DiagramNamePropertyDescriptor = new ElementPropertyDescriptor(null, diagram.Store.MetaDataDirectory.FindMetaAttribute(Diagram.NameMetaAttributeGuid), null, null);
-								}
-								diagramNamePropertyDescriptor.SetValue(diagram, value);
+								DomainClassInfo.SetName(diagram, value);
 							}
 							// base.Text will be updated via the DiagramNameChanged event handler
 						}

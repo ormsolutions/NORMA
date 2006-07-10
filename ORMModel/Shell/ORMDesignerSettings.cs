@@ -106,7 +106,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // ORMDesignerSchema class
 		#region ORMDesignerNameTable class
-		private class ORMDesignerNameTable : NameTable
+		private sealed class ORMDesignerNameTable : NameTable
 		{
 			public readonly string SchemaNamespace;
 			public readonly string SettingsElement;
@@ -152,19 +152,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region Static Variables
 		private static string mySettingsPath;
 		private static string myXmlConvertersDirectory;
-		private static object myLockObject;
-		private static object LockObject
-		{
-			get
-			{
-				if (myLockObject == null)
-				{
-					object lockObj = new object();
-					System.Threading.Interlocked.CompareExchange(ref myLockObject, lockObj, null);
-				}
-				return myLockObject;
-			}
-		}
+		private static readonly object LockObject = new object();
 		#endregion // Static Variables
 		#region Constructors
 		/// <summary>
@@ -563,7 +551,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private static bool TestElementName(string localName, string elementName)
 		{
-			return object.ReferenceEquals(localName, elementName);
+			return (object)localName == (object)elementName;
 		}
 		/// <summary>
 		/// Move the reader to the node immediately after the end element corresponding to the current open element

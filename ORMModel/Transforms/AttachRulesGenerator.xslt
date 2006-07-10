@@ -1,4 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -28,22 +41,21 @@
 		</xsl:variable>
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
 		<plx:namespace name="{$namespaceName}">
-			<plx:leadingInfo>
-				<plx:comment>Common Public License Copyright Notice</plx:comment>
-				<plx:comment>/**************************************************************************\</plx:comment>
-				<plx:comment>* Neumont Object-Role Modeling Architect for Visual Studio                 *</plx:comment>
-				<plx:comment>*                                                                          *</plx:comment>
-				<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
-				<plx:comment>*                                                                          *</plx:comment>
-				<plx:comment>* The use and distribution terms for this software are covered by the      *</plx:comment>
-				<plx:comment>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</plx:comment>
-				<plx:comment>* can be found in the file CPL.txt at the root of this distribution.       *</plx:comment>
-				<plx:comment>* By using this software in any fashion, you are agreeing to be bound by   *</plx:comment>
-				<plx:comment>* the terms of this license.                                               *</plx:comment>
-				<plx:comment>*                                                                          *</plx:comment>
-				<plx:comment>* You must not remove this notice, or any other, from this software.       *</plx:comment>
-				<plx:comment>\**************************************************************************/</plx:comment>
-			</plx:leadingInfo>
+			<xsl:variable name="copyright" select="parent::arg:Rules/arg:Copyright"/>
+			<xsl:if test="$copyright">
+				<plx:leadingInfo>
+					<plx:comment blankLine="true"/>
+					<plx:comment>
+						<xsl:value-of select="$copyright/@name"/>
+					</plx:comment>
+					<xsl:for-each select="$copyright/arg:CopyrightLine">
+						<plx:comment>
+							<xsl:value-of select="."/>
+						</plx:comment>
+					</xsl:for-each>
+					<plx:comment blankLine="true"/>
+				</plx:leadingInfo>
+			</xsl:if>
 			<plx:class name="{@class}" visibility="public" partial="true">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="Attach rules to {@class} model"/>
@@ -51,10 +63,94 @@
 				<plx:trailingInfo>
 					<plx:pragma type="closeRegion" data="Attach rules to {@class} model"/>
 				</plx:trailingInfo>
-				<plx:function name="AllMetaModelTypes" visibility="protected" modifier="override">
+				<plx:field visibility="private" static="true" name="myCustomDomainModelTypes" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
+				<plx:property visibility="private" modifier="static" name="CustomDomainModelTypes">
+					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
+					<plx:get>
+						<plx:local name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
+							<plx:initialize>
+								<plx:callStatic type="field" name="myCustomDomainModelTypes" dataTypeName="{@class}"/>
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:nameRef type="local" name="retVal"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:comment>No synchronization is needed here.</plx:comment>
+							<plx:comment>If accessed concurrently, the worst that will happen is the array of Types being created multiple times.</plx:comment>
+							<plx:comment>This would have a slightly negative impact on performance, but the result would still be correct.</plx:comment>
+							<plx:comment>Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.</plx:comment>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef type="local" name="retVal"/>
+								</plx:left>
+								<plx:right>
+									<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
+										<plx:arrayInitializer>
+											<xsl:variable name="contextClass" select="@class"/>
+											<xsl:for-each select="arg:*">
+												<plx:passParam>
+													<xsl:call-template name="GenerateTypeOf">
+														<xsl:with-param name="className" select="@class"/>
+														<xsl:with-param name="namespace" select="@namespace"/>
+														<xsl:with-param name="contextClass" select="$contextClass"/>
+														<xsl:with-param name="contextNamespace" select="$namespaceName"/>
+													</xsl:call-template>
+												</plx:passParam>
+											</xsl:for-each>
+										</plx:arrayInitializer>
+									</plx:callNew>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:callStatic type="field" name="myCustomDomainModelTypes" dataTypeName="{@class}"/>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef type="local" name="retVal"/>
+								</plx:right>
+							</plx:assign>
+							<plx:callStatic name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
+								<plx:passParam>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:callStatic type="methodCall" name="IndexOf" dataTypeName="Array">
+												<plx:passMemberTypeParam dataTypeName="Type"/>
+												<plx:passParam>
+													<plx:nameRef type="local" name="retVal"/>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:nullKeyword/>
+												</plx:passParam>
+											</plx:callStatic>
+										</plx:left>
+										<plx:right>
+											<plx:value type="i4" data="0"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:string>One or more rule types failed to resolve. The file and/or package will fail to load.</plx:string>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:branch>
+						<plx:return>
+							<plx:nameRef name="retVal"/>
+						</plx:return>
+					</plx:get>
+				</plx:property>
+				<plx:function name="GetCustomDomainModelTypes" visibility="protected" modifier="override">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Generated code to attach rules to the store.</summary>
+							<summary>Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+							<seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
@@ -70,45 +166,74 @@
 					</plx:branch>
 					<plx:local name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
 						<plx:initialize>
-							<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
-								<plx:arrayInitializer>
-									<xsl:variable name="contextClass" select="@class"/>
-									<xsl:for-each select="arg:*">
-										<plx:passParam>
-											<xsl:call-template name="GenerateTypeOf">
-												<xsl:with-param name="className" select="@class"/>
-												<xsl:with-param name="namespace" select="@namespace"/>
-												<xsl:with-param name="contextClass" select="$contextClass"/>
-												<xsl:with-param name="contextNamespace" select="$namespaceName"/>
-											</xsl:call-template>
-										</plx:passParam>
-									</xsl:for-each>
-								</plx:arrayInitializer>
-							</plx:callNew>
+							<plx:callThis accessor="base" type="methodCall" name="GetCustomDomainModelTypes"/>
 						</plx:initialize>
 					</plx:local>
-					<plx:callStatic name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
-						<plx:passParam>
-							<plx:unaryOperator type="booleanNot">
-								<plx:callInstance name="Contains">
-									<plx:callObject>
-										<plx:cast type="exceptionCast" dataTypeName="IList" dataTypeQualifier="System.Collections">
-											<plx:nameRef name="retVal"/>
-										</plx:cast>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nullKeyword/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:unaryOperator>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:string>One or more rule types failed to resolve. The file and/or package will fail to load.</plx:string>
-						</plx:passParam>
-					</plx:callStatic>
-					<plx:return>
-						<plx:nameRef name="retVal"/>
-					</plx:return>
+					<plx:local name="baseLength" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance type="property" name="Length">
+								<plx:callObject>
+									<plx:nameRef type="local" name="retVal"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="customDomainModelTypes" dataTypeName="Type" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callStatic type="property" name="CustomDomainModelTypes" dataTypeName="{@class}"/>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="lessThanOrEqual">
+								<plx:left>
+									<plx:nameRef type="local" name="baseLength"/>
+								</plx:left>
+								<plx:right>
+									<plx:value type="i4" data="0"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:nameRef type="local" name="customDomainModelTypes"/>
+						</plx:return>
+					</plx:branch>
+					<plx:fallbackBranch>
+						<plx:callStatic type="methodCall" name="Resize" dataTypeName="Array">
+							<plx:passMemberTypeParam dataTypeName="Type"/>
+							<plx:passParam type="inOut">
+								<plx:nameRef type="local" name="retVal"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:binaryOperator type="add">
+									<plx:left>
+										<plx:nameRef type="local" name="baseLength"/>
+									</plx:left>
+									<plx:right>
+										<plx:callInstance type="property" name="Length">
+											<plx:callObject>
+												<plx:nameRef type="local" name="customDomainModelTypes"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:passParam>
+						</plx:callStatic>
+						<plx:callInstance type="methodCall" name="CopyTo">
+							<plx:callObject>
+								<plx:nameRef type="local" name="customDomainModelTypes"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="local" name="retVal"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef type="local" name="baseLength"/>
+							</plx:passParam>
+						</plx:callInstance>
+						<plx:return>
+							<plx:nameRef type="local" name="retVal"/>
+						</plx:return>
+					</plx:fallbackBranch>
 				</plx:function>
 			</plx:class>
 		</plx:namespace>

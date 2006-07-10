@@ -20,8 +20,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using Microsoft.VisualStudio.Modeling;
 using System.Reflection;
+using Microsoft.VisualStudio.Modeling;
+
+using ShapeElement = Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement;
+using LinkShape = Microsoft.VisualStudio.Modeling.Diagrams.LinkShape;
 
 namespace Neumont.Tools.ORM.Framework
 {
@@ -30,7 +33,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// An interface for notifying when an element has been added
 	/// to a Store.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface INotifyElementAdded
 	{
 		/// <summary>
@@ -94,7 +96,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// An interface to implement on the meta model to dynamically provide
 	/// fixup listeners from a loaded meta model.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IDeserializationFixupListenerProvider
 	{
 		/// <summary>
@@ -162,6 +163,16 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="element">The newly added element</param>
 		protected void ElementAdded(ModelElement element)
 		{
+			// UNDONE: 2006-06 DSL Tools port: For ShapeElements (or at least Diagrams), OnInitialize needs to be called.
+			// In the case of Diagram, if we don't call OnInitialize, we get a NullReferenceException when we try to do
+			// certain things (like zooming).
+			// There might be a better place for this to go, though...
+			ShapeElement shapeElement = element as ShapeElement;
+			if (shapeElement != null)
+			{
+				shapeElement.OnInitialize();
+			}
+
 			List<IDeserializationFixupListener> listeners = myListeners;
 			int listenerCount = listeners.Count;
 			for (int i = 0; i < listenerCount; ++i)
@@ -182,11 +193,11 @@ namespace Neumont.Tools.ORM.Framework
 			notify.ElementAdded(element);
 			if (addLinks)
 			{
-				IList links = element.GetElementLinks();
+				ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(element);
 				int linkCount = links.Count;
 				for (int i = 0; i < linkCount; ++i)
 				{
-					notify.ElementAdded((ModelElement)links[i]);
+					notify.ElementAdded(links[i]);
 				}
 			}
 		}
@@ -256,6 +267,15 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 #endif // DEBUG
+
+			// UNDONE: 2006-06 DSL Tools port: For ShapeElements (or at least Diagrams), OnInitialize needs to be called.
+			// There might be a better place for this to go, though...
+			// For LinkShapes, we never get callbacks through INotifyElementAdded, so we call OnInitialize from here instead.
+			// This is MUCH later than it is normally called, but it is better than not calling it at all...
+			foreach (LinkShape linkShape in store.ElementDirectory.FindElements<LinkShape>(true))
+			{
+				linkShape.OnInitialize();
+			}
 		}
 		#endregion // DeserializationFixupManager specific
 	}
@@ -266,13 +286,13 @@ namespace Neumont.Tools.ORM.Framework
 	/// listening for a given type and phase of the deserialization
 	/// fixup process.
 	/// </summary>
-	/// <typeparam name="ElementType">The type of element to watch out for.
+	/// <typeparam name="TElement">The type of element to watch out for.
 	/// Will frequently be an interface.</typeparam>
-	public abstract class DeserializationFixupListener<ElementType> : IDeserializationFixupListener where ElementType : class
+	public abstract class DeserializationFixupListener<TElement> : IDeserializationFixupListener where TElement : class
 	{
 		#region Member Variables
 		private int myPhase;
-		private Collection<ElementType> myCollection;
+		private Collection<TElement> myCollection;
 		#endregion // Member Variables
 		#region Constructors
 		/// <summary>
@@ -315,9 +335,9 @@ namespace Neumont.Tools.ORM.Framework
 			{
 				// Clear the collection so it can safely be repopulated while
 				// the iterator is active.
-				Collection<ElementType> coll = myCollection;
+				Collection<TElement> coll = myCollection;
 				myCollection = null;
-				foreach (ElementType element in coll)
+				foreach (TElement element in coll)
 				{
 					// Call the abstract method to do the actual work
 					ProcessElement(element, store, notifyAdded);
@@ -350,13 +370,13 @@ namespace Neumont.Tools.ORM.Framework
 		#region INotifyElementAdded Implementation
 		/// <summary>
 		/// Implements INotifyElementAdded.ElementAdded. Elements will
-		/// be added if the ModelElement has a type matching ElementType
+		/// be added if the ModelElement has a type matching TElement
 		/// type parameter
 		/// </summary>
 		/// <param name="element">The element to add</param>
 		protected void ElementAdded(ModelElement element)
 		{
-			ElementType typedElement = element as ElementType;
+			TElement typedElement = element as TElement;
 			if (typedElement != null)
 			{
 				ElementCollection.Add(typedElement);
@@ -368,15 +388,15 @@ namespace Neumont.Tools.ORM.Framework
 		}
 		/// <summary>
 		/// Implements INotifyElementAdded.ElementAdded(ModelElement, bool).
-		/// The default implementation throws a NotImplementedException.
+		/// The default implementation throws a NotSupportedException.
 		/// </summary>
 		/// <param name="element">The newly added element</param>
 		/// <param name="addLinks">true if all links attached directly to the
 		/// element should also be added. Defaults to false.</param>
 		protected void ElementAdded(ModelElement element, bool addLinks)
 		{
-			Debug.Assert(false); // Direct call not support
-			throw new NotImplementedException();
+			Debug.Fail("Direct call not supported");
+			throw new NotSupportedException();
 		}
 		void INotifyElementAdded.ElementAdded(ModelElement element, bool addLinks)
 		{
@@ -384,14 +404,14 @@ namespace Neumont.Tools.ORM.Framework
 		}
 		#endregion // INotifyElementAdded Implementation
 		#region DeserializationFixupListener specific
-		private Collection<ElementType> ElementCollection
+		private Collection<TElement> ElementCollection
 		{
 			get
 			{
-				Collection<ElementType> coll = myCollection;
+				Collection<TElement> coll = myCollection;
 				if (coll == null)
 				{
-					myCollection = coll = new Collection<ElementType>();
+					myCollection = coll = new Collection<TElement>();
 				}
 				return coll;
 			}
@@ -404,7 +424,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// is always castable to a model element</param>
 		/// <param name="store">The context store</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-		protected abstract void ProcessElement(ElementType element, Store store, INotifyElementAdded notifyAdded);
+		protected abstract void ProcessElement(TElement element, Store store, INotifyElementAdded notifyAdded);
 		/// <summary>
 		/// The phase is complete. Default implementation does nothing.
 		/// </summary>

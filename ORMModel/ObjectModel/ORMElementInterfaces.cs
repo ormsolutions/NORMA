@@ -27,30 +27,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An <see cref="ModelElement">ORM element</see> that can be extended.
 	/// </summary>
-	[CLSCompliant(true)]
+	/// <remarks>
+	/// In order to support <see cref="IORMPropertyExtension"/>s, implementions
+	/// must ensure that their <see cref="ICustomTypeDescriptor.GetProperties(Attribute[])"/>
+	/// method calls <see cref="ExtendableElementUtility.GetExtensionProperties"/>.
+	/// </remarks>
 	public interface IORMExtendableElement
 	{
 		/// <summary>
 		/// The collection of extension <see cref="ModelElement"/>s.
 		/// </summary>
-		ModelElementMoveableCollection ExtensionCollection { get;}
+		LinkedElementCollection<ModelElement> ExtensionCollection { get;}
 
 		/// <summary>
 		/// The collection of extension <see cref="ModelError"/>s.
 		/// </summary>
-		ModelErrorMoveableCollection ExtensionModelErrorCollection { get;}
-
-		/// <summary>
-		/// In order to support <see cref="IORMPropertyExtension"/>s, this method must call
-		/// <see cref="ExtendableElementUtility.MergeExtensionProperties"/>. See example.
-		/// </summary>
-		/// <example>
-		/// public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
-		/// {
-		///		return Neumont.Tools.ORM.ObjectModel.ExtendableElementUtility.MergeExtensionProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
-		/// }
-		/// </example>
-		PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor);
+		LinkedElementCollection<ModelError> ExtensionModelErrorCollection { get;}
 	}
 	#endregion
 
@@ -58,9 +50,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An extension <see cref="ModelElement"/> that provides custom properties for the
 	/// <see cref="System.Windows.Forms.PropertyGrid"/> of the <see cref="IORMExtendableElement"/>
-	/// that it is extending.
+	/// that it is extending. The extension properties will be obtained from the
+	/// <see cref="ICustomTypeDescriptor"/> provided for the <see cref="IORMPropertyExtension"/>.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IORMPropertyExtension
 	{
 		/// <summary>
@@ -70,15 +62,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// If the extension is being shown as an
 		/// <see cref="ORMExtensionPropertySettings.MergeAsExpandableProperty">expandable property</see>,
-		/// this determines the meta attribute to display as the value at the root of the expandable tree.
+		/// this determines the property to display as the value at the root of the expandable tree.
 		/// </summary>
 		/// <remarks>
 		/// If <see cref="ORMExtensionPropertySettings.MergeAsExpandableProperty"/> is not set, the value of this
 		/// property is not used.
-		/// If <see cref="Guid.Empty"/> or a <see cref="Guid"/> for which a <see cref="MetaAttributeInfo"/>
+		/// If <see cref="Guid.Empty"/> or a <see cref="Guid"/> for which a <see cref="DomainPropertyInfo"/>
 		/// cannot be retrieved is specified, the value returned by <see cref="Object.ToString"/> is used.
 		/// </remarks>
-		Guid ExtensionExpandableTopLevelAttributeGuid { get; }
+		Guid ExtensionExpandableTopLevelPropertyGuid { get; }
 		/// <summary>
 		/// Returns a <see cref="PropertyDescriptorCollection"/> containing the <see cref="PropertyDescriptor"/>s
 		/// that should be merged with the <see cref="IORMExtendableElement"/>'s <see cref="PropertyDescriptor"/>s.
@@ -89,19 +81,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Controls how custom properties are displayed in the <see cref="System.Windows.Forms.PropertyGrid"/>.
 	/// </summary>
-	[Flags, CLSCompliant(true)]
+	[Flags]
 	public enum ORMExtensionPropertySettings
 	{
 		/// <summary>
-		/// Properties are not displayed
+		/// Properties are not displayed.
 		/// </summary>
 		NotDisplayed = 0,
 		/// <summary>
-		/// Properties are displayed as an expandable tree
+		/// Properties are displayed as an expandable tree.
 		/// </summary>
 		MergeAsExpandableProperty = 1,
 		/// <summary>
-		/// Properties are displayed as top-level entries
+		/// Properties are displayed as top-level entries.
 		/// </summary>
 		MergeAsTopLevelProperty = 2,
 	}

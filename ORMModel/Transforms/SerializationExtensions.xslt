@@ -1,4 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -20,22 +33,20 @@
 			<plx:namespaceImport name="Neumont.Tools.ORM.Shell"/>
 			<plx:namespaceImport name="Neumont.Tools.ORM.ObjectModel"/>
 			<plx:namespace name="{$CustomToolNamespace}">
-				<plx:leadingInfo>
-					<plx:comment>Common Public License Copyright Notice</plx:comment>
-					<plx:comment>/**************************************************************************\</plx:comment>
-					<plx:comment>* Neumont Object-Role Modeling Architect for Visual Studio                 *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* The use and distribution terms for this software are covered by the      *</plx:comment>
-					<plx:comment>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</plx:comment>
-					<plx:comment>* can be found in the file CPL.txt at the root of this distribution.       *</plx:comment>
-					<plx:comment>* By using this software in any fashion, you are agreeing to be bound by   *</plx:comment>
-					<plx:comment>* the terms of this license.                                               *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* You must not remove this notice, or any other, from this software.       *</plx:comment>
-					<plx:comment>\**************************************************************************/</plx:comment>
-				</plx:leadingInfo>
+				<xsl:if test="se:Copyright">
+					<plx:leadingInfo>
+						<plx:comment blankLine="true"/>
+						<plx:comment>
+							<xsl:value-of select="se:Copyright/@name"/>
+						</plx:comment>
+						<xsl:for-each select="se:Copyright/se:CopyrightLine">
+							<plx:comment>
+								<xsl:value-of select="."/>
+							</plx:comment>
+						</xsl:for-each>
+						<plx:comment blankLine="true"/>
+					</plx:leadingInfo>
+				</xsl:if>
 				<xsl:apply-templates select="child::*"/>
 			</plx:namespace>
 		</plx:root>
@@ -260,7 +271,7 @@
 												</xsl:call-template>
 												<xsl:for-each select="se:Link">
 													<plx:passParam>
-														<plx:callStatic name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" type="field"/>
+														<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
 													</plx:passParam>
 												</xsl:for-each>
 											</plx:callNew>
@@ -312,20 +323,20 @@
 					</plx:get>
 				</plx:property>
 			</xsl:if>
-			<xsl:variable name="haveCustomAttributeInfo" select="0!=count(se:Attribute)"/>
-			<xsl:if test="$haveCustomAttributeInfo or not($ClassOverride)">
-				<plx:function visibility="protected" name="GetCustomSerializedAttributeInfo" replacesName="{$ClassOverride}">
+			<xsl:variable name="haveCustomPropertyInfo" select="0!=count(se:Attribute)"/>
+			<xsl:if test="$haveCustomPropertyInfo or not($ClassOverride)">
+				<plx:function visibility="protected" name="GetCustomSerializedPropertyInfo" replacesName="{$ClassOverride}">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo</summary>
+							<summary>Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedAttributeInfo"/>
-					<plx:param name="attributeInfo" dataTypeName="MetaAttributeInfo"></plx:param>
-					<plx:param name="rolePlayedInfo" dataTypeName="MetaRoleInfo"></plx:param>
-					<plx:returns dataTypeName="ORMCustomSerializedAttributeInfo"/>
+					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedPropertyInfo"/>
+					<plx:param name="attributeInfo" dataTypeName="DomainPropertyInfo"></plx:param>
+					<plx:param name="rolePlayedInfo" dataTypeName="DomainRoleInfo"></plx:param>
+					<plx:returns dataTypeName="ORMCustomSerializedPropertyInfo"/>
 					<xsl:choose>
-						<xsl:when test="count(se:Attribute)">
+						<xsl:when test="$haveCustomPropertyInfo">
 							<xsl:for-each select="se:Attribute">
 								<plx:branch>
 									<plx:condition>
@@ -338,7 +349,7 @@
 												</plx:callInstance>
 											</plx:left>
 											<plx:right>
-												<plx:callStatic type="field" name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" />
+												<plx:callStatic type="field" name="{@ID}DomainPropertyId" dataTypeName="{$ClassName}" />
 											</plx:right>
 										</plx:binaryOperator>
 									</plx:condition>
@@ -354,14 +365,14 @@
 														</plx:callInstance>
 													</plx:left>
 													<plx:right>
-														<plx:callStatic type="field" name="{@ID}MetaRoleGuid" dataTypeName="{$ClassName}" />
+														<plx:callStatic type="field" name="{@ID}DomainRoleId" dataTypeName="{$ClassName}" />
 													</plx:right>
 												</plx:binaryOperator>
 											</plx:condition>
-											<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
+											<xsl:call-template name="ReturnORMCustomSerializedPropertyInfo"/>
 										</plx:branch>
 									</xsl:for-each>
-									<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
+									<xsl:call-template name="ReturnORMCustomSerializedPropertyInfo"/>
 								</plx:branch>
 							</xsl:for-each>
 							<xsl:if test="$ClassOverride">
@@ -374,7 +385,7 @@
 											<plx:right>
 												<plx:binaryOperator type="bitwiseAnd">
 													<plx:left>
-														<plx:callStatic name="AttributeInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" type="field"/>
+														<plx:callStatic name="PropertyInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" type="field"/>
 													</plx:left>
 													<plx:right>
 														<plx:callThis accessor="base" name="SupportedCustomSerializedOperations" type="property"/>
@@ -384,7 +395,7 @@
 										</plx:binaryOperator>
 									</plx:condition>
 									<plx:return>
-										<plx:callThis accessor="base" name="GetCustomSerializedAttributeInfo">
+										<plx:callThis accessor="base" name="GetCustomSerializedPropertyInfo">
 											<plx:passParam>
 												<plx:nameRef type="parameter" name="attributeInfo"/>
 											</plx:passParam>
@@ -396,7 +407,7 @@
 								</plx:branch>
 							</xsl:if>
 							<plx:return>
-								<plx:callStatic dataTypeName="ORMCustomSerializedAttributeInfo" name="Default" type="field"/>
+								<plx:callStatic dataTypeName="ORMCustomSerializedPropertyInfo" name="Default" type="field"/>
 							</plx:return>
 						</xsl:when>
 						<xsl:otherwise>
@@ -416,7 +427,7 @@
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedLinkInfo"/>
-					<plx:param name="rolePlayedInfo" dataTypeName="MetaRoleInfo"/>
+					<plx:param name="rolePlayedInfo" dataTypeName="DomainRoleInfo"/>
 					<plx:param name="elementLink" dataTypeName="ElementLink"/>
 					<plx:returns dataTypeName="ORMCustomSerializedElementInfo"/>
 					<xsl:choose>
@@ -440,7 +451,7 @@
 														<plx:nameRef name="roleId"/>
 													</plx:left>
 													<plx:right>
-														<plx:callStatic type="field" name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" />
+														<plx:callStatic type="field" name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" />
 													</plx:right>
 												</plx:binaryOperator>
 											</plx:condition>
@@ -469,18 +480,18 @@
 															<plx:nameRef name="roleId"/>
 														</plx:left>
 														<plx:right>
-															<plx:callStatic type="field" name="{$roleName}MetaRoleGuid" dataTypeName="{$relationshipName}" />
+															<plx:callStatic type="field" name="{$roleName}DomainRoleId" dataTypeName="{$relationshipName}" />
 														</plx:right>
 													</plx:binaryOperator>
 												</plx:condition>
 												<xsl:choose>
 													<!-- Note that the CreateAs conditions are sorted first -->
 													<xsl:when test="string(@CreateAsRelationshipName)">
-														<plx:local name="elementLinkMetaId" dataTypeName="Guid">
+														<plx:local name="elementLinkDomainId" dataTypeName="Guid">
 															<plx:initialize>
 																<plx:callInstance name="Id" type="property">
 																	<plx:callObject>
-																		<plx:callInstance name="MetaRelationship" type="property">
+																		<plx:callInstance name="GetDomainRelationship" type="methodCall">
 																			<plx:callObject>
 																				<plx:nameRef name="elementLink"/>
 																			</plx:callObject>
@@ -493,10 +504,10 @@
 															<plx:condition>
 																<plx:binaryOperator type="equality">
 																	<plx:left>
-																		<plx:nameRef name="elementLinkMetaId"/>
+																		<plx:nameRef name="elementLinkDomainId"/>
 																	</plx:left>
 																	<plx:right>
-																		<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
+																		<plx:callStatic name="DomainClassId" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
 																	</plx:right>
 																</plx:binaryOperator>
 															</plx:condition>
@@ -510,10 +521,10 @@
 																			<plx:condition>
 																				<plx:binaryOperator type="equality">
 																					<plx:left>
-																						<plx:nameRef name="elementLinkMetaId"/>
+																						<plx:nameRef name="elementLinkDomainId"/>
 																					</plx:left>
 																					<plx:right>
-																						<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
+																						<plx:callStatic name="DomainClassId" dataTypeName="{@CreateAsRelationshipName}" type="property"/>
 																					</plx:right>
 																				</plx:binaryOperator>
 																			</plx:condition>
@@ -584,26 +595,26 @@
 			<xsl:choose>
 				<xsl:when test="@SortChildElements='true'">
 					<plx:field name="myCustomSortChildComparer" static="true" visibility="private" dataTypeName="IComparer">
-						<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+						<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 					</plx:field>
-					<plx:class name="CustomSortChildComparer" visibility="private">
+					<plx:class name="CustomSortChildComparer" visibility="private" modifier="sealed">
 						<plx:implementsInterface dataTypeName="IComparer">
-							<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 						</plx:implementsInterface>
-						<plx:field name="myRoleOrderDictionary" visibility="private" dataTypeName="Dictionary">
+						<plx:field name="myRoleOrderDictionary" visibility="private" readOnly="true" dataTypeName="Dictionary">
 							<plx:passTypeParam dataTypeName=".string"/>
 							<plx:passTypeParam dataTypeName=".i4"/>
 						</plx:field>
 						<xsl:if test="$ClassOverride">
 							<plx:field name="myBaseComparer" visibility="private" dataTypeName="IComparer">
-								<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+								<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 							</plx:field>
 						</xsl:if>
 						<plx:function name=".construct" visibility="public">
 							<plx:param name="store" dataTypeName="Store"/>
 							<xsl:if test="$ClassOverride">
 								<plx:param name="baseComparer" dataTypeName="IComparer">
-									<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+									<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 								</plx:param>
 								<plx:assign>
 									<plx:left>
@@ -656,9 +667,9 @@
 								</xsl:for-each>
 							</xsl:variable>
 							<xsl:variable name="SortedLevels" select="exsl:node-set($SortedLevelsFragment)"/>
-							<plx:local name="metaDataDir" dataTypeName="MetaDataDirectory">
+							<plx:local name="domainDataDirectory" dataTypeName="DomainDataDirectory">
 								<plx:initialize>
-									<plx:callInstance name="MetaDataDirectory" type="property">
+									<plx:callInstance name="DomainDataDirectory" type="property">
 										<plx:callObject>
 											<plx:nameRef type="parameter" name="store"/>
 										</plx:callObject>
@@ -675,25 +686,26 @@
 									</plx:callNew>
 								</plx:initialize>
 							</plx:local>
-							<plx:local name="metaRole" dataTypeName="MetaRoleInfo"/>
+							<plx:local name="domainRole" dataTypeName="DomainRoleInfo"/>
 							<xsl:for-each select="$SortedLevels/SortLevel">
 								<xsl:variable name="level" select="position()-1"/>
 								<xsl:for-each select="Role">
 									<plx:assign>
 										<plx:left>
-											<plx:nameRef name="metaRole"/>
+											<plx:nameRef name="domainRole"/>
 										</plx:left>
 										<plx:right>
-											<plx:callInstance name="FindMetaRole">
+											<plx:callInstance name="FindDomainRole">
 												<plx:callObject>
-													<plx:nameRef name="metaDataDir"/>
+													<plx:nameRef name="domainDataDirectory"/>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:callStatic dataTypeName="{@RelationshipName}" name="{@RoleName}MetaRoleGuid" type="field"/>
+													<plx:callStatic dataTypeName="{@RelationshipName}" name="{@RoleName}DomainRoleId" type="field"/>
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:right>
 									</plx:assign>
+									<plx:comment>UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...</plx:comment>
 									<plx:assign>
 										<plx:left>
 											<plx:callInstance name=".implied" type="indexerCall">
@@ -701,11 +713,11 @@
 													<plx:nameRef name="roleOrderDictionary"/>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:callInstance name="FullName" type="property">
+													<plx:callInstance name="Name" type="property">
 														<plx:callObject>
-															<plx:callInstance name="OppositeMetaRole" type="property">
+															<plx:callInstance name="OppositeDomainRole" type="property">
 																<plx:callObject>
-																	<plx:nameRef name="metaRole"/>
+																	<plx:nameRef name="domainRole"/>
 																</plx:callObject>
 															</plx:callInstance>
 														</plx:callObject>
@@ -730,10 +742,10 @@
 						</plx:function>
 						<plx:function visibility="privateInterfaceMember" name="Compare">
 							<plx:interfaceMember dataTypeName="IComparer" memberName="Compare">
-								<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+								<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 							</plx:interfaceMember>
-							<plx:param name="x" dataTypeName="MetaRoleInfo"/>
-							<plx:param name="y" dataTypeName="MetaRoleInfo"/>
+							<plx:param name="x" dataTypeName="DomainRoleInfo"/>
+							<plx:param name="y" dataTypeName="DomainRoleInfo"/>
 							<plx:returns dataTypeName=".i4"/>
 							<xsl:if test="$ClassOverride">
 								<!-- Give the base the first shot, we want base elements displayed before derived elements -->
@@ -786,6 +798,7 @@
 							</xsl:variable>
 							<xsl:for-each select="exsl:node-set($paramVals)/child::*">
 								<plx:local name="{.}Pos" dataTypeName=".i4"/>
+								<plx:comment>UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...</plx:comment>
 								<plx:branch>
 									<plx:condition>
 										<plx:unaryOperator type="booleanNot">
@@ -794,7 +807,7 @@
 													<plx:callThis name="myRoleOrderDictionary" type="field"/>
 												</plx:callObject>
 												<plx:passParam type="in">
-													<plx:callInstance name="FullName" type="property">
+													<plx:callInstance name="Name" type="property">
 														<plx:callObject>
 															<plx:nameRef type="parameter" name="{.}"/>
 														</plx:callObject>
@@ -816,38 +829,15 @@
 									</plx:assign>
 								</plx:branch>
 							</xsl:for-each>
-							<plx:branch>
-								<plx:condition>
-									<plx:binaryOperator type="equality">
-										<plx:left>
-											<plx:nameRef name="xPos"/>
-										</plx:left>
-										<plx:right>
-											<plx:nameRef name="yPos"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:condition>
-								<plx:return>
-									<plx:value type="i4" data="0"/>
-								</plx:return>
-							</plx:branch>
-							<plx:alternateBranch>
-								<plx:condition>
-									<plx:binaryOperator type="lessThan">
-										<plx:left>
-											<plx:nameRef name="xPos"/>
-										</plx:left>
-										<plx:right>
-											<plx:nameRef name="yPos"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:condition>
-								<plx:return>
-									<plx:value type="i4" data="-1"/>
-								</plx:return>
-							</plx:alternateBranch>
 							<plx:return>
-								<plx:value type="i4" data="1"/>
+								<plx:callInstance name="CompareTo">
+									<plx:callObject>
+										<plx:nameRef name="xPos"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="yPos"/>
+									</plx:passParam>
+								</plx:callInstance>
 							</plx:return>
 						</plx:function>
 					</plx:class>
@@ -859,11 +849,11 @@
 						</plx:leadingInfo>
 						<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
 						<plx:returns dataTypeName="IComparer">
-							<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 						</plx:returns>
 						<plx:get>
 							<plx:local name="retVal" dataTypeName="IComparer">
-								<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+								<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 								<plx:initialize>
 									<plx:callStatic dataTypeName="{$ClassName}" name="myCustomSortChildComparer" type="field"/>
 								</plx:initialize>
@@ -881,7 +871,7 @@
 								</plx:condition>
 								<xsl:if test="$ClassOverride">
 									<plx:local name="baseComparer" dataTypeName="IComparer">
-										<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+										<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 										<plx:initialize>
 											<plx:nullKeyword/>
 										</plx:initialize>
@@ -955,7 +945,7 @@
 						</plx:leadingInfo>
 						<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
 						<plx:returns dataTypeName="IComparer">
-							<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
+							<plx:passTypeParam dataTypeName="DomainRoleInfo"/>
 						</plx:returns>
 						<plx:get>
 							<plx:return>
@@ -966,7 +956,7 @@
 				</xsl:when>
 			</xsl:choose>
 			<xsl:variable name="mapChildElementBodyFragment">
-				<xsl:variable name="namespaces" select="../se:MetaModel/se:Namespaces/se:Namespace"/>
+				<xsl:variable name="namespaces" select="../se:DomainModel/se:Namespaces/se:Namespace"/>
 				<xsl:variable name="namespace">
 					<xsl:call-template name="ResolveNamespace">
 						<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1021,11 +1011,11 @@
 								</plx:callObject>
 								<xsl:if test="$createAsRelationshipName">
 									<plx:passParam>
-										<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{$createAsRelationshipName}" type="property"/>
+										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
 									</plx:passParam>
 								</xsl:if>
 								<plx:passParam>
-									<plx:callStatic name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" type="property"/>
+									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="property"/>
 								</plx:passParam>
 							</plx:callInstance>
 							<plx:callInstance name="Add">
@@ -1099,11 +1089,11 @@
 								</plx:callObject>
 								<xsl:if test="$createAsRelationshipName">
 									<plx:passParam>
-										<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{$createAsRelationshipName}" type="property"/>
+										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
 									</plx:passParam>
 								</xsl:if>
 								<plx:passParam>
-									<plx:callStatic name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" type="field"/>
+									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" type="field"/>
 								</plx:passParam>
 							</plx:callInstance>
 							<plx:callInstance name="Add">
@@ -1157,12 +1147,12 @@
 								<xsl:if test="$createAsRelationshipName">
 									<explicitCreateMarker>
 										<plx:passParam>
-											<plx:callStatic name="MetaRelationshipGuid" dataTypeName="{$createAsRelationshipName}" type="property"/>
+											<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
 										</plx:passParam>
 									</explicitCreateMarker>
 								</xsl:if>
 								<plx:passParam>
-									<plx:callStatic name="{$roleName}MetaRoleGuid" dataTypeName="{$relationshipName}" type="property"/>
+									<plx:callStatic name="{$roleName}DomainRoleId" dataTypeName="{$relationshipName}" type="property"/>
 								</plx:passParam>
 							</xsl:if>
 						</xsl:for-each>
@@ -1224,7 +1214,7 @@
 							<plx:nameRef name="match"/>
 						</plx:callObject>
 						<plx:passParam>
-							<plx:callStatic name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" type="field"/>
+							<plx:callStatic name="{@ID}DomainPropertyId" dataTypeName="{$ClassName}" type="field"/>
 						</plx:passParam>
 						<plx:passParam>
 							<xsl:choose>
@@ -1467,7 +1457,7 @@
 					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="$attributes">
-							<xsl:variable name="namespaces" select="../se:MetaModel/se:Namespaces/se:Namespace"/>
+							<xsl:variable name="namespaces" select="../se:DomainModel/se:Namespaces/se:Namespace"/>
 							<plx:local name="customSerializedAttributes" dataTypeName="Dictionary">
 								<plx:passTypeParam dataTypeName=".string"/>
 								<plx:passTypeParam dataTypeName="Guid"/>
@@ -1527,7 +1517,7 @@
 											</plx:string>
 										</plx:passParam>
 										<plx:passParam>
-											<plx:callStatic name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" type="field"/>
+											<plx:callStatic name="{@ID}DomainPropertyId" dataTypeName="{$ClassName}" type="field"/>
 										</plx:passParam>
 									</plx:callInstance>
 								</xsl:for-each>
@@ -1675,10 +1665,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="se:MetaModel">
+	<xsl:template match="se:DomainModel">
 		<xsl:variable name="ModelName" select="@Class"/>
-		<xsl:variable name="DisplayResourceId" select="@DisplayNameResourceId"/>
-		<xsl:variable name="DescriptionResourceId" select="@DescriptionResourceId"/>
 		<plx:class name="{$ModelName}" visibility="public" partial="true">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$ModelName} model serialization"/>
@@ -1686,30 +1674,8 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$ModelName} model serialization"/>
 			</plx:trailingInfo>
-			<xsl:if test="$DisplayResourceId and $DescriptionResourceId">
-				<plx:attribute dataTypeName="MetaModelDisplayName">
-					<plx:passParam>
-						<plx:typeOf dataTypeName="{$ModelName}"/>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="$DisplayResourceId"/>
-						</plx:string>
-					</plx:passParam>
-				</plx:attribute>
-				<plx:attribute dataTypeName="MetaModelDescription">
-					<plx:passParam>
-						<plx:typeOf dataTypeName="{$ModelName}"/>
-					</plx:passParam>
-					<plx:passParam>
-						<plx:string>
-							<xsl:value-of select="$DescriptionResourceId"/>
-						</plx:string>
-					</plx:passParam>
-				</plx:attribute>
-			</xsl:if>
-			<plx:implementsInterface dataTypeName="IORMCustomSerializedMetaModel"/>
-			<plx:field name="XmlNamespace" visibility="public" const="true" dataTypeName=".string" static="false">
+			<plx:implementsInterface dataTypeName="IORMCustomSerializedDomainModel"/>
+			<plx:field name="XmlNamespace" visibility="public" static="true" readOnly="true" dataTypeName=".string">
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary>The default XmlNamespace associated with the '<xsl:value-of select="$ModelName"/>' extension model</summary>
@@ -1735,10 +1701,10 @@
 				<plx:property visibility="protected" name="DefaultElementPrefix" modifier="static">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedMetaModel.DefaultElementPrefix</summary>
+							<summary>Implements IORMCustomSerializedDomainModel.DefaultElementPrefix</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedMetaModel" memberName="DefaultElementPrefix"/>
+					<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="DefaultElementPrefix"/>
 					<plx:returns dataTypeName=".string"/>
 					<plx:get>
 						<plx:return>
@@ -1759,10 +1725,10 @@
 				<plx:function visibility="protected" name="GetCustomElementNamespaces" modifier="static">
 					<plx:leadingInfo>
 						<plx:docComment>
-							<summary>Implements IORMCustomSerializedMetaModel.GetCustomElementNamespaces</summary>
+							<summary>Implements IORMCustomSerializedDomainModel.GetCustomElementNamespaces</summary>
 						</plx:docComment>
 					</plx:leadingInfo>
-					<plx:interfaceMember dataTypeName="IORMCustomSerializedMetaModel" memberName="GetCustomElementNamespaces"/>
+					<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetCustomElementNamespaces"/>
 					<plx:returns dataTypeName=".string">
 						<plx:arrayDescriptor rank="2"/>
 					</plx:returns>
@@ -1847,38 +1813,38 @@
 					</plx:return>
 				</plx:function>
 			</xsl:for-each>
-			<xsl:variable name="hasOmittedElements" select="0!=count(se:OmittedMetaElements/child::se:*)"/>
+			<xsl:variable name="hasOmittedElements" select="0!=count(se:OmittedDomainElements/child::se:*)"/>
 			<xsl:if test="$hasOmittedElements">
 				<plx:field name="myCustomSerializationOmissions" dataTypeName="Dictionary" visibility="private">
-					<plx:passTypeParam dataTypeName="MetaClassInfo"/>
+					<plx:passTypeParam dataTypeName="DomainClassInfo"/>
 					<plx:passTypeParam dataTypeName=".object"/>
 				</plx:field>
 				<plx:function name="BuildCustomSerializationOmissions" visibility="private" modifier="static">
 					<plx:param name="store" dataTypeName="Store"/>
 					<plx:returns dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName="MetaClassInfo"/>
+						<plx:passTypeParam dataTypeName="DomainClassInfo"/>
 						<plx:passTypeParam dataTypeName=".object"/>
 					</plx:returns>
 					<plx:local name="retVal" dataTypeName="Dictionary">
-						<plx:passTypeParam dataTypeName="MetaClassInfo"/>
+						<plx:passTypeParam dataTypeName="DomainClassInfo"/>
 						<plx:passTypeParam dataTypeName=".object"/>
 						<plx:initialize>
 							<plx:callNew dataTypeName="Dictionary">
-								<plx:passTypeParam dataTypeName="MetaClassInfo"/>
+								<plx:passTypeParam dataTypeName="DomainClassInfo"/>
 								<plx:passTypeParam dataTypeName=".object"/>
 							</plx:callNew>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="dataDir" dataTypeName="MetaDataDirectory">
+					<plx:local name="dataDir" dataTypeName="DomainDataDirectory">
 						<plx:initialize>
-							<plx:callInstance name="MetaDataDirectory" type="property">
+							<plx:callInstance name="DomainDataDirectory" type="property">
 								<plx:callObject>
 									<plx:nameRef type="parameter" name="store"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<xsl:for-each select="se:OmittedMetaElements/child::se:*">
+					<xsl:for-each select="se:OmittedDomainElements/child::se:*">
 						<xsl:variable name="classOrRelationship">
 							<xsl:choose>
 								<xsl:when test="local-name()='OmitClass'">
@@ -1896,12 +1862,12 @@
 										<plx:nameRef name="retVal"/>
 									</plx:callObject>
 									<plx:passParam>
-										<plx:callInstance name="FindMeta{$classOrRelationship}">
+										<plx:callInstance name="FindDomain{$classOrRelationship}">
 											<plx:callObject>
 												<plx:nameRef name="dataDir"/>
 											</plx:callObject>
 											<plx:passParam>
-												<plx:callStatic name="Meta{$classOrRelationship}Guid" type="field" dataTypeName="{@Class}" dataTypeQualifier="{@Namespace}"/>
+												<plx:callStatic name="DomainClassId" type="field" dataTypeName="{@Class}" dataTypeQualifier="{@Namespace}"/>
 											</plx:passParam>
 										</plx:callInstance>
 									</plx:passParam>
@@ -1924,20 +1890,20 @@
 			<plx:field name="myValidNamespaces" dataTypeName="Collection" visibility="private" static="true">
 				<plx:passTypeParam dataTypeName=".string"/>
 			</plx:field>
-			<plx:function visibility="protected" name="ShouldSerializeMetaClass">
+			<plx:function visibility="protected" name="ShouldSerializeDomainClass">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedMetaModel.ShouldSerializeMetaClass</summary>
+						<summary>Implements IORMCustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedMetaModel" memberName="ShouldSerializeMetaClass"/>
+				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="ShouldSerializeDomainClass"/>
 				<plx:param name="store" dataTypeName="Store"/>
-				<plx:param name="classInfo" dataTypeName="MetaClassInfo"/>
+				<plx:param name="classInfo" dataTypeName="DomainClassInfo"/>
 				<plx:returns dataTypeName=".boolean"/>
 				<xsl:choose>
 					<xsl:when test="$hasOmittedElements">
 						<plx:local name="omissions" dataTypeName="Dictionary">
-							<plx:passTypeParam dataTypeName="MetaClassInfo"/>
+							<plx:passTypeParam dataTypeName="DomainClassInfo"/>
 							<plx:passTypeParam dataTypeName=".object"/>
 							<plx:initialize>
 								<plx:callThis name="myCustomSerializationOmissions" type="field"/>
@@ -1998,10 +1964,10 @@
 			<plx:function visibility="protected" name="GetRootElementClasses" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedMetaModel.GetRootElementClasses</summary>
+						<summary>Implements IORMCustomSerializedDomainModel.GetRootElementClasses</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedMetaModel" memberName="GetRootElementClasses"/>
+				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="GetRootElementClasses"/>
 				<plx:returns dataTypeName="Guid" dataTypeIsSimpleArray="true"/>
 				<plx:return>
 					<plx:callNew dataTypeName="Guid" dataTypeIsSimpleArray="true">
@@ -2011,7 +1977,7 @@
 								<plx:arrayInitializer>
 									<xsl:for-each select="$rootElements">
 										<plx:passParam>
-											<plx:callStatic dataTypeName="{@Class}" name="MetaClassGuid" type="field"/>
+											<plx:callStatic dataTypeName="{@Class}" name="DomainClassId" type="field"/>
 										</plx:passParam>
 									</xsl:for-each>
 								</plx:arrayInitializer>
@@ -2028,10 +1994,10 @@
 			<plx:function visibility="protected" name="MapRootElement" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedMetaModel.MapRootElement</summary>
+						<summary>Implements IORMCustomSerializedDomainModel.MapRootElement</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedMetaModel" memberName="MapRootElement"/>
+				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="MapRootElement"/>
 				<plx:param name="xmlNamespace" dataTypeName=".string"/>
 				<plx:param name="elementName" dataTypeName=".string"/>
 				<plx:returns dataTypeName="Guid"/>
@@ -2084,7 +2050,7 @@
 							</plx:binaryOperator>
 						</plx:condition>
 						<plx:return>
-							<plx:callStatic dataTypeName="{$className}" name="MetaClassGuid" type="field"/>
+							<plx:callStatic dataTypeName="{$className}" name="DomainClassId" type="field"/>
 						</plx:return>
 					</plx:branch>
 				</xsl:for-each>
@@ -2095,10 +2061,10 @@
 			<plx:function visibility="protected" name="MapClassName" modifier="static">
 				<plx:leadingInfo>
 					<plx:docComment>
-						<summary>Implements IORMCustomSerializedMetaModel.MapClassName</summary>
+						<summary>Implements IORMCustomSerializedDomainModel.MapClassName</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
-				<plx:interfaceMember dataTypeName="IORMCustomSerializedMetaModel" memberName="MapClassName"/>
+				<plx:interfaceMember dataTypeName="IORMCustomSerializedDomainModel" memberName="MapClassName"/>
 				<plx:param name="xmlNamespace" dataTypeName=".string"/>
 				<plx:param name="elementName" dataTypeName=".string"/>
 				<plx:returns dataTypeName="Guid"/>
@@ -2198,7 +2164,7 @@
 								</plx:string>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:callStatic name="MetaClassGuid" dataTypeName="{@Class}" type="property"/>
+								<plx:callStatic name="DomainClassId" dataTypeName="{@Class}" type="property"/>
 							</plx:passParam>
 						</plx:callInstance>
 						<!-- Handle the less obvious Conditional Names -->
@@ -2214,7 +2180,7 @@
 									</plx:string>
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callStatic name="MetaClassGuid" dataTypeName="{$className}" type="property"/>
+									<plx:callStatic name="DomainClassId" dataTypeName="{$className}" type="property"/>
 								</plx:passParam>
 							</plx:callInstance>
 						</xsl:for-each>
@@ -2291,7 +2257,7 @@
 			</xsl:if>
 			<xsl:if test="$attributes">
 				<xsl:element name="SupportedOperation">
-					<xsl:text>AttributeInfo</xsl:text>
+					<xsl:text>PropertyInfo</xsl:text>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="$links">
@@ -2565,17 +2531,17 @@
 			</plx:callNew>
 		</plx:return>
 	</xsl:template>
-	<xsl:template name="ReturnORMCustomSerializedAttributeInfo">
+	<xsl:template name="ReturnORMCustomSerializedPropertyInfo">
 		<xsl:for-each select="se:Condition">
 			<plx:branch>
 				<plx:condition>
 					<xsl:copy-of select="child::*"/>
 				</plx:condition>
-				<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
+				<xsl:call-template name="ReturnORMCustomSerializedPropertyInfo"/>
 			</plx:branch>
 		</xsl:for-each>
 		<plx:return>
-			<plx:callNew dataTypeName="ORMCustomSerializedAttributeInfo">
+			<plx:callNew dataTypeName="ORMCustomSerializedPropertyInfo">
 				<plx:passParam>
 					<xsl:choose>
 						<xsl:when test="string-length(@Prefix)">

@@ -38,7 +38,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>The reading that was added.</returns>
 		public Reading AddReading(string readingText)
 		{
-			RoleBaseMoveableCollection factRoles = RoleCollection;
+			LinkedElementCollection<RoleBase> factRoles = RoleCollection;
 			int roleCount = factRoles.Count;
 			if (!Reading.IsValidReadingText(readingText, roleCount))
 			{
@@ -46,56 +46,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 
 			Store store = Store;
-			Reading retVal = Reading.CreateAndInitializeReading(
-				store,
-				new AttributeAssignment[]{
-					new AttributeAssignment(Reading.TextMetaAttributeGuid, readingText, store)});
+			Reading retVal = new Reading(store, new PropertyAssignment(Reading.TextDomainPropertyId, readingText));
 			retVal.ReadingOrder = this;
 			return retVal;
 		}
 		#endregion // Reading facade method
 		#region CustomStoredAttribute handling
-		/// <summary>
-		/// Currently only handles when the ReadingText value is accessed.
-		/// </summary>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private string GetReadingTextValue()
 		{
-			object retval = null;
-			if (attribute.Id == ReadingTextMetaAttributeGuid)
-			{
-				ReadingMoveableCollection readings = ReadingCollection;
-				if (readings.Count == 0)
-				{
-					retval = String.Empty;
-				}
-				else
-				{
-					retval = readings[0].Text;
-				}
-			}
-			else
-			{
-				retval = base.GetValueForCustomStoredAttribute(attribute);
-			}
-			return retval;
+			LinkedElementCollection<Reading> readings = ReadingCollection;
+			return (readings.Count == 0) ? String.Empty : readings[0].Text;
 		}
-
-		/// <summary>
-		/// Currently only handles when the ReadingText is set.
-		/// </summary>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private void SetReadingTextValue(string newValue)
 		{
-			if (attribute.Id == ReadingTextMetaAttributeGuid)
+			LinkedElementCollection<Reading> readings = ReadingCollection;
+			if (readings.Count > 0)
 			{
-				ReadingMoveableCollection readings = ReadingCollection;
-				if (readings.Count > 0)
-				{
-					readings[0].Text = (string)newValue;
-				}
-			}
-			else
-			{
-				base.SetValueForCustomStoredAttribute(attribute, newValue);
+				readings[0].Text = newValue;
 			}
 		}
 		#endregion
@@ -108,8 +75,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				ReadingMoveableCollection readings;
-				if (!IsRemoved &&
+				LinkedElementCollection<Reading> readings;
+				if (!IsDeleted &&
 					0 != (readings = ReadingCollection).Count)
 				{
 					return readings[0];
@@ -120,21 +87,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region EnforceNoEmptyReadingOrder rule class
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)]
-		private class EnforceNoEmptyReadingOrder : RemoveRule
+		private sealed class EnforceNoEmptyReadingOrder : DeleteRule
 		{
 			/// <summary>
 			/// If the ReadingOrder.ReadingCollection is empty then remove the ReadingOrder
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 				ReadingOrder readOrd = link.ReadingOrder;
-				if (!readOrd.IsRemoved)
+				if (!readOrd.IsDeleted)
 				{
 					if (readOrd.ReadingCollection.Count == 0)
 					{
-						readOrd.Remove();
+						readOrd.Delete();
 					}
 				}
 			}
@@ -146,37 +113,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the place holder with the text {{deleted}}
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasRole))]
-		private class ReadingOrderHasRoleRemoving : RemovingRule
+		private sealed class ReadingOrderHasRoleDeleting : DeletingRule
 		{
 			//UNDONE:a role being removed creates the possibility of there being two ReadingOrders with the same Role sequences, they should be merged
 			
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				RoleBase linkRole = link.RoleCollection;
+				RoleBase linkRole = link.Role;
 				ReadingOrder linkReadingOrder = link.ReadingOrder;
 
-				if (linkReadingOrder.IsRemoving)
+				if (linkReadingOrder.IsDeleting)
 				{
 					// Don't validate if we're removing the reading order
 					return;
 				}
-				Debug.Assert(!linkReadingOrder.IsRemoved);
+				Debug.Assert(!linkReadingOrder.IsDeleted);
 
 				int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);
 				if (pos >= 0)
 				{
 					// UNDONE: This could be done much cleaner with RegEx.Replace and a callback
-					ReadingMoveableCollection readings = linkReadingOrder.ReadingCollection;
+					LinkedElementCollection<Reading> readings = linkReadingOrder.ReadingCollection;
 					int numReadings = readings.Count;
 					int roleCount = linkReadingOrder.RoleCollection.Count;
 					for (int iReading = 0; iReading < numReadings; ++iReading)
 					{
 						Reading linkReading = readings[iReading];
 
-						if (!linkReading.IsRemoving)
+						if (!linkReading.IsDeleting)
 						{
-							Debug.Assert(!linkReading.IsRemoved);
+							Debug.Assert(!linkReading.IsDeleted);
 							string text = linkReading.Text;
 							text = text.Replace("{" + pos.ToString(CultureInfo.InvariantCulture) + "}", ResourceStrings.ModelReadingRoleDeletedRoleText);
 							for (int i = pos + 1; i < roleCount; ++i)
@@ -206,14 +173,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// TODO: escape the deletedText for any Regex text, since it's localizable
 			Regex regExDeleted = new Regex(deletedText, RegexOptions.Compiled);
 
-			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
+			LinkedElementCollection<ReadingOrder> readingOrders = theFact.ReadingOrderCollection;
 			foreach (ReadingOrder ord in readingOrders)
 			{
-				RoleBaseMoveableCollection roles = ord.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = ord.RoleCollection;
 				if (!roles.Contains(addedRole))
 				{
 					ord.RoleCollection.Add(addedRole);
-					ReadingMoveableCollection readings = ord.ReadingCollection;
+					LinkedElementCollection<Reading> readings = ord.ReadingCollection;
 					foreach (Reading read in readings)
 					{
 						string readingText = read.Text;
@@ -241,12 +208,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// can also be added to the ReadingOrders and their Readings.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class FactTypeHasRoleAddedRule : AddRule
+		private sealed class FactTypeHasRoleAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				ValidateReadingOrdersRoleCollection(link.FactType, link.RoleCollection);
+				ValidateReadingOrdersRoleCollection(link.FactType, link.Role);
 			}
 		}
 		#endregion
@@ -270,7 +237,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRedirectVerbalization Implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasReadingOrder.ReadingOrderDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>

@@ -1,72 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Copyright name="Common Public License Copyright Notice">
-		Neumont Object-Role Modeling Architect for Visual Studio
-
-		Copyright © Neumont University. All rights reserved.
-
-		The use and distribution terms for this software are covered by the
-		Common Public License 1.0 (http://opensource.org/licenses/cpl) which
-		can be found in the file CPL.txt at the root of this distribution.
-		By using this software in any fashion, you are agreeing to be bound by
-		the terms of this license.
-
-		You must not remove this notice, or any other, from this software.
+		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
+		<arg:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* The use and distribution terms for this software are covered by the      *</arg:CopyrightLine>
+		<arg:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</arg:CopyrightLine>
+		<arg:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</arg:CopyrightLine>
+		<arg:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</arg:CopyrightLine>
+		<arg:CopyrightLine>* the terms of this license.                                               *</arg:CopyrightLine>
+		<arg:CopyrightLine>*                                                                          *</arg:CopyrightLine>
+		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
+		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMShapeModel">
-		<arg:Rule class="ExternalConstraintLink.RemoveDanglingConstraintShapeRule"/>
+		<arg:Rule class="ExternalConstraintLink.DeleteDanglingConstraintShapeRule"/>
 		<arg:Rule class="FactTypeShape.ConstraintDisplayPositionChangeRule"/>
 		<arg:Rule class="FactTypeShape.DerivationRuleChanged"/>
 		<arg:Rule class="FactTypeShape.DerivationRuleAdd"/>
-		<arg:Rule class="FactTypeShape.DerivationRuleRemove"/>
+		<arg:Rule class="FactTypeShape.DerivationRuleDelete"/>
 		<arg:Rule class="FactTypeShape.ExternalConstraintShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.FactTypeShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.ObjectificationIsImpliedChangeRule"/>
 		<arg:Rule class="FactTypeShape.RoleDisplayOrderChanged"/>
 		<arg:Rule class="FactTypeShape.SwitchFromNestedFact"/>
 		<arg:Rule class="FactTypeShape.SwitchToNestedFact"/>
-		<arg:Rule class="FrequencyConstraintShape.FrequencyConstraintAttributeChangeRule"/>
+		<arg:Rule class="FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule"/>
 		<arg:Rule class="ObjectTypeShape.DataTypeAddedRule"/>
-		<arg:Rule class="ObjectTypeShape.PreferredIdentifierRemovedRule"/>
+		<arg:Rule class="ObjectTypeShape.PreferredIdentifierDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="ObjectTypeShape.RolePlayerAddedRule"/>
-		<arg:Rule class="ObjectTypeShape.RolePlayerRemovedRule"/>
+		<arg:Rule class="ObjectTypeShape.RolePlayerDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
 		<arg:Rule class="ORMBaseBinaryLinkShape.LinkChangeRule"/>
 		<arg:Rule class="ORMBaseShape.ModelErrorAdded"/>
-		<arg:Rule class="ORMBaseShape.ModelErrorRemoving"/>
+		<arg:Rule class="ORMBaseShape.ModelErrorDeleting"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleAdded"/>
-		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleRemoved"/>
+		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleDeleted"/>
 		<arg:Rule class="ORMShapeModel.FactConstraintAdded"/>
-		<arg:Rule class="ORMShapeModel.FactConstraintRemoved"/>
-		<arg:Rule class="ORMShapeModel.ExternalRoleConstraintRemoved"/>
+		<arg:Rule class="ORMShapeModel.FactConstraintDeleted"/>
+		<arg:Rule class="ORMShapeModel.ExternalRoleConstraintDeleted"/>
 		<arg:Rule class="ORMShapeModel.FactTypedAdded"/>
 		<arg:Rule class="ORMShapeModel.FactTypeShapeChanged"/>
-		<arg:Rule class="ORMShapeModel.LinkConnectsToNodeRemoved"/>
+		<arg:Rule class="ORMShapeModel.LinkConnectsToNodeDeleted"/>
 		<arg:Rule class="ORMShapeModel.SetComparisonConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypedAdded"/>
-		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleRemoved"/>
+		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleDeleted"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypeShapeChangeRule"/>
-		<arg:Rule class="ORMShapeModel.ParentShapeRemoved"/>
-		<arg:Rule class="ORMShapeModel.PresentationLinkRemoved"/>
+		<arg:Rule class="ORMShapeModel.ParentShapeDeleted"/>
+		<arg:Rule class="ORMShapeModel.PresentationLinkDeleted"/>
 		<arg:Rule class="ORMShapeModel.ReadingOrderAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleChange"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleAdded"/>
-		<arg:Rule class="ORMShapeModel.RelativeParentShapeRemoved"/>
-		<arg:Rule class="ORMShapeModel.RoleRemoved"/>
+		<arg:Rule class="ORMShapeModel.RelativeParentShapeDeleted"/>
+		<arg:Rule class="ORMShapeModel.RoleDeleted"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintAdded"/>
-		<arg:Rule class="ORMShapeModel.RoleValueConstraintRemoved"/>
+		<arg:Rule class="ORMShapeModel.RoleValueConstraintDeleted"/>
 		<arg:Rule class="ORMShapeModel.SetConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintAdded"/>
-		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintRemoved"/>
-		<arg:Rule class="ReadingShape.ReadingOrderRemoved"/>
+		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintDeleted"/>
+		<arg:Rule class="ReadingShape.ReadingOrderDeleted"/>
 		<arg:Rule class="ReadingShape.ReadingPositionChanged"/>
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>
 		<arg:Rule class="ReadingShape.RoleDisplayOrderPositionChanged"/>
 		<arg:Rule class="ReadingShape.RoleDisplayOrderAdded"/>
-		<arg:Rule class="RingConstraintShape.RingConstraintAttributeChangeRule"/>
-		<arg:Rule class="RolePlayerLink.RolePlayerRemoving"/>
+		<arg:Rule class="RingConstraintShape.RingConstraintPropertyChangeRule"/>
+		<arg:Rule class="RolePlayerLink.RolePlayerDeleting"/>
 		<arg:Rule class="ValueConstraintShape.ValueRangeChanged"/>
 		<arg:Rule class="ValueConstraintShape.ValueConstraintAdded"/>
 		<arg:Rule class="ValueConstraintShape.ValueTypeHasDataTypeAdded"/>

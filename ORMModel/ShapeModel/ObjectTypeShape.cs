@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -25,8 +26,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
-using System.Collections;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
@@ -169,7 +169,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Creates and adds shape fields to this shape type. Called once per type.
 		/// </summary>
 		/// <param name="shapeFields">The shape fields collection for this shape type.</param>
-		protected override void InitializeShapeFields(ShapeFieldCollection shapeFields)
+		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
 			base.InitializeShapeFields(shapeFields);
 
@@ -186,7 +186,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			StringFormat fieldFormat = new StringFormat(StringFormatFlags.NoClip);
 			fieldFormat.Alignment = StringAlignment.Center;
 			field.DefaultStringFormat = fieldFormat;
-			field.AssociateValueWith(Store, ObjectTypeShape.ShapeNameMetaAttributeGuid, NamedElement.NameMetaAttributeGuid);
+			field.AssociateValueWith(Store, ORMNamedElement.NameDomainPropertyId);
 
 			// Initialize reference mode field
 			AutoSizeTextField referenceModeField = CreateReferenceModeTextField();
@@ -196,9 +196,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			referenceModeField.DefaultPenId = DiagramPens.ShapeOutline;
 			referenceModeField.DefaultFontId = DiagramFonts.ShapeTitle;
 			referenceModeField.DefaultFocusable = true;
-			referenceModeField.DefaultText = "";
+			referenceModeField.DefaultText = string.Empty;
 			referenceModeField.DefaultStringFormat = fieldFormat;
-			referenceModeField.AssociateValueWith(Store, ObjectTypeShape.ReferenceModeNameMetaAttributeGuid, ObjectType.ReferenceModeDisplayMetaAttributeGuid);
+			referenceModeField.AssociateValueWith(Store, ObjectType.ReferenceModeDisplayDomainPropertyId);
 
 			// Add all shapes before modifying anchoring behavior
 			shapeFields.Add(field);
@@ -242,9 +242,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				foreach (RoleBase rBase in factType.RoleCollection)
 				{
 					Role r = rBase.Role;
-					if (!object.ReferenceEquals(roleInDefn, r))
+					if (roleInDefn != r)
 					{
-						if (object.ReferenceEquals(r.RolePlayer, AssociatedObjectType))
+						if (r.RolePlayer == AssociatedObjectType)
 						{
 							isRoleValueRangeDefn = true;
 							break;
@@ -306,10 +306,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (null != (dataTypeError = error as DataTypeNotSpecifiedError))
 			{
 				Store store = Store;
-				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueTypeCollection;
+				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueType;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					valueType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.DataTypeDisplayMetaAttributeGuid), this),
+					ORMTypeDescriptor.CreatePropertyDescriptor(valueType, ObjectType.DataTypeDisplayDomainPropertyId),
 					true);
 			}
 			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
@@ -317,7 +317,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					requiresReferenceSchemeError.ObjectType.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ObjectType.ReferenceModeDisplayMetaAttributeGuid), this),
+					ORMTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
 					true);
 			}
 			else if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
@@ -337,15 +337,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // IModelErrorActivation Implementation
 		#region Shape display update rules
 		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ShapeChangeRule : ChangeRule
+		private sealed class ShapeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				//if primaryidentifyer for a Entity type is 
 				//removed and ref mode is not expanded...AutoResize() the entity type
-				Guid attributeGuid = e.MetaAttribute.Id;
+				Guid attributeGuid = e.DomainProperty.Id;
 				bool resizeShapes = false;
-				if (attributeGuid == NamedElement.NameMetaAttributeGuid)
+				if (attributeGuid == ORMNamedElement.NameDomainPropertyId)
 				{
 					// Figure out if we need to resize related object shapes. This happens
 					// when we've renamed a value type that is bound to the reference scheme
@@ -354,12 +354,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 					if (changeType.IsValueType)
 					{
-						RoleMoveableCollection playedRoles = changeType.PlayedRoleCollection;
+						LinkedElementCollection<Role> playedRoles = changeType.PlayedRoleCollection;
 						int roleCount = playedRoles.Count;
 						for (int i = 0; i < roleCount; ++i)
 						{
 							Role currentRole = playedRoles[i];
-							ConstraintRoleSequenceMoveableCollection roleConstraints = currentRole.ConstraintRoleSequenceCollection;
+							LinkedElementCollection<ConstraintRoleSequence> roleConstraints = currentRole.ConstraintRoleSequenceCollection;
 							int constraintCount = roleConstraints.Count;
 							for (int j = 0; j < constraintCount; ++j)
 							{
@@ -370,7 +370,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									ObjectType identifierFor = associatedConstraint.PreferredIdentifierFor;
 									if (identifierFor != null)
 									{
-										PresentationElementMoveableCollection pels = identifierFor.PresentationRolePlayers;
+										LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(identifierFor);
 										int pelCount = pels.Count;
 										ORMBaseShape ots;
 										for (int k = 0; k < pelCount; ++k)
@@ -387,13 +387,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					resizeShapes = true;
 				}
-				else if (attributeGuid == ObjectType.IsIndependentMetaAttributeGuid)
+				else if (attributeGuid == ObjectType.IsIndependentDomainPropertyId)
 				{
 					resizeShapes = true;
 				}
 				if (resizeShapes)
 				{
-					foreach (PresentationElement pel in e.ModelElement.PresentationRolePlayers)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(e.ModelElement))
 					{
 						ORMBaseShape shape = pel as ORMBaseShape;
 						if (shape != null)
@@ -405,15 +405,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class PreferredIdentifierRemovedRule : RemoveRule
+		private sealed class PreferredIdentifierDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 				ObjectType entityType = link.PreferredIdentifierFor;
-				if (!entityType.IsRemoved)
+				if (!entityType.IsDeleted)
 				{
-					PresentationElementMoveableCollection pels = entityType.PresentationRolePlayers;
+					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(entityType);
 					int pelCount = pels.Count;
 					ORMBaseShape ots; // Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
 					for (int i = 0; i < pelCount; ++i)
@@ -439,7 +439,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Debug.Assert(constraint != null); // Check before call
 			Debug.Assert(preferredIdentifierFor != null); // Check before call
 			//Get the object that represents the item with the preferred identifier. 
-			foreach (PresentationElement pel in preferredIdentifierFor.PresentationRolePlayers)
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(preferredIdentifierFor))
 			{
 				ObjectTypeShape objectShape;
 				ObjectifiedFactTypeNameShape objectifiedShape;
@@ -458,12 +458,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
-		private class PreferredIdentifierAddedRule : AddRule
+		private sealed class PreferredIdentifierAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectType rolePlayer;
-				RoleMoveableCollection roles;
+				LinkedElementCollection<Role> roles;
 				EntityTypeHasPreferredIdentifier link;
 				UniquenessConstraint constraint;
 				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
@@ -482,20 +482,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class DataTypeAddedRule : AddRule
+		private sealed class DataTypeAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelElement element = e.ModelElement;
 				EntityTypeHasPreferredIdentifier link;
 				if (null == (link = element as EntityTypeHasPreferredIdentifier))
 				{
 					ValueTypeHasDataType dataTypeLink = element as ValueTypeHasDataType;
-					RoleMoveableCollection playedRoles = dataTypeLink.ValueTypeCollection.PlayedRoleCollection;
+					LinkedElementCollection<Role> playedRoles = dataTypeLink.ValueType.PlayedRoleCollection;
 					int playedRolesCount = playedRoles.Count;
 					for (int i = 0; i < playedRolesCount; ++i)
 					{
-						ConstraintRoleSequenceMoveableCollection sequences = playedRoles[i].ConstraintRoleSequenceCollection;
+						LinkedElementCollection<ConstraintRoleSequence> sequences = playedRoles[i].ConstraintRoleSequenceCollection;
 						int constraintsCount = sequences.Count;
 						for (int j = 0; j < constraintsCount; ++j)
 						{
@@ -519,14 +519,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// to ensure that the ExpandRefMode property is correct.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class RolePlayerAddedRule : AddRule
+		private sealed class RolePlayerAddedRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				if (link.RolePlayer.IsValueType)
 				{
-					ConstraintRoleSequenceMoveableCollection sequences = link.PlayedRoleCollection.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = link.PlayedRole.ConstraintRoleSequenceCollection;
 					int constraintsCount = sequences.Count;
 					for (int i = 0; i < constraintsCount; ++i)
 					{
@@ -549,13 +549,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime=TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class RolePlayerRemovedRule : RemoveRule
+		private sealed class RolePlayerDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				if (!role.IsRemoved)
+				Role role = link.PlayedRole;
+				if (!role.IsDeleted)
 				{
 					foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
 					{
@@ -565,7 +565,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							ObjectType objectType = iuc.PreferredIdentifierFor;
 							if (objectType != null)
 							{
-								foreach (PresentationElement pel in objectType.PresentationRolePlayers)
+								foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(objectType))
 								{
 									ORMBaseShape objectShape; // Picks up ObjectTypeShape, ObjectifiedFactTypeNameShape
 									if (null != (objectShape = pel as ORMBaseShape))
@@ -586,7 +586,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void UpdateObjectTypeDisplay(ObjectType objectType)
 		{
-			foreach (PresentationElement pel in objectType.PresentationRolePlayers)
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(objectType))
 			{
 				ShapeElement shape = pel as ShapeElement;
 				if (shape != null)
@@ -600,24 +600,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static new void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(ValueTypeHasDataType.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(relInfo, new ElementAddedEventHandler(DataTypeAddedEvent));
-			eventDirectory.ElementRemoved.Add(relInfo, new ElementRemovedEventHandler(DataTypeRemovedEvent));
+			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(ValueTypeHasDataType.DomainClassId);
+			eventDirectory.ElementAdded.Add(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent));
+			eventDirectory.ElementDeleted.Add(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
 		public static new void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(ValueTypeHasDataType.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(relInfo, new ElementAddedEventHandler(DataTypeAddedEvent));
-			eventDirectory.ElementRemoved.Remove(relInfo, new ElementRemovedEventHandler(DataTypeRemovedEvent));
+			DomainRelationshipInfo relInfo = dataDirectory.FindDomainRelationship(ValueTypeHasDataType.DomainClassId);
+			eventDirectory.ElementAdded.Remove(relInfo, new EventHandler<ElementAddedEventArgs>(DataTypeAddedEvent));
+			eventDirectory.ElementDeleted.Remove(relInfo, new EventHandler<ElementDeletedEventArgs>(DataTypeRemovedEvent));
 		}
 		/// <summary>
 		/// Update the shape when a data type is added from the ObjecType.
@@ -625,8 +625,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static void DataTypeAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-			ObjectType ot = link.ValueTypeCollection;
-			if (!ot.IsRemoved)
+			ObjectType ot = link.ValueType;
+			if (!ot.IsDeleted)
 			{
 				UpdateObjectTypeDisplay(ot);
 			}
@@ -634,11 +634,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Update the shape when a data type is removed from the ObjecType.
 		/// </summary>
-		private static void DataTypeRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private static void DataTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-			ObjectType ot = link.ValueTypeCollection;
-			if (!ot.IsRemoved)
+			ObjectType ot = link.ValueType;
+			if (!ot.IsDeleted)
 			{
 				UpdateObjectTypeDisplay(ot);
 			}
@@ -668,61 +668,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 
 			/// <summary>
-			/// Get the minimum width of the shape field for the current text.
+			/// Gets the minimum <see cref="SizeD"/> of this <see cref="ReferenceModeTextField"/>.
 			/// </summary>
-			/// <param name="parentShape">ShapeElement</param>
-			/// <returns>Width of current text</returns>
-			public override double GetMinimumWidth(ShapeElement parentShape)
+			/// <param name="parentShape">
+			/// The <see cref="ObjectTypeShape"/> that this <see cref="ReferenceModeTextField"/> is associated with.
+			/// </param>
+			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="ReferenceModeTextField"/>.</returns>
+			public override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
-				ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
-				ObjectType objectType = parentShape.ModelElement as ObjectType;
-				if (objectType != null)
+				if (GetVisible(parentShape))
 				{
-					if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
-					{
-
-						return base.GetMinimumWidth(parentShape);
-					}
+					return base.GetMinimumSize(parentShape);
 				}
-				return 0;
-			}
-			/// <summary>
-			/// Get the minimum height of the shape field for the current text.
-			/// </summary>
-			/// <param name="parentShape">ShapeElement</param>
-			/// <returns>Width of current text</returns>
-			public override double GetMinimumHeight(ShapeElement parentShape)
-			{
-				ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
-				ObjectType objectType = parentShape.ModelElement as ObjectType;
-				if (objectType != null)
-				{
-					if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
-					{
-
-						return base.GetMinimumHeight(parentShape);
-					}
-				}
-				return 0;
+				return SizeD.Empty;
 			}
 
 			/// <summary>
-			/// Returns whether or not the text field is visible
+			/// Returns whether or not the text field is visible.
 			/// </summary>
-			/// <param name="parentShape"></param>
-			/// <returns></returns>
 			public override bool GetVisible(ShapeElement parentShape)
 			{
 				ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
 				ObjectType objectType = parentShape.ModelElement as ObjectType;
-				if (objectType != null && !objectTypeShape.ExpandRefMode)
-				{
-					if (!objectType.IsValueType)
-					{
-						return true;
-					}
-				}
-				return false;
+				return (objectType != null && objectTypeShape != null && !objectTypeShape.ExpandRefMode && !objectType.IsValueType);
 			}
 
 			/// <summary>
@@ -731,12 +699,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override string GetDisplayText(ShapeElement parentShape)
 			{
 				ObjectType objectType = parentShape.ModelElement as ObjectType;
-				if (objectType != null)
+				if (objectType != null && objectType.HasReferenceMode)
 				{
-					if (objectType.HasReferenceMode)
-					{
-						return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeReferenceModeFormatString, base.GetDisplayText(parentShape));
-					}
+					return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeReferenceModeFormatString, base.GetDisplayText(parentShape));
 				}
 				return base.GetDisplayText(parentShape);
 			}
@@ -764,9 +729,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override string GetDisplayText(ShapeElement parentShape)
 			{
 				string retVal = base.GetDisplayText(parentShape);
-				ObjectType objectType;
-				if (null != (objectType = parentShape.ModelElement as ObjectType) &&
-					objectType.IsIndependent)
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				if (objectType != null && objectType.IsIndependent)
 				{
 					retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
 				}

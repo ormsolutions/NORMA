@@ -14,10 +14,6 @@
 \**************************************************************************/
 #endregion
 
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
-using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,11 +25,17 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Neumont.Tools.ORM.ShapeModel;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.Win32;
+using Neumont.Tools.ORM.Design;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+
+using PropertyChangedEventArgs = Microsoft.VisualStudio.Modeling.Diagrams.PropertyChangedEventArgs;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -133,12 +135,13 @@ namespace Neumont.Tools.ORM.Shell
 					Debug.Assert(store != null);
 					using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
 					{
-						if (!selectedType.IsRemoved)
+						if (!selectedType.IsDeleted)
 						{
-							IDictionary contextinfo = t.TopLevelTransaction.Context.ContextInfo;
-							foreach (object o in selectedType.PresentationRolePlayers)
+							Dictionary<object, object> contextinfo = t.TopLevelTransaction.Context.ContextInfo;
+							LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(selectedType);
+							foreach (PresentationElement o in presentationElements)
 							{
-								ObjectTypeShape objectShape = o as ObjectTypeShape;
+								ObjectTypeShape objectShape;
 								ObjectifiedFactTypeNameShape objectifiedShape;
 								if ((null != (objectShape = o as ObjectTypeShape) && !objectShape.ExpandRefMode) ||
 									(null != (objectifiedShape = o as ObjectifiedFactTypeNameShape) && !objectifiedShape.ExpandRefMode))
@@ -146,8 +149,8 @@ namespace Neumont.Tools.ORM.Shell
 									contextinfo[ObjectType.DeleteReferenceModeValueType] = null;
 								}
 							}
-							selectedType.PresentationRolePlayers.Clear();
-							selectedType.Remove();
+							presentationElements.Clear();
+							selectedType.Delete();
 						}
 						if (t.HasPendingChanges)
 						{
@@ -305,31 +308,30 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			protected override IList FindRootElements(Store store)
 			{
-				return store.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
+				return store.ElementDirectory.FindElements<ORMModel>();
 			}
 			#endregion
 			#region CustomVisitorFilter
-			private class CustomVisitorFilter : AggregateVisitorFilter
+			private sealed class CustomVisitorFilter : EmbeddingVisitorFilter
 			{
 				private static Dictionary<Guid, VisitorFilterResult> myFilterDictionary;
-				public override VisitorFilterResult ShouldVisitRelationship(ElementWalker walker, ModelElement sourceElement, MetaRoleInfo sourceRoleInfo, MetaRelationshipInfo metaRelationshipInfo, ElementLink targetRelationship)
+				public sealed override VisitorFilterResult ShouldVisitRelationship(ElementWalker walker, ModelElement sourceElement, DomainRoleInfo sourceRoleInfo, DomainRelationshipInfo domainRelationshipInfo, ElementLink targetRelationship)
 				{
 					VisitorFilterResult result;
 					Dictionary<Guid, VisitorFilterResult> dictionary = myFilterDictionary;
 					if (dictionary == null)
 					{
 						dictionary = new Dictionary<Guid, VisitorFilterResult>();
-						dictionary.Add(ModelHasDataType.MetaRelationshipGuid, VisitorFilterResult.Never);
-						dictionary.Add(ModelHasError.MetaRelationshipGuid, VisitorFilterResult.Never);
-						dictionary.Add(ModelHasReferenceMode.MetaRelationshipGuid, VisitorFilterResult.Never);
-						dictionary.Add(ModelHasReferenceModeKind.MetaRelationshipGuid, VisitorFilterResult.Never);
-						dictionary.Add(ORMModelElementHasExtensionElement.MetaRelationshipGuid, VisitorFilterResult.Never);
-						dictionary.Add(ORMNamedElementHasExtensionElement.MetaRelationshipGuid, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasDataType.DomainClassId, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasError.DomainClassId, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasReferenceMode.DomainClassId, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasReferenceModeKind.DomainClassId, VisitorFilterResult.Never);
+						dictionary.Add(ORMModelElementHasExtensionElement.DomainClassId, VisitorFilterResult.Never);
 						myFilterDictionary = dictionary;
 					}
-					if (!dictionary.TryGetValue(metaRelationshipInfo.Id, out result))
+					if (!dictionary.TryGetValue(domainRelationshipInfo.Id, out result))
 					{
-						result = base.ShouldVisitRelationship(walker, sourceElement, sourceRoleInfo, metaRelationshipInfo, targetRelationship);
+						result = base.ShouldVisitRelationship(walker, sourceElement, sourceRoleInfo, domainRelationshipInfo, targetRelationship);
 					}
 					return result;
 				}
@@ -392,7 +394,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Hack override for the framework's incomplete implementation of OnDocumentWindowChanged
 		/// </summary>
-		protected override void OnDocumentWindowChanged(DocView oldView, DocView newView)
+		protected override void OnDocumentWindowChanged(ModelingDocView oldView, ModelingDocView newView)
 		{
 			// UNDONE: MSBUG The frameworks implementation of OnDocumentWindowChanged is
 			// garbage. Specifically, the ModelExplorerTreeContainer.ModelingDocData property
@@ -428,8 +430,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			eventDirectory.CustomModelEventManager.Add(FactTypeNameChangedEvent.CustomModelEventId, new CustomModelEventHandler(FactTypeNameChanged));
+			store.EventManagerDirectory.ElementPropertyChanged.Add(FactType.NameChangedDomainPropertyId, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged));
 		}
 		private void DetachModelEvents(Store store)
 		{
@@ -437,8 +438,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-			eventDirectory.CustomModelEventManager.Remove(FactTypeNameChangedEvent.CustomModelEventId, new CustomModelEventHandler(FactTypeNameChanged));
+			store.EventManagerDirectory.ElementPropertyChanged.Remove(FactType.NameChangedDomainPropertyId, new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged));
 		}
 		private RoleGroupTreeNode myFactCollectionNode;
 		/// <summary>
@@ -447,11 +447,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// and does not give any way to directly attached other events to individual
 		/// nodes, so we have to go hunting to find the facts.
 		/// </summary>
-		private void FactTypeNameChanged(object sender, CustomModelEventArgs e)
+		private void FactTypeNameChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
-			FactTypeNameChangedEventArgs args = (FactTypeNameChangedEventArgs)e;
-			FactType fact = args.FactType;
-			if (!fact.IsRemoved)
+			FactType fact = e.ModelElement as FactType;
+			if (!fact.IsDeleted)
 			{
 				RoleGroupTreeNode factsNode = myFactCollectionNode;
 				if (factsNode == null)
@@ -465,13 +464,12 @@ namespace Neumont.Tools.ORM.Shell
 						0 != (rootNodes = treeControl.Nodes).Count &&
 						null != (modelNode = rootNodes[0] as ModelElementTreeNode))
 					{
-						MetaRoleInfo factRoleInfo = modelNode.ModelElement.Store.MetaDataDirectory.FindMetaRole(ModelHasFactType.FactTypeCollectionMetaRoleGuid);
+						DomainRoleInfo factRoleInfo = modelNode.ModelElement.Store.DomainDataDirectory.FindDomainRole(ModelHasFactType.FactTypeDomainRoleId);
 						TreeNode testNode = modelNode.FirstNode;
 						while (testNode != null)
 						{
 							RoleGroupTreeNode testRoleNode = testNode as RoleGroupTreeNode;
-							if (testRoleNode != null &&
-								object.ReferenceEquals(testRoleNode.RoleInfo, factRoleInfo))
+							if (testRoleNode != null && testRoleNode.RoleInfo == factRoleInfo)
 							{
 								myFactCollectionNode = factsNode = testRoleNode;
 								break;
@@ -485,8 +483,7 @@ namespace Neumont.Tools.ORM.Shell
 					foreach (TreeNode testNode in factsNode.Nodes)
 					{
 						ModelElementTreeNode elementNode = testNode as ModelElementTreeNode;
-						if (elementNode != null &&
-							object.ReferenceEquals(elementNode.ModelElement, fact))
+						if (elementNode != null && elementNode.ModelElement == fact)
 						{
 							elementNode.UpdateNodeText();
 							break;

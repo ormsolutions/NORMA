@@ -167,7 +167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private static int RotateRight(int value, int places)
 		{
-			places = places & 0x1F;
+			places &= 0x1F;
 			if (places == 0)
 			{
 				return value;
@@ -180,7 +180,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public bool Equals(CustomChildVerbalizer obj)
 		{
-			return object.ReferenceEquals(myInstance, obj.myInstance) && myOptions == obj.myOptions;
+			return myInstance == obj.myInstance && myOptions == obj.myOptions;
 		}
 		/// <summary>
 		/// Equality operator
@@ -250,7 +250,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching reading order. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public static Reading GetMatchingReading(ReadingOrderMoveableCollection readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, RoleBaseMoveableCollection defaultRoleOrder, bool allowAnyOrder)
+		public static Reading GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, ReadingOrder ignoreReadingOrder, RoleBase matchLeadRole, IList matchAnyLeadRole, bool invertLeadRoles, bool noFrontText, LinkedElementCollection<RoleBase> defaultRoleOrder, bool allowAnyOrder)
 		{
 			int orderCount = readingOrders.Count;
 			Reading retVal = null;
@@ -337,7 +337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							continue;
 						}
 						ReadingOrder testOrder = readingOrders[i];
-						RoleBaseMoveableCollection testRoles = testOrder.RoleCollection;
+						LinkedElementCollection<RoleBase> testRoles = testOrder.RoleCollection;
 						int testRolesCount = testRoles.Count;
 						int j;
 						for (j = 0; j < testRolesCount; ++j)
@@ -374,13 +374,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="matchingReading">The matching reading. Can be non-null to start with</param>
 		/// <returns>true if an optimal match was found. retVal will be false if a match is found but
 		/// a more optimal match is possible</returns>
-		private static bool GetMatchingReading(ReadingOrderMoveableCollection readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, RoleBaseMoveableCollection defaultRoleOrder, bool testNoFrontText, bool requireNoFrontText, ref Reading matchingReading)
+		private static bool GetMatchingReading(LinkedElementCollection<ReadingOrder> readingOrders, int ignoreReadingOrderIndex, RoleBase matchLeadRole, LinkedElementCollection<RoleBase> defaultRoleOrder, bool testNoFrontText, bool requireNoFrontText, ref Reading matchingReading)
 		{
 			ReadingOrder matchingOrder = null;
 			int orderCount = readingOrders.Count;
 			ReadingOrder testOrder;
 			bool optimalMatch = false;
-			RoleBaseMoveableCollection testRoles;
+			LinkedElementCollection<RoleBase> testRoles;
 			int testRolesCount;
 			if (orderCount != 0)
 			{
@@ -395,7 +395,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						testOrder = readingOrders[i];
 						testRoles = testOrder.RoleCollection;
 						testRolesCount = testRoles.Count;
-						if (testRolesCount != 0 && object.ReferenceEquals(testRoles[0], matchLeadRole))
+						if (testRolesCount != 0 && testRoles[0] == matchLeadRole)
 						{
 							if (defaultRoleOrder != null)
 							{
@@ -436,7 +436,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					ReadingMoveableCollection readings = matchingOrder.ReadingCollection;
+					LinkedElementCollection<Reading> readings = matchingOrder.ReadingCollection;
 					Reading noFrontTextReading = null;
 					int readingCount = readings.Count;
 					for (int i = 0; i < readingCount; ++i)
@@ -473,14 +473,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="roleReplacements">The replacement fields. The length of the replacement array can be greater than
 		/// the number of roles in the defaultOrder collection</param>
 		/// <returns>The populated predicate text</returns>
-		public static string PopulatePredicateText(Reading reading, RoleBaseMoveableCollection defaultOrder, string[] roleReplacements)
+		public static string PopulatePredicateText(Reading reading, LinkedElementCollection<RoleBase> defaultOrder, string[] roleReplacements)
 		{
 			string retVal = null;
 			if (reading != null)
 			{
 				string[] useReplacements = roleReplacements;
 				int roleCount = defaultOrder.Count;
-				RoleBaseMoveableCollection readingRoles = reading.ReadingOrder.RoleCollection;
+				LinkedElementCollection<RoleBase> readingRoles = reading.ReadingOrder.RoleCollection;
 				Debug.Assert(readingRoles.Count >= roleCount);
 				// First, see if anything is out of order
 				int i;
@@ -543,7 +543,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						writer.Write(body.Substring(0, charIndex));
 					}
-					writer.Write(char.ToUpper(body[charIndex], CultureInfo.CurrentUICulture));
+					writer.Write(char.ToUpper(body[charIndex], CultureInfo.CurrentCulture));
 					string trailingText = body.Substring(charIndex + 1);
 					if (closeSentenceWith.Length != 0 && CloseSentence(writer, trailingText, closeSentenceWith))
 					{
@@ -644,7 +644,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="replacementFormatString">The string used to format replacement fields. The format string is used to build another
 		/// format string with one replacement field. It must consist of a {{0}} representing the eventual replacement field, a {0} for the leading
 		/// hyphen-bound text, and a {1} for the trailing hyphen-bound text.</param>
-		public VerbalizationHyphenBinder(Reading reading, RoleBaseMoveableCollection defaultOrder, string replacementFormatString)
+		public VerbalizationHyphenBinder(Reading reading, LinkedElementCollection<RoleBase> defaultOrder, string replacementFormatString)
 		{
 			string readingText;
 
@@ -661,14 +661,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// create an indexMap array that maps the reading role order to
 			// the fact role order.
 			int roleCount = defaultOrder.Count;
-			RoleBaseMoveableCollection readingRoles = reading.ReadingOrder.RoleCollection;
+			LinkedElementCollection<RoleBase> readingRoles = reading.ReadingOrder.RoleCollection;
 			Debug.Assert(readingRoles.Count == roleCount);
 			int[] indexMap = null;
 			int firstIndexChange = -1;
 			for (int i = 0; i < roleCount; ++i)
 			{
 				RoleBase readingRole = readingRoles[i];
-				if (object.ReferenceEquals(readingRole, defaultOrder[i]))
+				if (readingRole == defaultOrder[i])
 				{
 					if (indexMap != null)
 					{
@@ -688,7 +688,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				for (int j = firstIndexChange; j < roleCount; ++j)
 				{
-					if (object.ReferenceEquals(readingRole, defaultOrder[j]))
+					if (readingRole == defaultOrder[j])
 					{
 						indexMap[i] = j;
 						break;
@@ -846,7 +846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="roleReplacements">The replacement fields</param>
 		/// <param name="unmodifiedRoleReplacements">The roleReplacements array have not been modified with the HyphenBindRoleReplacement method</param>
 		/// <returns>The populated predicate text</returns>
-		public string PopulatePredicateText(Reading reading, RoleBaseMoveableCollection defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
+		public string PopulatePredicateText(Reading reading, LinkedElementCollection<RoleBase> defaultOrder, string[] roleReplacements, bool unmodifiedRoleReplacements)
 		{
 			string formatText = myModifiedReadingText;
 			if (formatText == null)

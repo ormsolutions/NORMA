@@ -214,7 +214,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			IFactConstraint factConstraint;
 			return (null != (stickyPel = (Diagram as ORMDiagram).StickyObject as PresentationElement) &&
 				null != (factConstraint = AssociatedFactConstraint as IFactConstraint) &&
-				object.ReferenceEquals(stickyPel.ModelElement, factConstraint.Constraint));
+				stickyPel.ModelElement == factConstraint.Constraint);
 		}
 		/// <summary>
 		/// Draw an arrow on the subtype end
@@ -231,14 +231,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (efc is FactSetComparisonConstraint)
 				{
 					SubsetConstraint sConstraint;
-					if (null != (sConstraint = efc.Roles[0] as SubsetConstraint))
+					if (null != (sConstraint = efc.LinkedElements[0] as SubsetConstraint))
 					{
 						LinkConnectsToNode fromNode = FromLinkConnectsToNode;
 						Debug.Assert(fromNode.Nodes is FactTypeShape); // expect connection to a FactTypeShape only
 						FactTypeShape factTypeShape = fromNode.Nodes as FactTypeShape;
 						FactType factType = factTypeShape.AssociatedFactType;
-						RoleBaseMoveableCollection factTypeRoles = factType.RoleCollection;
-						SetComparisonConstraintRoleSequenceMoveableCollection sequenceCollection = sConstraint.RoleSequenceCollection;
+						LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
+						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequenceCollection = sConstraint.RoleSequenceCollection;
 						if (sequenceCollection.Count > 1)
 						{
 							foreach (Role r in sequenceCollection[1].RoleCollection)
@@ -322,9 +322,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// links, so automatically remove them if a connecting shape is removed.
 		/// </summary>
 		[RuleOn(typeof(ExternalConstraintLink))]
-		private class RemoveDanglingConstraintShapeRule : RemovingRule
+		private sealed class DeleteDanglingConstraintShapeRule : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ExternalConstraintLink link = e.ModelElement as ExternalConstraintLink;
 				ModelElement linkMel;
@@ -333,13 +333,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// The FromShape (as opposed to ToShape) here needs to be in
 				// sync with the code in ConfiguringAsChildOf
 				if (null != (shape = link.FromShape as ExternalConstraintShape) &&
-					!shape.IsRemoving &&
+					!shape.IsDeleting &&
 					null != (linkMel = link.ModelElement) &&
-					!linkMel.IsRemoving &&
+					!linkMel.IsDeleting &&
 					null != (shapeMel = shape.ModelElement) &&
-					!shapeMel.IsRemoving)
+					!shapeMel.IsDeleting)
 				{
-					shape.Remove();
+					shape.Delete();
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
 			Neumont Object-Role Modeling Architect for Visual Studio
@@ -31,14 +31,13 @@
 		<xs:sequence>
 			<xs:element name="Copyright" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Copyright notice.</xs:documentation>
+					<xs:documentation>Copyright notice which applies to both the source document and anything generated from it.</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:string">
-							<xs:attribute name="name" type="xs:string" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
+					<xs:sequence>
+						<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required"/>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="Model" type="ModelType" maxOccurs="unbounded"/>
@@ -53,7 +52,7 @@
 		</xs:sequence>
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>
-				<xs:documentation>The simple name of the SubStore-derived class that contains the list of generated rules. This should be a simple name (no namespace)</xs:documentation>
+				<xs:documentation>The simple name of the DomainModel-derived class that contains the list of generated rules. This should be a simple name (no namespace)</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="namespace" type="xs:string" use="optional">
@@ -64,7 +63,6 @@
 	</xs:complexType>
 	<xs:element name="ReflectedType" type="ReflectedTypeType" abstract="true"/>
 	<xs:element name="Rule" substitutionGroup="ReflectedType"/>
-	<xs:element name="CustomModelEvent" substitutionGroup="ReflectedType"/>
 	<xs:complexType name="ReflectedTypeType">
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>

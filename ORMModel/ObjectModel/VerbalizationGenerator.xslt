@@ -1,4 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -41,23 +54,22 @@
 			<plx:namespaceImport name="System.IO"/>
 			<plx:namespaceImport name="System.Text"/>
 			<plx:namespaceImport name="System.Collections.Generic"/>
+			<plx:namespaceImport name="Microsoft.VisualStudio.Modeling"/>
 			<plx:namespace name="{$CustomToolNamespace}">
-				<plx:leadingInfo>
-					<plx:comment>Common Public License Copyright Notice</plx:comment>
-					<plx:comment>/**************************************************************************\</plx:comment>
-					<plx:comment>* Neumont Object-Role Modeling Architect for Visual Studio                 *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* The use and distribution terms for this software are covered by the      *</plx:comment>
-					<plx:comment>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</plx:comment>
-					<plx:comment>* can be found in the file CPL.txt at the root of this distribution.       *</plx:comment>
-					<plx:comment>* By using this software in any fashion, you are agreeing to be bound by   *</plx:comment>
-					<plx:comment>* the terms of this license.                                               *</plx:comment>
-					<plx:comment>*                                                                          *</plx:comment>
-					<plx:comment>* You must not remove this notice, or any other, from this software.       *</plx:comment>
-					<plx:comment>\**************************************************************************/</plx:comment>
-				</plx:leadingInfo>
+				<xsl:if test="cvg:Copyright">
+					<plx:leadingInfo>
+						<plx:comment blankLine="true"/>
+						<plx:comment>
+							<xsl:value-of select="cvg:Copyright/@name"/>
+						</plx:comment>
+						<xsl:for-each select="cvg:Copyright/cvg:CopyrightLine">
+							<plx:comment>
+								<xsl:value-of select="."/>
+							</plx:comment>
+						</xsl:for-each>
+						<plx:comment blankLine="true"/>
+					</plx:leadingInfo>
+				</xsl:if>
 				<!-- Generate verbalization set classes and default populations -->
 				<xsl:call-template name="GenerateVerbalizationSets"/>
 				<!-- Generate verbalization implementations for all constructs -->
@@ -182,7 +194,8 @@
 				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<!-- Don't proceed with verbalization if blocking errors are present -->
 				<xsl:call-template name="CheckErrorConditions"/>
-				<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
+				<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+					<plx:passTypeParam dataTypeName="RoleBase"/>
 					<plx:initialize>
 						<plx:callThis name="RoleCollection" type="property"/>
 					</plx:initialize>
@@ -196,7 +209,8 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
-				<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
+				<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
+					<plx:passTypeParam dataTypeName="ReadingOrder"/>
 					<plx:initialize>
 						<plx:callThis name="ReadingOrderCollection" type="property"/>
 					</plx:initialize>
@@ -526,7 +540,8 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="$isInternal and not($isRoleValue)">
-					<plx:local name="includedRoles" dataTypeName="RoleMoveableCollection">
+					<plx:local name="includedRoles" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="Role"/>
 						<plx:initialize>
 							<plx:callThis name="RoleCollection" type="property"/>
 						</plx:initialize>
@@ -548,7 +563,8 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="not($isValueTypeValueConstraint)">
-					<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
+					<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="RoleBase"/>
 						<plx:initialize>
 							<xsl:choose>
 								<xsl:when test="$isInternal">
@@ -580,7 +596,8 @@
 							</xsl:choose>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
+					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<xsl:if test="$isInternal">
 							<plx:initialize>
 								<plx:callInstance name="ReadingOrderCollection" type="property">
@@ -593,12 +610,14 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint)">
-					<plx:local name="allConstraintRoles" dataTypeName="RoleMoveableCollection">
+					<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="Role"/>
 						<plx:initialize>
 							<plx:callThis name="RoleCollection" type="property"/>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="allFacts" dataTypeName="FactTypeMoveableCollection">
+					<plx:local name="allFacts" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="FactType"/>
 						<plx:initialize>
 							<plx:callThis name="FactTypeCollection" type="property"/>
 						</plx:initialize>
@@ -919,7 +938,8 @@
 					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 				</xsl:if>
 				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint">
-					<plx:local name="ranges" dataTypeName="ValueRangeMoveableCollection">
+					<plx:local name="ranges" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="ValueRange"/>
 						<plx:initialize>
 							<plx:callThis name="ValueRangeCollection" type="property"/>
 						</plx:initialize>
@@ -1844,11 +1864,11 @@
 								</plx:beforeLoop>
 								<plx:branch>
 									<plx:condition>
-										<plx:callStatic name="ReferenceEquals" dataTypeName=".object">
-											<plx:passParam>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
 												<plx:nameRef name="rolePlayer"/>
-											</plx:passParam>
-											<plx:passParam>
+											</plx:left>
+											<plx:right>
 												<plx:callInstance name="RolePlayer" type="property">
 													<plx:callObject>
 														<plx:callInstance name="Role" type="property">
@@ -1865,8 +1885,8 @@
 														</plx:callInstance>
 													</plx:callObject>
 												</plx:callInstance>
-											</plx:passParam>
-										</plx:callStatic>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:condition>
 									<plx:assign>
 										<plx:left>
@@ -1925,11 +1945,11 @@
 								</plx:beforeLoop>
 								<plx:branch>
 									<plx:condition>
-										<plx:callStatic name="ReferenceEquals" dataTypeName=".object">
-											<plx:passParam>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
 												<plx:nameRef name="rolePlayer"/>
-											</plx:passParam>
-											<plx:passParam>
+											</plx:left>
+											<plx:right>
 												<plx:callInstance name="RolePlayer" type="property">
 													<plx:callObject>
 														<plx:callInstance name="Role" type="property">
@@ -1946,8 +1966,8 @@
 														</plx:callInstance>
 													</plx:callObject>
 												</plx:callInstance>
-											</plx:passParam>
-										</plx:callStatic>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:condition>
 									<plx:assign>
 										<plx:left>
@@ -2562,7 +2582,8 @@
 	</xsl:template>
 	<xsl:template name="DeclareVariablesForFact">
 		<xsl:param name="NestedFact" select="false()"/>
-		<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
+		<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+			<plx:passTypeParam dataTypeName="RoleBase"/>
 			<plx:initialize>
 				<plx:nullKeyword/>
 			</plx:initialize>
@@ -2572,7 +2593,8 @@
 				<plx:value data="0" type="i4"/>
 			</plx:initialize>
 		</plx:local>
-		<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
+		<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
+			<plx:passTypeParam dataTypeName="ReadingOrder"/>
 			<plx:initialize>
 				<plx:nullKeyword/>
 			</plx:initialize>
@@ -4243,7 +4265,8 @@
 			</xsl:if>
 		</xsl:if>
 		<xsl:if test="$contextMatch='preferredIdentifier'">
-			<plx:local dataTypeName="RoleMoveableCollection" name="includedRoles">
+			<plx:local dataTypeName="LinkedElementCollection" name="includedRoles">
+				<plx:passTypeParam dataTypeName="Role"/>
 				<plx:initialize>
 					<plx:callInstance name="RoleCollection" type="property">
 						<plx:callObject>
@@ -4342,7 +4365,8 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="factRoles" dataTypeName="RoleBaseMoveableCollection">
+					<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="RoleBase"/>
 						<plx:initialize>
 							<plx:callInstance name="RoleCollection" type="property">
 								<plx:callObject>
@@ -4360,7 +4384,8 @@
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
-					<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
+					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="ReadingOrder"/>
 						<plx:initialize>
 							<plx:callInstance name="ReadingOrderCollection" type="property">
 								<plx:callObject>

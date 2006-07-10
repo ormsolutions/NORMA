@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
@@ -51,18 +51,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Customize appearance
 		#region overrides
 		/// <summary>
-		/// Associate the value range text with this shape
+		/// Associate to the value range's text property
 		/// </summary>
-		protected override Guid AssociatedShapeMetaAttributeGuid
+		protected override Guid AssociatedModelDomainPropertyId
 		{
-			get { return ValueRangeTextMetaAttributeGuid; }
-		}
-		/// <summary>
-		/// Associate to the value range's text attribute
-		/// </summary>
-		protected override Guid AssociatedModelMetaAttributeGuid
-		{
-			get { return ValueRange.TextMetaAttributeGuid; }
+			get { return ValueRange.TextDomainPropertyId; }
 		}
 		/// <summary>
 		/// Store per-type value for the base class
@@ -129,7 +122,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private void InvalidateDisplayText()
 		{
-			Debug.Assert(TransactionManager.InTransaction);
+			Debug.Assert(Store.TransactionManager.InTransaction);
 			myDisplayText = null;
 			InvalidateRequired();
 			this.AutoResize();
@@ -148,9 +141,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">The ValueConstraint to update.</param>
 		protected static void UpdatePresentationRolePlayers(ModelElement e)
 		{
-			if (e != null && !e.IsRemoved)
+			if (e != null && !e.IsDeleted)
 			{
-				foreach (ShapeElement pel in e.PresentationRolePlayers)
+				foreach (ShapeElement pel in PresentationViewsSubject.GetPresentation(e))
 				{
 					ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
 					if (valueConstraintShape != null)
@@ -190,13 +183,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to update an associated ValueConstraintShape when a DataType is added (or changed).
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ValueTypeHasDataTypeAdded : AddRule
+		private sealed class ValueTypeHasDataTypeAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				base.ElementAdded(e);
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType objectType = link.ValueTypeCollection;
+				ObjectType objectType = link.ValueType;
 				ValueConstraint defn = objectType.ValueConstraint;
 				//Update the display on the objectType
 				UpdatePresentationRolePlayers(defn);
@@ -216,19 +209,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
 		[RuleOn(typeof(ValueRange), FireTime = TimeToFire.TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ValueRangeChanged : ChangeRule
+		private sealed class ValueRangeChanged : ChangeRule
 		{
 			/// <summary>
-			/// Notice when the Min or Max attributes are changed and invalidate
+			/// Notice when the Min or Max properties are changed and invalidate
 			/// display text of the ValueConstraintShapes.
 			/// </summary>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attrId = e.MetaAttribute.Id;
+				Guid attrId = e.DomainProperty.Id;
 				ValueRange valueRange = e.ModelElement as ValueRange;
 				Debug.Assert(valueRange != null);
-				if (attrId == ValueRange.MaxValueMetaAttributeGuid ||
-					attrId == ValueRange.MinValueMetaAttributeGuid)
+				if (attrId == ValueRange.MaxValueDomainPropertyId ||
+					attrId == ValueRange.MinValueDomainPropertyId)
 				{
 					Debug.Assert(valueRange.ValueConstraint != null);
 					ValueConstraint defn = valueRange.ValueConstraint;
@@ -241,13 +234,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
 		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ValueConstraintAdded : AddRule
+		private sealed class ValueConstraintAdded : AddRule
 		{
 			/// <summary>
 			/// Notice when the ValueConstraintHasValueRange link is added
 			/// and invalidate display text of the ValueConstraintShapes.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
 				ValueConstraint defn = link.ValueConstraint;
@@ -281,7 +274,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
 			{
-				ActivateNameProperty((NamedElement)duplicateName.ConstraintCollection[0]);
+				ActivateNameProperty(duplicateName.ConstraintCollection[0]);
 			}
 			else
 			{
@@ -292,7 +285,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					errorValueConstraint.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(ValueConstraint.TextMetaAttributeGuid), this),
+					ORMTypeDescriptor.CreatePropertyDescriptor(this, ValueConstraint.TextDomainPropertyId),
 					false);
 			}
 			return retVal;
@@ -316,18 +309,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Contains code to create a value range text field.
 		/// </summary>
-		private class ValueRangeAutoSizeTextField : AutoSizeTextField
+		private sealed class ValueRangeAutoSizeTextField : AutoSizeTextField
 		{
 			/// <summary>
 			/// Code that handles retrieval of the text to display in ValueConstraintShape.
 			/// </summary>
-			public override string GetDisplayText(ShapeElement parentShape)
+			public sealed override string GetDisplayText(ShapeElement parentShape)
 			{
 				string retval = null;
 				ValueConstraintShape parentValueConstraintShape = parentShape as ValueConstraintShape;
 				if (parentShape is ObjectTypeShape)
 				{
-					PresentationElementMoveableCollection pelList = parentShape.PresentationRolePlayers;
+					LinkedElementCollection<PresentationElement> pelList = PresentationViewsSubject.GetPresentation(parentShape);
 					foreach (ShapeElement pel in pelList)
 					{
 						ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
@@ -350,7 +343,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Changed to return true to get multiple line support.
 			/// </summary>
-			public override bool GetMultipleLine(ShapeElement parentShape)
+			public sealed override bool GetMultipleLine(ShapeElement parentShape)
 			{
 				return true;
 			}

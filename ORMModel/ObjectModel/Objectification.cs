@@ -33,66 +33,66 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule : AddRule
+		private sealed class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).RoleCollection.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
-		#region ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule class
+		#region ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
 		/// <summary>
 		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule : RemovingRule
+		private sealed class ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).RoleCollection.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
-		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleRemovingRule class
+		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
 		#region ImpliedObjectificationFactTypeHasRoleAddRule class
 		/// <summary>
 		/// 1) Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// 2) Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class ImpliedObjectificationFactTypeHasRoleAddRule : AddRule
+		private sealed class ImpliedObjectificationFactTypeHasRoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
 				ORMMetaModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
-				ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.RoleCollection as Role);
+				ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleAddRule class
-		#region ImpliedObjectificationFactTypeHasRoleRemovingRule class
+		#region ImpliedObjectificationFactTypeHasRoleDeletingRule class
 		/// <summary>
 		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class ImpliedObjectificationFactTypeHasRoleRemovingRule : RemovingRule
+		private sealed class ImpliedObjectificationFactTypeHasRoleDeletingRule : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
-		#endregion // ImpliedObjectificationFactTypeHasRoleRemovingRule class
+		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule class
 		#region ImpliedObjectificationUniquenessConstraintIsInternalChangeRule class
 		/// <summary>
 		/// Adds or removes an implied Objectification if necessary.
 		/// </summary>
 		[RuleOn(typeof(UniquenessConstraint))]
-		private class ImpliedObjectificationUniquenessConstraintIsInternalChangeRule : ChangeRule
+		private sealed class ImpliedObjectificationUniquenessConstraintIsInternalChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == UniquenessConstraint.IsInternalMetaAttributeGuid)
+				if (e.DomainProperty.Id == UniquenessConstraint.IsInternalDomainPropertyId)
 				{
 					ProcessUniquenessConstraintForImpliedObjectification(e.ModelElement as UniquenessConstraint, true);
 				}
@@ -104,11 +104,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validates that an objectification that is implied matches the implied objectification pattern.
 		/// </summary>
 		[RuleOn(typeof(Objectification))]
-		private class ImpliedObjectificationIsImpliedChangeRule : ChangeRule
+		private sealed class ImpliedObjectificationIsImpliedChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == Objectification.IsImpliedMetaAttributeGuid && (bool)e.NewValue)
+				if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId && (bool)e.NewValue)
 				{
 					Objectification objectification = e.ModelElement as Objectification;
 					
@@ -133,11 +133,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Changes an implied Objectification to being explicit if IsIndependent is changed.
 		/// </summary>
 		[RuleOn(typeof(ObjectType))]
-		private class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule : ChangeRule
+		private sealed class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == ObjectType.IsIndependentMetaAttributeGuid && !(bool)e.NewValue)
+				if (e.DomainProperty.Id == ObjectType.IsIndependentDomainPropertyId && !(bool)e.NewValue)
 				{
 					ObjectType nestingType = e.ModelElement as ObjectType;
 					FactType nestedFact = nestingType.NestedFactType;
@@ -155,11 +155,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule : AddRule
+		private sealed class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ProcessNewPlayedRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRoleCollection);
+				ProcessNewPlayedRoleForImpliedObjectification((e.ModelElement as ObjectTypePlaysRole).PlayedRole);
 			}
 		}
 		#endregion // ImpliedObjectificationObjectifyingTypePlaysRoleAddRule class
@@ -170,9 +170,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Create implied facts and constraints when an item is objectified
 		/// </summary>
 		[RuleOn(typeof(Objectification))]
-		private class ObjectificationAddRule : AddRule
+		private sealed class ObjectificationAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				Objectification objectificationLink = e.ModelElement as Objectification;
 				FactType nestedFact = objectificationLink.NestedFactType;
@@ -200,7 +200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// this relationship is established.
 
 				// Add implied fact types, one for each role
-				RoleBaseMoveableCollection roles = nestedFact.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = nestedFact.RoleCollection;
 				int roleCount = roles.Count;
 				if (roleCount != 0)
 				{
@@ -216,46 +216,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ObjectificationAddRule class
-		#region ObjectificationRemoveRule class
+		#region ObjectificationDeleteRule class
 		/// <summary>
 		/// Remove the implied objectifying ObjectType when Objectification is removed.
 		/// </summary>
 		[RuleOn(typeof(Objectification))]
-		private class ObjectificationRemoveRule : RemoveRule
+		private sealed class ObjectificationDeleteRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				Objectification objectification = e.ModelElement as Objectification;
 				if (objectification.IsImplied)
 				{
 					ObjectType nestingType = objectification.NestingType;
-					if (!nestingType.IsRemoved)
+					if (!nestingType.IsDeleted)
 					{
-						nestingType.Remove();
+						nestingType.Delete();
 					}
 				}
 				else
 				{
 					FactType nestedFact = objectification.NestedFactType;
-					if (!nestedFact.IsRemoved)
+					if (!nestedFact.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(nestedFact, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 			}
 		}
-		#endregion // ObjectificationRemoveRule class
+		#endregion // ObjectificationDeleteRule class
 		#region ImpliedFactTypeAddRule class
 		/// <summary>
 		/// Rule class to block objectification of implied facts
 		/// </summary>
 		[RuleOn(typeof(ObjectificationImpliesFactType))]
-		private class ImpliedFactTypeAddRule : AddRule
+		private sealed class ImpliedFactTypeAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectificationImpliesFactType link = e.ModelElement as ObjectificationImpliesFactType;
-				if (link.ImpliedFactTypeCollection.Objectification != null)
+				if (link.ImpliedFactType.Objectification != null)
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
 				}
@@ -268,9 +268,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to the nested type.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole)), RuleOn(typeof(FactSetConstraint))]
-		private class RoleAddRule : AddRule
+		private sealed class RoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelElement element = e.ModelElement;
 				ConstraintRoleSequenceHasRole sequenceRoleLink;
@@ -280,7 +280,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool disallowed = false;
 				if (null != (sequenceRoleLink = element as ConstraintRoleSequenceHasRole))
 				{
-					ConstraintRoleSequence modifiedSequence = sequenceRoleLink.ConstraintRoleSequenceCollection;
+					ConstraintRoleSequence modifiedSequence = sequenceRoleLink.ConstraintRoleSequence;
 					IConstraint constraint = modifiedSequence.Constraint;
 					if (constraint != null)
 					{
@@ -291,7 +291,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							case ConstraintType.InternalUniqueness:
 								// Do not allow direct modification. This rule is disabled
 								// when constraints on existing fact types are modified
-								FactTypeMoveableCollection facts = (constraint as SetConstraint).FactTypeCollection;
+								LinkedElementCollection<FactType> facts = (constraint as SetConstraint).FactTypeCollection;
 								if (facts.Count == 1)
 								{
 									fact = facts[0];
@@ -306,9 +306,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (null != (internalConstraintLink = element as FactSetConstraint))
 				{
-					if (internalConstraintLink.SetConstraintCollection.Constraint.ConstraintIsInternal)
+					if (internalConstraintLink.SetConstraint.Constraint.ConstraintIsInternal)
 					{
-						disallowed = null != internalConstraintLink.FactTypeCollection.ImpliedByObjectification;
+						disallowed = null != internalConstraintLink.FactType.ImpliedByObjectification;
 					}
 				}
 				else
@@ -324,7 +324,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					else if (null != (objectificationLink = fact.Objectification))
 					{
 						ObjectType nestingType = objectificationLink.NestingType;
-						Role nestedRole = factRoleLink.RoleCollection.Role;
+						Role nestedRole = factRoleLink.Role.Role;
 
 						// Create and populate new fact type
 						if (nestedRole.Proxy == null)
@@ -342,16 +342,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // RoleAddRule class
-		#region RoleRemovingRule class
+		#region RoleDeletingRule class
 		/// <summary>
 		/// Synchronize implied fact types when a role is removed from
 		/// the nested type.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class RoleRemovingRule : RemovingRule
+		private sealed class RoleDeletingRule : DeletingRule
 		{
 			private bool myAllowModification;
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ModelElement element = e.ModelElement;
 				ConstraintRoleSequenceHasRole sequenceRoleLink;
@@ -360,9 +360,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				bool disallowed = false;
 				if (null != (sequenceRoleLink = element as ConstraintRoleSequenceHasRole))
 				{
-					if (!sequenceRoleLink.RoleCollection.IsRemoving)
+					if (!sequenceRoleLink.Role.IsDeleting)
 					{
-						ConstraintRoleSequence sequence = sequenceRoleLink.ConstraintRoleSequenceCollection;
+						ConstraintRoleSequence sequence = sequenceRoleLink.ConstraintRoleSequence;
 						IConstraint constraint = sequence.Constraint;
 						if (constraint != null)
 						{
@@ -373,13 +373,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 								case ConstraintType.InternalUniqueness:
 									// Do not allow direct modification. This rule is disabled
 									// when constraints on existing fact types are modified
-									FactTypeMoveableCollection facts = (constraint as SetConstraint).FactTypeCollection;
+									LinkedElementCollection<FactType> facts = (constraint as SetConstraint).FactTypeCollection;
 									if (facts.Count == 1)
 									{
 										fact = facts[0];
 										if (null != (objectificationLink = fact.ImpliedByObjectification))
 										{
-											disallowed = !myAllowModification && !objectificationLink.IsRemoving;
+											disallowed = !myAllowModification && !objectificationLink.IsDeleting;
 										}
 									}
 									break;
@@ -395,31 +395,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{ 
 						// Our code only adds these before linking the implied objectification,
 						// so we always throw at this point
-						if (!myAllowModification && !objectificationLink.IsRemoving)
+						if (!myAllowModification && !objectificationLink.IsDeleting)
 						{
 							disallowed = true;
 							RoleProxy proxy;
 							Role proxyRole;
-							if (null != (proxy = factRoleLink.RoleCollection as RoleProxy) &&
+							if (null != (proxy = factRoleLink.Role as RoleProxy) &&
 								null != (proxyRole = proxy.Role))
 							{
-								disallowed = !proxyRole.IsRemoving;
+								disallowed = !proxyRole.IsDeleting;
 							}
 						}
 					}
 					else if (null != (objectificationLink = fact.Objectification))
 					{
-						if (!objectificationLink.IsRemoving)
+						if (!objectificationLink.IsDeleting)
 						{
 							try
 							{
 								myAllowModification = true;
-								Role nestedRole = factRoleLink.RoleCollection.Role;
+								Role nestedRole = factRoleLink.Role.Role;
 								RoleProxy proxyRole = nestedRole.Proxy;
 								Debug.Assert(proxyRole != null, "Proxy is not attached. Safe to ignore, but code path unexpected.");
 								if (proxyRole != null)
 								{
-									proxyRole.FactType.Remove();
+									proxyRole.FactType.Delete();
 								}
 							}
 							finally
@@ -437,19 +437,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RoleRemovingRule class
+		#endregion // RoleDeletingRule class
 		#region RolePlayerAddRule class
 		/// <summary>
 		/// Synchronize implied fact types when a role player is
 		/// set on an objectified role
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class RolePlayerAddRule : AddRule
+		private sealed class RolePlayerAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				FactType fact = role.FactType;
 				if (fact != null)
 				{
@@ -461,29 +461,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // RolePlayerAddRule class
-		#region RolePlayerRemovingRule class
+		#region RolePlayerDeletingRule class
 		/// <summary>
 		/// Synchronize implied fact types when a role player is
 		/// being removed from an objectified role
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class RolePlayerRemovingRule : RemovingRule
+		private sealed class RolePlayerDeletingRule : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
+				Role role = link.PlayedRole;
 				ObjectType rolePlayer = link.RolePlayer;
 				FactType fact = role.FactType;
 				// Note if the roleplayer is removed, then the links all go away
 				// automatically. There is no additional work to do or checks to make.
-				if (!(rolePlayer.IsRemoved || rolePlayer .IsRemoving) &&
+				if (!(rolePlayer.IsDeleted || rolePlayer .IsDeleting) &&
 					(null != (fact = role.FactType)))
 				{
 					Objectification objectificationLink;
 					if (null != (objectificationLink = fact.ImpliedByObjectification))
 					{
-						if (!(objectificationLink.IsRemoving || role.IsRemoving))
+						if (!(objectificationLink.IsDeleting || role.IsDeleting))
 						{
 							throw BlockedByObjectificationPatternException();
 						}
@@ -491,23 +491,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RolePlayerRemovingRule class
+		#endregion // RolePlayerDeletingRule class
 		#region InternalConstraintChangeRule class
 		/// <summary>
 		/// Ensure that implied internal constraints cannot change the Modality property
 		/// </summary>
 		[RuleOn(typeof(SetConstraint))]
-		private class InternalConstraintChangeRule : ChangeRule
+		private sealed class InternalConstraintChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == SetConstraint.ModalityMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == SetConstraint.ModalityDomainPropertyId)
 				{
 					SetConstraint constraint = e.ModelElement as SetConstraint;
 					if (constraint.Constraint.ConstraintIsInternal)
 					{
-						FactTypeMoveableCollection facts;
+						LinkedElementCollection<FactType> facts;
 						if (1 == (facts = constraint.FactTypeCollection).Count &&
 							facts[0].ImpliedByObjectification != null)
 						{
@@ -530,7 +530,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType playedFact = playedRole.FactType;
 				if (playedFact != null)
 				{
-					RoleBaseMoveableCollection roles;
+					LinkedElementCollection<RoleBase> roles;
 					// If the fact is implied, we don't need to do anything else
 					if (playedFact.ImpliedByObjectification != null || ((roles = playedFact.RoleCollection).Count > 0 && roles[0] is RoleProxy))
 					{
@@ -553,7 +553,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return;
 			}
-			FactTypeMoveableCollection facts = uniquenessConstraint.FactTypeCollection;
+			LinkedElementCollection<FactType> facts = uniquenessConstraint.FactTypeCollection;
 			int factsCount = facts.Count;
 			for (int i = 0; i < factsCount; ++i)
 			{
@@ -573,7 +573,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ProcessFactTypeForImpliedObjectification(FactType factType, bool throwOnFailure)
 		{
 			// We don't need to process implied FactTypes, since they can never be objectified
-			if (factType == null || factType.IsRemoved || factType.ImpliedByObjectification != null)
+			if (factType == null || factType.IsDeleted || factType.ImpliedByObjectification != null)
 			{
 				return;
 			}
@@ -604,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						objectification.NestingType.Remove();
+						objectification.NestingType.Delete();
 					}
 				}
 			}
@@ -636,25 +636,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static void CreateObjectificationForFactType(FactType factType, bool isImplied, INotifyElementAdded notifyAdded)
 		{
 			Store store = factType.Store;
-			ObjectType objectifyingType = ObjectType.CreateAndInitializeObjectType(store,
-				new AttributeAssignment[]
-				{
-					new AttributeAssignment(ObjectType.NameMetaAttributeGuid, factType.Name, store),
-					new AttributeAssignment(ObjectType.IsIndependentMetaAttributeGuid, isImplied, store),
-				});
-			Objectification.CreateAndInitializeObjectification(store,
+			ObjectType objectifyingType = new ObjectType(store,
+				new PropertyAssignment(ObjectType.NameDomainPropertyId, factType.Name),
+				new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isImplied));
+			new Objectification(store,
 				new RoleAssignment[]
 				{
-					new RoleAssignment(Objectification.NestedFactTypeMetaRoleGuid, factType),
-					new RoleAssignment(Objectification.NestingTypeMetaRoleGuid, objectifyingType)
+					new RoleAssignment(Objectification.NestedFactTypeDomainRoleId, factType),
+					new RoleAssignment(Objectification.NestingTypeDomainRoleId, objectifyingType)
 				},
-				new AttributeAssignment[]
+				new PropertyAssignment[]
 				{
-					new AttributeAssignment(Objectification.IsImpliedMetaAttributeGuid, isImplied, store)
+					new PropertyAssignment(Objectification.IsImpliedDomainPropertyId, isImplied)
 				});
 			if (notifyAdded == null)
 			{
-				IDictionary contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 				try
 				{
 					contextInfo[ObjectType.AllowDuplicateObjectNamesKey] = null;
@@ -703,13 +700,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// This is called during fixup potentially before the fact/constraint relationships
 				// are established, so we need to use the primary relationship (the role) to
 				// find what we're after.
-				RoleBaseMoveableCollection factRoles = factType.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
 				int factRoleCount = factRoles.Count;
 				bool breakOut = false;
 				for (int i = 0; i < factRoleCount && !breakOut; ++i)
 				{
 					Role role = (Role)factRoles[i]; // This must be a role, not a proxy, use exception cast
-					ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 					int sequenceCount = sequences.Count;
 					for (int j = 0; j < sequenceCount; ++j)
 					{
@@ -719,7 +716,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							if (preferredConstraint != null)
 							{
-								if (object.ReferenceEquals(candidateConstraint, preferredConstraint))
+								if (candidateConstraint == preferredConstraint)
 								{
 									continue;
 								}
@@ -739,11 +736,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (preferredConstraint != null)
 				{
-					notifyAdded.ElementAdded(store.ElementFactory.CreateElementLink(
-						typeof(EntityTypeHasPreferredIdentifier),
-						new RoleAssignment[]{
-							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, preferredConstraint),
-							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, objectifyingType)}), false);
+					notifyAdded.ElementAdded(new EntityTypeHasPreferredIdentifier(objectifyingType, preferredConstraint), false);
 				}
 			}
 		}
@@ -762,11 +755,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Create the implied fact and attach roles to it
 			Store store = model.Store;
-			FactType impliedFact = FactType.CreateFactType(store);
-			RoleProxy nearRole = RoleProxy.CreateRoleProxy(store);
+			FactType impliedFact = new FactType(store);
+			RoleProxy nearRole = new RoleProxy(store);
 			nearRole.TargetRole = nestedRole;
-			Role farRole = Role.CreateRole(store);
-			RoleBaseMoveableCollection impliedRoles = impliedFact.RoleCollection;
+			Role farRole = new Role(store);
+			LinkedElementCollection<RoleBase> impliedRoles = impliedFact.RoleCollection;
 			impliedRoles.Add(nearRole);
 			impliedRoles.Add(farRole);
 
@@ -784,24 +777,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// the readings at this point.
 
 			// Add forward reading
-			ReadingOrderMoveableCollection readingOrders = impliedFact.ReadingOrderCollection;
-			ReadingOrder order = ReadingOrder.CreateReadingOrder(store);
-			RoleBaseMoveableCollection orderRoles;
+			LinkedElementCollection<ReadingOrder> readingOrders = impliedFact.ReadingOrderCollection;
+			ReadingOrder order = new ReadingOrder(store);
+			LinkedElementCollection<RoleBase> orderRoles;
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
 			orderRoles.Add(nearRole);
 			orderRoles.Add(farRole);
-			Reading reading = Reading.CreateReading(store);
+			Reading reading = new Reading(store);
 			reading.ReadingOrder = order;
 			reading.Text = ResourceStrings.ImpliedFactTypePredicateReading;
 
 			// Add inverse reading
-			order = ReadingOrder.CreateReadingOrder(store);
+			order = new ReadingOrder(store);
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
 			orderRoles.Add(farRole);
 			orderRoles.Add(nearRole);
-			reading = Reading.CreateReading(store);
+			reading = new Reading(store);
 			reading.ReadingOrder = order;
 			reading.Text = ResourceStrings.ImpliedFactTypePredicateInverseReading;
 
@@ -834,11 +827,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						ruleManager.DisableRule(typeof(RolePlayerAddRule));
 						addRuleDisabled = true;
-						ruleManager.DisableRule(typeof(RolePlayerRemovingRule));
+						ruleManager.DisableRule(typeof(RolePlayerDeletingRule));
 						removingRuleDisabled = true;
 						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
 						{
-							RoleBaseMoveableCollection roles = impliedFactType.RoleCollection;
+							LinkedElementCollection<RoleBase> roles = impliedFactType.RoleCollection;
 							Debug.Assert(roles.Count == 2,
 								"When this method is called, we should be at a stable point, so implied Fact Types should always have exactly two Roles.");
 							Role role = roles[1] as Role;
@@ -858,11 +851,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (removingRuleDisabled)
 						{
-							ruleManager.EnableRule(typeof(RolePlayerRemovingRule));
+							ruleManager.EnableRule(typeof(RolePlayerDeletingRule));
 						}
 					}
 					objectification.IsImplied = false;
-					impliedObjectifyingType.Remove();
+					impliedObjectifyingType.Delete();
 				}
 			}
 			else
@@ -907,7 +900,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Invalid subtype patterns will either be fixed up or completely
 		/// removed.
 		/// </summary>
-		private class ObjectificationFixupListener : DeserializationFixupListener<Objectification>
+		private sealed class ObjectificationFixupListener : DeserializationFixupListener<Objectification>
 		{
 			/// <summary>
 			/// Create a new ObjectificationFixupListener
@@ -922,14 +915,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="element">An Objectification instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(Objectification element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(Objectification element, Store store, INotifyElementAdded notifyAdded)
 			{
 				// Note that this assumes xsd validation has occurred (RoleProxy is only on an ImpliedFact, there
 				// is 1 Role and 1 RoleProxy, and implied facts must be attached to an Objectification relationship.
 				FactType nestedFact = element.NestedFactType;
 				ORMModel model = nestedFact.Model;
 				ObjectType nestingType = element.NestingType;
-				RoleBaseMoveableCollection factRoles = nestedFact.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = nestedFact.RoleCollection;
 				int factRolesCount = factRoles.Count;
 
 				// Make sure each of the facts has a properly constructed role proxy
@@ -943,16 +936,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						// Make sure the proxy is appropriate
 						impliedFact = proxy.FactType;
-						if (impliedFact != null && !object.ReferenceEquals(impliedFact.ImpliedByObjectification, element))
+						if (impliedFact != null && impliedFact.ImpliedByObjectification != element)
 						{
 							RemoveFact(impliedFact);
 							impliedFact = null;
-							Debug.Assert(proxy.IsRemoved); // Goes away with delete propagation on the fact
+							Debug.Assert(proxy.IsDeleted); // Goes away with delete propagation on the fact
 							proxy = null;
 						}
 						else
 						{
-							RoleBaseMoveableCollection impliedRoles = impliedFact.RoleCollection;
+							LinkedElementCollection<RoleBase> impliedRoles = impliedFact.RoleCollection;
 							if (impliedRoles.Count != 2)
 							{
 								RemoveFact(impliedFact);
@@ -976,10 +969,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (farRole != null)
 								{
 									ObjectType testRolePlayer = farRole.RolePlayer;
-									if (!object.ReferenceEquals(testRolePlayer, nestingType))
+									if (testRolePlayer != nestingType)
 									{
 										farRole.RolePlayer = nestingType;
-										notifyAdded.ElementAdded((ModelElement)farRole.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid)[0]);
+										notifyAdded.ElementAdded(ObjectTypePlaysRole.GetRolePlayer(farRole));
 									}
 								}
 							}
@@ -988,17 +981,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (proxy == null)
 					{
 						// Create the proxy role
-						proxy = RoleProxy.CreateRoleProxy(store);
+						proxy = new RoleProxy(store);
 						proxy.TargetRole = factRole;
 						notifyAdded.ElementAdded(proxy, true);
 
 						// Create the non-proxy role
-						farRole = Role.CreateRole(store);
+						farRole = new Role(store);
 						farRole.RolePlayer = nestingType;
 						notifyAdded.ElementAdded(proxy, true);
 
 						// Create the implied fact and set relationships to existing objects
-						impliedFact = FactType.CreateFactType(store);
+						impliedFact = new FactType(store);
 						proxy.FactType = impliedFact;
 						farRole.FactType = impliedFact;
 						impliedFact.ImpliedByObjectification = element;
@@ -1006,26 +999,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 						notifyAdded.ElementAdded(impliedFact, true);
 
 						// Add forward reading
-						ReadingOrderMoveableCollection readingOrders = impliedFact.ReadingOrderCollection;
-						ReadingOrder order = ReadingOrder.CreateReadingOrder(store);
-						RoleBaseMoveableCollection orderRoles;
+						LinkedElementCollection<ReadingOrder> readingOrders = impliedFact.ReadingOrderCollection;
+						ReadingOrder order = new ReadingOrder(store);
+						LinkedElementCollection<RoleBase> orderRoles;
 						readingOrders.Add(order);
 						orderRoles = order.RoleCollection;
 						orderRoles.Add(proxy);
 						orderRoles.Add(farRole);
-						Reading reading = Reading.CreateReading(store);
+						Reading reading = new Reading(store);
 						reading.ReadingOrder = order;
 						reading.Text = ResourceStrings.ImpliedFactTypePredicateReading;
 						notifyAdded.ElementAdded(order, true);
 						notifyAdded.ElementAdded(reading, false);
 
 						// Add inverse reading
-						order = ReadingOrder.CreateReadingOrder(store);
+						order = new ReadingOrder(store);
 						readingOrders.Add(order);
 						orderRoles = order.RoleCollection;
 						orderRoles.Add(farRole);
 						orderRoles.Add(proxy);
-						reading = Reading.CreateReading(store);
+						reading = new Reading(store);
 						reading.ReadingOrder = order;
 						reading.Text = ResourceStrings.ImpliedFactTypePredicateInverseReading;
 						notifyAdded.ElementAdded(order, true);
@@ -1037,7 +1030,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 
 				// Verify that that are no innapropriate implied facts are attached to the objectification
-				FactTypeMoveableCollection impliedFacts = element.ImpliedFactTypeCollection;
+				LinkedElementCollection<FactType> impliedFacts = element.ImpliedFactTypeCollection;
 				int impliedFactCount = impliedFacts.Count;
 				if (impliedFactCount != factRolesCount)
 				{
@@ -1046,7 +1039,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int i = impliedFactCount - 1; i >= 0 && leftToRemove != 0; --i)
 					{
 						FactType impliedFact = impliedFacts[i];
-						RoleBaseMoveableCollection impliedRoles = impliedFact.RoleCollection;
+						LinkedElementCollection<RoleBase> impliedRoles = impliedFact.RoleCollection;
 						if (impliedRoles.Count != 2)
 						{
 							RemoveFact(impliedFact);
@@ -1063,7 +1056,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 							Role targetRole;
 							if (proxy == null ||
 								null == (targetRole = proxy.Role) ||
-								!object.ReferenceEquals(targetRole, nestedFact))
+								// UNDONE: 2006-06 DSL Tools port: This line was performing a reference equality check on targetRole and nestedFact, which would always return false.
+								// For the moment, I'm assuming it was supposed to be targetRole.FactType, but that obviously needs to be verified.
+								targetRole.FactType != nestedFact)
 							{
 								RemoveFact(impliedFact);
 								--leftToRemove;
@@ -1089,7 +1084,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						for (int i = 0; i < 2 && !canBeImplied; ++i)
 						{
 							Role role = (Role)factRoles[i].Role;
-							ConstraintRoleSequenceMoveableCollection constraints = role.ConstraintRoleSequenceCollection;
+							LinkedElementCollection<ConstraintRoleSequence> constraints = role.ConstraintRoleSequenceCollection;
 							int constraintCount = constraints.Count;
 							for (int j = 0; j < constraintCount; ++j)
 							{
@@ -1116,27 +1111,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="fact">The fact to clear of external constraints</param>
 			private static void RemoveFact(FactType fact)
 			{
-				RoleBaseMoveableCollection factRoles = fact.RoleCollection;
+				LinkedElementCollection<RoleBase> factRoles = fact.RoleCollection;
 				int roleCount = factRoles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
 					Role role = factRoles[i].Role;
-					ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 					int sequenceCount = sequences.Count;
 					for (int j = sequenceCount - 1; j >= 0; --j)
 					{
 						SetConstraint ic = sequences[j] as SetConstraint;
 						if (ic != null && ic.Constraint.ConstraintIsInternal)
 						{
-							ic.Remove();
+							ic.Delete();
 						}
 					}
 				}
-				fact.Remove();
+				fact.Delete();
 			}
 			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, INotifyElementAdded notifyAdded)
 			{
-				ConstraintRoleSequenceMoveableCollection sequences = role.ConstraintRoleSequenceCollection;
+				LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 				int sequenceCount = sequences.Count;
 				bool haveUniqueness = false;
 				bool haveMandatory = false;
@@ -1153,7 +1148,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								case ConstraintType.InternalUniqueness:
 									if (haveUniqueness)
 									{
-										ic.Remove();
+										ic.Delete();
 									}
 									else
 									{
@@ -1163,7 +1158,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								case ConstraintType.SimpleMandatory:
 									if (haveMandatory)
 									{
-										ic.Remove();
+										ic.Delete();
 									}
 									else
 									{
@@ -1174,7 +1169,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							ic.Remove();
+							ic.Delete();
 						}
 					}
 				}
@@ -1212,7 +1207,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// one will be fixed. Unnecessary implied objectification elements are removed
 		/// during Objectification validation.
 		/// </summary>
-		private class ImpliedObjectificationFixupListener : DeserializationFixupListener<FactType>
+		private sealed class ImpliedObjectificationFixupListener : DeserializationFixupListener<FactType>
 		{
 			/// <summary>
 			/// Create a new SubtypeFactFixupListener
@@ -1229,14 +1224,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="element">An FactType instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!element.IsRemoved &&
+				if (!element.IsDeleted &&
 					null == element.Objectification &&
 					null == element.ImpliedByObjectification)
 				{
 					bool impliedRequired = false;
-					RoleBaseMoveableCollection roles = element.RoleCollection;
+					LinkedElementCollection<RoleBase> roles = element.RoleCollection;
 					int roleCount = roles.Count;
 					if (roleCount > 2)
 					{
@@ -1250,7 +1245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						for (int i = 0; i < roleCount && !impliedRequired; ++i)
 						{
 							Role role = roles[i].Role;
-							ConstraintRoleSequenceMoveableCollection constraints = role.ConstraintRoleSequenceCollection;
+							LinkedElementCollection<ConstraintRoleSequence> constraints = role.ConstraintRoleSequenceCollection;
 							int constraintCount = constraints.Count;
 							for (int j = 0; j < constraintCount; ++j)
 							{

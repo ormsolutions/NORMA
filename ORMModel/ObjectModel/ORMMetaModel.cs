@@ -30,7 +30,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// The delegate will be called when the current transaction finishes committing.
 	/// </summary>
 	/// <param name="element">The element to validate</param>
-	[CLSCompliant(true)]
 	public delegate void ElementValidator(ModelElement element);
 	public partial class ORMMetaModel : IORMModelEventSubscriber, IVerbalizationSnippetsProvider, ISurveyNodeProvider
 	{
@@ -55,34 +54,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // InitializingToolboxItems property
 		#region Delayed Model Validation
-		private const string DelayedValidationContextKey = "{F8B7BB89-78A2-4F53-8C55-FC69B8A0FEF3}";
+		private static readonly object DelayedValidationContextKey = new object();
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
 		[RuleOn(typeof(ORMMetaModel), FireTime = TimeToFire.LocalCommit)]
-		private class DelayValidateElements : TransactionCommittingRule
+		private sealed class DelayValidateElements : TransactionCommittingRule
 		{
-			public override void TransactionCommitting(TransactionCommitEventArgs e)
+			public sealed override void TransactionCommitting(TransactionCommitEventArgs e)
 			{
-				IDictionary contextInfo = e.Transaction.Context.ContextInfo;
-				while (contextInfo.Contains(DelayedValidationContextKey)) // Let's do a while in case a new validator is added by the other validators
+				Dictionary<object, object> contextInfo = e.Transaction.Context.ContextInfo;
+				while (contextInfo.ContainsKey(DelayedValidationContextKey)) // Let's do a while in case a new validator is added by the other validators
 				{
 					Dictionary<ElementValidatorKey, object> validators = (Dictionary<ElementValidatorKey, object>)contextInfo[DelayedValidationContextKey];
 					contextInfo.Remove(DelayedValidationContextKey);
 					foreach (ElementValidatorKey key in validators.Keys)
 					{
-						key.Validator(key.Element);
+						key.Validate();
 					}
 				}
 			}
 		}
 		/// <summary>
-		/// A structure to use as a key for tracking element validation
+		/// A structure to use as a key for tracking <see cref="ModelElement"/> validation.
 		/// </summary>
 		private struct ElementValidatorKey
 		{
 			/// <summary>
-			/// Create a new key
+			/// Instantiates a new instance of <see cref="ElementValidatorKey"/>.
 			/// </summary>
 			public ElementValidatorKey(ModelElement element, ElementValidator validator)
 			{
@@ -90,13 +89,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Validator = validator;
 			}
 			/// <summary>
-			/// The element to validate
+			/// Invokes <see cref="Validator"/>, passing it <see cref="Element"/>.
 			/// </summary>
-			public ModelElement Element;
+			public void Validate()
+			{
+				this.Validator(this.Element);
+			}
 			/// <summary>
-			/// The callback valdiation function
+			/// The <see cref="ModelElement"/> to validate.
 			/// </summary>
-			public ElementValidator Validator;
+			public readonly ModelElement Element;
+			/// <summary>
+			/// The callback valdiation function.
+			/// </summary>
+			public readonly ElementValidator Validator;
 		}
 		/// <summary>
 		/// Called inside a transaction register a callback function validate an
@@ -110,10 +116,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Store store = element.Store;
 			Debug.Assert(store.TransactionActive);
-			IDictionary contextDictionary = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			Dictionary<object, object> contextDictionary = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 			Dictionary<ElementValidatorKey, object> dictionary = null;
 			ElementValidatorKey key = new ElementValidatorKey(element, validator);
-			if (contextDictionary.Contains(DelayedValidationContextKey))
+			if (contextDictionary.ContainsKey(DelayedValidationContextKey))
 			{
 				dictionary = (Dictionary<ElementValidatorKey, object>)contextDictionary[DelayedValidationContextKey];
 				if (dictionary.ContainsKey(key))
@@ -170,14 +176,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void SurveyQuestionLoad()
 		{
-			MetaDataDirectory directory = this.Store.MetaDataDirectory;
+			DomainDataDirectory directory = this.Store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = this.Store.EventManagerDirectory;
-			MetaClassInfo classInfo = directory.FindMetaRelationship(ModelHasObjectType.MetaRelationshipGuid);
+			DomainClassInfo classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
 
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ModelElementAdded));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ModelElementRemoved));
-			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ModelElementNameChanged));
-			eventDirectory.CustomModelEventManager.Add(FactTypeNameChangedEvent.CustomModelEventId, new CustomModelEventHandler(FactTypeNameChanged));
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ModelElementAdded));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelElementRemoved));
+			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChanged));
+			eventDirectory.ElementPropertyChanged.Add(directory.FindDomainClass(FactType.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(FactTypeNameChanged));
 		}
 		void IORMModelEventSubscriber.SurveyQuestionLoad()
 		{
@@ -216,15 +222,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected IEnumerable<SampleDataElementNode> GetSurveyNodes()
 		{
-			Guid[] elementTypes = { FactType.MetaClassGuid, SubtypeFact.MetaClassGuid, ObjectType.MetaClassGuid };
-			for (int i = 0; i < elementTypes.Length; ++i)
+			foreach (ModelElement element in this.Store.ElementDirectory.FindElements(FactType.DomainClassId, true))
 			{
-				IList tempElements = this.Store.ElementDirectory.GetElements(elementTypes[i], true);
-				for (int j = 0; j < tempElements.Count; ++j)
-				{
-					SampleDataElementNode currentElement = new SampleDataElementNode(tempElements[j]);
-					yield return currentElement;
-				}
+				yield return new SampleDataElementNode(element);
+			}
+			foreach (ModelElement element in this.Store.ElementDirectory.FindElements(ObjectType.DomainClassId, true))
+			{
+				yield return new SampleDataElementNode(element);
 			}
 		}
 		#endregion
@@ -244,17 +248,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// wired on SurveyQuestionLoad as event handler for ElementRemoved events
+		/// wired on SurveyQuestionLoad as event handler for ElementDeleted events
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected void ModelElementRemoved(object sender, ElementRemovedEventArgs e)
+		protected void ModelElementRemoved(object sender, ElementDeletedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				eventNotify.ElementRemoved((object)element);
+				eventNotify.ElementDeleted((object)element);
 			}
 		}
 		/// <summary>
@@ -262,7 +266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected void ModelElementChanged(object sender, ElementAttributeChangedEventArgs e)
+		protected void ModelElementChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
@@ -273,11 +277,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// wired on SurveyQuestionLoad as event handler for ElementAttributeChanged events
+		/// wired on SurveyQuestionLoad as event handler for ElementPropertyChanged events
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected void ModelElementNameChanged(object sender, ElementAttributeChangedEventArgs e)
+		protected void ModelElementNameChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
 			INotifySurveyElementChanged eventNotify;
 			ModelElement element = e.ModelElement;
@@ -291,9 +295,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected void FactTypeNameChanged(object sender, CustomModelEventArgs e)
+		protected void FactTypeNameChanged(object sender, ElementPropertyChangedEventArgs e)
 		{
-			INotifySurveyElementChanged eventNotify = (e.Store as IORMToolServices).NotifySurveyElementChanged;
+			INotifySurveyElementChanged eventNotify = (e.ModelElement.Store as IORMToolServices).NotifySurveyElementChanged;
 			if (eventNotify != null)
 			{
 				//TODO: find a way to get the changed model element off of CustomModelEventArgs or the sender

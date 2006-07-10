@@ -850,11 +850,10 @@
 						<xs:documentation>Copyright notice.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:simpleContent>
-							<xs:extension base="xs:string">
-								<xs:attribute name="name" type="xs:string" use="required"/>
-							</xs:extension>
-						</xs:simpleContent>
+						<xs:sequence>
+							<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="Constructs" minOccurs="0" maxOccurs="1">

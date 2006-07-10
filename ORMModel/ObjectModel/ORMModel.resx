@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Common Public License Copyright Notice" xml:space="preserve">
+  <metadata name="Common Public License Copyright Notice" xml:space="preserve">
     <value>
 			Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -131,7 +131,7 @@
 
 			You must not remove this notice, or any other, from this software.
 		</value>
-  </data>
+  </metadata>
   <data name="ImpliedFactType.PredicateInverseReading" xml:space="preserve">
     <value>{0} involves {1}</value>
     <comment>The inverse reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>

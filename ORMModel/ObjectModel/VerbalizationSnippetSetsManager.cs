@@ -15,19 +15,20 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using System.Diagnostics;
-using Microsoft.VisualStudio.Modeling;
-using System.Xml;
-using System.Reflection;
-using Neumont.Tools.ORM.ObjectModel.Editors;
 using System.ComponentModel;
-using Microsoft.VisualStudio.VirtualTreeGrid;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Security.Permissions;
+using System.Text;
+using System.Xml;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -35,14 +36,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Data returned for each set of verbalization snippets supported.
 	/// </summary>
-	public struct VerbalizationSnippetsData
+	public struct VerbalizationSnippetsData : IEquatable<VerbalizationSnippetsData>
 	{
 		#region Member Variables
-		private Type myEnumType;
-		private IVerbalizationSets myDefaultVerbalizationSets;
-		private string myAlternateSnippetsDirectory;
-		private string myTypeDescription;
-		private string myDefaultSetsDescription;
+		private readonly Type myEnumType;
+		private readonly IVerbalizationSets myDefaultVerbalizationSets;
+		private readonly string myAlternateSnippetsDirectory;
+		private readonly string myTypeDescription;
+		private readonly string myDefaultSetsDescription;
 		#endregion // Member Variables
 		#region Constructors
 		/// <summary>
@@ -101,12 +102,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					Type currentInterface = supportedInterfaces[i];
 					if (currentInterface.IsGenericType &&
-						object.ReferenceEquals(currentInterface.GetGenericTypeDefinition(), typeof(IVerbalizationSets<>)))
+						currentInterface.GetGenericTypeDefinition() == typeof(IVerbalizationSets<>))
 					{
 						Type[] typeArgs = currentInterface.GetGenericArguments();
 						if (typeArgs != null &&
 							typeArgs.Length == 1 &&
-							object.ReferenceEquals(typeArgs[0], enumType))
+							typeArgs[0] == enumType)
 						{
 							break;
 						}
@@ -245,7 +246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if (!leftEmpty && !rightEmpty)
 			{
 				// Note that myDescription is intentionally ignored
-				return object.ReferenceEquals(myEnumType, obj.myEnumType) &&
+				return myEnumType == obj.myEnumType &&
 					myDefaultVerbalizationSets == obj.myDefaultVerbalizationSets &&
 					myAlternateSnippetsDirectory == obj.myAlternateSnippetsDirectory &&
 					myTypeDescription == obj.myTypeDescription &&
@@ -599,19 +600,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public class VerbalizationSnippetSetsManager
 	{
 		#region Member Variables
-		private static object myLockObject;
-		private static object LockObject
-		{
-			get
-			{
-				if (myLockObject == null)
-				{
-					object lockObj = new object();
-					System.Threading.Interlocked.CompareExchange(ref myLockObject, lockObj, null);
-				}
-				return myLockObject;
-			}
-		}
+		private static readonly object LockObject = new object();
 		#endregion // Member Variables
 		#region Snippet Sets Schema definition classes
 		#region VerbalizationSnippetSets class
@@ -681,7 +670,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // VerbalizationSnippetSets class
 		#region VerbalizationSnippetSetsNameTable class
-		private class VerbalizationSnippetSetsNameTable : NameTable
+		private sealed class VerbalizationSnippetSetsNameTable : NameTable
 		{
 			public readonly string SchemaNamespace;
 			public readonly string LanguagesElement;
@@ -730,18 +719,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>Snippets dictionary</returns>
 		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
 		{
-			return LoadSnippetsDictionary(GetSubstoreEnumerator<IVerbalizationSnippetsProvider>(store), customSnippetsDirectory, customIdentifiers);
-		}
-		private static IEnumerable<T> GetSubstoreEnumerator<T>(Store store) where T : class
-		{
-			foreach (object substore in store.SubStores.Values)
+			if (store == null)
 			{
-				T typeTest = substore as T;
-				if (typeTest != null)
+				throw new ArgumentNullException("store");
+			}
+			ICollection<DomainModel> domainModels = store.DomainModels;
+			List<IVerbalizationSnippetsProvider> snippetProviders = new List<IVerbalizationSnippetsProvider>(domainModels.Count);
+			foreach (DomainModel domainModel in domainModels)
+			{
+				IVerbalizationSnippetsProvider provider = domainModel as IVerbalizationSnippetsProvider;
+				if (provider != null)
 				{
-					yield return typeTest;
+					snippetProviders.Add(provider);
 				}
 			}
+			return LoadSnippetsDictionary(snippetProviders, customSnippetsDirectory, customIdentifiers);
 		}
 		/// <summary>
 		/// Load the descriptions and names of all verbalization snippets provided
@@ -779,7 +771,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								null,
 								BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 								null,
-								new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, true },
+								new object[] { Path.Combine(customSnippetsDirectory ?? string.Empty, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, true },
 								null);
 						}
 					}
@@ -809,6 +801,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>Snippets dictionary</returns>
 		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
 		{
+			if (providers == null)
+			{
+				throw new ArgumentNullException("providers");
+			}
 			Dictionary<Type, IVerbalizationSets> retVal = new Dictionary<Type, IVerbalizationSets>();
 			Type[] typeArgs = new Type[1];
 			int customIdentifiersCount = (customIdentifiers != null) ? customIdentifiers.Length : 0;
@@ -873,20 +869,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Load all xml files in the provided directory
 		/// </summary>
-		/// <typeparam name="EnumType">The enumtype of the verbalization snippets</typeparam>
+		/// <typeparam name="TEnum">The enum type of the verbalization snippets</typeparam>
 		/// <param name="directoryPath">The directory to load</param>
 		/// <param name="verbalizationSets">The dictionary to store new snippets and retrieve existing snippets. The
-		/// dictionary will contain the default verbalization set for the given EnumType, which is always provided
+		/// dictionary will contain the default verbalization set for the given TEnum, which is always provided
 		/// by the snippets provider.</param>
 		/// <param name="defaultSnippetsIdentifier">The default snippets identifier for items of this type</param>
 		/// <param name="identifiersOnly">The populated dictionary will have keys only, skip verbalizationset population.</param>
-		private static void LoadVerbalizationFiles<EnumType>(string directoryPath, IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> verbalizationSets, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly) where EnumType : struct
+		private static void LoadVerbalizationFiles<TEnum>(string directoryPath, IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> verbalizationSets, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly) where TEnum : struct
 		{
 			if (Directory.Exists(directoryPath))
 			{
 				string[] files = Directory.GetFiles(directoryPath, "*.xml");
 				int fileCount = files.Length;
-				List<RawSnippets<EnumType>> rawSnippetsList = null;
+				List<RawSnippets<TEnum>> rawSnippetsList = null;
 				for (int i = 0; i < fileCount; ++i)
 				{
 					string currentFile = files[i];
@@ -894,7 +890,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						using (FileStream stream = new FileStream(currentFile, FileMode.Open, FileAccess.Read, FileShare.Read))
 						{
-							LoadSnippets<EnumType>(stream, identifiersOnly, ref rawSnippetsList);
+							LoadSnippets<TEnum>(stream, identifiersOnly, ref rawSnippetsList);
 						}
 					}
 				}
@@ -910,26 +906,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Directory and file loading methods
 		#region XML processing structs
-		private struct RawSnippet<EnumType> where EnumType : struct
+		private struct RawSnippet<TEnum> where TEnum : struct
 		{
-			public RawSnippet(EnumType id, string value, ConstraintModality? modality, bool? sign)
+			public RawSnippet(TEnum id, string value, ConstraintModality? modality, bool? sign)
 			{
 				Id = id;
 				Value = value;
 				Modality = modality;
 				Sign = sign;
 			}
-			public EnumType Id;
+			public TEnum Id;
 			public string Value;
 			public bool? Sign;
 			public ConstraintModality? Modality;
 		}
-		private struct RawSnippets<EnumType> where EnumType : struct
+		private struct RawSnippets<TEnum> where TEnum : struct
 		{
 			#region Member Variables
 			public VerbalizationSnippetsIdentifier Id;
 			public VerbalizationSnippetsIdentifier BaseId;
-			public List<RawSnippet<EnumType>> Snippets;
+			public List<RawSnippet<TEnum>> Snippets;
 			#endregion // Member Variables
 			#region Helper Functions
 			public bool IsEmpty
@@ -941,36 +937,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			#endregion // Helper Functions
 			#region VerbalizationSets implementation class
-			private sealed class PassthroughVerbalizationSets : VerbalizationSets<EnumType>, IVerbalizationSets<EnumType>
+			private sealed class PassthroughVerbalizationSets : VerbalizationSets<TEnum>, IVerbalizationSets<TEnum>
 			{
-				private IVerbalizationSets<EnumType> myDeferTo;
-				public PassthroughVerbalizationSets(IVerbalizationSets<EnumType> deferTo)
+				private IVerbalizationSets<TEnum> myDeferTo;
+				public PassthroughVerbalizationSets(IVerbalizationSets<TEnum> deferTo)
 				{
 					myDeferTo = deferTo;
 				}
-				string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative)
+				string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
 				{
 					string retVal = base.GetSnippet(snippetType, isDeontic, isNegative);
 					return (retVal == null) ? myDeferTo.GetSnippet(snippetType, isDeontic, isNegative) : retVal;
 				}
-				string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType)
+				string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType)
 				{
 					string retVal = base.GetSnippet(snippetType);
 					return (retVal == null) ? myDeferTo.GetSnippet(snippetType) : retVal;
 				}
 				protected override void PopulateVerbalizationSets(VerbalizationSet[] sets, object userData)
 				{
-					List<RawSnippet<EnumType>> snippetsList = (List<RawSnippet<EnumType>>)userData;
-					IVerbalizationSets<EnumType> baseSnippets = myDeferTo;
+					List<RawSnippet<TEnum>> snippetsList = (List<RawSnippet<TEnum>>)userData;
+					IVerbalizationSets<TEnum> baseSnippets = myDeferTo;
 
 					int snippetsCount = snippetsList.Count;
 					Debug.Assert(snippetsCount > 0); // Loader won't create the set otherwise
 
-					// Sort the snippets by enum value, number of specified attributes (modality, sign),
+					// Sort the snippets by enum value, number of specified properties (modality, sign),
 					// then by modality, sign so they're nicely grouped for the loop below
 					#region Sort Snippets
 					snippetsList.Sort(
-						delegate(RawSnippet<EnumType> snippet1, RawSnippet<EnumType> snippet2)
+						delegate(RawSnippet<TEnum> snippet1, RawSnippet<TEnum> snippet2)
 						{
 							int compareResult = 0;
 
@@ -1054,8 +1050,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 					for (int i = 0; i < snippetsCount; ++i)
 					{
-						RawSnippet<EnumType> snippet = snippetsList[i];
-						EnumType type = snippet.Id;
+						RawSnippet<TEnum> snippet = snippetsList[i];
+						TEnum type = snippet.Id;
 						ConstraintModality? modality = snippet.Modality;
 						bool? sign = snippet.Sign;
 						string value = snippet.Value;
@@ -1087,7 +1083,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				private static void SetValue(VerbalizationSet[] sets, EnumType key, bool isDeontic, bool isNegative, string value)
+				private static void SetValue(VerbalizationSet[] sets, TEnum key, bool isDeontic, bool isNegative, string value)
 				{
 					int setIndex = GetSetIndex(isDeontic, isNegative);
 					DictionaryVerbalizationSet set = sets[setIndex] as DictionaryVerbalizationSet;
@@ -1096,7 +1092,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						set = new DictionaryVerbalizationSet();
 						sets[setIndex] = set;
 					}
-					IDictionary<EnumType, string> dictionary = set.Dictionary;
+					IDictionary<TEnum, string> dictionary = set.Dictionary;
 					if (!dictionary.ContainsKey(key))
 					{
 						dictionary.Add(key, value);
@@ -1105,7 +1101,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				/// <summary>
 				/// Convert the enum value to an index
 				/// </summary>
-				protected override int ValueToIndex(EnumType enumValue)
+				protected override int ValueToIndex(TEnum enumValue)
 				{
 					return (int)(object)enumValue;
 				}
@@ -1113,30 +1109,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#endregion // VerbalizationSets implementation class
 			#region Snippet processing
 			/// <summary>
-			/// A placeholder empty implementaiton of IVerbalizationSets&lt;EnumType&gt;
+			/// A placeholder empty implementaiton of IVerbalizationSets&lt;TEnum&gt;
 			/// to enable cycle detection when we're loading identifiers only
 			/// </summary>
-			private class EmptyVerbalizationSets : IVerbalizationSets<EnumType>
+			private sealed class EmptyVerbalizationSets : IVerbalizationSets<TEnum>
 			{
-				#region IVerbalizationSets<EnumType> Implementation
-				string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType, bool isDeontic, bool isNegative)
+				#region IVerbalizationSets<TEnum> Implementation
+				string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
 				{
 					return null;
 				}
-				string IVerbalizationSets<EnumType>.GetSnippet(EnumType snippetType)
+				string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType)
 				{
 					return null;
 				}
-				#endregion // IVerbalizationSets<EnumType> Implementation
+				#endregion // IVerbalizationSets<TEnum> Implementation
 			}
-			public IVerbalizationSets<EnumType> Process(IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> processedSets, List<RawSnippets<EnumType>> rawSnippetsList, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly)
+			public IVerbalizationSets<TEnum> Process(IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> processedSets, List<RawSnippets<TEnum>> rawSnippetsList, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly)
 			{
 				VerbalizationSnippetsIdentifier currentId = this.Id;
 				if (processedSets.ContainsKey(currentId))
 				{
-					return (IVerbalizationSets<EnumType>)processedSets[currentId];
+					return (IVerbalizationSets<TEnum>)processedSets[currentId];
 				}
-				IVerbalizationSets<EnumType> retVal = null;
+				IVerbalizationSets<TEnum> retVal = null;
 
 				// Add the set by this identifier with a null value
 				// to stop any potential cycle. Any request to use
@@ -1146,22 +1142,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				processedSets.Add(currentId, null);
 				try
 				{
-					IVerbalizationSets<EnumType> baseSnippets = null;
+					IVerbalizationSets<TEnum> baseSnippets = null;
 					VerbalizationSnippetsIdentifier currentBaseId = this.BaseId;
 					if (processedSets.ContainsKey(currentBaseId))
 					{
-						baseSnippets = (IVerbalizationSets<EnumType>)processedSets[currentBaseId];
+						baseSnippets = (IVerbalizationSets<TEnum>)processedSets[currentBaseId];
 						if (baseSnippets == null)
 						{
 							// We've encountered a cycle, fallback on the default set
 							Debug.Fail("Cycle encountered in snippet inheritance");
-							baseSnippets = (IVerbalizationSets<EnumType>)processedSets[defaultSnippetsIdentifier];
+							baseSnippets = (IVerbalizationSets<TEnum>)processedSets[defaultSnippetsIdentifier];
 						}
 					}
 					if (baseSnippets == null)
 					{
-						RawSnippets<EnumType> requiredSnippets = rawSnippetsList.Find(
-							delegate(RawSnippets<EnumType> match)
+						RawSnippets<TEnum> requiredSnippets = rawSnippetsList.Find(
+							delegate(RawSnippets<TEnum> match)
 							{
 								return match.Id.Equals(currentBaseId);
 							});
@@ -1172,7 +1168,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (baseSnippets == null)
 						{
 							// Fallback case, base is not defined
-							baseSnippets = (IVerbalizationSets<EnumType>)processedSets[defaultSnippetsIdentifier];
+							baseSnippets = (IVerbalizationSets<TEnum>)processedSets[defaultSnippetsIdentifier];
 						}
 					}
 					Debug.Assert(baseSnippets != null); // Should always have some base at this point
@@ -1182,8 +1178,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						VerbalizationSets<EnumType> retValImpl = new PassthroughVerbalizationSets(baseSnippets);
-						VerbalizationSets<EnumType>.Initialize(retValImpl, Snippets);
+						VerbalizationSets<TEnum> retValImpl = new PassthroughVerbalizationSets(baseSnippets);
+						VerbalizationSets<TEnum>.Initialize(retValImpl, Snippets);
 						retVal = retValImpl;
 					}
 					processingComplete = true;
@@ -1208,11 +1204,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Load the snippets for a given enum type defining those snippets from a stream
 		/// </summary>
-		/// <typeparam name="EnumType">The type of the enum for the values of the Snippet.@type attribute</typeparam>
+		/// <typeparam name="TEnum">The type of the enum for the values of the Snippet.@type property</typeparam>
 		/// <param name="stream">The stream to load</param>
 		/// <param name="identifiersOnly">Load identifiers only.</param>
 		/// <param name="rawSnippetsList">The list to add results to. May be null.</param>
-		private static void LoadSnippets<EnumType>(Stream stream, bool identifiersOnly, ref List<RawSnippets<EnumType>> rawSnippetsList) where EnumType : struct
+		private static void LoadSnippets<TEnum>(Stream stream, bool identifiersOnly, ref List<RawSnippets<TEnum>> rawSnippetsList) where TEnum : struct
 		{
 			VerbalizationSnippetSetsNameTable names = VerbalizationSnippetSets.Names;
 			using (XmlTextReader settingsReader = new XmlTextReader(new StreamReader(stream), names))
@@ -1230,7 +1226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								{
 									if (TestElementName(reader.LocalName, names.LanguageElement))
 									{
-										ProcessLanguage<EnumType>(reader, names, identifiersOnly, ref rawSnippetsList);
+										ProcessLanguage<TEnum>(reader, names, identifiersOnly, ref rawSnippetsList);
 									}
 									else
 									{
@@ -1248,7 +1244,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private static void ProcessLanguage<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, bool identifiersOnly, ref List<RawSnippets<EnumType>> rawSnippetsList) where EnumType : struct
+		private static void ProcessLanguage<TEnum>(XmlReader reader, VerbalizationSnippetSetsNameTable names, bool identifiersOnly, ref List<RawSnippets<TEnum>> rawSnippetsList) where TEnum : struct
 		{
 			if (reader.IsEmptyElement)
 			{
@@ -1262,12 +1258,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (TestElementName(reader.LocalName, names.SnippetsElement))
 					{
-						RawSnippets<EnumType> rawSnippets = ProcessSnippets<EnumType>(reader, names, identifiersOnly, languageId);
+						RawSnippets<TEnum> rawSnippets = ProcessSnippets<TEnum>(reader, names, identifiersOnly, languageId);
 						if (identifiersOnly ? !rawSnippets.Id.IsEmpty : !rawSnippets.IsEmpty)
 						{
 							if (rawSnippetsList == null)
 							{
-								rawSnippetsList = new List<RawSnippets<EnumType>>();
+								rawSnippetsList = new List<RawSnippets<TEnum>>();
 							}
 							rawSnippetsList.Add(rawSnippets);
 						}
@@ -1284,9 +1280,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private static RawSnippets<EnumType> ProcessSnippets<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, bool identifiersOnly, string languageId) where EnumType : struct
+		private static RawSnippets<TEnum> ProcessSnippets<TEnum>(XmlReader reader, VerbalizationSnippetSetsNameTable names, bool identifiersOnly, string languageId) where TEnum : struct
 		{
-			RawSnippets<EnumType> retVal = default(RawSnippets<EnumType>);
+			RawSnippets<TEnum> retVal = default(RawSnippets<TEnum>);
 			if (reader.IsEmptyElement)
 			{
 				return retVal;
@@ -1308,7 +1304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (TestElementName(reader.LocalName, names.SnippetElement))
 						{
-							ProcessSnippet<EnumType>(reader, names, ref retVal.Snippets);
+							ProcessSnippet<TEnum>(reader, names, ref retVal.Snippets);
 						}
 						else
 						{
@@ -1324,17 +1320,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (identifiersOnly || retVal.Snippets != null)
 			{
-				retVal.Id = new VerbalizationSnippetsIdentifier(typeof(EnumType), languageId, name, description);
-				retVal.BaseId = new VerbalizationSnippetsIdentifier(typeof(EnumType), baseLang, baseName);
+				retVal.Id = new VerbalizationSnippetsIdentifier(typeof(TEnum), languageId, name, description);
+				retVal.BaseId = new VerbalizationSnippetsIdentifier(typeof(TEnum), baseLang, baseName);
 			}
 			return retVal;
 		}
-		private static void ProcessSnippet<EnumType>(XmlReader reader, VerbalizationSnippetSetsNameTable names, ref List<RawSnippet<EnumType>> snippetList) where EnumType : struct
+		private static void ProcessSnippet<TEnum>(XmlReader reader, VerbalizationSnippetSetsNameTable names, ref List<RawSnippet<TEnum>> snippetList) where TEnum : struct
 		{
 			bool finishElement = true;
 			try
 			{
-				EnumType type = (EnumType)Enum.Parse(typeof(EnumType), reader.GetAttribute(names.TypeAttribute));
+				TEnum type = (TEnum)Enum.Parse(typeof(TEnum), reader.GetAttribute(names.TypeAttribute));
 				string modalityString = reader.GetAttribute(names.ModalityAttribute);
 				ConstraintModality? modality = null;
 				if (modalityString != null)
@@ -1367,15 +1363,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					value = reader.ReadString();
 				}
-				if (value == null)
-				{
-					value = "";
-				}
-				if (snippetList == null)
-				{
-					snippetList = new List<RawSnippet<EnumType>>();
-				}
-				snippetList.Add(new RawSnippet<EnumType>(type, value, modality, sign));
+				(snippetList ?? (snippetList = new List<RawSnippet<TEnum>>())).Add(
+					new RawSnippet<TEnum>(type, value ?? string.Empty, modality, sign));
 			}
 			catch (ArgumentException)
 			{
@@ -1396,7 +1385,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region XML Helper Functions
 		private static bool TestElementName(string localName, string elementName)
 		{
-			return object.ReferenceEquals(localName, elementName);
+			return (object)localName == (object)elementName;
 		}
 		/// <summary>
 		/// Move the reader to the node immediately after the end element corresponding to the current open element
@@ -1429,6 +1418,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An editor class to choose the current verbalization options
 	/// </summary>
+	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
 	public abstract class AvailableVerbalizationSnippetsEditor : TreePicker
 	{
 		#region Abstract properties
@@ -1468,7 +1459,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected override object TranslateToValue(ITypeDescriptorContext context, object oldValue, ITree tree, int selectedRow, int selectedColumn)
 		{
-			return VerbalizationSnippetsIdentifier.SaveIdentifiers((tree.Root as ProviderBranch).CurrentIdentifiers);
+			return VerbalizationSnippetsIdentifier.SaveIdentifiers(((ProviderBranch)tree.Root).CurrentIdentifiers);
 		}
 		private static Size myLastControlSize = new Size(272, 128);
 		/// <summary>
@@ -1797,7 +1788,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// A helper class to provide a default IBranch implementation
 		/// </summary>
-		private class BaseBranch : IBranch
+		private abstract class BaseBranch : IBranch
 		{
 			#region IBranch Implementation
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)

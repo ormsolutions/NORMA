@@ -126,7 +126,7 @@ namespace ExtensionExample
 		[RuleOn(typeof(ModelHasObjectType))]
 		public class ExtensionObjectTypeAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectTypeCollection, DelayValidateObjectTypeHasMeaningfulNameError);
 			}
@@ -137,7 +137,7 @@ namespace ExtensionExample
 		[RuleOn(typeof(ObjectType))]
 		public class ExtensionObjectTypeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public override void ElementAttributeChanged(ElementPropertyChangedEventArgs e)
 			{
 				ORMMetaModel.DelayValidateElement((e.ModelElement as ObjectType), DelayValidateObjectTypeHasMeaningfulNameError);
 			}
@@ -157,13 +157,13 @@ namespace ExtensionExample
 		/// <summary>
 		/// Private class to Validate a ObjectType when the .orm file is Deserialization.
 		/// </summary>
-		private class ObjectTypeNameFixupListener : DeserializationFixupListener<ObjectType>
+		private sealed class ObjectTypeNameFixupListener : DeserializationFixupListener<ObjectType>
 		{
 			public ObjectTypeNameFixupListener()
 				: base((int)ORMDeserializationFixupPhase.ValidateImplicitStoredElements)
 			{
 			}
-			protected override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ValidateObjectTypeName(element, notifyAdded);
 			}

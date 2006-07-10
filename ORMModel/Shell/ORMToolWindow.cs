@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections;
 using System.Runtime.InteropServices;
@@ -44,7 +44,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			private set
 			{
-				if (object.ReferenceEquals(myCurrentDocument, value))
+				if (myCurrentDocument == value)
 				{
 					return;
 				}
@@ -126,26 +126,15 @@ namespace Neumont.Tools.ORM.Shell
 			IMonitorSelectionService monitor = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(MonitorSelectionChanged);
 			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
-			ORMDesignerDocData docData = null;
 			try
 			{
-				docData = monitor.CurrentDocument as ORMDesignerDocData;
+				CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
+				CurrentORMSelectionContainer = monitor.CurrentSelectionContainer as IORMSelectionContainer;
 			}
 			catch (COMException)
 			{
 				// Swallow, this will occasionally be initialized when the document is shutting down
 			}
-			IORMSelectionContainer container = null;
-			try
-			{
-				container = monitor.CurrentSelectionContainer as IORMSelectionContainer;
-			}
-			catch (COMException)
-			{
-				// Swallow, this will occasionally be initialized when the document is shutting down
-			}
-			CurrentDocument = docData;
-			CurrentORMSelectionContainer = container;
 		}
 		#endregion // ORMToolWindow Constructor
 		#region IMonitorSelectionService Event Handlers

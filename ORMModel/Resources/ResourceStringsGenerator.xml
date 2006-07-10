@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ResourceStrings xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<Copyright name="Common Public License Copyright Notice">
-		Neumont Object-Role Modeling Architect for Visual Studio
-
-		Copyright © Neumont University. All rights reserved.
-
-		The use and distribution terms for this software are covered by the
-		Common Public License 1.0 (http://opensource.org/licenses/cpl) which
-		can be found in the file CPL.txt at the root of this distribution.
-		By using this software in any fashion, you are agreeing to be bound by
-		the terms of this license.
-
-		You must not remove this notice, or any other, from this software.
+		<CopyrightLine>/**************************************************************************\</CopyrightLine>
+		<CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* The use and distribution terms for this software are covered by the      *</CopyrightLine>
+		<CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</CopyrightLine>
+		<CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</CopyrightLine>
+		<CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</CopyrightLine>
+		<CopyrightLine>* the terms of this license.                                               *</CopyrightLine>
+		<CopyrightLine>*                                                                          *</CopyrightLine>
+		<CopyrightLine>* You must not remove this notice, or any other, from this software.       *</CopyrightLine>
+		<CopyrightLine>\**************************************************************************/</CopyrightLine>
 	</Copyright>
 	<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified">
 		<xs:element name="ResourceStrings">
@@ -22,11 +24,10 @@
 							<xs:documentation>Copyright notice.</xs:documentation>
 						</xs:annotation>
 						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:string">
-									<xs:attribute name="name" type="xs:string" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
+							<xs:sequence>
+								<xs:element name="CopyrightLine" type="xs:string" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="name" type="xs:string" use="required"/>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="ResourceString" maxOccurs="unbounded">
@@ -104,13 +105,13 @@
 	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading">
 		<comment type="summary">The display name used for a ReadingType</comment>
 	</ResourceString>
-	<ResourceString name="RolePlayerPickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText">
+	<ResourceString name="RolePlayerPickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.Design.RolePlayerPicker.NullItemText">
 		<comment type="summary">The name displayed to represent null in the role player picker</comment>
 	</ResourceString>
-	<ResourceString name="NestedFactTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText">
+	<ResourceString name="NestedFactTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.Design.NestedFactTypePicker.NullItemText">
 		<comment type="summary">The name displayed to represent null in the nested fact type picker</comment>
 	</ResourceString>
-	<ResourceString name="NestingTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText">
+	<ResourceString name="NestingTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.Design.NestingTypePicker.NullItemText">
 		<comment type="summary">The name displayed to represent null in the nesting type picker</comment>
 	</ResourceString>
 	<ResourceString name="EntityTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">

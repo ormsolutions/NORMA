@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -25,49 +26,63 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Provides static helper functions for extension <see cref="ModelElement"/>s.
 	/// </summary>
-	[CLSCompliant(true)]
 	public static class ExtensionElementUtility
 	{
 		/// <summary>
-		/// Adds the extension <see cref="ModelElement"/> <paramref name="extensionElement"/> to the
-		/// <see cref="IORMExtendableElement"/> <paramref name="extendedElement"/>.
+		/// Adds the extension <see cref="ModelElement"/> specified by <paramref name="extensionElement"/> to the
+		/// <see cref="IORMExtendableElement"/> specified by <paramref name="extendedElement"/>.
 		/// </summary>
 		public static void AddExtensionElement(IORMExtendableElement extendedElement, ModelElement extensionElement)
 		{
+			if (extendedElement == null)
+			{
+				throw new ArgumentNullException("extendedElement");
+			}
+			if (extensionElement == null)
+			{
+				throw new ArgumentNullException("extensionElement");
+			}
 			extendedElement.ExtensionCollection.Add(extensionElement);
 		}
 		/// <summary>
-		/// Adds the extension ModelError to the IORMExtendableElement.
+		/// Adds the extension <see cref="ModelError"/> specified by <paramref name="extensionError"/> to the
+		/// <see cref="IORMExtendableElement"/> specified by <paramref name="extendedElement"/>.
 		/// </summary>
-		public static void AddExtensionModelError(IORMExtendableElement extendedElement, ModelError error)
+		public static void AddExtensionModelError(IORMExtendableElement extendedElement, ModelError extensionError)
 		{
-			extendedElement.ExtensionModelErrorCollection.Add(error);
+			if (extendedElement == null)
+			{
+				throw new ArgumentNullException("extendedElement");
+			}
+			if (extensionError == null)
+			{
+				throw new ArgumentNullException("extensionError");
+			}
+			extendedElement.ExtensionModelErrorCollection.Add(extensionError);
 		}
 		/// <summary>
-		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelElement"/>
-		/// <paramref name="extensionElement"/> is attached to.
+		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelElement"/> specified
+		/// by <paramref name="extensionElement"/> is attached to.
 		/// </summary>
 		public static IORMExtendableElement GetExtendedElement(ModelElement extensionElement)
 		{
-			return (IORMExtendableElement)
-			(
-				extensionElement.GetCounterpartRolePlayer(ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuid, false)
-				??
-				extensionElement.GetCounterpartRolePlayer(ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuid, false)
-			);
+			if (extensionElement == null)
+			{
+				throw new ArgumentNullException("extensionElement");
+			}
+			return (IORMExtendableElement)DomainRoleInfo.GetLinkedElement(extensionElement, ORMModelElementHasExtensionElement.ExtensionDomainRoleId);
 		}
 		/// <summary>
-		/// Gets the IORMExtendableElement that the extension ModelError extensionElement is attached to.
+		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelError"/> specified
+		/// by <paramref name="extensionError"/> is attached to.
 		/// </summary>
-		public static IORMExtendableElement GetExtendedErrorOwnerElement(ModelError extensionElement)
+		public static IORMExtendableElement GetExtendedErrorOwnerElement(ModelError extensionError)
 		{
-			return (IORMExtendableElement)
-			(
-				extensionElement.GetCounterpartRolePlayer(ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid, ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, false)
-				??
-				extensionElement.GetCounterpartRolePlayer(ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid, ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, false)
-
-			);
+			if (extensionError == null)
+			{
+				throw new ArgumentNullException("extensionError");
+			}
+			return (IORMExtendableElement)DomainRoleInfo.GetLinkedElement(extensionError, ORMModelElementHasExtensionModelError.ExtensionModelErrorDomainRoleId);
 		}
 	}
 	#endregion // ExtensionElementUtility
@@ -76,49 +91,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Provides static helper functions for <see cref="IORMExtendableElement"/>s.
 	/// </summary>
-	[CLSCompliant(true)]
 	public static class ExtendableElementUtility
 	{
 		/// <summary>
-		/// Merges the properties from an <see cref="IORMExtendableElement"/> with the
-		/// properties from its associated extension <see cref="ModelElement"/>s.
+		/// Adds the properties from the extension <see cref="ModelElement"/>s of the
+		/// <see cref="IORMExtendableElement"/> specified by <paramref name="extendableElement"/>
+		/// to the <see cref="PropertyDescriptorCollection"/> sepcified by <paramref name="properties"/>.
 		/// </summary>
-		/// <param name="extendableElement">The <see cref="IORMExtendableElement"/></param>
-		/// <param name="baseProperties">
-		/// The original properties from the <see cref="IORMExtendableElement"/>.
-		/// These can be obtained by calling <c>base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor)</c>
-		/// in the <see cref="IORMExtendableElement"/>'s implementation of <see cref="IORMExtendableElement.GetDisplayProperties"/>.
+		/// <param name="extendableElement">
+		/// The <see cref="IORMExtendableElement"/> from which the extension properties should be retrieved.
 		/// </param>
-		/// <returns>A merged <see cref="PropertyDescriptorCollection"/></returns>
-		public static PropertyDescriptorCollection MergeExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection baseProperties)
+		/// <param name="properties">
+		/// The <see cref="PropertyDescriptorCollection"/> to which the extension properties should be added.
+		/// </param>
+		public static void GetExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties)
 		{
+			if (extendableElement == null)
+			{
+				throw new ArgumentNullException("extendableElement");
+			}
+			if (properties == null)
+			{
+				throw new ArgumentNullException("properties");
+			}
 			foreach (ModelElement extension in extendableElement.ExtensionCollection)
 			{
 				IORMPropertyExtension customPropertyExtension = extension as IORMPropertyExtension;
 				ORMExtensionPropertySettings settings = (customPropertyExtension != null) ? customPropertyExtension.ExtensionPropertySettings : ORMExtensionPropertySettings.MergeAsTopLevelProperty;
 				if (0 != (settings & ORMExtensionPropertySettings.MergeAsExpandableProperty))
 				{
-					baseProperties.Add(ExpandableExtensionDescriptor.CreateExtensionDescriptor(customPropertyExtension));
+					properties.Add(ExpandableExtensionPropertyDescriptor.CreateExtensionDescriptor(customPropertyExtension));
 				}
 				if (0 != (settings & ORMExtensionPropertySettings.MergeAsTopLevelProperty))
 				{
-					foreach (PropertyDescriptor descriptor in extension.GetProperties())
+					foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(extension))
 					{
-						baseProperties.Add(descriptor);
+						properties.Add(descriptor);
 					}
 				}
 			}
-			return baseProperties;
 		}
 
-		#region ExpandableExtensionDescriptor
-		private class ExpandableExtensionDescriptor : PropertyDescriptor
+		#region ExpandableExtensionPropertyDescriptor
+		private sealed class ExpandableExtensionPropertyDescriptor : PropertyDescriptor
 		{
 			#region ExpandableExtensionConverter
-			private class ExpandableExtensionConverter : ExpandableObjectConverter
+			private sealed class ExpandableExtensionConverter : ExpandableObjectConverter
 			{
 				#region ContextWrapper
-				private class ContextWrapper : ITypeDescriptorContext
+				private sealed class ContextWrapper : ITypeDescriptorContext
 				{
 					private ITypeDescriptorContext myInnerContext;
 					private readonly PropertyDescriptor myOriginalDescriptor;
@@ -235,28 +256,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			#endregion // ExpandableExtensionConverter
 
-			public static ExpandableExtensionDescriptor CreateExtensionDescriptor(IORMPropertyExtension extensionElement)
+			public static ExpandableExtensionPropertyDescriptor CreateExtensionDescriptor(IORMPropertyExtension extensionElement)
 			{
 				ModelElement element = extensionElement as ModelElement;
-				MetaAttributeInfo extensionExpandableTopLevelAttributeInfo = element.Store.MetaDataDirectory.FindMetaAttribute(extensionElement.ExtensionExpandableTopLevelAttributeGuid);
+				DomainPropertyInfo extensionExpandableTopLevelPropertyInfo = element.Store.DomainDataDirectory.FindDomainProperty(extensionElement.ExtensionExpandableTopLevelPropertyGuid);
 
-				// If ExtensionExpandableTopLevelAttributeGuid is invalid or Guid.Empty, FindMetaAttribute returns null.
-				bool readOnly = (extensionExpandableTopLevelAttributeInfo == null);
+				// If ExtensionExpandableTopLevelPropertyGuid is invalid or Guid.Empty, FindDomainProperty returns null.
+				bool readOnly = (extensionExpandableTopLevelPropertyInfo == null);
 
 				PropertyDescriptor descriptor = null;
 				ExpandableObjectConverter expandableConverter = null;
 
 				if (!readOnly)
 				{
-					descriptor = element.CreatePropertyDescriptor(extensionExpandableTopLevelAttributeInfo, element);
-					expandableConverter = new ExpandableExtensionConverter(extensionElement, descriptor);
+					expandableConverter = new ExpandableExtensionConverter(extensionElement, Design.ORMTypeDescriptor.CreatePropertyDescriptor(element, extensionExpandableTopLevelPropertyInfo));
 				}
 				else
 				{
 					expandableConverter = new ExpandableObjectConverter();
 				}
 
-				return new ExpandableExtensionDescriptor(extensionElement, expandableConverter, readOnly, descriptor);
+				return new ExpandableExtensionPropertyDescriptor(extensionElement, expandableConverter, readOnly, descriptor);
 			}
 
 			private IORMPropertyExtension myExtensionElement;
@@ -264,7 +284,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			private TypeConverter myConverter;
 			private bool myReadOnly;
 
-			private ExpandableExtensionDescriptor(IORMPropertyExtension extensionElement, TypeConverter converter, bool readOnly, PropertyDescriptor descriptor)
+			private ExpandableExtensionPropertyDescriptor(IORMPropertyExtension extensionElement, TypeConverter converter, bool readOnly, PropertyDescriptor descriptor)
 				: base(extensionElement.ToString(), null)
 			{
 				this.myExtensionElement = extensionElement;
@@ -285,7 +305,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				get
 				{
-					return typeof(ExpandableExtensionDescriptor);
+					return typeof(ExpandableExtensionPropertyDescriptor);
 				}
 			}
 
@@ -345,7 +365,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 		}
-		#endregion // ExpandableExtensionDescriptor
+		#endregion // ExpandableExtensionPropertyDescriptor
 	}
 	#endregion // ExtendableElementUtility
 }

@@ -15,7 +15,8 @@
 #endregion
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 namespace Neumont.Tools.ORM.Framework
 {
@@ -35,28 +36,28 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			Store store = sourceRolePlayer.Store;
 			bool sameTargetRolePlayer = false;
-			MetaRoleInfo sourceRoleInfo = store.MetaDataDirectory.FindMetaRole(sourceRoleGuid);
+			DomainRoleInfo sourceRoleInfo = store.DomainDataDirectory.FindDomainRole(sourceRoleGuid);
 			if (linkType == null)
 			{
-				linkType = sourceRoleInfo.MetaRelationship.ImplementationClass;
+				linkType = sourceRoleInfo.DomainRelationship.ImplementationClass;
 			}
-			IList links = sourceRolePlayer.GetElementLinks(sourceRoleGuid);
+			ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetElementLinks<ElementLink>(sourceRolePlayer, sourceRoleGuid);
 			int linkCount = links.Count;
 			if (linkCount != 0)
 			{
 				for (int i = linkCount - 1; i >= 0; --i)
 				{
-					ElementLink link = links[i] as ElementLink;
-					if (!link.IsRemoved)
+					ElementLink link = links[i];
+					if (!link.IsDeleted)
 					{
-						ModelElement counterpart = link.GetRolePlayer(sourceRoleInfo.OppositeMetaRole);
+						ModelElement counterpart = sourceRoleInfo.OppositeDomainRole.GetRolePlayer(link);
 						if (counterpart != null && counterpart == newTargetRolePlayer)
 						{
 							sameTargetRolePlayer = true;
 						}
 						else
 						{
-							link.Remove();
+							link.Delete();
 						}
 						// break; // In theory we can break on the first one, but this guarantees that we rip any slop already in the model
 					}
@@ -65,23 +66,23 @@ namespace Neumont.Tools.ORM.Framework
 			if (newTargetRolePlayer != null)
 			{
 				// Check the relationship on the other end to enforce 1-1
-				links = newTargetRolePlayer.GetElementLinks(targetRoleGuid);
+				links = DomainRoleInfo.GetElementLinks<ElementLink>(newTargetRolePlayer, targetRoleGuid);
 				linkCount = links.Count;
 				if (linkCount != 0)
 				{
 					for (int i = linkCount - 1; i >= 0; --i)
 					{
-						ElementLink link = links[i] as ElementLink;
-						if (!link.IsRemoved)
+						ElementLink link = links[i];
+						if (!link.IsDeleted)
 						{
-							ModelElement counterpart = link.GetRolePlayer(sourceRoleInfo);
+							ModelElement counterpart = sourceRoleInfo.GetRolePlayer(link);
 							if (counterpart != null && counterpart == sourceRolePlayer)
 							{
 								sameTargetRolePlayer = true;
 							}
 							else
 							{
-								link.Remove();
+								link.Delete();
 							}
 							// break; // In theory we can break on the first one, but this guarantees that we rip any slop already in the model
 						}
@@ -90,11 +91,9 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			if ((!sameTargetRolePlayer) && (newTargetRolePlayer != null))
 			{
-				store.ElementFactory.CreateElementLink(linkType, new RoleAssignment[]
-					{
-						new RoleAssignment(sourceRoleGuid, sourceRolePlayer),
-						new RoleAssignment(targetRoleGuid, newTargetRolePlayer)
-					});
+				store.ElementFactory.CreateElementLink(sourceRoleInfo.DomainRelationship,
+					new RoleAssignment(sourceRoleGuid, sourceRolePlayer),
+					new RoleAssignment(targetRoleGuid, newTargetRolePlayer));
 			}
 		}
 	}

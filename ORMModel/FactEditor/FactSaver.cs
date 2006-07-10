@@ -22,8 +22,8 @@ using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Framework;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Text.RegularExpressions;
 
@@ -63,7 +63,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		{
 			ORMModel myModel = null;
 			Store store = myCurrentDocument.Store;
-			myModel = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			myModel = store.ElementDirectory.FindElements<ORMModel>()[0];
 
 			if (null != myModel)
 			{
@@ -76,8 +76,8 @@ namespace Neumont.Tools.ORM.FactEditor
 				// We've got a model, now lets start a transaction to add our fact to the model.
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
 				{
-					IDictionary topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
-					RoleBaseMoveableCollection factRoles = null;
+					Dictionary<object, object> topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
+					LinkedElementCollection<RoleBase> factRoles = null;
 					ReadingOrder readOrd;
 					Reading primaryReading = null;
 					FactType currentFact;
@@ -86,8 +86,8 @@ namespace Neumont.Tools.ORM.FactEditor
 					// Get the fact if it exists, otherwise create a new one.
 					if (myEditFact == null)
 					{
-						currentFact = FactType.CreateFactType(store);
-						readOrd = ReadingOrder.CreateReadingOrder(store);
+						currentFact = new FactType(store);
+						readOrd = new ReadingOrder(store);
 						// assign the fact to this reading order to setup the reference
 						// between role collectionsreadOrd.FactType = currentFact;
 						readOrd.FactType = currentFact;
@@ -121,7 +121,7 @@ namespace Neumont.Tools.ORM.FactEditor
 						// Or if the object exists and the names are different, create a new one
 						if (isEmptyElement)
 						{
-							currentObject = ObjectType.CreateObjectType(store);
+							currentObject = new ObjectType(store);
 							currentObject.Name = objectName;
 							currentObject.Model = myModel;
 							newObjectsCreated = true;
@@ -247,7 +247,7 @@ namespace Neumont.Tools.ORM.FactEditor
 						}
 
 						// Add this object to the fact role collection, default the role name to the object name
-						Role role = Role.CreateRole(store);
+						Role role = new Role(store);
 						role.RolePlayer = currentObject;
 						factRoles.Add(role);
 						// add the role to the reading order's role collection
@@ -270,7 +270,7 @@ namespace Neumont.Tools.ORM.FactEditor
 					// If we're creating a new fact, add the reading to the reading collection
 					if (myEditFact == null)
 					{
-						primaryReading = Reading.CreateReading(store);
+						primaryReading = new Reading(store);
 						primaryReading.ReadingOrder = readOrd;
 					}
 					primaryReading.Text = myParsedFact.ReadingText;

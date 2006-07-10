@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				case RoleSequenceStyles.OneRoleSequence:
 					break;
 				default:
-					Debug.Assert(false); // Shouldn't be here
+					Debug.Fail("Shouldn't be here");
 					break;
 #endif // DEBUG
 			}
@@ -135,7 +135,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				case RoleSequenceStyles.OneRoleSequence:
 					break;
 				default:
-					Debug.Assert(false); // Shouldn't be here
+					Debug.Fail("Shouldn't be here");
 					break;
 #endif // DEBUG
 			}
@@ -147,22 +147,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule that fires when a constraint has a RoleSequence Removed
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class ConstraintRoleSequenceHasRoleRemoved : RemoveRule
+		private sealed class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Runs when ConstraintRoleSequenceHasRole element is removed. 
 			/// If there are no more roles in the role collection then the
 			/// entire ConstraintRoleSequence is removed
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequence = link.ConstraintRoleSequenceCollection;
-				if (!roleSequence.IsRemoved)
+				ConstraintRoleSequence roleSequence = link.ConstraintRoleSequence;
+				if (!roleSequence.IsDeleted)
 				{
 					if (roleSequence.RoleCollection.Count == 0)
 					{
-						roleSequence.Remove();
+						roleSequence.Delete();
 					}
 				}
 			}
@@ -191,29 +191,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType fact = role.FactType;
 			if (fact != null)
 			{
-				IList existingFactConstraints = fact.GetElementLinks(FactSetConstraint.FactTypeCollectionMetaRoleGuid);
+				ReadOnlyCollection<FactSetConstraint> existingFactConstraints = DomainRoleInfo.GetElementLinks<FactSetConstraint>(fact, FactSetConstraint.FactTypeDomainRoleId);
 				int listCount = existingFactConstraints.Count;
 				for (int i = 0; i < listCount; ++i)
 				{
-					FactSetConstraint testFactConstraint = (FactSetConstraint)existingFactConstraints[i];
-					if (testFactConstraint.SetConstraintCollection == this)
-				{
+					FactSetConstraint testFactConstraint = existingFactConstraints[i];
+					if (testFactConstraint.SetConstraint == this)
+					{
 						retVal = testFactConstraint;
 						break;
+					}
 				}
-			}
 				if (retVal == null)
-		{
-					retVal = FactSetConstraint.CreateFactSetConstraint(fact.Store, new RoleAssignment[]
-			{
-							new RoleAssignment(FactSetConstraint.FactTypeCollectionMetaRoleGuid, fact),
-							new RoleAssignment(FactSetConstraint.SetConstraintCollectionMetaRoleGuid, this)
-						});
+				{
+					retVal = new FactSetConstraint(fact, this);
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
-			}
 				}
-			return retVal;
 			}
+			return retVal;
+		}
 		#endregion // SetConstraint Specific
 		#region SetConstraint synchronization rules
 		/// <summary>
@@ -221,8 +217,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void EnforceNoForeignFacts(FactSetConstraint link)
 		{
-			FactType fact = link.FactTypeCollection;
-			SetConstraint constraint = link.SetConstraintCollection;
+			FactType fact = link.FactType;
+			SetConstraint constraint = link.SetConstraint;
 			ORMModel factModel = fact.Model;
 			ORMModel constraintModel = constraint.Model;
 			if ((constraint as IConstraint).ConstraintIsInternal)
@@ -234,45 +230,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			if (factModel != null)
-		{
-				if (constraintModel == null)
 			{
+				if (constraintModel == null)
+				{
 					constraint.Model = factModel;
-			}
-				else if (!object.ReferenceEquals(factModel, constraintModel))
-		{
+				}
+				else if (factModel != constraintModel)
+				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFacts);
 				}
 			}
 			else if (constraintModel != null)
 			{
 				fact.Model = constraintModel;
-		}
+			}
 		}
 		/// <summary>
 		/// Ensure that a fact and constraint have a consistent owning model
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class FactSetConstraintAdded : AddRule
+		private sealed class FactSetConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
 				EnforceNoForeignFacts(e.ModelElement as FactSetConstraint);
+			}
 		}
-	}
 		/// <summary>
 		/// Ensure that an internal constraint always goes away with its fact
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class FactSetConstraintRemoved : RemoveRule
+		private sealed class FactSetConstraintDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				SetConstraint constraint = link.SetConstraintCollection;
-				if (!constraint.IsRemoved && !constraint.IsRemoving && constraint.Constraint.ConstraintIsInternal)
+				SetConstraint constraint = link.SetConstraint;
+				if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal)
 				{
-					constraint.Remove();
+					constraint.Delete();
 				}
 			}
 		}
@@ -281,29 +277,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// has a consistent model for the constraints
 		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))]
-		private class FactAdded : AddRule
+		private sealed class FactAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				IList existingConstraintLinks = link.FactTypeCollection.GetElementLinks(FactSetConstraint.FactTypeCollectionMetaRoleGuid);
+				ReadOnlyCollection<ElementLink> existingConstraintLinks = DomainRoleInfo.GetElementLinks<ElementLink>(link.FactType, FactSetConstraint.FactTypeDomainRoleId);
 				int existingLinksCount = existingConstraintLinks.Count;
 				for (int i = 0; i < existingLinksCount; ++i)
 				{
 					EnforceNoForeignFacts(existingConstraintLinks[i] as FactSetConstraint);
-						}
-					}
-					}
+				}
+			}
+		}
 		/// <summary>
 		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class EnforceRoleSequenceValidityForAdd : AddRule
+		private sealed class EnforceRoleSequenceValidityForAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint constraint = link.ConstraintRoleSequenceCollection as SetConstraint;
+				SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
 				if (constraint != null)
 				{
 					ORMMetaModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
@@ -316,13 +312,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Remove Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class EnforceRoleSequenceValidityForRemove : RemoveRule
+		private sealed class EnforceRoleSequenceValidityForDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint constraint = link.ConstraintRoleSequenceCollection as SetConstraint;
-				if (constraint != null && !constraint.IsRemoved)
+				SetConstraint constraint = link.ConstraintRoleSequence as SetConstraint;
+				if (constraint != null && !constraint.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
 					ORMMetaModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
@@ -335,16 +331,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class ConstraintRoleSequenceHasRoleAdded : AddRule
+		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as SetConstraint;
+				SetConstraint constraint = link.ConstraintRoleSequence.Constraint as SetConstraint;
 				if (constraint != null)
 				{
 					bool createdAndInitialized;
-					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection, out createdAndInitialized);
+					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
 						factConstraint.ConstrainedRoleCollection.Add(link);
@@ -369,16 +365,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// constraint is a role sequence.
 		/// </summary>
 		[RuleOn(typeof(ModelHasSetConstraint))]
-		private class ConstraintAdded : AddRule
+		private sealed class ConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
 				// Add implied fact constraint elements
 				EnsureFactConstraintForRoleSequence(link);
 
 				// Register for delayed error validation
-				IModelErrorOwner errorOwner = link.SetConstraintCollection as IModelErrorOwner;
+				IModelErrorOwner errorOwner = link.SetConstraint as IModelErrorOwner;
 				if (errorOwner != null)
 				{
 					errorOwner.DelayValidateErrors();
@@ -402,10 +398,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="link">A roleset link added to the constraint</param>
 		private static void EnsureFactConstraintForRoleSequence(ModelHasSetConstraint link)
 		{
-			SetConstraint roleSequence = link.SetConstraintCollection;
+			SetConstraint roleSequence = link.SetConstraint;
 			// The following line gets the links instead of the counterparts,
 			// which are provided by roleSequence.RoleCollection
-			IList roleLinks = roleSequence.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+			IList roleLinks = DomainRoleInfo.GetElementLinks<ElementLink>(roleSequence, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 			int roleCount = roleLinks.Count;
 			if (roleCount != 0)
 			{
@@ -413,10 +409,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
 					bool createdAndInitialized;
-					FactConstraint factConstraint = roleSequence.EnsureFactConstraintForRole(roleLink.RoleCollection, out createdAndInitialized);
+					FactConstraint factConstraint = roleSequence.EnsureFactConstraintForRole(roleLink.Role, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
-						ConstraintRoleSequenceHasRoleMoveableCollection constrainedRoles = factConstraint.ConstrainedRoleCollection;
+						LinkedElementCollection<ConstraintRoleSequenceHasRole> constrainedRoles = factConstraint.ConstrainedRoleCollection;
 						if (!constrainedRoles.Contains(roleLink))
 						{
 							constrainedRoles.Add(roleLink);
@@ -458,7 +454,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				// We can't verbalize if there are constrained facts without readings or
 				// any constrained roles without role players
-				FactTypeMoveableCollection facts = FactTypeCollection;
+				LinkedElementCollection<FactType> facts = FactTypeCollection;
 				int count = facts.Count;
 				for (int i = 0; i < count; ++i)
 				{
@@ -470,7 +466,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(this as IConstraint).ConstraintIsInternal)
 				{
-					RoleMoveableCollection roles = RoleCollection;
+					LinkedElementCollection<Role> roles = RoleCollection;
 					count = roles.Count;
 					for (int i = 0; i < count; ++i)
 					{
@@ -546,12 +542,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Fixup listener implementation. Adds implicit FactConstraint relationships
 		/// </summary>
-		private class ExternalConstraintFixupListener : DeserializationFixupListener<SetConstraint>
+		private sealed class ExternalConstraintFixupListener : DeserializationFixupListener<SetConstraint>
 		{
 			/// <summary>
 			/// ExternalConstraintFixupListener constructor
 			/// </summary>
-			public ExternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+			public ExternalConstraintFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitElements)
 			{
 			}
 			/// <summary>
@@ -561,21 +558,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="element">An ExternalConstraint element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(SetConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(SetConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				IList links = element.GetElementLinks(ModelHasSetConstraint.SetConstraintCollectionMetaRoleGuid);
+				ReadOnlyCollection<ModelHasSetConstraint> links = DomainRoleInfo.GetElementLinks<ModelHasSetConstraint>(element, ModelHasSetConstraint.SetConstraintDomainRoleId);
 				int linksCount = links.Count;
 				for (int i = 0; i < linksCount; ++i)
 				{
-					EnsureFactConstraintForRoleSequence(links[i] as ModelHasSetConstraint);
-					IList factLinks = element.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid);
+					EnsureFactConstraintForRoleSequence(links[i]);
+					ReadOnlyCollection<FactSetConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetConstraint>(element, FactSetConstraint.SetConstraintDomainRoleId);
 					int factLinksCount = factLinks.Count;
 					for (int j = 0; j < factLinksCount; ++j)
 					{
 						// Notify that the link was added. Note that we set
 						// addLinks to true here because we expect ExternalRoleConstraint
 						// links to be attached to each FactConstraint
-						notifyAdded.ElementAdded(factLinks[j] as ModelElement, true);
+						notifyAdded.ElementAdded(factLinks[j], true);
 					}
 				}
 			}
@@ -599,7 +596,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// must be notified back to the caller.</param>
 		private void VerifyRoleSequenceCountForRule(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				int minCount = ConstraintUtility.RoleSequenceCountMinimum(this);
 				int maxCount;
@@ -613,7 +610,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (null == TooFewRoleSequencesError)
 					{
-						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
+						insufficientError = new TooFewRoleSequencesError(store);
 						insufficientError.SetConstraint = this;
 						insufficientError.Model = Model;
 						insufficientError.GenerateErrorText();
@@ -624,7 +621,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					removeTooMany = true;
 				}
-				
+
 				else
 				{
 					removeTooFew = true;
@@ -632,7 +629,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (null == TooManyRoleSequencesError)
 						{
-							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
+							extraError = new TooManyRoleSequencesError(store);
 							extraError.SetConstraint = this;
 							extraError.Model = Model;
 							extraError.GenerateErrorText();
@@ -649,11 +646,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (removeTooFew && null != (insufficientError = TooFewRoleSequencesError))
 				{
-					insufficientError.Remove();
+					insufficientError.Delete();
 				}
 				if (removeTooMany && null != (extraError = TooManyRoleSequencesError))
 				{
-					extraError.Remove();
+					extraError.Delete();
 				}
 			}
 		}
@@ -674,7 +671,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
 		{
 			CompatibleRolePlayerTypeError compatibleError;
-			if (IsRemoved)
+			if (IsDeleted)
 			{
 				return;
 			}
@@ -685,7 +682,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Check on load, but not later. Constraint types don't switch on the fly
 					if (null != (compatibleError = CompatibleRolePlayerTypeError))
 					{
-						compatibleError.Remove();
+						compatibleError.Delete();
 					}
 				}
 				return;
@@ -693,7 +690,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 			bool isCompatible = true;
 
-			RoleMoveableCollection roles = RoleCollection;
+			LinkedElementCollection<Role> roles = RoleCollection;
 			int roleCount = roles.Count;
 			if (roleCount > 1)
 			{
@@ -742,7 +739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								//If the error is not present, add it to the model
 								if (null == CompatibleRolePlayerTypeError)
 								{
-									compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(Store);
+									compatibleError = new CompatibleRolePlayerTypeError(Store);
 									compatibleError.SetConstraint = this;
 									compatibleError.Model = Model;
 									compatibleError.GenerateErrorText();
@@ -762,7 +759,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (null != (compatibleError = CompatibleRolePlayerTypeError))
 				{
-					compatibleError.Remove();
+					compatibleError.Delete();
 				}
 			}
 		}
@@ -771,13 +768,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
+		private sealed class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				Role role = link.PlayedRole;
+				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
 				for (int i = 0; i < count; ++i)
 				{
@@ -794,13 +791,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		///Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class EnforceRoleSequenceValidityForFactTypeRemove : RemoveRule
+		private sealed class EnforceRoleSequenceValidityForFactTypeDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				Role role = link.PlayedRole;
+				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
 				for (int i = 0; i < count; ++i)
 				{
@@ -863,7 +860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Debug.Assert(false); // Implement on derived class
+				Debug.Fail("Implement on derived class");
 				throw new NotImplementedException();
 			}
 		}
@@ -871,7 +868,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Debug.Assert(false); // Implement on derived class
+				Debug.Fail("Implement on derived class");
 				throw new NotImplementedException();
 			}
 		}
@@ -890,7 +887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void ValidateColumnCompatibility()
 		{
-			if (!IsRemoved && !IsRemoving)
+			if (!IsDeleting && !IsDeleted)
 			{
 				ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
 			}
@@ -911,15 +908,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// fact type from here, use the FactTypeCollection property on the returned
 		/// object. To get to the roles, use the ConstrainedRoleCollection property.
 		/// </summary>
-		public IList<FactConstraint> FactConstraintCollection
+		public ReadOnlyCollection<FactConstraint> FactConstraintCollection
 		{
 			get
 			{
-				IList untypedList = GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid);
-				int elementCount = untypedList.Count;
-				FactConstraint[] typedList = new FactConstraint[elementCount];
-				untypedList.CopyTo(typedList, 0);
-				return typedList;
+				return DomainRoleInfo.GetElementLinks<FactConstraint>(this, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
 			}
 		}
 		/// <summary>
@@ -939,27 +932,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType fact = role.FactType;
 			if (fact != null)
 			{
-				IList existingFactConstraints = fact.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid);
-					int listCount = existingFactConstraints.Count;
-					for (int i = 0; i < listCount; ++i)
+				ReadOnlyCollection<FactSetComparisonConstraint> existingFactConstraints = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(fact, FactSetComparisonConstraint.FactTypeDomainRoleId);
+				int listCount = existingFactConstraints.Count;
+				for (int i = 0; i < listCount; ++i)
+				{
+					FactSetComparisonConstraint testFactConstraint = existingFactConstraints[i];
+					if (testFactConstraint.SetComparisonConstraint == this)
 					{
-					FactSetComparisonConstraint testFactConstraint = (FactSetComparisonConstraint)existingFactConstraints[i];
-					if (testFactConstraint.SetComparisonConstraintCollection == this)
-						{
-							retVal = testFactConstraint;
-							break;
-						}
-					}
-					if (retVal == null)
-					{
-					retVal = FactSetComparisonConstraint.CreateFactSetComparisonConstraint(fact.Store, new RoleAssignment[]
-					{
-						new RoleAssignment(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid, fact),
-						new RoleAssignment(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid, this)
-					});
-					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
+						retVal = testFactConstraint;
+						break;
 					}
 				}
+				if (retVal == null)
+				{
+					retVal = new FactSetComparisonConstraint(fact, this);
+					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
+				}
+			}
 			return retVal;
 		}
 		#endregion // SetComparisonConstraint Specific
@@ -969,8 +958,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private static void EnforceNoForeignFacts(FactSetComparisonConstraint link)
 		{
-			FactType fact = link.FactTypeCollection;
-			SetComparisonConstraint constraint = link.SetComparisonConstraintCollection;
+			FactType fact = link.FactType;
+			SetComparisonConstraint constraint = link.SetComparisonConstraint;
 			ORMModel factModel = fact.Model;
 			ORMModel constraintModel = constraint.Model;
 			if (factModel != null)
@@ -979,7 +968,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					constraint.Model = factModel;
 				}
-				else if (!object.ReferenceEquals(factModel, constraintModel))
+				else if (factModel != constraintModel)
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionConstraintEnforceNoForeignFacts);
 				}
@@ -993,9 +982,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure that a fact and constraint have a consistent owning model
 		/// </summary>
 		[RuleOn(typeof(FactSetComparisonConstraint))]
-		private class FactSetComparisonConstraintAdded : AddRule
+		private sealed class FactSetComparisonConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EnforceNoForeignFacts(e.ModelElement as FactSetComparisonConstraint);
 			}
@@ -1005,16 +994,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// has a consistent model for the constraints
 		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))]
-		private class FactAdded : AddRule
+		private sealed class FactAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				IList existingConstraintLinks = link.FactTypeCollection.GetElementLinks(FactSetComparisonConstraint.FactTypeCollectionMetaRoleGuid);
+				ReadOnlyCollection<FactSetComparisonConstraint> existingConstraintLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(link.FactType, FactSetComparisonConstraint.FactTypeDomainRoleId);
 				int existingLinksCount = existingConstraintLinks.Count;
 				for (int i = 0; i < existingLinksCount; ++i)
 				{
-					EnforceNoForeignFacts(existingConstraintLinks[i] as FactSetComparisonConstraint);
+					EnforceNoForeignFacts(existingConstraintLinks[i]);
 				}
 			}
 		}
@@ -1023,16 +1012,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class ConstraintRoleSequenceHasRoleAdded : AddRule
+		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetComparisonConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as SetComparisonConstraint;
+				SetComparisonConstraint constraint = link.ConstraintRoleSequence.Constraint as SetComparisonConstraint;
 				if (constraint != null && constraint.Model != null)
 				{
 					bool createdAndInitialized;
-					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection, out createdAndInitialized);
+					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.Role, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
 						factConstraint.ConstrainedRoleCollection.Add(link);
@@ -1056,16 +1045,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// objects are created for each role.
 		/// </summary>
 		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
-		private class ConstraintHasRoleSequenceAdded : AddRule
+		private sealed class ConstraintHasRoleSequenceAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EnsureFactConstraintForRoleSequence(e.ModelElement as SetComparisonConstraintHasRoleSequence);
 			}
 			/// <summary>
 			/// Fire early so the Constraint.FactTypeCollection is populated for other rules
 			/// </summary>
-			public override bool FireBefore
+			public sealed override bool FireBefore
 			{
 				get
 				{
@@ -1080,22 +1069,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="link">A roleset link added to the constraint</param>
 		private static void EnsureFactConstraintForRoleSequence(SetComparisonConstraintHasRoleSequence link)
 		{
-			SetComparisonConstraintRoleSequence roleSequence = link.RoleSequenceCollection;
+			SetComparisonConstraintRoleSequence roleSequence = link.RoleSequence;
 			// The following line gets the links instead of the counterparts,
 			// which are provided by roleSequence.RoleCollection
-			IList roleLinks = roleSequence.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+			ReadOnlyCollection<ConstraintRoleSequenceHasRole> roleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(roleSequence, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 			int roleCount = roleLinks.Count;
 			if (roleCount != 0)
 			{
 				SetComparisonConstraint constraint = link.ExternalConstraint;
 				for (int i = 0; i < roleCount; ++i)
 				{
-					ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
+					ConstraintRoleSequenceHasRole roleLink = roleLinks[i];
 					bool createdAndInitialized;
-					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.RoleCollection, out createdAndInitialized);
+					FactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.Role, out createdAndInitialized);
 					if (factConstraint != null && !createdAndInitialized)
 					{
-						ConstraintRoleSequenceHasRoleMoveableCollection constrainedRoles = factConstraint.ConstrainedRoleCollection;
+						LinkedElementCollection<ConstraintRoleSequenceHasRole> constrainedRoles = factConstraint.ConstrainedRoleCollection;
 						if (!constrainedRoles.Contains(roleLink))
 						{
 							constrainedRoles.Add(roleLink);
@@ -1110,17 +1099,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// constraints, but we only need to write it once.
 		/// </summary>
 		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 1000)]
-		private class ExternalRoleConstraintRemoved : RemoveRule
+		private sealed class ExternalRoleConstraintDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
-				FactConstraint factConstraint = link.FactConstraintCollection;
-				if (!factConstraint.IsRemoved)
+				FactConstraint factConstraint = link.FactConstraint;
+				if (!factConstraint.IsDeleted)
 				{
 					if (factConstraint.ConstrainedRoleCollection.Count == 0)
 					{
-						factConstraint.Remove();
+						factConstraint.Delete();
 					}
 				}
 			}
@@ -1141,12 +1130,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Fixup listener implementation. Adds implicit FactConstraint relationships
 		/// </summary>
-		private class ExternalConstraintFixupListener : DeserializationFixupListener<SetComparisonConstraint>
+		private sealed class ExternalConstraintFixupListener : DeserializationFixupListener<SetComparisonConstraint>
 		{
 			/// <summary>
 			/// ExternalConstraintFixupListener constructor
 			/// </summary>
-			public ExternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+			public ExternalConstraintFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitElements)
 			{
 			}
 			/// <summary>
@@ -1156,21 +1146,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="element">An ExternalConstraint element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(SetComparisonConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(SetComparisonConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				IList links = element.GetElementLinks(SetComparisonConstraintHasRoleSequence.ExternalConstraintMetaRoleGuid);
+				ReadOnlyCollection<SetComparisonConstraintHasRoleSequence> links = DomainRoleInfo.GetElementLinks<SetComparisonConstraintHasRoleSequence>(element, SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId);
 				int linksCount = links.Count;
 				for (int i = 0; i < linksCount; ++i)
 				{
-					EnsureFactConstraintForRoleSequence(links[i] as SetComparisonConstraintHasRoleSequence);
-					IList factLinks = element.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid);
+					EnsureFactConstraintForRoleSequence(links[i]);
+					ReadOnlyCollection<FactSetComparisonConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
 					int factLinksCount = factLinks.Count;
 					for (int j = 0; j < factLinksCount; ++j)
 					{
 						// Notify that the link was added. Note that we set
 						// addLinks to true here because we expect ExternalRoleConstraint
 						// links to be attached to each FactConstraint
-						notifyAdded.ElementAdded(factLinks[j] as ModelElement, true);
+						notifyAdded.ElementAdded(factLinks[j], true);
 					}
 				}
 			}
@@ -1194,7 +1184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// must be notified back to the caller.</param>
 		private void VerifyRoleSequenceCountForRule(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				int minCount = ConstraintUtility.RoleSequenceCountMinimum(this);
 				int maxCount;
@@ -1210,7 +1200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					tooFewOrTooMany = true;
 					if (null == this.TooFewRoleSequencesError)
 					{
-						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
+						insufficientError = new TooFewRoleSequencesError(store);
 						insufficientError.SetComparisonConstraint = this;
 						insufficientError.Model = Model;
 						insufficientError.GenerateErrorText();
@@ -1229,7 +1219,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						tooFewOrTooMany = true;
 						if (null == TooManyRoleSequencesError)
 						{
-							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
+							extraError = new TooManyRoleSequencesError(store);
 							extraError.SetComparisonConstraint = this;
 							extraError.Model = Model;
 							extraError.GenerateErrorText();
@@ -1246,11 +1236,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (removeTooFew && null != (insufficientError = TooFewRoleSequencesError))
 				{
-					insufficientError.Remove();
+					insufficientError.Delete();
 				}
 				if (removeTooMany && null != (extraError = TooManyRoleSequencesError))
 				{
-					extraError.Remove();
+					extraError.Delete();
 				}
 
 				VerifyRoleSequenceArityForRule(notifyAdded, tooFewOrTooMany);
@@ -1302,7 +1292,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				arityError = ArityMismatchError;
 				if (arityError != null)
 				{
-					arityError.Remove(); // Can't validate arity with the wrong number of role sequences
+					arityError.Delete(); // Can't validate arity with the wrong number of role sequences
 				}
 			}
 			else
@@ -1319,7 +1309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							arityError = ArityMismatchError;
 							if (arityError == null)
 							{
-								arityError = ExternalConstraintRoleSequenceArityMismatchError.CreateExternalConstraintRoleSequenceArityMismatchError(store);
+								arityError = new ExternalConstraintRoleSequenceArityMismatchError(store);
 								arityError.Constraint = this;
 								arityError.Model = Model;
 								arityError.GenerateErrorText();
@@ -1336,7 +1326,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (null != (arityError = ArityMismatchError))
 					{
-						arityError.Remove();
+						arityError.Delete();
 					}
 				}
 			}
@@ -1367,19 +1357,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				SetComparisonConstraintRoleSequenceMoveableCollection sequences = RoleSequenceCollection;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = RoleSequenceCollection;
 				int sequenceCount = sequences.Count;
 
 				if (sequenceCount > 1)
 				{
 					// Cache the role collection so we're not regenerating them all the time
-					RoleMoveableCollection[] roleCollections = new RoleMoveableCollection[sequenceCount];
+					LinkedElementCollection<Role>[] roleCollections = new LinkedElementCollection<Role>[sequenceCount];
 					for (int i = 0; i < sequenceCount; ++i)
 					{
 						roleCollections[i] = sequences[i].RoleCollection;
 					}
 
-					CompatibleRolePlayerTypeErrorMoveableCollection startingErrors = CompatibleRolePlayerTypeErrorCollection;
+					LinkedElementCollection<CompatibleRolePlayerTypeError> startingErrors = CompatibleRolePlayerTypeErrorCollection;
 					int startingErrorCount = startingErrors.Count;
 					int nextStartingError = 0;
 
@@ -1440,7 +1430,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										else
 										{
 											// We need a new error, create it from scratch
-											compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
+											compatibleError = new CompatibleRolePlayerTypeError(store);
 											compatibleError.Column = column;
 											compatibleError.SetComparisonConstraint = this;
 											compatibleError.Model = Model;
@@ -1459,7 +1449,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// If any errors are left, then remove them, we have enough
 					for (int i = startingErrorCount - 1; i >= nextStartingError; --i)
 					{
-						startingErrors[i].Remove();
+						startingErrors[i].Delete();
 					}
 				}
 				else
@@ -1484,21 +1474,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // VerifyCompatibleRolePlayerTypeForRule
 		#region Add/Remove Rules
 		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
-		private class EnforceRoleSequenceCardinalityForAdd : AddRule
+		private sealed class EnforceRoleSequenceCardinalityForAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
 				ORMMetaModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
 			}
 		}
 		[RuleOn(typeof(ModelHasSetComparisonConstraint))]
-		private class EnforceRoleSequenceCardinalityForConstraintAdd : AddRule
+		private sealed class EnforceRoleSequenceCardinalityForConstraintAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
-				IModelErrorOwner errorOwner = link.SetComparisonConstraintCollection as IModelErrorOwner;
+				IModelErrorOwner errorOwner = link.SetComparisonConstraint as IModelErrorOwner;
 				if (errorOwner != null)
 				{
 					errorOwner.DelayValidateErrors();
@@ -1506,13 +1496,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
-		private class EnforceRoleSequenceCardinalityForRemove : RemoveRule
+		private sealed class EnforceRoleSequenceCardinalityForDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
 				SetComparisonConstraint externalConstraint = link.ExternalConstraint;
-				if (externalConstraint != null && !externalConstraint.IsRemoved)
+				if (externalConstraint != null && !externalConstraint.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
 				}
@@ -1522,12 +1512,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Add Rule for arity and compatibility checking when ExternalConstraints roles are added
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class EnforceRoleSequenceValidityForAdd : AddRule
+		private sealed class EnforceRoleSequenceValidityForAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as SetComparisonConstraintRoleSequence;
+				SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
 				if (sequence != null)
 				{
 					SetComparisonConstraint constraint = sequence.ExternalConstraint;
@@ -1542,16 +1532,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		//Remove Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are removed
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class EnforceRoleSequenceValidityForRemove : RemoveRule
+		private sealed class EnforceRoleSequenceValidityForDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as SetComparisonConstraintRoleSequence;
+				SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
 				if (sequence != null)
 				{
 					SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-					if (externalConstraint != null && !externalConstraint.IsRemoved)
+					if (externalConstraint != null && !externalConstraint.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
 						ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
@@ -1560,16 +1550,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class EnforceRoleSequenceValidityForReorder : RolePlayerPositionChangeRule
+		private sealed class EnforceRoleSequenceValidityForReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
 				SetComparisonConstraintRoleSequence sequence;
-				if (e.SourceMetaRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid &&
+				if (e.SourceDomainRole.Id == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId &&
 					null != (sequence = e.SourceElement as SetComparisonConstraintRoleSequence))
 				{
 					SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-					if (externalConstraint != null && !externalConstraint.IsRemoved)
+					if (externalConstraint != null && !externalConstraint.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 					}
@@ -1579,13 +1569,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		//Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
+		private sealed class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				Role role = link.PlayedRole;
+				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
 				for (int i = 0; i < count; ++i)
 				{
@@ -1604,23 +1594,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		//Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private class EnforceRoleSequenceValidityForFactTypeRemove : RemoveRule
+		private sealed class EnforceRoleSequenceValidityForFactTypeDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRoleCollection;
-				if (!role.IsRemoved)
+				Role role = link.PlayedRole;
+				if (!role.IsDeleted)
 				{
-					ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 					int count = roleSequences.Count;
 					for (int i = 0; i < count; ++i)
 					{
 						SetComparisonConstraintRoleSequence sequence = roleSequences[i] as SetComparisonConstraintRoleSequence;
-						if (sequence != null && !sequence.IsRemoved)
+						if (sequence != null && !sequence.IsDeleted)
 						{
 							SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-							if (externalConstraint != null && !externalConstraint.IsRemoved)
+							if (externalConstraint != null && !externalConstraint.IsDeleted)
 							{
 								ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 							}
@@ -1746,7 +1736,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Debug.Assert(false); // Implement on derived class
+				Debug.Fail("Implement on derived class");
 				throw new NotImplementedException();
 			}
 		}
@@ -1754,7 +1744,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				Debug.Assert(false); // Implement on derived class
+				Debug.Fail("Implement on derived class");
 				throw new NotImplementedException();
 			}
 		}
@@ -1790,10 +1780,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void ValidateColumnCompatibility()
 		{
-			if (!IsRemoved && !IsRemoving)
+			if (!IsDeleted && !IsDeleting)
 			{
 				ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
-		}
+			}
 		}
 		void IConstraint.ValidateColumnCompatibility()
 		{
@@ -1820,125 +1810,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				ConstraintRoleSequenceHasRoleMoveableCollection roleSequenceLinks = ConstrainedRoleCollection;
+				LinkedElementCollection<ConstraintRoleSequenceHasRole> roleSequenceLinks = ConstrainedRoleCollection;
 				int roleSequenceLinksCount = roleSequenceLinks.Count;
 				Role[] typedList = new Role[roleSequenceLinksCount];
 				for (int i = 0; i < roleSequenceLinksCount; ++i)
 				{
-					typedList[i] = roleSequenceLinks[i].RoleCollection;
+					typedList[i] = roleSequenceLinks[i].Role;
 				}
 				return typedList;
 			}
 		}
-		FactType IFactConstraint.FactType
-		{
-			get
-			{
-				// This is for the compiler, which doesn't like the protected FactType property.
-				// Overriding on the derived types enables IFactConstraint support without
-				// a double virtual call to get the data.
-				Debug.Assert(false);
-				return FactType;
-			}
-		}
 		IConstraint IFactConstraint.Constraint
 		{
 			get
 			{
-				// This is for the compiler, which doesn't like the protected FactType property.
-				// Overriding on the derived types enables IFactConstraint support without
-				// a double virtual call to get the data.
-				Debug.Assert(false);
-				return Constraint;
+				return (IConstraint)Constraint;
 			}
 		}
-		/// <summary>
-		/// Retrieve the fact type from a derived class
-		/// </summary>
-		protected abstract FactType FactType {get;}
-		/// <summary>
-		/// Retrieve the constraint from a derived class
-		/// </summary>
-		protected abstract IConstraint Constraint { get;}
 		#endregion // IFactConstraint Implementation
-	}
-	public partial class FactSetComparisonConstraint : IFactConstraint
-	{
-		FactType IFactConstraint.FactType
-		{
-			get
-			{
-				return FactType;
-			}
-		}
-		IConstraint IFactConstraint.Constraint
-		{
-			get
-			{
-				return Constraint;
-			}
-		}
-		/// <summary>
-		/// Implements FactType for IFactConstraint and FactConstraint
-		/// by deferring to generated FactTypeCollection accessor
-		/// </summary>
-		protected sealed override FactType FactType
-		{
-			get
-			{
-				return FactTypeCollection;
-			}
-		}
-		/// <summary>
-		/// Implements Constraint for IFactConstraint and FactConstraint
-		/// by deferring to generated SetComparisonConstraintCollection accessor
-		/// </summary>
-		protected sealed override IConstraint Constraint
-		{
-			get
-			{
-				return SetComparisonConstraintCollection;
-			}
-		}
-	}
-	public partial class FactSetConstraint : IFactConstraint
-	{
-		FactType IFactConstraint.FactType
-		{
-			get
-			{
-				return FactType;
-			}
-		}
-		IConstraint IFactConstraint.Constraint
-		{
-			get
-			{
-				return Constraint;
-			}
-		}
-		/// <summary>
-		/// Implements FactType for IFactConstraint and FactConstraint
-		/// by deferring to generated FactTypeCollection accessor
-		/// </summary>
-		protected sealed override FactType FactType
-		{
-			get
-			{
-				return FactTypeCollection;
-			}
-		}
-		/// <summary>
-		/// Implements Constraint for IFactConstraint and FactConstraint
-		/// by deferring to generated SetConstraintCollection accessor
-		/// </summary>
-		protected sealed override IConstraint Constraint
-		{
-			get
-			{
-				return SetConstraintCollection;
-			}
-		}
 	}
 	#endregion // FactConstraint classes
 	#region ConstraintRoleSequence classes
@@ -2062,25 +1951,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// must be notified back to the caller.</param>
 		private void VerifyNotImpliedByMandatoryConstraints(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool noError = true;
 				EqualityImpliedByMandatoryError impliedEqualityError;
-				SetComparisonConstraintRoleSequenceMoveableCollection sequences = RoleSequenceCollection;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = RoleSequenceCollection;
 				int roleSequenceCount = sequences.Count;
 
 				if (roleSequenceCount >= 2)
 				{
 					for (int i = 0; i < roleSequenceCount; ++i)
 					{
-						RoleMoveableCollection roleCollection = sequences[i].RoleCollection;
+						LinkedElementCollection<Role> roleCollection = sequences[i].RoleCollection;
 						int roleCount = roleCollection.Count;
 						if (roleCount != 1)
 						{
 							break;
 						}
 						Role currentRole = roleCollection[0];
-						ConstraintRoleSequenceMoveableCollection roleConstraints = currentRole.ConstraintRoleSequenceCollection;
+						LinkedElementCollection<ConstraintRoleSequence> roleConstraints = currentRole.ConstraintRoleSequenceCollection;
 						int constraintCount = roleConstraints.Count;
 						bool haveMandatory = false;
 						for (int counter = 0; counter < constraintCount; ++counter)
@@ -2089,7 +1978,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (currentConstraint.ConstraintType == ConstraintType.SimpleMandatory)
 							{
 								MandatoryConstraint mandatory = currentConstraint as MandatoryConstraint;
-								if (!mandatory.IsRemoving)
+								if (!mandatory.IsDeleting)
 								{
 									haveMandatory = true;
 								}
@@ -2112,7 +2001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (null == EqualityImpliedByMandatoryError)
 					{
-						impliedEqualityError = EqualityImpliedByMandatoryError.CreateEqualityImpliedByMandatoryError(Store);
+						impliedEqualityError = new EqualityImpliedByMandatoryError(Store);
 						impliedEqualityError.EqualityConstraint = this;
 						impliedEqualityError.Model = Model;
 						impliedEqualityError.GenerateErrorText();
@@ -2124,7 +2013,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (noError && null != (impliedEqualityError = EqualityImpliedByMandatoryError))
 				{
-					impliedEqualityError.Remove();
+					impliedEqualityError.Delete();
 				}
 			}
 		}
@@ -2135,11 +2024,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void VerifyMandatoryDoesNotImplyEquality(MandatoryConstraint mandatoryContraint)
 		{
 			Debug.Assert(mandatoryContraint.IsSimple);
-			RoleMoveableCollection roles = mandatoryContraint.RoleCollection;
+			LinkedElementCollection<Role> roles = mandatoryContraint.RoleCollection;
 			if (roles.Count != 0)
 			{
 				Role currentRole = roles[0];
-				ConstraintRoleSequenceMoveableCollection constraints = currentRole.ConstraintRoleSequenceCollection;
+				LinkedElementCollection<ConstraintRoleSequence> constraints = currentRole.ConstraintRoleSequenceCollection;
 				int constraintCount = constraints.Count;
 				for (int i = 0; i < constraintCount; ++i)
 				{
@@ -2158,22 +2047,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// constraint.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.Inline)]
-		private class ConstraintRoleSequenceHasRoleRemoved : RemovingRule
+		private sealed class ConstraintRoleSequenceHasRoleDeleting : DeletingRule
 		{
 			/// <summary>
 			/// Runs when roleset element is removing. It calls to verify that no mandatory roles are 
 			/// connected to the EqualityConstraint.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
 				IConstraint constraint = roleSequences.Constraint;
 				switch (constraint.ConstraintType)
 				{
 					case ConstraintType.Equality:
 						EqualityConstraint equality = constraint as EqualityConstraint;
-						if (!equality.IsRemoved)
+						if (!equality.IsDeleted)
 						{
 							equality.VerifyNotImpliedByMandatoryConstraints(null);
 						}
@@ -2192,22 +2081,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// constraint.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class ConstraintRoleSequenceHasRoleAdded : AddRule
+		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			/// <summary>
 			/// Runs when roleset element is being added. It calls to verify that no mandatory roles are 
 			/// connected to the EqualityConstraint.
 			/// </summary>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequence;
 				IConstraint constraint = roleSequences.Constraint;
 				switch (constraint.ConstraintType)
 				{
 					case ConstraintType.Equality:
 						EqualityConstraint equality = constraint as EqualityConstraint;
-						if (!equality.IsRemoved)
+						if (!equality.IsDeleted)
 						{
 							equality.VerifyNotImpliedByMandatoryConstraints(null);
 						}
@@ -2236,7 +2125,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public void TestRemovePreferredIdentifier()
 		{
-			if (!IsRemoving && !IsRemoved)
+			if (!IsDeleting && !IsDeleted)
 			{
 				// This is a bit tricky because we always have to look
 				// at the links to test removing, so we can't use
@@ -2244,18 +2133,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// remove propagation set on the opposite end.
 				bool remove = true;
 				UniquenessConstraint constraint = PreferredIdentifier;
-				if (!constraint.IsRemoving && !constraint.IsRemoved)
+				if (!constraint.IsDeleting && !constraint.IsDeleted)
 				{
 					ObjectType forType = PreferredIdentifierFor;
-					if (!forType.IsRemoving && !forType.IsRemoved)
+					if (!forType.IsDeleting && !forType.IsDeleted)
 					{
 						Objectification objectification = forType.Objectification;
 						if (constraint.IsInternal)
 						{
 							if (objectification != null &&
-								object.ReferenceEquals(objectification.NestedFactType, constraint.FactTypeCollection[0]))
+								objectification.NestedFactType == constraint.FactTypeCollection[0])
 							{
-								remove = objectification.IsRemoving;
+								remove = objectification.IsDeleting;
 							}
 							else
 							{
@@ -2263,16 +2152,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// relationship, so the link can be gone without the role
 								// being removed. Get the links first instead of using the
 								// generated counterpart collection.
-								IList constraintRoleLinks = constraint.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+								ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(constraint, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 								ConstraintRoleSequenceHasRole constraintRoleLink;
-								RoleBaseMoveableCollection factRoles;
+								LinkedElementCollection<RoleBase> factRoles;
 								Role constraintRole;
 								FactType factType;
 								if (1 == constraintRoleLinks.Count &&
-									!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[0]).IsRemoving &&
-									!(constraintRole = constraintRoleLink.RoleCollection).IsRemoving &&
+									!(constraintRoleLink = constraintRoleLinks[0]).IsDeleting &&
+									!(constraintRole = constraintRoleLink.Role).IsDeleting &&
 									null != (factType = constraintRole.FactType) &&
-									!factType.IsRemoving &&
+									!factType.IsDeleting &&
 									2 == (factRoles = factType.RoleCollection).Count)
 								{
 									// Make sure we have exactly one additional single-roled internal
@@ -2280,7 +2169,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									// opposite role is mandatory, and that the role player is still
 									// connected.
 									Role oppositeRole = factRoles[0].Role;
-									if (object.ReferenceEquals(oppositeRole, constraintRole))
+									if (oppositeRole == constraintRole)
 									{
 										oppositeRole = factRoles[1].Role;
 									}
@@ -2289,14 +2178,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 									// to edit the link directly, so we need to check the
 									// link itself, not the counterpart.
 									bool rolePlayerOK = false;
-									if (!oppositeRole.IsRemoving)
+									if (!oppositeRole.IsDeleting)
 									{
-										IList rolePlayerLinks = oppositeRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+										ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(oppositeRole, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 										int rolePlayerLinksCount = rolePlayerLinks.Count;
 										for (int i = 0; i < rolePlayerLinksCount; ++i)
 										{
-											ObjectTypePlaysRole rolePlayerLink = (ObjectTypePlaysRole)rolePlayerLinks[i];
-											if (!rolePlayerLink.IsRemoving)
+											ObjectTypePlaysRole rolePlayerLink = rolePlayerLinks[i];
+											if (!rolePlayerLink.IsDeleting)
 											{
 												rolePlayerOK = true;
 												break;
@@ -2308,15 +2197,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 									{
 										bool haveOppositeUniqueness = false;
 										bool haveOppositeMandatory = false;
-										IList oppositeRoleConstraintLinks = oppositeRole.GetElementLinks(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
+										ReadOnlyCollection<ConstraintRoleSequenceHasRole> oppositeRoleConstraintLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(oppositeRole, ConstraintRoleSequenceHasRole.RoleDomainRoleId);
 										int oppositeRoleConstraintLinkCount = oppositeRoleConstraintLinks.Count;
 										for (int i = 0; i < oppositeRoleConstraintLinkCount; ++i)
 										{
-											ConstraintRoleSequenceHasRole oppositeRoleConstraintLink = (ConstraintRoleSequenceHasRole)oppositeRoleConstraintLinks[i];
+											ConstraintRoleSequenceHasRole oppositeRoleConstraintLink = oppositeRoleConstraintLinks[i];
 											ConstraintRoleSequence testRoleSequence;
 											SetConstraint testConstraint;
-											if (!oppositeRoleConstraintLink.IsRemoving &&
-												!(testRoleSequence = oppositeRoleConstraintLink.ConstraintRoleSequenceCollection).IsRemoving &&
+											if (!oppositeRoleConstraintLink.IsDeleting &&
+												!(testRoleSequence = oppositeRoleConstraintLink.ConstraintRoleSequence).IsDeleting &&
 												null != (testConstraint = testRoleSequence as SetConstraint))
 											{
 												switch (testConstraint.Constraint.ConstraintType)
@@ -2350,7 +2239,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						else
 						{
 							// See list of conditions in UniquenessConstraint.TestAllowPreferred
-							IList constraintRoleLinks = constraint.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+							ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(constraint, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 							ConstraintRoleSequenceHasRole constraintRoleLink;
 							Role constraintRole;
 							int allRolesCount = constraintRoleLinks.Count;
@@ -2359,22 +2248,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int remainingRolesCount = 0;
 							FactType factType;
 							int proxyRoleCount = 0;
-							if (objectification != null && objectification.IsRemoving)
+							if (objectification != null && objectification.IsDeleting)
 							{
 								objectification = null;
 							}
 							for (int i = 0; i < allRolesCount; ++i)
 							{
-								if (!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[i]).IsRemoving &&
-									!(constraintRole = constraintRoleLink.RoleCollection).IsRemoving)
+								if (!(constraintRoleLink = constraintRoleLinks[i]).IsDeleting &&
+									!(constraintRole = constraintRoleLink.Role).IsDeleting)
 								{
 									++remainingRolesCount;
 									if (objectification != null &&
 										null != (proxy = constraintRole.Proxy) &&
-										!proxy.IsRemoving &&
+										!proxy.IsDeleting &&
 										null != (impliedFact = proxy.FactType) &&
-										!impliedFact.IsRemoving &&
-										object.ReferenceEquals(impliedFact.ImpliedByObjectification, objectification))
+										!impliedFact.IsDeleting &&
+										impliedFact.ImpliedByObjectification == objectification)
 									{
 										++proxyRoleCount;
 									}
@@ -2383,15 +2272,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (remainingRolesCount != 0) // Condition 1
 							{
 								int remainingFactsCount = 0;
-								IList factSetConstraints = constraint.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid);
+								ReadOnlyCollection<FactSetConstraint> factSetConstraints = DomainRoleInfo.GetElementLinks<FactSetConstraint>(constraint, FactSetConstraint.SetConstraintDomainRoleId);
 								int factSetConstraintCount = factSetConstraints.Count;
 								for (int i = 0; i < factSetConstraintCount; ++i)
 								{
-									FactSetConstraint factConstraint = (FactSetConstraint)factSetConstraints[i];
-									if (!factConstraint.IsRemoving)
+									FactSetConstraint factConstraint = factSetConstraints[i];
+									if (!factConstraint.IsDeleting)
 									{
-										factType = factConstraint.FactTypeCollection;
-										if (!factType.IsRemoving)
+										factType = factConstraint.FactType;
+										if (!factType.IsDeleting)
 										{
 											++remainingFactsCount;
 										}
@@ -2402,32 +2291,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 									int constraintRoleIndex = 0;
 									for (; constraintRoleIndex < allRolesCount; ++constraintRoleIndex)
 									{
-										if (!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[constraintRoleIndex]).IsRemoving &&
-											!(constraintRole = constraintRoleLink.RoleCollection).IsRemoving)
+										if (!(constraintRoleLink = (ConstraintRoleSequenceHasRole)constraintRoleLinks[constraintRoleIndex]).IsDeleting &&
+											!(constraintRole = constraintRoleLink.Role).IsDeleting)
 										{
 											if (objectification != null &&
 												null != (proxy = constraintRole.Proxy) &&
-												!proxy.IsRemoving &&
+												!proxy.IsDeleting &&
 												null != (impliedFact = proxy.FactType) &&
-												!impliedFact.IsRemoving &&
-												object.ReferenceEquals(impliedFact.ImpliedByObjectification, objectification))
+												!impliedFact.IsDeleting &&
+												impliedFact.ImpliedByObjectification == objectification)
 											{
 												// The remaining binary fact conditions are verified
 												// by the objectification pattern on implied facts.
 												continue;
 											}
 											factType = constraintRole.FactType;
-											RoleBaseMoveableCollection factRoles = factType.RoleCollection;
+											LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
 											if (factRoles.Count != 2)
 											{
 												break;
 											}
 											Role oppositeRole = factRoles[0].Role;
-											if (object.ReferenceEquals(oppositeRole, constraintRole))
+											if (oppositeRole == constraintRole)
 											{
 												oppositeRole = factRoles[1].Role;
 											}
-											if (oppositeRole.IsRemoving)
+											if (oppositeRole.IsDeleting)
 											{
 												break;
 											}
@@ -2435,22 +2324,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 											// Don't use oppositeRole.RolePlayer, this will pick up
 											// a removing role player, which is exactly the condition we're
 											// looking for.
-											IList rolePlayerLinks = oppositeRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+											ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(oppositeRole, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 											int rolePlayerLinksCount = rolePlayerLinks.Count;
 											for (int i = 0; i < rolePlayerLinksCount; ++i)
 											{
-												ObjectTypePlaysRole rolePlayerLink = rolePlayerLinks[i] as ObjectTypePlaysRole;
-												if (!rolePlayerLink.IsRemoving)
+												ObjectTypePlaysRole rolePlayerLink = rolePlayerLinks[i];
+												if (!rolePlayerLink.IsDeleting)
 												{
 													ObjectType testRolePlayer = rolePlayerLink.RolePlayer;
-													if (!testRolePlayer.IsRemoving)
+													if (!testRolePlayer.IsDeleting)
 													{
 														currentRolePlayer = testRolePlayer;
 														break;
 													}
 												}
 											}
-											if (!object.ReferenceEquals(forType, currentRolePlayer))
+											if (forType != currentRolePlayer)
 											{
 												break; // Condition 4
 											}
@@ -2460,13 +2349,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 												UniquenessConstraint oppositeUniqueness = oppositeSequence as UniquenessConstraint;
 												if (oppositeUniqueness != null && oppositeUniqueness.IsInternal)
 												{
-													IList roleLinks = oppositeSequence.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+													ReadOnlyCollection<ConstraintRoleSequenceHasRole> roleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(oppositeSequence, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 													int roleLinkCount = roleLinks.Count;
 													int remainingCount = 0;
 													for (int i = 0; i < roleLinkCount; ++i)
 													{
-														ConstraintRoleSequenceHasRole roleLink = roleLinks[i] as ConstraintRoleSequenceHasRole;
-														if (!roleLink.IsRemoving)
+														ConstraintRoleSequenceHasRole roleLink = roleLinks[i];
+														if (!roleLink.IsDeleting)
 														{
 															++remainingCount;
 														}
@@ -2500,25 +2389,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (remove)
 				{
-					Remove();
+					this.Delete();
 				}
 			}
 		}
 		#endregion // Remove testing for preferred identifier
-		#region TestRemovePreferredIdentifierRemovingRule class
+		#region TestRemovePreferredIdentifierDeletingRule class
 		/// <summary>
 		/// A rule to determine if a mandatory condition for
 		/// a preferred identifier link has been eliminated.
 		/// Remove the preferred identifier if this happens.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class TestRemovePreferredIdentifierRemovingRule : RemovingRule
+		private sealed class TestRemovePreferredIdentifierDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// See if a preferred identifier is still valid
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ModelElement element = e.ModelElement;
 				ObjectTypePlaysRole rolePlayerLink;
@@ -2531,14 +2420,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (null != (roleConstraintLink = element as ConstraintRoleSequenceHasRole))
 				{
 					IConstraint constraint;
-					if (null != (constraint = roleConstraintLink.ConstraintRoleSequenceCollection.Constraint))
+					if (null != (constraint = roleConstraintLink.ConstraintRoleSequence.Constraint))
 					{
 						switch (constraint.ConstraintType)
 						{
 							case ConstraintType.DisjunctiveMandatory:
 							case ConstraintType.InternalUniqueness:
 							case ConstraintType.SimpleMandatory:
-								Role role = roleConstraintLink.RoleCollection;
+								Role role = roleConstraintLink.Role;
 								if (role != null)
 								{
 									rolePlayer = role.RolePlayer;
@@ -2550,30 +2439,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				if (rolePlayer != null && !rolePlayer.IsRemoving)
+				if (rolePlayer != null && !rolePlayer.IsDeleting)
 				{
-					IList links = rolePlayer.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+					ReadOnlyCollection<EntityTypeHasPreferredIdentifier> links = DomainRoleInfo.GetElementLinks<EntityTypeHasPreferredIdentifier>(rolePlayer, EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId);
 					// Don't for each, the iterator doesn't like it when you remove elements
 					int linksCount = links.Count;
 					Debug.Assert(linksCount <= 1); // Should be a 1-1 relationship
 					for (int i = linksCount - 1; i >= 0; --i)
 					{
-						EntityTypeHasPreferredIdentifier identifierLink = links[i] as EntityTypeHasPreferredIdentifier;
+						EntityTypeHasPreferredIdentifier identifierLink = links[i];
 						identifierLink.TestRemovePreferredIdentifier();
 					}
 				}
 			}
 		}
-		#endregion // TestRemovePreferredIdentifierRemovingRule class
+		#endregion // TestRemovePreferredIdentifierDeletingRule class
 		#region TestRemovePreferredIdentifierRoleAddRule class
 		/// <summary>
 		/// A rule to determine if a role has been added to a fact that
 		/// has a preferred identifier attached to one of its constraints.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class TestRemovePreferredIdentifierRoleAddRule : AddRule
+		private sealed class TestRemovePreferredIdentifierRoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole roleLink = e.ModelElement as FactTypeHasRole;
 				FactType fact = roleLink.FactType;
@@ -2587,7 +2476,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							Objectification objectification;
 							if (!(null != (objectification = forType.Objectification) &&
-								object.ReferenceEquals(fact, objectification.NestedFactType)))
+								fact == objectification.NestedFactType))
 							{
 								// If the preferred identifier is already there, then
 								// the fact is binary and removing the role will
@@ -2609,12 +2498,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// that is acting as a preferred identifier
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class TestRemovePreferredIdentifierConstraintRoleAddRule : AddRule
+		private sealed class TestRemovePreferredIdentifierConstraintRoleAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole constraintLink = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequence;
 				IConstraint constraint = sequence.Constraint;
 				if (constraint != null)
 				{
@@ -2625,7 +2514,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (preferredFor != null)
 							{
 								FactType nestedFactType = preferredFor.NestedFactType;
-								if (nestedFactType != null && object.ReferenceEquals(nestedFactType, constraintLink.RoleCollection.FactType))
+								if (nestedFactType != null && nestedFactType == constraintLink.Role.FactType)
 								{
 									// Adding a link to an internal constraint that is the preferred
 									// identifier for an objectifying type is always valid
@@ -2641,15 +2530,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// role constraint, which must have a single-column internal uniqueness
 							// constraint over it for both internal and external identifiers.
 							UniquenessConstraint iuc = constraint as UniquenessConstraint;
-							FactTypeMoveableCollection facts = iuc.FactTypeCollection;
+							LinkedElementCollection<FactType> facts = iuc.FactTypeCollection;
 							if (facts.Count == 1)
 							{
 								FactType fact = facts[0];
-								RoleBaseMoveableCollection roles = fact.RoleCollection;
+								LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
 								if (roles.Count == 2)
 								{
 									Role oldRole = roles[0].Role;
-									if (object.ReferenceEquals(oldRole, constraintLink.RoleCollection))
+									if (oldRole == constraintLink.Role)
 									{
 										// Unlikely but possible (you'd need to insert instead of add)
 										oldRole = roles[1].Role;
@@ -2657,16 +2546,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 									ObjectType oldRolePlayer;
 									UniquenessConstraint preferredIdentifier;
 									if ((null != (oldRolePlayer = oldRole.RolePlayer)) &&
-										!oldRolePlayer.IsRemoved &&
+										!oldRolePlayer.IsDeleted &&
 										(null != (preferredIdentifier = oldRolePlayer.PreferredIdentifier)))
 									{
-										FactTypeMoveableCollection testFacts = preferredIdentifier.FactTypeCollection;
+										LinkedElementCollection<FactType> testFacts = preferredIdentifier.FactTypeCollection;
 										int testFactsCount = testFacts.Count;
 										for (int i = 0; i < testFactsCount; ++i)
 										{
 											// If this fact is involved in the external preferred identifier, then
 											// the prerequisites for the pattern no longer hold
-											if (object.ReferenceEquals(fact, testFacts[i]))
+											if (fact == testFacts[i])
 											{
 												oldRolePlayer.PreferredIdentifier = null;
 												break;
@@ -2691,30 +2580,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (identifierFor != null)
 								{
 									bool clearIdentifier = true;
-									Role nearRole = constraintLink.RoleCollection;
+									Role nearRole = constraintLink.Role;
 									FactType factType = nearRole.FactType;
 									if (null != factType)
 									{
 										Objectification objectification = identifierFor.Objectification;
 										RoleProxy proxy;
 										FactType impliedFact;
-										RoleBaseMoveableCollection factRoles;
+										LinkedElementCollection<RoleBase> factRoles;
 										if (null != (objectification = identifierFor.Objectification) &&
 											null != (proxy = nearRole.Proxy) &&
 											null != (impliedFact = proxy.FactType) &&
-											object.ReferenceEquals(objectification, impliedFact.ImpliedByObjectification))
+											objectification == impliedFact.ImpliedByObjectification)
 										{
 											clearIdentifier = false;
 										}
 										else if ((factRoles = factType.RoleCollection).Count == 2)
 										{
 											Role oppositeRole = factRoles[0].Role;
-											if (object.ReferenceEquals(oppositeRole, nearRole))
+											if (oppositeRole == nearRole)
 											{
 												oppositeRole = factRoles[1].Role;
 											}
 											ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
-											if (oppositeRolePlayer == null || object.ReferenceEquals(oppositeRolePlayer, identifierFor))
+											if (oppositeRolePlayer == null || oppositeRolePlayer == identifierFor)
 											{
 												bool haveSingleRoleInternalUniqueness = false;
 												foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
@@ -2758,13 +2647,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// pattern is not allowed.
 		/// </summary>
 		[RuleOn(typeof(Objectification))]
-		private class TestRemovePreferredIdentifierObjectificationAddRule : AddRule
+		private sealed class TestRemovePreferredIdentifierObjectificationAddRule : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				Objectification link = e.ModelElement as Objectification;
 				FactType factType = link.NestedFactType;
-				RoleBaseMoveableCollection roles = factType.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 				int roleCount = roles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
@@ -2773,11 +2662,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					Role role = (Role)roles[i];
 					ObjectType rolePlayer;
 					UniquenessConstraint pid;
-					FactTypeMoveableCollection facts;
+					LinkedElementCollection<FactType> facts;
 					if (null != (rolePlayer = role.RolePlayer) &&
 						null != (pid = rolePlayer.PreferredIdentifier) &&
 						1 == (facts = pid.FactTypeCollection).Count &&
-						object.ReferenceEquals(facts[0], factType))
+						facts[0] == factType)
 					{
 						rolePlayer.PreferredIdentifier = null;
 					}
@@ -2791,14 +2680,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// identifier and extend modifiable conditions as needed.
 		/// </summary>
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
-		private class PreferredIdentifierAddedRule : AddRule
+		private sealed class PreferredIdentifierAddedRule : AddRule
 		{
 			/// <summary>
 			/// Check preconditions on an internal or external
 			/// constraint.
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 
@@ -2826,19 +2715,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// role, so find it, add constraints as needed, and then let this
 							// pass through to finish creating the preferred identifier link.
 							Role role = iuc.RoleCollection[0];
-							
+
 							// If we're adding a constraint pattern to the objectifying type from
 							// an internal constraint on its nested type, then the required opposite
 							// role pattern is already enforced by the Objectification relationship.
 							// We do not need to enforce it here.
-							if (role.Proxy == null || !object.ReferenceEquals(role.FactType, entityType.NestedFactType))
+							if (role.Proxy == null || role.FactType != entityType.NestedFactType)
 							{
 								Role oppositeRole = null;
 								FactType factType = role.FactType;
 								foreach (RoleBase roleBase in factType.RoleCollection)
 								{
 									Role factRole = roleBase.Role;
-									if (!object.ReferenceEquals(role, factRole))
+									if (role != factRole)
 									{
 										oppositeRole = factRole;
 										break;
@@ -2882,7 +2771,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							// with the internal uniqueness cases (the result is ambiguous), and we do
 							// not enforce constraints on this side of the fact. The other cases
 							// cases are handled as validation errors.
-							RoleMoveableCollection roles = euc.RoleCollection;
+							LinkedElementCollection<Role> roles = euc.RoleCollection;
 							int roleCount = roles.Count;
 							Store store = euc.Store;
 							for (int i = 0; i < roleCount; ++i)
@@ -2894,18 +2783,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (null != objectification &&
 									null != (proxyRole = role.Proxy) &&
 									null != (impliedFactType = proxyRole.FactType) &&
-									object.ReferenceEquals(impliedFactType.ImpliedByObjectification, objectification))
+									impliedFactType.ImpliedByObjectification == objectification)
 								{
 									// The opposite role pattern is enforced by the objectification pattern
 									continue;
 								}
-								
+
 								Role oppositeRole = null;
 								FactType factType = role.FactType;
 								foreach (RoleBase roleBase in factType.RoleCollection)
 								{
 									Role factRole = roleBase.Role;
-									if (!object.ReferenceEquals(role, factRole))
+									if (role != factRole)
 									{
 										oppositeRole = factRole;
 										break;
@@ -2950,62 +2839,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeHasPreferredIdentifier pattern enforcement
 	#region UniquenessConstraint class
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<UniquenessConstraint, Design.UniquenessConstraintTypeDescriptor<UniquenessConstraint>>))]
 	public partial class UniquenessConstraint : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region CustomStorage handlers
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <returns></returns>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private bool GetIsPreferredValue()
 		{
-			Guid attributeId = attribute.Id;
-			if (attributeId == IsPreferredMetaAttributeGuid)
-			{
-				return PreferredIdentifierFor != null;
-			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			return PreferredIdentifierFor != null;
 		}
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not
-		/// stored. Actual changes are handled in UniquenessConstraintChangeRule.
-		/// </summary>
-		/// <param name="attribute">MetaAttributeInfo</param>
-		/// <param name="newValue">object</param>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private void SetIsPreferredValue(bool newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == IsPreferredMetaAttributeGuid)
-			{
-				// Handled by UniquenessConstraintChangeRule
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			// Handled by UniquenessConstraintChangeRule
 		}
 		#endregion // CustomStorage handlers
 		#region Customize property display
-		/// <summary>
-		/// Display different class names for internal and external uniqueness constraints
-		/// </summary>
-		public override string GetClassName()
-		{
-			return IsInternal ? ResourceStrings.InternalUniquenessConstraint : ResourceStrings.ExternalUniquenessConstraint;
-		}
-		/// <summary>
-		/// Ensure that the Preferred property is readonly
-		/// when the InternalUniquenessConstraintChangeRule is
-		/// unable to make it true.
-		/// </summary>
-		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
-		{
-			ElementPropertyDescriptor descriptor = propertyDescriptor as ElementPropertyDescriptor;
-			if (descriptor != null && descriptor.MetaAttributeInfo.Id == IsPreferredMetaAttributeGuid)
-			{
-				return IsPreferred ? false : !TestAllowPreferred(null, false);
-			}
-			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
-		}
 		/// <summary>
 		/// Test to see if this constraint can be turned
 		/// into a preferred uniqueness constraint
@@ -3039,15 +2886,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// to the preferred constraint roles. If the primary object is created for
 				// a RefMode object type, then a ValueType is required, but this is
 				// not a requirement for all role players on preferred identifier constraints.
-				RoleMoveableCollection constraintRoles = RoleCollection;
+				LinkedElementCollection<Role> constraintRoles = RoleCollection;
 				int constraintRoleCount = constraintRoles.Count;
-				FactTypeMoveableCollection constraintFacts;
+				LinkedElementCollection<FactType> constraintFacts;
 				int constraintFactCount;
 				bool objectified = false;
 				if (constraintRoleCount != 0 &&
 					(!(objectified = (1 == (constraintFactCount = (constraintFacts = FactTypeCollection).Count) &&
 					null != forType &&
-					object.ReferenceEquals(constraintFacts[0], forType.NestedFactType))) ||
+					constraintFacts[0] == forType.NestedFactType)) ||
 					(constraintFactCount == constraintRoleCount))) // Condition 1 and 2 (bail if 2a
 				{
 					int constraintRoleIndex = 0;
@@ -3060,7 +2907,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						Role role = constraintRoles[constraintRoleIndex];
 						RoleProxy proxy = role.Proxy;
 						FactType factType = role.FactType;
-						RoleBaseMoveableCollection factRoles = null;
+						LinkedElementCollection<RoleBase> factRoles = null;
 						bool directBinary;
 						patternOK = false;
 						if ((directBinary = (!objectified && (factRoles = factType.RoleCollection).Count == 2)) ||
@@ -3071,7 +2918,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							if (directBinary)
 							{
 								Role oppositeRole = factRoles[0].Role;
-								if (object.ReferenceEquals(oppositeRole, role))
+								if (oppositeRole == role)
 								{
 									oppositeRole = factRoles[1].Role;
 								}
@@ -3087,16 +2934,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (havePreviousRolePlayer)
 								{
 									if (prevRolePlayer != null &&
-										(object.ReferenceEquals(prevRolePlayer, rolePlayer) ||
-										object.ReferenceEquals(prevRolePlayer, impliedRolePlayer))) // Condition 4
+										(prevRolePlayer == rolePlayer ||
+										prevRolePlayer == impliedRolePlayer)) // Condition 4
 									{
 										patternOK = true;
 										prevImpliedRolePlayer = null;
 									}
 									if (!patternOK &&
 										prevImpliedRolePlayer != null &&
-										(object.ReferenceEquals(prevImpliedRolePlayer, rolePlayer) ||
-										object.ReferenceEquals(prevImpliedRolePlayer, impliedRolePlayer))) // Condition 4
+										(prevImpliedRolePlayer == rolePlayer ||
+										prevImpliedRolePlayer == impliedRolePlayer)) // Condition 4
 									{
 										patternOK = true;
 										prevRolePlayer = prevImpliedRolePlayer;
@@ -3106,14 +2953,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 								else
 								{
 									if (rolePlayer != null &&
-										(forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
+										(forType == null || forType == rolePlayer) &&
 										!rolePlayer.IsValueType) // Condition 5
 									{
 										patternOK = true;
 										prevRolePlayer = rolePlayer;
 									}
 									if (impliedRolePlayer != null &&
-										(forType == null || object.ReferenceEquals(forType, impliedRolePlayer)))
+										(forType == null || forType == impliedRolePlayer))
 									{
 										Debug.Assert(!impliedRolePlayer.IsValueType, "Objectifying types cannot be value types"); // Condition 5
 										patternOK = true;
@@ -3199,7 +3046,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid };
+		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId };
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -3228,9 +3075,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// must be notified back to the caller.</param>
 		private void VerifyNMinusOneForRule(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
-				FactTypeMoveableCollection facts;
+				LinkedElementCollection<FactType> facts;
 				NMinusOneError error = NMinusOneError;
 				FactType fact;
 				if (IsInternal &&
@@ -3240,7 +3087,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					//Adding the Error to the model
 					if (error == null)
 					{
-						error = NMinusOneError.CreateNMinusOneError(Store);
+						error = new NMinusOneError(Store);
 						error.Constraint = this;
 						error.Model = fact.Model;
 						error.GenerateErrorText();
@@ -3259,7 +3106,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (error != null)
 				{
 					//Removing error
-					error.Remove();
+					error.Delete();
 				}
 			}
 		}
@@ -3268,11 +3115,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Checks when Internal constraint is added
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class NMinusOneAddRuleModelValidation : AddRule
+		private sealed class NMinusOneAddRuleModelValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				SetConstraint constraint = (e.ModelElement as FactSetConstraint).SetConstraintCollection;
+				SetConstraint constraint = (e.ModelElement as FactSetConstraint).SetConstraint;
 				IModelErrorOwner errorOwner;
 				if (constraint.Constraint.ConstraintIsInternal &&
 					null != (errorOwner = constraint as IModelErrorOwner))
@@ -3285,12 +3132,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class NMinusOneAddRuleModelConstraintAddValidation : AddRule
+		private sealed class NMinusOneAddRuleModelConstraintAddValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as UniquenessConstraint;
+				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
 				if (constraint != null && constraint.IsInternal)
 				{
 					ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
@@ -3301,13 +3148,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class NMinusOneRemoveRuleModelConstraintRemoveValidation : RemoveRule
+		private sealed class NMinusOneDeleteRuleModelConstraintDeleteValidation : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				UniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as UniquenessConstraint;
-				if (constraint != null && !constraint.IsRemoved && constraint.IsInternal)
+				UniquenessConstraint constraint = link.ConstraintRoleSequence as UniquenessConstraint;
+				if (constraint != null && !constraint.IsDeleted && constraint.IsInternal)
 				{
 					ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 				}
@@ -3318,9 +3165,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Used for Adding roles to the role sequence check
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class NMinusOneAddRuleModelFactAddValidation : AddRule
+		private sealed class NMinusOneAddRuleModelFactAddValidation : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType fact = link.FactType;
@@ -3338,17 +3185,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Used for Removing roles to the role sequence check
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class NMinusOneRemoveRuleModelFactRemoveValidation : RemoveRule
+		private sealed class NMinusOneDeleteRuleModelFactDeleteValidation : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType fact = link.FactType;
-				if (fact != null && !fact.IsRemoved)
+				if (fact != null && !fact.IsDeleted)
 				{
 					foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
 					{
-						if (!constraint.IsRemoved)
+						if (!constraint.IsDeleted)
 						{
 							ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 						}
@@ -3358,25 +3205,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // NMinusOneError Validation
 		#region Internal constraint handling
-		private static AttributeAssignment[] myInitialInternalAttributes;
+		private static PropertyAssignment[] myInitialInternalAttributes;
 		/// <summary>
-		/// Create a UniquenessConstraint with an initial 'IsInternal' property set set true
+		/// Create a UniquenessConstraint with an initial 'IsInternal' property set to true
 		/// </summary>
 		/// <param name="store">The containing store</param>
 		/// <returns>The newly created constraint</returns>
 		public static UniquenessConstraint CreateInternalUniquenessConstraint(Store store)
 		{
-			AttributeAssignment[] attributes = myInitialInternalAttributes;
+			PropertyAssignment[] attributes = myInitialInternalAttributes;
 			if (attributes == null)
 			{
-				System.Threading.Interlocked.CompareExchange<AttributeAssignment[]>(
-					ref myInitialInternalAttributes,
-					new AttributeAssignment[]{
-						new AttributeAssignment(store.MetaDataDirectory.FindMetaAttribute(IsInternalMetaAttributeGuid), true)},
-					null);
-				attributes = myInitialInternalAttributes;
+				attributes = myInitialInternalAttributes =
+					new PropertyAssignment[] { new PropertyAssignment(IsInternalDomainPropertyId, true) };
 			}
-			return CreateAndInitializeUniquenessConstraint(store, attributes);
+			return new UniquenessConstraint(store, attributes);
 		}
 		/// <summary>
 		/// Create a UniquenessConstraint with an initial 'IsInternal' property set to true
@@ -3393,12 +3236,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Internal constraint handling
 		#region UniquenessConstraintChangeRule class
 		[RuleOn(typeof(UniquenessConstraint))]
-		private class UniquenessConstraintChangeRule : ChangeRule
+		private sealed class UniquenessConstraintChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == UniquenessConstraint.IsPreferredMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == UniquenessConstraint.IsPreferredDomainPropertyId)
 				{
 					UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
 					if ((bool)e.NewValue)
@@ -3431,12 +3274,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						if (targetRolePlayer == null)
 						{
-							RoleBaseMoveableCollection factRoles = role.FactType.RoleCollection;
+							LinkedElementCollection<RoleBase> factRoles = role.FactType.RoleCollection;
 							int roleCount = factRoles.Count;
 							for (int i = 0; i < roleCount; ++i)
 							{
 								RoleBase testRole = factRoles[i];
-								if (!object.ReferenceEquals(role, testRole))
+								if (role != testRole)
 								{
 									targetRolePlayer = ((Role)testRole).RolePlayer;
 									break;
@@ -3452,28 +3295,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 						constraint.PreferredIdentifierFor = null;
 					}
 				}
-				else if (attributeId == UniquenessConstraint.IsInternalMetaAttributeGuid)
+				else if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
 				{
 					// UNDONE: Support toggling IsInternal property after the object has been created
 					throw new InvalidOperationException("UniquenessConstraint.IsInternal cannot be changed");
+				}
 			}
 		}
-	}
 		#endregion // UniquenessConstraintChangeRule class
 	}
 	#endregion // UniquenessConstraint class
 	#region MandatoryConstraint class
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<MandatoryConstraint, Design.MandatoryConstraintTypeDescriptor<MandatoryConstraint>>))]
 	public partial class MandatoryConstraint : IModelErrorOwner
 	{
-		#region Customize Display
-		/// <summary>
-		/// Display different class names for disjunctive and simple mandatory constraints
-		/// </summary>
-		public override string GetClassName()
-		{
-			return IsSimple ? ResourceStrings.SimpleMandatoryConstraint : ResourceStrings.DisjunctiveMandatoryConstraint;
-		}
-		#endregion // Customize Display
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Implements IModelErrorOwner.GetErrorCollection
@@ -3547,20 +3382,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Set during deserialization</param>
 		private void ValidateImpliedByMandatoryError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = false;
-				RoleMoveableCollection constraintRoles = RoleCollection;
+				LinkedElementCollection<Role> constraintRoles = RoleCollection;
 				int constraintRoleCount = constraintRoles.Count;
 				for (int iConstraint = 0; !hasError && iConstraint < constraintRoleCount; ++iConstraint)
 				{
 					Role constraintRole = constraintRoles[iConstraint];
-					ConstraintRoleSequenceMoveableCollection intersectingSequences = constraintRole.ConstraintRoleSequenceCollection;
+					LinkedElementCollection<ConstraintRoleSequence> intersectingSequences = constraintRole.ConstraintRoleSequenceCollection;
 					int intersectingSequenceCount = intersectingSequences.Count;
 					for (int iIntersectingSequence = 0; !hasError && iIntersectingSequence < intersectingSequenceCount; ++iIntersectingSequence)
 					{
 						ConstraintRoleSequence intersectingSequence = intersectingSequences[iIntersectingSequence];
-						if (!object.ReferenceEquals(intersectingSequence, this))
+						if (intersectingSequence != this)
 						{
 							IConstraint intersectingConstraint = intersectingSequence.Constraint;
 							switch (intersectingConstraint.ConstraintType)
@@ -3571,7 +3406,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								case ConstraintType.DisjunctiveMandatory:
 									{
 										MandatoryConstraint intersectingMandatory = intersectingSequence as MandatoryConstraint;
-										RoleMoveableCollection intersectingRoles = intersectingMandatory.RoleCollection;
+										LinkedElementCollection<Role> intersectingRoles = intersectingMandatory.RoleCollection;
 										int intersectingRoleCount = intersectingRoles.Count;
 										if (intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
 										{
@@ -3581,8 +3416,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 												Role intersectingRole = intersectingRoles[iIntersectingRole];
 												// Finding a role that is not contained in the set of roles for this constraint
 												// means that it is not a true subset.
-												if (!object.ReferenceEquals(intersectingRole, constraintRole) &&
-													(-1 == constraintRoles.IndexOf(intersectingRole)))
+												if (intersectingRole != constraintRole && constraintRoles.IndexOf(intersectingRole) == -1)
 												{
 													hasError = false;
 													break;
@@ -3600,7 +3434,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (error == null)
 					{
-						error = MandatoryImpliedByMandatoryError.CreateMandatoryImpliedByMandatoryError(Store);
+						error = new MandatoryImpliedByMandatoryError(Store);
 						error.MandatoryConstraint = this;
 						error.Model = Model;
 						error.GenerateErrorText();
@@ -3612,7 +3446,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (error != null)
 				{
-					error.Remove();
+					error.Delete();
 				}
 			}
 		}
@@ -3624,7 +3458,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="link">The ConstraintRoleSequenceHasRole element.</param>
 		private static void ValidateIntersectingMandatoryConstraints(ConstraintRoleSequenceHasRole link)
 		{
-			ConstraintRoleSequence roleSequence = link.ConstraintRoleSequenceCollection;
+			ConstraintRoleSequence roleSequence = link.ConstraintRoleSequence;
 			if (roleSequence is SetComparisonConstraintRoleSequence)
 			{
 				return;
@@ -3645,8 +3479,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			if (checkIntersection)
 			{
-				Role modifiedRole = link.RoleCollection;
-				ConstraintRoleSequenceMoveableCollection constraints = modifiedRole.ConstraintRoleSequenceCollection;
+				Role modifiedRole = link.Role;
+				LinkedElementCollection<ConstraintRoleSequence> constraints = modifiedRole.ConstraintRoleSequenceCollection;
 				int constraintCount = constraints.Count;
 				ConstraintRoleSequence currentSequence;
 				for (int i = 0; i < constraintCount; ++i)
@@ -3661,19 +3495,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					// We need to find all other disjunctive mandatory constraints that
 					// intersect with any role of this constraint
-					RoleMoveableCollection roles = currentDisjunctive.RoleCollection;
+					LinkedElementCollection<Role> roles = currentDisjunctive.RoleCollection;
 					int roleCount = roles.Count;
 					for (int iRole = 0; iRole < roleCount; ++iRole)
 					{
 						Role testRole = roles[iRole];
-						if (!object.ReferenceEquals(testRole, modifiedRole))
+						if (testRole != modifiedRole)
 						{
 							constraints = testRole.ConstraintRoleSequenceCollection;
 							constraintCount = constraints.Count;
 							for (int i = 0; i < constraintCount; ++i)
 							{
 								currentSequence = constraints[i];
-								if (!object.ReferenceEquals(currentSequence, currentDisjunctive))
+								if (currentSequence != currentDisjunctive)
 								{
 									if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
 									{
@@ -3688,7 +3522,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //Error Rules
 		#region Simple mandatory constraint handling
-		private static AttributeAssignment[] myInitialInternalAttributes;
+		private static PropertyAssignment[] myInitialInternalAttributes;
 		/// <summary>
 		/// Create a MandatoryConstraint with an initial 'IsSimple' property set set true
 		/// </summary>
@@ -3696,17 +3530,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>The newly created constraint</returns>
 		public static MandatoryConstraint CreateSimpleMandatoryConstraint(Store store)
 		{
-			AttributeAssignment[] attributes = myInitialInternalAttributes;
+			PropertyAssignment[] attributes = myInitialInternalAttributes;
 			if (attributes == null)
 			{
-				System.Threading.Interlocked.CompareExchange<AttributeAssignment[]>(
-					ref myInitialInternalAttributes,
-					new AttributeAssignment[]{
-						new AttributeAssignment(store.MetaDataDirectory.FindMetaAttribute(IsSimpleMetaAttributeGuid), true)},
-					null);
-				attributes = myInitialInternalAttributes;
+				attributes = myInitialInternalAttributes = new PropertyAssignment[] { new PropertyAssignment(IsSimpleDomainPropertyId, true) };
 			}
-			return CreateAndInitializeMandatoryConstraint(store, attributes);
+			return new MandatoryConstraint(store, attributes);
 		}
 		/// <summary>
 		/// Create a MandatoryConstraint with an initial 'IsSimple' property set to true
@@ -3725,12 +3554,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Handle changes to the IsSimple property
 		/// </summary>
 		[RuleOn(typeof(MandatoryConstraint))]
-		private class MandatoryConstraintChangeRule : ChangeRule
+		private sealed class MandatoryConstraintChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == MandatoryConstraint.IsSimpleMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == MandatoryConstraint.IsSimpleDomainPropertyId)
 				{
 					// UNDONE: Support toggling IsSimple property after the object has been created.
 					throw new InvalidOperationException("MandatoryConstraint.IsSimple cannot be changed");
@@ -3741,20 +3570,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Simple mandatory constraint handling
 		#region VerifyImpliedMandatoryRole Add/Remove Methods
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class VerifyImpliedMandatoryRoleAdd : AddRule
+		private sealed class VerifyImpliedMandatoryRoleAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValidateIntersectingMandatoryConstraints(e.ModelElement as ConstraintRoleSequenceHasRole);
 			}
 		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class VerifyImpliedMandatoryRoleRemoved : RemovingRule
+		private sealed class VerifyImpliedMandatoryRoleDeleting : DeletingRule
 		{
 			/// <summary>
 			/// Runs when roleset element is removing. It calls to verify that no mandatory roles are connected to the EqualityConstraint.
 			/// </summary>
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ValidateIntersectingMandatoryConstraints(e.ModelElement as ConstraintRoleSequenceHasRole);
 			}
@@ -3841,7 +3670,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			//create a list of the links between the constraint and the fact types it is attached to
 			//to preserve all information between the constraint and each fact type
-			IList factLinks = this.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid);
+			ReadOnlyCollection<FactSetConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetConstraint>(this, FactSetConstraint.SetConstraintDomainRoleId);
 			int linkCount = factLinks.Count;
 			//if there are no fact links, there is no reason to step further into the method
 			if (linkCount != 0)
@@ -3849,24 +3678,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//create local variables that will be recreated regularly
 				FactSetConstraint factLink;
 				FactType factType;
-				ConstraintRoleSequenceHasRoleMoveableCollection roleLinks;
+				LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks;
 				Role roleOnFact;
 				//the error collection only needs to be called for once
-				FrequencyConstraintContradictsInternalUniquenessConstraintErrorMoveableCollection errors = this.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection;
+				LinkedElementCollection<FrequencyConstraintContradictsInternalUniquenessConstraintError> errors = this.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection;
 				for (int i = 0; i < linkCount; ++i)
 				{
 					bool needError = false, haveError = false;//booleans to determine what to do as far as the error is concerned
-					factLink = (FactSetConstraint)factLinks[i];
-					factType = factLink.FactTypeCollection;
+					factLink = factLinks[i];
+					factType = factLink.FactType;
 					roleLinks = factLink.ConstrainedRoleCollection;
 					//determine if an error is needed
-					RoleBaseMoveableCollection factRoles = factType.RoleCollection;//localize the role collection
+					LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;//localize the role collection
 					int iucCount = factType.GetInternalConstraintsCount(ConstraintType.InternalUniqueness);//count of the IUCs
 					if (iucCount >= 0)//not passing this means needError stays false
 					{
 						int[] roleBits = new int[iucCount];//int array to accomodate the bit representation of the IUCs
 						int bits, roleCount, index = 0;//declare local integer variables which will see frequent use in the upcoming loop
-						RoleMoveableCollection constraintRoles;//declare local role collection which will be reset several times in the upcoming loop
+						LinkedElementCollection<Role> constraintRoles;//declare local role collection which will be reset several times in the upcoming loop
 						foreach (UniquenessConstraint ic in factType.GetInternalConstraints<UniquenessConstraint>())
 						{
 							bits = 0;
@@ -3882,10 +3711,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int fqBits = 0;//representation of the roles covered by the frequency constraint
 						//create similar bit for roles covered by the frequency constraint
 						roleCount = roleLinks.Count;//reuse roleCount
-						for (int j = 0; j < roleCount; ++j) 
+						for (int j = 0; j < roleCount; ++j)
 						{
-							roleOnFact = roleLinks[j].RoleCollection;
-							fqBits |= 1 << factRoles.IndexOf(roleOnFact);//hoping it's safe to assume the role is on the factType
+							roleOnFact = roleLinks[j].Role;
+							fqBits |= 1 << Role.IndexOf(factRoles, roleOnFact);//hoping it's safe to assume the role is on the factType
 						}
 
 						int rbLength = roleBits.Length;
@@ -3910,7 +3739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					for (int j = errorCount - 1; j >= 0; --j)
 					{
 						FrequencyConstraintContradictsInternalUniquenessConstraintError error = errors[j];
-						if (object.ReferenceEquals(error.FactType, factType))
+						if (error.FactType == factType)
 						{
 							if (needError)
 							{
@@ -3919,7 +3748,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								error.Remove();//have it, don't need it, get rid of it
+								error.Delete();//have it, don't need it, get rid of it
 								continue;//continue checking the collection in case of duplicates
 							}//no reason to set haveError because needError is false
 						}
@@ -3927,7 +3756,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (needError && !haveError)//need the error, but don't have it
 					{
 						//add the error - don't know how to do this part...
-						FrequencyConstraintContradictsInternalUniquenessConstraintError contraError = FrequencyConstraintContradictsInternalUniquenessConstraintError.CreateFrequencyConstraintContradictsInternalUniquenessConstraintError(Store);
+						FrequencyConstraintContradictsInternalUniquenessConstraintError contraError = new FrequencyConstraintContradictsInternalUniquenessConstraintError(Store);
 						contraError.FrequencyConstraint = this;
 						contraError.FactType = factType;
 						contraError.Model = this.Model;
@@ -3959,7 +3788,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// must be notified back to the caller.</param>
 		private void VerifyMinMaxError(INotifyElementAdded notifyAdded)
 		{
-			if (IsRemoved)
+			if (IsDeleted)
 			{
 				return;
 			}
@@ -3972,7 +3801,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				//Adding the Error to the model
 				if (minMaxError == null)
 				{
-					minMaxError = FrequencyConstraintMinMaxError.CreateFrequencyConstraintMinMaxError(Store);
+					minMaxError = new FrequencyConstraintMinMaxError(Store);
 					minMaxError.FrequencyConstraint = this;
 					minMaxError.Model = Model;
 					minMaxError.GenerateErrorText();
@@ -3984,22 +3813,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (minMaxError != null)
 			{
-				minMaxError.Remove();
+				minMaxError.Delete();
 			}
 		}
 		#endregion // MinMaxError Validation
 		#region FrequencyConstraintMinMaxRule class
 		[RuleOn(typeof(FrequencyConstraint))]
-		private class FrequencyConstraintMinMaxRule : ChangeRule
+		private sealed class FrequencyConstraintMinMaxRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == FrequencyConstraint.MinFrequencyMetaAttributeGuid ||
-					attributeId == FrequencyConstraint.MaxFrequencyMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
+					attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
 				{
 					FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
-					if (!fc.IsRemoved)
+					if (!fc.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(fc, DelayValidateFrequencyConstraintMinMaxError);
 					}
@@ -4016,21 +3845,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// out the appropriate errors here.
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))]
-		private class RemoveContradictionErrorsWithFactTypeRule : RemoveRule
+		private sealed class RemoveContradictionErrorsWithFactTypeRule : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactSetConstraint link = e.ModelElement as FactSetConstraint;
-				FrequencyConstraint fc = link.SetConstraintCollection as FrequencyConstraint;
+				FrequencyConstraint fc = link.SetConstraint as FrequencyConstraint;
 				if (fc != null)
 				{
-					FactType fact = link.FactTypeCollection;
+					FactType fact = link.FactType;
 					foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in fc.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
 					{
-						Debug.Assert(!contradictionError.IsRemoved); // Removed errors should not be in the collection
-						if (object.ReferenceEquals(contradictionError.FactType, fact))
+						Debug.Assert(!contradictionError.IsDeleted); // Removed errors should not be in the collection
+						if (contradictionError.FactType == fact)
 						{
-							contradictionError.Remove();
+							contradictionError.Delete();
 							// Note we can break here because there will only be one error per fact, and we must break here because we've modified the collection
 							break;
 						}
@@ -4113,7 +3942,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// must be notified back to the caller.</param>
 		private void VerifyTypeNotSpecifiedRule(INotifyElementAdded notifyAdded)
 		{
-			if (this.IsRemoved)
+			if (this.IsDeleted)
 			{
 				return;
 			}
@@ -4124,10 +3953,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if (notSpecified == null)
 				{
-					notSpecified = RingConstraintTypeNotSpecifiedError.CreateRingConstraintTypeNotSpecifiedError(this.Store);
+					notSpecified = new RingConstraintTypeNotSpecifiedError(this.Store);
 					notSpecified.RingConstraint = this;
 					notSpecified.Model = this.Model;
-					notSpecified.GenerateErrorText(); 
+					notSpecified.GenerateErrorText();
 					if (notifyAdded != null)
 					{
 						notifyAdded.ElementAdded(notSpecified);
@@ -4136,21 +3965,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (notSpecified != null)
 			{
-				notSpecified.Remove();
+				notSpecified.Delete();
 			}
 		}
 		#endregion //Type Not Specified Error Rule
 		#region RingConstraintTypeChangeRule class
 		[RuleOn(typeof(RingConstraint))]
-		private class RingConstraintTypeChangeRule : ChangeRule
+		private sealed class RingConstraintTypeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == RingConstraint.RingTypeMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == RingConstraint.RingTypeDomainPropertyId)
 				{
 					RingConstraint rc = e.ModelElement as RingConstraint;
-					if (!rc.IsRemoved)
+					if (!rc.IsDeleted)
 					{
 						ORMMetaModel.DelayValidateElement(rc, DelayValidateRingConstraintTypeNotSpecifiedError);
 					}
@@ -4159,7 +3988,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // RingConstraintTypeChangeRule class
 	}
-		#endregion //Ring Constraint class
+	#endregion //Ring Constraint class
 	#region PreferredIdentifierFor implementation
 	public partial class UniquenessConstraint
 	{
@@ -4171,11 +4000,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return GetCounterpartRolePlayer(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, false) as ObjectType;
+				return EntityTypeHasPreferredIdentifier.GetPreferredIdentifierFor(this);
 			}
 			set
 			{
-				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, typeof(EntityTypeHasPreferredIdentifier));
+				Utility.SetPropertyValidateOneToOne(this, value, EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId, EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId, typeof(EntityTypeHasPreferredIdentifier));
 			}
 		}
 		ObjectType IConstraint.PreferredIdentifierFor
@@ -4201,13 +4030,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			NamedElement parent = SetComparisonConstraint; 
+			ORMNamedElement parent = SetComparisonConstraint;
 			if (parent == null)
 			{
 				parent = SetConstraint;
 				Debug.Assert(parent != null);
 			}
-			string parentName = (parent != null) ? parent.Name : ""; 
+			string parentName = (parent != null) ? parent.Name : string.Empty;
 			string currentText = Name;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
 			if (currentText != newText)
@@ -4258,7 +4087,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			NamedElement parent = SetComparisonConstraint;
+			ORMNamedElement parent = SetComparisonConstraint;
 			if (parent == null)
 			{
 				parent = SetConstraint;
@@ -4365,7 +4194,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			SetComparisonConstraint multiColumnParent = SetComparisonConstraint;
-			NamedElement namedParent;
+			ORMNamedElement namedParent;
 			bool useColumn;
 			if (multiColumnParent != null)
 			{
@@ -4419,12 +4248,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return either the single column or multi column
 		/// constraint associated with this error.
 		/// </summary>
-		public NamedElement ParentConstraint
+		public ORMNamedElement ParentConstraint
 		{
 			get
 			{
-				NamedElement retVal = SetComparisonConstraint;
-				return (retVal != null) ? retVal : SetConstraint;
+				return (ORMNamedElement)SetComparisonConstraint ?? SetConstraint;
 			}
 		}
 		#endregion // Accessor Properties
@@ -4500,7 +4328,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
-			get 
+			get
 			{
 				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
 			}
@@ -4512,7 +4340,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected ModelElement[] GetRepresentedElements()
 		{
-			return new ModelElement[]{FrequencyConstraint, FactType};
+			return new ModelElement[] { FrequencyConstraint, FactType };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
@@ -4710,7 +4538,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			RingConstraint parent = this.RingConstraint; 
+			RingConstraint parent = this.RingConstraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = this.Model.Name;
 			string currentText = this.Name;
@@ -4725,7 +4553,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
-			get 
+			get
 			{
 				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
 			}
@@ -4886,7 +4714,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// sets of compatible roles.
 		/// </summary>
 		Subset,
-	}	
+	}
 	#endregion // ConstraintType enum
 	#region ConstraintStorageStyle enum
 	/// <summary>
@@ -4909,76 +4737,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SetComparisonConstraint,
 	}
 	#endregion // ConstraintStorageStyle enum
-	#region ConstraintModality enum
-	/// <summary>
-	/// A list of Constraint Modalities.
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum ConstraintModality
-	{
-		/// <summary>
-		/// The constraint must hold
-		/// </summary>
-		Alethic,
-		/// <summary>
-		/// The constraint should hold
-		/// </summary>
-		Deontic
-	}
-	#endregion
-	#region RingConstraintType enum
-	/// <summary>
-	/// Types of valid ring constraints
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum RingConstraintType
-	{
-		/// <summary>
-		/// The type of the constraint has not been defined
-		/// </summary>
-		Undefined = 0,
-		/// <summary>
-		/// Irreflexive
-		/// </summary>
-		Irreflexive = 1,
-		/// <summary>
-		/// Symmetric
-		/// </summary>
-		Symmetric = 2,
-		/// <summary>
-		/// Asymmetric
-		/// </summary>
-		Asymmetric = 3,
-		/// <summary>
-		/// Antisymmetric
-		/// </summary>
-		Antisymmetric = 4,
-		/// <summary>
-		/// Intransitive
-		/// </summary>
-		Intransitive = 5,
-		/// <summary>
-		/// Acyclic
-		/// </summary>
-		Acyclic = 6,
-		/// <summary>
-		/// Acyclic and Intransitive
-		/// </summary>
-		AcyclicIntransitive = 7,
-		/// <summary>
-		/// Asymmetric and Intransitive
-		/// </summary>
-		AsymmetricIntransitive = 8,
-		/// <summary>
-		/// Symmetric and Intransitive
-		/// </summary>
-		SymmetricIntransitive = 9,
-		/// <summary>
-		/// Symmetric and Irreflexive
-		/// </summary>
-		SymmetricIrreflexive = 10
-	}
-	#endregion
 	#region ConstraintType and RoleSequenceStyles implementation for all constraints
 	public partial class FrequencyConstraint : IConstraint
 	{

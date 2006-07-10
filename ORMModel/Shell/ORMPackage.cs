@@ -17,22 +17,26 @@
 //#define HIDENEWMODELBROWSER
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 using System.Diagnostics;
-using System.Resources;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
-using OleInterop = Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Shell;
+using System.Windows.Forms;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Modeling.Design;
+using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
 using Neumont.Tools.ORM.FactEditor;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 
-using SubStore = Microsoft.VisualStudio.Modeling.SubStore;
+using OleInterop = Microsoft.VisualStudio.OLE.Interop;
+using DomainModel = Microsoft.VisualStudio.Modeling.DomainModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -49,7 +53,7 @@ namespace Neumont.Tools.ORM.Shell
 	// "ORM Designer" and "General" correspond and must be in sync with ORMDesignerUI.rc
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", 105, 106, false)]
 	[ProvideEditorFactory(typeof(ORMDesignerEditorFactory), 108, TrustLevel=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
-	// The following ProvideEditorExtension attributes are for {General, Misc, Solution} Items, in that order
+	// The following ProvideEditorExtension properties are for {General, Misc, Solution} Items, in that order
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems\", ProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8")]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems\", ProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3")]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems\", ProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235")]
@@ -247,12 +251,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// are added to the toolbox, even when run with "/setup". To be safe we'll check for "setup"
 		/// and we don't do anything interesting in MgdSetSite if we find it. 
 		/// </summary>
-		protected override void Initialize()
+		protected sealed override void Initialize()
 		{
 			base.Initialize();
 
 			// register the class designer editor factory
-			RegisterModelingEditorFactory(new ORMDesignerEditorFactory(this));
+			RegisterEditorFactory(new ORMDesignerEditorFactory(this));
 
 			if (!SetupMode)
 			{
@@ -286,7 +290,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// This is called by the package base class when our package gets unloaded.
 		/// </summary>
-		protected override void Dispose(bool disposing)
+		protected sealed override void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
@@ -304,14 +308,101 @@ namespace Neumont.Tools.ORM.Shell
 			base.Dispose(disposing);
 		}
 		/// <summary>
-		/// Specifies the name of the DTE object used to bootstrap unit testing.  Derived classes
-		/// should specify a unique name.
+		/// Retrieve toolbox items. Called during devenv /setup or
+		/// toolbox refresh. Uses standard prototype settings (mostly
+		/// created in ORMDiagram.InitializeToolboxItem) and adds additional
+		/// filter strings as required.
 		/// </summary>
-		protected override string UnitTestObjectName
+		/// <seealso cref="ModelingPackage.CreateToolboxItems"/>
+		protected sealed override IList<ModelingToolboxItem> CreateToolboxItems()
 		{
-			get
+			IList<ModelingToolboxItem> items;
+			ORMMetaModel.InitializingToolboxItems = false;
+			try
 			{
-				return "ORMDesignerTestDriver";
+				items = new ORMMetaModelToolboxHelper(this).CreateToolboxItems();
+			}
+			finally
+			{
+				ORMMetaModel.InitializingToolboxItems = true;
+			}
+
+			// Build up a dictionary of items so we can add filter strings. This is
+			// much easier than trying to maintain all of the filter strings at the ims level,
+			// which would require elements with different filter string sets to be placed on different
+			// ims elements.
+			int itemCount = items.Count;
+			Dictionary<string, int> itemIndexDictionary = new Dictionary<string, int>(itemCount);
+			for (int i = 0; i < itemCount; i++)
+			{
+				itemIndexDictionary[items[i].Id] = i;
+			}
+
+			ToolboxItemFilterAttribute attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramInternalUniquenessConstraintFilterString, ToolboxItemFilterType.Allow);
+			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxInternalUniquenessConstraintItemId, attribute);
+
+			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectInternalUniquenessConstraintFilterString, ToolboxItemFilterType.Allow);
+			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxInternalUniquenessConstraintConnectorItemId, attribute);
+
+			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectExternalConstraintFilterString, ToolboxItemFilterType.Allow);
+			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxExternalConstraintConnectorItemId, attribute);
+
+			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramConnectRoleFilterString, ToolboxItemFilterType.Allow);
+			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxRoleConnectorItemId, attribute);
+
+			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramCreateSubtypeFilterString, ToolboxItemFilterType.Allow);
+			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxSubtypeConnectorItemId, attribute);
+
+			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramExternalConstraintFilterString, ToolboxItemFilterType.Allow);
+			string[] itemIds = {
+				ResourceStrings.ToolboxEqualityConstraintItemId,
+				ResourceStrings.ToolboxExclusionConstraintItemId,
+				ResourceStrings.ToolboxExclusiveOrConstraintItemId,
+				ResourceStrings.ToolboxExternalUniquenessConstraintItemId,
+				ResourceStrings.ToolboxInclusiveOrConstraintItemId,
+				ResourceStrings.ToolboxRingConstraintItemId,
+				ResourceStrings.ToolboxSubsetConstraintItemId,
+				ResourceStrings.ToolboxFrequencyConstraintItemId
+			};
+			int idCount = itemIds.Length;
+			for (int i = 0; i < idCount; ++i)
+			{
+				AddFilterAttribute(items, itemIndexDictionary, itemIds[i], attribute);
+			}
+			return items;
+		}
+		/// <summary>
+		/// Add a filter string to the specified ModelingToolboxItem
+		/// </summary>
+		/// <param name="items">An array of existing items</param>
+		/// <param name="itemIndexDictionary">A dictionary mapping from the item name
+		/// to an index in the items array</param>
+		/// <param name="itemId">The name of the item to modify</param>
+		/// <param name="attribute">The filter property to add</param>
+		private static void AddFilterAttribute(IList<ModelingToolboxItem> items, Dictionary<string, int> itemIndexDictionary, string itemId, ToolboxItemFilterAttribute attribute)
+		{
+			int itemIndex;
+			if (itemIndexDictionary.TryGetValue(itemId, out itemIndex))
+			{
+				ModelingToolboxItem itemBase = items[itemIndex];
+				System.Collections.ICollection baseFilters = itemBase.Filter;
+				int baseFilterCount = baseFilters.Count;
+				ToolboxItemFilterAttribute[] newFilters = new ToolboxItemFilterAttribute[baseFilterCount + 1];
+				baseFilters.CopyTo(newFilters, 0);
+				newFilters[baseFilterCount] = attribute;
+				itemBase.Filter = newFilters;
+				// UNDONE: 2006-06 DSL Tools port: Why was this recreating the ModelingToolboxItem rather than just setting Filter?
+				/*items[itemIndex] = new ModelingToolboxItem(
+					itemBase.Id,
+					itemBase.Position,
+					itemBase.DisplayName ?? String.Empty,
+					itemBase.Bitmap,
+					itemBase.TabNameId,
+					itemBase.TabName ?? String.Empty,
+					itemBase.ContextSensitiveHelpKeyword ?? String.Empty,
+					itemBase.Description,
+					itemBase.Prototype,
+					newFilters);*/
 			}
 		}
 		#endregion // Base overrides
@@ -578,11 +669,11 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 
-		#region Extension SubStores
+		#region Extension DomainModels
 		/// <summary>
-		/// Retrieves the <see cref="SubStore"/> for a specific extension namespace.
+		/// Retrieves the <see cref="DomainModel"/> for a specific extension namespace.
 		/// </summary>
-		/// <remarks>If a <see cref="SubStore"/> cannot be found for a namespace, <see langword="null"/> is returned.</remarks>
+		/// <remarks>If a <see cref="DomainModel"/> cannot be found for a namespace, <see langword="null"/> is returned.</remarks>
 		public static Type GetExtensionSubStore(string extensionNamespace)
 		{
 			RegistryKey applicationRegistryRoot = null;
@@ -610,7 +701,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
-		/// Adds the extension <see cref="SubStore"/> <see cref="Type"/>s from the <paramref name="extensionPath"/>
+		/// Adds the extension <see cref="DomainModel"/> <see cref="Type"/>s from the <paramref name="extensionPath"/>
 		/// under <paramref name="hkeyBase"/> to the <see cref="ICollection{Type}"/> <paramref name="extensionSubStoreTypes"/>.
 		/// </summary>
 		private static Type LoadExtension(string extensionNamespace, RegistryKey hkeyBase)
@@ -620,7 +711,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (hkeyExtension != null)
 				{
 				// Execution is returned to this point if the user elects to retry a failed extension load
-				LABEL_RETRY:
+				L_Retry:
 					try
 					{
 						string extensionTypeString = hkeyExtension.GetValue("Class") as string;
@@ -644,7 +735,7 @@ namespace Neumont.Tools.ORM.Shell
 
 						Type extensionType = Assembly.Load(extensionAssemblyName).GetType(extensionTypeString, true, false);
 
-						if (extensionType.IsSubclassOf(typeof(SubStore)))
+						if (extensionType.IsSubclassOf(typeof(DomainModel)))
 						{
 							return extensionType;
 						}
@@ -654,13 +745,13 @@ namespace Neumont.Tools.ORM.Shell
 						// An Exception can occur for a number of reasons, such as the user not having the correct
 						// registry or file permissions, or the referenced assmebly or file not existing or being corrupt
 
-						string message = string.Format(System.Globalization.CultureInfo.CurrentUICulture, ResourceStrings.ExtensionLoadFailureMessage, Environment.NewLine, extensionNamespace, ex);
+						string message = string.Format(System.Globalization.CultureInfo.CurrentCulture, ResourceStrings.ExtensionLoadFailureMessage, Environment.NewLine, extensionNamespace, ex);
 						int result = VsShellUtilities.ShowMessageBox(Singleton, message, ResourceStrings.ExtensionLoadFailureTitle, OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_ABORTRETRYIGNORE, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_THIRD);
-						if (result == (int) DialogResult.Retry)
+						if (result == (int)DialogResult.Retry)
 						{
-							goto LABEL_RETRY;
+							goto L_Retry;
 						}
-						else if (result != (int) DialogResult.Ignore)
+						else if (result != (int)DialogResult.Ignore)
 						{
 							// If a debugger is already attached, Launch() has no effect, so we can always safely call it
 							Debugger.Launch();
@@ -676,7 +767,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// Enumerate all models available to the ORM designer
 		/// </summary>
 		/// <returns>IEnumerable&lt;Type&gt;</returns>
-		public static IEnumerable<Type> GetAvailableMetaModels()
+		public static IEnumerable<Type> GetAvailableDomainModels()
 		{
 			yield return typeof(Neumont.Tools.ORM.ObjectModel.ORMMetaModel);
 			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeModel);
@@ -727,6 +818,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return extensions;
 		}
-		#endregion // Extension SubStores
+		#endregion // Extension DomainModels
 	}
 }

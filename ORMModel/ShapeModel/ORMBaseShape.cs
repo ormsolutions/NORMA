@@ -16,18 +16,44 @@
 
 using System;
 using System.Collections;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.Shell;
+
 namespace Neumont.Tools.ORM.ShapeModel
 {
+	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseShape, ORMModelElement, Design.ORMBaseShapeTypeDescriptor<ORMBaseShape, ORMModelElement>>))]
 	public partial class ORMBaseShape
 	{
+		#region Constructor
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ORMBaseShape(Partition partition, PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			// UNDONE: 2006-06 DSL Tools port: ShapeElementAddRule seems to do this (and more) for us now...
+			// From the old OnCreated method:
+			// Make sure the shape fields are available very early so auto sizing
+			// based on content always works. This is needed during deserialization
+			// as well as initial creation, so in pre-2006-06 DSL Tools versions it
+			// was placed in OnCreated instead of OnInitialized.
+			GC.KeepAlive(ShapeFields);
+
+			// The rest is from the old OnInitialized method:
+			// Do early initialization so sizing mechanisms work correctly
+			AbsoluteBounds = new RectangleD(PointD.Empty, DefaultSize);
+		}
+		#endregion // Constructor
 		#region Virtual extensions
 		/// <summary>
 		/// Called during the OnChildConfiguring from the parent shape.
@@ -82,7 +108,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ModelElement modelElement = shapeElement.ModelElement;
 			if (modelElement != null)
 			{
-				PresentationElementMoveableCollection presentationElements = modelElement.PresentationRolePlayers;
+				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelElement);
 				int pelCount = presentationElements.Count;
 				if (pelCount != 0)
 				{
@@ -90,7 +116,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					for (int i = 0; i < pelCount; ++i)
 					{
 						PresentationElement pel = presentationElements[i];
-						if (!object.ReferenceEquals(shapeElement, pel) && thisType.IsAssignableFrom(pel.GetType()))
+						if (shapeElement != pel && thisType.IsAssignableFrom(pel.GetType()))
 						{
 							return true;
 						}
@@ -106,6 +132,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override bool HasShadow
 		{
 			get { return false; }
+		}
+		/// <summary>
+		/// Default to no sides being resizable.
+		/// </summary>
+		public override NodeSides ResizableSides
+		{
+			get
+			{
+				return NodeSides.None;
+			}
 		}
 		/// <summary>
 		/// Add error brushes to the styleSet
@@ -175,27 +211,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Make sure the shape fields are available very early. This is
-		/// needed during deserialization as well as initial creation, so
-		/// it is placed in OnCreated instead of OnInitialized.
-		/// </summary>
-		public override void OnCreated()
-		{
-			base.OnCreated();
-			// Force early initialization of shape fields so auto sizing based on
-			// content always works
-			ShapeFieldCollection shapes = ShapeFields;
-		}
-		/// <summary>
-		/// Do early initialization so sizing mechanisms work correctly
-		/// </summary>
-		public override void OnInitialized()
-		{
-			base.OnInitialized();
-			SizeD defSize = DefaultSize;
-			AbsoluteBounds = new RectangleD(0.0, 0.0, defSize.Width, defSize.Height);
-		}
-		/// <summary>
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape children
 		/// </summary>
 		/// <param name="child">The child being configured</param>
@@ -227,30 +242,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
-		#region Customize property display
-		/// <summary>
-		/// Display the name of the underlying element as the
-		/// component name in the property grid.
-		/// </summary>
-		public override string GetComponentName()
-		{
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetComponentName() : base.GetComponentName();
-		}
-		/// <summary>
-		/// Display the class of the underlying element as the
-		/// component name in the property grid.
-		/// </summary>
-		public override string GetClassName()
-		{
-			if (Store.Disposed)
-			{
-				return GetType().Name;
-			}
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetClassName() : base.GetClassName();
-		}
-		#endregion // Customize property display
 		#region Hack to block child shape moving twice
 		/// <summary>
 		/// Hack override to handle MSBUG that moves child shapes twice on the diagram. Combined
@@ -267,9 +258,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ShapeElement parentShape = ParentShape;
 					if (!(parentShape is ORMDiagram))
 					{
-						DiagramItemCollection movingItems = (DiagramItemCollection)store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMDiagram.MovingDiagramItemsContextKey];
-						if (movingItems != null &&
-							movingItems.Contains(new DiagramItem(parentShape)))
+						object movingItems;
+						if (store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(ORMDiagram.MovingDiagramItemsContextKey, out movingItems) &&
+							movingItems != null &&
+							((DiagramItemCollection)movingItems).Contains(new DiagramItem(parentShape)))
 						{
 							return false;
 						}
@@ -342,7 +334,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return GetClassName();
+				return TypeDescriptor.GetClassName(this);
 			}
 		}
 		/// <summary>
@@ -352,7 +344,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return GetComponentName();
+				return TypeDescriptor.GetComponentName(this);
 			}
 		}
 		#endregion // Accessibility Properties
@@ -372,7 +364,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
 		public void InvalidateRequired(bool refreshBitmap)
 		{
-			TransactionManager tmgr = TransactionManager;
+			TransactionManager tmgr = Store.TransactionManager;
 			if (tmgr.InTransaction)
 			{
 				UpdateCounter = unchecked(tmgr.CurrentTransaction.SequenceNumber - (refreshBitmap ? 0L : 1L));
@@ -386,71 +378,54 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected virtual void BeforeInvalidate()
 		{
 		}
-		/// <summary>
-		/// Standard override. Retrieve values for calculated properties.
-		/// </summary>
-		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		private long GetUpdateCounterValue()
 		{
-			Guid attributeId = attribute.Id;
-			if (attributeId == UpdateCounterMetaAttributeGuid)
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
 			{
-				TransactionManager tmgr = TransactionManager;
-				if (tmgr.InTransaction)
-				{
-					// Using subtract 2 and set to 1 under to indicate
-					// the difference between an Invalidate(true) and
-					// and Invalidate(false)
-					return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
-				}
-				else
-				{
-					return 0L;
-				}
+				// Using subtract 2 and set to 1 under to indicate
+				// the difference between an Invalidate(true) and
+				// and Invalidate(false)
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 2);
 			}
-			return base.GetValueForCustomStoredAttribute(attribute);
+			else
+			{
+				return 0L;
+			}
 		}
-		/// <summary>
-		/// Standard override. All custom storage properties are derived, not stored. 
-		/// </summary>
-		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		private void SetUpdateCounterValue(long newValue)
 		{
-			Guid attributeGuid = attribute.Id;
-			if (attributeGuid == UpdateCounterMetaAttributeGuid)
-			{
-				// Nothing to do, we're just trying to create a transaction log
-				return;
-			}
-			base.SetValueForCustomStoredAttribute(attribute, newValue);
+			// Nothing to do, we're just trying to create a transaction log
 		}
 		/// <summary>
 		/// Attach base shape event handlers
 		/// </summary>
 		public static void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ORMBaseShape.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(AttributeChangedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
+			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeChangedEvent));
 		}
 		/// <summary>
 		/// Detach base shape event handlers
 		/// </summary>
 		public static void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ORMBaseShape.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(AttributeChangedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ORMBaseShape.DomainClassId);
+			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(AttributeChangedEvent));
 		}
-		private static void AttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void AttributeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			Guid attributeId = e.MetaAttribute.Id;
-			if (attributeId == UpdateCounterMetaAttributeGuid)
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == UpdateCounterDomainPropertyId)
 			{
 				ORMBaseShape shape = e.ModelElement as ORMBaseShape;
-				if (!shape.IsRemoved)
+				if (!shape.IsDeleted)
 				{
 					shape.BeforeInvalidate();
 					shape.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
@@ -464,31 +439,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// for the specified element
 		/// </summary>
 		/// <param name="targetElement">The underlying model element with a name property</param>
-		protected void ActivateNameProperty(NamedElement targetElement)
+		protected void ActivateNameProperty(ModelElement targetElement)
 		{
 			Store store = Store;
 			EditorUtility.ActivatePropertyEditor(
 				(store as IORMToolServices).ServiceProvider,
-				targetElement.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), this),
+				ORMTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
 				false);
 		}
 		#endregion // DuplicateNameError Activation Helper
 		#region Update shapes on ModelError added/removed
 		[RuleOn(typeof(ModelHasError))]
-		private class ModelErrorAdded : AddRule
+		private sealed class ModelErrorAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ProcessModelErrorChange(e.ModelElement as ModelHasError);
 			}
 		}
 		[RuleOn(typeof(ModelHasError))]
-		private class ModelErrorRemoving : RemovingRule
+		private sealed class ModelErrorDeleting : DeletingRule
 		{
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
 				ModelHasError link = e.ModelElement as ModelHasError;
-				if (!link.Model.IsRemoving)
+				if (!link.Model.IsDeleting)
 				{
 					ProcessModelErrorChange(link);
 				}
@@ -496,23 +471,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private static void ProcessModelErrorChange(ModelHasError errorLink)
 		{
-			ModelError error = errorLink.ErrorCollection;
+			ModelError error = errorLink.Error;
 			// Give the error itself a change to have an indirect owner.
 			// A ModelError can own itself.
 			InvalidateIndirectErrorOwnerDisplay(error, null);
-			MetaClassInfo classInfo = error.MetaClass;
-			IList playedMetaRoles = classInfo.AllMetaRolesPlayed;
+			DomainClassInfo classInfo = error.GetDomainClass();
+			ReadOnlyCollection<DomainRoleInfo> playedMetaRoles = classInfo.AllDomainRolesPlayed;
 			int playedMetaRoleCount = playedMetaRoles.Count;
 			for (int i = 0; i < playedMetaRoleCount; ++i)
 			{
-				MetaRoleInfo roleInfo = (MetaRoleInfo)playedMetaRoles[i];
-				if (roleInfo.Id != ModelHasError.ErrorCollectionMetaRoleGuid)
+				DomainRoleInfo roleInfo = playedMetaRoles[i];
+				if (roleInfo.Id != ModelHasError.ErrorDomainRoleId)
 				{
-					IList rolePlayers = error.GetCounterpartRolePlayers(roleInfo, roleInfo.OppositeMetaRole);
+					LinkedElementCollection<ModelElement> rolePlayers = roleInfo.GetLinkedElements(error);
 					int rolePlayerCount = rolePlayers.Count;
 					for (int j = 0; j < rolePlayerCount; ++j)
 					{
-						ModelElement rolePlayer = (ModelElement)rolePlayers[j];
+						ModelElement rolePlayer = rolePlayers[j];
 						InvalidateErrorOwnerDisplay(rolePlayer);
 						InvalidateIndirectErrorOwnerDisplay(rolePlayer, null);
 					}
@@ -521,21 +496,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private static void InvalidateErrorOwnerDisplay(ModelElement element)
 		{
-			if (!element.IsRemoving)
+			if (!element.IsDeleting)
 			{
-				PresentationElementMoveableCollection pels = element.PresentationRolePlayers;
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
 				int pelCount = pels.Count;
 				for (int i = 0; i < pelCount; ++i)
 				{
 					ORMBaseShape shape = pels[i] as ORMBaseShape;
-					if (shape != null && !shape.IsRemoving)
+					if (shape != null && !shape.IsDeleting)
 					{
 						shape.InvalidateRequired();
 					}
 				}
 			}
 		}
-		private static void InvalidateIndirectErrorOwnerDisplay(ModelElement element, MetaDataDirectory metaDataDirectory)
+		private static void InvalidateIndirectErrorOwnerDisplay(ModelElement element, DomainDataDirectory domainDataDirectory)
 		{
 			IHasIndirectModelErrorOwner indirectOwner = element as IHasIndirectModelErrorOwner;
 			if (indirectOwner != null)
@@ -545,26 +520,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (metaRoles != null &&
 					0 != (roleCount = metaRoles.Length))
 				{
-					if (metaDataDirectory == null)
+					if (domainDataDirectory == null)
 					{
-						metaDataDirectory = element.Store.MetaDataDirectory;
+						domainDataDirectory = element.Store.DomainDataDirectory;
 					}
 					for (int i = 0; i < roleCount; ++i)
 					{
 						Debug.Assert(metaRoles[i] != Guid.Empty);
-						MetaRoleInfo metaRole = metaDataDirectory.FindMetaRole(metaRoles[i]);
+						DomainRoleInfo metaRole = domainDataDirectory.FindDomainRole(metaRoles[i]);
 						if (metaRole != null)
 						{
-							IList counterparts = element.GetCounterpartRolePlayers(metaRole, metaRole.OppositeMetaRole);
+							LinkedElementCollection<ModelElement> counterparts = metaRole.GetLinkedElements(element);
 							int counterpartCount = counterparts.Count;
 							for (int j = 0; j < counterpartCount; ++j)
 							{
-								ModelElement counterpart = (ModelElement)counterparts[j];
+								ModelElement counterpart = counterparts[j];
 								if (counterpart is IModelErrorOwner)
 								{
 									InvalidateErrorOwnerDisplay(counterpart);
 								}
-								InvalidateIndirectErrorOwnerDisplay(counterpart, metaDataDirectory);
+								InvalidateIndirectErrorOwnerDisplay(counterpart, domainDataDirectory);
 							}
 						}
 					}
@@ -580,22 +555,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (metaRoles != null &&
 					0 != (roleCount = metaRoles.Length))
 				{
-					if (metaDataDirectory == null)
+					if (domainDataDirectory == null)
 					{
-						metaDataDirectory = element.Store.MetaDataDirectory;
+						domainDataDirectory = element.Store.DomainDataDirectory;
 					}
 					for (int i = 0; i < roleCount; ++i)
 					{
 						Debug.Assert(metaRoles[i] != Guid.Empty);
-						MetaRoleInfo metaRole = metaDataDirectory.FindMetaRole(metaRoles[i]);
+						DomainRoleInfo metaRole = domainDataDirectory.FindDomainRole(metaRoles[i]);
 						if (metaRole != null)
 						{
-							ModelElement rolePlayer = elementLink.GetRolePlayer(metaRole);
+							ModelElement rolePlayer = metaRole.GetRolePlayer(elementLink);
 							if (rolePlayer is IModelErrorOwner)
 							{
 								InvalidateErrorOwnerDisplay(rolePlayer);
 							}
-							InvalidateIndirectErrorOwnerDisplay(rolePlayer, metaDataDirectory);
+							InvalidateIndirectErrorOwnerDisplay(rolePlayer, domainDataDirectory);
 						}
 					}
 				}

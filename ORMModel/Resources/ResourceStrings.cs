@@ -30,6 +30,9 @@ namespace Neumont.Tools.ORM
 	/// </summary>
 	internal static partial class ResourceStrings
 	{
+		// UNDONE: 2006-06 DSL Tools port: Temporary hack until we figure out what we want to do for ShapeField names.
+		public const string ShapeFieldName_HACK = null;
+
 		#region Supported Resource Managers
 		/// <summary>
 		/// Recognized resource managers
@@ -54,19 +57,23 @@ namespace Neumont.Tools.ORM
 			Diagram,
 		}
 		#endregion // Supported Resource Managers
+
 		#region Non-IMS ResourceManagers
-		private static object myLockObject;
-		private static object LockObject
+		private static readonly object LockObject = new object();
+		private static void LoadResourceManagerForType(ref ResourceManager resMgr, Type type)
 		{
-			get
+			if (resMgr == null)
 			{
-				if (myLockObject == null)
+				lock (LockObject)
 				{
-					System.Threading.Interlocked.CompareExchange(ref myLockObject, new object(), null);
+					if (resMgr == null)
+					{
+						resMgr = new ResourceManager(type.FullName, type.Assembly);
+					}
 				}
-				return myLockObject;
 			}
 		}
+
 		private static ResourceManager myDiagramResourceManager;
 		private static ResourceManager DiagramResourceManager
 		{
@@ -74,20 +81,10 @@ namespace Neumont.Tools.ORM
 			{
 				if (myDiagramResourceManager == null)
 				{
-					lock (LockObject)
-					{
-						if (myDiagramResourceManager == null)
-						{
-							myDiagramResourceManager = LoadResourceManagerForType(typeof(ORMDiagram));
-						}
-					}
+					LoadResourceManagerForType(ref myDiagramResourceManager, typeof(ORMDiagram));
 				}
 				return myDiagramResourceManager;
 			}
-		}
-		private static ResourceManager LoadResourceManagerForType(Type type)
-		{
-			return new ResourceManager(type.FullName, type.Assembly);
 		}
 
 		private static ResourceManager myModelResourceManager;
@@ -97,143 +94,169 @@ namespace Neumont.Tools.ORM
 			{
 				if (myModelResourceManager == null)
 				{
-					lock (LockObject)
-					{
-						if (myModelResourceManager == null)
-						{
-							myModelResourceManager = LoadResourceManagerForType(typeof(ORMModel));
-						}
-					}
+					LoadResourceManagerForType(ref myModelResourceManager, typeof(ORMModel));
 				}
 				return myModelResourceManager;
 			}
 		}
+		
+		// UNDONE: 2006-06 DSL Tools port: ResourceManagers have been temporarily redirected until we port the resx files.
+		private static ResourceManager myMetaModelResourceManager;
+		private static ResourceManager MetaModelResourceManager
+		{
+			get
+			{
+				if (myMetaModelResourceManager == null)
+				{
+					LoadResourceManagerForType(ref myMetaModelResourceManager, typeof(ORMMetaModel));
+				}
+				return myMetaModelResourceManager;
+			}
+		}
+
+		// UNDONE: 2006-06 DSL Tools port: ResourceManagers have been temporarily redirected until we port the resx files.
+		private static ResourceManager myShapeModelResourceManager;
+		private static ResourceManager ShapeModelResourceManager
+		{
+			get
+			{
+				if (myShapeModelResourceManager == null)
+				{
+					LoadResourceManagerForType(ref myShapeModelResourceManager, typeof(ORMShapeModel));
+				}
+				return myShapeModelResourceManager;
+			}
+		}
+
 		#endregion // Non-IMS ResourceManagers
+
 		#region Helper functions
+		// UNDONE: 2006-06 DSL Tools port: ResourceManagers have been temporarily redirected until we port the resx files.
 		private static ResourceManager GetResourceManager(ResourceManagers manager)
 		{
-			ResourceManager resMgr = null;
 			switch (manager)
 			{
 				case ResourceManagers.ObjectModel:
-					resMgr = ORMMetaModel.SingletonResourceManager;
-					break;
+					//return ORMMetaModel.SingletonResourceManager;
+					return MetaModelResourceManager;
 				case ResourceManagers.ShapeModel:
-					resMgr = ORMShapeModel.SingletonResourceManager;
-					break;
+					//return ORMShapeModel.SingletonResourceManager;
+					return ShapeModelResourceManager;
 				case ResourceManagers.Diagram:
-					resMgr = DiagramResourceManager;
-					break;
+					return DiagramResourceManager;
 				case ResourceManagers.Model:
-					resMgr = ModelResourceManager;
-					break;
+					return ModelResourceManager;
+				default:
+					return null;
 			}
-			return resMgr;
 		}
 
 		private static string GetString(ResourceManagers manager, string resourceName)
 		{
-			ResourceManager resMgr = null;
 			string retVal = null;
-			resMgr = GetResourceManager(manager);
+			ResourceManager resMgr = GetResourceManager(manager);
 			if (resMgr != null)
 			{
 				retVal = resMgr.GetString(resourceName);
+				Debug.Assert(!String.IsNullOrEmpty(retVal), "Unrecognized resource string: " + resourceName);
 			}
-			Debug.Assert(retVal != null && retVal.Length > 0, "Unrecognized resource string: " + resourceName);
-			return (retVal != null) ? retVal : String.Empty;
+			return retVal ?? String.Empty;
 		}
 
 		private static object GetObject(ResourceManagers manager, string resourceName)
 		{
-			ResourceManager resMgr = null;
 			object retVal = null;
-			resMgr = GetResourceManager(manager);
+			ResourceManager resMgr = GetResourceManager(manager);
 			if (resMgr != null)
 			{
 				retVal = resMgr.GetObject(resourceName);
+				Debug.Assert(retVal != null, "Unrecognized resource string: " + resourceName);
 			}
-			Debug.Assert(retVal != null, "Unrecognized resource string: " + resourceName);
 			return retVal;
 		}
 		#endregion // Helper functions
+
 		#region Public resource ids
+		#region Toolbox Item Ids
 		/// <summary>
 		/// The identifier for the EntityType toolbox item
 		/// </summary>
-		public const string ToolboxEntityTypeItemId = "Toolbox.EntityType.Item.Id";
+		public const string ToolboxEntityTypeItemId = "EntityTypeToolboxItem";
 		/// <summary>
 		/// The identifier for the ValueType toolbox item
 		/// </summary>
-		public const string ToolboxValueTypeItemId = "Toolbox.ValueType.Item.Id";
+		public const string ToolboxValueTypeItemId = "ValueTypeToolboxItem";
 		/// <summary>
 		/// The identifier for the ObjectifiedFactType toolbox item
 		/// </summary>
-		public const string ToolboxObjectifiedFactTypeItemId = "Toolbox.ObjectifiedFactType.Item.Id";
+		public const string ToolboxObjectifiedFactTypeItemId = "ObjectifiedFactTypeToolboxItem";
 		/// <summary>
 		/// The identifier for the UnaryFactType toolbox item
 		/// </summary>
-		public const string ToolboxUnaryFactTypeItemId = "Toolbox.UnaryFactType.Item.Id";
+		public const string ToolboxUnaryFactTypeItemId = "UnaryFactTypeToolboxItem";
 		/// <summary>
 		/// The identifier for the BinaryFactType toolbox item
 		/// </summary>
-		public const string ToolboxBinaryFactTypeItemId = "Toolbox.BinaryFactType.Item.Id";
+		public const string ToolboxBinaryFactTypeItemId = "BinaryFactTypeToolboxItem";
 		/// <summary>
 		/// The identifier for the TernaryFactType toolbox item
 		/// </summary>
-		public const string ToolboxTernaryFactTypeItemId = "Toolbox.TernaryFactType.Item.Id";
+		public const string ToolboxTernaryFactTypeItemId = "TernaryFactTypeToolboxItem";
 		/// <summary>
 		/// The identifier for an ExternalUniquenessConstraint toolbox item
 		/// </summary>
-		public const string ToolboxExternalUniquenessConstraintItemId = "Toolbox.ExternalUniquenessConstraint.Item.Id";
+		public const string ToolboxExternalUniquenessConstraintItemId = "ExternalUniquenessConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an InternalUniquenessConstraint toolbox item
 		/// </summary>
-		public const string ToolboxInternalUniquenessConstraintItemId = "Toolbox.InternalUniquenessConstraint.Item.Id";
+		public const string ToolboxInternalUniquenessConstraintItemId = "InternalUniquenessConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an ExclusionConstraint toolbox item
 		/// </summary>
-		public const string ToolboxExclusionConstraintItemId = "Toolbox.ExclusionConstraint.Item.Id";
+		public const string ToolboxExclusionConstraintItemId = "ExclusionConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an InclusiveOrConstraint toolbox item
 		/// </summary>
-		public const string ToolboxInclusiveOrConstraintItemId = "Toolbox.InclusiveOrConstraint.Item.Id";
+		public const string ToolboxInclusiveOrConstraintItemId = "InclusiveOrConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an ExclusiveOrConstraint toolbox item
 		/// </summary>
-		public const string ToolboxExclusiveOrConstraintItemId = "Toolbox.ExclusiveOrConstraint.Item.Id";
+		public const string ToolboxExclusiveOrConstraintItemId = "ExclusiveOrConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for the RoleConnector toolbox item
 		/// </summary>
-		public const string ToolboxRoleConnectorItemId = "Toolbox.RoleConnector.Item.Id";
+		public const string ToolboxRoleConnectorItemId = "RoleConnectorToolboxItem";
 		/// <summary>
 		/// The identifier for a FrequencyConstraint toolbox item
 		/// </summary>
-		public const string ToolboxFrequencyConstraintItemId = "Toolbox.FrequencyConstraint.Item.Id";
+		public const string ToolboxFrequencyConstraintItemId = "FrequencyConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an SubsetConstraint toolbox item
 		/// </summary>
-		public const string ToolboxSubsetConstraintItemId = "Toolbox.SubsetConstraint.Item.Id";
+		public const string ToolboxSubsetConstraintItemId = "SubsetConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an EqualityConstraint toolbox item
 		/// </summary>
-		public const string ToolboxEqualityConstraintItemId = "Toolbox.EqualityConstraint.Item.Id";
+		public const string ToolboxEqualityConstraintItemId = "EqualityConstraintToolboxItem";
 		/// <summary>
 		/// The identifier for an ExternalConstraintConnector toolbox item
 		/// </summary>
-		public const string ToolboxExternalConstraintConnectorItemId = "Toolbox.ExternalConstraintConnector.Item.Id";
+		public const string ToolboxExternalConstraintConnectorItemId = "ExternalConstraintConnectorToolboxItem";
 		/// <summary>
 		/// The identifier for an SubtypeConnector toolbox item
 		/// </summary>
-		public const string ToolboxSubtypeConnectorItemId = "Toolbox.SubtypeConnector.Item.Id";
+		public const string ToolboxSubtypeConnectorItemId = "SubtypeConnectorToolboxItem";
 		/// <summary>
 		/// The identifier for an InternalUniquenessConstraintConnector toolbox item
 		/// </summary>
-		public const string ToolboxInternalUniquenessConstraintConnectorItemId = "Toolbox.InternalUniquenessConstraintConnector.Item.Id";
+		public const string ToolboxInternalUniquenessConstraintConnectorItemId = "InternalUniquenessConstraintConnectorToolboxItem";
 		/// <summary>
 		/// The identifier for a Ring Constraint
 		/// </summary>
-		public const string ToolboxRingConstraintItemId = "Toolbox.RingConstraint.Item.Id";
+		public const string ToolboxRingConstraintItemId = "RingConstraintToolboxItem";
+		#endregion // Toolbox Item Ids
+
+		#region OptionsPage Ids
 		/// <summary>
 		/// Category name for options page (appearance)
 		/// </summary>
@@ -346,6 +369,9 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the Show Default Constraint Verbalization option
 		/// </summary>
 		public const string OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId = "OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName";
+		#endregion // OptionsPage Ids
+
+		#region FactEditorColors Ids
 		/// <summary>
 		/// Display Name of the Object Name color
 		/// </summary>
@@ -362,6 +388,13 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the Delimiter color
 		/// </summary>
 		public const string FactEditorColorsDelimiterId = "FactEditorColors.Delimiter";
+		/// <summary>
+		/// Display Name of the Quantifier color
+		/// </summary>
+		public const string FactEditorColorsQuantifierId = "FactEditorColors.Quantifier";
+		#endregion // FactEditorColors Ids
+
+		#region FontsAndColors Ids
 		/// <summary>
 		/// Display name for the ORM Designer fonts and colors category
 		/// </summary>
@@ -414,15 +447,14 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the Quantifier color
 		/// </summary>
 		public const string FontsAndColorsVerbalizerRefModeColorId = "FontsAndColors.VerbalizerRefModeColorId";
-		/// <summary>
-		/// Display Name of the Quantifier color
-		/// </summary>
-		public const string FactEditorColorsQuantifierId = "FactEditorColors.Quantifier";
+		#endregion // FontsAndColors Ids
 		#endregion // Public resource ids
+
 		#region Private resource ids
 		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";
 		private const string DiagramTabImage_Id = "Diagram.TabImage";
 		#endregion // Private resource ids
+
 		#region Public accessor properties
 		/// <summary>
 		/// The category name to display on the options pages

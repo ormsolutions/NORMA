@@ -3,65 +3,63 @@
 	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:Copyright name="Common Public License Copyright Notice">
-		Neumont Object-Role Modeling Architect for Visual Studio
-
-		Copyright © Neumont University. All rights reserved.
-
-		The use and distribution terms for this software are covered by the
-		Common Public License 1.0 (http://opensource.org/licenses/cpl) which
-		can be found in the file CPL.txt at the root of this distribution.
-		By using this software in any fashion, you are agreeing to be bound by
-		the terms of this license.
-
-		You must not remove this notice, or any other, from this software.
+		<se:CopyrightLine>/**************************************************************************\</se:CopyrightLine>
+		<se:CopyrightLine>* Neumont Object-Role Modeling Architect for Visual Studio                 *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* Copyright © Neumont University. All rights reserved.                     *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* The use and distribution terms for this software are covered by the      *</se:CopyrightLine>
+		<se:CopyrightLine>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</se:CopyrightLine>
+		<se:CopyrightLine>* can be found in the file CPL.txt at the root of this distribution.       *</se:CopyrightLine>
+		<se:CopyrightLine>* By using this software in any fashion, you are agreeing to be bound by   *</se:CopyrightLine>
+		<se:CopyrightLine>* the terms of this license.                                               *</se:CopyrightLine>
+		<se:CopyrightLine>*                                                                          *</se:CopyrightLine>
+		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
+		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:MetaModel Class="ORMMetaModel">
+	<se:DomainModel Class="ORMMetaModel">
 		<se:Namespaces>
 			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-04/ORMCore" SchemaFile="ORM2Core.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
 		</se:RootElements>
-		<se:OmittedMetaElements>
+		<se:OmittedDomainElements>
 			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
-			<se:OmitRelationship Class="SubjectHasPresentation" Namespace="Microsoft.VisualStudio.Modeling"/>
-		</se:OmittedMetaElements>
-	</se:MetaModel>
+			<se:OmitRelationship Class="PresentationViewsSubject" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
+		</se:OmittedDomainElements>
+	</se:DomainModel>
 	<!--Model-->
-	<se:Element Class="ORMNamedElement">
-		<se:ChildElement Name="Extensions">
-			<se:Link RelationshipName="ORMNamedElementHasExtensionElement" RoleName="ExtensionCollection"/>
-		</se:ChildElement>
-	</se:Element>
 	<se:Element Class="ORMModelElement">
 		<se:ChildElement Name="Extensions">
-			<se:Link RelationshipName="ORMModelElementHasExtensionElement" RoleName="ExtensionCollection"/>
+			<se:Link RelationshipName="ORMModelElementHasExtensionElement" RoleName="Extension"/>
 		</se:ChildElement>
 	</se:Element>
+	<se:Element Class="ORMNamedElement" Override="true"/>
 	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true" Override="true">
 		<se:ChildElement Name="Objects">
-			<se:Link RelationshipName="ModelHasObjectType" RoleName="ObjectTypeCollection"/>
+			<se:Link RelationshipName="ModelHasObjectType" RoleName="ObjectType"/>
 		</se:ChildElement>
 		<se:ChildElement Name="Facts">
-			<se:Link RelationshipName="ModelHasFactType" RoleName="FactTypeCollection"/>
+			<se:Link RelationshipName="ModelHasFactType" RoleName="FactType"/>
 		</se:ChildElement>
 		<se:ChildElement Name="Constraints">
-			<se:Link RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraintCollection"/>
-			<se:Link RelationshipName="ModelHasSetConstraint" RoleName="SetConstraintCollection"/>
+			<se:Link RelationshipName="ModelHasSetComparisonConstraint" RoleName="SetComparisonConstraint"/>
+			<se:Link RelationshipName="ModelHasSetConstraint" RoleName="SetConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="DataTypes">
-			<se:Link RelationshipName="ModelHasDataType" RoleName="DataTypeCollection"/>
+			<se:Link RelationshipName="ModelHasDataType" RoleName="DataType"/>
 		</se:ChildElement>
 		<se:ChildElement Name="CustomReferenceModes">
-			<se:Link RelationshipName="ModelHasReferenceMode" RoleName="ReferenceModeCollection"/>
+			<se:Link RelationshipName="ModelHasReferenceMode" RoleName="ReferenceMode"/>
 		</se:ChildElement>
 		<se:ChildElement Name="ModelErrors">
-			<se:Link RelationshipName="ModelHasError" RoleName="ErrorCollection"/>
+			<se:Link RelationshipName="ModelHasError" RoleName="Error"/>
 		</se:ChildElement>
 		<se:ChildElement Name="ReferenceModeKinds">
-			<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" />
+			<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKind" />
 		</se:ChildElement>
 	</se:Element>
 	<se:Element Class="Note" Override="true">
@@ -112,24 +110,24 @@
 			<se:Link RelationshipName="ObjectTypeHasNote" RoleName="Note"/>
 		</se:ChildElement>
 		<se:ChildElement Name="PlayedRoles">
-			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
+			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
 		</se:ChildElement>
 		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement" />
 		<se:ChildElement Name="ValueRestriction">
 			<se:Link RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
-		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection">
+		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole">
 			<se:ConditionalName Name="SubtypeMetaRole">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
-						<plx:callInstance name="GetRolePlayer" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="elementLink" type="parameter"/>
-							</plx:callObject>
+						<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo" type="methodCall">
 							<plx:passParam>
-								<plx:callStatic dataTypeName="ObjectTypePlaysRole" name="PlayedRoleCollectionMetaRoleGuid" type="property"/>
+								<plx:nameRef name="elementLink" type="parameter"/>
 							</plx:passParam>
-						</plx:callInstance>
+							<plx:passParam>
+								<plx:callStatic dataTypeName="ObjectTypePlaysRole" name="PlayedRoleDomainRoleId" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
 					</plx:left>
 					<plx:right>
 						<plx:directTypeReference dataTypeName="SubtypeMetaRole"/>
@@ -139,14 +137,14 @@
 			<se:ConditionalName Name="SupertypeMetaRole">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>
-						<plx:callInstance name="GetRolePlayer" type="methodCall">
-							<plx:callObject>
-								<plx:nameRef name="elementLink" type="parameter"/>
-							</plx:callObject>
+						<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo" type="methodCall">
 							<plx:passParam>
-								<plx:callStatic dataTypeName="ObjectTypePlaysRole" name="PlayedRoleCollectionMetaRoleGuid" type="property"/>
+								<plx:nameRef name="elementLink" type="parameter"/>
 							</plx:passParam>
-						</plx:callInstance>
+							<plx:passParam>
+								<plx:callStatic dataTypeName="ObjectTypePlaysRole" name="PlayedRoleDomainRoleId" type="property"/>
+							</plx:passParam>
+						</plx:callStatic>
 					</plx:left>
 					<plx:right>
 						<plx:directTypeReference dataTypeName="SupertypeMetaRole"/>
@@ -157,8 +155,8 @@
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:ChildElement Name="Instances">
-			<se:Link RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstanceCollection"/>
-			<se:Link RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstanceCollection"/>
+			<se:Link RelationshipName="ValueTypeHasValueTypeInstance" RoleName="ValueTypeInstance"/>
+			<se:Link RelationshipName="EntityTypeHasEntityTypeInstance" RoleName="EntityTypeInstance"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
@@ -168,15 +166,15 @@
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
 		<se:Attribute ID="Value" WriteStyle="Element"/>
-		<se:Link Name="ValueTypeRoleInstance" RelationshipName="RoleInstance" RoleName="RoleCollection" WriteStyle="NotWritten"/>
+		<se:Link Name="ValueTypeRoleInstance" RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
 		<se:ChildElement Name="RoleInstances">
-			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
+			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:ChildElement>
-		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
-		<se:Link RelationshipName="RoleInstance" RoleName="RoleCollection" WriteStyle="NotWritten"/>
+		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
+		<se:Link RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="TooFewEntityTypeRoleInstancesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRoleInstance">
@@ -188,7 +186,7 @@
 	</se:Element>
 	<se:Element Class="ValueTypeHasDataType">
 		<se:Attribute ID="Scale">
-			<se:RolePlayed ID="ValueTypeCollection" Name="Scale"/>
+			<se:RolePlayed ID="ValueType" Name="Scale"/>
 		</se:Attribute>
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="DataTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -203,7 +201,11 @@
 					<plx:left>
 						<plx:callInstance name="Count" type="property">
 							<plx:callObject>
-								<plx:callThis name="GetElementLinks"/>
+								<plx:callStatic name="GetAllElementLinks" dataTypeName="DomainRoleInfo" type="methodCall">
+									<plx:passParam>
+										<plx:thisKeyword/>
+									</plx:passParam>
+								</plx:callStatic>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:left>
@@ -213,15 +215,15 @@
 				</plx:binaryOperator>
 			</plx:return>
 		</se:ConditionalSerialization>
-		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
+		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceMode" WriteStyle="NotWritten" />
 	</se:Element>
 	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" Override="true">
 		<se:ChildElement Name="ValueRanges">
-			<se:Link RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRangeCollection"/>
+			<se:Link RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRange"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueConstraintHasValueRangeOverlapError" RoleName="ValueRangeOverlapError" WriteStyle="NotWritten"/>
@@ -255,21 +257,21 @@
 			<se:Link RelationshipName="FactTypeHasNote" RoleName="Note"/>
 		</se:ChildElement>
 		<se:ChildElement Name="FactRoles">
-			<se:Link RelationshipName="FactTypeHasRole" RoleName="RoleCollection"/>
+			<se:Link RelationshipName="FactTypeHasRole" RoleName="Role"/>
 		</se:ChildElement>
 		<se:ChildElement Name="ReadingOrders">
-			<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
+			<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrder"/>
 		</se:ChildElement>
 		<se:ChildElement Name="InternalConstraints">
-			<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraintCollection"/>
+			<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="DerivationRule">
 			<se:Link RelationshipName="FactTypeHasDerivationExpression" RoleName="DerivationRule"/>
 		</se:ChildElement>
 		<se:ChildElement Name="Instances">
-			<se:Link RelationshipName="FactTypeHasFactTypeInstance" RoleName="FactTypeInstanceCollection"/>
+			<se:Link RelationshipName="FactTypeHasFactTypeInstance" RoleName="FactTypeInstance"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraintCollection" WriteStyle="NotWritten">
+		<se:Link RelationshipName="FactSetConstraint" RoleName="SetConstraint" WriteStyle="NotWritten">
 			<se:ConditionalName Name="UniquenessConstraint" WriteStyle="Element">
 				<plx:binaryOperator type="equality">
 					<plx:left>
@@ -279,14 +281,14 @@
 						<plx:callInstance name="ConstraintType" type="property">
 							<plx:callObject>
 								<plx:cast dataTypeName="IConstraint">
-									<plx:callInstance name="GetRolePlayer" type="methodCall">
-										<plx:callObject>
-											<plx:nameRef name="elementLink" type="parameter"/>
-										</plx:callObject>
+									<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo" type="methodCall">
 										<plx:passParam>
-											<plx:callStatic dataTypeName="FactSetConstraint" name="SetConstraintCollectionMetaRoleGuid" type="property"/>
+											<plx:nameRef name="elementLink" type="parameter"/>
 										</plx:passParam>
-									</plx:callInstance>
+										<plx:passParam>
+											<plx:callStatic dataTypeName="FactSetConstraint" name="SetConstraintDomainRoleId" type="property"/>
+										</plx:passParam>
+									</plx:callStatic>
 								</plx:cast>
 							</plx:callObject>
 						</plx:callInstance>
@@ -302,14 +304,14 @@
 						<plx:callInstance name="ConstraintType" type="property">
 							<plx:callObject>
 								<plx:cast dataTypeName="IConstraint">
-									<plx:callInstance name="GetRolePlayer" type="methodCall">
-										<plx:callObject>
-											<plx:nameRef name="elementLink" type="parameter"/>
-										</plx:callObject>
+									<plx:callStatic name="GetRolePlayer" dataTypeName="DomainRoleInfo" type="methodCall">
 										<plx:passParam>
-											<plx:callStatic dataTypeName="FactSetConstraint" name="SetConstraintCollectionMetaRoleGuid" type="property"/>
+											<plx:nameRef name="elementLink" type="parameter"/>
 										</plx:passParam>
-									</plx:callInstance>
+										<plx:passParam>
+											<plx:callStatic dataTypeName="FactSetConstraint" name="SetConstraintDomainRoleId" type="property"/>
+										</plx:passParam>
+									</plx:callStatic>
 								</plx:cast>
 							</plx:callObject>
 						</plx:callInstance>
@@ -322,14 +324,14 @@
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeInstance" Name="FactTypeInstance" Override="true">
 		<se:ChildElement Name="RoleInstances">
-			<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
+			<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:ChildElement>
-		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstanceCollection"/>
-		<se:Link RelationshipName="RoleInstance" RoleName="RoleCollection" WriteStyle="NotWritten"/>
+		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
+		<se:Link RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="TooFewFactTypeRoleInstancesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeRoleInstance">
@@ -357,17 +359,17 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactTypeCollection" WriteStyle="NotWritten"/>
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Readings-->
 	<se:Element Class="ReadingOrder" SortChildElements="true" Override="true">
 		<se:ChildElement Name="Readings">
-			<se:Link RelationshipName="ReadingOrderHasReading" RoleName="ReadingCollection"/>
+			<se:Link RelationshipName="ReadingOrderHasReading" RoleName="Reading"/>
 		</se:ChildElement>
 		<se:ChildElement Name="RoleSequence">
-			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection"/>
+			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="Role"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection" Name="Role"/>
+		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="Role" Name="Role"/>
 	</se:Element>
 	<se:Element Class="Reading" HasMixedTypedAttributes="true" Override="true">
 		<se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
@@ -384,15 +386,15 @@
 			<se:Link RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="RoleInstances">
-			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="EntityTypeRoleInstance"/>
-			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="FactTypeRoleInstance"/>
+			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="EntityTypeRoleInstance"/>
+			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="FactTypeRoleInstance"/>
 		</se:ChildElement>
-		<se:Link Name="EntityTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="EntityTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
-		<se:Link Name="FactTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstanceCollection" CreateAsRelationshipName="FactTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="EntityTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="EntityTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="FactTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="FactTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
 		<!--Need to add this attribute as custom storage.-->
 		<!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -416,16 +418,16 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:ChildElement Name="RoleSequences">
-			<se:Link RelationshipName="SetComparisonConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
+			<se:Link RelationshipName="SetComparisonConstraintHasRoleSequence" RoleName="RoleSequence"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="ArityMismatchError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SetComparisonConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role"/>
 	</se:Element>
 	<se:Element Class="SetConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Modality">
@@ -441,13 +443,13 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:ChildElement Name="RoleSequence">
-			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
+			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
+		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="Role" Name="Role"/>
 		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SetConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactSetConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactSetConstraint" RoleName="FactType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" Override="true">
 		<se:Attribute ID="IsSimple">
@@ -461,7 +463,7 @@
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="UniquenessConstraint" Override="true" SortChildElements="true">
 		<se:Attribute ID="IsInternal">
@@ -484,19 +486,19 @@
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
 		<se:ChildElement Name="Constraints">
-			<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraintCollection"/>
-			<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraintCollection"/>
-			<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraintCollection"/>
+			<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraint"/>
+			<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraint"/>
+			<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraint"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraintCollection" Name="SetComparisonConstraint"/>
-		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraintCollection" Name="SetConstraint"/>
-		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraintCollection" Name="ValueConstraint"/>
+		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
+		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraint" Name="SetConstraint"/>
+		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraint" Name="ValueConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeDuplicateNameError" Override="true">
 		<se:ChildElement Name="Objects">
-			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection"/>
+			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectType"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection" Name="Object"/>
+		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectType" Name="Object"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>

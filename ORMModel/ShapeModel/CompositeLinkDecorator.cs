@@ -68,14 +68,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected override GraphicsPath GetPath(RectangleD bounds)
 		{
-			// Not used. If we see this is firing, then we need to extend
-			// this class to specify one of the composite paths (or a custom path)
-			// as the path to represent the whole item. Default to the last of the
-			// composite paths (the first one drawn).
-			//
-			// I have a feeling this may be used in the future if selection drawing
-			// around link lines is improved.
-			Debug.Assert(false); 
+			 Debug.Fail("Not used. If we see this is firing, then we need to extend " +
+			 "this class to specify one of the composite paths (or a custom path) " +
+			 "as the path to represent the whole item. Default to the last of the " +
+			 "composite paths (the first one drawn).\r\n" +
+			 "I have a feeling this may be used in the future if selection drawing " +
+			 "around link lines is improved.");
 			return null;
 		}
 

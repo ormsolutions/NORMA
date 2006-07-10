@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// because of the settings in the ExtensionDomainModel.SerializationExtensions.xml file) to
 		/// be readded when the file loads.
 		/// </summary>
-		private class ORMModelFixupListener : DeserializationFixupListener<ORMModel>
+		private sealed class ORMModelFixupListener : DeserializationFixupListener<ORMModel>
 		{
 			/// <summary>
 			/// ExternalConstraintFixupListener constructor
@@ -69,7 +69,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <param name="element">An ORMModel element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ORMModel element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ORMModel element, Store store, INotifyElementAdded notifyAdded)
 			{
 				OIALModel oil = (OIALModel)element.GetCounterpartRolePlayer(
 					OIALModelHasORMModel.ORMModelMetaRoleGuid,

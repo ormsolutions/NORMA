@@ -21,12 +21,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -34,51 +34,12 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	#region ConstraintDisplayPosition enum
-	/// <summary>
-	/// Determines where internal constraints are drawn
-	/// on a facttype
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum ConstraintDisplayPosition
-	{
-		/// <summary>
-		/// Draw the constraints above the role boxes
-		/// </summary>
-		Top,
-		/// <summary>
-		/// Draw the constraints below the role boxes
-		/// </summary>
-		Bottom
-	}
-	#endregion ConstraintDisplayPosition enum
-	#region DisplayRoleNames enum
-	/// <summary>
-	/// Determines whether RoleNameShapes will be
-	/// drawn for this fact, overrides global settings
-	/// </summary>
-	[CLSCompliant(true)]
-	public enum DisplayRoleNames
-	{
-		/// <summary>
-		/// Use the global setting
-		/// </summary>
-		UserDefault,
-		/// <summary>
-		/// Draw the RoleNameShape for the fact 
-		/// </summary>
-		On,
-		/// <summary>
-		/// Do not draw RoleNameShapes for the fact
-		/// </summary>
-		Off,
-	}
-	#endregion // DisplayRoleNames
 	#region FactTypeShape class
+	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<FactTypeShape, FactType, Design.FactTypeShapeTypeDescriptor<FactTypeShape, FactType>>))]
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
 	{
 		#region Public token values
@@ -181,7 +142,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Debug.Assert(factConstraint != null);
 				Debug.Assert(uniqueConstraintRoles != null);
 				Debug.Assert(roleActivity != null);
-				if (!object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_FullySpanning) && !object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_AntiSpanning))
+				if (roleActivity != PreDefinedConstraintBoxRoleActivities_FullySpanning && roleActivity != PreDefinedConstraintBoxRoleActivities_AntiSpanning)
 				{
 					int roleActivityCount = roleActivity.Length;
 					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= uniqueConstraintRoles.Count);
@@ -284,7 +245,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return object.ReferenceEquals(myActiveRoles, PreDefinedConstraintBoxRoleActivities_FullySpanning);
+					return myActiveRoles == PreDefinedConstraintBoxRoleActivities_FullySpanning;
 				}
 			}
 			/// <summary>
@@ -295,7 +256,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return object.ReferenceEquals(myActiveRoles, PreDefinedConstraintBoxRoleActivities_AntiSpanning);
+					return myActiveRoles == PreDefinedConstraintBoxRoleActivities_AntiSpanning;
 				}
 			}
 			/// <summary>
@@ -399,6 +360,71 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				return significantBoxCount;
 			}
+			private sealed class ConstraintBoxComparer : Comparer<ConstraintBox>
+			{
+				private ConstraintBoxComparer()
+				{
+				}
+				public sealed override int Compare(ConstraintBox c1, ConstraintBox c2)
+				{
+					if (c1.FactConstraint == c2.FactConstraint)
+					{
+						// Same object
+						return 0;
+					}
+
+					// Order the constraints by IsHidden, ConstraintType, RoleCount
+					int retVal = 0;
+
+					if (c1.IsHidden)
+					{
+						if (!c2.IsHidden)
+						{
+							retVal = 1;
+						}
+					}
+					else if (c2.IsHidden)
+					{
+						retVal = -1;
+					}
+					else
+					{
+						ConstraintType ct1 = c1.ConstraintType;
+						ConstraintType ct2 = c2.ConstraintType;
+						if (ct1 != ct2)
+						{
+							int ctOrder1 = RelativeSortPosition(ct1);
+							int ctOrder2 = RelativeSortPosition(ct2);
+							if (ctOrder1 < ctOrder2)
+							{
+								retVal = -1;
+							}
+							else if (ctOrder1 > ctOrder2)
+							{
+								retVal = 1;
+							}
+						}
+						else if (IsConstraintTypeVisible(ct1))
+						{
+							// Constraints with less roles sink to the bottom.
+							int c1RoleCount = c1.RoleCollection.Count;
+							int c2RoleCount = c2.RoleCollection.Count;
+							if (c1RoleCount < c2RoleCount)
+							{
+								retVal = 1;
+							}
+							else if (c1RoleCount > c2RoleCount)
+							{
+								retVal = -1;
+							}
+						}
+					}
+
+					return retVal;
+				}
+
+				public static readonly ConstraintBoxComparer Instance = new ConstraintBoxComparer();
+			}
 			/// <summary>
 			/// Sort the constraint boxes and place non-displayed constraints
 			/// at the end of the array. Return the number of boxes that
@@ -411,67 +437,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The number of significant boxes</returns>
 			public static int OrderConstraintBoxes(ConstraintBox[] boxes, int fullCount)
 			{
-				Array.Sort(
-					boxes,
-					//0,
-					//fullCount, // UNDONE: This is dumb. Sort should have an overload that takes a Comparer<T> with index, count. Check in Beta2
-					delegate(ConstraintBox c1, ConstraintBox c2)
-					{
-						if (object.ReferenceEquals(c1.FactConstraint, c2.FactConstraint))
-						{
-							// Same object
-							return 0;
-						}
-
-						// Order the constraints by IsHidden, ConstraintType, RoleCount
-						int retVal = 0;
-
-						if (c1.IsHidden)
-						{
-							if (!c2.IsHidden)
-							{
-								retVal = 1;
-							}
-						}
-						else if (c2.IsHidden)
-						{
-							retVal = -1;
-						}
-						else
-						{
-							ConstraintType ct1 = c1.ConstraintType;
-							ConstraintType ct2 = c2.ConstraintType;
-							if (ct1 != ct2)
-							{
-								int ctOrder1 = RelativeSortPosition(ct1);
-								int ctOrder2 = RelativeSortPosition(ct2);
-								if (ctOrder1 < ctOrder2)
-								{
-									retVal = -1;
-								}
-								else if (ctOrder1 > ctOrder2)
-								{
-									retVal = 1;
-								}
-							}
-							else if (IsConstraintTypeVisible(ct1))
-							{
-								// Constraints with less roles sink to the bottom.
-								int c1RoleCount = c1.RoleCollection.Count;
-								int c2RoleCount = c2.RoleCollection.Count;
-								if (c1RoleCount < c2RoleCount)
-								{
-									retVal = 1;
-								}
-								else if (c1RoleCount > c2RoleCount)
-								{
-									retVal = -1;
-								}
-							}
-						}
-
-						return retVal;
-					});
+				Array.Sort(boxes, 0, fullCount, ConstraintBoxComparer.Instance);
 				return CalculateSignificantCount(boxes, fullCount);
 			}
 			/// <summary>
@@ -554,7 +520,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool moveOccured = false;
 			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleOrderTransactionName))
 			{
-				RoleBaseMoveableCollection roles = EnsureDisplayOrderCollection();
+				LinkedElementCollection<RoleBase> roles = EnsureDisplayOrderCollection();
 				int index = roles.IndexOf(roleToMove);
 				if (index != 0 && movingLeft)
 				{
@@ -573,15 +539,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return moveOccured;
 		}
-		private RoleBaseMoveableCollection EnsureDisplayOrderCollection()
+		private LinkedElementCollection<RoleBase> EnsureDisplayOrderCollection()
 		{
-			RoleBaseMoveableCollection displayRoles = RoleDisplayOrderCollection;
+			LinkedElementCollection<RoleBase> displayRoles = RoleDisplayOrderCollection;
 			if (displayRoles.Count == 0)
 			{
 				FactType fact = AssociatedFactType;
 				if (fact != null)
 				{
-					RoleBaseMoveableCollection nativeRoles = fact.RoleCollection;
+					LinkedElementCollection<RoleBase> nativeRoles = fact.RoleCollection;
 					int nativeRoleCount = nativeRoles.Count;
 					for (int i = 0; i < nativeRoleCount; ++i)
 					{
@@ -596,11 +562,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// If there is not a custom display order then it will return the default
 		/// role collection.
 		/// </summary>
-		public RoleBaseMoveableCollection DisplayedRoleOrder
+		public LinkedElementCollection<RoleBase> DisplayedRoleOrder
 		{
 			get
 			{
-				RoleBaseMoveableCollection alternateOrder = RoleDisplayOrderCollection;
+				LinkedElementCollection<RoleBase> alternateOrder = RoleDisplayOrderCollection;
 				return (alternateOrder.Count == 0) ? AssociatedFactType.RoleCollection : alternateOrder;
 			}
 		}
@@ -611,31 +577,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
 		public static ReadingOrder FindMatchingReadingOrder(FactTypeShape theFact)
 		{
-			RoleBaseMoveableCollection factRoles = theFact.DisplayedRoleOrder;
+			LinkedElementCollection<RoleBase> factRoles = theFact.DisplayedRoleOrder;
 			RoleBase[] roleOrder = new RoleBase[factRoles.Count];
 			factRoles.CopyTo(roleOrder, 0);
 			return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
 		}
 		#region RoleDisplayOrderChanged class
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
+		private sealed class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
 				Role role;
 				if (null != (role = e.CounterpartRolePlayer as Role))
 				{
-					foreach (PresentationElement pElem in role.FactType.PresentationRolePlayers)
+					foreach (PresentationElement pElem in PresentationViewsSubject.GetPresentation(role.FactType))
 					{
 						FactTypeShape factShape;
 						if (null != (factShape = pElem as FactTypeShape))
 						{
-							foreach (LinkConnectsToNode connection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+							foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
 							{
 								BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
 								if (binaryLink != null)
 								{
-									binaryLink.RipUp();
+									binaryLink.RecalculateRoute();
 								}
 							}
 
@@ -737,7 +703,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// initialize variables
 			FactType parentFact = AssociatedFactType;
-			RoleBaseMoveableCollection factRoles = DisplayedRoleOrder;
+			LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
 			int factRoleCount = factRoles.Count;
 			if (fullBounds.IsEmpty)
 			{
@@ -773,7 +739,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							Role testRole = constraintRoles[i];
 							for (int j = 0; j < i; ++j)
 							{
-								if (object.ReferenceEquals(constraintRoles[j], testRole))
+								if (constraintRoles[j] == testRole)
 								{
 									++duplicateCount;
 									break;
@@ -793,7 +759,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									int j = 0;
 									for (; j < i; ++j)
 									{
-										if (object.ReferenceEquals(constraintRoles[j], testRole))
+										if (constraintRoles[j] == testRole)
 										{
 											break;
 										}
@@ -995,7 +961,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					//    use the center point that we would have if there were no extenal
 					//    bars and call this sufficient.
 					int externalsCount = significantConstraintCount - internalsCount;
-					double testVerticalPoint = Location.Y + mySpacerShapeField.GetMinimumHeight(this) + RoleBoxHeight / 2;
+					double testVerticalPoint = Location.Y + mySpacerShapeField.GetMinimumSize(this).Height + RoleBoxHeight / 2;
 					ORMDiagram diagram = Diagram as ORMDiagram;
 					if (currentDisplayPosition == ConstraintDisplayPosition.Top)
 					{
@@ -1176,21 +1142,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private const double RoleBoxWidth = 0.16;
 		private const double NestedFactHorizontalMargin = 0.09;
 		private const double NestedFactVerticalMargin = 0.056;
+		private static readonly SizeD NestedFactMarginSize = new SizeD(NestedFactHorizontalMargin, NestedFactVerticalMargin);
 		private const double ConstraintHeight = 0.07;
 		private const double ExternalConstraintBarCenterAdjust = ConstraintHeight / 5;
 		private const double BorderMargin = 0.05;
+		private static readonly SizeD BorderMarginSize = new SizeD(BorderMargin / 2, 0);
 		private const double FocusIndicatorInsideMargin = .019;
 		#endregion // Size Constants
 		#region SpacerShapeField : ShapeField
 		/// <summary>
 		/// Creates a shape to properly align the other shapefields within the FactTypeShape.
 		/// </summary>
-		private class SpacerShapeField : ShapeField
+		private sealed class SpacerShapeField : ShapeField
 		{
 			/// <summary>
 			/// Construct a default SpacerShapeField
 			/// </summary>
 			public SpacerShapeField()
+				: base(ResourceStrings.ShapeFieldName_HACK)
 			{
 				DefaultFocusable = false;
 				DefaultSelectable = false;
@@ -1198,33 +1167,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 
 			/// <summary>
-			/// Width is that of NestedFactHorizontalMargin if parentShape is objectified; otherwise, zero.
+			/// Returns <see cref="NestedFactMarginSize"/> if <see cref="FactTypeShape.ShouldDrawObjectified"/> is
+			/// <see langword="true"/> for <paramref name="parentShape"/>, otherwise <see cref="BorderMarginSize"/>.
 			/// </summary>
-			/// <returns>NestedFactHorizontalMargin if objectified; otherwise, 0.</returns>
-			public override double GetMinimumWidth(ShapeElement parentShape)
+			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
-				return (parentShape as FactTypeShape).ShouldDrawObjectified ? NestedFactHorizontalMargin : 0;
-			}
-
-			/// <summary>
-			/// Width is that of NestedFactVerticalMargin if parentShape is objectified; otherwise, zero.
-			/// </summary>
-			/// <returns>NestedFactVerticalMargin if objectified; otherwise, 0.</returns>
-			public override double GetMinimumHeight(ShapeElement parentShape)
-			{
-				return (parentShape as FactTypeShape).ShouldDrawObjectified ? NestedFactVerticalMargin : BorderMargin / 2;
+				return (parentShape as FactTypeShape).ShouldDrawObjectified ? NestedFactMarginSize : BorderMarginSize;
 			}
 
 			// Nothing to paint for the spacer. So, no DoPaint override needed.
-
 		}
 		#endregion // SpacerShapeField class
 		#region ConstraintShapeField : ShapeField
-		private class ConstraintShapeField : ShapeField
+		private sealed class ConstraintShapeField : ShapeField
 		{
-			private ConstraintDisplayPosition myDisplayPosition;
+			private readonly ConstraintDisplayPosition myDisplayPosition;
 
 			public ConstraintShapeField(ConstraintDisplayPosition displayPosition)
+				: base(ResourceStrings.ShapeFieldName_HACK)
 			{
 				DefaultFocusable = true;
 				DefaultSelectable = true;
@@ -1248,7 +1208,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="parentShape">The current FactTypeShape that the mouse is over.</param>
 			/// <param name="diagramHitTestInfo">The DiagramHitTestInfo to which the ConstraintSubShapField
 			/// will be added if the mouse is over it.</param>
-			public override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
+			public sealed override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
 			{
 				((FactTypeShape)parentShape).WalkConstraintBoxes(
 					this,
@@ -1270,7 +1230,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			/// <param name="parentShape">The current FactTypeShape to retrieve information for</param>
 			/// <returns>Total number of child items</returns>
-			public override int GetAccessibleChildCount(ShapeElement parentShape)
+			public sealed override int GetAccessibleChildCount(ShapeElement parentShape)
 			{
 				int total = 0;
 				((FactTypeShape)parentShape).WalkConstraintBoxes(
@@ -1289,7 +1249,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="parentShape">The current FactTypeShape to retrieve information for</param>
 			/// <param name="index">The 0-based index of the child to retrieve</param>
 			/// <returns>ShapeSubField for the specified constraint</returns>
-			public override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
+			public sealed override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
 			{
 				ShapeSubField retVal = null;
 				((FactTypeShape)parentShape).WalkConstraintBoxes(
@@ -1307,22 +1267,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 					});
 				return retVal;
 			}
-			/// <summary>
-			/// Get the minimum width of the ConstraintShapeField.
-			/// </summary>
-			/// <param name="parentShape">The FactTypeShape that this ConstraintShapeField is associated with.</param>
-			/// <returns>The width of the ConstraintShapeField.</returns>
-			public override double GetMinimumWidth(ShapeElement parentShape)
-			{
-				return RolesShape.GetMinimumWidth(parentShape);
-			}
 
 			/// <summary>
-			/// Get the minimum height of the ConstraintShapeField.
+			/// Gets the minimum <see cref="SizeD"/> of this <see cref="ConstraintShapeField"/>.
 			/// </summary>
-			/// <param name="parentShape">The FactTypeShape that this ConstraintShapeField is associated with.</param>
-			/// <returns>The height of the ConstraintShapeField.</returns>
-			public override double GetMinimumHeight(ShapeElement parentShape)
+			/// <param name="parentShape">The <see cref="FactTypeShape"/> that this <see cref="ConstraintShapeField"/> is associated with.</param>
+			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="ConstraintShapeField"/>.</returns>
+			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
 				double minY = double.MaxValue;
 				double maxY = double.MinValue;
@@ -1338,7 +1289,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						maxY = Math.Max(maxY, bounds.Bottom);
 						return true;
 					});
-				return wasVisited ? maxY - minY : 0;
+				return new SizeD(RolesShape.GetMinimumSize(parentShape).Width, wasVisited ? maxY - minY : 0);
 			}
 
 			/// <summary>
@@ -1346,7 +1297,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
 			/// <param name="parentShape">ConstraintShapeField to draw to.</param>
-			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
+			public sealed override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
 				FactTypeShape factShape = parentShape as FactTypeShape;
 				Graphics g = e.Graphics;
@@ -1364,7 +1315,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						foreach (DiagramItem item in highlightedShapes)
 						{
-							if (object.ReferenceEquals(factShape, item.Shape))
+							if (factShape == item.Shape)
 							{
 								if (item.SubField == null)
 								{
@@ -1427,7 +1378,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								UniquenessConstraint activeInternalConstraint = activeInternalAction.ActiveConstraint;
 								UniquenessConstraint targetConstraint = currentConstraint as UniquenessConstraint;
-								if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
+								if (activeInternalConstraint == targetConstraint)
 								{
 									isSticky = true;
 									constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
@@ -1438,7 +1389,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							ExternalConstraintShape externalConstraintShape = diagram.StickyObject as ExternalConstraintShape;
 							if (externalConstraintShape != null &&
-								object.ReferenceEquals(externalConstraintShape.AssociatedConstraint, currentConstraint))
+								externalConstraintShape.AssociatedConstraint == currentConstraint)
 							{
 								constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
 							}
@@ -1449,7 +1400,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							foreach (DiagramItem item in highlightedShapes)
 							{
-								if (object.ReferenceEquals(factShape, item.Shape))
+								if (factShape == item.Shape)
 								{
 									ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
 									if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
@@ -1702,10 +1653,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ConstraintShapeField class
 		#region ConstraintSubField class
-		private class ConstraintSubField : ShapeSubField
+		private sealed class ConstraintSubField : ORMBaseShapeSubField
 		{
 			#region Mouse handling
-			public override void OnDoubleClick(DiagramPointEventArgs e)
+			public sealed override void OnDoubleClick(DiagramPointEventArgs e)
 			{
 				if (ORMBaseShape.AttemptErrorActivation(e))
 				{
@@ -1720,7 +1671,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// Move on to the selection action
 					InternalUniquenessConstraintConnectAction iucca = diagram.InternalUniquenessConstraintConnectAction;
 					ActiveInternalUniquenessConstraintConnectAction = iucca;
-					RoleMoveableCollection roleColl = iuc.RoleCollection;
+					LinkedElementCollection<Role> roleColl = iuc.RoleCollection;
 					FactTypeShape factShape = e.DiagramHitTestInfo.HitDiagramItem.Shape as FactTypeShape;
 					if (roleColl.Count != 0)
 					{
@@ -1760,7 +1711,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Returns true if the fields have the same associated role
 			/// </summary>
-			public override bool SubFieldEquals(object obj)
+			public sealed override bool SubFieldEquals(object obj)
 			{
 				ConstraintSubField compareTo;
 				if (null != (compareTo = obj as ConstraintSubField))
@@ -1772,7 +1723,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Returns the hash code for the associated role
 			/// </summary>
-			public override int SubFieldHashCode
+			public sealed override int SubFieldHashCode
 			{
 				get
 				{
@@ -1783,7 +1734,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// A role sub field is always selectable, return true regardless of parameters
 			/// </summary>
 			/// <returns>true</returns>
-			public override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
+			public sealed override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
 			{
 				return true;
 			}
@@ -1791,7 +1742,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// A role sub field is always focusable, return true regardless of parameters
 			/// </summary>
 			/// <returns>true</returns>
-			public override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
+			public sealed override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
 			{
 				return true;
 			}
@@ -1802,7 +1753,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="parentShape">The containing FactTypeShape</param>
 			/// <param name="parentField">The containing shape field</param>
 			/// <returns>The vertical slice for this role</returns>
-			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
+			public sealed override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
 			{
 				return parentField.GetBounds(parentShape);
 			}
@@ -1826,12 +1777,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ConstraintSubField class
 		#region RolesShapeField class
-		private class RolesShapeField : ShapeField
+		private sealed class RolesShapeField : ShapeField
 		{
 			/// <summary>
 			/// Construct a default RolesShapeField (Visible, but not selectable or focusable)
 			/// </summary>
 			public RolesShapeField()
+				: base(ResourceStrings.ShapeFieldName_HACK)
 			{
 				DefaultFocusable = false;
 				DefaultSelectable = false;
@@ -1840,13 +1792,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Find the role sub shape at this location
 			/// </summary>
-			public override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
+			public sealed override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
 			{
 				RectangleD fullBounds = GetBounds(parentShape);
 				if (fullBounds.Contains(point))
 				{
 					FactTypeShape parentFactShape = parentShape as FactTypeShape;
-					RoleBaseMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
+					LinkedElementCollection<RoleBase> roles = parentFactShape.DisplayedRoleOrder;
 					int roleCount = roles.Count;
 					if (roleCount != 0)
 					{
@@ -1859,47 +1811,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Return the number of children in this shape field.
 			/// Maps to the number of roles on the FactTypeShape
 			/// </summary>
-			public override int GetAccessibleChildCount(ShapeElement parentShape)
+			public sealed override int GetAccessibleChildCount(ShapeElement parentShape)
 			{
 				return (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count;
 			}
 			/// <summary>
 			/// Return the RoleSubField corresponding to the role at the requested index
 			/// </summary>
-			public override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
+			public sealed override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
 			{
 				return new RoleSubField((parentShape as FactTypeShape).AssociatedFactType.RoleCollection[index]);
 			}
 			/// <summary>
-			/// Get the minimum width of this RolesShapeField.
+			/// Gets the minimum <see cref="SizeD"/> of this <see cref="RolesShapeField"/>.
 			/// </summary>
-			/// <param name="parentShape">The FactTypeShape associated with this RolesShapeField.</param>
-			/// <returns>The width of this RolesShapeField.</returns>
-			public override double GetMinimumWidth(ShapeElement parentShape)
+			/// <param name="parentShape">The <see cref="FactTypeShape"/> that this <see cref="RolesShapeField"/> is associated with.</param>
+			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="RolesShapeField"/>.</returns>
+			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
 				double margin = parentShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
-				return FactTypeShape.RoleBoxWidth * Math.Max(1, (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count) + margin;
-			}
-			/// <summary>
-			/// Get the minimum height of this RolesShapeField.
-			/// </summary>
-			/// <param name="parentShape">The FactTypeShape associated with this RolesShapeField.</param>
-			/// <returns>The height of this RolesShapeField.</returns>
-			public override double GetMinimumHeight(ShapeElement parentShape)
-			{
-				double margin = parentShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
-				return FactTypeShape.RoleBoxHeight + margin;
+				double width = FactTypeShape.RoleBoxWidth * Math.Max(1, (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count) + margin;
+				double height = FactTypeShape.RoleBoxHeight + margin;
+				return new SizeD(width, height);
 			}
 			/// <summary>
 			/// Paint the RolesShapeField
 			/// </summary>
 			/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
 			/// <param name="parentShape">FactTypeShape to draw to.</param>
-			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
+			public sealed override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
 				FactType factType = parentFactShape.AssociatedFactType;
-				RoleBaseMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
+				LinkedElementCollection<RoleBase> roles = parentFactShape.DisplayedRoleOrder;
 				int roleCount = roles.Count;
 				bool objectified = factType.NestingType != null;
 				if (roleCount > 0 || objectified)
@@ -1912,11 +1856,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 					bool factShapeHighlighted = false;
 					if (clientView != null)
 					{
-						FactTypeShape factShape = factType.PresentationRolePlayers[0] as FactTypeShape;
+						FactTypeShape factShape = PresentationViewsSubject.GetPresentation(factType)[0] as FactTypeShape;
 						selection = clientView.Selection;
 						foreach (DiagramItem item in clientView.HighlightedShapes)
 						{
-							if (object.ReferenceEquals(parentShape, item.Shape))
+							if (parentShape == item.Shape)
 							{
 								RoleSubField roleField = item.SubField as RoleSubField;
 								if (roleField != null)
@@ -2021,7 +1965,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									// Test to see if the diagram's StickyObject (which is an IConstraint) contains a reference to this role.
 									foreach (ConstraintRoleSequence c in currentRole.Role.ConstraintRoleSequenceCollection)
 									{
-										if (object.ReferenceEquals(c.Constraint, stickyConstraint))
+										if (c.Constraint == stickyConstraint)
 										{
 											sequence = c;
 											roleIsInStickyObject = true;
@@ -2055,7 +1999,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										{
 											if (null != (mcec = stickyConstraint as SetComparisonConstraint))
 											{
-												SetComparisonConstraintRoleSequenceMoveableCollection sequenceCollection = mcec.RoleSequenceCollection;
+												LinkedElementCollection<SetComparisonConstraintRoleSequence> sequenceCollection = mcec.RoleSequenceCollection;
 												int sequenceCollectionCount = sequenceCollection.Count;
 												for (int sequenceIndex = 0; sequenceIndex < sequenceCollectionCount; ++sequenceIndex)
 												{
@@ -2177,7 +2121,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="styleSet">The StyleSet of the shape we are drawing to.</param>
 			/// <param name="bounds">The bounds to draw as the highlight.</param>
 			/// <param name="active">Boolean indicating whether or not to draw highlight as active (ex: the mouse is currently over this highlight).</param>
-			protected static void DrawHighlight(Graphics g, StyleSet styleSet, RectangleF bounds, bool active)
+			private static void DrawHighlight(Graphics g, StyleSet styleSet, RectangleF bounds, bool active)
 			{
 				Brush brush = styleSet.GetBrush(RoleBoxResource);
 				Color startColor = default(Color);
@@ -2200,7 +2144,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // RolesShapeField class
 		#region RoleSubField class
-		private class RoleSubField : ShapeSubField
+		private sealed class RoleSubField : ORMBaseShapeSubField
 		{
 			#region Member variables
 			private RoleBase myAssociatedRole;
@@ -2219,7 +2163,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Returns true if the fields have the same associated role
 			/// </summary>
-			public override bool SubFieldEquals(object obj)
+			public sealed override bool SubFieldEquals(object obj)
 			{
 				RoleSubField compareTo;
 				if (null != (compareTo = obj as RoleSubField))
@@ -2231,18 +2175,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Returns the hash code for the associated role
 			/// </summary>
-			public override int SubFieldHashCode
+			public sealed override int SubFieldHashCode
 			{
 				get
 				{
-					return myAssociatedRole.GetHashCode();
+					RoleBase associatedRole = myAssociatedRole;
+					return (associatedRole != null) ? associatedRole.GetHashCode() : 0;
 				}
 			}
 			/// <summary>
 			/// A role sub field is always selectable, return true regardless of parameters
 			/// </summary>
 			/// <returns>true</returns>
-			public override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
+			public sealed override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
 			{
 				return true;
 			}
@@ -2250,7 +2195,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// A role sub field is always focusable, return true regardless of parameters
 			/// </summary>
 			/// <returns>true</returns>
-			public override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
+			public sealed override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
 			{
 				return true;
 			}
@@ -2261,11 +2206,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="parentShape">The containing FactTypeShape</param>
 			/// <param name="parentField">The containing shape field</param>
 			/// <returns>The vertical slice for this role</returns>
-			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
+			public sealed override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
 			{
 				RectangleD retVal = parentField.GetBounds(parentShape);
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
-				RoleBaseMoveableCollection roles = parentFactShape.DisplayedRoleOrder;
+				LinkedElementCollection<RoleBase> roles = parentFactShape.DisplayedRoleOrder;
 				retVal.Width /= roles.Count;
 				int roleIndex = roles.IndexOf(myAssociatedRole);
 				if (roleIndex > 0)
@@ -2276,14 +2221,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			#endregion // Required ShapeSubField
 			#region Mouse handling
-			public override void OnDoubleClick(DiagramPointEventArgs e)
+			public sealed override void OnDoubleClick(DiagramPointEventArgs e)
 			{
 				ORMBaseShape.AttemptErrorActivation(e);
 				base.OnDoubleClick(e);
 			}
 			#endregion // Mouse handling
 			#region DragDrop support
-			public override MouseAction GetPotentialMouseAction(MouseButtons mouseButtons, PointD point, DiagramHitTestInfo hitTestInfo)
+			public sealed override MouseAction GetPotentialMouseAction(MouseButtons mouseButtons, PointD point, DiagramHitTestInfo hitTestInfo)
 			{
 				if (mouseButtons == MouseButtons.Left)
 				{
@@ -2535,7 +2480,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// and contains our role boxes.
 		/// </summary>
 		/// <param name="shapeFields">Per-class collection of shape fields</param>
-		protected override void InitializeShapeFields(ShapeFieldCollection shapeFields)
+		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
 			base.InitializeShapeFields(shapeFields);
 
@@ -2613,10 +2558,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (rolesShape != null)
 				{
 					double width, height;
-					width = rolesShape.GetMinimumWidth(this);
-					height = rolesShape.GetMinimumHeight(this);
-					height += myTopConstraintShapeField.GetMinimumHeight(this);
-					height += myBottomConstraintShapeField.GetMinimumHeight(this);
+					SizeD rolesShapeSize = rolesShape.GetMinimumSize(this);
+					width = rolesShapeSize.Width;
+					height = rolesShapeSize.Height;
+					height += myTopConstraintShapeField.GetMinimumSize(this).Height;
+					height += myBottomConstraintShapeField.GetMinimumSize(this).Height;
 					if (!ShouldDrawObjectified)
 					{
 						width += BorderMargin;
@@ -2650,7 +2596,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Update the cached center position of the role box
 		/// </summary>
 		/// <param name="newSize">The new size of the fact, or SizeD.Empty. Allows a move/size with
-		/// a single action, resulting in a single transaction log entry for AbsoluteBounds attribute</param>
+		/// a single action, resulting in a single transaction log entry for AbsoluteBounds property</param>
 		/// <returns>true if the bounds were changed</returns>
 		private bool UpdateRolesPosition(SizeD newSize)
 		{
@@ -2684,7 +2630,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public static void ConstraintSetChanged(FactType factType, IConstraint constraint, bool roleChangeOnly)
 		{
 			Debug.Assert(factType.Store.TransactionManager.InTransaction);
-			foreach (PresentationElement pel in factType.PresentationRolePlayers)
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 			{
 				FactTypeShape factShape = pel as FactTypeShape;
 				if (factShape != null)
@@ -2714,12 +2660,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					if (resize)
 					{
-						foreach (LinkConnectsToNode connection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
 						{
 							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
 							if (binaryLink != null)
 							{
-								binaryLink.RipUp();
+								binaryLink.RecalculateRoute();
 							}
 						}
 						factShape.AutoResize();
@@ -2764,7 +2710,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					if ((activeExternalAction == null) ||
 						(-1 == activeExternalAction.GetActiveRoleIndex(role.Role)))
 					{
-						SetComparisonConstraintRoleSequenceMoveableCollection sequences = (mcec as SetComparisonConstraint).RoleSequenceCollection;
+						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = (mcec as SetComparisonConstraint).RoleSequenceCollection;
 						int sequenceCount = sequences.Count;
 						string formatString = ResourceStrings.SetConstraintStickyRoleTooltipFormatString;
 						for (int i = 0; i < sequenceCount; ++i)
@@ -2839,7 +2785,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				foreach (ShapeElement shape in this.RelativeChildShapes)
 				{
 					ReadingShape readingShape = shape as ReadingShape;
-					if (readingShape != null && !readingShape.IsRemoved)
+					if (readingShape != null && !readingShape.IsDeleted)
 					{
 						return false;
 					}
@@ -2848,7 +2794,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (element is Role)
 			{
 				Role role = element as Role;
-				foreach (PresentationElement pElement in role.FactType.PresentationRolePlayers)
+				foreach (PresentationElement pElement in PresentationViewsSubject.GetPresentation(role.FactType))
 				{
 					FactTypeShape fts = pElement as FactTypeShape;
 					if (fts != null)
@@ -2864,23 +2810,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return true;
 		}
 		/// <summary>
-		/// An object type is displayed as an ObjectTypeShape unless it is
-		/// objectified, in which case we display it as an ObjectifiedFactTypeNameShape
-		/// </summary>
-		/// <param name="element">The element to test. Expecting an ObjectType.</param>
-		/// <param name="shapeTypes">The choice of shape types</param>
-		/// <returns></returns>
-		protected override MetaClassInfo ChooseShape(ModelElement element, IList shapeTypes)
-		{
-			Guid classId = element.MetaClassId;
-			if (classId == ObjectType.MetaClassGuid)
-			{
-				return ORMDiagram.ChooseShapeTypeForObjectType((ObjectType)element, shapeTypes);
-			}
-			Debug.Assert(false); // We're only expecting an ObjectType here
-			return base.ChooseShape(element, shapeTypes);
-		}
-		/// <summary>
 		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, RoleNameShape, or ValueConstraintShape a
 		/// relative child element.
 		/// </summary>
@@ -2892,296 +2821,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return RelationshipType.Relative;
 		}
 		#endregion // Customize appearance
-		#region Customize property display
-		#region Reusable helper class for custom property descriptor creation
-		/// <summary>
-		/// A helper class to enable an object to be displayed as expandable,
-		/// and have one string attribute specified as an editable string.
-		/// </summary>
-		private abstract class ExpandableStringConverter : ExpandableObjectConverter
-		{
-			/// <summary>
-			/// Allow conversion from a string
-			/// </summary>
-			/// <param name="context">ITypeDescriptorContext</param>
-			/// <param name="sourceType">Type</param>
-			/// <returns>true for a string type</returns>
-			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-			{
-				return sourceType == typeof(string);
-			}
-			/// <summary>
-			/// Allow conversion to a string. Note that the base class
-			/// handles the ConvertTo function for us.
-			/// </summary>
-			/// <param name="context">ITypeDescriptorContext</param>
-			/// <param name="destinationType">Type</param>
-			/// <returns>true for a stirng type</returns>
-			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-			{
-				return destinationType == typeof(string);
-			}
-			/// <summary>
-			/// Convert from a string to the specified string
-			/// meta attribute on the context element.
-			/// </summary>
-			/// <param name="context">ITypeDescriptorContext</param>
-			/// <param name="culture">CultureInfo</param>
-			/// <param name="value">New value for the attribute</param>
-			/// <returns>context.Instance for a string value, defers to base otherwise</returns>
-			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-			{
-				string stringValue = value as string;
-				Guid primaryStringGuid = PrimaryStringAttributeId;
-				if (primaryStringGuid == Guid.Empty)
-				{
-					return "";
-				}
-				else if (stringValue != null)
-				{
-					object instance = context.Instance;
-					ModelElement element = ConvertContextToElement(context);
-					if (element != null)
-					{
-						MetaAttributeInfo attrInfo = element.Store.MetaDataDirectory.FindMetaAttribute(primaryStringGuid);
-						// This will recurse when the property descriptor is changed because the
-						// transaction close will refresh the property browser. Make sure we don't
-						// fire a second SetValue here so we only get one item on the undo stack.
-						if (stringValue != (string)element.GetAttributeValue(attrInfo))
-						{
-							// We want exactly the same result as achieved by setting
-							// the property directly in the property grid, so create a property
-							// descriptor to do the actual work of setting the property inside
-							// a transaction.
-							element.CreatePropertyDescriptor(attrInfo, element).SetValue(element, stringValue);
-						}
-					}
-					return instance;
-				}
-				else
-				{
-					return base.ConvertFrom(context, culture, value);
-				}
-			}
-			/// <summary>
-			/// Override to retrieve the ModelElement to modify from the context
-			/// information.
-			/// </summary>
-			/// <param name="context">ITypeDescriptorContext</param>
-			/// <returns>ModelElement</returns>
-			protected abstract ModelElement ConvertContextToElement(ITypeDescriptorContext context);
-			/// <summary>
-			/// Override to specify the string property to represent
-			/// as the string value for the object. Defaults to
-			/// NamedElement.NameMetaAttributeGuid.
-			/// </summary>
-			/// <value></value>
-			protected virtual Guid PrimaryStringAttributeId
-			{
-				get
-				{
-					return NamedElement.NameMetaAttributeGuid;
-				}
-			}
-		}
-		/// <summary>
-		/// A property descriptor implementation to
-		/// use a ModelElement as an attribute
-		/// in the property grid. Use with a realized
-		/// ExpandableStringConverter instance to create
-		/// an expandable property with an editable text field.
-		/// </summary>
-		private class HeaderDescriptor : PropertyDescriptor
-		{
-			private ModelElement myWrappedElement;
-			private TypeConverter myConverter;
-			/// <summary>
-			/// Create a descriptor for the specified element and
-			/// type converter.
-			/// </summary>
-			/// <param name="wrapElement">ModelElement</param>
-			/// <param name="converter">TypeConverter (can be null)</param>
-			public HeaderDescriptor(ModelElement wrapElement, TypeConverter converter)
-				: base(wrapElement.GetComponentName(), new Attribute[] { })
-			{
-				myWrappedElement = wrapElement;
-				myConverter = converter;
-			}
-			/// <summary>
-			/// Return the converter specified in the constructor
-			/// </summary>
-			public override TypeConverter Converter
-			{
-				get
-				{
-					return myConverter;
-				}
-			}
-			/// <summary>
-			/// Use the underlying class name as the display name
-			/// </summary>
-			public override string DisplayName
-			{
-				get { return myWrappedElement.GetClassName(); }
-			}
-			/// <summary>
-			/// Return this object as the component type
-			/// </summary>
-			public override Type ComponentType
-			{
-				get { return typeof(HeaderDescriptor); }
-			}
-			/// <summary>
-			/// Returns false
-			/// </summary>
-			public override bool IsReadOnly
-			{
-				get { return false; }
-			}
-			/// <summary>
-			/// Specify the type of the wrapped element
-			/// as the PropertyType
-			/// </summary>
-			public override Type PropertyType
-			{
-				get { return myWrappedElement.GetType(); }
-			}
-			/// <summary>
-			/// Disallow resetting the value
-			/// </summary>
-			/// <param name="component">object</param>
-			/// <returns>false</returns>
-			public override bool CanResetValue(object component)
-			{
-				return false;
-			}
-			/// <summary>
-			/// Return the wrapped element as the property value
-			/// </summary>
-			/// <param name="component">object (ignored)</param>
-			/// <returns>wrapElement value specified in constructor</returns>
-			public override object GetValue(object component)
-			{
-				return myWrappedElement;
-			}
-			/// <summary>
-			/// Do not serialize
-			/// </summary>
-			/// <param name="component"></param>
-			/// <returns></returns>
-			public override bool ShouldSerializeValue(object component)
-			{
-				return false;
-			}
-			/// <summary>
-			/// Do not reset
-			/// </summary>
-			/// <param name="component"></param>
-			public override void ResetValue(object component)
-			{
-			}
-			/// <summary>
-			/// Do nothing. All value setting in this case
-			/// is done by the type converter.
-			/// </summary>
-			/// <param name="component">object</param>
-			/// <param name="value">object</param>
-			public override void SetValue(object component, object value)
-			{
-			}
-		}
-		#endregion //Reusable helper class for custom property descriptor creation
-		#region Nested FactType-specific type converters
-		/// <summary>
-		/// A type converter for showing the raw fact type
-		/// as an expandable property in a nested fact type.
-		/// </summary>
-		private class ObjectifiedFactPropertyConverter : ExpandableStringConverter
-		{
-			public static readonly TypeConverter Converter = new ObjectifiedFactPropertyConverter();
-			private ObjectifiedFactPropertyConverter() { }
-			/// <summary>
-			/// Convert from a FactTypeShape to a FactType
-			/// </summary>
-			/// <param name="context">ITypeDescriptorContext</param>
-			/// <returns></returns>
-			protected override ModelElement ConvertContextToElement(ITypeDescriptorContext context)
-			{
-				FactTypeShape shape = context.Instance as FactTypeShape;
-				FactType factType;
-				if (null != (shape = context.Instance as FactTypeShape) &&
-					null != (factType = shape.AssociatedFactType))
-				{
-					return factType;
-				}
-				return null;
-			}
-			/// <summary>
-			/// Nothing useful to show here
-			/// </summary>
-			protected override Guid PrimaryStringAttributeId
-			{
-				get
-				{
-					return FactType.NameMetaAttributeGuid;
-				}
-			}
-		}
-		/// <summary>
-		/// A type converter for showing the nesting type
-		/// as an expandable property in a nested fact type.
-		/// </summary>
-		private class ObjectifyingEntityTypePropertyConverter : ExpandableStringConverter
-		{
-			public static readonly TypeConverter Converter = new ObjectifyingEntityTypePropertyConverter();
-			private ObjectifyingEntityTypePropertyConverter() { }
-			/// <summary>
-			/// Convert from a FactTypeShape to the nesting EntityType
-			/// </summary>
-			/// <param name="context">ITypeDescriptorContext</param>
-			/// <returns></returns>
-			protected override ModelElement ConvertContextToElement(ITypeDescriptorContext context)
-			{
-				FactTypeShape shape = context.Instance as FactTypeShape;
-				FactType factType;
-				if (null != (shape = context.Instance as FactTypeShape) &&
-					null != (factType = shape.AssociatedFactType))
-				{
-					return factType.NestingType;
-				}
-				return null;
-			}
-		}
-		#endregion // Nested FactType-specific type converters
-		/// <summary>
-		/// Show selected properties from the nesting type and the
-		/// fact type for an objectified type, as well as expandable
-		/// nodes for each of the underlying instances.
-		/// </summary>
-		/// <param name="attributes"></param>
-		/// <returns></returns>
-		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
-		{
-			FactType factType = AssociatedFactType;
-			if (ShouldDrawObjectification(factType))
-			{
-				ObjectType nestingType = factType.NestingType;
-				MetaDataDirectory metaDir = factType.Store.MetaDataDirectory;
-				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
-					this.CreatePropertyDescriptor(metaDir.FindMetaAttribute(FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid), this),
-					this.CreatePropertyDescriptor(metaDir.FindMetaAttribute(FactTypeShape.DisplayRoleNamesMetaAttributeGuid), this), 
-					nestingType.CreatePropertyDescriptor(metaDir.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), nestingType),
-					nestingType.CreatePropertyDescriptor(metaDir.FindMetaAttribute(ObjectType.IsIndependentMetaAttributeGuid), nestingType),
-					new HeaderDescriptor(factType, ObjectifiedFactPropertyConverter.Converter),
-					new HeaderDescriptor(nestingType, ObjectifyingEntityTypePropertyConverter.Converter),
-					});
-			}
-			else
-			{
-				return base.GetProperties(attributes);
-			}
-		}
-		#endregion // Customize property display
 		#region Accessibility Settings
 		/// <summary>
 		/// Get the accessible name for a shape field
@@ -3248,7 +2887,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (null != (rangeShape = oppositeShape as ValueConstraintShape))
 			{
 				factType = AssociatedFactType;
-				RoleBaseMoveableCollection factRoles = DisplayedRoleOrder;
+				LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
 				factRoleCount = factRoles.Count;
 				roleIndex = factRoles.IndexOf(((RoleValueConstraint)rangeShape.AssociatedValueConstraint).Role);
 			}
@@ -3260,15 +2899,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					SetConstraint scec;
 					SetComparisonConstraint mcec = null;
-					IList factConstraints = null;
+					ReadOnlyCollection<ElementLink> factConstraints = null;
 					IList<Role> roles = null;
 					if (null != (scec = constraint as SetConstraint))
 					{
-						factConstraints = scec.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid);
+						factConstraints = DomainRoleInfo.GetElementLinks<ElementLink>(scec, FactSetConstraint.SetConstraintDomainRoleId);
 					}
 					else if (null != (mcec = constraint as SetComparisonConstraint))
 					{
-						factConstraints = mcec.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid);
+						factConstraints = DomainRoleInfo.GetElementLinks<ElementLink>(mcec, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
 					}
 					if (factConstraints != null)
 					{
@@ -3276,7 +2915,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						for (int i = 0; i < factConstraintCount; ++i)
 						{
 							IFactConstraint factConstraint = (IFactConstraint)factConstraints[i];
-							if (object.ReferenceEquals(factConstraint.FactType, factType))
+							if (factConstraint.FactType == factType)
 							{
 								roles = factConstraint.RoleCollection;
 								break;
@@ -3291,7 +2930,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								RoleBaseMoveableCollection factRoles;
+								LinkedElementCollection<RoleBase> factRoles;
 								int roleCount = roles.Count;
 								int role1Index = 1;
 								switch (roleCount)
@@ -3305,7 +2944,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										{
 											Role role0 = roles[0];
 											Role role1 = roles[role1Index];
-											if (mcec != null && object.ReferenceEquals(role0, role1))
+											if (mcec != null && role0 == role1)
 											{
 												// Handle overlapping role sequences
 												goto case 1;
@@ -3345,13 +2984,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 												Role testRole = roles[i];
 												if (role1 == null)
 												{
-													if (!object.ReferenceEquals(testRole, role0))
+													if (testRole != role0)
 													{
 														role1Index = i;
 														role1 = testRole;
 													}
 												}
-												else if (!object.ReferenceEquals(testRole, role0) && !object.ReferenceEquals(testRole, role1))
+												else if (testRole != role0 && testRole != role1)
 												{
 													haveThirdRole = true;
 													break;
@@ -3379,7 +3018,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			if (factType != null && objectType != null)
 			{
-				RoleBaseMoveableCollection roles = DisplayedRoleOrder;
+				LinkedElementCollection<RoleBase> roles = DisplayedRoleOrder;
 				factRoleCount = roles.Count;
 				RoleBase role = null;
 				ORMDiagram parentDiagram = (ORMDiagram)Diagram;
@@ -3388,8 +3027,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RolePlayerLink firstLinkShape = null;
 				RolePlayerLink linkShape = null;
 				bool recordMatch = false;
-				Dictionary<FactTypeShape, Collection<RolePlayerLink>> linksDictionary = ConnectedLinksContextDictionary;
-				Collection<RolePlayerLink> processedLinks = null;
+				Dictionary<FactTypeShape, List<RolePlayerLink>> linksDictionary = ConnectedLinksContextDictionary;
+				List<RolePlayerLink> processedLinks = null;
 				for (int i = 0; i < factRoleCount; ++i)
 				{
 					// UNDONE: MSBUG Note that this where the data passed to DoFoldToShape
@@ -3402,11 +3041,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// or make them selectable. The code here includes the RolePlayerLink.RolePlayerRemoving
 					// and the RolePlayeLink.HasBeenConnected properties.
 					role = roles[i];
-					IList rolePlayerLinks = role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+					ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
 					if (rolePlayerLinks.Count != 0)
 					{
-						ObjectTypePlaysRole rolePlayerLink = (ObjectTypePlaysRole)rolePlayerLinks[0];
-						if (object.ReferenceEquals(rolePlayerLink.RolePlayer, objectType))
+						ObjectTypePlaysRole rolePlayerLink = rolePlayerLinks[0];
+						if (rolePlayerLink.RolePlayer == objectType)
 						{
 							if (firstIndex == -1)
 							{
@@ -3577,12 +3216,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		// Code to track which links have already been returned during this walk
 		private static object ConnectedLinksContextDictionaryKey = new object();
-		private Dictionary<FactTypeShape, Collection<RolePlayerLink>> ConnectedLinksContextDictionary
+		private Dictionary<FactTypeShape, List<RolePlayerLink>> ConnectedLinksContextDictionary
 		{
 			get
 			{
 				Store store = Store;
-				return store.TransactionActive ? (Dictionary<FactTypeShape, Collection<RolePlayerLink>>)store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ConnectedLinksContextDictionaryKey] : null;
+				if (store.TransactionActive)
+				{
+					object connectedLinksContextDictionary;
+					store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(ConnectedLinksContextDictionaryKey, out connectedLinksContextDictionary);
+					return (Dictionary<FactTypeShape, List<RolePlayerLink>>)connectedLinksContextDictionary;
+				}
+				return null;
 			}
 			set
 			{
@@ -3590,22 +3235,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ConnectedLinksContextDictionaryKey] = value;
 			}
 		}
-		private void EnsureLinksDictionary(ref Dictionary<FactTypeShape, Collection<RolePlayerLink>> linksDictionary, ref Collection<RolePlayerLink> processedLinks)
+		private void EnsureLinksDictionary(ref Dictionary<FactTypeShape, List<RolePlayerLink>> linksDictionary, ref List<RolePlayerLink> processedLinks)
 		{
 			if (processedLinks == null)
 			{
 				if (linksDictionary == null)
 				{
-					Debug.Assert(ConnectedLinksContextDictionary == null, "Attempt to retrieve the dictionary  before creating it");
-					linksDictionary = new Dictionary<FactTypeShape, Collection<RolePlayerLink>>();
-					linksDictionary[this] = processedLinks = new Collection<RolePlayerLink>();
+					Debug.Assert(ConnectedLinksContextDictionary == null, "Attempt to retrieve the dictionary before creating it");
+					linksDictionary = new Dictionary<FactTypeShape, List<RolePlayerLink>>();
+					linksDictionary[this] = processedLinks = new List<RolePlayerLink>();
 					ConnectedLinksContextDictionary = linksDictionary;
 				}
 				else
 				{
 					if (!linksDictionary.TryGetValue(this, out processedLinks))
 					{
-						linksDictionary[this] = processedLinks = new Collection<RolePlayerLink>();
+						linksDictionary[this] = processedLinks = new List<RolePlayerLink>();
 					}
 				}
 			}
@@ -3774,7 +3419,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						ActiveInternalUniquenessConstraintConnectAction = connectAction;
 						if (addActiveRoles)
 						{
-							RoleMoveableCollection roleColl = activateConstraint.RoleCollection;
+							LinkedElementCollection<Role> roleColl = activateConstraint.RoleCollection;
 							if (roleColl.Count != 0)
 							{
 								IList<Role> selectedRoles = connectAction.SelectedRoleCollection;
@@ -3803,7 +3448,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					role.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(Role.ValueRangeTextMetaAttributeGuid), this),
+					ORMTypeDescriptor.CreatePropertyDescriptor(role, Role.ValueRangeTextDomainPropertyId),
 					false);
 			}
 			return retVal;
@@ -3847,7 +3492,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public static bool ShouldDrawObjectification(Objectification objectification)
 		{
 			ObjectType nestingType;
-			if (objectification == null || (!(nestingType = objectification.NestingType).IsRemoved && nestingType.Model == null))
+			if (objectification == null || (!(nestingType = objectification.NestingType).IsDeleted && nestingType.Model == null))
 			{
 				return false;
 			}
@@ -4012,7 +3657,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			Debug.Assert(role.FactType == AssociatedFactType);
 			FactType factType = role.FactType;
-			RoleBaseMoveableCollection roles = DisplayedRoleOrder;
+			LinkedElementCollection<RoleBase> roles = DisplayedRoleOrder;
 			int roleCount = roles.Count;
 			if (roleCount != 0)
 			{
@@ -4090,7 +3735,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (objectification != null)
 						{
 							bool requireMultiple = false;
-							if (!object.ReferenceEquals(objectification.NestedFactType, currentConstraint.FactTypeCollection[0]))
+							if (objectification.NestedFactType != currentConstraint.FactTypeCollection[0])
 							{
 								retVal = true;
 							}
@@ -4118,7 +3763,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									foreach (UniquenessConstraint testConstraint in currentConstraint.FactTypeCollection[0].GetInternalConstraints<UniquenessConstraint>())
 									{
-										if (!object.ReferenceEquals(currentConstraint, testConstraint))
+										if (currentConstraint != testConstraint)
 										{
 											retVal = true;
 											break;
@@ -4139,7 +3784,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class SwitchToNestedFact : AddRule
+		private sealed class SwitchToNestedFact : AddRule
 		{
 			public static void ProcessObjectification(Objectification link)
 			{
@@ -4149,13 +3794,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
 				if (!ShouldDrawObjectification(link))
 				{
-					nestingType.PresentationRolePlayers.Clear();
+					PresentationViewsSubject.GetPresentation(nestingType).Clear();
 					return;
 				}
 
 				// Part1: Make sure the fact shape is visible on any diagram where the
 				// corresponding nestingType is displayed
-				foreach (PresentationElement pel in nestingType.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestingType))
 				{
 					ObjectTypeShape objectShape = pel as ObjectTypeShape;
 					if (objectShape != null)
@@ -4175,13 +3820,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 
 				// Part2: Move any links from the object type to the fact type
-				foreach (ObjectTypePlaysRole modelLink in nestingType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid))
+				foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
 				{
-					Role playedRole = modelLink.PlayedRoleCollection;
+					Role playedRole = modelLink.PlayedRole;
 					SubtypeFact subType = playedRole.FactType as SubtypeFact;
 					if (subType != null)
 					{
-						foreach (object obj in subType.PresentationRolePlayers)
+						foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(subType))
 						{
 							SubtypeLink subtypeLink = obj as SubtypeLink;
 							if (subtypeLink != null)
@@ -4190,13 +3835,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 								NodeShape factShape = currentDiagram.FindShapeForElement<NodeShape>(nestedFactType);
 								if (factShape != null)
 								{
-									if (object.ReferenceEquals(playedRole, subType.SupertypeRole))
+									if (playedRole == subType.SupertypeRole)
 									{
 										subtypeLink.ToShape = factShape;
 									}
 									else
 									{
-										Debug.Assert(object.ReferenceEquals(playedRole, subType.SubtypeRole));
+										Debug.Assert(playedRole == subType.SubtypeRole);
 										subtypeLink.FromShape = factShape;
 									}
 								}
@@ -4204,14 +3849,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									// Backup. Should only happen if the FixupDiagram call in part 1
 									// did not add the fact type.
-									subtypeLink.Remove();
+									subtypeLink.Delete();
 								}
 							}
 						}
 					}
 					else
 					{
-						foreach (object obj in modelLink.PresentationRolePlayers)
+						foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(modelLink))
 						{
 							RolePlayerLink rolePlayer = obj as RolePlayerLink;
 							if (rolePlayer != null)
@@ -4226,7 +3871,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									// Backup. Should only happen if the FixupDiagram call in part 1
 									// did not add the fact type.
-									rolePlayer.Remove();
+									rolePlayer.Delete();
 								}
 							}
 						}
@@ -4238,11 +3883,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// players doesn't blow the labels away. Also, FixUpDiagram will attempt
 				// to fix up the existing shapes instead of creating new ones if the existing
 				// ones are not cleared away.
-				nestingType.PresentationRolePlayers.Clear();
+				PresentationViewsSubject.GetPresentation(nestingType).Clear();
 
 				// Part4: Resize the fact type wherever it is displayed and add the
 				// labels for the fact type display.
-				foreach (PresentationElement pel in nestedFactType.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
 				{
 					FactTypeShape shape = pel as FactTypeShape;
 					if (shape != null)
@@ -4252,21 +3897,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ProcessObjectification(e.ModelElement as Objectification);
 			}
 		}
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class SwitchFromNestedFact : RemoveRule
+		private sealed class SwitchFromNestedFact : DeleteRule
 		{
 			public static void ProcessObjectification(Objectification link, bool switchingToImplied)
 			{
 				FactType nestedFactType = link.NestedFactType;
 				ObjectType nestingType = link.NestingType;
 
-				bool nestingTypeRemoved = nestingType.IsRemoved;
-				bool nestedFactTypeRemoved = nestedFactType.IsRemoved;
+				bool nestingTypeRemoved = nestingType.IsDeleted;
+				bool nestedFactTypeRemoved = nestedFactType.IsDeleted;
 
 				if (nestingTypeRemoved && nestedFactTypeRemoved)
 				{
@@ -4281,20 +3926,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						// If we're just removing the fact, then we need to readd the normal object shape
 						Store store = nestingType.Store;
-						IList pels = nestingType.PresentationRolePlayers;
+						IList<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
 						int pelCount = pels.Count;
 						for (int i = pelCount - 1; i >= 0; --i)
 						{
 							ObjectifiedFactTypeNameShape oldShape;
 							ORMDiagram shapeDiagram;
 							if (null != (oldShape = pels[i] as ObjectifiedFactTypeNameShape) &&
-								!oldShape.IsRemoved &&
+								!oldShape.IsDeleted &&
 								null != (shapeDiagram = oldShape.Diagram as ORMDiagram))
 							{
-								ObjectTypeShape newShape = ObjectTypeShape.CreateObjectTypeShape(store);
+								ObjectTypeShape newShape = new ObjectTypeShape(store);
 								shapeDiagram.NestedChildShapes.Add(newShape);
 								newShape.AbsoluteBounds = oldShape.AbsoluteBoundingBox;
-								oldShape.Remove();
+								oldShape.Delete();
 								newShape.Associate(nestingType);
 								newShape.AutoResize();
 							}
@@ -4302,7 +3947,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else
 					{
-						nestingType.PresentationRolePlayers.Clear();
+						PresentationViewsSubject.GetPresentation(nestingType).Clear();
 					}
 				}
 
@@ -4311,7 +3956,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMModel nestingTypeModel = nestingTypeRemoved ? null : nestingType.Model;
 				if (!nestedFactTypeRemoved)
 				{
-					foreach (PresentationElement pel in nestedFactType.PresentationRolePlayers)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(nestedFactType))
 					{
 						FactTypeShape factShape = pel as FactTypeShape;
 						if (factShape != null)
@@ -4343,9 +3988,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// since there won't be any object type shape.
 				if (!nestingTypeRemoved && !switchingToImplied)
 				{
-					foreach (ObjectTypePlaysRole modelLink in nestingType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid))
+					foreach (ObjectTypePlaysRole modelLink in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(nestingType, ObjectTypePlaysRole.RolePlayerDomainRoleId))
 					{
-						Role playedRole = modelLink.PlayedRoleCollection;
+						Role playedRole = modelLink.PlayedRole;
 						SubtypeFact subType = playedRole.FactType as SubtypeFact;
 						if (subType != null)
 						{
@@ -4355,7 +4000,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								foreach (object obj in subType.PresentationRolePlayers)
+								foreach (PresentationElement obj in PresentationViewsSubject.GetPresentation(subType))
 								{
 									SubtypeLink subtypeLink = obj as SubtypeLink;
 									if (subtypeLink != null)
@@ -4364,13 +4009,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 										NodeShape objShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
 										if (objShape != null)
 										{
-											if (object.ReferenceEquals(playedRole, subType.SupertypeRole))
+											if (playedRole == subType.SupertypeRole)
 											{
 												subtypeLink.ToShape = objShape;
 											}
 											else
 											{
-												Debug.Assert(object.ReferenceEquals(playedRole, subType.SubtypeRole));
+												Debug.Assert(playedRole == subType.SubtypeRole);
 												subtypeLink.FromShape = objShape;
 											}
 										}
@@ -4378,7 +4023,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										{
 											// Backup. Should only happen if the FixupDiagram call in part 1
 											// did not add the fact type.
-											subtypeLink.Remove();
+											subtypeLink.Delete();
 										}
 									}
 								}
@@ -4392,7 +4037,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								foreach (RolePlayerLink rolePlayer in modelLink.PresentationRolePlayers)
+								foreach (RolePlayerLink rolePlayer in PresentationViewsSubject.GetPresentation(modelLink))
 								{
 									NodeShape objShape = (rolePlayer.Diagram as ORMDiagram).FindShapeForElement<NodeShape>(nestingType);
 									if (objShape != null)
@@ -4401,7 +4046,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 									else
 									{
-										rolePlayer.Remove();
+										rolePlayer.Delete();
 									}
 								}
 							}
@@ -4409,7 +4054,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				Objectification link = e.ModelElement as Objectification;
 				// If the objectification was not being drawn, we don't need to do anything
@@ -4421,11 +4066,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(Objectification))]
-		private class ObjectificationIsImpliedChangeRule : ChangeRule
+		private sealed class ObjectificationIsImpliedChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == Objectification.IsImpliedMetaAttributeGuid)
+				if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId)
 				{
 					if ((bool)e.OldValue)
 					{
@@ -4450,22 +4095,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#region ConstraintDisplayPositionChangeRule class
 		[RuleOn(typeof(FactTypeShape))]
-		private class ConstraintDisplayPositionChangeRule : ChangeRule
+		private sealed class ConstraintDisplayPositionChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == ConstraintDisplayPositionMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == ConstraintDisplayPositionDomainPropertyId)
 				{
 					FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
-					if (!factTypeShape.IsRemoved)
+					if (!factTypeShape.IsDeleted)
 					{
-						foreach (LinkConnectsToNode connection in factTypeShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factTypeShape, LinkConnectsToNode.NodesDomainRoleId))
 						{
 							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
 							if (binaryLink != null)
 							{
-								binaryLink.RipUp();
+								binaryLink.RecalculateRoute();
 							}
 						}
 						factTypeShape.AutoResize();
@@ -4481,20 +4126,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when an external constraint shape is moved.
 		/// </summary>
 		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.LocalCommit)]
-		private class ExternalConstraintShapeChangeRule : ChangeRule
+		private sealed class ExternalConstraintShapeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == ExternalConstraintShape.AbsoluteBoundsMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == ExternalConstraintShape.AbsoluteBoundsDomainPropertyId)
 				{
 					ExternalConstraintShape externalConstraintShape = e.ModelElement as ExternalConstraintShape;
-					if (!externalConstraintShape.IsRemoved)
+					if (!externalConstraintShape.IsDeleted)
 					{
-						foreach (LinkConnectsToNode connection in externalConstraintShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+						foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(externalConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
 						{
 							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
-							if (binaryLink != null && !binaryLink.IsRemoved)
+							if (binaryLink != null && !binaryLink.IsDeleted)
 							{
 								Debug.Assert(binaryLink.ToShape == externalConstraintShape);
 								FactTypeShape factShape = binaryLink.FromShape as FactTypeShape;
@@ -4507,7 +4152,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									{
 										ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
 										bool constraintBarVisible;
-										RoleBaseMoveableCollection factRoles = null;
+										LinkedElementCollection<RoleBase> factRoles = null;
 										switch (roles.Count)
 										{
 											case 0:
@@ -4521,7 +4166,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 													// Handle possible duplicates in IFactConstraint.RoleCollection
 													Role role0 = roles[0];
 													Role role1 = roles[1];
-													if (object.ReferenceEquals(role0, role1))
+													if (role0 == role1)
 													{
 														goto case 1;
 													}
@@ -4561,12 +4206,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 											}
 											// All links going into the FactTypeShape are
 											// suspect, get rid of all of them.
-											foreach (LinkConnectsToNode factConnection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+											foreach (LinkConnectsToNode factConnection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(factShape, LinkConnectsToNode.NodesDomainRoleId))
 											{
 												BinaryLinkShape binaryLinkToFact = factConnection.Link as BinaryLinkShape;
-												if (binaryLinkToFact != null && !object.ReferenceEquals(binaryLink, binaryLinkToFact))
+												if (binaryLinkToFact != null && binaryLink != binaryLinkToFact)
 												{
-													binaryLinkToFact.RipUp();
+													binaryLinkToFact.RecalculateRoute();
 												}
 											}
 											if (!resized)
@@ -4589,12 +4234,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when the shape changes.
 		/// </summary>
 		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class FactTypeShapeChangeRule : ChangeRule
+		private sealed class FactTypeShapeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.MetaAttribute.Id;
-				if (attributeId == FactTypeShape.AbsoluteBoundsMetaAttributeGuid)
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == FactTypeShape.AbsoluteBoundsDomainPropertyId)
 				{
 					FactTypeShape parentShape = e.ModelElement as FactTypeShape;
 					RectangleD oldBounds = (RectangleD)e.OldValue;
@@ -4607,7 +4252,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					bool checkY = !VGConstants.FuzzZero(yChange, VGConstants.FuzzDistance);
 					if (checkX || checkY)
 					{
-						ShapeElementMoveableCollection childShapes = parentShape.RelativeChildShapes;
+						LinkedElementCollection<ShapeElement> childShapes = parentShape.RelativeChildShapes;
 						int childCount = childShapes.Count;
 						if (childCount != 0)
 						{
@@ -4649,9 +4294,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static void UpdateDotDisplayOnMandatoryConstraintChange(Role role)
 		{
-			foreach (ModelElement mel in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+			foreach (ModelElement mel in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
 			{
-				foreach (PresentationElement pel in mel.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(mel))
 				{
 					ShapeElement shape = pel as ShapeElement;
 					if (shape != null)
@@ -4666,47 +4311,47 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static new void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(UniquenessConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(UniquenessConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Add(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
 		public static new void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(UniquenessConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(UniquenessConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Remove(attributeInfo, new EventHandler<ElementPropertyChangedEventArgs>(InternalConstraintChangedEvent));
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
 		}
 		/// <summary>
 		/// Update the link displays when the modality of an internal uniqueness constraint changes
 		/// </summary>
-		private static void InternalConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void InternalConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			UniquenessConstraint iuc = e.ModelElement as UniquenessConstraint;
-			FactTypeMoveableCollection factTypes;
+			LinkedElementCollection<FactType> factTypes;
 			if (iuc != null &&
-				!iuc.IsRemoved &&
+				!iuc.IsDeleted &&
 				iuc.IsInternal &&
 				1 == (factTypes = iuc.FactTypeCollection).Count)
 			{
 				FactType factType = factTypes[0];
-				if (factType != null && !factType.IsRemoved)
+				if (factType != null && !factType.IsDeleted)
 				{
-					foreach (PresentationElement pel in factType.PresentationRolePlayers)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 					{
 						ShapeElement shape = pel as ShapeElement;
 						if (shape != null)
@@ -4724,13 +4369,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 			UniquenessConstraint constraint = link.PreferredIdentifier;
-			FactTypeMoveableCollection factTypes;
+			LinkedElementCollection<FactType> factTypes;
 			FactType factType;
 			if (constraint.IsInternal &&
 				1 == (factTypes = constraint.FactTypeCollection).Count &&
 				null != (factType = factTypes[0]))
 			{
-				foreach (PresentationElement pel in factType.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
 					FactTypeShape factShape = pel as FactTypeShape;
 					if (factShape != null)
@@ -4743,17 +4388,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Event handler that listens for preferred identifiers being removed.
 		/// </summary>
-		public static void PreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
+		public static void PreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 			UniquenessConstraint constraint = link.PreferredIdentifier;
-			FactTypeMoveableCollection factTypes;
+			LinkedElementCollection<FactType> factTypes;
 			FactType factType;
-			if (!constraint.IsRemoved &&
+			if (!constraint.IsDeleted &&
 				1 == (factTypes = constraint.FactTypeCollection).Count &&
 				null != (factType = factTypes[0]))
 			{
-				foreach (PresentationElement pel in factType.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
 					FactTypeShape factShape = pel as FactTypeShape;
 					if (factShape != null)
@@ -4770,10 +4415,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// width has been adjusted to make it easier to select the fact shape, but we
 		/// don't want to add extra width for the normal selection outline.
 		/// </summary>
-		private class CustomFactTypeShapeGeometry : CustomFoldRectangleShapeGeometry
+		private sealed class CustomFactTypeShapeGeometry : CustomFoldRectangleShapeGeometry
 		{
 			public new static readonly ShapeGeometry ShapeGeometry = new CustomFactTypeShapeGeometry();
-			protected override double GetFocusIndicatorInsideMargin(IGeometryHost geometryHost)
+			protected sealed override double GetFocusIndicatorInsideMargin(IGeometryHost geometryHost)
 			{
 				return FocusIndicatorInsideMargin;
 			}
@@ -4781,7 +4426,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Override GetPerimeterBoundingBox to ignore outline pen when the outline is not displayed
 			/// UNDONE: MSBUG The framework should check HasOutline before using the outline pen
 			/// </summary>
-			protected override RectangleD GetPerimeterBoundingBox(IGeometryHost geometryHost)
+			protected sealed override RectangleD GetPerimeterBoundingBox(IGeometryHost geometryHost)
 			{
 				if (geometryHost.GeometryHasOutline)
 				{
@@ -4791,18 +4436,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // CustomFactTypeShapeGeometry
-		#region Helper Functions
-		#endregion
 		#region Derivation Rules
 		[RuleOn(typeof(FactTypeDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private class DerivationRuleChanged : ChangeRule
+		private sealed class DerivationRuleChanged : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == FactTypeDerivationExpression.DerivationStorageMetaAttributeGuid)
+				if (e.DomainProperty.Id == FactTypeDerivationExpression.DerivationStorageDomainPropertyId)
 				{
 					FactTypeDerivationExpression ftde = e.ModelElement as FactTypeDerivationExpression;
-					if (!ftde.IsRemoved)
+					if (!ftde.IsDeleted)
 					{
 						FactType ft = ftde.FactType;
 						if (ft != null)
@@ -4815,9 +4458,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private class DerivationRuleAdd : AddRule
+		private sealed class DerivationRuleAdd : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
 				if (null != ftde)
@@ -4828,16 +4471,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
-		private class DerivationRuleRemove : RemoveRule
+		private sealed class DerivationRuleDelete : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 
 				FactTypeHasDerivationExpression ftde = e.ModelElement as FactTypeHasDerivationExpression;
 				if (null != ftde)
 				{
 					FactType ft = ftde.FactType;
-					if (!ft.IsRemoved)
+					if (!ft.IsDeleted)
 					{
 						ReadingShape.InvalidateReadingShape(ft);
 					}
@@ -4855,13 +4498,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation
 	{
 		private static AutoSizeTextField myTextShapeField;
-		/// <summary>
-		/// Associate the text box with the object type name
-		/// </summary>
-		protected override Guid AssociatedShapeMetaAttributeGuid
-		{
-			get { return ObjectTypeNameMetaAttributeGuid; }
-		}
 		/// <summary>
 		/// Store per-type value for the base class
 		/// </summary>

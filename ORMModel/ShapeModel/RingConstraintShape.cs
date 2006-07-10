@@ -26,7 +26,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class RingConstraintShape : ExternalConstraintShape, IModelErrorActivation
@@ -339,28 +339,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		#endregion // Customize appearance
-		#region RingConstraintAttributeChangeRule class
+		#region RingConstraintPropertyChangeRule class
 		[RuleOn(typeof(RingConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class RingConstraintAttributeChangeRule : ChangeRule
+		private sealed class RingConstraintPropertyChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == RingConstraint.RingTypeMetaAttributeGuid)
+				if (e.DomainProperty.Id == RingConstraint.RingTypeDomainPropertyId)
 				{
 					RingConstraint ringConstraint = (RingConstraint)e.ModelElement;
-					if (!ringConstraint.IsRemoved)
+					if (!ringConstraint.IsDeleted)
 					{
-						foreach (PresentationElement pel in ringConstraint.PresentationRolePlayers)
+						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(ringConstraint))
 						{
 							RingConstraintShape ringConstraintShape = pel as RingConstraintShape;
 							if (ringConstraintShape != null)
 							{
-								foreach (LinkConnectsToNode connection in ringConstraintShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+								foreach (LinkConnectsToNode connection in DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(ringConstraintShape, LinkConnectsToNode.NodesDomainRoleId))
 								{
 									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
 									if (binaryLink != null)
 									{
-										binaryLink.RipUp();
+										binaryLink.RecalculateRoute();
 									}
 								}
 								SizeD oldSize = ringConstraintShape.myContentSize;
@@ -379,7 +379,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // RingConstraintAttributeChangeRule class
+		#endregion // RingConstraintPropertyChangeRule class
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError
@@ -394,7 +394,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RingConstraint constraint = ringTypeError.RingConstraint;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					constraint.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(RingConstraint.RingTypeMetaAttributeGuid), this),
+					ORMTypeDescriptor.CreatePropertyDescriptor(constraint, RingConstraint.RingTypeDomainPropertyId),
 					true);
 			}
 			else

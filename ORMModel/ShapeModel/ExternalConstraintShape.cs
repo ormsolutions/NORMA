@@ -370,7 +370,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMDiagram ormDiagram;
 				StyleSetResourceId id;
 				if (null != (ormDiagram = this.Diagram as ORMDiagram)
-					&& object.ReferenceEquals(ormDiagram.StickyObject, this))
+					&& ormDiagram.StickyObject == this)
 				{
 					id = ORMDiagram.StickyBackgroundResource;
 				}
@@ -408,7 +408,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
 			{
-				ActivateNameProperty((NamedElement)duplicateName.ConstraintCollection[0]);
+				ActivateNameProperty((ModelElement)duplicateName.ConstraintCollection[0]);
 			}
 			else
 			{
@@ -441,7 +441,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool rVal = false;
 			Role r;
 			IConstraint constraint = AssociatedConstraint;
-			if (object.ReferenceEquals(mel, constraint))
+			if (mel == constraint)
 			{
 				rVal = true;
 			}
@@ -491,27 +491,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					case ConstraintStorageStyle.SetConstraint:
 						SetConstraint scec = constraint as SetConstraint;
-						foreach (FactSetConstraint factConstraint in scec.GetElementLinks(FactSetConstraint.SetConstraintCollectionMetaRoleGuid))
+						foreach (FactSetConstraint factConstraint in DomainRoleInfo.GetElementLinks<FactSetConstraint>(scec, FactSetConstraint.SetConstraintDomainRoleId))
 						{
 							// Redraw the line
 							RedrawPelsOnDiagram(factConstraint, diagram);
 							if (includeFacts)
 							{
 								// Redraw the fact type
-								RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
+								RedrawPelsOnDiagram(factConstraint.FactType, diagram);
 							}
 						}
 						break;
 					case ConstraintStorageStyle.SetComparisonConstraint:
 						SetComparisonConstraint mcec = constraint as SetComparisonConstraint;
-						foreach (FactSetComparisonConstraint factConstraint in mcec.GetElementLinks(FactSetComparisonConstraint.SetComparisonConstraintCollectionMetaRoleGuid))
+						foreach (FactSetComparisonConstraint factConstraint in DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(mcec, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId))
 						{
 							// Redraw the line
 							RedrawPelsOnDiagram(factConstraint, diagram);
 							if (includeFacts)
 							{
 								// Redraw the fact type
-								RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
+								RedrawPelsOnDiagram(factConstraint.FactType, diagram);
 							}
 						}
 						break;
@@ -521,12 +521,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		private static void RedrawPelsOnDiagram(ModelElement element, Diagram diagram)
 		{
-			PresentationElementMoveableCollection pels = element.PresentationRolePlayers;
+			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
 			int pelsCount = pels.Count;
 			for (int i = 0; i < pelsCount; ++i)
 			{
 				ShapeElement shape = pels[i] as ShapeElement;
-				if (shape != null && object.ReferenceEquals(shape.Diagram, diagram))
+				if (shape != null && shape.Diagram == diagram)
 				{
 					shape.Invalidate(true);
 				}
@@ -582,38 +582,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static new void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(SetComparisonConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
-			eventDirectory.RolePlayerOrderChanged.Add(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SetComparisonConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SetComparisonConstraintChangedEvent));
-			attributeInfo = dataDirectory.FindMetaAttribute(SetConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SetConstraintChangedEvent));
+			DomainRoleInfo roleInfo = dataDirectory.FindDomainRole(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
+			eventDirectory.RolePlayerOrderChanged.Add(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedEvent));
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Add(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetComparisonConstraintChangedEvent));
+			propertyInfo = dataDirectory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Add(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetConstraintChangedEvent));
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
 		public static new void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(SetComparisonConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
-			eventDirectory.RolePlayerOrderChanged.Remove(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
-			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SetComparisonConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SetComparisonConstraintChangedEvent));
-			attributeInfo = dataDirectory.FindMetaAttribute(SetConstraint.ModalityMetaAttributeGuid);
-			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SetConstraintChangedEvent));
+			DomainRoleInfo roleInfo = dataDirectory.FindDomainRole(SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId);
+			eventDirectory.RolePlayerOrderChanged.Remove(roleInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerOrderChangedEvent));
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Remove(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetComparisonConstraintChangedEvent));
+			propertyInfo = dataDirectory.FindDomainProperty(SetConstraint.ModalityDomainPropertyId);
+			eventDirectory.ElementPropertyChanged.Remove(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(SetConstraintChangedEvent));
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
+			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent));
 		}
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
@@ -622,52 +622,52 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.SourceElement as SetComparisonConstraint))
 			{
-				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
 					if (null != (ecs = pel as ExternalConstraintShape))
 					{
 						// If the constraint being changed is also the current stick object,
 						// then refresh the linked facts as well
 						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
-							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
+							&& ecs == ormDiagram.StickyObject);
 					}
 				}
 			}
 		}
-		private static void SetComparisonConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void SetComparisonConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			SetComparisonConstraint constraint;
 			ExternalConstraintShape ecs;
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.ModelElement as SetComparisonConstraint))
 			{
-				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
 					if (null != (ecs = pel as ExternalConstraintShape))
 					{
 						// If the constraint being changed is also the current stick object,
 						// then refresh the linked facts as well
 						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
-							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
+							&& ecs == ormDiagram.StickyObject);
 					}
 				}
 			}
 		}
-		private static void SetConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private static void SetConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			SetConstraint constraint;
 			ExternalConstraintShape ecs;
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.ModelElement as SetConstraint))
 			{
-				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
 					if (null != (ecs = pel as ExternalConstraintShape))
 					{
 						// If the constraint being changed is also the current stick object,
 						// then refresh the linked facts as well
 						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
-							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
+							&& ecs == ormDiagram.StickyObject);
 					}
 				}
 			}
@@ -681,7 +681,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			UniquenessConstraint constraint = link.PreferredIdentifier;
 			if (!constraint.IsInternal)
 			{
-				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
 					ExternalConstraintShape constraintShape = pel as ExternalConstraintShape;
 					if (constraintShape != null)
@@ -694,14 +694,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Event handler that listens for preferred identifiers being removed.
 		/// </summary>
-		public static void PreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
+		public static void PreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
 			UniquenessConstraint constraint = link.PreferredIdentifier;
 			if (!constraint.IsInternal &&
-				!constraint.IsRemoved)
+				!constraint.IsDeleted)
 			{
-				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
 					ExternalConstraintShape constraintShape = pel as ExternalConstraintShape;
 					if (constraintShape != null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+
 // Common Public License Copyright Notice
 // /**************************************************************************\
 // * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -14,6 +15,7 @@ using System.Diagnostics;
 // *                                                                          *
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
+
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region PortableDataType Enum

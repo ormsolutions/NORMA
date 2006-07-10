@@ -24,35 +24,33 @@ using Neumont.Tools.ORM.Framework;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ORMModelElement
+	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<ORMModelElement, Design.ORMModelElementTypeDescriptor<ORMModelElement>>))]
 	public abstract partial class ORMModelElement : IORMExtendableElement, IModelErrorOwner
 	{
-		#region Base overrides
-		/// <summary>See <see cref="IORMExtendableElement.GetDisplayProperties"/></summary>
-		public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
-		{
-			return ExtendableElementUtility.MergeExtensionProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
-		}
+		#region Accessibility properties
 		/// <summary>
 		/// Get the default accessible name for this element. Defers to GetClassName
 		/// </summary>
-		public override string AccessibleName
+		public virtual string AccessibleName
 		{
+			// UNDONE: In the pre-2006-06 drops of DSL Tools, this was inherited from ModelElement.
 			get
 			{
-				return GetClassName();
+				return TypeDescriptor.GetClassName(this);
 			}
 		}
 		/// <summary>
 		/// Get the default accessible value for this element. Defers to GetComponentName
 		/// </summary>
-		public override string AccessibleValue
+		public virtual string AccessibleValue
 		{
+			// UNDONE: In the pre-2006-06 drops of DSL Tools, this was inherited from ModelElement.
 			get
 			{
-				return GetComponentName();
+				return TypeDescriptor.GetComponentName(this);
 			}
 		}
-		#endregion // Base overrides
+		#endregion // Accessibility properties
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Implements IModelErrorOwner.GetErrorCollection
@@ -61,9 +59,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (filter == 0 || (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary))))
 			{
-				foreach (object error in GetCounterpartRolePlayers(ORMModelElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMModelElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
+				foreach (ModelError modelError in ORMModelElementHasExtensionModelError.GetExtensionModelErrorCollection(this))
 				{
-					yield return (ModelError)error;
+					yield return new ModelErrorUsage(modelError);
 				}
 			}
 		}
@@ -95,26 +93,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // ORMModelElement
 	#region ORMNamedElement
-	public abstract partial class ORMNamedElement : IORMExtendableElement, IModelErrorOwner
+	public abstract partial class ORMNamedElement
 	{
 		#region Base overrides
-		/// <summary>See <see cref="IORMExtendableElement.GetDisplayProperties"/></summary>
-		public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
-		{
-			return ExtendableElementUtility.MergeExtensionProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
-		}
 		/// <summary>
-		/// Get the default accessible name for this element. Defers to GetClassName
-		/// </summary>
-		public override string AccessibleName
-		{
-			get
-			{
-				return GetClassName();
-			}
-		}
-		/// <summary>
-		/// Get the default accessible name for this element. Returns the Name.
+		/// Get the default accessible value for this element. Returns the Name.
 		/// </summary>
 		public override string AccessibleValue
 		{
@@ -124,45 +107,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region IModelErrorOwner Implementation
-		/// <summary>
-		/// Implements IModelErrorOwner.GetErrorCollection
-		/// </summary>
-		protected IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
-		{
-			if (filter == 0 || (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary))))
-			{
-				foreach (object error in GetCounterpartRolePlayers(ORMNamedElementHasExtensionModelError.ExtendedElementMetaRoleGuid, ORMNamedElementHasExtensionModelError.ExtensionModelErrorCollectionMetaRoleGuid))
-				{
-					yield return (ModelError)error;
-				}
-			}
-		}
-		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
-		{
-			return GetErrorCollection(filter);
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.ValidateErrors (empty implementation)
-		/// </summary>
-		protected static void ValidateErrors(INotifyElementAdded notifyAdded)
-		{
-		}
-		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
-		{
-			ValidateErrors(notifyAdded);
-		}
-		/// <summary>
-		/// Implements IModelErrorOwner.DelayValidateErrors (empty implementation)
-		/// </summary>
-		protected static void DelayValidateErrors()
-		{
-		}
-		void IModelErrorOwner.DelayValidateErrors()
-		{
-			DelayValidateErrors();
-		}
-		#endregion // IModelErrorOwner Implementation
 	}
 	#endregion // ORMNamedElement
 }

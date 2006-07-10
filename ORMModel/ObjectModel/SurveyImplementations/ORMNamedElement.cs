@@ -1,3 +1,19 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,10 +40,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected bool IsEditable
 		{
-			get 
+			get
 			{
-				MetaAttributeInfo info = this.Store.MetaDataDirectory.FindMetaAttribute(NamedElement.NameMetaAttributeGuid);
-				return this.IsPropertyDescriptorReadOnly(this.CreatePropertyDescriptor(info, this));
+				// UNDONE: 2006-06 DSL Tools port: This seemed to be returning the same value as IsReadOnly, rather than its opposite,
+				// which seemed to be rather backwards. For now, I've changed it to return !IsReadOnly...
+				return !Design.ORMTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
 			}
 		}
 

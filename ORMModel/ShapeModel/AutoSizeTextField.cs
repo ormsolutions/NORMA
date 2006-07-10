@@ -30,52 +30,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public class AutoSizeTextField : TextField
 	{
 		/// <summary>
-		/// Default constructor
+		/// Constructor
 		/// </summary>
 		public AutoSizeTextField()
+			: base(ResourceStrings.ShapeFieldName_HACK)
 		{
+			base.DefaultAutoSize = true;
 		}
 		/// <summary>
-		/// Get the minimum width of the shape field for the current text.
+		/// Always returns <see langword="true"/>.
 		/// </summary>
-		/// <param name="parentShape">ShapeElement</param>
-		/// <returns>Width of current text</returns>
-		public override double GetMinimumWidth(ShapeElement parentShape)
+		public sealed override bool GetAutoSize(ShapeElement parentShape)
 		{
-			return Math.Max(base.GetMinimumWidth(parentShape), GetTextSize(parentShape).Width);
+			return true;
 		}
 		/// <summary>
-		/// Get the minimum height of the shape field for the current text.
+		/// Gets the minimum <see cref="SizeD"/> of this <see cref="AutoSizeTextField"/> for the current text.
 		/// </summary>
-		/// <param name="parentShape">ShapeElement</param>
-		/// <returns>Width of current text</returns>
-		public override double GetMinimumHeight(ShapeElement parentShape)
+		/// <param name="parentShape">
+		/// The <see cref="ShapeElement"/> that this <see cref="AutoSizeTextField"/> is associated with.
+		/// </param>
+		/// <returns>The minimum <see cref="SizeD"/> of this <see cref="AutoSizeTextField"/>.</returns>
+		public override SizeD GetMinimumSize(ShapeElement parentShape)
 		{
-			return Math.Max(base.GetMinimumHeight(parentShape), GetTextSize(parentShape).Height);
-		}
-		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-		private static extern IntPtr GetDesktopWindow();
-		/// <summary>
-		/// Get the size of the given text in the context of this parent shape.
-		/// Helper function for GetMinimumWidth and GetMinimumHeight.
-		/// </summary>
-		/// <param name="parentShape">ShapeElement</param>
-		/// <returns></returns>
-		private SizeF GetTextSize(ShapeElement parentShape)
-		{
-			SizeF textSize = SizeF.Empty;
 			string text = GetDisplayText(parentShape);
-			if (text != null && text.Length != 0)
+			if (!string.IsNullOrEmpty(text))
 			{
 				using (Font font = GetFont(parentShape))
 				{
-					using (Graphics g = Graphics.FromHwnd(GetDesktopWindow()))
-					{
-						textSize = g.MeasureString(text, font);
-					}
+					return base.MeasureDisplayText(text, font, null, parentShape.MaximumSize);
 				}
 			}
-			return textSize;
+			return SizeD.Empty;
 		}
 	}
 }

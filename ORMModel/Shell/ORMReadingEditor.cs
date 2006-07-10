@@ -17,13 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Design;
 using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using System.Diagnostics;
 using Microsoft.VisualStudio;
@@ -188,7 +188,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						theFact = testFact;
 					}
-					else if (!object.ReferenceEquals(testFact, theFact))
+					else if (testFact != theFact)
 					{
 						theFact = null;
 						break;
@@ -201,9 +201,9 @@ namespace Neumont.Tools.ORM.Shell
 					EditingFactType = ActiveFactType.Empty;
 				}
 				//selection could change between the shapes that are related to the fact
-				else if (!object.ReferenceEquals(theFact, currentFact))
+				else if (theFact != currentFact)
 				{
-					RoleBaseMoveableCollection displayOrder = null;
+					LinkedElementCollection<RoleBase> displayOrder = null;
 					ORMDesignerDocView docView = CurrentORMSelectionContainer as ORMDesignerDocView;
 					if (docView != null)
 					{
@@ -265,18 +265,13 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 		#region nested class ReadingsViewForm
-		private class ReadingsViewForm : ContainerControl
+		private sealed class ReadingsViewForm : ContainerControl
 		{
-			private ReadingEditor myReadingEditor;
-			private Label myNoSelectionLabel;
+			private readonly ReadingEditor myReadingEditor;
+			private readonly Label myNoSelectionLabel;
 
 			#region construction
 			public ReadingsViewForm()
-			{
-				Initialize();
-			}
-
-			private void Initialize()
 			{
 				myReadingEditor = new ReadingEditor();
 				this.Controls.Add(myReadingEditor);
@@ -562,7 +557,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#endregion
 		#region Nested Tool Window Class
-		private class ReadingEditorCommandSet : MarshalByRefObject, IDisposable
+		private sealed class ReadingEditorCommandSet : MarshalByRefObject, IDisposable
 		{
 			private IMenuCommandService myMenuService;
 			private IMonitorSelectionService myMonitorSelection;
@@ -583,7 +578,7 @@ namespace Neumont.Tools.ORM.Shell
 				AddCommands(myCommands);
 			}
 
-			protected virtual void AddCommands(MenuCommand[] commands)
+			private void AddCommands(MenuCommand[] commands)
 			{
 				IMenuCommandService menuService = MenuService; //force creation of myMenuService
 				if (menuService != null)
@@ -596,7 +591,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			protected virtual void RemoveCommands(MenuCommand[] commands)
+			private void RemoveCommands(MenuCommand[] commands)
 			{
 				IMenuCommandService menuService = myMenuService;
 				if (menuService != null)
@@ -609,7 +604,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			protected IMenuCommandService MenuService
+			private IMenuCommandService MenuService
 			{
 				get
 				{
@@ -617,7 +612,7 @@ namespace Neumont.Tools.ORM.Shell
 					return myMenuService;
 				}
 			}
-			protected ORMReadingEditorToolWindow CurrentToolWindow
+			private ORMReadingEditorToolWindow CurrentToolWindow
 			{
 				get
 				{

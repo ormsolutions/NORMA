@@ -1,0 +1,146 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
+using System;
+using System.Diagnostics;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Design;
+using Neumont.Tools.ORM.ObjectModel;
+
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	public sealed partial class ORMMetaModelToolboxHelper
+	{
+		/// <summary>
+		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
+		/// <see cref="ObjectType"/> should be a ValueType.
+		/// </summary>
+		public static readonly object ValueTypeUserDataKey = new object();
+		/// <summary>
+		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
+		/// <see cref="UniquenessConstraint"/> is internal.
+		/// </summary>
+		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
+
+		private int myObjectTypeCount;
+		private int myFactTypeCount;
+		private int myUniquenessConstraintCount;
+		/// <summary>See <see cref="ORMMetaModelToolboxHelperBase.CreateElementToolPrototype"/>.</summary>
+		protected sealed override ElementGroupPrototype CreateElementToolPrototype(Store store, Guid domainClassId)
+		{
+			// UNDONE: HACK: 2006-06 DSL Tools port: This method is intended to be only a temporary solution, until we have time to come up with something better.
+
+			// WARNING: This method is _extremely_ order-sensitive. If the order that the toolbox items are listed
+			// in the .dsl file changes, or if the DSL Tools text template that is used to generate ORMMetaModelHelperBase
+			// changes, this method will most likely need to be changed as well.
+
+			ElementGroup group = new ElementGroup(store);
+
+			if (domainClassId.Equals(ObjectType.DomainClassId))
+			{
+				ObjectType objectType = new ObjectType(store);
+				group.AddGraph(objectType);
+				switch (myObjectTypeCount++)
+				{
+					case 0:
+						// EntityType - We don't need to do anything else...
+						break;
+					case 1:
+						// ValueType
+						// Do not try to set the IsValueType property here. IsValueType picks
+						// up the default data type for the model, which can only be done
+						// when the model is known. Instead, flag the element so that it
+						// can be set during MergeRelate on the model.
+						group.UserData = ValueTypeUserDataKey;
+						break;
+					case 2:
+						// ObjectifiedFactType
+						group.AddGraph(new Objectification(objectType, AddFactType(store, group, 2)));
+						break;
+					default:
+						goto L_Error;
+				}
+			}
+			else if (domainClassId.Equals(FactType.DomainClassId))
+			{
+				Debug.Assert(myFactTypeCount < 3);
+				AddFactType(store, group, ++myFactTypeCount);
+			}
+			else if (domainClassId.Equals(UniquenessConstraint.DomainClassId))
+			{
+				if (myUniquenessConstraintCount == 0)
+				{
+					// Add this here so that we can distinguish between internal and external uniqueness
+					// constraints without unpacking the model. We want to merge internals into a fact
+					// and externals into the model.
+					group.UserData = InternalUniquenessConstraintUserDataKey;
+					group.AddGraph(UniquenessConstraint.CreateInternalUniquenessConstraint(store));
+				}
+				else
+				{
+					Debug.Assert(myUniquenessConstraintCount == 1);
+					group.AddGraph(new UniquenessConstraint(store));
+				}
+				myUniquenessConstraintCount++;
+			}
+			else if (domainClassId.Equals(EqualityConstraint.DomainClassId))
+			{
+				group.AddGraph(new EqualityConstraint(store));
+			}
+			else if (domainClassId.Equals(ExclusionConstraint.DomainClassId))
+			{
+				group.AddGraph(new ExclusionConstraint(store));
+			}
+			else if (domainClassId.Equals(MandatoryConstraint.DomainClassId))
+			{
+				group.AddGraph(new MandatoryConstraint(store));
+			}
+			else if (domainClassId.Equals(SubsetConstraint.DomainClassId))
+			{
+				group.AddGraph(new SubsetConstraint(store));
+			}
+			else if (domainClassId.Equals(FrequencyConstraint.DomainClassId))
+			{
+				group.AddGraph(new FrequencyConstraint(store));
+			}
+			else if (domainClassId.Equals(RingConstraint.DomainClassId))
+			{
+				group.AddGraph(new RingConstraint(store));
+			}
+			else
+			{
+				goto L_Error;
+			}
+			return group.CreatePrototype();
+		L_Error:
+			Debug.Fail("Unexpected toolbox item type.");
+			return null;
+		}
+
+		private static FactType AddFactType(Store store, ElementGroup group, int arity)
+		{
+			FactType factType = new FactType(store, null);
+			LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+			for (int i = 0; i < arity; i++)
+			{
+				Role role = new Role(store);
+				roles.Add(role);
+				group.AddGraph(role);
+			}
+			return factType;
+		}
+	}
+}

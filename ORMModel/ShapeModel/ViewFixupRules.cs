@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -31,14 +32,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasObjectType fixup
 		#region ObjectTypedAdded class
 		[RuleOn(typeof(ModelHasObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class ObjectTypedAdded : AddRule
+		private sealed class ObjectTypedAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
 				if (link != null)
 				{
-					ObjectType objectType = link.ObjectTypeCollection;
+					ObjectType objectType = link.ObjectType;
 					if (objectType.NestedFactType == null) // Otherwise, fix up with the fact type
 					{
 						Diagram.FixUpDiagram(link.Model, objectType);
@@ -52,16 +53,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ObjectTypeChangeRule class
 		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		[RuleOn(typeof(ObjectifiedFactTypeNameShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class ObjectTypeShapeChangeRule : ChangeRule
+		private sealed class ObjectTypeShapeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ObjectTypeShape objectTypeShape = null;
 				ObjectifiedFactTypeNameShape objectifiedShape = null;
-				Guid attributeId = e.MetaAttribute.Id;
-				if ((attributeId == ObjectTypeShape.ExpandRefModeMetaAttributeGuid &&
+				Guid attributeId = e.DomainProperty.Id;
+				if ((attributeId == ObjectTypeShape.ExpandRefModeDomainPropertyId &&
 					null != (objectTypeShape = e.ModelElement as ObjectTypeShape)) ||
-					(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeMetaAttributeGuid &&
+					(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId &&
 					null != (objectifiedShape = e.ModelElement as ObjectifiedFactTypeNameShape)))
 				{
 					if (objectTypeShape != null)
@@ -125,7 +126,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									shapeElements.Add(shapeOnDiagram, true);
 								}
 
-								foreach (ValueTypeHasValueConstraint link in valueType.GetElementLinks(ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid))
+								foreach (ValueTypeHasValueConstraint link in DomainRoleInfo.GetElementLinks<ValueTypeHasValueConstraint>(valueType, ValueTypeHasValueConstraint.ValueTypeDomainRoleId))
 								{
 									FixupValueTypeValueConstraintLink(link, null);
 								}
@@ -144,7 +145,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						foreach (RoleBase roleBase in factType.RoleCollection)
 						{
 							Role role = roleBase.Role;
-							foreach (ObjectTypePlaysRole link in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+							foreach (ObjectTypePlaysRole link in DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId))
 							{
 								if (expandingRefMode)
 								{
@@ -155,7 +156,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									RemoveShapesFromDiagram(link, parentDiagram);
 								}
 							}
-							foreach (RoleHasValueConstraint link in role.GetElementLinks(RoleHasValueConstraint.RoleMetaRoleGuid))
+							foreach (RoleHasValueConstraint link in DomainRoleInfo.GetElementLinks<RoleHasValueConstraint>(role, RoleHasValueConstraint.RoleDomainRoleId))
 							{
 								if (expandingRefMode)
 								{
@@ -180,23 +181,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// </summary>
 			private void RemoveShapesFromDiagram(ModelElement element, Diagram diagram)
 			{
-				PresentationElementMoveableCollection pels = element.PresentationRolePlayers;
+				LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(element);
 				int pelCount = pels.Count;
 				for (int i = pelCount - 1; i >= 0; --i) // Walk backwards so we can safely remove
 				{
 					ShapeElement shape = pels[i] as ShapeElement;
-					if (shape != null && object.ReferenceEquals(shape.Diagram, diagram))
+					if (shape != null && shape.Diagram == diagram)
 					{
 						ClearChildShapes(shape.NestedChildShapes);
 						ClearChildShapes(shape.RelativeChildShapes);
-						shape.Remove();
+						shape.Delete();
 					}
 				}
 			}
 			/// <summary>
 			/// Helper function to recursively delete child shapes. Used by RemoveShapesFromDiagram.
 			/// </summary>
-			private void ClearChildShapes(ShapeElementMoveableCollection shapes)
+			private void ClearChildShapes(LinkedElementCollection<ShapeElement> shapes)
 			{
 				int count = shapes.Count;
 				if (count > 0)
@@ -206,7 +207,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						ShapeElement shape = shapes[i];
 						ClearChildShapes(shape.NestedChildShapes);
 						ClearChildShapes(shape.RelativeChildShapes);
-						shape.Remove();
+						shape.Delete();
 					}
 				}
 			}
@@ -214,28 +215,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ObjectTypeShapeChangeRule class
 		#region FactTypeAdded class
 		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class FactTypedAdded : AddRule
+		private sealed class FactTypedAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasFactType link = e.ModelElement as ModelHasFactType;
 				if (link != null)
 				{
-					Diagram.FixUpDiagram(link.Model, link.FactTypeCollection);
+					Diagram.FixUpDiagram(link.Model, link.FactType);
 				}
 			}
 		}
 		#endregion // FactTypeAdded class
 		#region FactTypeChanged
 		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class FactTypeShapeChanged : ChangeRule
+		private sealed class FactTypeShapeChanged : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				FactTypeShape fts = e.ModelElement as FactTypeShape;
 				if (fts != null)
 				{
-					if (e.MetaAttribute.Id == FactTypeShape.DisplayRoleNamesMetaAttributeGuid)
+					if (e.DomainProperty.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
 					{
 						FactType fact = fts.ModelElement as FactType;
 						if (fact != null)
@@ -251,28 +252,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasConstraint fixup
 		#region SetComparisonConstraintAdded class
 		[RuleOn(typeof(ModelHasSetComparisonConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class SetComparisonConstraintAdded : AddRule
+		private sealed class SetComparisonConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
 				if (link != null)
 				{
-					Diagram.FixUpDiagram(link.Model, link.SetComparisonConstraintCollection);
+					Diagram.FixUpDiagram(link.Model, link.SetComparisonConstraint);
 				}
 			}
 		}
 		#endregion // SetComparisonConstraintAdded class
 		#region SetConstraintAdded class
 		[RuleOn(typeof(ModelHasSetConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class SetConstraintAdded : AddRule
+		private sealed class SetConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasSetConstraint link = e.ModelElement as ModelHasSetConstraint;
 				if (link != null)
 				{
-					Diagram.FixUpDiagram(link.Model, link.SetConstraintCollection);
+					Diagram.FixUpDiagram(link.Model, link.SetConstraint);
 				}
 			}
 		}
@@ -283,15 +284,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ConstraintRoleSequenceRoleAdded : AddRule
+		private sealed class ConstraintRoleSequenceRoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				FactType factType;
 				IConstraint constraint;
-				if (null != (factType = link.RoleCollection.FactType) &&
-					null != (constraint = link.ConstraintRoleSequenceCollection.Constraint))
+				if (null != (factType = link.Role.FactType) &&
+					null != (constraint = link.ConstraintRoleSequence.Constraint))
 				{
 					FactTypeShape.ConstraintSetChanged(factType, constraint, true);
 				}
@@ -303,17 +304,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ConstraintRoleSequenceRoleRemoved : RemoveRule
+		private sealed class ConstraintRoleSequenceRoleDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				FactType factType;
 				IConstraint constraint;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
-				if (!sequence.IsRemoved &&
-					null != (factType = link.RoleCollection.FactType) &&
-					!factType.IsRemoved &&
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
+				if (!sequence.IsDeleted &&
+					null != (factType = link.Role.FactType) &&
+					!factType.IsDeleted &&
 					null != (constraint = sequence.Constraint)
 					)
 				{
@@ -329,19 +330,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// that does not also delete the fact constraint.
 		/// </summary>
 		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ExternalRoleConstraintRemoved : RemoveRule
+		private sealed class ExternalRoleConstraintDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
 				FactType factType;
-				FactSetComparisonConstraint factConstraint = link.FactConstraintCollection as FactSetComparisonConstraint;
+				FactSetComparisonConstraint factConstraint = link.FactConstraint as FactSetComparisonConstraint;
 				if (factConstraint != null &&
-					!factConstraint.IsRemoved &&
-					(null != (factType = factConstraint.FactTypeCollection)) &&
-					!factType.IsRemoved)
+					!factConstraint.IsDeleted &&
+					(null != (factType = factConstraint.FactType)) &&
+					!factType.IsDeleted)
 				{
-					FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraintCollection, false);
+					FactTypeShape.ConstraintSetChanged(factType, factConstraint.SetComparisonConstraint, false);
 				}
 			}
 		}
@@ -351,27 +352,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region FactTypeHasRole fixup
 		#region RoleAdded class
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class RoleAdded : AddRule
+		private sealed class RoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
-				foreach (PresentationElement pel in factType.PresentationRolePlayers)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 				{
 					FactTypeShape shape = pel as FactTypeShape;
 					if (shape != null)
 					{
 						//This part handles inserting the role in the correct location if the facttypeshape has 
 						//a different display order for the roles than the native one.
-						RoleBaseMoveableCollection roles = shape.RoleDisplayOrderCollection;
+						LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
 						if (roles.Count != 0)
 						{
 							Store store = shape.Store;
-							RoleBase newRole = link.RoleCollection;
-							IDictionary contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+							RoleBase newRole = link.Role;
+							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 							int insertIndex = -1;
-							if (contextInfo.Contains(FactTypeShape.InsertAfterRoleKey))
+							if (contextInfo.ContainsKey(FactTypeShape.InsertAfterRoleKey))
 							{
 								RoleBase insertAfter = (RoleBase)contextInfo[FactTypeShape.InsertAfterRoleKey];
 								insertIndex = roles.IndexOf(insertAfter);
@@ -380,7 +381,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 									++insertIndex;
 								}
 							}
-							else if (contextInfo.Contains(FactTypeShape.InsertBeforeRoleKey))
+							else if (contextInfo.ContainsKey(FactTypeShape.InsertBeforeRoleKey))
 							{
 								RoleBase insertBefore = (RoleBase)contextInfo[FactTypeShape.InsertBeforeRoleKey];
 								insertIndex = roles.IndexOf(insertBefore);
@@ -402,15 +403,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleAdded class
 		#region RoleRemoved class
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class RoleRemoved : RemoveRule
+		private sealed class RoleDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
-				if (!factType.IsRemoved)
+				if (!factType.IsDeleted)
 				{
-					foreach (PresentationElement pel in factType.PresentationRolePlayers)
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
 					{
 						FactTypeShape shape = pel as FactTypeShape;
 						if (shape != null)
@@ -426,9 +427,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ObjectTypePlaysRole fixup
 		#region ObjectTypePlaysRoleAdded class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ObjectTypePlaysRoleAdded : AddRule
+		private sealed class ObjectTypePlaysRoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				if (link != null)
@@ -442,7 +443,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to display role player links
 		/// </summary>
-		private class DisplayRolePlayersFixupListener : DeserializationFixupListener<ObjectTypePlaysRole>
+		private sealed class DisplayRolePlayersFixupListener : DeserializationFixupListener<ObjectTypePlaysRole>
 		{
 			/// <summary>
 			/// Create a new DisplayRolePlayersFixupListener
@@ -456,7 +457,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">An ObjectTypePlaysRole instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ObjectTypePlaysRole element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ObjectTypePlaysRole element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FixupRolePlayerLink(element);
 			}
@@ -464,18 +465,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayRolePlayersFixupListener class
 		#region ObjectTypePlaysRoleRemoved class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ObjectTypePlaysRoleRemoved : RemoveRule
+		private sealed class ObjectTypePlaysRoleDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated RolePlayer link is removed
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				if (link != null)
 				{
 					// This will fire the PresentationLinkRemoved rule
-					link.PresentationRolePlayers.Clear();
+					PresentationViewsSubject.GetPresentation(link).Clear();
 				}
 			}
 		}
@@ -488,7 +489,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			FactType associatedFact = link.PlayedRoleCollection.FactType;
+			FactType associatedFact = link.PlayedRole.FactType;
 			if (associatedFact != null)
 			{
 				ObjectType rolePlayer = link.RolePlayer;
@@ -514,16 +515,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region RoleHasValueConstraint fixup
 		#region RoleValueConstraintAdded class
 		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class RoleValueConstraintAdded : AddRule
+		private sealed class RoleValueConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
 				if (link != null)
 				{
 					Role r = link.Role;
 					FactType factType = r.FactType;
-					IList links = factType.GetElementLinks(SubjectHasPresentation.SubjectMetaRoleGuid);
+					ReadOnlyCollection<PresentationViewsSubject> links = PresentationViewsSubject.GetLinksToPresentation(factType);
 					//If the factType has no presentation elements, it must be hidden. In which case,
 					//we need to fixup the ValueTypeValueConstraint with this link.
 					if (links.Count > 0)
@@ -542,7 +543,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to display role player links
 		/// </summary>
-		private class DisplayRoleValueConstraintFixupListener : DeserializationFixupListener<RoleHasValueConstraint>
+		private sealed class DisplayRoleValueConstraintFixupListener : DeserializationFixupListener<RoleHasValueConstraint>
 		{
 			/// <summary>
 			/// Create a new DisplayValueConstraintFixupListener
@@ -557,7 +558,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">A RoleHasValueConstraint instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(RoleHasValueConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(RoleHasValueConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FixupRoleValueConstraintLink(element, notifyAdded);
 			}
@@ -565,18 +566,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayValueConstraintFixupListener class
 		#region RoleValueConstraintRemoved class
 		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class RoleValueConstraintRemoved : RemoveRule
+		private sealed class RoleValueConstraintDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
 				if (link != null)
 				{
 					// This will fire the PresentationLinkRemoved rule
-					link.PresentationRolePlayers.Clear();
+					PresentationViewsSubject.GetPresentation(link).Clear();
 				}
 			}
 		}
@@ -608,9 +609,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ValueTypeHasValueConstraint fixup
 		#region ValueConstraintAdded class
 		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ValueTypeValueConstraintAdded : AddRule
+		private sealed class ValueTypeValueConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
 				if (link != null)
@@ -624,7 +625,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to display role player links
 		/// </summary>
-		private class DisplayValueTypeValueConstraintFixupListener : DeserializationFixupListener<ValueTypeHasValueConstraint>
+		private sealed class DisplayValueTypeValueConstraintFixupListener : DeserializationFixupListener<ValueTypeHasValueConstraint>
 		{
 			/// <summary>
 			/// Create a new DisplayValueConstraintFixupListener
@@ -639,7 +640,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">A RoleHasValueConstraint instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ValueTypeHasValueConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(ValueTypeHasValueConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FixupValueTypeValueConstraintLink(element, notifyAdded);
 			}
@@ -647,18 +648,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayValueTypeValueConstraintFixupListener class
 		#region ValueTypeValueConstraintRemoved class
 		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ValueTypeValueConstraintRemoved : RemoveRule
+		private sealed class ValueTypeValueConstraintDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
 				if (link != null)
 				{
 					// This will fire the PresentationLinkRemoved rule
-					link.PresentationRolePlayers.Clear();
+					PresentationViewsSubject.GetPresentation(link).Clear();
 				}
 			}
 		}
@@ -701,7 +702,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			foreach (RoleBase rBase in factType.RoleCollection)
 			{
 				Role r = rBase.Role;
-				if (!object.ReferenceEquals(r, role))
+				if (r != role)
 				{
 					objectType = r.RolePlayer;
 				}
@@ -721,9 +722,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region FactConstraint fixup
 		#region FactConstraintAdded class
 		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class FactConstraintAdded : AddRule
+		private sealed class FactConstraintAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactConstraint link = e.ModelElement as FactConstraint;
 				if (link != null)
@@ -735,9 +736,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactConstraintAdded class
 		#region FactConstraintRemoved class
 		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class FactConstraintRemoved : RemoveRule
+		private sealed class FactConstraintDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				IFactConstraint link;
 				IConstraint constraint;
@@ -745,7 +746,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					null != (constraint = link.Constraint))
 				{
 					FactType fact = link.FactType;
-					if (!fact.IsRemoved)
+					if (!fact.IsDeleted)
 					{
 						FactTypeShape.ConstraintSetChanged(fact, constraint, false);
 					}
@@ -758,7 +759,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// A fixup class to display external constraint links for
 		/// when both endpoints are represented on the diagram
 		/// </summary>
-		private class DisplayExternalConstraintLinksFixupListener : DeserializationFixupListener<FactConstraint>
+		private sealed class DisplayExternalConstraintLinksFixupListener : DeserializationFixupListener<FactConstraint>
 		{
 			/// <summary>
 			/// Create a new DisplayExternalConstraintLinksFixupListener
@@ -772,7 +773,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">A FactConstraint instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(FactConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(FactConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FixupExternalConstraintLink(element);
 			}
@@ -802,18 +803,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FactConstraint fixup
-		#region SubjectHasPresentation fixup
+		#region PresentationViewsSubject fixup
 		#region PresentationLinkRemoved class
-		[RuleOn(typeof(SubjectHasPresentation))]
-		private class PresentationLinkRemoved : RemoveRule
+		[RuleOn(typeof(PresentationViewsSubject))]
+		private sealed class PresentationLinkDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Clearing the PresentationRolePlayers collection does not automatically
 			/// remove the PELs (propagatedelete is false). Add this rule in code here.
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
-				SubjectHasPresentation link = e.ModelElement as SubjectHasPresentation;
+				PresentationViewsSubject link = e.ModelElement as PresentationViewsSubject;
 				if (link != null)
 				{
 					ShapeElement presenter = link.Presentation as ShapeElement;
@@ -827,12 +828,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							ReadingOrder order = (ReadingOrder)link.Subject;
 							FactType fact = order.FactType;
-							if (fact != null && !fact.IsRemoved)
+							if (fact != null && !fact.IsDeleted)
 							{
-								ReadingOrderMoveableCollection remainingOrders = fact.ReadingOrderCollection;
+								LinkedElementCollection<ReadingOrder> remainingOrders = fact.ReadingOrderCollection;
 								if (remainingOrders.Count != 0)
 								{
-									RoleBaseMoveableCollection roles = fact.RoleCollection;
+									LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
 									Reading newReading = FactType.GetMatchingReading(remainingOrders, order, roles[0], null, false, false, roles, true);
 									if (newReading != null)
 									{
@@ -847,7 +848,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 						presenter.Invalidate();
-						presenter.Remove();
+						presenter.Delete();
 					}
 				}
 			}
@@ -856,12 +857,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ParentShapeRemoved class
 		[RuleOn(typeof(ParentShapeHasRelativeChildShapes))]
 		[RuleOn(typeof(ParentShapeContainsNestedChildShapes))]
-		private class ParentShapeRemoved : RemoveRule
+		private sealed class ParentShapeDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Deletion of a parent shape should delete the child shape.
 			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ParentShapeHasRelativeChildShapes linkRelative = e.ModelElement as ParentShapeHasRelativeChildShapes;
 				ParentShapeContainsNestedChildShapes linkNested;
@@ -873,29 +874,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// deleted.
 					if (!(relativeShape is ObjectifiedFactTypeNameShape))
 					{
-						relativeShape.Remove();
+						relativeShape.Delete();
 					}
                 }
 				else if ((linkNested = e.ModelElement as ParentShapeContainsNestedChildShapes) != null)
 				{
-					linkNested.NestedChildShapes.Remove();
+					linkNested.NestedChildShapes.Delete();
 				}
 			}
 		}
 		[RuleOn(typeof(ParentShapeHasRelativeChildShapes), FireTime=TimeToFire.LocalCommit, Priority=int.MaxValue)]
-		private class RelativeParentShapeRemoved : RemoveRule
+		private sealed class RelativeParentShapeDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Backup deletion of an ObjectifiedFactTypeNameShape, skipped during inline rule
 			/// </summary>
 			/// <param name="e"></param>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ParentShapeHasRelativeChildShapes link = e.ModelElement as ParentShapeHasRelativeChildShapes;
 				ShapeElement childShape = link.RelativeChildShapes;
-				if (!childShape.IsRemoved)
+				if (!childShape.IsDeleted)
 				{
-					childShape.Remove();
+					childShape.Delete();
 				}
 			}
 		}
@@ -904,7 +905,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to remove orphaned pels
 		/// </summary>
-		private class EliminateOrphanedShapesFixupListener : DeserializationFixupListener<PresentationElement>
+		private sealed class EliminateOrphanedShapesFixupListener : DeserializationFixupListener<PresentationElement>
 		{
 			/// <summary>
 			/// Create a new EliminateOrphanedShapesFixupListener
@@ -918,37 +919,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">A PresentationElement instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(PresentationElement element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(PresentationElement element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ModelElement backingElement = element.ModelElement;
-				if (backingElement == null || backingElement.IsRemoved)
+				if (backingElement == null || backingElement.IsDeleted)
 				{
-					element.Remove();
+					element.Delete();
 				}
 			}
 		}
 		#endregion // EliminateOrphanedShapesFixupListener class
-		#endregion // SubjectHasPresentation fixup
+		#endregion // PresentationViewsSubject fixup
 		#region LinkConnectsToNodeRemoved class
 		/// <summary>
 		/// Don't leave links dangling. Remove any link shape that points
 		/// to no model element.
 		/// </summary>
 		[RuleOn(typeof(LinkConnectsToNode), FireTime=TimeToFire.LocalCommit)]
-		private class LinkConnectsToNodeRemoved : RemoveRule
+		private sealed class LinkConnectsToNodeDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				LinkConnectsToNode link = e.ModelElement as LinkConnectsToNode;
 				LinkShape linkShape = link.Link;
 				NodeShape nodeShape = link.Nodes;
 				ModelElement backingElement;
-				if (nodeShape.IsRemoved &&
-					!linkShape.IsRemoved &&
+				if (nodeShape.IsDeleted &&
+					!linkShape.IsDeleted &&
 					null != (backingElement = linkShape.ModelElement) &&
-					!backingElement.IsRemoved)
+					!backingElement.IsDeleted)
 				{
-					linkShape.Remove();
+					linkShape.Delete();
 				}
 			}
 		}
@@ -961,19 +962,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="link"></param>
 		private static void FixupReadingOrderLink(FactTypeHasReadingOrder link)
 		{
-			ReadingOrder readingOrd = link.ReadingOrderCollection;
+			ReadingOrder readingOrd = link.ReadingOrder;
 			FactType fact = link.FactType;
 			ORMModel model = fact.Model;
-			if (!fact.IsRemoved && model != null)
+			if (!fact.IsDeleted && model != null)
 			{
 				Diagram.FixUpDiagram(model, fact); // Make sure the fact is already there
 				Diagram.FixUpDiagram(fact, readingOrd);
 			}
 		}
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class ReadingOrderAdded : AddRule
+		private sealed class ReadingOrderAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FixupReadingOrderLink(e.ModelElement as FactTypeHasReadingOrder);
 			}
@@ -982,7 +983,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to display role player links
 		/// </summary>
-		private class DisplayReadingsFixupListener : DeserializationFixupListener<FactTypeHasReadingOrder>
+		private sealed class DisplayReadingsFixupListener : DeserializationFixupListener<FactTypeHasReadingOrder>
 		{
 			/// <summary>
 			/// Create a new DisplayRolePlayersFixupListener
@@ -997,7 +998,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="element">An FactTypeHasReadingOrder instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(FactTypeHasReadingOrder element, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(FactTypeHasReadingOrder element, Store store, INotifyElementAdded notifyAdded)
 			{
 				FixupReadingOrderLink(element);
 			}
@@ -1010,14 +1011,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// and rules.
 		/// </summary>
 		[RuleOn(typeof(Role), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class RoleChange : ChangeRule
+		private sealed class RoleChange : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.MetaAttribute.Id == Role.NameMetaAttributeGuid)
+				if (e.DomainProperty.Id == Role.NameDomainPropertyId)
 				{
 						Role role = (Role)e.ModelElement;
-						if (!role.IsRemoved)
+						if (!role.IsDeleted)
 						{
 							if (string.IsNullOrEmpty(role.Name))
 							{
@@ -1028,7 +1029,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								Diagram.FixUpDiagram(role.FactType, role);
 								if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
 								{
-									foreach (PresentationElement element in role.FactType.PresentationRolePlayers)
+									foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role.FactType))
 									{
 										FactTypeShape fts = element as FactTypeShape;
 										if (fts != null
@@ -1048,7 +1049,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A fixup class to display role name
 		/// </summary>
-		private class DisplayRoleNameFixupListener : DeserializationFixupListener<Role>
+		private sealed class DisplayRoleNameFixupListener : DeserializationFixupListener<Role>
 		{
 			/// <summary>
 			/// Create a new DisplayRoleNameFixupListener
@@ -1062,9 +1063,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="role">A Role instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(Role role, Store store, INotifyElementAdded notifyAdded)
+			protected sealed override void ProcessElement(Role role, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!role.IsRemoved)
+				if (!role.IsDeleted)
 				{
 					RoleNameShape.SetRoleNameDisplay(role.FactType);
 				}

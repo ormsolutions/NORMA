@@ -4,83 +4,70 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ORMMetaModel : ISurveyQuestionProvider
 	{
+		private static readonly ISurveyQuestionTypeInfo[] SurveyQuestionTypeInfo = new ISurveyQuestionTypeInfo[]{
+			ProvideSurveyQuestionForElementType.Instance,
+			ProvideSurveyQuestionForErrorState.Instance};
 		/// <summary>
-		/// Returns an array of ISurveyQuestionTypeInfo representing the questions that can be	asked of objects in this MetaModel
+		/// Returns an array of ISurveyQuestionTypeInfo representing the questions that can be asked of objects in this DomainModel
 		/// </summary>
-		protected ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo()
+		protected static ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo()
 		{
-			return new ISurveyQuestionTypeInfo[]{
-				new ProvideSurveyQuestionForElementType(),
-				new ProvideSurveyQuestionForErrorState()};
+			return (ISurveyQuestionTypeInfo[])ORMMetaModel.SurveyQuestionTypeInfo.Clone();
 		}
 		ISurveyQuestionTypeInfo[] ISurveyQuestionProvider.GetSurveyQuestionTypeInfo()
 		{
-			return this.GetSurveyQuestionTypeInfo();
+			return GetSurveyQuestionTypeInfo();
 		}
-		private class ProvideSurveyQuestionForElementType : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForElementType : ISurveyQuestionTypeInfo
 		{
-			protected Type QuestionType
+			private ProvideSurveyQuestionForElementType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForElementType();
+			public Type QuestionType
 			{
 				get
 				{
 					return typeof(ElementType);
 				}
 			}
-			Type ISurveyQuestionTypeInfo.QuestionType
-			{
-				get
-				{
-					return this.QuestionType;
-				}
-			}
-			protected int AskQuestion(object data)
+			public int AskQuestion(object data)
 			{
 				IAnswerSurveyQuestion<ElementType> typedData = data as IAnswerSurveyQuestion<ElementType>;
 				if (typedData != null)
 				{
-					return (int)typedData.AskQuestion();
+					return typedData.AskQuestion();
 				}
 				else
 				{
 					return -1;
 				}
 			}
-			int ISurveyQuestionTypeInfo.AskQuestion(object data)
-			{
-				return this.AskQuestion(data);
-			}
 		}
-		private class ProvideSurveyQuestionForErrorState : ISurveyQuestionTypeInfo
+		private sealed class ProvideSurveyQuestionForErrorState : ISurveyQuestionTypeInfo
 		{
-			protected Type QuestionType
+			private ProvideSurveyQuestionForErrorState()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo Instance = new ProvideSurveyQuestionForErrorState();
+			public Type QuestionType
 			{
 				get
 				{
 					return typeof(ErrorState);
 				}
 			}
-			Type ISurveyQuestionTypeInfo.QuestionType
-			{
-				get
-				{
-					return this.QuestionType;
-				}
-			}
-			protected int AskQuestion(object data)
+			public int AskQuestion(object data)
 			{
 				IAnswerSurveyQuestion<ErrorState> typedData = data as IAnswerSurveyQuestion<ErrorState>;
 				if (typedData != null)
 				{
-					return (int)typedData.AskQuestion();
+					return typedData.AskQuestion();
 				}
 				else
 				{
 					return -1;
 				}
-			}
-			int ISurveyQuestionTypeInfo.AskQuestion(object data)
-			{
-				return this.AskQuestion(data);
 			}
 		}
 	}

@@ -1,25 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
-using System.IO;
+using Microsoft.VisualStudio.Shell.Interop;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {
 	public partial class ExtensionManager : Form
 	{
-		private Store _store;
-		private List<Type> _loadedSubStoreTypes;
+		private readonly Store _store;
+		private readonly List<Type> _loadedDomainModelTypes;
 		/// <summary>
 		/// Initialize the ExtensionManager form
 		/// </summary>
@@ -27,11 +28,11 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			InitializeComponent();
 			this._store = store;
-			System.Collections.ICollection subStores = store.SubStores.Values;
-			this._loadedSubStoreTypes = new List<Type>(subStores.Count);
-			foreach (SubStore subStore in subStores)
+			ICollection<DomainModel> domainModels = store.DomainModels;
+			this._loadedDomainModelTypes = new List<Type>(domainModels.Count);
+			foreach (DomainModel domainModel in domainModels)
 			{
-				this._loadedSubStoreTypes.Add(subStore.GetType());
+				this._loadedDomainModelTypes.Add(domainModel.GetType());
 			}
 		}
 		/// <summary>
@@ -79,17 +80,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// This is a custom callback class for the XSLT file that is
 		/// responsible for adding or removing the custom extension namespaces to the ORM document.
 		/// </summary>
-		private class NamespaceUtility
+		private sealed class NamespaceUtility
 		{
 			private readonly List<string> _namespaces;
 			private readonly List<string> _addedNamespaces;
-			private IEnumerator<string> _enumerator;
+			private bool _hasEnumerator;
+			private List<string>.Enumerator _enumerator;
 			private bool _hasCurrent;
 			private static readonly Random random = new Random();
 			/// <summary>
-			/// Default Constructor for the NameSpaceUtility.
+			/// Default Constructor for the <see cref="NamespaceUtility"/>.
 			/// </summary>
-			/// <param name="namespaces">a <see cref="List"/> of available namespaces.</param>
+			/// <param name="namespaces">a <see cref="List{String}"/> of available namespaces.</param>
 			public NamespaceUtility(List<string> namespaces)
 			{
 				this._namespaces = namespaces;
@@ -120,9 +122,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// <returns>The current namespace position if there is a next one. an empty string if there is not.</returns>
 			public string getNextSelectedNamespace()
 			{
-				if (this._enumerator == null)
+				if (!this._hasEnumerator)
 				{
 					this._enumerator = this._namespaces.GetEnumerator();
+					this._hasEnumerator = true;
 				}
 				this._hasCurrent = this._enumerator.MoveNext();
 				if (this._hasCurrent)
@@ -205,38 +208,22 @@ namespace Neumont.Tools.ORM.Shell
 			Type type = ormExtensionType.Type;
 			ListViewItem lvi = new ListViewItem();
 			lvi.Tag = ormExtensionType;
-			if (this._loadedSubStoreTypes.Contains(type))
+			if (this._loadedDomainModelTypes.Contains(type))
 			{
 				lvi.Checked = true;
 			}
 
-			//Add the Display Name
-			object[] attributes = type.GetCustomAttributes(typeof(MetaModelDisplayNameAttribute), true);
-			if (attributes.Length > 0)
-			{
-				MetaModelDisplayNameAttribute displayNameAttribute = attributes[0] as MetaModelDisplayNameAttribute;
-				lvi.SubItems.Add(displayNameAttribute.DisplayName);
-			}
-			else
-			{
-				Debug.Assert(false, "Custom extension does not have MetaModelDisplayNameAttribute");
-			}
-			//Add the description
-			attributes = type.GetCustomAttributes(typeof(MetaModelDescriptionAttribute), true);
-			if (attributes.Length > 0)
-			{
-				MetaModelDescriptionAttribute descriptionAttribute = attributes[0] as MetaModelDescriptionAttribute;
-				lvi.SubItems.Add(descriptionAttribute.Description);
-			}
-			else
-			{
-				Debug.Assert(false, "Custom extension does not have MetaModelDescriptionAttribute");
-			}
+			//Add the DisplayName
+			lvi.SubItems.Add(ORMTypeDescriptor.GetDisplayName(type));
+			
+			//Add the Description
+			lvi.SubItems.Add(ORMTypeDescriptor.GetDescription(type));
+
 			lvExtensions.Items.Add(lvi);
 		}
-		private class OwnerWindow : IWin32Window
+		private sealed class OwnerWindow : IWin32Window
 		{
-			private IntPtr myHandle;
+			private readonly IntPtr myHandle;
 			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
 			private static extern IntPtr GetDesktopWindow();
 			public OwnerWindow(IServiceProvider serviceProvider)
@@ -247,15 +234,13 @@ namespace Neumont.Tools.ORM.Shell
 					myHandle = GetDesktopWindow();
 				}
 			}
-			#region IWin32Window Members
-			IntPtr IWin32Window.Handle
+			public IntPtr Handle
 			{
 				get
 				{
 					return myHandle;
 				}
 			}
-			#endregion // IWin32Window Members
 		}
 		/// <summary>
 		/// This method grabs and compiles the XSLT transform that strips or adds custom extension to the ORM file.

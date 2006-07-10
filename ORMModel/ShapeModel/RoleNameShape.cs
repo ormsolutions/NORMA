@@ -57,20 +57,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classStyleSet.AddBrush(RoleNameTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
 		}
 		/// <summary>
-		/// Returns the guid for the role name attribute
+		/// Returns the guid for the object model name property
 		/// </summary>
-		protected override Guid AssociatedShapeMetaAttributeGuid
-		{
-			get { return RoleNameShape.RoleNameMetaAttributeGuid; }
-		}
-		/// <summary>
-		/// Returns the guid for the object model name attribute
-		/// </summary>
-		protected override Guid AssociatedModelMetaAttributeGuid
+		protected override Guid AssociatedModelDomainPropertyId
 		{
 			get
 			{
-				return Role.NameMetaAttributeGuid;
+				return Role.NameDomainPropertyId;
 			}
 		}
 		/// <summary>
@@ -94,12 +87,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static void RemoveRoleNameShapeFromRole(Role role)
 		{
-			foreach (PresentationElement element in role.PresentationRolePlayers)
+			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role))
 			{
 				RoleNameShape rns = element as RoleNameShape;
 				if (rns != null)
 				{
-					rns.Remove();
+					rns.Delete();
 				}
 			}
 		}
@@ -113,7 +106,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				Diagram.FixUpDiagram(role.FactType, role);
 			}
-			foreach (PresentationElement element in role.PresentationRolePlayers)
+			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role))
 			{
 				RoleNameShape rns = element as RoleNameShape;
 				if (rns != null)
@@ -145,7 +138,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			bool shouldDisplay = false;
 			bool shouldRemove = false;
-			foreach (PresentationElement element in fact.PresentationRolePlayers)
+			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(fact))
 			{
 				FactTypeShape fts = element as FactTypeShape;
 				if (fts != null)
@@ -185,7 +178,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			double y = -0.2;
 			FactType factType = factShape.AssociatedFactType;
 			// Cascades RoleNameShapes for facts that contain more than one role
-			RoleBaseMoveableCollection roles = factShape.DisplayedRoleOrder;
+			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
 			int roleIndex = roles.IndexOf((RoleBase)ModelElement);
 			if (roleIndex != -1)
 			{
@@ -197,15 +190,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Inherited AutoSizeTextField class so the display GetDisplayText could be overridden
 		/// </summary>
-		private class RoleNameAutoSizeTextField : AutoSizeTextField
+		private sealed class RoleNameAutoSizeTextField : AutoSizeTextField
 		{
 			/// <summary>
 			/// Gets the text to display in the RoleNameShape and appends square brackets to beginning and end
 			/// </summary>
-			public override string GetDisplayText(ShapeElement parentShape)
+			public sealed override string GetDisplayText(ShapeElement parentShape)
 			{
-				string roleName = base.GetDisplayText(parentShape);
-				return string.Format(CultureInfo.InvariantCulture, "[{0}]", roleName); // UNDONE: Localize format string
+				return string.Format(CultureInfo.InvariantCulture, "[{0}]", base.GetDisplayText(parentShape)); // UNDONE: Localize format string
 			}
 		}
 	}

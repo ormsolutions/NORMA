@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -41,6 +39,16 @@ namespace Neumont.Tools.ORM.Shell
 				return this.myType;
 			}
 		}
+		/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+		public override bool Equals(object obj)
+		{
+			return (obj is ORMExtensionType) && this.Equals((ORMExtensionType)obj);
+		}
+		/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
+		public override int GetHashCode()
+		{
+			return this.myNamespaceUri.GetHashCode();
+		}
 		/// <summary>
 		/// Checks if two ORMExtensionType's are equals.
 		/// </summary>
@@ -48,7 +56,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>true if they equal false if they don't.</returns>
 		public bool Equals(ORMExtensionType other)
 		{
-			return this.NamespaceUri.Equals(other.NamespaceUri);
+			return this.myNamespaceUri.Equals(other.myNamespaceUri);
 		}
 		/// <summary>
 		/// Compares the two namespaceURI's.
@@ -57,7 +65,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>standard compare logic.</returns>
 		public int CompareTo(ORMExtensionType other)
 		{
-			return this.NamespaceUri.CompareTo(other.NamespaceUri);
+			return this.myNamespaceUri.CompareTo(other.myNamespaceUri);
 		}
 	}
 }

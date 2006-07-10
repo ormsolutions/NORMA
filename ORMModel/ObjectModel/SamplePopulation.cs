@@ -135,12 +135,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>FactTypeRoleInstance for the given role, or null if none found.</returns>
 		public FactTypeRoleInstance FindRoleInstance(Role selectedRole)
 		{
-			FactTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
+			LinkedElementCollection<FactTypeRoleInstance> roleInstances = RoleInstanceCollection;
 			int roleInstanceCount = roleInstances.Count;
 			FactTypeRoleInstance roleInstance;
 			for (int i = 0; i < roleInstanceCount; ++i)
 			{
-				if (object.ReferenceEquals((roleInstance = roleInstances[i]).RoleCollection, selectedRole))
+				if ((roleInstance = roleInstances[i]).Role == selectedRole)
 				{
 					return roleInstance;
 				}
@@ -229,12 +229,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Element notification, set during deserialization</param>
 		private void ValidateTooFewFactTypeRoleInstancesError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = false;
-				FactTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
+				LinkedElementCollection<FactTypeRoleInstance> roleInstances = RoleInstanceCollection;
 				FactType parent = FactType;
-				RoleBaseMoveableCollection factRoles;
+				LinkedElementCollection<RoleBase> factRoles;
 				if (parent != null && roleInstances != null && (factRoles = parent.RoleCollection) != null)
 				{
 					bool roleMatch;
@@ -251,7 +251,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							roleMatch = false;
 							for (int j = 0; !hasError && j < roleInstancesCount; ++j)
 							{
-								if (object.ReferenceEquals(factRoles[i].Role, roleInstances[j].RoleCollection))
+								if (factRoles[i].Role == roleInstances[j].Role)
 								{
 									roleMatch = true;
 									break;
@@ -269,7 +269,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (tooFew == null)
 					{
-						tooFew = TooFewFactTypeRoleInstancesError.CreateTooFewFactTypeRoleInstancesError(this.Store);
+						tooFew = new TooFewFactTypeRoleInstancesError(this.Store);
 						tooFew.FactTypeInstance = this;
 						tooFew.Model = parent.Model;
 						tooFew.GenerateErrorText();
@@ -281,7 +281,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (tooFew != null)
 				{
-					tooFew.Remove();
+					tooFew.Delete();
 				}
 			}
 		}
@@ -302,7 +302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					FactType = candidateFactType;
 				}
-				else if (!object.ReferenceEquals(existingFactType, candidateFactType))
+				else if (existingFactType != candidateFactType)
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionFactTypeInstanceInconsistentRoleOwners);
 				}
@@ -315,17 +315,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		private void EnsureNonDuplicateRoleInstance(FactTypeInstanceHasRoleInstance link)
 		{
-			Role role = link.RoleInstanceCollection.RoleCollection;
+			Role role = link.RoleInstance.Role;
 			if (role != null)
 			{
-				IList currentLinks = this.GetElementLinks(FactTypeInstanceHasRoleInstance.FactTypeInstanceMetaRoleGuid);
+
+				ReadOnlyCollection<FactTypeInstanceHasRoleInstance> currentLinks = FactTypeInstanceHasRoleInstance.GetLinksToRoleInstanceCollection(this);
 				int linkCount = currentLinks.Count;
 				for (int i = linkCount - 1; i >= 0; --i)
 				{
-					FactTypeInstanceHasRoleInstance currentLink = (FactTypeInstanceHasRoleInstance)currentLinks[i];
-					if (!object.ReferenceEquals(link, currentLink) && object.ReferenceEquals(role, currentLink.RoleInstanceCollection.RoleCollection))
+					FactTypeInstanceHasRoleInstance currentLink = currentLinks[i];
+					if (link != currentLink && role == currentLink.RoleInstance.Role)
 					{
-						currentLink.Remove();
+						currentLink.Delete();
 						break;
 					}
 				}
@@ -338,9 +339,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// should be revalidated to ensure that they form a complete instance of the FactType
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class FactTypeHasRoleAdded : AddRule
+
+		private sealed class FactTypeHasRoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType parent = link.FactType;
@@ -358,20 +360,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// any FactTypeRoleInstances.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))]
-		private class FactTypeHasRoleRemoved : RemoveRule
+		private sealed class FactTypeHasRoleDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
-				if (!factType.IsRemoved)
+				if (!factType.IsDeleted)
 				{
-					FactTypeInstanceMoveableCollection factTypeInstances = factType.FactTypeInstanceCollection;
+					LinkedElementCollection<FactTypeInstance> factTypeInstances = factType.FactTypeInstanceCollection;
 					int factTypeInstanceCount = factTypeInstances.Count;
 					for (int i = 0; i < factTypeInstanceCount; ++i)
 					{
 						FactTypeInstance factTypeInstance = factTypeInstances[i];
-						if (!factTypeInstance.IsRemoved)
+						if (!factTypeInstance.IsDeleted)
 						{
 							ORMMetaModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 						}
@@ -386,20 +388,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// have the same FactType as a parent
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasFactTypeInstance))]
-		private class FactTypeHasFactTypeInstanceAdded : AddRule
+		private sealed class FactTypeHasFactTypeInstanceAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
 				FactType existingFactType = link.FactType;
 
-				FactTypeInstance newInstance = link.FactTypeInstanceCollection;
-				FactTypeRoleInstanceMoveableCollection roleInstances = newInstance.RoleInstanceCollection;
+				FactTypeInstance newInstance = link.FactTypeInstance;
+				LinkedElementCollection<FactTypeRoleInstance> roleInstances = newInstance.RoleInstanceCollection;
 				int roleInstanceCount = roleInstances.Count;
 				for (int i = 0; i < roleInstanceCount; ++i)
 				{
 					// Check each role being related to the FactType
-					newInstance.EnsureConsistentRoleOwner(existingFactType, roleInstances[i].RoleCollection);
+					newInstance.EnsureConsistentRoleOwner(existingFactType, roleInstances[i].Role);
 				}
 				ORMMetaModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 			}
@@ -412,16 +414,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// for the given role doesn't already exist
 		/// </summary>
 		[RuleOn(typeof(FactTypeInstanceHasRoleInstance))]
-		private class FactTypeInstanceHasRoleInstanceAdded : AddRule
+		private sealed class FactTypeInstanceHasRoleInstanceAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
 				FactTypeInstance newInstance = link.FactTypeInstance;
 				FactType existingFactType = newInstance.FactType;
 
-				FactTypeRoleInstance roleInstance = link.RoleInstanceCollection;
-				Role role = roleInstance.RoleCollection;
+				FactTypeRoleInstance roleInstance = link.RoleInstance;
+				Role role = roleInstance.Role;
 				newInstance.EnsureConsistentRoleOwner(existingFactType, role);
 				newInstance.EnsureNonDuplicateRoleInstance(link);
 				ORMMetaModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
@@ -434,17 +436,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// removed was the last one, remove the FactTypeInstance.
 		/// </summary>
 		[RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=TimeToFire.LocalCommit)]
-		private class FactTypeInstanceHasRoleInstanceRemoved : RemoveRule
+		private sealed class FactTypeInstanceHasRoleInstanceDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
 				FactTypeInstance instance = link.FactTypeInstance;
-				if (!instance.IsRemoved)
+				if (!instance.IsDeleted)
 				{
 					if (instance.RoleInstanceCollection.Count == 0)
 					{
-						instance.Remove();
+						instance.Delete();
 					}
 					else
 					{
@@ -465,12 +467,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>EntityTypeRoleInstance for the given role, or null if none found.</returns>
 		public EntityTypeRoleInstance FindRoleInstance(Role selectedRole)
 		{
-			EntityTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
+			LinkedElementCollection<EntityTypeRoleInstance> roleInstances = RoleInstanceCollection;
 			int roleInstanceCount = roleInstances.Count;
 			EntityTypeRoleInstance roleInstance;
 			for (int i = 0; i < roleInstanceCount; ++i)
 			{
-				if (object.ReferenceEquals((roleInstance = roleInstances[i]).RoleCollection, selectedRole))
+				if ((roleInstance = roleInstances[i]).Role == selectedRole)
 				{
 					return roleInstance;
 				}
@@ -560,15 +562,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Element notification, set during deserialization</param>
 		private void ValidateTooFewEntityTypeRoleInstancesError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				bool hasError = false;
-				EntityTypeRoleInstanceMoveableCollection roleInstances = RoleInstanceCollection;
+				LinkedElementCollection<EntityTypeRoleInstance> roleInstances = RoleInstanceCollection;
 				ObjectType parent = EntityType;
 				UniquenessConstraint preferredIdent;
 				if (parent != null && roleInstances != null && (preferredIdent = parent.PreferredIdentifier) != null)
 				{
-					RoleMoveableCollection entityPreferredIdentRoles = preferredIdent.RoleCollection;
+					LinkedElementCollection<Role> entityPreferredIdentRoles = preferredIdent.RoleCollection;
 					bool roleMatch;
 					int identifierRoleCount = entityPreferredIdentRoles.Count;
 					int roleInstancesCount = roleInstances.Count;
@@ -583,7 +585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							roleMatch = false;
 							for (int j = 0; !hasError && j < roleInstancesCount; ++j)
 							{
-								if (object.ReferenceEquals(entityPreferredIdentRoles[i], roleInstances[j].RoleCollection))
+								if (entityPreferredIdentRoles[i] == roleInstances[j].Role)
 								{
 									roleMatch = true;
 									break;
@@ -602,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (tooFew == null)
 					{
-						tooFew = TooFewEntityTypeRoleInstancesError.CreateTooFewEntityTypeRoleInstancesError(this.Store);
+						tooFew = new TooFewEntityTypeRoleInstancesError(this.Store);
 						tooFew.EntityTypeInstance = this;
 						tooFew.Model = parent.Model;
 						tooFew.GenerateErrorText();
@@ -614,7 +616,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (tooFew != null)
 				{
-					tooFew.Remove();
+					tooFew.Delete();
 				}
 			}
 		}
@@ -625,12 +627,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (currentEntityType != null && currentEntityType.PreferredIdentifier != null)
 			{
 				UniquenessConstraint identifierRoleSequence = currentEntityType.PreferredIdentifier;
-				RoleMoveableCollection identifierRoles = identifierRoleSequence.RoleCollection;
+				LinkedElementCollection<Role> identifierRoles = identifierRoleSequence.RoleCollection;
 				int identifierRolesCount = identifierRoles.Count;
 				for (int i = 0; i < identifierRolesCount; ++i)
 				{
 					// If role is in the identifier collection, all done
-					if (object.ReferenceEquals(role, identifierRoles[i]))
+					if (role == identifierRoles[i])
 					{
 						return;
 					}
@@ -652,17 +654,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		private void EnsureNonDuplicateRoleInstance(EntityTypeInstanceHasRoleInstance link)
 		{
-			Role role = link.RoleInstanceCollection.RoleCollection;
+			Role role = link.RoleInstance.Role;
 			if (role != null)
 			{
-				IList currentLinks = this.GetElementLinks(EntityTypeInstanceHasRoleInstance.EntityTypeInstanceMetaRoleGuid);
+				ReadOnlyCollection<EntityTypeInstanceHasRoleInstance> currentLinks = EntityTypeInstanceHasRoleInstance.GetLinksToRoleInstanceCollection(this);
 				int linkCount = currentLinks.Count;
 				for (int i = linkCount - 1; i >= 0; --i)
 				{
-					EntityTypeInstanceHasRoleInstance currentLink = (EntityTypeInstanceHasRoleInstance)currentLinks[i];
-					if (!object.ReferenceEquals(link, currentLink) && object.ReferenceEquals(role, currentLink.RoleInstanceCollection.RoleCollection))
+					EntityTypeInstanceHasRoleInstance currentLink = currentLinks[i];
+					if (link != currentLink && role == currentLink.RoleInstance.Role)
 					{
-						currentLink.Remove();
+						currentLink.Delete();
 						break;
 					}
 				}
@@ -675,19 +677,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// should be revalidated to ensure that they form a complete instance of the EntityType
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class ConstraintRoleSequenceHasRoleAdded : AddRule
+		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 				UniquenessConstraint uniConstraint = sequence as UniquenessConstraint;
 				ObjectType parent;
 				if (uniConstraint != null && (parent = uniConstraint.PreferredIdentifierFor) != null)
 				{
 					foreach (EntityTypeInstance entityTypeInstance in parent.EntityTypeInstanceCollection)
 					{
-						if (!entityTypeInstance.IsRemoved)
+						if (!entityTypeInstance.IsDeleted)
 						{
 							ORMMetaModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 						}
@@ -703,32 +705,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// any EntityTypeRoleInstances.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class ConstraintRoleSequenceHasRoleRemoved : RemoveRule
+		private sealed class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequence;
 				UniquenessConstraint uniConstraint = sequence as UniquenessConstraint;
 				ObjectType parent;
 				if (uniConstraint != null && (parent = uniConstraint.PreferredIdentifierFor) != null)
 				{
-					Role removedRole = link.RoleCollection;
-					EntityTypeRoleInstanceMoveableCollection roleInstances;
+					Role removedRole = link.Role;
+					LinkedElementCollection<EntityTypeRoleInstance> roleInstances;
 					bool cleanUp;
 					foreach (EntityTypeInstance entityTypeInstance in parent.EntityTypeInstanceCollection)
 					{
-						if (!entityTypeInstance.IsRemoved)
+						if (!entityTypeInstance.IsDeleted)
 						{
 							cleanUp = true;
 							roleInstances = entityTypeInstance.RoleInstanceCollection;
 							foreach (EntityTypeRoleInstance entityTypeRoleInstance in roleInstances)
 							{
-								if (!entityTypeRoleInstance.IsRemoved)
+								if (!entityTypeRoleInstance.IsDeleted)
 								{
-									if (object.ReferenceEquals(entityTypeRoleInstance.RoleCollection, removedRole))
+									if (entityTypeRoleInstance.Role == removedRole)
 									{
-										entityTypeRoleInstance.Remove();
+										entityTypeRoleInstance.Delete();
 									}
 									else
 									{
@@ -738,7 +740,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							if (cleanUp)
 							{
-								entityTypeInstance.Remove();
+								entityTypeInstance.Delete();
 							}
 							else
 							{
@@ -756,9 +758,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// EntityType's preferred identifier.
 		/// </summary>
 		[RuleOn(typeof(EntityTypeHasEntityTypeInstance))]
-		private class EntityTypeHasEntityTypeInstanceAdded : AddRule
+		private sealed class EntityTypeHasEntityTypeInstanceAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
 				ObjectType entity = link.EntityType;
@@ -766,8 +768,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionEntityTypeInstanceInvalidEntityTypeParent);
 				}
-				EntityTypeInstance entityTypeInstance = link.EntityTypeInstanceCollection;
-				RoleMoveableCollection entityTypeRoleInstances = entityTypeInstance.RoleCollection;
+				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
+				ReadOnlyLinkedElementCollection<Role> entityTypeRoleInstances = entityTypeInstance.RoleCollection;
 				int roleCount = entityTypeRoleInstances.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
@@ -782,14 +784,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Also validate the EntityTypeInstance to ensure a full instance population.
 		/// </summary>
 		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
-		private class EntityTypeInstanceHasRoleInstanceAdded : AddRule
+		private sealed class EntityTypeInstanceHasRoleInstanceAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-				EntityTypeRoleInstance roleInstance = link.RoleInstanceCollection;
+				EntityTypeRoleInstance roleInstance = link.RoleInstance;
 				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
-				Role role = roleInstance.RoleCollection;
+				Role role = roleInstance.Role;
 				entityTypeInstance.EnsureConsistentRoleCollections(entityTypeInstance.EntityType, role);
 				entityTypeInstance.EnsureNonDuplicateRoleInstance(link);
 				ORMMetaModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
@@ -802,17 +804,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// removed is the last one, remove the parent EntityTypeInstance.
 		/// </summary>
 		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
-		private class EntityTypeInstanceHasRoleInstanceRemoved : RemoveRule
+		private sealed class EntityTypeInstanceHasRoleInstanceDeleted : DeleteRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
 				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
 				EntityTypeInstance instance = link.EntityTypeInstance;
-				if (!instance.IsRemoved)
+				if (!instance.IsDeleted)
 				{
 					if (instance.RoleInstanceCollection.Count == 0)
 					{
-						instance.Remove();
+						instance.Delete();
 					}
 					else
 					{
@@ -915,7 +917,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Element notification, set during deserialization</param>
 		private void ValidateCompatibleValueTypeInstanceValueError(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			if (!IsDeleted)
 			{
 				ObjectType parent = this.ValueType;
 				CompatibleValueTypeInstanceValueError badValue = this.CompatibleValueTypeInstanceValueError;
@@ -926,7 +928,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (badValue == null)
 						{
-							badValue = CompatibleValueTypeInstanceValueError.CreateCompatibleValueTypeInstanceValueError(this.Store);
+							badValue = new CompatibleValueTypeInstanceValueError(this.Store);
 							badValue.ValueTypeInstance = this;
 							badValue.Model = parent.Model;
 							badValue.GenerateErrorText();
@@ -939,7 +941,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (badValue != null)
 				{
-					badValue.Remove();
+					badValue.Delete();
 				}
 			}
 		}
@@ -949,13 +951,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// When the DataType changes, recheck the valueTypeInstance values
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private class ValueTypeHasDataTypeAdded : AddRule
+		private sealed class ValueTypeHasDataTypeAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				DataType dataType = link.DataType;
-				ObjectType valueType = link.ValueTypeCollection;
+				ObjectType valueType = link.ValueType;
 				bool clearErrors = dataType.CanParseAnyValue;
 				foreach (ValueTypeInstance valueTypeInstance in valueType.ValueTypeInstanceCollection)
 				{
@@ -975,12 +977,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Whenever the value of a valueTypeInstance changes, make sure it can be parsed as the current DataType
 		/// </summary>
 		[RuleOn(typeof(ValueTypeInstance))]
-		private class ValueTypeInstanceValueChanged : ChangeRule
+		private sealed class ValueTypeInstanceValueChanged : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ValueTypeInstance valueTypeInstance = e.ModelElement as ValueTypeInstance;
-				if (!valueTypeInstance.IsRemoved)
+				if (!valueTypeInstance.IsDeleted)
 				{
 					ORMMetaModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
 				}
@@ -994,9 +996,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// ValueType.DataType
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasValueTypeInstance))]
-		private class ValueTypeHasValueTypeInstanceAdded : AddRule
+		private sealed class ValueTypeHasValueTypeInstanceAdded : AddRule
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasValueTypeInstance link = e.ModelElement as ValueTypeHasValueTypeInstance;
 				ObjectType valueType = link.ValueType;
@@ -1004,10 +1006,107 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionValueTypeInstanceInvalidValueTypeParent);
 				}
-				ValueTypeInstance valueTypeInstance = link.ValueTypeInstanceCollection;
+				ValueTypeInstance valueTypeInstance = link.ValueTypeInstance;
 				ORMMetaModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
 			}
 		}
 		#endregion
 	}
+	#region HACK: Workarounds for DSL Tools code generator and DomainModelReflector
+	public partial class ORMMetaModel
+	{
+		/// <summary>
+		/// Adds fake roles for EntityTypeRoleInstance and FactTypeRoleInstance.
+		/// </summary>
+		protected override DomainRolePlayerInfo[] GetCustomDomainRoles()
+		{
+			DomainRolePlayerInfo[] retVal = base.GetCustomDomainRoles();
+			int baseLength = retVal.Length;
+			Array.Resize<DomainRolePlayerInfo>(ref retVal, baseLength + 4);
+			retVal[baseLength++] = new DomainRolePlayerInfo(typeof(EntityTypeRoleInstance), "Role", new Guid(0xD927C1AA, 0x2E2D, 0x41CF, 0x9D, 0x87, 0x0A, 0x69, 0xA6, 0x3F, 0x3E, 0x9A));
+			retVal[baseLength++] = new DomainRolePlayerInfo(typeof(EntityTypeRoleInstance), "ObjectTypeInstance", new Guid(0x8E4356D2, 0x05D5, 0x4194, 0xBD, 0xBC, 0xF5, 0xB9, 0x6D, 0x22, 0xE4, 0x1A));
+			retVal[baseLength++] = new DomainRolePlayerInfo(typeof(FactTypeRoleInstance), "Role", new Guid(0xE927C1AA, 0x2E2D, 0x41CF, 0x9D, 0x87, 0x0A, 0x69, 0xA6, 0x3F, 0x3E, 0x9B));
+			retVal[baseLength] = new DomainRolePlayerInfo(typeof(FactTypeRoleInstance), "ObjectTypeInstance", new Guid(0x9E4356D2, 0x05D5, 0x4194, 0xBD, 0xBC, 0xF5, 0xB9, 0x6D, 0x22, 0xE4, 0x1B));
+			return retVal;
+		}
+	}
+	public partial class EntityTypeRoleInstance
+	{
+		#region Role implementation
+		/// <summary>See <see cref="RoleInstance.Role"/>.</summary>
+		[DomainRole(DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey = "Neumont.Tools.ORM.ObjectModel.RoleInstance/Role.PropertyDisplayName", Multiplicity = Multiplicity.OneMany)]
+		[DomainObjectId("C927C1AA-2E2D-41CF-9D87-0A69A63F3E99")]
+		public override Role Role
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return (Role)DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[DebuggerStepThrough]
+			set
+			{
+				DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+		#endregion // Role implementation
+		#region // ObjectTypeInstance implementation
+		/// <summary>See <see cref="RoleInstance.ObjectTypeInstance"/>.</summary>
+		[DomainRole(DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey = "Neumont.Tools.ORM.ObjectModel.RoleInstance/ObjectTypeInstance.PropertyDisplayName", Multiplicity = Multiplicity.OneMany)]
+		[DomainObjectId("7E4356D2-05D5-4194-BDBC-F5B96D22E419")]
+		public override ObjectTypeInstance ObjectTypeInstance
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+			}
+			[DebuggerStepThrough]
+			set
+			{
+				DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+			}
+		}
+		#endregion // ObjectTypeInstance implementation
+	}
+	public partial class FactTypeRoleInstance
+	{
+		#region Role implementation
+		/// <summary>See <see cref="RoleInstance.Role"/>.</summary>
+		[DomainRole(DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey = "Neumont.Tools.ORM.ObjectModel.RoleInstance/Role.PropertyDisplayName", Multiplicity = Multiplicity.OneMany)]
+		[DomainObjectId("C927C1AA-2E2D-41CF-9D87-0A69A63F3E99")]
+		public override Role Role
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return (Role)DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[DebuggerStepThrough]
+			set
+			{
+				DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+		#endregion // Role implementation
+		#region // ObjectTypeInstance implementation
+		/// <summary>See <see cref="RoleInstance.ObjectTypeInstance"/>.</summary>
+		[DomainRole(DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey = "Neumont.Tools.ORM.ObjectModel.RoleInstance/ObjectTypeInstance.PropertyDisplayName", Multiplicity = Multiplicity.OneMany)]
+		[DomainObjectId("7E4356D2-05D5-4194-BDBC-F5B96D22E419")]
+		public override ObjectTypeInstance ObjectTypeInstance
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+			}
+			[DebuggerStepThrough]
+			set
+			{
+				DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+			}
+		}
+		#endregion // ObjectTypeInstance implementation
+	}
+	#endregion HACK: Workarounds for DSL Tools code generator and DomainModelReflector
 }
