@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Text.RegularExpressions;
 
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	/// <summary>
 	/// Use to draw a FactLine on the model.

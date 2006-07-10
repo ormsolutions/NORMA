@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 
 #endregion
 
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	#region FactLineType enum
 

@@ -30,7 +30,7 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 #endregion
 
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	/// <summary>
 	/// The host of the text editor

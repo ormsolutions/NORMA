@@ -18,7 +18,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio;
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	#region FactEditorColorizableItem Enum
 	/// <summary>

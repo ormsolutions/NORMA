@@ -31,9 +31,9 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
-using Neumont.Tools.ORM.FactEditor;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Shell.FactEditor;
 
 using OleInterop = Microsoft.VisualStudio.OLE.Interop;
 using DomainModel = Microsoft.VisualStudio.Modeling.DomainModel;

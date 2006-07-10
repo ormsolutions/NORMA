@@ -29,7 +29,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 #endregion
 
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	/// <summary>
 	/// Filter the text view and look for specific package commands

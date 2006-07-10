@@ -83,15 +83,15 @@
   <ItemGroup>
     <Compile Include="Design\ORMTypeConverters.cs" />
     <Compile Include="Design\ORMTypeDescriptors.cs" />
-    <Compile Include="FactEditor\FactCodeWindowManager.cs" />
-    <Compile Include="FactEditor\FactColorizer.cs" />
-    <Compile Include="FactEditor\FactCompletionSet.cs" />
-    <Compile Include="FactEditor\FactFontsAndColors.cs" />
-    <Compile Include="FactEditor\FactGuidList.cs" />
-    <Compile Include="FactEditor\FactLanguageService.cs" />
-    <Compile Include="FactEditor\FactParser.cs" />
-    <Compile Include="FactEditor\FactSaver.cs" />
-    <Compile Include="FactEditor\FactTextViewFilter.cs" />
+    <Compile Include="Shell\FactEditor\FactCodeWindowManager.cs" />
+    <Compile Include="Shell\FactEditor\FactColorizer.cs" />
+    <Compile Include="Shell\FactEditor\FactCompletionSet.cs" />
+    <Compile Include="Shell\FactEditor\FactFontsAndColors.cs" />
+    <Compile Include="Shell\FactEditor\FactGuidList.cs" />
+    <Compile Include="Shell\FactEditor\FactLanguageService.cs" />
+    <Compile Include="Shell\FactEditor\FactParser.cs" />
+    <Compile Include="Shell\FactEditor\FactSaver.cs" />
+    <Compile Include="Shell\FactEditor\FactTextViewFilter.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\CategorySurveyQuestion.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyInterfaces.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\ListGrouper.cs" />

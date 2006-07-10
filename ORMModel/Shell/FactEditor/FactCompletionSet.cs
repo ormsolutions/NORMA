@@ -33,7 +33,7 @@ using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	/// <summary>
 	/// A completion set manager for fact editing

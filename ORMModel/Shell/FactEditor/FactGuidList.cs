@@ -26,7 +26,7 @@ namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// A collection of static <see cref="Guid"/>s used in the <see cref="Microsoft.VisualStudio.OLE.Interop.IOleCommandTarget.Exec"/>
-	/// <seealso cref="Neumont.Tools.ORM.FactEditor.FactTextViewFilter"/>
+	/// <seealso cref="Neumont.Tools.ORM.Shell.FactEditor.FactTextViewFilter"/>
 	/// </summary>
 	public static class FactGuidList
 	{

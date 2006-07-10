@@ -26,7 +26,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 #endregion
 
-namespace Neumont.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.Shell.FactEditor
 {
 	/// <summary>
 	/// A class which handles applying color to marked tokens
