@@ -70,6 +70,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			base.InitializeResources(classStyleSet);
 			PenSettings settings = new PenSettings();
+			settings.Color = Color.DarkBlue;
 			settings.Width = 1.2f / 72f; // 1.2 point
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, settings);
 			settings.DashStyle = DashStyle.Dash;

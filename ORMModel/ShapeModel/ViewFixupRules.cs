@@ -965,7 +965,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ReadingOrder readingOrd = link.ReadingOrder;
 			FactType fact = link.FactType;
 			ORMModel model = fact.Model;
-			if (!fact.IsDeleted && model != null)
+			if (!fact.IsDeleted && !(fact is SubtypeFact) && model != null)
 			{
 				Diagram.FixUpDiagram(model, fact); // Make sure the fact is already there
 				Diagram.FixUpDiagram(fact, readingOrd);

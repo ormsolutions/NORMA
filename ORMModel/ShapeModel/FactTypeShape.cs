@@ -1146,7 +1146,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private const double ConstraintHeight = 0.07;
 		private const double ExternalConstraintBarCenterAdjust = ConstraintHeight / 5;
 		private const double BorderMargin = 0.05;
-		private static readonly SizeD BorderMarginSize = new SizeD(BorderMargin / 2, 0);
+		private static readonly SizeD BorderMarginSize = new SizeD(0, BorderMargin / 2);
 		private const double FocusIndicatorInsideMargin = .019;
 		#endregion // Size Constants
 		#region SpacerShapeField : ShapeField

@@ -131,30 +131,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion // ErrorCollection
 		#region MergeContext functions
-		// UNDONE: 2006-06 DSL Tools port: Is this needed any more? (It used to be named "CanAddChildElement")
-		/// <summary>
-		/// Support adding root elements and constraints directly to the design surface.
-		/// </summary>
-		/*protected override bool CanMerge(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
-		{
-			if (rootElement == null)
-			{
-				return false;
-			}
-			DomainClassInfo classInfo = Store.DomainDataDirectory.FindDomainClass(rootElement.MetaClassId);
-			return classInfo.IsDerivedFrom(ObjectType.DomainClassId) ||
-				classInfo.IsDerivedFrom(FactType.DomainClassId) ||
-				classInfo.IsDerivedFrom(SetComparisonConstraint.DomainClassId) ||
-				(classInfo.IsDerivedFrom(SetConstraint.DomainClassId) && elementGroupPrototype.UserData != ORMMetaModelToolboxHelper.InternalUniquenessConstraintUserDataKey);
-		}*/
-
-		// Called from MergeRelate method in generated code.
-		private void MergeRelateObjectType(ModelElement objectType, ElementGroup elementGroup)
-		{
-			// This is to work around a bug in the generated code.
-			// It is passing us the reference typed as ModelElement rather than ObjectType.
-			this.MergeRelateObjectType((ObjectType)objectType, elementGroup);
-		}
 		private void MergeRelateObjectType(ObjectType objectType, ElementGroup elementGroup)
 		{
 			if (elementGroup.UserData == ORMMetaModelToolboxHelper.ValueTypeUserDataKey)
@@ -162,6 +138,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				objectType.DataType = DefaultDataType;
 			}
 			this.ObjectTypeCollection.Add(objectType);
+		}
+		private bool CanMergeSetConstraint(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
+		{
+			return elementGroupPrototype.UserData != ORMMetaModelToolboxHelper.InternalUniquenessConstraintUserDataKey;
 		}
 		#endregion // MergeContext functions
 	}

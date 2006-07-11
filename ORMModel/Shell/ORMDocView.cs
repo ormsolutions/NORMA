@@ -1136,10 +1136,11 @@ namespace Neumont.Tools.ORM.Shell
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
 				{
 					Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
+					#if QUEUEDSELECTION
 					// UNDONE: 2006-06 DSL Tools port: QueuedSelection doesn't seem to exist any more. What do we replace it with?
-					//IList queuedSelection = docData.QueuedSelection as IList;
+					IList queuedSelection = docData.QueuedSelection as IList;
 					IList queuedSelection = null;
-					Debug.Fail("UNDONE: 2006-06 DSL Tool port: QueuedSelection has not yet been replaced, so this code will most likely crash.");
+					#endif // QUEUEDSELECTION
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
 					{
@@ -1197,6 +1198,7 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)
 						{
+#if QUEUEDSELECTION
 							// The object was selected directly (through a shape field or sub field element)
 							ModelElement shapeAssociatedMel = null;
 							if (complexSelection)
@@ -1246,6 +1248,7 @@ namespace Neumont.Tools.ORM.Shell
 									queuedSelection.Add(pel);
 								}
 							}
+#endif // QUEUEDSELECTION
 
 							// Remove the item
 							mel.Delete();
@@ -1254,6 +1257,7 @@ namespace Neumont.Tools.ORM.Shell
 
 					if (t.HasPendingChanges)
 					{
+#if QUEUEDSELECTION
 						if (complexSelection)
 						{
 							for (int i = queuedSelection.Count - 1; i >= 0; --i)
@@ -1268,6 +1272,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							queuedSelection.Add(d);
 						}
+#endif // QUEUEDSELECTION
 						t.Commit();
 					}
 				}

@@ -211,6 +211,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Allow relative child shapes to move above and to the left of their parent
+		/// </summary>
+		public override BoundsRules BoundsRules
+		{
+			get
+			{
+				return NoBoundsRules.Instance;
+			}
+		}
+		/// <summary>
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape children
 		/// </summary>
 		/// <param name="child">The child being configured</param>
@@ -242,35 +252,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize appearance
-		#region Hack to block child shape moving twice
-		/// <summary>
-		/// Hack override to handle MSBUG that moves child shapes twice on the diagram. Combined
-		/// with ORMDiagram.MoveByRepositioning and ORMDiagram.MovingDiagramItemsContextKey to limit
-		/// to limit moving of child shapes during a transaction.
-		/// </summary>
-		public override bool CanMove
-		{
-			get
-			{
-				Store store = Store;
-				if (store.TransactionActive)
-				{
-					ShapeElement parentShape = ParentShape;
-					if (!(parentShape is ORMDiagram))
-					{
-						object movingItems;
-						if (store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(ORMDiagram.MovingDiagramItemsContextKey, out movingItems) &&
-							movingItems != null &&
-							((DiagramItemCollection)movingItems).Contains(new DiagramItem(parentShape)))
-						{
-							return false;
-						}
-					}
-				}
-				return base.CanMove;
-			}
-		}
-		#endregion // Hack to block child shape moving twice
 		#region Auto-activate associated errors
 		/// <summary>
 		/// Attempt to activate an activatable error.

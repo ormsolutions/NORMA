@@ -41,18 +41,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>See <see cref="ORMMetaModelToolboxHelperBase.CreateElementToolPrototype"/>.</summary>
 		protected sealed override ElementGroupPrototype CreateElementToolPrototype(Store store, Guid domainClassId)
 		{
-			// UNDONE: HACK: 2006-06 DSL Tools port: This method is intended to be only a temporary solution, until we have time to come up with something better.
-
 			// WARNING: This method is _extremely_ order-sensitive. If the order that the toolbox items are listed
 			// in the .dsl file changes, or if the DSL Tools text template that is used to generate ORMMetaModelHelperBase
 			// changes, this method will most likely need to be changed as well.
 
 			ElementGroup group = new ElementGroup(store);
+			bool unknownItem = false;
 
 			if (domainClassId.Equals(ObjectType.DomainClassId))
 			{
 				ObjectType objectType = new ObjectType(store);
-				group.AddGraph(objectType);
+				group.AddGraph(objectType, true);
 				switch (myObjectTypeCount++)
 				{
 					case 0:
@@ -68,16 +67,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 						break;
 					case 2:
 						// ObjectifiedFactType
-						group.AddGraph(new Objectification(objectType, AddFactType(store, group, 2)));
+						group.AddGraph(new Objectification(objectType, AddFactType(store, group, 2)), true);
 						break;
 					default:
-						goto L_Error;
+						unknownItem = true;
+						break;
 				}
 			}
 			else if (domainClassId.Equals(FactType.DomainClassId))
 			{
 				Debug.Assert(myFactTypeCount < 3);
-				AddFactType(store, group, ++myFactTypeCount);
+				group.AddGraph(AddFactType(store, group, ++myFactTypeCount), true);
 			}
 			else if (domainClassId.Equals(UniquenessConstraint.DomainClassId))
 			{
@@ -87,49 +87,53 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// constraints without unpacking the model. We want to merge internals into a fact
 					// and externals into the model.
 					group.UserData = InternalUniquenessConstraintUserDataKey;
-					group.AddGraph(UniquenessConstraint.CreateInternalUniquenessConstraint(store));
+					group.AddGraph(UniquenessConstraint.CreateInternalUniquenessConstraint(store), true);
 				}
 				else
 				{
 					Debug.Assert(myUniquenessConstraintCount == 1);
-					group.AddGraph(new UniquenessConstraint(store));
+					group.AddGraph(new UniquenessConstraint(store), true);
 				}
 				myUniquenessConstraintCount++;
 			}
 			else if (domainClassId.Equals(EqualityConstraint.DomainClassId))
 			{
-				group.AddGraph(new EqualityConstraint(store));
+				group.AddGraph(new EqualityConstraint(store), true);
 			}
 			else if (domainClassId.Equals(ExclusionConstraint.DomainClassId))
 			{
-				group.AddGraph(new ExclusionConstraint(store));
+				group.AddGraph(new ExclusionConstraint(store), true);
 			}
 			else if (domainClassId.Equals(MandatoryConstraint.DomainClassId))
 			{
-				group.AddGraph(new MandatoryConstraint(store));
+				group.AddGraph(new MandatoryConstraint(store), true);
 			}
 			else if (domainClassId.Equals(SubsetConstraint.DomainClassId))
 			{
-				group.AddGraph(new SubsetConstraint(store));
+				group.AddGraph(new SubsetConstraint(store), true);
 			}
 			else if (domainClassId.Equals(FrequencyConstraint.DomainClassId))
 			{
-				group.AddGraph(new FrequencyConstraint(store));
+				group.AddGraph(new FrequencyConstraint(store), true);
 			}
 			else if (domainClassId.Equals(RingConstraint.DomainClassId))
 			{
-				group.AddGraph(new RingConstraint(store));
+				group.AddGraph(new RingConstraint(store), true);
 			}
 			else
 			{
-				goto L_Error;
+				unknownItem = true;
 			}
-			return group.CreatePrototype();
-		L_Error:
-			Debug.Fail("Unexpected toolbox item type.");
-			return null;
+			Debug.Assert(!unknownItem, "Unexpected toolbox item type.");
+			return unknownItem ? null : group.CreatePrototype();
 		}
-
+		/// <summary>
+		/// Helper function for CreateElementToolPrototype
+		/// </summary>
+		/// <param name="store">The context store</param>
+		/// <param name="group">The group to create</param>
+		/// <param name="arity">The number of roles to put on the fact type</param>
+		/// <returns>The created fact type. The fact itself is not added to the group.</returns>
 		private static FactType AddFactType(Store store, ElementGroup group, int arity)
 		{
 			FactType factType = new FactType(store, null);

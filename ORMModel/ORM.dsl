@@ -62,31 +62,7 @@
 						<DomainPath>ModelHasFactType.FactTypeCollection</DomainPath>
 					</LinkCreationPaths>
 				</ElementMergeDirective>
-				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
-					<Index>
-						<DomainClassMoniker Name="ModelError"/>
-					</Index>
-					<LinkCreationPaths>
-						<DomainPath>ModelHasError.ErrorCollection</DomainPath>
-					</LinkCreationPaths>
-				</ElementMergeDirective>
-				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
-					<Index>
-						<DomainClassMoniker Name="ReferenceModeKind"/>
-					</Index>
-					<LinkCreationPaths>
-						<DomainPath>ModelHasReferenceModeKind.ReferenceModeKindCollection</DomainPath>
-					</LinkCreationPaths>
-				</ElementMergeDirective>
-				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
-					<Index>
-						<DomainClassMoniker Name="ReferenceMode"/>
-					</Index>
-					<LinkCreationPaths>
-						<DomainPath>ModelHasReferenceMode.ReferenceModeCollection</DomainPath>
-					</LinkCreationPaths>
-				</ElementMergeDirective>
-				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
+				<ElementMergeDirective UsesCustomAccept="true" UsesCustomMerge="false">
 					<Index>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</Index>
@@ -100,14 +76,6 @@
 					</Index>
 					<LinkCreationPaths>
 						<DomainPath>ModelHasSetComparisonConstraint.SetComparisonConstraintCollection</DomainPath>
-					</LinkCreationPaths>
-				</ElementMergeDirective>
-				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
-					<Index>
-						<DomainClassMoniker Name="DataType"/>
-					</Index>
-					<LinkCreationPaths>
-						<DomainPath>ModelHasDataType.DataTypeCollection</DomainPath>
 					</LinkCreationPaths>
 				</ElementMergeDirective>
 			</ElementMergeDirectives>
@@ -2891,7 +2859,7 @@
 	</Types>
 
 	<Shapes>
-		<GeometryShape Name="ORMBaseShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="55131F4B-0F9A-408D-BED0-79451BA7F4F0" HasCustomConstructor="true">
+		<GeometryShape Name="ORMBaseShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="55131F4B-0F9A-408D-BED0-79451BA7F4F0" HasCustomConstructor="true" FillGradientMode="None">
 			<Properties>
 				<DomainProperty Name="UpdateCounter" Id="85E23BA2-451A-4CD3-B233-64973E6133F6" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
 					<Type>
@@ -2900,7 +2868,7 @@
 				</DomainProperty>
 			</Properties>
 		</GeometryShape>
-		<GeometryShape Name="ObjectTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00C1F246-D8F1-4EEA-AC88-39BA238143A8">
+		<GeometryShape Name="ObjectTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00C1F246-D8F1-4EEA-AC88-39BA238143A8" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseClass>
@@ -2912,7 +2880,7 @@
 				</DomainProperty>
 			</Properties>
 		</GeometryShape>
-		<GeometryShape Name="FactTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8E440A3B-275E-42F7-868B-D5D473158ACD">
+		<GeometryShape Name="FactTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8E440A3B-275E-42F7-868B-D5D473158ACD" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseClass>
@@ -2934,32 +2902,32 @@
 				</DomainProperty>
 			</Properties>
 		</GeometryShape>
-		<GeometryShape Name="SubtypeLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="87DDAEDA-1FD8-4433-BB1E-7482C7F471A7">
+		<GeometryShape Name="SubtypeLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="87DDAEDA-1FD8-4433-BB1E-7482C7F471A7" FillGradientMode="None">
 			<BaseClass>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="ExternalConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00A08F56-73BA-4C8F-8FA1-AE61B8FC1CAE">
+		<GeometryShape Name="ExternalConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00A08F56-73BA-4C8F-8FA1-AE61B8FC1CAE" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="FrequencyConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="EC47CD7D-023B-4971-8B5B-1242DBC7356F">
+		<GeometryShape Name="FrequencyConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="EC47CD7D-023B-4971-8B5B-1242DBC7356F" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="RingConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="61B334C5-D37F-4A74-90E9-AC793D35BDF1">
+		<GeometryShape Name="RingConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="61B334C5-D37F-4A74-90E9-AC793D35BDF1" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="FloatingTextShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="0904999F-D9C5-4C4E-A08F-F8DD4B2F29A3">
+		<GeometryShape Name="FloatingTextShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="0904999F-D9C5-4C4E-A08F-F8DD4B2F29A3" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="ObjectifiedFactTypeNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="7FD5183A-8BC2-43BB-8474-A0A2D558D90A">
+		<GeometryShape Name="ObjectifiedFactTypeNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="7FD5183A-8BC2-43BB-8474-A0A2D558D90A" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseClass>
@@ -2971,22 +2939,22 @@
 				</DomainProperty>
 			</Properties>
 		</GeometryShape>
-		<GeometryShape Name="ReadingShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="C567ED6D-D0A6-4FD8-A974-C567AA309D5E">
+		<GeometryShape Name="ReadingShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="C567ED6D-D0A6-4FD8-A974-C567AA309D5E" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="ValueConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="B65F916A-06A5-4EFE-BBF9-8D8E55B5C7EB">
+		<GeometryShape Name="ValueConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="B65F916A-06A5-4EFE-BBF9-8D8E55B5C7EB" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="RoleNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="2CB7393C-4502-4C59-979D-94D6C89B4080">
+		<GeometryShape Name="RoleNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="2CB7393C-4502-4C59-979D-94D6C89B4080" FillGradientMode="None">
 			<BaseClass>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D"/>
+		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None"/>
 	</Shapes>
 
 	<Connectors>

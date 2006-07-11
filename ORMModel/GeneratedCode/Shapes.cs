@@ -52,28 +52,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -284,28 +262,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -519,28 +475,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -959,28 +893,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1107,28 +1019,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1243,28 +1133,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1379,28 +1247,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1443,28 +1289,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public abstract partial class FloatingTextShape : ORMBaseShape
 	{
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1581,28 +1405,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1817,28 +1619,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -1965,28 +1745,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -2113,28 +1871,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	
@@ -2274,28 +2010,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion
 		#region Shape styles
-		/// <summary>
-		/// Indicates whether this shape displays a background gradient.
-		/// </summary>
-		public override bool HasBackgroundGradient
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
-		/// <summary>
-		/// Indicates the direction of the gradient.
-		/// </summary>
-		public override global::System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				return global::System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
-			}
-		}
-		
 		#endregion
 		#region Constructors, domain class Id
 	

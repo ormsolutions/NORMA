@@ -347,25 +347,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetConstraint.DomainClassId)) 
 				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ReferenceMode.DomainClassId)) 
-				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.DataType.DomainClassId)) 
-				{
-					return true;
+					// Call custom method implemented in partial class
+					return this.CanMergeSetConstraint(rootElement, elementGroupPrototype);
 				}
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.DomainClassId)) 
-				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId)) 
 				{
 					return true;
 				}
@@ -375,12 +361,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.DomainClassId)) 
-				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ModelError.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId)) 
 				{
 					return true;
 				}
@@ -422,28 +403,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 				
 			{
-				global::Neumont.Tools.ORM.ObjectModel.ReferenceMode sourceReferenceMode = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ReferenceMode;
-				if (sourceReferenceMode != null)
-				{
-					// Create link for path ModelHasReferenceMode.ReferenceModeCollection
-					this.ReferenceModeCollection.Add(sourceReferenceMode);
-
-					return;
-				}
-			}
-				
-			{
-				global::Neumont.Tools.ORM.ObjectModel.DataType sourceDataType = sourceElement as global::Neumont.Tools.ORM.ObjectModel.DataType;
-				if (sourceDataType != null)
-				{
-					// Create link for path ModelHasDataType.DataTypeCollection
-					this.DataTypeCollection.Add(sourceDataType);
-
-					return;
-				}
-			}
-				
-			{
 				global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint;
 				if (sourceSetComparisonConstraint != null)
 				{
@@ -455,44 +414,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 				
 			{
-				global::Neumont.Tools.ORM.ObjectModel.FactType sourceFactType = sourceElement as global::Neumont.Tools.ORM.ObjectModel.FactType;
-				if (sourceFactType != null)
-				{
-					// Create link for path ModelHasFactType.FactTypeCollection
-					this.FactTypeCollection.Add(sourceFactType);
-
-					return;
-				}
-			}
-				
-			{
 				global::Neumont.Tools.ORM.ObjectModel.ObjectType sourceObjectType = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
 				if (sourceObjectType != null)
 				{
 				
 					// Call custom method implemented in partial class
-					this.MergeRelateObjectType(sourceElement, elementGroup);
+					this.MergeRelateObjectType(sourceObjectType, elementGroup);
 					return;
 				}
 			}
 				
 			{
-				global::Neumont.Tools.ORM.ObjectModel.ReferenceModeKind sourceReferenceModeKind = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ReferenceModeKind;
-				if (sourceReferenceModeKind != null)
+				global::Neumont.Tools.ORM.ObjectModel.FactType sourceFactType = sourceElement as global::Neumont.Tools.ORM.ObjectModel.FactType;
+				if (sourceFactType != null)
 				{
-					// Create link for path ModelHasReferenceModeKind.ReferenceModeKindCollection
-					this.ReferenceModeKindCollection.Add(sourceReferenceModeKind);
-
-					return;
-				}
-			}
-				
-			{
-				global::Neumont.Tools.ORM.ObjectModel.ModelError sourceModelError = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ModelError;
-				if (sourceModelError != null)
-				{
-					// Create link for path ModelHasError.ErrorCollection
-					global::Neumont.Tools.ORM.ObjectModel.ModelHasError.GetErrorCollection(this).Add(sourceModelError);
+					// Create link for path ModelHasFactType.FactTypeCollection
+					this.FactTypeCollection.Add(sourceFactType);
 
 					return;
 				}
@@ -1246,7 +1183,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
 				global::System.Object oldValue = GetValue(element);
-				if (newValue != oldValue)
+				// Don't use != with object properties
+				if (!global::System.Object.Equals(newValue, oldValue))
 				{
 					ValueChanging(element, oldValue, newValue);
 					// There is no storage for ReferenceModeDisplay because its Kind is

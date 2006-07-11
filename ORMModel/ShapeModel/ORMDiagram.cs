@@ -260,38 +260,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		# endregion // DragDrop overrides
-		#region Hack to block child shape moving twice
-		/// <summary>
-		/// Key used to add a DiagramItemCollection to the current top-level
-		/// transaction's ContextInfo when elements are being moved on the diagram.
-		/// </summary>
-		public static readonly object MovingDiagramItemsContextKey = new object();
-		/// <summary>
-		/// Hack override to handle MSBUG that moves child shapes twice on the diagram. Combined
-		/// with ORMBaseShape.CanMove to limit moving of child shapes during a transaction.
-		/// </summary>
-		public override void MoveByRepositioning(ElementGroupPrototype elementGroupPrototype, DiagramItemCollection topLevelItems, PointD moveDelta, DiagramItem hitDiagramItem)
-		{
-			Store store = Store;
-			Dictionary<object, object> contextInfo = null;
-			if (store.TransactionActive)
-			{
-				contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-				contextInfo[MovingDiagramItemsContextKey] = topLevelItems;
-			}
-			try
-			{
-				base.MoveByRepositioning(elementGroupPrototype, topLevelItems, moveDelta, hitDiagramItem);
-			}
-			finally
-			{
-				if (contextInfo != null)
-				{
-					contextInfo.Remove(MovingDiagramItemsContextKey);
-				}
-			}
-		}
-		#endregion // Hack to block child shape moving twice
 		#region Toolbox filter strings
 		// UNDONE: 2006-06 DSL Tools port: Some of these toolbox filter strings have been changed to point to the filter strings
 		// in ToolboxHelper. Is this the correct thing to do, and does anything else need to be done? (The original versions of

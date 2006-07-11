@@ -639,7 +639,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-
 		/// <summary>
 		/// Rule to notice changes to Reading.Text properties so that the
 		/// reading shapes can have their display text invalidated.

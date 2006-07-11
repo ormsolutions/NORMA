@@ -218,6 +218,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ActiveShapeField = field;
 					OnSubFieldMouseEnter(field, subField, e);
 				}
+				e.Handled = true; // Must mark as handled, or the framework will forward this OnMouseMove
 			}
 		}
 		/// <summary>
