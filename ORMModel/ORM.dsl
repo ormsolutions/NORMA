@@ -2959,7 +2959,7 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseClass>
 		</GeometryShape>
-		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None"/>
+		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0"/>
 	</Shapes>
 
 	<Connectors>

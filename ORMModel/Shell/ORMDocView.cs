@@ -1139,7 +1139,6 @@ namespace Neumont.Tools.ORM.Shell
 					#if QUEUEDSELECTION
 					// UNDONE: 2006-06 DSL Tools port: QueuedSelection doesn't seem to exist any more. What do we replace it with?
 					IList queuedSelection = docData.QueuedSelection as IList;
-					IList queuedSelection = null;
 					#endif // QUEUEDSELECTION
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
@@ -2081,9 +2080,9 @@ namespace Neumont.Tools.ORM.Shell
 				// Not sure if this should be allowed.  For that matter, since roles are represented as
 				// ShapeFields instead of ShapeElements, I don't know that it's even possible to multiselect them.
 				throw new NotImplementedException(
-					string.Concat("Multiselect deletion of role sequences is not implemented.  ",
-					"If you see this message, decide if what you're doing is really a valid operation.  ",
-					"If it is, look in Shell\\ORMCommandSet.cs, OnMenuDeleteRowSequence() to implement it."));
+					"Multiselect deletion of role sequences is not implemented. " +
+					"If you see this message, decide if what you're doing is really a valid operation. " +
+					"If it is, look in Shell\\ORMCommandSet.cs, OnMenuDeleteRowSequence() to implement it.");
 			}
 
 		}

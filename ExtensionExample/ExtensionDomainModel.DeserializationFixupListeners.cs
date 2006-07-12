@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Framework;
 using Neumont.Tools.ORM.ObjectModel;
-using Microsoft.VisualStudio.Modeling;
-using System.Collections;
 
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	public partial class ExtensionDomainModel : IDeserializationFixupListenerProvider
 	{

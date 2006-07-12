@@ -2089,7 +2089,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return new DslDiagrams::SizeD(1.5, 1);
+				return new DslDiagrams::SizeD(0, 0);
 			}
 		}
 		#endregion

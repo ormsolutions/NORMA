@@ -25,15 +25,15 @@
 using DslModeling = Microsoft.VisualStudio.Modeling;
 using DslDesign = Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
 	/// DomainModel ExtensionDomainModel
 	/// The extension created for testing purposes
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8")]
-	[DslDesign::DisplayNameResource("ExtensionExample.ExtensionDomainModel.DisplayName", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("ExtensionExample.ExtensionDomainModel.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("9f620b5a-9a99-45a4-a022-c9ed95ce85d6")]
 	public partial class ExtensionDomainModel : DslModeling::DomainModel
@@ -156,7 +156,7 @@ namespace ExtensionExample
 		/// <summary>
 		/// The base name of this model's resources.
 		/// </summary>
-		public const string ResourceBaseName = "ExtensionExample.GeneratedCode.DomainModelResx";
+		public const string ResourceBaseName = "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx";
 		
 		/// <summary>
 		/// Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
@@ -375,7 +375,7 @@ namespace ExtensionExample
 	#endregion
 		
 }
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
 	/// DomainEnumeration: TestEnumeration
@@ -386,27 +386,27 @@ namespace ExtensionExample
 	{
 		/// <summary>
 		/// Zero
-		/// Description for ExtensionExample.TestEnumeration.Zero
+		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero
 		/// </summary>
-		[DslDesign::DescriptionResource("ExtensionExample.TestEnumeration/Zero.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Zero.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		Zero = 0,
 		/// <summary>
 		/// One
-		/// Description for ExtensionExample.TestEnumeration.One
+		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.One
 		/// </summary>
-		[DslDesign::DescriptionResource("ExtensionExample.TestEnumeration/One.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/One.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		One = 1,
 		/// <summary>
 		/// Two
-		/// Description for ExtensionExample.TestEnumeration.Two
+		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Two
 		/// </summary>
-		[DslDesign::DescriptionResource("ExtensionExample.TestEnumeration/Two.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Two.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		Two = 2,
 		/// <summary>
 		/// Three
-		/// Description for ExtensionExample.TestEnumeration.Three
+		/// Description for Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Three
 		/// </summary>
-		[DslDesign::DescriptionResource("ExtensionExample.TestEnumeration/Three.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.TestEnumeration/Three.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		Three = 3,
 	}
 }

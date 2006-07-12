@@ -292,44 +292,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Accessibility Properties
-		#region HACK: BackgroundGradient properties for SubtypeLink
-		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
-		// since links must be related to DomainRelationship elements, not DomainClass elements.
-
-		/// <summary>HACK: Pretend this property isn't here.</summary>
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public virtual bool HasBackgroundGradient
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>HACK: Pretend this property isn't here.</summary>
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public virtual System.Drawing.Drawing2D.LinearGradientMode BackgroundGradientMode
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-		}
-		/// <summary>HACK: Pretend this property isn't here.</summary>
-		[Browsable(false)]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		internal SizeD Size
-		{
-			get
-			{
-				return SizeD.Empty;
-			}
-			set
-			{
-			}
-		}
-		#endregion HACK: BackgroundGradient properties for SubtypeLink
 	}
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape
@@ -364,17 +326,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return false;
 			}
 		}
-		// UNDONE: 2006-06 DSL Tools port: Commented out to get rid of duplicate definition error so we can compile...
-		/*/// <summary>
-		/// Dummy shapes have no size
-		/// </summary>
-		public override SizeD DefaultSize
-		{
-			get
-			{
-				return SizeD.Empty;
-			}
-		}*/
 	}
 	#endregion // LinkConnectorShape class
 }

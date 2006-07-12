@@ -16,7 +16,7 @@ using System.Reflection;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	#region Attach rules to ExtensionDomainModel model
 	public partial class ExtensionDomainModel

@@ -24,14 +24,14 @@
 
 using DslModeling = Microsoft.VisualStudio.Modeling;
 using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
 	/// DomainClass MyCustomExtensionElement
-	/// Description for ExtensionExample.MyCustomExtensionElement
+	/// Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement
 	/// </summary>
-	[DslDesign::DisplayNameResource("ExtensionExample.MyCustomExtensionElement.DisplayName", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("ExtensionExample.MyCustomExtensionElement.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("14db7e59-72e3-441f-9993-88fb3e3c01b3")]
 	public partial class MyCustomExtensionElement : DslModeling::ModelElement
@@ -78,11 +78,12 @@ namespace ExtensionExample
 		
 		/// <summary>
 		/// Gets or sets the value of TestProperty domain property.
-		/// Description for ExtensionExample.MyCustomExtensionElement.TestProperty
+		/// Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Test
+		/// Property
 		/// </summary>
-		[global::System.ComponentModel.Editor(typeof(global::ExtensionExample.TestElementPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
-		[DslDesign::DisplayNameResource("ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ExtensionExample.MyCustomExtensionElement/TestProperty.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ExtensionExample.Design.TestElementPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(@"Default value")]
 		[DslModeling::DomainObjectId("6825c613-7e2a-4d14-8277-0db3b86b1210")]
 		public global::System.String TestProperty
@@ -177,15 +178,16 @@ namespace ExtensionExample
 		/// <summary>
 		/// Storage for CustomEnum
 		/// </summary>
-		private TestEnumeration customEnumPropertyStorage = ExtensionExample.TestEnumeration.Zero;
+		private TestEnumeration customEnumPropertyStorage = Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero;
 		
 		/// <summary>
 		/// Gets or sets the value of CustomEnum domain property.
-		/// Description for ExtensionExample.MyCustomExtensionElement.CustomEnum
+		/// Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Cust
+		/// omEnum
 		/// </summary>
-		[DslDesign::DisplayNameResource("ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ExtensionExample.MyCustomExtensionElement/CustomEnum.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ExtensionExample.TestEnumeration.Zero)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ExtensionExample.TestEnumeration.Zero)]
 		[DslModeling::DomainObjectId("26aaf88d-2051-4d87-b863-bf330d7123bb")]
 		public TestEnumeration CustomEnum
 		{
@@ -271,14 +273,15 @@ namespace ExtensionExample
 		#endregion
 	}
 }
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
 	/// DomainClass ObjectTypeRequiresMeaningfulNameError
-	/// Description for ExtensionExample.ObjectTypeRequiresMeaningfulNameError
+	/// Description for Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulN
+	/// ameError
 	/// </summary>
-	[DslDesign::DisplayNameResource("ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description", typeof(global::ExtensionExample.ExtensionDomainModel), "ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("b9448302-beb4-451e-bfd8-cb824201784c")]
 	public partial class ObjectTypeRequiresMeaningfulNameError : global::Neumont.Tools.ORM.ObjectModel.ModelError

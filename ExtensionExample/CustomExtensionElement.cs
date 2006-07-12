@@ -21,39 +21,42 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Design;
 
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	#region TestElementPicker Class
-	/// <summary>
-	/// Provides the content for a drop down list for <see cref="MyCustomExtensionElement.TestProperty"/>.
-	/// </summary>
-	/// <remarks>
-	/// The user is allowed to specify a value that is not in the drop down list by typing it in.
-	/// If the current value is not in the list of predefined values, it is added to the drop down list.
-	/// </remarks>
-	public class TestElementPicker : Neumont.Tools.ORM.Design.ElementPicker
+	namespace Design
 	{
-		private static readonly string[] predefinedValues =
-			new string[] { "Default value", "Not the default value", "Another value" };
-
-		protected override System.Collections.IList GetContentList(System.ComponentModel.ITypeDescriptorContext context, object value)
+		/// <summary>
+		/// Provides the content for a drop down list for <see cref="MyCustomExtensionElement.TestProperty"/>.
+		/// </summary>
+		/// <remarks>
+		/// The user is allowed to specify a value that is not in the drop down list by typing it in.
+		/// If the current value is not in the list of predefined values, it is added to the drop down list.
+		/// </remarks>
+		public class TestElementPicker : Neumont.Tools.ORM.Design.ElementPicker
 		{
-			// UNDONE: If this UITypeEditor is being used for the top-level value of an expandable property,
-			// the value parameter will be the value of the extension element rather than the property.
-			// For now, we handle this just by checking if the value is a string or not, but we need a more general
-			// solution that will (hopefully) be transparent to extensions.
+			private static readonly string[] predefinedValues =
+				new string[] { "Default value", "Not the default value", "Another value" };
 
-			string valueString = value as string ?? (value as MyCustomExtensionElement).TestProperty;
+			protected override System.Collections.IList GetContentList(System.ComponentModel.ITypeDescriptorContext context, object value)
+			{
+				// UNDONE: If this UITypeEditor is being used for the top-level value of an expandable property,
+				// the value parameter will be the value of the extension element rather than the property.
+				// For now, we handle this just by checking if the value is a string or not, but we need a more general
+				// solution that will (hopefully) be transparent to extensions.
 
-			if (Array.IndexOf(predefinedValues, valueString) != -1)
-			{
-				return Array.AsReadOnly(predefinedValues);
-			}
-			else
-			{
-				List<string> valuesList = new List<string>(predefinedValues);
-				valuesList.Add(valueString);
-				return valuesList;
+				string valueString = value as string ?? (value as MyCustomExtensionElement).TestProperty;
+
+				if (Array.IndexOf(predefinedValues, valueString) != -1)
+				{
+					return Array.AsReadOnly(predefinedValues);
+				}
+				else
+				{
+					List<string> valuesList = new List<string>(predefinedValues);
+					valuesList.Add(valueString);
+					return valuesList;
+				}
 			}
 		}
 	}
@@ -87,10 +90,6 @@ namespace ExtensionExample
 
 		/// <summary>
 		/// Test only code to randomly pick how our extension properties are displayed.
-		/// OnCreated generally does not need to be overriden. If you do override it, however,
-		/// note that OnCreated is called whenever an element is created, whereas OnInitialized
-		/// is not called during deserialization. Therefore, if you make any changes to the model
-		/// in this routine you should make those changes in OnInitialized instead.
 		/// </summary>
 		private void PickRandomTopLevelProperty()
 		{

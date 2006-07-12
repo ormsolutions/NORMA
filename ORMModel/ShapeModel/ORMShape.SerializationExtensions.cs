@@ -219,21 +219,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == ORMDiagram.DiagramIdDomainPropertyId)
+			if (domainPropertyInfo.Id == ORMDiagram.DiagramIdDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
-			if (attributeInfo.Id == ORMDiagram.AutoPopulateShapesDomainPropertyId)
+			if (domainPropertyInfo.Id == ORMDiagram.AutoPopulateShapesDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
@@ -417,21 +417,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == ORMBaseShape.IsExpandedDomainPropertyId)
+			if (domainPropertyInfo.Id == ORMBaseShape.IsExpandedDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
-			if (attributeInfo.Id == ORMBaseShape.AbsoluteBoundsDomainPropertyId)
+			if (domainPropertyInfo.Id == ORMBaseShape.AbsoluteBoundsDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
@@ -599,9 +599,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == ObjectTypeShape.ExpandRefModeDomainPropertyId)
+			if (domainPropertyInfo.Id == ObjectTypeShape.ExpandRefModeDomainPropertyId)
 			{
 				if (!(this.ExpandRefMode))
 				{
@@ -611,13 +611,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
-				return base.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>
@@ -673,9 +673,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId)
+			if (domainPropertyInfo.Id == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId)
 			{
 				if (!(this.ExpandRefMode))
 				{
@@ -685,13 +685,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
-				return base.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>
@@ -846,9 +846,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
+			if (domainPropertyInfo.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
 			{
 				if (this.DisplayRoleNames == DisplayRoleNames.UserDefault)
 				{
@@ -856,19 +856,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
-			if (attributeInfo.Id == FactTypeShape.RolesPositionDomainPropertyId)
+			if (domainPropertyInfo.Id == FactTypeShape.RolesPositionDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
-				return base.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo

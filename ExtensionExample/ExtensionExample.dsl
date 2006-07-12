@@ -16,7 +16,7 @@
 	xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	Id="9F620B5A-9A99-45A4-A022-C9ED95CE85D6"
-	Namespace="ExtensionExample"
+	Namespace="Neumont.Tools.ORM.ExtensionExample"
 	Name="ExtensionDomainModel"
 	DisplayName="My Custom Extension"
 	Description="The extension created for testing purposes"
@@ -33,13 +33,13 @@
 	</Attributes>
 	
 	<Classes>
-		<DomainClass Name="MyCustomExtensionElement" Namespace="ExtensionExample" Id="14DB7E59-72E3-441F-9993-88FB3E3C01B3" DisplayName="MyCustomExtensionElement" HasCustomConstructor="true">
+		<DomainClass Name="MyCustomExtensionElement" Namespace="Neumont.Tools.ORM.ExtensionExample" Id="14DB7E59-72E3-441F-9993-88FB3E3C01B3" DisplayName="MyCustomExtensionElement" HasCustomConstructor="true">
 			<Properties>
 				<DomainProperty Name="TestProperty" DisplayName="TestProperty" Id="6825C613-7E2A-4D14-8277-0DB3B86B1210" DefaultValue="Default value">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::ExtensionExample.TestElementPicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ExtensionExample.Design.TestElementPicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -55,7 +55,7 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Name="ObjectTypeRequiresMeaningfulNameError" Namespace="ExtensionExample" Id="B9448302-BEB4-451E-BFD8-CB824201784C" DisplayName="ObjectTypeRequiresMeaningfulNameError">
+		<DomainClass Name="ObjectTypeRequiresMeaningfulNameError" Namespace="Neumont.Tools.ORM.ExtensionExample" Id="B9448302-BEB4-451E-BFD8-CB824201784C" DisplayName="ObjectTypeRequiresMeaningfulNameError">
 			<BaseClass>
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelError"/>
 			</BaseClass>
@@ -66,7 +66,7 @@
 
 	<Types>
 		<ExternalType Namespace="System" Name="String"/>
-		<DomainEnumeration Namespace="ExtensionExample" Name="TestEnumeration" Description="Provides test values for our enum sample dropdown.">
+		<DomainEnumeration Name="TestEnumeration" Namespace="Neumont.Tools.ORM.ExtensionExample" Description="Provides test values for our enum sample dropdown.">
 			<Literals>
 				<EnumerationLiteral Name="Zero" Value="0"/>
 				<EnumerationLiteral Name="One" Value="1"/>
@@ -80,7 +80,7 @@
 
 	<Connectors/>
 
-	<XmlSerializationBehavior Name="ExtensionDomainModelSerializationBehavior" Namespace="ExtensionExample"/>
+	<XmlSerializationBehavior Name="ExtensionDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ExtensionExample"/>
 
 	<ExplorerBehavior Name="ExtensionDomainModelExplorer"/>
 

@@ -8,7 +8,7 @@ using Neumont.Tools.ORM.Framework;
 using System.Globalization;
 using System.Resources;
 
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
 	/// This is a ModelError added to the ORM Tool using extensions.

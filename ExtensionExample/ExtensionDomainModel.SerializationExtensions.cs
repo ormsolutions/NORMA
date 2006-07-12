@@ -22,7 +22,7 @@ using Neumont.Tools.ORM.ObjectModel;
 // * You must not remove this notice, or any other, from this software.       *
 // \**************************************************************************/
 
-namespace ExtensionExample
+namespace Neumont.Tools.ORM.ExtensionExample
 {
 	#region ExtensionDomainModel model serialization
 	public partial class ExtensionDomainModel : IORMCustomSerializedDomainModel
@@ -181,13 +181,13 @@ namespace ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
 		/// </summary>
-		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo attributeInfo, DomainRoleInfo rolePlayedInfo)
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			return this.GetCustomSerializedPropertyInfo(attributeInfo, rolePlayedInfo);
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo

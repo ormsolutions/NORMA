@@ -71,7 +71,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private Stream myFileStream;
 		private IDictionary<string, Type> myExtensionSubStores;
-		private static readonly IDictionary<string, Type> myStandardSubStores;
+		private static readonly Dictionary<string, Type> myStandardSubStores = InitializeStandardSubStores();
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -82,14 +82,14 @@ namespace Neumont.Tools.ORM.Shell
 		{
 		}
 		/// <summary>
-		/// DocData constructor used to create the standard substores needed for the tool.
+		/// Initialize the dictionary of standard <see cref="DomainModel"/>s needed for the tool.
 		/// </summary>
-		static ORMDesignerDocData()
+		private static Dictionary<string, Type> InitializeStandardSubStores()
 		{
 			Dictionary<string, Type> standardSubStores = new Dictionary<string, Type>();
 			standardSubStores.Add(ORMMetaModel.XmlNamespace, typeof(ORMMetaModel));
 			standardSubStores.Add(ORMShapeModel.XmlNamespace, typeof(ORMShapeModel));
-			myStandardSubStores = standardSubStores;
+			return standardSubStores;
 		}
 		#endregion // Construction/destruction
 		#region Base overrides

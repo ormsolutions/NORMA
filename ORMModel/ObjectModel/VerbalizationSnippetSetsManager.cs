@@ -597,7 +597,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Class for managing and loading snippet sets
 	/// </summary>
-	public class VerbalizationSnippetSetsManager
+	public static class VerbalizationSnippetSetsManager
 	{
 		#region Member Variables
 		private static readonly object LockObject = new object();

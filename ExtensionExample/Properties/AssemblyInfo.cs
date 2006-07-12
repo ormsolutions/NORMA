@@ -1,36 +1,23 @@
+using System;
+using System.Diagnostics;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of properties. Change these property values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("ExtensionExample")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ExtensionExample")]
-[assembly: AssemblyCopyright("Copyright ©  2005")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM componenets.  If you need to access a type in this assembly from 
-// COM, set the ComVisible property to true on that type.
+[assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
+[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: AssemblyTitle("Neumont.Tools.ORM.ExtensionExample.dll")]
+[assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
+[assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Extension Example DLL")]
+[assembly: AssemblyCompany("Neumont University")]
+[assembly: AssemblyCopyright("Copyright © Neumont University. All rights reserved.")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+[assembly: Debuggable(DebuggableAttribute.DebuggingModes.Default | DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints | DebuggableAttribute.DebuggingModes.DisableOptimizations)]
+#else
+[assembly: AssemblyConfiguration("Release")]
+[assembly: Debuggable(DebuggableAttribute.DebuggingModes.Default | DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+#endif
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f32c0311-9c0d-4d36-a1b5-44ddd23d0225")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: System.CLSCompliant(true)]

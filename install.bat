@@ -15,10 +15,10 @@ IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir
 IF NOT EXIST "%NORMADir%" (CALL:_Cleanup)
 
 CALL:_MakeDir "%NORMADir%\bin\1033"
+CALL:_MakeDir "%NORMADir%\bin\Extensions"
 CALL:_MakeDir "%NORMADir%\Help"
 CALL:_MakeDir "%NORMADir%\Xml\Schemas"
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
-CALL:_MakeDir "%NORMADir%\Xml\Verbalization"
 CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Core"
 CALL:_MakeDir "%NORMADir%\ORMProjectItems"
 CALL:_RemoveDir "%ORMDir%\..\..\ORM"
@@ -32,6 +32,8 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%OutDir%\Neumont.Tools.ORM.dll" "%NORMADir
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%OutDir%\Neumont.Tools.ORM.pdb" "%NORMADir%\bin\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%OutDir%\Neumont.Tools.ORM.xml" "%NORMADir%\bin\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModelSatDll\bin\Neumont.Tools.ORMUI.dll" "%NORMADir%\bin\1033\"
+XCOPY /Y /D /V /Q "%RootDir%\ExtensionExample\%OutDir%\Neumont.Tools.ORM.ExtensionExample.dll" "%ExtensionsDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ExtensionExample\%OutDir%\Neumont.Tools.ORM.ExtensionExample.pdb" "%ExtensionsDir%\"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" "%NORMADir%\ORMProjectItems\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMModel.orm" "%NORMADir%\ORMProjectItems\"
@@ -78,6 +80,9 @@ REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\Neumon
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/ExtensionExample" /v "Class" /d "Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/ExtensionExample" /v "CodeBase" /d "%NORMADir%\bin\Extensions\Neumont.Tools.ORM.ExtensionExample.dll" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect\Extensions\http://schemas.neumont.edu/ORM/ExtensionExample" /v "Assembly" /d "Neumont.Tools.ORM.ExtensionExample, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL

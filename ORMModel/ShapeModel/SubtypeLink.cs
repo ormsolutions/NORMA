@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -393,6 +394,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#region HACK: Size property
+		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
+		// since links must be related to DomainRelationship elements, not DomainClass elements.
+		/// <summary>HACK: Pretend this property isn't here.</summary>
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		private SizeD Size
+		{
+			get
+			{
+				return SizeD.Empty;
+			}
+			set
+			{
+			}
+		}
+		#endregion HACK: Size property
 		#endregion // SubtypeLink specific
 		#region Store Event Handlers
 		/// <summary>

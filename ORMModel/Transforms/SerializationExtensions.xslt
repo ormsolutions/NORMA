@@ -332,7 +332,7 @@
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedPropertyInfo"/>
-					<plx:param name="attributeInfo" dataTypeName="DomainPropertyInfo"></plx:param>
+					<plx:param name="domainPropertyInfo" dataTypeName="DomainPropertyInfo"></plx:param>
 					<plx:param name="rolePlayedInfo" dataTypeName="DomainRoleInfo"></plx:param>
 					<plx:returns dataTypeName="ORMCustomSerializedPropertyInfo"/>
 					<xsl:choose>
@@ -344,7 +344,7 @@
 											<plx:left>
 												<plx:callInstance type="property" name="Id">
 													<plx:callObject>
-														<plx:nameRef type="parameter" name="attributeInfo"/>
+														<plx:nameRef type="parameter" name="domainPropertyInfo"/>
 													</plx:callObject>
 												</plx:callInstance>
 											</plx:left>
@@ -397,7 +397,7 @@
 									<plx:return>
 										<plx:callThis accessor="base" name="GetCustomSerializedPropertyInfo">
 											<plx:passParam>
-												<plx:nameRef type="parameter" name="attributeInfo"/>
+												<plx:nameRef type="parameter" name="domainPropertyInfo"/>
 											</plx:passParam>
 											<plx:passParam>
 												<plx:nameRef type="parameter" name="rolePlayedInfo"/>

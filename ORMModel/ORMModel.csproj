@@ -6,33 +6,35 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{888816BF-5497-49F9-8353-C8EF30CB9226}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Neumont.Tools.ORM</RootNamespace>
     <AssemblyName>Neumont.Tools.ORM</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
-    <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
     <ApplicationIcon>Resources\ORM.ico</ApplicationIcon>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>.\bin\Debug\Neumont.Tools.ORM.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Release\Neumont.Tools.ORM.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
     <NoWarn>1607</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
