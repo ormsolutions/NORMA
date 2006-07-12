@@ -30,7 +30,7 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseBinaryLinkShape, ElementLink, ORMPresentationElementTypeDescriptor<ORMBaseBinaryLinkShape, ElementLink>>))]
+	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseBinaryLinkShape, ModelElement, Design.ORMBaseBinaryLinkShapeTypeDescriptor<ORMBaseBinaryLinkShape, ModelElement>>))]
 	public partial class ORMBaseBinaryLinkShape
 	{
 		#region GetVGEdge method

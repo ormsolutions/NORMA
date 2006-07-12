@@ -1138,7 +1138,22 @@
 	</Classes>
 
 	<Relationships>
-		<!--<DomainRelationship Name="ORMElementLink" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="D6DC3311-4298-4EE5-9DA2-B1378AB09BF1"/>-->
+		<!--<DomainRelationship Name="ORMElementLink" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="D6DC3311-4298-4EE5-9DA2-B1378AB09BF1">
+			<Source>
+				<DomainRole Name="SourceRole" PropertyName="TargetRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="SourceRole" Id="97F9C6E3-18C8-49F8-89C2-50563AAC4ECE">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="TargetRole" PropertyName="SourceRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="TargetRole"  Id="635F5B0D-F4CA-4321-89A7-FA0ACE028562">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>-->
 
 		<DomainRelationship Name="FactConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="BCF635F2-F2C6-4690-956D-2A44C48A9DA9">
 			<!--<BaseRelationship>

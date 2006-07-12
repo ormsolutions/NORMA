@@ -1074,7 +1074,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return TypeDescriptor.GetClassName(ORMElement);
+			return ORMElement.GetDomainClass().DisplayName;
 		}
 
 		/// <summary>
@@ -1194,7 +1194,28 @@ namespace Neumont.Tools.ORM.Design
 		// (e.g. for supporting shape extensions, etc.).
 	}
 	#endregion // ORMBaseShapeTypeDescriptor class
+	#region ORMBaseBinaryLinkShapeTypeDescriptor class
+	/// <summary>
+	/// <see cref="PresentationElementTypeDescriptor"/> for <see cref="ORMBaseBinaryLinkShape"/>s.
+	/// </summary>
+	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+	public class ORMBaseBinaryLinkShapeTypeDescriptor<TPresentationElement, TModelElement> : ORMPresentationElementTypeDescriptor<TPresentationElement, TModelElement>
+		where TPresentationElement : ORMBaseBinaryLinkShape
+		where TModelElement : ModelElement
+	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="ORMBaseShapeTypeDescriptor{TPresentationElement,TModelElement}"/>
+		/// for <paramref name="presentationElement"/>.
+		/// </summary>
+		public ORMBaseBinaryLinkShapeTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
+			: base(presentationElement, selectedElement)
+		{
+		}
 
+		// This class does not have anything customized in it at the present time, but may in the future
+		// (e.g. for supporting shape extensions, etc.).
+	}
+	#endregion // ORMBaseBinaryLinkShapeTypeDescriptor class
 	#region FactTypeShapeTypeDescriptor class
 	/// <summary>
 	/// <see cref="ORMBaseShapeTypeDescriptor{TPresentationElement,TModelElement}"/> for <see cref="FactTypeShape"/>s.
