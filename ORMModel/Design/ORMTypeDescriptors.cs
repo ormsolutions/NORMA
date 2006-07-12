@@ -551,7 +551,7 @@ namespace Neumont.Tools.ORM.Design
 		private readonly TModelElement myElement;
 		/// <summary>
 		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> is for.
 		/// </summary>
 		protected TModelElement ORMElement
 		{
@@ -559,6 +559,16 @@ namespace Neumont.Tools.ORM.Design
 			{
 				return myElement;
 			}
+		}
+
+		/// <summary>
+		/// Returns the <see cref="DomainObjectInfo.DisplayName"/> for the <see cref="DomainClassInfo"/>
+		/// of the <typeparamref name="TModelElement"/> that this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/>
+		/// is for.
+		/// </summary>
+		public override string GetClassName()
+		{
+			return ORMElement.GetDomainClass().DisplayName;
 		}
 
 		/// <summary>
@@ -578,6 +588,7 @@ namespace Neumont.Tools.ORM.Design
 			ExtendableElementUtility.GetExtensionProperties(myElement, properties);
 			return properties;
 		}
+
 		/// <summary>
 		/// Not used, don't look for them
 		/// </summary>
@@ -585,6 +596,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			return false;
 		}
+
 		/// <summary>
 		/// Let our *Display properties handle these
 		/// </summary>
@@ -1037,7 +1049,7 @@ namespace Neumont.Tools.ORM.Design
 		private readonly TPresentationElement myPresentationElement;
 		/// <summary>
 		/// The <see cref="PresentationElement"/> of type <typeparamref name="TPresentationElement"/> that
-		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// this <see cref="ORMPresentationElementTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
 		/// </summary>
 		protected TPresentationElement ORMPresentationElement
 		{
@@ -1050,7 +1062,7 @@ namespace Neumont.Tools.ORM.Design
 		private readonly TModelElement myElement;
 		/// <summary>
 		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// this <see cref="ORMPresentationElementTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
 		/// </summary>
 		protected TModelElement ORMElement
 		{
@@ -1074,7 +1086,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ORMElement.GetDomainClass().DisplayName;
+			return TypeDescriptor.GetClassName(ORMElement);
 		}
 
 		/// <summary>
@@ -1084,6 +1096,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			return TypeDescriptor.GetComponentName(ORMElement);
 		}
+
 		/// <summary>
 		/// Not used, don't look for them
 		/// </summary>
@@ -1091,6 +1104,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			return false;
 		}
+
 		/// <summary>
 		/// Let our *Display properties handle these
 		/// </summary>
@@ -1130,7 +1144,7 @@ namespace Neumont.Tools.ORM.Design
 		private readonly TPresentationElement myPresentationElement;
 		/// <summary>
 		/// The <see cref="PresentationElement"/> of type <typeparamref name="TPresentationElement"/> that
-		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// this <see cref="ORMDiagramTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
 		/// </summary>
 		protected TPresentationElement ORMPresentationElement
 		{
@@ -1143,7 +1157,7 @@ namespace Neumont.Tools.ORM.Design
 		private readonly TModelElement myElement;
 		/// <summary>
 		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// this <see cref="ORMDiagramTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
 		/// </summary>
 		protected TModelElement ORMElement
 		{
@@ -1160,6 +1174,14 @@ namespace Neumont.Tools.ORM.Design
 		public sealed override PropertyDescriptorCollection GetProperties()
 		{
 			return GetProperties(null);
+		}
+
+		/// <summary>
+		/// Returns the class name of the associated <typeparamref name="TModelElement"/>.
+		/// </summary>
+		public override string GetClassName()
+		{
+			return TypeDescriptor.GetClassName(ORMElement);
 		}
 
 		/// <summary>
