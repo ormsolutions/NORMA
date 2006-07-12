@@ -58,23 +58,32 @@ namespace ExtensionExample
 		}
 	}
 	#endregion // TestElementPicker Class
-	#region TestEnumeration Enum
-	/// <summary>
-	/// Provides test values for our enum sample dropdown
-	/// </summary>
-	public enum TestEnumeration
-	{
-		None = 0,
-		One = 1,
-		Two = 2,
-		Three = 3
-	}
-	#endregion // TestEnumeration Enum
 	#region MyCustomExtensionElement class
 	public partial class MyCustomExtensionElement : IORMPropertyExtension
 	{
 		private static readonly Random random = new Random();
-		private Guid myExtensionExpandableTopLevelAttributeGuid;
+		private Guid myExtensionExpandableTopLevelPropertyId;
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public MyCustomExtensionElement(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public MyCustomExtensionElement(Partition partition, params PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			this.PickRandomTopLevelProperty();
+		}
 
 		/// <summary>
 		/// Test only code to randomly pick how our extension properties are displayed.
@@ -83,7 +92,7 @@ namespace ExtensionExample
 		/// is not called during deserialization. Therefore, if you make any changes to the model
 		/// in this routine you should make those changes in OnInitialized instead.
 		/// </summary>
-		public override void OnCreated()
+		private void PickRandomTopLevelProperty()
 		{
 			int randomNumber;
 			lock (random)
@@ -93,7 +102,7 @@ namespace ExtensionExample
 			switch (randomNumber)
 			{
 				case 0:
-					myExtensionExpandableTopLevelAttributeGuid = Guid.Empty;
+					myExtensionExpandableTopLevelPropertyId = Guid.Empty;
 					break;
 				case 1:
 					// MetaClassGuid is not a valid Guid for ExtensionExpandableTopLevelAttributeGuid
@@ -101,13 +110,13 @@ namespace ExtensionExample
 					// including it as a possible return value in order to test the handling
 					// of invalid Guids. The result in this case should be the same as if we specified
 					// Guid.Empty.
-					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.DomainClassId;
+					myExtensionExpandableTopLevelPropertyId = MyCustomExtensionElement.DomainClassId;
 					break;
 				case 2:
-					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.TestPropertyDomainPropertyId;
+					myExtensionExpandableTopLevelPropertyId = MyCustomExtensionElement.TestPropertyDomainPropertyId;
 					break;
 				case 3:
-					myExtensionExpandableTopLevelAttributeGuid = MyCustomExtensionElement.CustomEnumDomainPropertyId;
+					myExtensionExpandableTopLevelPropertyId = MyCustomExtensionElement.CustomEnumDomainPropertyId;
 					break;
 			}
 		}
@@ -135,11 +144,11 @@ namespace ExtensionExample
 		/// <value>
 		/// When this extension element is created, we randomly pick which property to show.
 		/// </value>
-		public Guid ExtensionExpandableTopLevelAttributeGuid
+		public Guid ExtensionExpandableTopLevelPropertyId
 		{
 			get
 			{
-				return myExtensionExpandableTopLevelAttributeGuid;
+				return myExtensionExpandableTopLevelPropertyId;
 			}
 		}
 
@@ -172,7 +181,7 @@ namespace ExtensionExample
 		public sealed override void ElementAdded(ElementAddedEventArgs e)
 		{
 			FactTypeHasRole factTypeHasRole = (FactTypeHasRole)e.ModelElement;
-			ExtensionElementUtility.AddExtensionElement(factTypeHasRole.Role, new MyCustomExtensionElement(sactTypeHasRole.Store));
+			ExtensionElementUtility.AddExtensionElement(factTypeHasRole.Role, new MyCustomExtensionElement(factTypeHasRole.Store));
 		}
 	}
 	#endregion // ExtensionAddRule class

@@ -461,6 +461,8 @@ namespace Neumont.Tools.ORM.Design
 		#endregion // GetDescription methods
 	}
 	#endregion // ORMTypeDescriptor utility class
+
+
 	#region TypeDescriptionProvider classes
 
 	#region ORMTypeDescriptionProvider class
@@ -1026,7 +1028,7 @@ namespace Neumont.Tools.ORM.Design
 		protected ORMPresentationElementTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
 			: base(presentationElement, selectedElement)
 		{
-			// The PresentionElementTypeDescriptor constructor already checked presentationElement for null.
+			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
 			myPresentationElement = presentationElement;
 			// The ElementTypeDescriptor constructor already checked selectedElement for null.
 			myElement = selectedElement;
@@ -1119,7 +1121,7 @@ namespace Neumont.Tools.ORM.Design
 		public ORMDiagramTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
 			: base(presentationElement, selectedElement)
 		{
-			// The PresenationElementTypeDescriptor constructor already checked presentationElement for null.
+			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
 			myPresentationElement = presentationElement;
 			// The ElementTypeDescriptor constructor already checked selectedElement for null.
 			myElement = selectedElement;

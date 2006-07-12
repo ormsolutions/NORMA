@@ -1,5 +1,7 @@
 <#@ include file="Dsl\DslResxGenerator.tt" #>
+<#@ Dsl processor="DslImportDirectiveProcessor"  requires="fileName='..\..\ORMModel\ORM.dsl'" #>
 <#@ Dsl processor="DslDirectiveProcessor"  requires="fileName='..\ExtensionExample.dsl'" #>
+<#@ Dsl processor="DslImportEndDirectiveProcessor" #>
 <!-- Common Public License Copyright Notice -->
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio

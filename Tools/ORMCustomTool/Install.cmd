@@ -1,6 +1,7 @@
 @ECHO OFF
 SETLOCAL
 
+SET XMLDir=%~dp0\..\..\XML
 SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
@@ -19,20 +20,20 @@ CALL:_InstallCustomToolReg "8.0Exp"
 CALL:_InstallExtenderReg "8.0Exp"
 
 :: Install and register ORM Transforms
-XCOPY /Y /D /V /Q "%~dp0\..\OIAL\CoRefORM.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoOWL\OIALtoOWL.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIAL\CoRefORM.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIAL\ORMtoOIAL.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoXSD\OIALtoXSD.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoOWL\OIALtoOWL.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoDCIL\OIALtoDCIL.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTransformsDir%\"
 
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_Abstract.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt" "%ORMTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_Abstract.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
 
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".CoRef.orm" "ORM" "CoRefORM" "%ORMTransformsDir%\CoRefORM.xslt"
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt"
@@ -48,22 +49,22 @@ CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In
 
 
 :: Install and register DIL Transforms
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoSQLStandard.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoPostgreSQL.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoDB2.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoSQLServer.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoOracle.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DomainInliner.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DIL\DILSupportFunctions.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoSQLStandard.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoPostgreSQL.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoDB2.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoSQLServer.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DDILtoOracle.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DomainInliner.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DIL\DILSupportFunctions.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoDDIL" "DCIL to DDIL" "Transforms DCIL to DDIL." ".DDIL.xml" "DCIL" "DDIL" "%DILTransformsDir%\DCILtoDDIL.xslt"
 CALL:_AddXslORMGenerator "DDILtoSQLStandard" "DDIL to SQL Standard" "Transforms DDIL to Standard-dialect SQL." ".SQLStandard.sql" "DDIL" "SQL_SQLStandard" "%DILTransformsDir%\DDILtoSQLStandard.xslt"
 CALL:_AddXslORMGenerator "DDILtoPostgreSQL" "DDIL to PostgreSQL" "Transforms DDIL to PostgreSQL-dialect SQL." ".PostgreSQL.sql" "DDIL" "SQL_PostgreSQL" "%DILTransformsDir%\DDILtoPostgreSQL.xslt"
 CALL:_AddXslORMGenerator "DDILtoDB2" "DDIL to DB2" "Transforms DDIL to DB2-dialect SQL." ".DB2.sql" "DDIL" "SQL_DB2" "%DILTransformsDir%\DDILtoDB2.xslt"
 CALL:_AddXslORMGenerator "DDILtoSQLServer" "DDIL to SQL Server" "Transforms DDIL to SQL Server-dialect SQL." ".SQLServer.sql" "DDIL" "SQL_SQLServer" "%DILTransformsDir%\DDILtoSQLServer.xslt"
 CALL:_AddXslORMGenerator "DDILtoOracle" "DDIL to Oracle" "Transforms DDIL to Oracle-dialect SQL." ".Oracle.sql" "DDIL" "SQL_Oracle" "%DILTransformsDir%\DDILtoOracle.xslt"
-XCOPY /Y /D /V /Q "%~dp0\..\DCILtoHTML\DCILtoTV.xslt" "%DILTransformsDir%\"
-XCOPY /Y /D /V /Q "%~dp0\..\DCILtoHTML\TVtoHTML.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\DCILtoTV.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\DCILtoHTML\TVtoHTML.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to TableView." ".TableView.xml" "DCIL" "TV" "%DILTransformsDir%\DCILtoTV.xslt"
 CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".TableView.html" "TV" "TableViewHTML" "%DILTransformsDir%\TVtoHTML.xslt"
 
@@ -102,7 +103,7 @@ REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "ThreadingModel" /d "Both"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 GOTO:EOF
 
 :_AddExtenderReg
@@ -111,10 +112,10 @@ REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "ThreadingModel" /d "Both"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ExtenderProvider"
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "CodeBase" /d "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0 /f /v "Assembly" /d "Neumont.Tools.ORM.ORMCustomTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 GOTO:EOF
 
 :_AddRegGenerator

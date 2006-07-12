@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -74,11 +74,11 @@
 							</Directory>
 
 							<Component Id="ORMCustomToolComponent" Guid="9B2F677A-1D14-4E9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" Name="ORMCstTl.dll" LongName="Neumont.Tools.ORM.ORMCustomTool.dll" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" Name="ORMCstTl.dll" LongName="Neumont.Tools.ORM.ORMCustomTool.dll" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool.dll" AssemblyApplication="Neumont.Tools.ORM.ORMCustomTool.dll" ProcessorArchitecture="msil"/>
-								<File Id="Neumont.Tools.ORM.ORMCustomTool.pdb" Name="ORMCstTl.pdb" LongName="Neumont.Tools.ORM.ORMCustomTool.pdb" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.pdb" Name="ORMCstTl.pdb" LongName="Neumont.Tools.ORM.ORMCustomTool.pdb" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
-								<File Id="Neumont.Tools.ORM.ORMCustomTool.xml" Name="ORMCstTl.xml" LongName="Neumont.Tools.ORM.ORMCustomTool.xml" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.xml" Name="ORMCstTl.xml" LongName="Neumont.Tools.ORM.ORMCustomTool.xml" src="..\Tools\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.xml"
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
 									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>

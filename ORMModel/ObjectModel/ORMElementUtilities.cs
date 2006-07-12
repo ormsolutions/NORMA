@@ -259,7 +259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public static ExpandableExtensionPropertyDescriptor CreateExtensionDescriptor(IORMPropertyExtension extensionElement)
 			{
 				ModelElement element = extensionElement as ModelElement;
-				DomainPropertyInfo extensionExpandableTopLevelPropertyInfo = element.Store.DomainDataDirectory.FindDomainProperty(extensionElement.ExtensionExpandableTopLevelPropertyGuid);
+				DomainPropertyInfo extensionExpandableTopLevelPropertyInfo = element.Store.DomainDataDirectory.FindDomainProperty(extensionElement.ExtensionExpandableTopLevelPropertyId);
 
 				// If ExtensionExpandableTopLevelPropertyGuid is invalid or Guid.Empty, FindDomainProperty returns null.
 				bool readOnly = (extensionExpandableTopLevelPropertyInfo == null);

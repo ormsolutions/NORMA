@@ -36,7 +36,7 @@ namespace ExtensionExample
 		/// <param name="objectType">The ObjectType you wish to be validated.</param>
 		private static void ValidateObjectTypeName(ObjectType objectType, INotifyElementAdded notifyAdded)
 		{
-			if (!objectType.IsRemoved)
+			if (!objectType.IsDeleted)
 			{
 				Regex regex = objectTypeRegex;
 				if (regex == null)
@@ -51,7 +51,7 @@ namespace ExtensionExample
 				string objectTypeName = objectType.Name;
 				Match regexMatch = regex.Match(objectType.Name);
 
-				ModelErrorMoveableCollection extensions = objectType.ExtensionModelErrorCollection;
+				LinkedElementCollection<ModelError> extensions = objectType.ExtensionModelErrorCollection;
 				ObjectTypeRequiresMeaningfulNameError nameError = null;
 				int extensionCount = extensions.Count;
 				int i;
@@ -68,7 +68,7 @@ namespace ExtensionExample
 				{
 					if (nameError == null)
 					{
-						nameError = ObjectTypeRequiresMeaningfulNameError.CreateObjectTypeRequiresMeaningfulNameError(objectType.Store);
+						nameError = new ObjectTypeRequiresMeaningfulNameError(objectType.Store);
 						ExtensionElementUtility.AddExtensionModelError(objectType, nameError);
 						nameError.Model = objectType.Model;
 						nameError.GenerateErrorText();
@@ -86,7 +86,7 @@ namespace ExtensionExample
 				{
 					if (nameError != null)
 					{
-						nameError.Remove();
+						nameError.Delete();
 					}
 				}
 			}
@@ -128,7 +128,7 @@ namespace ExtensionExample
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectTypeCollection, DelayValidateObjectTypeHasMeaningfulNameError);
+				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectType, DelayValidateObjectTypeHasMeaningfulNameError);
 			}
 		}
 		/// <summary>
@@ -137,7 +137,7 @@ namespace ExtensionExample
 		[RuleOn(typeof(ObjectType))]
 		public class ExtensionObjectTypeChangeRule : ChangeRule
 		{
-			public override void ElementAttributeChanged(ElementPropertyChangedEventArgs e)
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				ORMMetaModel.DelayValidateElement((e.ModelElement as ObjectType), DelayValidateObjectTypeHasMeaningfulNameError);
 			}

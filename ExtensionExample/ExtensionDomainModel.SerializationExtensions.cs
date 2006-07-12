@@ -244,7 +244,7 @@ namespace ExtensionExample
 		/// </summary>
 		protected bool ShouldSerialize()
 		{
-			return (TestEnumeration.None != this.CustomEnum) || ("Default value" != this.TestProperty);
+			return (TestEnumeration.Zero != this.CustomEnum) || ("Default value" != this.TestProperty);
 		}
 		bool IORMCustomSerializedElement.ShouldSerialize()
 		{
@@ -278,7 +278,7 @@ namespace ExtensionExample
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ORMNamedElementHasExtensionModelError.ExtendedElementDomainRoleId)
+			if (roleId == ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ObjectType", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -303,7 +303,7 @@ namespace ExtensionExample
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ORMNamedElementHasExtensionModelError.ExtendedElementDomainRoleId);
+				match.InitializeRoles(ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ExtensionExample|ObjectType", match);
 				ObjectTypeRequiresMeaningfulNameError.myChildElementMappings = childElementMappings;
 			}

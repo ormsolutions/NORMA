@@ -58,7 +58,7 @@ namespace ExtensionExample
 			protected sealed override void ProcessElement(Role element, Store store, INotifyElementAdded notifyAdded)
 			{
 				IORMExtendableElement extendableElement = element as IORMExtendableElement;
-				ModelElementMoveableCollection extensions = extendableElement.ExtensionCollection;
+				LinkedElementCollection<ModelElement> extensions = extendableElement.ExtensionCollection;
 				int extensionCount = extensions.Count;
 				int i;
 				for (i = 0; i < extensionCount; ++i)
@@ -71,7 +71,7 @@ namespace ExtensionExample
 				}
 				if (i == extensionCount)
 				{
-					MyCustomExtensionElement customElement = MyCustomExtensionElement.CreateMyCustomExtensionElement(store);
+					MyCustomExtensionElement customElement = new MyCustomExtensionElement(store);
 					ExtensionElementUtility.AddExtensionElement(extendableElement, customElement);
 					// Always notify during deserialization. All rules are turned off, so
 					// any additions need to be explicitly notified so that other deserialization

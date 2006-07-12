@@ -110,7 +110,7 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <None Include="Install.cmd" />
+    <None Include="Install.bat" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\ORMGeneratorSelectionControl.resx">
@@ -123,7 +123,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)Install.cmd" "$(DevEnvDir)"</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)Install.bat" "$(DevEnvDir)"</PostBuildEvent>
     <PreBuildEvent>"$(SolutionDir)..\..\VersionGenerator.exe"</PreBuildEvent>
   </PropertyGroup>
 </Project>

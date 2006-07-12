@@ -29,7 +29,7 @@
 					<plx:left>
 						<plx:binaryOperator type="inequality">
 							<plx:left>
-								<plx:callStatic name="None" dataTypeName="TestEnumeration" type="field"/>
+								<plx:callStatic name="Zero" dataTypeName="TestEnumeration" type="field"/>
 							</plx:left>
 							<plx:right>
 								<plx:callThis name="CustomEnum" type="property"/>
@@ -51,6 +51,6 @@
 		</se:ConditionalSerialization>
 	</se:Element>
 	<se:Element Class="ObjectTypeRequiresMeaningfulNameError" Override="true">
-		<se:Link Name="ObjectType" RelationshipName="ORMNamedElementHasExtensionModelError" RoleName="ExtendedElement"/>
+		<se:Link Name="ObjectType" RelationshipName="ORMModelElementHasExtensionModelError" RoleName="ExtendedElement"/>
 	</se:Element>
 </se:CustomSerializedElements>

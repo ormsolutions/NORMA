@@ -131,7 +131,7 @@ namespace Neumont.Tools.ORM.Shell
 		private static Assembly ResolveAssemblyOnce(object sender, ResolveEventArgs args)
 		{
 			Assembly assembly = typeof(ORMDesignerPackage).Assembly;
-			if (0 == string.CompareOrdinal(args.Name, assembly.FullName))
+			if (string.Equals(args.Name, assembly.FullName, StringComparison.Ordinal))
 			{
 				AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssemblyOnce;
 				return assembly;

@@ -1412,6 +1412,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ValueTypeHasDataType element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -1497,6 +1511,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.lengthPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ValueTypeHasDataType element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -1853,6 +1881,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.isImpliedPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Objectification element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}

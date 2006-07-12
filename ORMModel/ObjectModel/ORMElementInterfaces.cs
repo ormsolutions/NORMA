@@ -70,12 +70,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If <see cref="Guid.Empty"/> or a <see cref="Guid"/> for which a <see cref="DomainPropertyInfo"/>
 		/// cannot be retrieved is specified, the value returned by <see cref="Object.ToString"/> is used.
 		/// </remarks>
-		Guid ExtensionExpandableTopLevelPropertyGuid { get; }
-		/// <summary>
-		/// Returns a <see cref="PropertyDescriptorCollection"/> containing the <see cref="PropertyDescriptor"/>s
-		/// that should be merged with the <see cref="IORMExtendableElement"/>'s <see cref="PropertyDescriptor"/>s.
-		/// </summary>
-		PropertyDescriptorCollection GetProperties();
+		Guid ExtensionExpandableTopLevelPropertyId { get; }
 	}
 
 	/// <summary>

@@ -27,13 +27,13 @@
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="3EAE649F-E654-4D04-8289-C25D2C0322D8"/>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
 	
 	<Classes>
-		<DomainClass Name="MyCustomExtensionElement" Namespace="ExtensionExample" Id="14DB7E59-72E3-441F-9993-88FB3E3C01B3" DisplayName="MyCustomExtensionElement">
+		<DomainClass Name="MyCustomExtensionElement" Namespace="ExtensionExample" Id="14DB7E59-72E3-441F-9993-88FB3E3C01B3" DisplayName="MyCustomExtensionElement" HasCustomConstructor="true">
 			<Properties>
 				<DomainProperty Name="TestProperty" DisplayName="TestProperty" Id="6825C613-7E2A-4D14-8277-0DB3B86B1210" DefaultValue="Default value">
 					<Attributes>
@@ -57,8 +57,7 @@
 		</DomainClass>
 		<DomainClass Name="ObjectTypeRequiresMeaningfulNameError" Namespace="ExtensionExample" Id="B9448302-BEB4-451E-BFD8-CB824201784C" DisplayName="ObjectTypeRequiresMeaningfulNameError">
 			<BaseClass>
-				<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
-				<!--<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelError"/>-->
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelError"/>
 			</BaseClass>
 		</DomainClass>
 	</Classes>
@@ -67,7 +66,6 @@
 
 	<Types>
 		<ExternalType Namespace="System" Name="String"/>
-		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ModelError"/>
 		<DomainEnumeration Namespace="ExtensionExample" Name="TestEnumeration" Description="Provides test values for our enum sample dropdown.">
 			<Literals>
 				<EnumerationLiteral Name="Zero" Value="0"/>

@@ -371,6 +371,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ORMDiagramBase element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion

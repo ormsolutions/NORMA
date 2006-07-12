@@ -13,10 +13,7 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-<#
-//AddDomainModel(typeof(Neumont.Tools.ORM.ObjectModel.ORMMetaModel));
-//Store.LoadDomainModels(typeof(Neumont.Tools.ORM.ObjectModel.ORMMetaModel));
-//< # @ assembly name="C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.dll" # >
-#>
 <#@ include file="Dsl\DomainModelCodeGenerator.tt" #>
+<#@ Dsl processor="DslImportDirectiveProcessor"  requires="fileName='..\..\ORMModel\ORM.dsl'" #>
 <#@ Dsl processor="DslDirectiveProcessor"  requires="fileName='..\ExtensionExample.dsl'" #>
+<#@ Dsl processor="DslImportEndDirectiveProcessor" #>
