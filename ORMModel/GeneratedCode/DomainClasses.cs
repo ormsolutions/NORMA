@@ -192,6 +192,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ORMNamedElement element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -560,6 +574,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -651,6 +679,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -736,6 +778,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.isIndependentPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectType element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -829,6 +885,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -917,6 +987,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetScaleValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectType element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -1009,6 +1093,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -1022,7 +1120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NestedFactTypeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactTypeDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.NestedFactType
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NestedFactTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -1102,6 +1200,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, FactType oldValue, FactType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -1115,9 +1227,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ReferenceModeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.RefMode
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.ReferenceModePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.Design.ReferenceModeConverter))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ReferenceModeDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -1192,6 +1305,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetReferenceModeDisplayValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectType element, global::System.Object oldValue, global::System.Object newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -1285,6 +1412,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -1376,6 +1517,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, ReferenceMode oldValue, ReferenceMode newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -1389,7 +1544,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DataTypeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.DataType
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.DataTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/DataTypeDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
@@ -1465,6 +1620,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetDataTypeDisplayValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectType element, DataType oldValue, DataType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -1557,6 +1726,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ObjectType element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -1642,6 +1825,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.isPersonalPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectType element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -1972,6 +2169,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactType element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -2061,6 +2272,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetNoteTextValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(FactType element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -2155,6 +2380,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactType element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -2246,6 +2485,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactType element, global::System.Int64 oldValue, global::System.Int64 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -2259,7 +2512,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NestingTypeDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.NestingType
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NestingTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -2339,6 +2592,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactType element, ObjectType oldValue, ObjectType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -2352,7 +2619,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationRuleDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationRuleDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationRule
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
@@ -2429,6 +2696,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactType element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -2442,7 +2723,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of DerivationStorageDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorage
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationStorageDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationStorageDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
@@ -2517,6 +2798,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetDerivationStorageDisplayValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(FactType element, DerivationStorageType oldValue, DerivationStorageType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -2850,6 +3145,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(SubtypeFact element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -3006,7 +3315,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of RolePlayerDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.RolePlayerDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.Role.RolePlayer
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.RolePlayerPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/RolePlayerDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
@@ -3082,6 +3391,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetRolePlayerDisplayValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Role element, ObjectType oldValue, ObjectType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -3172,6 +3495,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetIsMandatoryValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Role element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -3266,6 +3603,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Role element, RoleMultiplicity oldValue, RoleMultiplicity newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -3354,6 +3705,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetValueRangeTextValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Role element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -3446,6 +3811,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Role element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -3536,6 +3915,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Role element, ConstraintModality oldValue, ConstraintModality newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -3621,6 +4014,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.namePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Role element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -3712,6 +4119,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetObjectificationOppositeRoleNameValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Role element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -4064,6 +4485,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(SetComparisonConstraint element, ConstraintModality oldValue, ConstraintModality newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -4309,6 +4744,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Expression element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -4394,6 +4843,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.languagePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Expression element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -4580,6 +5043,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(RingConstraint element, RingConstraintType oldValue, RingConstraintType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -4725,6 +5202,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FrequencyConstraint element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -4811,6 +5302,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.maxFrequencyPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(FrequencyConstraint element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -4973,6 +5478,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(UniquenessConstraint element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -5059,6 +5578,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.isInternalPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(UniquenessConstraint element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -5224,6 +5757,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(MandatoryConstraint element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -5357,6 +5904,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.modalityPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(SetConstraint element, ConstraintModality oldValue, ConstraintModality newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -6339,6 +6900,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(CompatibleRolePlayerTypeError element, global::System.Int32 oldValue, global::System.Int32 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -6833,6 +7408,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ReferenceModeKind element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -6920,6 +7509,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.referenceModeTypePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ReferenceModeKind element, ReferenceModeType oldValue, ReferenceModeType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -7119,6 +7722,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(CustomReferenceMode element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -7161,7 +7778,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of KindDisplay domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceMode.KindDisplay
+		/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceMode.Kind
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.ReferenceModeKindPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceMode/KindDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
@@ -7237,6 +7854,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetKindDisplayValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ReferenceMode element, ReferenceModeKind oldValue, ReferenceModeKind newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -8514,6 +9145,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Reading element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -8605,6 +9250,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Reading element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -8690,6 +9349,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.languagePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Reading element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -8781,6 +9454,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// method on the domain class.
 					element.SetIsPrimaryForFactTypeValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(Reading element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -8967,6 +9654,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ReadingOrder element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -9137,6 +9838,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ValueRange element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -9222,6 +9937,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.maxValuePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ValueRange element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -9314,6 +10043,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ValueRange element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -9402,6 +10145,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ValueRange element, RangeInclusion oldValue, RangeInclusion newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -9488,6 +10245,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.maxInclusionPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ValueRange element, RangeInclusion oldValue, RangeInclusion newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -9697,10 +10468,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0x410fce34, 0xdacb, 0x4f59, 0x94, 0xa6, 0xff, 0x7e, 0x42, 0x10, 0x8e, 0x74);
 		
-		/// <summary>
-		/// Storage for Text
-		/// </summary>
-		private global::System.String textPropertyStorage = @"";
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
@@ -9708,13 +10475,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("410fce34-dacb-4f59-94a6-ff7e42108e74")]
 		public global::System.String Text
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return textPropertyStorage;
+				return TextPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -9754,7 +10522,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override sealed global::System.String GetValue(ValueConstraint element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.textPropertyStorage;
+				// There is no storage for Text because its Kind is
+				// set to CustomStorage. Please provide the GetTextValue()
+				// method on the domain class.
+				return element.GetTextValue();
 			}
 		
 			/// <summary>
@@ -9770,8 +10541,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.textPropertyStorage = newValue;
+					// There is no storage for Text because its Kind is
+					// set to CustomStorage. Please provide the SetTextValue()
+					// method on the domain class.
+					element.SetTextValue(newValue);
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ValueConstraint element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -10416,6 +11204,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(Note element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -10808,6 +11610,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactTypeDerivationExpression element, DerivationStorageType oldValue, DerivationStorageType newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -11080,6 +11896,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValueChanging(element, oldValue, newValue);
 					element.valuePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ValueTypeInstance element, global::System.String oldValue, global::System.String newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}

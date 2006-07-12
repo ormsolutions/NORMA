@@ -105,13 +105,13 @@
 	<ResourceString name="ReadingType" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Reading">
 		<comment type="summary">The display name used for a ReadingType</comment>
 	</ResourceString>
-	<ResourceString name="RolePlayerPickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.Design.RolePlayerPicker.NullItemText">
+	<ResourceString name="RolePlayerPickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText">
 		<comment type="summary">The name displayed to represent null in the role player picker</comment>
 	</ResourceString>
-	<ResourceString name="NestedFactTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.Design.NestedFactTypePicker.NullItemText">
+	<ResourceString name="NestedFactTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText">
 		<comment type="summary">The name displayed to represent null in the nested fact type picker</comment>
 	</ResourceString>
-	<ResourceString name="NestingTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.Design.NestingTypePicker.NullItemText">
+	<ResourceString name="NestingTypePickerNullItemText" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText">
 		<comment type="summary">The name displayed to represent null in the nesting type picker</comment>
 	</ResourceString>
 	<ResourceString name="EntityTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">

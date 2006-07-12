@@ -1026,7 +1026,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (attributeGuid == ObjectType.ReferenceModeDisplayDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string);
+					SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string, true);
 				}
 				else if (attributeGuid == ObjectType.ReferenceModeStringDomainPropertyId)
 				{
@@ -1046,12 +1046,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
 					}
-					SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string);
+					SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string, false);
 				}
 				else if (attributeGuid == ObjectType.ReferenceModeDomainPropertyId)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null);
+					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null, false);
 				}
 				else if (attributeGuid == ObjectType.ValueRangeTextDomainPropertyId)
 				{
@@ -1091,11 +1091,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="oldMode">The old reference mode</param>
 			/// <param name="newModeName">The new reference mode name</param>
 			/// <param name="oldModeName">The old reference mode name</param>
-			private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName)
+			/// <param name="forceAggressivelyKillValueType">Aggressively remove an associated value type. If this is false, then
+			/// it checks for the DeleteReferenceModeValueType key in the store context.</param>
+			private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName, bool forceAggressivelyKillValueType)
 			{
-				Store store = objectType.Store;
-				bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
-
+				bool aggressivelyKillValueType = forceAggressivelyKillValueType ?
+					true :
+					objectType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(DeleteReferenceModeValueType);
 				string newValue = newModeName ?? string.Empty;
 				string oldValue = oldModeName ?? string.Empty;
 

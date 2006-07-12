@@ -462,18 +462,19 @@ namespace Neumont.Tools.ORM.Shell
 					DomainClassInfo currentMetaClass = element.GetDomainClass();
 					while (currentMetaClass != null)
 					{
-						// UNDONE: 2006-06 DSL Tools port: Is AggregatedRoles --> AllEmbeddedByDomainRoles correct?
-						//IList aggregateList = currentMetaClass.AggregatedRoles;
-						ReadOnlyCollection<DomainRoleInfo> aggregateList = currentMetaClass.AllEmbeddedByDomainRoles;
-						int aggregateCount = aggregateList.Count;
-						for (int i = 0; i < aggregateCount; ++i)
+						ReadOnlyCollection<DomainRoleInfo> aggregatingList = currentMetaClass.AllDomainRolesPlayed;
+						int aggregatingCount = aggregatingList.Count;
+						for (int i = 0; i < aggregatingCount; ++i)
 						{
-							DomainRoleInfo roleInfo = aggregateList[i];
-							LinkedElementCollection<ModelElement> children = roleInfo.OppositeDomainRole.GetLinkedElements(element);
-							int childCount = children.Count;
-							for (int j = 0; j < childCount; ++j)
+							DomainRoleInfo roleInfo = aggregatingList[i];
+							if (roleInfo.IsEmbedding)
 							{
-								VerbalizeElement(children[j], snippetsDictionary, filter, callback, isNegative, indentLevel);
+								LinkedElementCollection<ModelElement> children = roleInfo.GetLinkedElements(element);
+								int childCount = children.Count;
+								for (int j = 0; j < childCount; ++j)
+								{
+									VerbalizeElement(children[j], snippetsDictionary, filter, callback, isNegative, indentLevel);
+								}
 							}
 						}
 						currentMetaClass = currentMetaClass.BaseDomainClass;

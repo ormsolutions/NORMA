@@ -28,7 +28,6 @@ using Neumont.Tools.ORM.Framework;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ReferenceMode class
-	[TypeConverter(typeof(Design.ReferenceModeConverter))]
 	public abstract partial class ReferenceMode : IComparable<ReferenceMode>
 	{
 		private PortableDataType dataType = PortableDataType.Unspecified;

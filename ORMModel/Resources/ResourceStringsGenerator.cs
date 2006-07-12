@@ -139,7 +139,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.Design.RolePlayerPicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
 			}
 		}
 		/// <summary>
@@ -149,7 +149,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.Design.NestedFactTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
 			}
 		}
 		/// <summary>
@@ -159,7 +159,7 @@ namespace Neumont.Tools.ORM
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.Design.NestingTypePicker.NullItemText");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestingTypePicker.NullItemText");
 			}
 		}
 		/// <summary>

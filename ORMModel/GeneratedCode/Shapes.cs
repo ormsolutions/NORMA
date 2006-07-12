@@ -160,6 +160,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(ORMBaseShape element, global::System.Int64 oldValue, global::System.Int64 newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -371,6 +385,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanging(element, oldValue, newValue);
 					element.expandRefModePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectTypeShape element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -587,6 +615,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactTypeShape element, ConstraintDisplayPosition oldValue, ConstraintDisplayPosition newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -676,6 +718,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
+			private new void ValueChanged(FactTypeShape element, DisplayRoleNames oldValue, DisplayRoleNames newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
+				}
+			}
 		}
 		
 		#endregion
@@ -763,6 +819,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanging(element, oldValue, newValue);
 					element.rolesPositionPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(FactTypeShape element, global::System.Double oldValue, global::System.Double newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}
@@ -1515,6 +1585,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanging(element, oldValue, newValue);
 					element.expandRefModePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
+				}
+			}
+			private new void ValueChanged(ObjectifiedFactTypeNameShape element, global::System.Boolean oldValue, global::System.Boolean newValue)
+			{
+				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
+				// as the element being deleted. The internal setValueMode is Resurrect during
+				// an undo/redo
+				if (element.Store.TransactionManager.InTransaction)
+				{
+					base.ValueChanged(element, oldValue, newValue);
+				}
+				else
+				{
+					this.OnValueChanged(element, oldValue, newValue);
 				}
 			}
 		}

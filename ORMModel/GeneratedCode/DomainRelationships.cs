@@ -19253,4 +19253,3 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-

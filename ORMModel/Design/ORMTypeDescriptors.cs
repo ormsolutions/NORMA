@@ -461,60 +461,6 @@ namespace Neumont.Tools.ORM.Design
 		#endregion // GetDescription methods
 	}
 	#endregion // ORMTypeDescriptor utility class
-
-
-	#region ORM TypeDescriptor Interfaces
-
-	#region IORMTypeDescriptor interface
-	/// <summary>
-	/// <see cref="ICustomTypeDescriptor"/>s for <see cref="ORMModelElement"/>s.
-	/// </summary>
-	/// <typeparam name="TModelElement">
-	/// The type of the ORM <see cref="ModelElement"/> for which this is an <see cref="ICustomTypeDescriptor"/>.
-	/// </typeparam>
-	public interface IORMTypeDescriptor<TModelElement> : ICustomTypeDescriptor
-		where TModelElement : ModelElement
-	{
-		/// <summary>
-		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="IORMTypeDescriptor{TModelElement}"/> is for.
-		/// </summary>
-		TModelElement ORMElement
-		{
-			get;
-		}
-	}
-	#endregion // IORMTypeDescriptor interface
-
-	#region IORMPresentationTypeDescriptor interface
-	/// <summary>
-	/// <see cref="ICustomTypeDescriptor"/>s for ORM <see cref="PresentationElement"/>s.
-	/// </summary>
-	/// <typeparam name="TPresentationElement">
-	/// The type of the ORM <see cref="PresentationElement"/> for which this is an <see cref="ICustomTypeDescriptor"/>.
-	/// </typeparam>
-	/// <typeparam name="TModelElement">
-	/// The type of the ORM <see cref="ModelElement"/> that instances of <typeparamref name="TPresentationElement"/>
-	/// are associated with.
-	/// </typeparam>
-	public interface IORMPresentationTypeDescriptor<TPresentationElement, TModelElement> : IORMTypeDescriptor<TModelElement>
-		where TPresentationElement : PresentationElement
-		where TModelElement : ModelElement
-	{
-		/// <summary>
-		/// The <see cref="PresentationElement"/> of type <typeparamref name="TPresentationElement"/> that
-		/// this <see cref="IORMPresentationTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
-		/// </summary>
-		TPresentationElement ORMPresentationElement
-		{
-			get;
-		}
-	}
-	#endregion // IORMPresentationTypeDescriptor interface
-
-	#endregion // ORM TypeDescriptor Interfaces
-
-
 	#region TypeDescriptionProvider classes
 
 	#region ORMTypeDescriptionProvider class
@@ -563,7 +509,6 @@ namespace Neumont.Tools.ORM.Design
 		private static readonly RuntimeMethodHandle TypeDescriptorConstructorHandle = Type.GetTypeFromHandle(TypeDescriptorTypeHandle).GetConstructor(
 			BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
 			null, new Type[] { typeof(TPresentationElement), typeof(TModelElement) }, null).MethodHandle;
-
 		/// <summary>See <see cref="PresentationElementTypeDescriptionProvider.CreatePresentationElementTypeDescriptor"/>.</summary>
 		protected sealed override PresentationElementTypeDescriptor CreatePresentationElementTypeDescriptor(PresentationElement presentationElement, ModelElement selectedElement)
 		{
@@ -587,7 +532,7 @@ namespace Neumont.Tools.ORM.Design
 	/// The type of the <see cref="ORMModelElement"/> that this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> is for.
 	/// </typeparam>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMModelElementTypeDescriptor<TModelElement> : ElementTypeDescriptor, IORMTypeDescriptor<TModelElement>
+	public class ORMModelElementTypeDescriptor<TModelElement> : ElementTypeDescriptor
 		where TModelElement : ORMModelElement
 	{
 		/// <summary>
@@ -602,8 +547,11 @@ namespace Neumont.Tools.ORM.Design
 		}
 
 		private readonly TModelElement myElement;
-		/// <summary>See <see cref="IORMTypeDescriptor{TModelElement}.ORMElement"/>.</summary>
-		public TModelElement ORMElement
+		/// <summary>
+		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
+		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// </summary>
+		protected TModelElement ORMElement
 		{
 			get
 			{
@@ -627,6 +575,24 @@ namespace Neumont.Tools.ORM.Design
 			PropertyDescriptorCollection properties = base.GetProperties(attributes);
 			ExtendableElementUtility.GetExtensionProperties(myElement, properties);
 			return properties;
+		}
+		/// <summary>
+		/// Not used, don't look for them
+		/// </summary>
+		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
+		{
+			return false;
+		}
+		/// <summary>
+		/// Let our *Display properties handle these
+		/// </summary>
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
+		{
+			// UNDONE: We may want to lose the *Display properties. Need a way to filter
+			// the contents of a RolePlayerPropertyDescriptor dropdown list
+			// UNDONE: MSBUG RolePlayerPropertyDescriptor should respect the System.ComponentModel.EditorAttribute on the
+			// generated property.
+			return false;
 		}
 	}
 	#endregion // ORMModelElementTypeDescriptor class
@@ -1048,7 +1014,7 @@ namespace Neumont.Tools.ORM.Design
 	/// The type of the ORM <see cref="ModelElement"/> that <typeparamref name="TPresentationElement"/> is associated with.
 	/// </typeparam>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public abstract class ORMPresentationElementTypeDescriptor<TPresentationElement, TModelElement> : PresentationElementTypeDescriptor, IORMPresentationTypeDescriptor<TPresentationElement, TModelElement>
+	public abstract class ORMPresentationElementTypeDescriptor<TPresentationElement, TModelElement> : PresentationElementTypeDescriptor
 		where TPresentationElement : PresentationElement
 		where TModelElement : ModelElement
 	{
@@ -1060,15 +1026,18 @@ namespace Neumont.Tools.ORM.Design
 		protected ORMPresentationElementTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
 			: base(presentationElement, selectedElement)
 		{
-			// The PresenationElementTypeDescriptor constructor already checked presentationElement for null.
+			// The PresentionElementTypeDescriptor constructor already checked presentationElement for null.
 			myPresentationElement = presentationElement;
 			// The ElementTypeDescriptor constructor already checked selectedElement for null.
 			myElement = selectedElement;
 		}
 
 		private readonly TPresentationElement myPresentationElement;
-		/// <summary>See <see cref="IORMPresentationTypeDescriptor{TPresentationElement,TModelElement}.ORMPresentationElement"/>.</summary>
-		public TPresentationElement ORMPresentationElement
+		/// <summary>
+		/// The <see cref="PresentationElement"/> of type <typeparamref name="TPresentationElement"/> that
+		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// </summary>
+		protected TPresentationElement ORMPresentationElement
 		{
 			get
 			{
@@ -1077,8 +1046,11 @@ namespace Neumont.Tools.ORM.Design
 		}
 
 		private readonly TModelElement myElement;
-		/// <summary>See <see cref="IORMTypeDescriptor{TModelElement}.ORMElement"/>.</summary>
-		public TModelElement ORMElement
+		/// <summary>
+		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
+		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// </summary>
+		protected TModelElement ORMElement
 		{
 			get
 			{
@@ -1110,6 +1082,24 @@ namespace Neumont.Tools.ORM.Design
 		{
 			return TypeDescriptor.GetComponentName(ORMElement);
 		}
+		/// <summary>
+		/// Not used, don't look for them
+		/// </summary>
+		protected override bool IncludeEmbeddingRelationshipProperties(ModelElement requestor)
+		{
+			return false;
+		}
+		/// <summary>
+		/// Let our *Display properties handle these
+		/// </summary>
+		protected override bool IncludeOppositeRolePlayerProperties(ModelElement requestor)
+		{
+			// UNDONE: We may want to lose the *Display properties. Need a way to filter
+			// the contents of a RolePlayerPropertyDescriptor dropdown list
+			// UNDONE: MSBUG RolePlayerPropertyDescriptor should respect the System.ComponentModel.EditorAttribute on the
+			// generated property.
+			return false;
+		}
 	}
 	#endregion // ORMPresentationElementTypeDescriptor class
 
@@ -1118,7 +1108,7 @@ namespace Neumont.Tools.ORM.Design
 	/// <see cref="DiagramTypeDescriptor"/> for <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMDiagramTypeDescriptor<TPresentationElement, TModelElement> : DiagramTypeDescriptor, IORMPresentationTypeDescriptor<TPresentationElement, TModelElement>
+	public class ORMDiagramTypeDescriptor<TPresentationElement, TModelElement> : DiagramTypeDescriptor
 		where TPresentationElement : ORMDiagram
 		where TModelElement : ORMModel
 	{
@@ -1136,8 +1126,11 @@ namespace Neumont.Tools.ORM.Design
 		}
 
 		private readonly TPresentationElement myPresentationElement;
-		/// <summary>See <see cref="IORMPresentationTypeDescriptor{TPresentationElement,TModelElement}.ORMPresentationElement"/>.</summary>
-		public TPresentationElement ORMPresentationElement
+		/// <summary>
+		/// The <see cref="PresentationElement"/> of type <typeparamref name="TPresentationElement"/> that
+		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// </summary>
+		protected TPresentationElement ORMPresentationElement
 		{
 			get
 			{
@@ -1146,8 +1139,11 @@ namespace Neumont.Tools.ORM.Design
 		}
 
 		private readonly TModelElement myElement;
-		/// <summary>See <see cref="IORMTypeDescriptor{TModelElement}.ORMElement"/>.</summary>
-		public TModelElement ORMElement
+		/// <summary>
+		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
+		/// this <see cref="ICustomTypeDescriptor"/> is for.
+		/// </summary>
+		protected TModelElement ORMElement
 		{
 			get
 			{

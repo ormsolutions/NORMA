@@ -2207,16 +2207,19 @@ namespace Neumont.Tools.ORM.Shell
 						if (oppositeDomainClass != null)
 						{
 							// Find the aggregating role that maps to this class
-							// UNDONE: 2006-06 DSL Tools port: Is AggregatedRoles --> AllEmbeddedByDomainRoles correct?
-							ReadOnlyCollection<DomainRoleInfo> aggregatedRoles = element.GetDomainClass().AllEmbeddedByDomainRoles;
-							int rolesCount = aggregatedRoles.Count;
+							ReadOnlyCollection<DomainRoleInfo> aggregatingRoles = element.GetDomainClass().AllDomainRolesPlayed;
+							int rolesCount = aggregatingRoles.Count;
 							for (int i = 0; i < rolesCount; ++i)
 							{
-								DomainRoleInfo testRole = aggregatedRoles[i];
-								if (testRole.RolePlayer == oppositeDomainClass)
+								DomainRoleInfo aggregatingRole = aggregatingRoles[i];
+								if (aggregatingRole.IsEmbedding)
 								{
-									oppositeDomainRole = testRole;
-									break;
+									DomainRoleInfo testRole = aggregatingRole.OppositeDomainRole;
+									if (testRole.RolePlayer == oppositeDomainClass)
+									{
+										oppositeDomainRole = testRole;
+										break;
+									}
 								}
 							}
 						}
@@ -2650,6 +2653,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
 				explicitMetaRelationshipInfo ?? oppositeMetaRoleInfo.DomainRelationship,
+				new PropertyAssignment[]{new PropertyAssignment(ElementFactory.IdPropertyAssignment, id)},
 				new RoleAssignment(oppositeMetaRoleInfo.OppositeDomainRole.Id, rolePlayer),
 				new RoleAssignment(oppositeMetaRoleInfo.Id, oppositeRolePlayer));
 			if (myNotifyAdded != null)

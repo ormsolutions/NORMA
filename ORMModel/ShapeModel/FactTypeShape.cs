@@ -2425,6 +2425,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			PenSettings penSettings = new PenSettings();
 			penSettings.Width = 1.2f / 72f; // 1.2 point
+			penSettings.Color = Color.DarkBlue;
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
 
 			penSettings.Color = SystemColors.WindowText;

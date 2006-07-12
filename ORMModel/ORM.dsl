@@ -131,7 +131,7 @@
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NestedFactTypeDisplay" DefaultValue="" DisplayName="NestedFactTypeDisplay" Id="C003F8F1-368C-4058-A5F8-90EF63556743" Kind="CustomStorage">
+				<DomainProperty Name="NestedFactTypeDisplay" DefaultValue="" DisplayName="NestedFactType" Id="C003F8F1-368C-4058-A5F8-90EF63556743" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -154,12 +154,17 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ReferenceModeDisplay" DefaultValue="" DisplayName="ReferenceModeDisplay" Id="2E56D25A-BD96-4478-A55C-9F17A15C94B6" Kind="CustomStorage">
+				<DomainProperty Name="ReferenceModeDisplay" DefaultValue="" DisplayName="RefMode" Id="2E56D25A-BD96-4478-A55C-9F17A15C94B6" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
 								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ReferenceModePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ReferenceModeConverter)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
@@ -177,7 +182,7 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ReferenceMode"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DataTypeDisplay" DefaultValue="" DisplayName="DataTypeDisplay" Id="3E8893A7-5985-4200-A595-CB1E9EC9ADA7" Kind="CustomStorage">
+				<DomainProperty Name="DataTypeDisplay" DefaultValue="" DisplayName="DataType" Id="3E8893A7-5985-4200-A595-CB1E9EC9ADA7" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -242,7 +247,7 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NestingTypeDisplay" DefaultValue="" DisplayName="NestingTypeDisplay" Id="08C9243D-38BA-41E5-9864-5BBB8977B676" Kind="CustomStorage">
+				<DomainProperty Name="NestingTypeDisplay" DefaultValue="" DisplayName="NestingType" Id="08C9243D-38BA-41E5-9864-5BBB8977B676" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -265,12 +270,12 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRuleDisplay" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage">
+				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DerivationStorageDisplay" DefaultValue="" DisplayName="DerivationStorageDisplay" Id="307C9629-ACE8-43E1-ABF3-33E8BB7146B7" Kind="CustomStorage">
+				<DomainProperty Name="DerivationStorageDisplay" DefaultValue="" DisplayName="DerivationStorage" Id="307C9629-ACE8-43E1-ABF3-33E8BB7146B7" Kind="CustomStorage">
 					<Type>
 						<DomainEnumerationMoniker Name="DerivationStorageType"/>
 					</Type>
@@ -308,7 +313,7 @@
 				<DomainClassMoniker Name="RoleBase"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="RolePlayerDisplay" DefaultValue="" DisplayName="RolePlayerDisplay" Id="B66FCA99-E6EC-46C9-B445-D549F6D7ABE1" Kind="CustomStorage">
+				<DomainProperty Name="RolePlayerDisplay" DefaultValue="" DisplayName="RolePlayer" Id="B66FCA99-E6EC-46C9-B445-D549F6D7ABE1" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -672,7 +677,7 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="KindDisplay" DefaultValue="" DisplayName="KindDisplay" Id="BBC452CA-0454-4047-9143-B11E065556FB" Kind="CustomStorage">
+				<DomainProperty Name="KindDisplay" DefaultValue="" DisplayName="Kind" Id="BBC452CA-0454-4047-9143-B11E065556FB" Kind="CustomStorage">
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
@@ -967,7 +972,7 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="410FCE34-DACB-4F59-94A6-FF7E42108E74">
+				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="410FCE34-DACB-4F59-94A6-FF7E42108E74" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>

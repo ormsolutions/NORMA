@@ -123,6 +123,20 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Debug.Assert(mySingleton == null); // Should only be loaded once per IDE session
 			mySingleton = this;
+			// System.ComponentModel.TypeDescriptor is failing to find our TypeDescriptorProvider classes.
+			// This fixes it.
+			// UNDONE: This is first getting called with the OptionsPage on the call stack
+			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyOnce;
+		}
+		private static Assembly ResolveAssemblyOnce(object sender, ResolveEventArgs args)
+		{
+			Assembly assembly = typeof(ORMDesignerPackage).Assembly;
+			if (0 == string.CompareOrdinal(args.Name, assembly.FullName))
+			{
+				AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssemblyOnce;
+				return assembly;
+			}
+			return null;
 		}
 		#endregion
 		#region Properties
