@@ -931,7 +931,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("7a4d2b10-43f3-475f-aa0a-8f880b9a1e4b")]
 	public partial class ORMModelElementHasExtensionModelError : DslModeling::ElementLink
 	{
@@ -4850,7 +4850,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("3167f5d3-c234-46e3-aac2-4ceb791dfb9c")]
 	public partial class SetComparisonConstraintHasTooFewRoleSequencesError : DslModeling::ElementLink
 	{
@@ -5110,7 +5110,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("e7c33130-2d1f-4f95-b988-bd7608cf2d1c")]
 	public partial class SetComparisonConstraintHasTooManyRoleSequencesError : DslModeling::ElementLink
 	{
@@ -7067,7 +7067,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("d2116bc7-25a8-455e-9347-414bd03b7546")]
 	public partial class ReadingHasTooManyRolesError : DslModeling::ElementLink
 	{
@@ -7326,7 +7326,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("fc3e0a3c-40ce-4ded-8a6b-241c7b51c099")]
 	public partial class ReadingHasTooFewRolesError : DslModeling::ElementLink
 	{
@@ -7585,7 +7585,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("c5a25732-f5a7-409e-b56a-6419a951fb13")]
 	public partial class SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError : DslModeling::ElementLink
 	{
@@ -7845,7 +7845,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("eec8eb82-5b15-4b61-8737-da1a54199a13")]
 	public partial class FactTypeHasFactTypeRequiresReadingError : DslModeling::ElementLink
 	{
@@ -8105,7 +8105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("dd5ff7f8-7169-489b-9b8a-ede3772f52be")]
 	public partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError : DslModeling::ElementLink
 	{
@@ -9122,7 +9122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("f2a79e36-a317-4c36-81da-d562d2afbf09")]
 	public partial class ValueTypeHasUnspecifiedDataTypeError : DslModeling::ElementLink
 	{
@@ -9382,7 +9382,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("13410c4f-ffed-4b0f-ad0b-bd48d09b4310")]
 	public partial class SetComparisonConstraintHasCompatibleRolePlayerTypeError : DslModeling::ElementLink
 	{
@@ -9623,7 +9623,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("91cde095-28d9-4852-b171-430fe5a29429")]
 	public partial class SetConstraintHasCompatibleRolePlayerTypeError : DslModeling::ElementLink
 	{
@@ -9883,7 +9883,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("429f7144-1227-4d0e-b4f8-59ad6ffc7eb3")]
 	public partial class UniquenessConstraintHasNMinusOneError : DslModeling::ElementLink
 	{
@@ -10142,7 +10142,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("09e6ac31-2ca1-4126-8c95-bfc571088b2d")]
 	public partial class RoleHasRolePlayerRequiredError : DslModeling::ElementLink
 	{
@@ -10402,7 +10402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0d352e42-06d6-4ad1-aace-3ea5aacde302")]
 	public partial class EqualityConstraintHasEqualityImpliedByMandatoryError : DslModeling::ElementLink
 	{
@@ -10662,7 +10662,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("1b6cbb8c-d1a6-4949-ac4d-596dc1ce147f")]
 	public partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError : DslModeling::ElementLink
 	{
@@ -10922,7 +10922,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("3efcb5a8-2dcb-478e-bd02-5898c36c9143")]
 	public partial class MandatoryConstraintHasMandatoryImpliedByMandatoryError : DslModeling::ElementLink
 	{
@@ -11182,7 +11182,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("2e851b91-fcb9-4b3c-9276-2c2e3a1972c9")]
 	public partial class FrequencyConstraintHasFrequencyConstraintMinMaxError : DslModeling::ElementLink
 	{
@@ -11441,7 +11441,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("d2706f81-78cc-493e-90c9-d54a10d33fa0")]
 	public partial class ObjectificationImpliesFactType : DslModeling::ElementLink
 	{
@@ -11681,7 +11681,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("1d2620be-40ac-4f10-b420-5cd52687dd49")]
 	public partial class ValueRangeHasMaxValueMismatchError : DslModeling::ElementLink
 	{
@@ -11940,7 +11940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("0e8be672-bcbe-412b-9589-76bfa88fde38")]
 	public partial class ValueRangeHasMinValueMismatchError : DslModeling::ElementLink
 	{
@@ -12200,7 +12200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("32d5a7e1-5a80-44ab-bc2e-96a15a4d92cb")]
 	public partial class FactTypeHasImpliedInternalUniquenessConstraintError : DslModeling::ElementLink
 	{
@@ -12460,7 +12460,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6409dbe5-5c44-42af-b0c6-fb1ee7e3af2a")]
 	public partial class SetConstraintHasTooFewRoleSequencesError : DslModeling::ElementLink
 	{
@@ -12720,7 +12720,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("d54eb064-7fc6-4bcd-af30-c73e2d586fc4")]
 	public partial class SetConstraintHasTooManyRoleSequencesError : DslModeling::ElementLink
 	{
@@ -12980,7 +12980,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("78716ce5-db71-4367-a912-9b622a3c480b")]
 	public partial class FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError : DslModeling::ElementLink
 	{
@@ -13222,7 +13222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("57656c65-6812-4e80-ab3c-199deb82b3ef")]
 	public partial class FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError : DslModeling::ElementLink
 	{
@@ -13464,7 +13464,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("62e65e16-efa7-43d0-9759-8715d0c8b914")]
 	public partial class RingConstraintHasRingConstraintTypeNotSpecifiedError : DslModeling::ElementLink
 	{
@@ -13965,7 +13965,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("2231fc51-1b87-45a5-af53-5a95f1b68e04")]
 	public partial class ObjectTypeHasObjectTypeRequiresPrimarySupertypeError : DslModeling::ElementLink
 	{
@@ -14739,7 +14739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("4a739f80-00fa-4f02-bd81-ed60c79defc3")]
 	public partial class ObjectTypeHasCompatibleSupertypesError : DslModeling::ElementLink
 	{
@@ -14999,7 +14999,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("8adb8b72-8510-486a-87ce-760c7607460c")]
 	public partial class UniquenessConstraintHasUniquenessImpliedByUniquenessError : DslModeling::ElementLink
 	{
@@ -15259,7 +15259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("31a1bff6-47dc-4f00-955b-1935082a3f25")]
 	public partial class ObjectTypeHasPreferredIdentifierRequiresMandatoryError : DslModeling::ElementLink
 	{
@@ -15519,7 +15519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("9044be08-d88b-4bca-b261-0841e1c73b5d")]
 	public partial class ValueConstraintHasValueRangeOverlapError : DslModeling::ElementLink
 	{
@@ -18304,7 +18304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("922e0a74-9384-4d25-9c38-e0ab709fee8f")]
 	public partial class EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError : DslModeling::ElementLink
 	{
@@ -18564,7 +18564,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("6ac86dd8-1766-472e-b70f-b788c04ed688")]
 	public partial class FactTypeInstanceHasTooFewFactTypeRoleInstancesError : DslModeling::ElementLink
 	{
@@ -18824,7 +18824,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a8af2a8f-cdd0-41cb-b8cd-60cf28277288")]
 	public partial class ValueTypeInstanceHasCompatibleValueTypeInstanceValueError : DslModeling::ElementLink
 	{

@@ -695,17 +695,20 @@
 											<plx:nameRef name="domainRole"/>
 										</plx:left>
 										<plx:right>
-											<plx:callInstance name="FindDomainRole">
+											<plx:callInstance name="OppositeDomainRole" type="property">
 												<plx:callObject>
-													<plx:nameRef name="domainDataDirectory"/>
+													<plx:callInstance name="FindDomainRole">
+														<plx:callObject>
+															<plx:nameRef name="domainDataDirectory"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:callStatic dataTypeName="{@RelationshipName}" name="{@RoleName}DomainRoleId" type="field"/>
+														</plx:passParam>
+													</plx:callInstance>
 												</plx:callObject>
-												<plx:passParam>
-													<plx:callStatic dataTypeName="{@RelationshipName}" name="{@RoleName}DomainRoleId" type="field"/>
-												</plx:passParam>
 											</plx:callInstance>
 										</plx:right>
 									</plx:assign>
-									<plx:comment>UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...</plx:comment>
 									<plx:assign>
 										<plx:left>
 											<plx:callInstance name=".implied" type="indexerCall">
@@ -713,15 +716,11 @@
 													<plx:nameRef name="roleOrderDictionary"/>
 												</plx:callObject>
 												<plx:passParam>
-													<plx:callInstance name="Name" type="property">
-														<plx:callObject>
-															<plx:callInstance name="OppositeDomainRole" type="property">
-																<plx:callObject>
-																	<plx:nameRef name="domainRole"/>
-																</plx:callObject>
-															</plx:callInstance>
-														</plx:callObject>
-													</plx:callInstance>
+													<xsl:call-template name="DomainRoleInfoFullName">
+														<xsl:with-param name="DomainRoleInfoExpression">
+															<plx:nameRef name="domainRole"/>
+														</xsl:with-param>
+													</xsl:call-template>
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:left>
@@ -798,7 +797,6 @@
 							</xsl:variable>
 							<xsl:for-each select="exsl:node-set($paramVals)/child::*">
 								<plx:local name="{.}Pos" dataTypeName=".i4"/>
-								<plx:comment>UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...</plx:comment>
 								<plx:branch>
 									<plx:condition>
 										<plx:unaryOperator type="booleanNot">
@@ -807,11 +805,11 @@
 													<plx:callThis name="myRoleOrderDictionary" type="field"/>
 												</plx:callObject>
 												<plx:passParam type="in">
-													<plx:callInstance name="Name" type="property">
-														<plx:callObject>
+													<xsl:call-template name="DomainRoleInfoFullName">
+														<xsl:with-param name="DomainRoleInfoExpression">
 															<plx:nameRef type="parameter" name="{.}"/>
-														</plx:callObject>
-													</plx:callInstance>
+														</xsl:with-param>
+													</xsl:call-template>
 												</plx:passParam>
 												<plx:passParam type="out">
 													<plx:nameRef name="{.}Pos"/>
@@ -1652,6 +1650,36 @@
 				</plx:function>
 			</xsl:if>
 		</plx:class>
+	</xsl:template>
+	<xsl:template name="DomainRoleInfoFullName">
+		<xsl:param name="DomainRoleInfoExpression"/>
+		<plx:callStatic name="Concat" dataTypeName=".string">
+			<plx:passParam>
+				<plx:callInstance name="FullName" type="property">
+					<plx:callObject>
+						<plx:callInstance name="ImplementationClass" type="property">
+							<plx:callObject>
+								<plx:callInstance name="DomainRelationship" type="property">
+									<plx:callObject>
+										<xsl:copy-of select="$DomainRoleInfoExpression"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:string>.</plx:string>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callInstance name="Name" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$DomainRoleInfoExpression"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:passParam>
+		</plx:callStatic>
 	</xsl:template>
 	<xsl:template name="ResolveNamespace">
 		<xsl:param name="namespaces"/>

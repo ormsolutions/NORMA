@@ -229,6 +229,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
+			if (domainPropertyInfo.Id == ORMDiagram.DoLineRoutingDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.DoResizeParentDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.DoShapeAnchoringDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.DoViewFixupDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.PlaceUnplacedShapesDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
 			return ORMCustomSerializedPropertyInfo.Default;
 		}
 		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
@@ -260,25 +280,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
@@ -458,28 +474,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
@@ -901,9 +912,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -917,14 +927,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 				int xPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}

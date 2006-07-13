@@ -1142,14 +1142,14 @@
 			<Source>
 				<DomainRole Name="SourceRole" PropertyName="TargetRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="SourceRole" Id="97F9C6E3-18C8-49F8-89C2-50563AAC4ECE">
 					<RolePlayer>
-						<DomainClassMoniker Name="ORMModelElement"/>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<DomainRole Name="TargetRole" PropertyName="SourceRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="TargetRole"  Id="635F5B0D-F4CA-4321-89A7-FA0ACE028562">
 					<RolePlayer>
-						<DomainClassMoniker Name="ORMModelElement"/>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -1235,7 +1235,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ORMModelElementHasExtensionModelError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="7A4D2B10-43F3-475F-AA0A-8F880B9A1E4B">
+		<DomainRelationship Name="ORMModelElementHasExtensionModelError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7A4D2B10-43F3-475F-AA0A-8F880B9A1E4B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1554,7 +1554,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasTooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="3167F5D3-C234-46E3-AAC2-4CEB791DFB9C">
+		<DomainRelationship Name="SetComparisonConstraintHasTooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3167F5D3-C234-46E3-AAC2-4CEB791DFB9C">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1574,7 +1574,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasTooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="E7C33130-2D1F-4F95-B988-BD7608CF2D1C">
+		<DomainRelationship Name="SetComparisonConstraintHasTooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E7C33130-2D1F-4F95-B988-BD7608CF2D1C">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1734,7 +1734,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingHasTooManyRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="D2116BC7-25A8-455E-9347-414BD03B7546">
+		<DomainRelationship Name="ReadingHasTooManyRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D2116BC7-25A8-455E-9347-414BD03B7546">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1754,7 +1754,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ReadingHasTooFewRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="FC3E0A3C-40CE-4DED-8A6B-241C7B51C099">
+		<DomainRelationship Name="ReadingHasTooFewRolesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="FC3E0A3C-40CE-4DED-8A6B-241C7B51C099">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1774,7 +1774,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="C5A25732-F5A7-409E-B56A-6419A951FB13">
+		<DomainRelationship Name="SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C5A25732-F5A7-409E-B56A-6419A951FB13">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1794,7 +1794,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFactTypeRequiresReadingError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="EEC8EB82-5B15-4B61-8737-DA1A54199A13">
+		<DomainRelationship Name="FactTypeHasFactTypeRequiresReadingError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="EEC8EB82-5B15-4B61-8737-DA1A54199A13">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1814,7 +1814,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="DD5FF7F8-7169-489B-9B8A-EDE3772F52BE">
+		<DomainRelationship Name="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="DD5FF7F8-7169-489B-9B8A-EDE3772F52BE">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1894,7 +1894,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeHasUnspecifiedDataTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F2A79E36-A317-4C36-81DA-D562D2AFBF09">
+		<DomainRelationship Name="ValueTypeHasUnspecifiedDataTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F2A79E36-A317-4C36-81DA-D562D2AFBF09">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1914,7 +1914,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetComparisonConstraintHasCompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="13410C4F-FFED-4B0F-AD0B-BD48D09B4310">
+		<DomainRelationship Name="SetComparisonConstraintHasCompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="13410C4F-FFED-4B0F-AD0B-BD48D09B4310">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1934,7 +1934,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasCompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="91CDE095-28D9-4852-B171-430FE5A29429">
+		<DomainRelationship Name="SetConstraintHasCompatibleRolePlayerTypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="91CDE095-28D9-4852-B171-430FE5A29429">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1954,7 +1954,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="UniquenessConstraintHasNMinusOneError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="429F7144-1227-4D0E-B4F8-59AD6FFC7EB3">
+		<DomainRelationship Name="UniquenessConstraintHasNMinusOneError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="429F7144-1227-4D0E-B4F8-59AD6FFC7EB3">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1974,7 +1974,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RoleHasRolePlayerRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="09E6AC31-2CA1-4126-8C95-BFC571088B2D">
+		<DomainRelationship Name="RoleHasRolePlayerRequiredError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="09E6AC31-2CA1-4126-8C95-BFC571088B2D">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -1994,7 +1994,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EqualityConstraintHasEqualityImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="0D352E42-06D6-4AD1-AACE-3EA5AACDE302">
+		<DomainRelationship Name="EqualityConstraintHasEqualityImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0D352E42-06D6-4AD1-AACE-3EA5AACDE302">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2014,7 +2014,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="1B6CBB8C-D1A6-4949-AC4D-596DC1CE147F">
+		<DomainRelationship Name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1B6CBB8C-D1A6-4949-AC4D-596DC1CE147F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2034,7 +2034,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="MandatoryConstraintHasMandatoryImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="3EFCB5A8-2DCB-478E-BD02-5898C36C9143">
+		<DomainRelationship Name="MandatoryConstraintHasMandatoryImpliedByMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="3EFCB5A8-2DCB-478E-BD02-5898C36C9143">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2054,7 +2054,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintMinMaxError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="2E851B91-FCB9-4B3C-9276-2C2E3A1972C9">
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintMinMaxError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2E851B91-FCB9-4B3C-9276-2C2E3A1972C9">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2074,7 +2074,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectificationImpliesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="D2706F81-78CC-493E-90C9-D54A10D33FA0">
+		<DomainRelationship Name="ObjectificationImpliesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D2706F81-78CC-493E-90C9-D54A10D33FA0">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2094,7 +2094,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueRangeHasMaxValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="1D2620BE-40AC-4F10-B420-5CD52687DD49">
+		<DomainRelationship Name="ValueRangeHasMaxValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="1D2620BE-40AC-4F10-B420-5CD52687DD49">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2114,7 +2114,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueRangeHasMinValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="0E8BE672-BCBE-412B-9589-76BFA88FDE38">
+		<DomainRelationship Name="ValueRangeHasMinValueMismatchError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="0E8BE672-BCBE-412B-9589-76BFA88FDE38">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2134,7 +2134,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasImpliedInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="32D5A7E1-5A80-44AB-BC2E-96A15A4D92CB">
+		<DomainRelationship Name="FactTypeHasImpliedInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="32D5A7E1-5A80-44AB-BC2E-96A15A4D92CB">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2154,7 +2154,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasTooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="6409DBE5-5C44-42AF-B0C6-FB1EE7E3AF2A">
+		<DomainRelationship Name="SetConstraintHasTooFewRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6409DBE5-5C44-42AF-B0C6-FB1EE7E3AF2A">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2174,7 +2174,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="SetConstraintHasTooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="D54EB064-7FC6-4BCD-AF30-C73E2D586FC4">
+		<DomainRelationship Name="SetConstraintHasTooManyRoleSequencesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="D54EB064-7FC6-4BCD-AF30-C73E2D586FC4">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2194,7 +2194,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="78716CE5-DB71-4367-A912-9B622A3C480B">
+		<DomainRelationship Name="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="78716CE5-DB71-4367-A912-9B622A3C480B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2214,7 +2214,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="57656C65-6812-4E80-AB3C-199DEB82B3EF">
+		<DomainRelationship Name="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="57656C65-6812-4E80-AB3C-199DEB82B3EF">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2234,7 +2234,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="RingConstraintHasRingConstraintTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="62E65E16-EFA7-43D0-9759-8715D0C8B914">
+		<DomainRelationship Name="RingConstraintHasRingConstraintTypeNotSpecifiedError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="62E65E16-EFA7-43D0-9759-8715D0C8B914">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2274,7 +2274,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="2231FC51-1B87-45A5-AF53-5A95F1B68E04">
+		<DomainRelationship Name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2231FC51-1B87-45A5-AF53-5A95F1B68E04">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2334,7 +2334,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasCompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="4A739F80-00FA-4F02-BD81-ED60C79DEFC3">
+		<DomainRelationship Name="ObjectTypeHasCompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="4A739F80-00FA-4F02-BD81-ED60C79DEFC3">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2354,7 +2354,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="UniquenessConstraintHasUniquenessImpliedByUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="8ADB8B72-8510-486A-87CE-760C7607460C">
+		<DomainRelationship Name="UniquenessConstraintHasUniquenessImpliedByUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="8ADB8B72-8510-486A-87CE-760C7607460C">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2374,7 +2374,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="31A1BFF6-47DC-4F00-955B-1935082A3F25">
+		<DomainRelationship Name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="31A1BFF6-47DC-4F00-955B-1935082A3F25">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2394,7 +2394,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueConstraintHasValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="9044BE08-D88B-4BCA-B261-0841E1C73B5D">
+		<DomainRelationship Name="ValueConstraintHasValueRangeOverlapError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9044BE08-D88B-4BCA-B261-0841E1C73B5D">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2629,7 +2629,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="922E0A74-9384-4D25-9C38-E0AB709FEE8F">
+		<DomainRelationship Name="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="922E0A74-9384-4D25-9C38-E0AB709FEE8F">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2649,7 +2649,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="6AC86DD8-1766-472E-B70F-B788C04ED688">
+		<DomainRelationship Name="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="6AC86DD8-1766-472E-B70F-B788C04ED688">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2669,7 +2669,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="A8AF2A8F-CDD0-41CB-B8CD-60CF28277288">
+		<DomainRelationship Name="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="A8AF2A8F-CDD0-41CB-B8CD-60CF28277288">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->

@@ -234,31 +234,25 @@ namespace Neumont.Tools.ORM.OIALModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasORMModel.ORMModelDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasORMModel.ORMModelDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}
@@ -874,37 +868,29 @@ namespace Neumont.Tools.ORM.OIALModel
 				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				DomainRoleInfo domainRole;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasObjectType.ObjectTypeDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencingConceptTypeDomainRoleId);
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				roleOrderDictionary[domainRole.OppositeDomainRole.Name] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasObjectType.ObjectTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencingConceptTypeDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
 			{
 				int xPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(x.Name, out xPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos)))
 				{
 					xPos = int.MaxValue;
 				}
 				int yPos;
-				// UNDONE: 2006-06 DSL Tools port: "Name" on the next line used to be "FullName"...
-				if (!(this.myRoleOrderDictionary.TryGetValue(y.Name, out yPos)))
+				if (!(this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos)))
 				{
 					yPos = int.MaxValue;
 				}

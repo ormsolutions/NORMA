@@ -112,7 +112,7 @@ namespace Neumont.Tools.ORM.Shell
 		PrimaryLinkElement = 0x02,
 		/// <summary>
 		/// Used for aggregating links. Write as a child element of the
-		/// aggregating object. Writes the link id. Any properties on the link
+		/// aggregated object. Writes the link id. Any properties on the link
 		/// and referencing child elements are written at this location.
 		/// </summary>
 		AggregatingLinkElement = 0x03,
@@ -2003,7 +2003,7 @@ namespace Neumont.Tools.ORM.Shell
 				settings.NameTable = nameTable;
 #if DEBUG
 				// Skip validation when the shift key is down in debug mode
-				if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.ShiftKey) != 0)
+				if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) == 0)
 				{
 #endif // DEBUG
 					settings.ValidationType = ValidationType.Schema;
