@@ -68,7 +68,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}

@@ -101,16 +101,16 @@ namespace Neumont.Tools.ORM
 		}
 		
 		// UNDONE: 2006-06 DSL Tools port: ResourceManagers have been temporarily redirected until we port the resx files.
-		private static ResourceManager myMetaModelResourceManager;
-		private static ResourceManager MetaModelResourceManager
+		private static ResourceManager myCoreModelResourceManager;
+		private static ResourceManager CoreModelResourceManager
 		{
 			get
 			{
-				if (myMetaModelResourceManager == null)
+				if (myCoreModelResourceManager == null)
 				{
-					LoadResourceManagerForType(ref myMetaModelResourceManager, typeof(ORMMetaModel));
+					LoadResourceManagerForType(ref myCoreModelResourceManager, typeof(ORMCoreModel));
 				}
-				return myMetaModelResourceManager;
+				return myCoreModelResourceManager;
 			}
 		}
 
@@ -137,8 +137,8 @@ namespace Neumont.Tools.ORM
 			switch (manager)
 			{
 				case ResourceManagers.ObjectModel:
-					//return ORMMetaModel.SingletonResourceManager;
-					return MetaModelResourceManager;
+					//return ORMCoreModel.SingletonResourceManager;
+					return CoreModelResourceManager;
 				case ResourceManagers.ShapeModel:
 					//return ORMShapeModel.SingletonResourceManager;
 					return ShapeModelResourceManager;

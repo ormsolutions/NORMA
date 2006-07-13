@@ -618,7 +618,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMMetaModel.DelayValidateElement(this, DelayValidateRolePlayerRequiredError);
+			ORMCoreModel.DelayValidateElement(this, DelayValidateRolePlayerRequiredError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -658,7 +658,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = link.PlayedRole;
 				if (!role.IsDeleted)
 				{
-					ORMMetaModel.DelayValidateElement(role, DelayValidateRolePlayerRequiredError);
+					ORMCoreModel.DelayValidateElement(role, DelayValidateRolePlayerRequiredError);
 				}
 			}
 		}
@@ -676,8 +676,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role addedRole = link.Role as Role;
 				if (addedRole != null)
 				{
-					ORMMetaModel.DelayValidateElement(addedRole, DelayValidateRolePlayerRequiredError);
-					ORMMetaModel.DelayValidateElement(addedRole, DelayRenumberErrorsWithRoleNumbersAfterRole);
+					ORMCoreModel.DelayValidateElement(addedRole, DelayValidateRolePlayerRequiredError);
+					ORMCoreModel.DelayValidateElement(addedRole, DelayRenumberErrorsWithRoleNumbersAfterRole);
 				}
 			}
 		}
@@ -694,7 +694,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = link.FactType;
 				if (!factType.IsDeleted)
 				{
-					ORMMetaModel.DelayValidateElement(factType, DelayRenumberErrorsWithRoleNumbers);
+					ORMCoreModel.DelayValidateElement(factType, DelayRenumberErrorsWithRoleNumbers);
 				}
 			}
 		}

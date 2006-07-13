@@ -20,29 +20,18 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
-	public sealed partial class ORMMetaModelToolboxHelper
+	public sealed partial class ORMShapeModelToolboxHelper
 	{
-		/// <summary>
-		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
-		/// <see cref="ObjectType"/> should be a ValueType.
-		/// </summary>
-		public static readonly object ValueTypeUserDataKey = new object();
-		/// <summary>
-		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
-		/// <see cref="UniquenessConstraint"/> is internal.
-		/// </summary>
-		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
-
 		private int myObjectTypeCount;
 		private int myFactTypeCount;
 		private int myUniquenessConstraintCount;
-		/// <summary>See <see cref="ORMMetaModelToolboxHelperBase.CreateElementToolPrototype"/>.</summary>
+		/// <summary>See <see cref="ORMShapeModelToolboxHelperBase.CreateElementToolPrototype"/>.</summary>
 		protected sealed override ElementGroupPrototype CreateElementToolPrototype(Store store, Guid domainClassId)
 		{
 			// WARNING: This method is _extremely_ order-sensitive. If the order that the toolbox items are listed
-			// in the .dsl file changes, or if the DSL Tools text template that is used to generate ORMMetaModelHelperBase
+			// in the .dsl file changes, or if the DSL Tools text template that is used to generate ORMShapeModelToolboxHelperBase
 			// changes, this method will most likely need to be changed as well.
 
 			ElementGroup group = new ElementGroup(store);
@@ -63,7 +52,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// up the default data type for the model, which can only be done
 						// when the model is known. Instead, flag the element so that it
 						// can be set during MergeRelate on the model.
-						group.UserData = ValueTypeUserDataKey;
+						group.UserData = ORMModel.ValueTypeUserDataKey;
 						break;
 					case 2:
 						// ObjectifiedFactType
@@ -86,7 +75,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Add this here so that we can distinguish between internal and external uniqueness
 					// constraints without unpacking the model. We want to merge internals into a fact
 					// and externals into the model.
-					group.UserData = InternalUniquenessConstraintUserDataKey;
+					group.UserData = ORMModel.InternalUniquenessConstraintUserDataKey;
 					group.AddGraph(UniquenessConstraint.CreateInternalUniquenessConstraint(store), true);
 				}
 				else

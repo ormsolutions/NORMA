@@ -87,7 +87,7 @@ namespace Neumont.Tools.ORM.Shell
 		private static Dictionary<string, Type> InitializeStandardSubStores()
 		{
 			Dictionary<string, Type> standardSubStores = new Dictionary<string, Type>();
-			standardSubStores.Add(ORMMetaModel.XmlNamespace, typeof(ORMMetaModel));
+			standardSubStores.Add(ORMCoreModel.XmlNamespace, typeof(ORMCoreModel));
 			standardSubStores.Add(ORMShapeModel.XmlNamespace, typeof(ORMShapeModel));
 			return standardSubStores;
 		}
@@ -164,7 +164,7 @@ namespace Neumont.Tools.ORM.Shell
 									if (reader.Prefix == "xmlns")
 									{
 										string URI = reader.Value;
-										if (!string.Equals(URI, ORMMetaModel.XmlNamespace, StringComparison.Ordinal) &&
+										if (!string.Equals(URI, ORMCoreModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMShapeModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
 										{

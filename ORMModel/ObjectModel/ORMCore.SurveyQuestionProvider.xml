@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" class="ORMMetaModel">
+<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" class="ORMCoreModel">
 	<qp:provideSurveyQuestion questionType="ElementType"/>
 	<qp:provideSurveyQuestion questionType="ErrorState"/>
 </qp:surveyQuestionProvider>

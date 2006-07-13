@@ -112,12 +112,6 @@
     <Compile Include="Framework\MultiDiagramDocView\MultiDiagramDocView.cs" />
     <Compile Include="Design\Comparers.cs" />
     <Compile Include="Framework\Utility.cs" />
-    <Compile Include="GeneratedCode\PropertiesGrid.cs">
-      <DependentUpon>PropertiesGrid.tt</DependentUpon>
-      <SubType>Code</SubType>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="ObjectModel\ORMCore.SurveyQuestionProvider.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMCore.SurveyQuestionProvider.xml</DependentUpon>
@@ -130,6 +124,21 @@
     </Compile>
     <Compile Include="Design\SamplePopulationEditor.Designer.cs">
       <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\CoreDomainRelationships.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreDomainRelationships.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ShapeDomainModel.cs">
+      <DependentUpon>ShapeDomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="GeneratedCode\ShapeDomainRelationships.cs">
+      <DependentUpon>ShapeDomainRelationships.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GeneratedCode\ConnectionBuilders.cs">
       <AutoGen>True</AutoGen>
@@ -151,21 +160,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainClasses.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\DomainModel.cs">
+    <Compile Include="GeneratedCode\CoreDomainModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DomainModel.tt</DependentUpon>
+      <DependentUpon>CoreDomainModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedCode\DomainRelationships.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DomainRelationships.tt</DependentUpon>
-    </Compile>
-    <None Include="GeneratedCode\MultiplicityValidation.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MultiplicityValidation.tt</DependentUpon>
-    </None>
     <Compile Include="GeneratedCode\Shapes.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,7 +216,7 @@
     </Compile>
     <Compile Include="ObjectModel\ORMElements.cs" />
     <Compile Include="ObjectModel\ORMElementUtilities.cs" />
-    <Compile Include="ObjectModel\ORMMetaModel.cs" />
+    <Compile Include="ObjectModel\ORMCoreModel.cs" />
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ObjectModel\ORMCore.SerializationExtensions.cs">
@@ -236,7 +235,6 @@
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
     <Compile Include="ShapeModel\ORMBaseShapeSubField.cs" />
-    <Compile Include="ShapeModel\ORMShapeModel.cs" />
     <Compile Include="ShapeModel\ORMShape.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMShape.SerializationExtensions.xml</DependentUpon>
@@ -417,16 +415,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ObjectModel\ORMMetaModel.resx">
+    <EmbeddedResource Include="GeneratedCode\ShapeDomainModelResx.resx">
+      <DependentUpon>ShapeDomainModelResx.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Designer</SubType>
+      <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectModel\ORMCoreModel.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORMShapeModel.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+    <EmbeddedResource Include="GeneratedCode\CoreDomainModelResx.resx">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <DependentUpon>CoreDomainModelResx.tt</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintAllowed.cur" />
@@ -448,6 +452,18 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Connectors.cs</LastGenOutput>
     </None>
+    <None Include="GeneratedCode\ShapeDomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ShapeDomainModel.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\ShapeDomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ShapeDomainModelResx.resx</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\ShapeDomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ShapeDomainRelationships.cs</LastGenOutput>
+    </None>
     <None Include="GeneratedCode\Diagram.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Diagram.cs</LastGenOutput>
@@ -456,25 +472,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DomainClasses.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainModel.tt">
+    <None Include="GeneratedCode\CoreDomainModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainModel.cs</LastGenOutput>
+      <LastGenOutput>CoreDomainModel.cs</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainModelResx.tt">
+    <None Include="GeneratedCode\CoreDomainModelResx.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+      <LastGenOutput>CoreDomainModelResx.resx</LastGenOutput>
     </None>
-    <None Include="GeneratedCode\DomainRelationships.tt">
+    <None Include="GeneratedCode\CoreDomainRelationships.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
-    </None>
-    <None Include="GeneratedCode\MultiplicityValidation.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MultiplicityValidation.cs</LastGenOutput>
-    </None>
-    <None Include="GeneratedCode\PropertiesGrid.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PropertiesGrid.cs</LastGenOutput>
+      <LastGenOutput>CoreDomainRelationships.cs</LastGenOutput>
     </None>
     <None Include="GeneratedCode\Shapes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -484,10 +492,11 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToolboxHelper.cs</LastGenOutput>
     </None>
+    <None Include="ObjectModel\ORMCore.dsl" />
+    <None Include="ShapeModel\ORMShape.dsl" />
     <None Include="ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ORM.dsl" />
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />

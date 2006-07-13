@@ -37,7 +37,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
@@ -50,7 +50,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
@@ -65,7 +65,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
-				ORMMetaModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
 				ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
 			}
 		}
@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule class
@@ -239,7 +239,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType nestedFact = objectification.NestedFactType;
 					if (!nestedFact.IsDeleted)
 					{
-						ORMMetaModel.DelayValidateElement(nestedFact, DelayProcessFactTypeForImpliedObjectification);
+						ORMCoreModel.DelayValidateElement(nestedFact, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 			}
@@ -557,7 +557,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int factsCount = facts.Count;
 			for (int i = 0; i < factsCount; ++i)
 			{
-				ORMMetaModel.DelayValidateElement(facts[i], DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreModel.DelayValidateElement(facts[i], DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		/// <summary>

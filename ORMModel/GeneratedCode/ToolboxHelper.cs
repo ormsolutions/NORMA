@@ -1,8 +1,8 @@
-#region Common Public License Copyright Notice
+﻿#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright � Neumont University. All rights reserved.                     *
+* Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -26,7 +26,7 @@ using DslModeling = Microsoft.VisualStudio.Modeling;
 using DslDesign = Microsoft.VisualStudio.Modeling.Design;
 using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// Helper class used to create and initialize toolbox items for this DSL.
@@ -34,28 +34,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <remarks>
 	/// Double-derived class to allow easier code customization.
 	/// </remarks>
-	public partial class ORMMetaModelToolboxHelper : ORMMetaModelToolboxHelperBase 
+	public partial class ORMShapeModelToolboxHelper : ORMShapeModelToolboxHelperBase 
 	{
 		/// <summary>
-		/// Constructs a new ORMMetaModelToolboxHelper.
+		/// Constructs a new ORMShapeModelToolboxHelper.
 		/// </summary>
-		public ORMMetaModelToolboxHelper(global::System.IServiceProvider serviceProvider)
+		public ORMShapeModelToolboxHelper(global::System.IServiceProvider serviceProvider)
 			: base(serviceProvider) { }
 	}
 	
 	/// <summary>
 	/// Helper class used to create and initialize toolbox items for this DSL.
 	/// </summary>
-	public abstract class ORMMetaModelToolboxHelperBase
+	public abstract class ORMShapeModelToolboxHelperBase
 	{
 		/// <summary>
-		/// Toolbox item filter string used to identify ORMMetaModel toolbox items.  
+		/// Toolbox item filter string used to identify ORMShapeModel toolbox items.  
 		/// </summary>
 		/// <remarks>
 		/// See the MSDN documentation for the ToolboxItemFilterAttribute class for more information on toolbox
 		/// item filters.
 		/// </remarks>
-		public const string ToolboxFilterString = "ORMMetaModel.1.0";
+		public const string ToolboxFilterString = "ORMShapeModel.1.0";
 		/// <summary>
 		/// Toolbox item filter string used to identify RoleConnector connector tool.
 		/// </summary>
@@ -72,9 +72,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private global::System.IServiceProvider sp;
 		
 		/// <summary>
-		/// Constructs a new ORMMetaModelToolboxHelperBase.
+		/// Constructs a new ORMShapeModelToolboxHelperBase.
 		/// </summary>
-		protected ORMMetaModelToolboxHelperBase(global::System.IServiceProvider serviceProvider)
+		protected ORMShapeModelToolboxHelperBase(global::System.IServiceProvider serviceProvider)
 		{
 			if(serviceProvider == null) throw new global::System.ArgumentNullException("serviceProvider");
 			
@@ -103,8 +103,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			using(DslModeling::Store store = new DslModeling::Store(this.ServiceProvider))
 			{
 				store.LoadDomainModels(typeof(DslDiagrams::CoreDesignSurface),
-					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel));
-				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel.SingletonResourceManager;
+					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel),
+					typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel));
+				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel.SingletonResourceManager;
 				global::System.Globalization.CultureInfo resourceCulture = global::System.Globalization.CultureInfo.CurrentUICulture;
 			
 				// Open transaction so we can create model elements corresponding to toolbox items.

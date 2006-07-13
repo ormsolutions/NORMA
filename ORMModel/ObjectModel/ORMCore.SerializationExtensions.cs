@@ -24,11 +24,11 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region ORMMetaModel model serialization
-	public partial class ORMMetaModel : IORMCustomSerializedDomainModel
+	#region ORMCoreModel model serialization
+	public partial class ORMCoreModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
-		/// The default XmlNamespace associated with the 'ORMMetaModel' extension model
+		/// The default XmlNamespace associated with the 'ORMCoreModel' extension model
 		/// </summary>
 		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMCore";
 		/// <summary>
@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
 			if (omissions == null)
 			{
-				omissions = ORMMetaModel.BuildCustomSerializationOmissions(store);
+				omissions = ORMCoreModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
 			return !(omissions.ContainsKey(classInfo));
@@ -125,13 +125,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
-			Collection<string> validNamespaces = ORMMetaModel.myValidNamespaces;
-			Dictionary<string, Guid> classNameMap = ORMMetaModel.myClassNameMap;
+			Collection<string> validNamespaces = ORMCoreModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = ORMCoreModel.myClassNameMap;
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
 				validNamespaces.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore");
-				ORMMetaModel.myValidNamespaces = validNamespaces;
+				ORMCoreModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
@@ -203,7 +203,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.DomainClassId);
 				classNameMap.Add("RolePlayerRequiredError", RolePlayerRequiredError.DomainClassId);
 				classNameMap.Add("FrequencyConstraintContradictsInternalUniquenessConstraintError", FrequencyConstraintContradictsInternalUniquenessConstraintError.DomainClassId);
-				ORMMetaModel.myClassNameMap = classNameMap;
+				ORMCoreModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
 			{
@@ -216,7 +216,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return MapClassName(xmlNamespace, elementName);
 		}
 	}
-	#endregion // ORMMetaModel model serialization
+	#endregion // ORMCoreModel model serialization
 	#region ORMModelElement serialization
 	public partial class ORMModelElement : IORMCustomSerializedElement
 	{

@@ -554,7 +554,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMMetaModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
+			ORMCoreModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{

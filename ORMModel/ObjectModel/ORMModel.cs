@@ -76,6 +76,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel
 	{
+		/// <summary>
+		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
+		/// <see cref="ObjectType"/> should be a ValueType.
+		/// </summary>
+		public static readonly object ValueTypeUserDataKey = new object();
+		/// <summary>
+		/// Used as the value for <see cref="ElementGroup.UserData"/> to indicate that the
+		/// <see cref="UniquenessConstraint"/> is internal.
+		/// </summary>
+		public static readonly object InternalUniquenessConstraintUserDataKey = new object();
+
 		#region Entity- and ValueType specific collections
 		/// <summary>
 		/// All of the entity types in the object types collection.
@@ -133,7 +144,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region MergeContext functions
 		private void MergeRelateObjectType(ObjectType objectType, ElementGroup elementGroup)
 		{
-			if (elementGroup.UserData == ORMMetaModelToolboxHelper.ValueTypeUserDataKey)
+			if (elementGroup.UserData == ORMModel.ValueTypeUserDataKey)
 			{
 				objectType.DataType = DefaultDataType;
 			}
@@ -141,7 +152,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private bool CanMergeSetConstraint(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
 		{
-			return elementGroupPrototype.UserData != ORMMetaModelToolboxHelper.InternalUniquenessConstraintUserDataKey;
+			return elementGroupPrototype.UserData != ORMModel.InternalUniquenessConstraintUserDataKey;
 		}
 		#endregion // MergeContext functions
 	}

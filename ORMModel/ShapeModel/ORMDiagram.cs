@@ -267,7 +267,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used for simple actions
 		/// </summary>
-		public const string ORMDiagramDefaultFilterString = ORMMetaModelToolboxHelper.ToolboxFilterString;
+		public const string ORMDiagramDefaultFilterString = ORMShapeModelToolboxHelper.ToolboxFilterString;
 		//public const string ORMDiagramDefaultFilterString = "ORMDiagramDefaultFilterString";
 
 		/// <summary>
@@ -279,12 +279,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to connect role sequences to external constraints
 		/// </summary>
-		public const string ORMDiagramConnectExternalConstraintFilterString = ORMMetaModelToolboxHelper.ExternalConstraintConnectorFilterString;
+		public const string ORMDiagramConnectExternalConstraintFilterString = ORMShapeModelToolboxHelper.ExternalConstraintConnectorFilterString;
 		//public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		/// <summary>
 		/// The filter string used to create subtype relationships between object types
 		/// </summary>
-		public const string ORMDiagramCreateSubtypeFilterString = ORMMetaModelToolboxHelper.SubtypeConnectorFilterString;
+		public const string ORMDiagramCreateSubtypeFilterString = ORMShapeModelToolboxHelper.SubtypeConnectorFilterString;
 		//public const string ORMDiagramCreateSubtypeFilterString = "ORMDiagramCreateSubtypeFilterString";
 		/// <summary>
 		/// The filter string used to create an internal constraint. Very similar to a
@@ -299,7 +299,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to connect a role to its role player object type
 		/// </summary>
-		public const string ORMDiagramConnectRoleFilterString = ORMMetaModelToolboxHelper.RoleConnectorFilterString;
+		public const string ORMDiagramConnectRoleFilterString = ORMShapeModelToolboxHelper.RoleConnectorFilterString;
 		//public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
 		#endregion // Toolbox filter strings
 		#region StickyEditObject

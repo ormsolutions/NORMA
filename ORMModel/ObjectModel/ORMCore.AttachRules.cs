@@ -18,15 +18,15 @@ using System.Reflection;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region Attach rules to ORMMetaModel model
-	public partial class ORMMetaModel
+	#region Attach rules to ORMCoreModel model
+	public partial class ORMCoreModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = ORMMetaModel.myCustomDomainModelTypes;
+				Type[] retVal = ORMCoreModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -187,7 +187,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeInstanceValueChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasValueTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeValueConstraint).GetNestedType("ValueTypeValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
-					ORMMetaModel.myCustomDomainModelTypes = retVal;
+					ORMCoreModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -201,13 +201,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = ORMMetaModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = ORMCoreModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -220,5 +220,5 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	#endregion // Attach rules to ORMMetaModel model
+	#endregion // Attach rules to ORMCoreModel model
 }

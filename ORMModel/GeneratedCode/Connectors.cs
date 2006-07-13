@@ -1,8 +1,8 @@
-#region Common Public License Copyright Notice
+﻿#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright � Neumont University. All rights reserved.                     *
+* Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -32,8 +32,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ORMBaseBinaryLinkShape
 	/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("ceff4339-48d0-4ffe-b052-2f9da167b1db")]
 	public abstract partial class ORMBaseBinaryLinkShape : DslDiagrams::BinaryLinkShape
@@ -64,8 +64,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass RolePlayerLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.RolePlayerLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2b3f0aae-b1b1-4727-8862-5c34b494b499")]
 	public partial class RolePlayerLink : ORMBaseBinaryLinkShape
@@ -178,8 +178,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ExternalConstraintLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8815e6d8-238b-422c-a4b3-29fdc8de9ea5")]
 	public partial class ExternalConstraintLink : ORMBaseBinaryLinkShape
@@ -292,8 +292,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ValueRangeLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.ValueRangeLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("374e43c3-c294-49c4-8a61-3c3ca5fc86e8")]
 	public partial class ValueRangeLink : ORMBaseBinaryLinkShape

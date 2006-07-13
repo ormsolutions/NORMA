@@ -307,7 +307,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -323,7 +323,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ObjectType objectType = (e.ModelElement as ModelHasObjectType).ObjectTypeCollection;
 				ORMModel model = objectType.Model;
-				ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -340,7 +340,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ORMModel model = (e.ModelElement as ObjectType).Model;
 				if (model != null)
 				{
-					ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+					ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 		}
@@ -355,7 +355,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasFactType).Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ModelHasFactType).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -371,7 +371,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				FactType fact = (e.ModelElement as ModelHasFactType).FactTypeCollection;
 				ORMModel model = fact.Model;
-				ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -388,7 +388,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ORMModel model = (e.ModelElement as FactType).Model;
 				if (model != null)
 				{
-					ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+					ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 		}
@@ -404,7 +404,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
-				ORMMetaModel.DelayValidateElement(setConstraint.Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(setConstraint.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -422,7 +422,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ORMModel model = setConstraint.Model;
 				if (model != null)
 				{
-					ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+					ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 		}
@@ -439,7 +439,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
 				ORMModel model = setConstraint.Model;
-				ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -456,7 +456,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType objectType = objectRole.RolePlayer;
-				ORMMetaModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(objectType.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -472,7 +472,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType objectType = objectRole.RolePlayer;
-				ORMMetaModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(objectType.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -490,7 +490,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
 				RoleBase rolebase = constraintSequence.RoleCollection;
 				FactType factType = rolebase.FactType;
-				ORMMetaModel.DelayValidateElement(factType.Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(factType.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -507,7 +507,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
 				RoleBase rolebase = constraintSequence.RoleCollection;
 				FactType factType = rolebase.FactType;
-				ORMMetaModel.DelayValidateElement(factType.Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(factType.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -531,7 +531,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					ORMModel model = role.FactType.Model;
 					if (model != null)
 					{
-						ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+						ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 					}
 				}
 			}
@@ -557,7 +557,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					ORMModel model = role.FactType.Model;
 					if (model != null)
 					{
-						ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+						ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 					}
 				}
 			}
@@ -578,7 +578,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ORMModel model = fact.Model;
 				if (model != null)
 				{
-					ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+					ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 		}
@@ -621,7 +621,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					oil.ORMModel = model;
 					notifyAdded.ElementAdded(oil, true);
 				}
-				ORMMetaModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(objectType.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -660,7 +660,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					oil.ORMModel = model;
 					notifyAdded.ElementAdded(oil, true);
 				}
-				ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -699,7 +699,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					oil.ORMModel = model;
 					notifyAdded.ElementAdded(oil, true);
 				}
-				ORMMetaModel.DelayValidateElement(model, DelayValidateModel);
+				ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		#endregion // Deserialization FixupListeners

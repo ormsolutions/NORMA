@@ -104,7 +104,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}

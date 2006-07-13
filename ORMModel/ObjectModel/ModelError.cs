@@ -214,7 +214,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void ValidateErrors(INotifyElementAdded notifyAdded);
 		/// <summary>
 		/// Called to add delayed validate callbacks to model
-		/// elements. The implementation should use the ORMMetaModel.DelayValidateElement
+		/// elements. The implementation should use the ORMCoreModel.DelayValidateElement
 		/// to register callbacks for element validation when the transaction is committed.
 		/// </summary>
 		void DelayValidateErrors();

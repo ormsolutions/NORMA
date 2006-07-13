@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				Regex regex = objectTypeRegex;
 				if (regex == null)
 				{
-					ResourceManager resMgr = ORMMetaModel.SingletonResourceManager;
+					ResourceManager resMgr = ORMCoreModel.SingletonResourceManager;
 					regex = System.Threading.Interlocked.CompareExchange<Regex>(
 						ref objectTypeRegex,
 						new Regex(string.Format(CultureInfo.InvariantCulture, @"\A({0}|{1})\d+\z", resMgr.GetString("Neumont.Tools.ORM.ObjectModel.ValueType"), resMgr.GetString("Neumont.Tools.ORM.ObjectModel.EntityType")), RegexOptions.Compiled | RegexOptions.IgnoreCase),
@@ -128,7 +128,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectType, DelayValidateObjectTypeHasMeaningfulNameError);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).ObjectType, DelayValidateObjectTypeHasMeaningfulNameError);
 			}
 		}
 		/// <summary>
@@ -139,7 +139,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		{
 			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				ORMMetaModel.DelayValidateElement((e.ModelElement as ObjectType), DelayValidateObjectTypeHasMeaningfulNameError);
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ObjectType), DelayValidateObjectTypeHasMeaningfulNameError);
 			}
 		}
 		#endregion // ExtensionErrorRules

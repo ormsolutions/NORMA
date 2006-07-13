@@ -1,8 +1,8 @@
-#region Common Public License Copyright Notice
+﻿#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright � Neumont University. All rights reserved.                     *
+* Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -31,8 +31,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// Double-derived base class for DomainClass ORMDiagram
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("948f992d-c9b8-46f9-be3c-b48347f8ab0b")]
 	public abstract partial class ORMDiagramBase : DslDiagrams::Diagram
@@ -72,7 +72,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 		#region Toolbox filters
 		private static global::System.ComponentModel.ToolboxItemFilterAttribute[] toolboxFilters = new global::System.ComponentModel.ToolboxItemFilterAttribute[] {
-					new global::System.ComponentModel.ToolboxItemFilterAttribute(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModelToolboxHelperBase.ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) };
+					new global::System.ComponentModel.ToolboxItemFilterAttribute(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModelToolboxHelperBase.ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) };
 		
 		/// <summary>
 		/// Toolbox item filter attributes for this diagram.
@@ -302,8 +302,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Gets or sets the value of AutoPopulateShapes domain property.
 		/// Description for Neumont.Tools.ORM.ShapeModel.ORMDiagram.Auto Populate Shapes
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMMetaModel), "Neumont.Tools.ORM.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("d3f7a171-ce39-4944-be80-d55127423c83")]
 		public global::System.Boolean AutoPopulateShapes
