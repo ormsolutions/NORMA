@@ -68,6 +68,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			retVal[dataDir.FindDomainRelationship(FactConstraint.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(FactSetComparisonConstraint.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ExternalRoleConstraint.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(IntrinsicReferenceMode.DomainClassId)] = null;

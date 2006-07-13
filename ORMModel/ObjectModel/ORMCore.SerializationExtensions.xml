@@ -25,6 +25,7 @@
 			<se:RootElement Class="ORMModel"/>
 		</se:RootElements>
 		<se:OmittedDomainElements>
+			<se:OmitRelationship Class="FactConstraint"/>
 			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>

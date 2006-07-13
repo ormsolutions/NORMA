@@ -45,7 +45,7 @@ namespace Neumont.Tools.ORM.Design
 		/// <see cref="PropertyDescriptor"/> on a <see cref="ModelElement"/>.
 		/// </summary>
 		[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-		public class TypeDescriptorContext : ITypeDescriptorContext
+		public sealed class TypeDescriptorContext : ITypeDescriptorContext
 		{
 			private readonly ModelElement myInstance;
 			private readonly PropertyDescriptor myPropertyDescriptor;
@@ -223,41 +223,6 @@ namespace Neumont.Tools.ORM.Design
 		#endregion // CreateTypeDescriptorContext method
 
 		#region CreatePropertyDescriptor methods
-		private delegate ElementPropertyDescriptor CreatePropertyDescriptorInternalDelegate(ElementTypeDescriptor @this, ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes);
-		private static CreatePropertyDescriptorInternalDelegate CreatePropertyDescriptorInternal;
-		private static readonly object CreatePropertyDescriptorInternalLockObject = new object();
-		private static void InitializeCreatePropertyDescriptorInternal()
-		{
-			if (CreatePropertyDescriptorInternal == null)
-			{
-				lock (CreatePropertyDescriptorInternalLockObject)
-				{
-					if (CreatePropertyDescriptorInternal == null)
-					{
-						const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly;
-						Type elementTypeDescriptor = typeof(ElementTypeDescriptor);
-						Type returnType = typeof(ElementPropertyDescriptor);
-						Type[] parameterTypes = new Type[] { typeof(ModelElement), typeof(DomainPropertyInfo), typeof(Attribute[]) };
-
-						DynamicMethod dynamicMethod = new DynamicMethod("CreatePropertyDescriptorInternal", returnType, parameterTypes, elementTypeDescriptor, true);
-
-						// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for a bit more than we really need
-						// (which is 11 bytes) in order to avoid it resizing its buffer towards the end when it looks like we're running low
-						ILGenerator ilGenerator = dynamicMethod.GetILGenerator(16);
-						ilGenerator.Emit(OpCodes.Ldarg_0);
-						ilGenerator.Emit(OpCodes.Ldarg_1);
-						ilGenerator.Emit(OpCodes.Ldarg_2);
-						ilGenerator.Emit(OpCodes.Ldarg_3);
-						ilGenerator.Emit(OpCodes.Tailcall);
-						ilGenerator.Emit(OpCodes.Callvirt, elementTypeDescriptor.GetMethod("CreatePropertyDescriptor", bindingFlags, null, parameterTypes, null));
-						ilGenerator.Emit(OpCodes.Ret);
-
-						CreatePropertyDescriptorInternal = (CreatePropertyDescriptorInternalDelegate)dynamicMethod.CreateDelegate(typeof(CreatePropertyDescriptorInternalDelegate));
-					}
-				}
-			}
-		}
-
 		/// <summary>
 		/// Creates a <see cref="PropertyDescriptor"/> for the <c>Name</c> property of <paramref name="element"/>.
 		/// </summary>
@@ -351,26 +316,10 @@ namespace Neumont.Tools.ORM.Design
 			{
 				throw new ArgumentNullException("domainPropertyInfo");
 			}
-			Attribute[] attributes = null;
 			if (element != null)
 			{
 				TypeDescriptionProvider typeDescriptorProvider = TypeDescriptor.GetProvider(element);
 				ICustomTypeDescriptor typeDescriptor = typeDescriptorProvider.GetTypeDescriptor(element.GetType(), element);
-				ElementTypeDescriptor elementTypeDescriptor = typeDescriptor as ElementTypeDescriptor;
-				if (elementTypeDescriptor != null)
-				{
-					CreatePropertyDescriptorInternalDelegate createPropertyDescriptorInternal = CreatePropertyDescriptorInternal;
-					if (CreatePropertyDescriptorInternal == null)
-					{
-						InitializeCreatePropertyDescriptorInternal();
-						createPropertyDescriptorInternal = CreatePropertyDescriptorInternal;
-					}
-					PropertyDescriptor propertyDescriptor = createPropertyDescriptorInternal(elementTypeDescriptor, element, domainPropertyInfo, attributes = GetMemberAttributes(domainPropertyInfo.PropertyInfo));
-					if (propertyDescriptor != null)
-					{
-						return propertyDescriptor;
-					}
-				}
 				Type propertyType = domainPropertyInfo.PropertyType;
 				string propertyName = domainPropertyInfo.Name;
 				PropertyDescriptorCollection propertyDescriptors = typeDescriptor.GetProperties();
@@ -382,7 +331,7 @@ namespace Neumont.Tools.ORM.Design
 					}
 				}
 			}
-			return new ElementPropertyDescriptor(element, domainPropertyInfo, attributes ?? GetMemberAttributes(domainPropertyInfo.PropertyInfo));
+			return new ElementPropertyDescriptor(element, domainPropertyInfo, GetMemberAttributes(domainPropertyInfo.PropertyInfo));
 		}
 		#endregion // CreatePropertyDescriptor methods
 

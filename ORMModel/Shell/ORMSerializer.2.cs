@@ -806,27 +806,24 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="element">The <see cref="ModelElement"/> containing the property to be serialized.</param>
 		/// <param name="property">The <see cref="DomainPropertyInfo"/> to be serialized.</param>
-		/// <param name="typeConvert"><see langword="true"/> to type convert the value.</param>
-		/// <returns>An XML-encoded <see cref="String"/> that represents the serialized value of the property.</returns>
-		private static string ToXml(ModelElement element, DomainPropertyInfo property, bool typeConvert)
+		/// <returns>An XSD-appropriate <see cref="String"/> that represents the serialized value of the property.</returns>
+		private static string ToXml(ModelElement element, DomainPropertyInfo property)
 		{
 			object value = property.GetValue(element);
-			Type type;
 			if (value == null)
 			{
 				return null;
 			}
-			else if (typeConvert || (type = property.PropertyType).IsEnum)
-			{
-				goto L_TypeConvert;
-			}
-			else
+			Type type = property.PropertyType;
+			if (!type.IsEnum)
 			{
 				switch (Type.GetTypeCode(type))
 				{
 					case TypeCode.Empty:
 					case TypeCode.DBNull:
 						return null;
+					case TypeCode.String:
+						return (string)value;
 					case TypeCode.DateTime:
 						return XmlConvert.ToString((DateTime)value, XmlDateTimeSerializationMode.Utc);
 					case TypeCode.UInt64:
@@ -865,7 +862,6 @@ namespace Neumont.Tools.ORM.Shell
 					return XmlConvert.ToString((TimeSpan)value);
 				}
 			}
-		L_TypeConvert:
 			Design.ORMTypeDescriptor.TypeDescriptorContext context = Design.ORMTypeDescriptor.CreateTypeDescriptorContext(element, property);
 			return context.PropertyDescriptor.Converter.ConvertToInvariantString(context, value);
 		}
@@ -1087,11 +1083,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				if (property.Kind != DomainPropertyKind.CustomStorage)
 				{
-					file.WriteAttributeString
-					(
-						property.Name,
-						ToXml(element, property, false)
-					);
+					file.WriteAttributeString(property.Name, ToXml(element, property));
 				}
 				return;
 			}
@@ -1111,7 +1103,7 @@ namespace Neumont.Tools.ORM.Shell
 									customInfo.CustomPrefix != null ? customInfo.CustomPrefix : DefaultElementPrefix(element),
 									customInfo.CustomName != null ? customInfo.CustomName : property.Name,
 									customInfo.CustomNamespace,
-									ToXml(element, property, property.Kind == DomainPropertyKind.CustomStorage)
+									ToXml(element, property)
 								);
 								break;
 							}
@@ -1135,7 +1127,7 @@ namespace Neumont.Tools.ORM.Shell
 									prefix,
 									customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
 									customInfo.CustomNamespace,
-									ToXml(element, property, property.Kind == DomainPropertyKind.CustomStorage)
+									ToXml(element, property)
 								);
 								file.WriteEndElement();
 
@@ -1150,7 +1142,7 @@ namespace Neumont.Tools.ORM.Shell
 						customInfo.CustomPrefix,
 						customInfo.CustomName != null ? customInfo.CustomName : property.Name,
 						customInfo.CustomNamespace,
-						ToXml(element, property, property.Kind == DomainPropertyKind.CustomStorage)
+						ToXml(element, property)
 					);
 				}
 			}
@@ -2612,7 +2604,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (objectValue == null)
 			{
-				objectValue = Design.ORMTypeDescriptor.CreatePropertyDescriptor(element, domainPropertyInfo).Converter.ConvertFromInvariantString(stringValue);
+				Design.ORMTypeDescriptor.TypeDescriptorContext context = Design.ORMTypeDescriptor.CreateTypeDescriptorContext(element, domainPropertyInfo);
+				objectValue = context.PropertyDescriptor.Converter.ConvertFromInvariantString(context, stringValue);
 			}
 			if (objectValue != null)
 			{
