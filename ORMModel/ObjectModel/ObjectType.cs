@@ -2277,13 +2277,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ValueTypeHasDataType.ValueTypeDomainRoleId };
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
 		/// Implements IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
 		{
-			return myIndirectModelErrorOwnerLinkRoles;
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ValueTypeHasDataType.ValueTypeDomainRoleId };
+			}
+			return linkRoles;
 		}
 		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
 		{
