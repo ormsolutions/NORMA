@@ -282,7 +282,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// The IVerbalizationSnippetsProvider interfaces enables
 	/// a model to provide verbalization snippets to the ORM
 	/// verbalization engine. Snippets are identified by an
-	/// enum type used to retrieve snippets.
+	/// enum type used to retrieve snippets. A DomainModel
+	/// uses the VerbalizationSnippetsProviderAttribute to
+	/// indicate the class that provides verbalization snippets.
 	/// </summary>
 	public interface IVerbalizationSnippetsProvider
 	{
@@ -293,6 +295,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 		VerbalizationSnippetsData[] ProvideVerbalizationSnippets();
 	}
 	#endregion // IVerbalizationSnippetsProvider interface
+	#region VerbalizationSnippetsProviderAttribute class
+	/// <summary>
+	/// Provide an IVerbalizationSnippetsProvider implementation for a DomainModel
+	/// </summary>
+	[AttributeUsage( AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+	public sealed class VerbalizationSnippetsProviderAttribute : Attribute
+	{
+		private Type myProviderType;
+		private string myNestedProviderName;
+		/// <summary>
+		/// Associate an IVerbalizationSnippetsProvider implementation with a DomainModel-derived class
+		/// </summary>
+		/// <param name="providerType">A type that implements IVerbalizationSnippetsProvider
+		/// and has a parameterless constructor</param>
+		public VerbalizationSnippetsProviderAttribute(Type providerType)
+		{
+			myProviderType = providerType;
+		}
+		/// <summary>
+		/// Associate an IVerbalizationSnippetsProvider implementation with a DomainModel-derived class
+		/// </summary>
+		/// <param name="nestedTypeName">The name of a nested class in the DomainModel that implements
+		/// the IVerbalizationSnippetsProvider interface.</param>
+		public VerbalizationSnippetsProviderAttribute(string nestedTypeName)
+		{
+			myNestedProviderName = nestedTypeName;
+		}
+		/// <summary>
+		/// Create an instance of the associated snippets provider
+		/// </summary>
+		/// <param name="domainModelType">The type of the associated domain model</param>
+		/// <returns>IVerbalizationSnippetsProvider implementation</returns>
+		public IVerbalizationSnippetsProvider CreateSnippetsProvider(Type domainModelType)
+		{
+			Type createType = myProviderType;
+			if (createType == null)
+			{
+				string[] nestedTypeNames = myNestedProviderName.Split(new char[] { '.', '+' }, StringSplitOptions.RemoveEmptyEntries);
+				int nestedNamesCount = nestedTypeNames.Length;
+				createType = domainModelType;
+				for (int i = 0; i < nestedNamesCount; ++i)
+				{
+					createType = createType.GetNestedType(nestedTypeNames[i], BindingFlags.NonPublic | BindingFlags.Public);
+				}
+			}
+			return (IVerbalizationSnippetsProvider)Activator.CreateInstance(createType, true);
+		}
+	}
+	#endregion // VerbalizationSnippetsProviderAttribute class
+
 	#region VerbalizationSnippetsIdentifier struct
 	/// <summary>
 	/// A unique identifier for verbalization snippets
@@ -727,10 +779,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			List<IVerbalizationSnippetsProvider> snippetProviders = new List<IVerbalizationSnippetsProvider>(domainModels.Count);
 			foreach (DomainModel domainModel in domainModels)
 			{
-				IVerbalizationSnippetsProvider provider = domainModel as IVerbalizationSnippetsProvider;
-				if (provider != null)
+				Type domainModelType = domainModel.GetType();
+				object[] providers = domainModelType.GetCustomAttributes(typeof(VerbalizationSnippetsProviderAttribute), false);
+				if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
 				{
-					snippetProviders.Add(provider);
+					IVerbalizationSnippetsProvider provider = ((VerbalizationSnippetsProviderAttribute)providers[0]).CreateSnippetsProvider(domainModelType);
+					if (provider != null)
+					{
+						snippetProviders.Add(provider);
+					}
 				}
 			}
 			return LoadSnippetsDictionary(snippetProviders, customSnippetsDirectory, customIdentifiers);

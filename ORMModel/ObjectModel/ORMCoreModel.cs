@@ -31,7 +31,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// </summary>
 	/// <param name="element">The element to validate</param>
 	public delegate void ElementValidator(ModelElement element);
-	public partial class ORMCoreModel : IORMModelEventSubscriber, IVerbalizationSnippetsProvider, ISurveyNodeProvider
+	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
+	public partial class ORMCoreModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
 		#region InitializingToolboxItems property
 		private static bool myReflectRulesSuspended;
@@ -191,24 +192,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IORMModelEventSubscriber Implementation
 		#region IVerbalizationSnippetsProvider Implementation
-		/// <summary>
-		/// IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets
-		/// </summary>
-		protected VerbalizationSnippetsData[] ProvideVerbalizationSnippets()
+		private class VerbalizationSnippets : IVerbalizationSnippetsProvider
 		{
-			return new VerbalizationSnippetsData[]
-		{
-            new VerbalizationSnippetsData(
-				typeof(CoreVerbalizationSnippetType),
-                CoreVerbalizationSets.Default,
-                "Core",
-				ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
-				ResourceStrings.CoreVerbalizationSnippetsDefaultDescription)
-		};
-		}
-		VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
-		{
-			return ProvideVerbalizationSnippets();
+			/// <summary>
+			/// IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets
+			/// </summary>
+			protected VerbalizationSnippetsData[] ProvideVerbalizationSnippets()
+			{
+				return new VerbalizationSnippetsData[]
+				{
+					new VerbalizationSnippetsData(
+						typeof(CoreVerbalizationSnippetType),
+						CoreVerbalizationSets.Default,
+						"Core",
+						ResourceStrings.CoreVerbalizationSnippetsTypeDescription,
+						ResourceStrings.CoreVerbalizationSnippetsDefaultDescription)
+				};
+			}
+			VerbalizationSnippetsData[] IVerbalizationSnippetsProvider.ProvideVerbalizationSnippets()
+			{
+				return ProvideVerbalizationSnippets();
+			}
 		}
 		#endregion // IVerbalizationSnippetsProvider Implementation
 		#region ISurveyNodeProvider Members

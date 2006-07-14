@@ -796,10 +796,14 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					foreach (Type metaModelType in ORMDesignerPackage.GetAvailableDomainModels())
 					{
-						IVerbalizationSnippetsProvider provider = Activator.CreateInstance(metaModelType) as IVerbalizationSnippetsProvider;
-						if (provider != null)
+						object[] providers = metaModelType.GetCustomAttributes(typeof(VerbalizationSnippetsProviderAttribute), false);
+						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
 						{
-							yield return provider;
+							IVerbalizationSnippetsProvider provider = ((VerbalizationSnippetsProviderAttribute)providers[0]).CreateSnippetsProvider(metaModelType);
+							if (provider != null)
+							{
+								yield return provider;
+							}
 						}
 					}
 				}

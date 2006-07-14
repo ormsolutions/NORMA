@@ -787,7 +787,11 @@ namespace Neumont.Tools.ORM.Shell
 			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeModel);
 			foreach (ORMExtensionType extension in GetAvailableCustomExtensions())
 			{
-				yield return extension.Type;
+				Type type = extension.Type;
+				if (type != null)
+				{
+					yield return type;
+				}
 			}
 		}
 		/// <summary>
