@@ -1957,6 +1957,63 @@ namespace Neumont.Tools.ORM.Shell
 		private INotifyElementAdded myNotifyAdded;
 		private Dictionary<Guid, PlaceholderElement> myPlaceholderElementMap;
 		private Dictionary<string, IORMCustomSerializedDomainModel> myXmlNamespaceToModelMap;
+
+        #region Member Variables
+        /// <summary>
+        /// Ref Counter for suspending/resuming Modeling Rule Engine
+        /// </summary>
+        private int myRuleSuspendCount;
+
+        /// <summary>
+        /// Current store object. Set in constructor
+        /// </summary>
+        private readonly Store myStore;
+        #endregion // Member Variables
+        #region Constructor
+        /// <summary>
+        /// Create a serializer on the given store
+        /// </summary>
+        /// <param name="store">Store instance</param>
+        public ORMSerializer(Store store)
+        {
+            myStore = store;
+        }
+        #endregion // Constructor
+        #region Rule Suspension
+        /// <summary>
+        /// Block rules on store during serialization/deserialization
+        /// </summary>
+        public bool RulesSuspended
+        {
+            get
+            {
+                return myRuleSuspendCount > 0;
+            }
+            set
+            {
+                if (value)
+                {
+                    // Turn on for first set
+                    if (1 == ++myRuleSuspendCount)
+                    {
+                        myStore.RuleManager.SuspendRuleNotification();
+                    }
+                }
+                else
+                {
+                    // Turn off for balanced call
+                    Debug.Assert(myRuleSuspendCount > 0);
+                    if (0 == --myRuleSuspendCount)
+                    {
+                        myStore.RuleManager.ResumeRuleNotification();
+                    }
+                }
+            }
+        }
+        #endregion // Rule Suspension
+
+
+
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
@@ -2001,6 +2058,8 @@ namespace Neumont.Tools.ORM.Shell
 				myXmlNamespaceToModelMap = namespaceToModelMap;
 				NameTable nameTable = new NameTable();
 				settings.NameTable = nameTable;
+
+
 #if DEBUG
 				// Skip validation when the shift key is down in debug mode
 				if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) == 0)
