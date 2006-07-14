@@ -1250,13 +1250,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId };
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
-			return myIndirectModelErrorOwnerLinkRoles;
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId };
+			}
+			return linkRoles;
 		}
 		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		{
@@ -1460,16 +1467,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ConstraintCollection Implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[]{
-			SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId,
-			SetConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId,
-			ValueConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId};
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
-			return myIndirectModelErrorOwnerLinkRoles;
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[]{
+					SetComparisonConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId,
+					SetConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId,
+					ValueConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId};
+			}
+			return linkRoles;
 		}
 		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		{

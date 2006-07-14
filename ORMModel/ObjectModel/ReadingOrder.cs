@@ -237,13 +237,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRedirectVerbalization Implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasReadingOrder.ReadingOrderDomainRoleId };
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
-			return myIndirectModelErrorOwnerLinkRoles;
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FactTypeHasReadingOrder.ReadingOrderDomainRoleId };
+			}
+			return linkRoles;
 		}
 		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		{

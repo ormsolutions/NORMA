@@ -280,10 +280,30 @@ namespace Neumont.Tools.ORM.Shell
 			if (designer != null)
 			{
 				Diagram diagram = designer.Diagram;
-				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandDeletePage.Replace("&", "")))
+				Store store = diagram.Store;
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandDeletePage.Replace("&", "")))
 				{
-					diagram.Delete();
-					t.Commit();
+					// UNDONE: MSBUG This rule should not be doing anything if the parent is deleted.
+					// Causes diagram deletion to crash VS
+					bool turnedOffResizeRule = false;
+					Type ruleType = typeof(Diagram).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ResizeParentRule");
+					try
+					{
+						if (ruleType != null)
+						{
+							store.RuleManager.DisableRule(ruleType);
+							turnedOffResizeRule = true;
+						}
+						diagram.Delete();
+						t.Commit();
+					}
+					finally
+					{
+						if (turnedOffResizeRule)
+						{
+							store.RuleManager.EnableRule(ruleType);
+						}
+					}
 				}
 			}
 		}

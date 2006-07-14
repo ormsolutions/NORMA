@@ -2127,8 +2127,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles1 = new Guid[] { Objectification.NestingTypeDomainRoleId };
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles2 = new Guid[] { ObjectTypePlaysRole.RolePlayerDomainRoleId };
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles1;
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles2;
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
@@ -2136,13 +2136,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (Objectification != null)
 			{
-				return myIndirectModelErrorOwnerLinkRoles1;
+				// Creating a static readonly guid array is causing static field initialization
+				// ordering issues with the partial classes. Defer initialization.
+				Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles1;
+				if (linkRoles == null)
+				{
+					myIndirectModelErrorOwnerLinkRoles1 = linkRoles = new Guid[] { Objectification.NestingTypeDomainRoleId };
+				}
+				return linkRoles;
 			}
 			else if (IsValueType)
 			{
 				// This may be used as a reference mode on the other side.
 				// Display data type errors on the other end.
-				return myIndirectModelErrorOwnerLinkRoles2;
+				Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles2;
+				if (linkRoles == null)
+				{
+					myIndirectModelErrorOwnerLinkRoles2 = linkRoles = new Guid[] { ObjectTypePlaysRole.RolePlayerDomainRoleId };
+				}
+				return linkRoles;
 			}
 			return null;
 		}

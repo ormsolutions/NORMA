@@ -626,13 +626,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region IHasIndirectModelErrorOwner Implementation
-		private static readonly Guid[] myIndirectModelErrorOwnerLinkRoles = new Guid[] { FactTypeHasRole.RoleDomainRoleId, ConstraintRoleSequenceHasRole.RoleDomainRoleId };
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
 		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		/// </summary>
 		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
-			return myIndirectModelErrorOwnerLinkRoles;
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] {
+					FactTypeHasRole.RoleDomainRoleId,
+					ConstraintRoleSequenceHasRole.RoleDomainRoleId };
+			}
+			return linkRoles;
 		}
 		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
 		{
