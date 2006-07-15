@@ -17,26 +17,26 @@
 	</arg:Copyright>
 	<arg:Model class="OIALMetaModel">
 		<arg:Rule class="OIALModel.ModelHasObjectTypeAddRule"/>
-		<arg:Rule class="OIALModel.ModelHasObjectTypeRemovingRule"/>
+		<arg:Rule class="OIALModel.ModelHasObjectTypeDeletingRule"/>
 		<arg:Rule class="OIALModel.ObjectTypeChangeRule"/>
 		<arg:Rule class="OIALModel.ObjectTypePlaysRoleAddRule"/>
-		<arg:Rule class="OIALModel.ObjectTypePlaysRoleRemovingRule"/>
+		<arg:Rule class="OIALModel.ObjectTypePlaysRoleDeletingRule"/>
 		<arg:Rule class="OIALModel.ModelHasFactTypeAddRule"/>
-		<arg:Rule class="OIALModel.ModelHasFactTypeRemovingRule"/>
+		<arg:Rule class="OIALModel.ModelHasFactTypeDeletingRule"/>
 		<arg:Rule class="OIALModel.FactTypeChangeRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintAddRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintChangeRule"/>
-		<arg:Rule class="OIALModel.ModelHasSetConstraintRemovingRule"/>
+		<arg:Rule class="OIALModel.ModelHasSetConstraintDeletingRule"/>
 		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleAddRule"/>
-		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleRemovingRule"/>
+		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleDeletingRule"/>
 		<arg:Rule class="OIALModel.UniquenessConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.MandatoryConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.RoleBaseChangeRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeAddRule"/>
-		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeRemoveRule"/>
+		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeDeleteRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeAddRule"/>
-		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeRemoveRule"/>
+		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeDeleteRule"/>
 		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleAddRule"/>-->
-		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleRemoveRule"/>-->
+		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleDeleteRule"/>-->
 	</arg:Model>
 </arg:Rules>

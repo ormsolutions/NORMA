@@ -43,9 +43,9 @@
 					<xs:documentation>Write as the primary definition for a link. A link that has attributes or serialized links that reference it must have exactly one primary link element.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="AggregatingLinkElement">
+			<xs:enumeration value="EmbeddingLinkElement">
 				<xs:annotation>
-					<xs:documentation>Write as the primary definition for the link that aggregates the parent element. Allows attributes and links to aggregating relationships.</xs:documentation>
+					<xs:documentation>Write as the primary definition for the link that embeds the parent element. Allows attributes and links to embedding relationships.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="DoubleTaggedElement">

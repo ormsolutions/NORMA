@@ -111,11 +111,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		PrimaryLinkElement = 0x02,
 		/// <summary>
-		/// Used for aggregating links. Write as a child element of the
-		/// aggregated object. Writes the link id. Any properties on the link
+		/// Used for embedding links. Write as a child element of the
+		/// embedded object. Writes the link id. Any properties on the link
 		/// and referencing child elements are written at this location.
 		/// </summary>
-		AggregatingLinkElement = 0x03,
+		EmbeddingLinkElement = 0x03,
 	}
 	/// <summary>
 	/// Write style for property custom serialization.
@@ -1203,7 +1203,7 @@ namespace Neumont.Tools.ORM.Shell
 			bool writeContents = customElement != null &&
 				0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) &&
 				((writeStyle = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeDomainRole, link).WriteStyle) == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement ||
-				(aggregatingLink = writeStyle == ORMCustomSerializedElementWriteStyle.AggregatingLinkElement));
+				(aggregatingLink = writeStyle == ORMCustomSerializedElementWriteStyle.EmbeddingLinkElement));
 
 			if (writeContents)
 			{
@@ -1328,7 +1328,7 @@ namespace Neumont.Tools.ORM.Shell
 				(oppositeIsAggregate &&
 				null != (testChildInfo = childElement as IORMCustomSerializedElement) &&
 				0 != (testChildInfo.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.EmbeddingLinkInfo) &&
-				testChildInfo.GetCustomSerializedLinkInfo(oppositeRoleInfo, null).WriteStyle == ORMCustomSerializedElementWriteStyle.AggregatingLinkElement))) //write link
+				testChildInfo.GetCustomSerializedLinkInfo(oppositeRoleInfo, null).WriteStyle == ORMCustomSerializedElementWriteStyle.EmbeddingLinkElement))) //write link
 			{
 				ReadOnlyCollection<ElementLink> links = rolePlayedInfo.GetElementLinks<ElementLink>(childElement);
 				int linksCount = links.Count;

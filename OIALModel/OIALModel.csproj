@@ -10,20 +10,20 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Neumont.Tools.ORM.OIALModel</RootNamespace>
     <AssemblyName>Neumont.Tools.ORM.OIALModel</AssemblyName>
-    <StartupObject>
-    </StartupObject>
+    <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <NoWarn>1607</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,30 +31,29 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <NoWarn>1607</NoWarn>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OIALModel.dsldm">
-      <SubType>
-      </SubType>
-    </None>
-    <EmbeddedResource Include="OIALModel.xsd">
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
       <SubType>Designer</SubType>
+      <DesignTime>True</DesignTime>
     </EmbeddedResource>
-    <EmbeddedResource Include="OIALMetaModel.dsldm.resx">
-      <DependentUpon>OIALMetaModel.dsldm.cs</DependentUpon>
+    <EmbeddedResource Include="OIALModel.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -62,11 +61,24 @@
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <None Include="Plix.xml" />
-    <None Include="OIALMetaModel.dsldm.dsldmt">
+    <None Include="GeneratedCode\DomainClasses.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OIALMetaModel.dsldm.cs</LastGenOutput>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
     </None>
+    <None Include="GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+    </None>
+    <None Include="OIALModel.dsl" />
+    <None Include="Plix.xml" />
     <Content Include="OIALModel.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>OIALModel.AttachRules.cs</LastGenOutput>
@@ -87,14 +99,23 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+    <Compile Include="GeneratedCode\DomainClasses.cs">
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainModel.cs">
+      <DependentUpon>DomainModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainRelationships.cs">
+      <DependentUpon>DomainRelationships.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="OIALModel.cs" />
     <Compile Include="OIALModel.DeserializationFixupListeners.cs" />
-    <Compile Include="OIALMetaModel.dsldm.cs">
-      <DependentUpon>OIALMetaModel.dsldm.dsldmt</DependentUpon>
-      <SubType>Code</SubType>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OIALModel.AttachRules.cs">
       <AutoGen>True</AutoGen>
@@ -105,19 +126,11 @@
       <DependentUpon>OIALModel.SerializationExtensions.xml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.XML" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)" "$(DevEnvDir)..\..\"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)install.bat" "bin\$(ConfigurationName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

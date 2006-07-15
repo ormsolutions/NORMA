@@ -35,25 +35,25 @@ namespace Neumont.Tools.ORM.OIALModel
 					// Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(OIALModel).GetNestedType("ModelHasObjectTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("ModelHasObjectTypeRemovingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("ModelHasObjectTypeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ObjectTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ObjectTypePlaysRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("ObjectTypePlaysRoleRemovingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("ObjectTypePlaysRoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasFactTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("ModelHasFactTypeRemovingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("ModelHasFactTypeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("FactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("ModelHasSetConstraintRemovingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("ModelHasSetConstraintDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ConstraintRoleSequenceHasRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("ConstraintRoleSequenceHasRoleRemovingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("ConstraintRoleSequenceHasRoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("UniquenessConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("MandatoryConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("RoleBaseChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("OIALModelHasConceptTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("OIALModelHasConceptTypeRemoveRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("OIALModelHasConceptTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConceptTypeAbsorbedConceptTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConceptTypeAbsorbedConceptTypeRemoveRule", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConceptTypeAbsorbedConceptTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic)};
 					OIALMetaModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}

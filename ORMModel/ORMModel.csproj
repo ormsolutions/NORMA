@@ -310,9 +310,6 @@
     <Compile Include="Shell\IORMSelectionContainer.cs" />
     <Compile Include="Shell\ORMReadingEditor.cs" />
     <Compile Include="Shell\ORMSamplePopulationToolWindow.cs" />
-    <Compile Include="Shell\ORMSerializer.2.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Shell\ORMSerializer.cs" />
     <Compile Include="Shell\ORMDesignerSettings.cs" />
     <Compile Include="Shell\ORMToolWindow.cs" />

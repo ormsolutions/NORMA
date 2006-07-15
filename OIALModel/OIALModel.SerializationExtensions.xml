@@ -29,46 +29,46 @@
 	<se:Element Class="OIALModel" Name="Model" Override="false" SortChildElements="true">
 		<se:Link Name="ORMModel" RelationshipName="OIALModelHasORMModel" RoleName="ORMModel"/>
 		<se:ChildElement Name="ChildSequenceConstraints">
-			<se:Link RelationshipName="OIALModelHasChildSequenceConstraint" RoleName="ChildSequenceConstraintCollection"/>
+			<se:Link RelationshipName="OIALModelHasChildSequenceConstraint" RoleName="ChildSequenceConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="InformationTypeFormats">
-			<se:Link RelationshipName="OIALHasInformationTypeFormat" RoleName="InformationTypeFormatCollection"/>
+			<se:Link RelationshipName="OIALHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
 		</se:ChildElement>
 		<se:ChildElement Name="ConceptTypes">
-			<se:Link RelationshipName="OIALModelHasConceptType" RoleName="ConceptTypeCollection"/>
+			<se:Link RelationshipName="OIALModelHasConceptType" RoleName="ConceptType"/>
 		</se:ChildElement>
 	</se:Element>
 	<!-- ChildSequenceConstraints and ChildSequences -->
 	<se:Element Class="ChildSequenceConstraint">
 		<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="ConceptTypeHasChild" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="ChildSequence">
-			<se:Link RelationshipName="SingleChildSequenceConstraintHasMinTwoChildrenChildSequence" RoleName="ChildSequence" />
+			<se:Link RelationshipName="SingleChildSequenceConstraintHasMinTwoChildrenChildSequence" RoleName="ChildSequence"/>
 		</se:ChildElement>
 	</se:Element>
 	<se:Element Class="ChildSequence">
-		<se:Link Name="ConceptTypeHasChild" RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ConceptTypeHasChildCollection" />
+		<se:Link Name="ConceptTypeHasChild" RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ConceptTypeHasChild"/>
 	</se:Element>
 	<!-- InformationTypeFormats -->
 	<se:Element Class="InformationTypeFormat">
-		<se:Link RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationType" WriteStyle="NotWritten" />
-		<se:Link Name="ValueType" RelationshipName="InformationTypeFormatHasObjectType" RoleName="ValueType" />
+		<se:Link RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationType" WriteStyle="NotWritten"/>
+		<se:Link Name="ValueType" RelationshipName="InformationTypeFormatHasObjectType" RoleName="ValueType"/>
 	</se:Element>
 	<!-- Concept Types -->
 	<se:Element Class="ConceptType" SortChildElements="true">
-		<se:Link Name="ObjectType" RelationshipName="ConceptTypeHasObjectType" RoleName="ObjectType" />
+		<se:Link Name="ObjectType" RelationshipName="ConceptTypeHasObjectType" RoleName="ObjectType"/>
 		<se:ChildElement Name="ContainedTypes" SortChildElements="false">
-			<se:Link RelationshipName="ConceptTypeHasInformationType" RoleName="InformationTypeCollection"/>
-			<se:Link RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbedConceptTypeCollection"/>
-			<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptTypeCollection"/>
+			<se:Link RelationshipName="ConceptTypeHasInformationType" RoleName="InformationType"/>
+			<se:Link RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbedConceptType"/>
+			<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptType"/>
 		</se:ChildElement>
-		<se:Link Name="ConceptTypeLink" RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbingConceptType" WriteStyle="AggregatingLinkElement"/>
-		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptTypeCollection" Name="ReferencedConceptType" WriteStyle="PrimaryLinkElement"  />
+		<se:Link Name="ConceptTypeLink" RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbingConceptType" WriteStyle="EmbeddingLinkElement"/>
+		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptType" Name="ReferencedConceptType" WriteStyle="PrimaryLinkElement" />
 		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencingConceptType" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- InformationTypes -->
 	<se:Element Class="InformationType">
-		<se:Link Name="InformationTypeFormat" RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationTypeFormat" />
-		<se:Link Name="InformationTypeLink" RelationshipName="ConceptTypeHasInformationType" RoleName="ConceptType" WriteStyle="AggregatingLinkElement"/>
+		<se:Link Name="InformationTypeFormat" RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
+		<se:Link Name="InformationTypeLink" RelationshipName="ConceptTypeHasInformationType" RoleName="ConceptType" WriteStyle="EmbeddingLinkElement"/>
 	</se:Element>
 	<!-- ConceptTypeHasChild -->
 	<se:Element Class="ConceptTypeHasChild">
@@ -86,12 +86,12 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:ChildElement Name="SingleChildConstraints">
-			<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="SingleChildConstraintCollection"/>
+			<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="SingleChildConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="PathRoles">
-			<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRoleCollection"/>
+			<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRole"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ChildSequenceCollection" WriteStyle="NotWritten" />
-		<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRoleCollection" Name="Role" Prefix="orm"/>
+		<se:Link RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ChildSequence" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRole" Name="Role" Prefix="orm"/>
 	</se:Element>
 </se:CustomSerializedElements>

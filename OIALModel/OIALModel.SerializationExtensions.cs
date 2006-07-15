@@ -170,9 +170,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[3];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId);
-				ret[1] = new ORMCustomSerializedChildElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId);
-				ret[2] = new ORMCustomSerializedChildElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
+				ret[1] = new ORMCustomSerializedChildElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+				ret[2] = new ORMCustomSerializedChildElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasConceptType.ConceptTypeDomainRoleId);
 				OIALModel.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -236,11 +236,11 @@ namespace Neumont.Tools.ORM.OIALModel
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasORMModel.ORMModelDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(OIALModelHasConceptType.ConceptTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
@@ -295,11 +295,11 @@ namespace Neumont.Tools.ORM.OIALModel
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(OIALModelHasORMModel.ORMModelDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ORMModel", match);
-				match.InitializeRoles(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollectionDomainRoleId);
+				match.InitializeRoles(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ChildSequenceConstraints||", match);
-				match.InitializeRoles(OIALHasInformationTypeFormat.InformationTypeFormatCollectionDomainRoleId);
+				match.InitializeRoles(OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|InformationTypeFormats||", match);
-				match.InitializeRoles(OIALModelHasConceptType.ConceptTypeCollectionDomainRoleId);
+				match.InitializeRoles(OIALModelHasConceptType.ConceptTypeDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypes||", match);
 				OIALModel.myChildElementMappings = childElementMappings;
 			}
@@ -547,7 +547,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildCollectionDomainRoleId)
+			if (roleId == ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ConceptTypeHasChild", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -585,7 +585,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildCollectionDomainRoleId);
+				match.InitializeRoles(ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypeHasChild", match);
 				ChildSequence.myChildElementMappings = childElementMappings;
 			}
@@ -774,7 +774,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | (ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles | ORMCustomSerializedElementSupportedOperations.AggregatingLinkInfo));
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles);
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -794,7 +794,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[1];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ContainedTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId, ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ContainedTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasInformationType.InformationTypeDomainRoleId, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeDomainRoleId, ConceptTypeRef.ReferencedConceptTypeDomainRoleId);
 				ConceptType.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -843,9 +843,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			if (roleId == ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId)
 			{
-				return new ORMCustomSerializedElementInfo(null, "ConceptTypeLink", null, ORMCustomSerializedElementWriteStyle.AggregatingLinkElement, null);
+				return new ORMCustomSerializedElementInfo(null, "ConceptTypeLink", null, ORMCustomSerializedElementWriteStyle.EmbeddingLinkElement, null);
 			}
-			if (roleId == ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId)
+			if (roleId == ConceptTypeRef.ReferencedConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ReferencedConceptType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
@@ -870,11 +870,11 @@ namespace Neumont.Tools.ORM.OIALModel
 				DomainRoleInfo domainRole;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasObjectType.ObjectTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasInformationType.InformationTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencedConceptTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
@@ -935,9 +935,9 @@ namespace Neumont.Tools.ORM.OIALModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ObjectType", match);
 				match.InitializeRoles(ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypeLink", match);
-				match.InitializeRoles(ConceptTypeRef.ReferencedConceptTypeCollectionDomainRoleId);
+				match.InitializeRoles(ConceptTypeRef.ReferencedConceptTypeDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ContainedTypes|http://schemas.neumont.edu/ORM/2006-01/OIALModel|ReferencedConceptType", match);
-				match.InitializeRoles(ConceptTypeHasInformationType.InformationTypeCollectionDomainRoleId, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeCollectionDomainRoleId);
+				match.InitializeRoles(ConceptTypeHasInformationType.InformationTypeDomainRoleId, ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|ContainedTypes||", match);
 				ConceptType.myChildElementMappings = childElementMappings;
 			}
@@ -983,7 +983,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.AggregatingLinkInfo;
+				return ORMCustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1044,7 +1044,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			if (roleId == ConceptTypeHasInformationType.ConceptTypeDomainRoleId)
 			{
-				return new ORMCustomSerializedElementInfo(null, "InformationTypeLink", null, ORMCustomSerializedElementWriteStyle.AggregatingLinkElement, null);
+				return new ORMCustomSerializedElementInfo(null, "InformationTypeLink", null, ORMCustomSerializedElementWriteStyle.EmbeddingLinkElement, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
@@ -1148,8 +1148,8 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[2];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "SingleChildConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, ChildHasSingleChildConstraint.SingleChildConstraintCollectionDomainRoleId);
-				ret[1] = new ORMCustomSerializedChildElementInfo(null, "PathRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasChildHasPathRole.PathRoleCollectionDomainRoleId);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "SingleChildConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId);
+				ret[1] = new ORMCustomSerializedChildElementInfo(null, "PathRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, ConceptTypeHasChildHasPathRole.PathRoleDomainRoleId);
 				ConceptTypeHasChild.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -1200,11 +1200,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ChildSequenceHasConceptTypeHasChild.ChildSequenceCollectionDomainRoleId)
+			if (roleId == ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
-			if (roleId == ConceptTypeHasChildHasPathRole.PathRoleCollectionDomainRoleId)
+			if (roleId == ConceptTypeHasChildHasPathRole.PathRoleDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo("orm", "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -1242,9 +1242,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ConceptTypeHasChildHasPathRole.PathRoleCollectionDomainRoleId);
+				match.InitializeRoles(ConceptTypeHasChildHasPathRole.PathRoleDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|PathRoles|http://schemas.neumont.edu/ORM/2006-01/OIALModel|Role", match);
-				match.InitializeRoles(ChildHasSingleChildConstraint.SingleChildConstraintCollectionDomainRoleId);
+				match.InitializeRoles(ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel|SingleChildConstraints||", match);
 				ConceptTypeHasChild.myChildElementMappings = childElementMappings;
 			}

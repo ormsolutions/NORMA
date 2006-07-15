@@ -71,13 +71,10 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(ORMModel element, Store store, INotifyElementAdded notifyAdded)
 			{
-				OIALModel oil = (OIALModel)element.GetCounterpartRolePlayer(
-					OIALModelHasORMModel.ORMModelMetaRoleGuid,
-					OIALModelHasORMModel.OIALModelMetaRoleGuid,
-					false);
+				OIALModel oil = OIALModelHasORMModel.GetOIALModel(element);
 				if (oil == null)
 				{
-					oil = OIALModel.CreateOIALModel(store);
+					oil = new OIALModel(store);
 					oil.ORMModel = element;
 					notifyAdded.ElementAdded(oil, true);
 				}

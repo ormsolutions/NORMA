@@ -2305,7 +2305,7 @@
 			</xsl:if>
 			<xsl:if test="$aggregatingLinks">
 				<xsl:element name="SupportedOperation">
-					<xsl:text>AggregatingLinkInfo</xsl:text>
+					<xsl:text>EmbeddingLinkInfo</xsl:text>
 				</xsl:element>
 			</xsl:if>
 		</xsl:variable>
