@@ -86,8 +86,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			System.Diagnostics.Debug.Assert(getVGEdgeInternal != null);
 			return (getVGEdgeInternal != null) ? getVGEdgeInternal(this) : null;
 		}
+		/// <summary>
+		/// Specify CenterToCenter routing style so we can
+		/// locate our objects in DoFoldToShape
+		/// </summary>
+		protected override LineRoutingStyle DefaultRoutingStyle
+		{
+			get
+			{
+				// UNDONE: MSBUG We really want VGRoutingStyle.VGRouteCenterToCenter, but can't do it properly without MS help
+				// Do straight for now, the default is RightAngle
+				return LineRoutingStyle.Straight;
+			}
+		}
 		#endregion // GetVGEdge method
-
 		#region Customize appearance
 		/// <summary>
 		/// Selecting links gets in the way of selecting roleboxes, etc.

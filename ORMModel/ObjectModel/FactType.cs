@@ -1200,6 +1200,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal ?? String.Empty;
 			}
 		}
+		/// <summary>
+		/// Override to use our own name handling
+		/// </summary>
+		protected override void MergeConfigure(ElementGroup elementGroup)
+		{
+			// Do nothing here. The base calls SetUniqueName, but we don't enforce
+			// unique names on the generated FactType name.
+		}
 		#endregion // Automatic Name Generation
 		#region Model Validation Rules
 		/// <summary>

@@ -1259,7 +1259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validator callback for DataTypeNoteSpecifiedError
 		/// </summary>
-		private static void DelayValidateDataTypeNoteSpecifiedError(ModelElement element)
+		private static void DelayValidateDataTypeNotSpecifiedError(ModelElement element)
 		{
 			(element as ObjectType).ValidateDataTypeNotSpecifiedError(null);
 		}
@@ -1290,6 +1290,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						notifyAdded.ElementAdded(error, true);
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// A class to add unspecified data type errors
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))]
+		private sealed class UnspecifiedDataTypeAddRule : AddRule
+		{
+			/// <summary>
+			/// Test if an added data type relationship points to
+			/// an unspecified type
+			/// </summary>
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ORMCoreModel.DelayValidateElement((e.ModelElement as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
+			}
+		}
+		[RuleOn(typeof(ValueTypeHasDataType))]
+		private sealed class UnspecifiedDataRoleRolePlayerChanged : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				// If the data type changed, then validate the object type.
+				// If the object type changed, then validate both object types.
+				if (changedRoleGuid == ValueTypeHasDataType.DataTypeDomainRoleId)
+				{
+					ORMCoreModel.DelayValidateElement((e.ElementLink as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
+				}
+				else
+				{
+					ORMCoreModel.DelayValidateElement(e.NewRolePlayer, DelayValidateDataTypeNotSpecifiedError);
+					ORMCoreModel.DelayValidateElement(e.OldRolePlayer, DelayValidateDataTypeNotSpecifiedError);
 				}
 			}
 		}
@@ -2115,7 +2149,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateDataTypeNoteSpecifiedError);
+			ORMCoreModel.DelayValidateElement(this, DelayValidateDataTypeNotSpecifiedError);
 			ORMCoreModel.DelayValidateElement(this, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			ORMCoreModel.DelayValidateElement(this, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 			ORMCoreModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);

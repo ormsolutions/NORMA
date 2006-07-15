@@ -106,6 +106,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Name;
 			}
 		}
+		/// <summary>
+		/// Override to use our own name handling
+		/// </summary>
+		protected override void MergeConfigure(ElementGroup elementGroup)
+		{
+			// UNDONE: Consider providing an ElementNameProvider tied into the
+			// appropriate named element dictionary.
+			// Do nothing here. The base calls SetUniqueName, but we want
+			// all unique name handling to go through our NamedElementDictionary
+		}
 		#endregion // Base overrides
 	}
 	#endregion // ORMNamedElement

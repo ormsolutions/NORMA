@@ -268,31 +268,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region DataTypeNotSpecified Error
 	public partial class DataTypeNotSpecifiedError : IRepresentModelElements
 	{
-		/// <summary>
-		/// A class to add unspecified data type errors
-		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))]
-		private sealed class UnspecifiedTypeAddedRule : AddRule
-		{
-			/// <summary>
-			/// Test if an added data type relationship points to
-			/// an unspecified type
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				UnspecifiedDataType unspecifiedType = link.DataType as UnspecifiedDataType;
-				if (unspecifiedType != null)
-				{
-					DataTypeNotSpecifiedError error = new DataTypeNotSpecifiedError(link.Store);
-					link.DataTypeNotSpecifiedError = error;
-					error.Model = unspecifiedType.Model;
-					error.GenerateErrorText();
-				}
-			}
-		}
-		
 		#region Accessor Properties
 		/// <summary>
 		/// The value type associated with this error
