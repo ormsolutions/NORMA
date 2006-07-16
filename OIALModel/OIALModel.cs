@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Modeling.Diagnostics;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Framework;
 using System.Globalization;
+using System.Collections;
 #endregion // Using Directives
 
 namespace Neumont.Tools.ORM.OIALModel
@@ -454,7 +455,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType objectType = objectRole.RolePlayer;
-				ORMCoreModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				ORMModel model = objectType.Model;
+				if (model != null)
+				{
+					ORMCoreModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				}
 			}
 		}
 		/// <summary>
@@ -488,7 +493,12 @@ namespace Neumont.Tools.ORM.OIALModel
 				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
 				RoleBase rolebase = constraintSequence.Role;
 				FactType factType = rolebase.FactType;
-				ORMCoreModel.DelayValidateElement(factType.Model, DelayValidateModel);
+				ORMModel model = factType.Model;
+				if (model != null)
+				{
+					ORMCoreModel.DelayValidateElement(model, DelayValidateModel);
+				}
+
 			}
 		}
 		/// <summary>
@@ -695,7 +705,6 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	#endregion // OIALModel Rules and Validation
 	#region Live OIAL Implementation
-	#region OIALModel Algorithms
 	public partial class OIALModel
 	{
 		#region Core OIAL Implementation
@@ -768,22 +777,41 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="conceptTypes">A collection of <see cref="ConceptType"/> objects whose
 		/// links are of interest.</param>
 		/// <param name="conceptTypeCount">The number of <see cref="ConceptType"/>s in the collection</param>
-		private void ViewElementLinks(Store store, ConceptTypeMoveableCollection conceptTypes, int conceptTypeCount)
+		private void ViewElementLinks(Store store, LinkedElementCollection<ConceptType> conceptTypes, int conceptTypeCount)
 		{
 			// UNDONE: To be able to view ElementLinks in the debugger window, we have to add the
 			// ElementLinks of each ConceptType to a ModelElement array. Then we use an overload
 			// of Debug.Assert() to view this information. The Search.FindTreesInForest() does the
 			// same thing for the ModelElements (not ElementLinks) of the store.
 			
-			ArrayList elementLinkList = new ArrayList();
+			ArrayList modelElementList = new ArrayList();
 			for (int i = 0; i < conceptTypeCount; ++i)
 			{
-				elementLinkList.AddRange(conceptTypes[i].GetElementLinks());
+				modelElementList.AddRange(GetConceptTypeElementLinks(conceptTypes[i]));
+			}	
+			// Get the existing information, like ORMModel, ORMDiagram, and OIALModel elements.
+			modelElementList.AddRange(Search.FindTreesInForest(store));
+			ModelElement[] modelElementArray = new ModelElement[modelElementList.Count];
+			modelElementList.CopyTo(modelElementArray);
+			Debug.Assert(store.DefaultPartition, modelElementArray);
+		}
+		/// <summary>
+		/// Gets the <see cref="ElementLink"/>s of the <see cref="ConceptType"/> passed to it as well
+		/// as the links of all its absorbed <see cref="ConceptType"/>s.
+		/// </summary>
+		/// <param name="conceptType">The <see cref="ConceptType"/> whose element links and children element links are of interest.</param>
+		/// <returns>A list of <see cref="ElementLink"/>s.</returns>
+		private IList GetConceptTypeElementLinks(ConceptType conceptType)
+		{
+			ArrayList elementLinkList = new ArrayList();
+			elementLinkList.AddRange(conceptType.GetElementLinks());
+			ConceptTypeMoveableCollection absorbedConceptTypes = conceptType.AbsorbedConceptTypeCollection;
+			int absorbedConceptTypesCount = absorbedConceptTypes.Count;
+			for (int i = 0; i < absorbedConceptTypesCount; ++i)
+			{
+				elementLinkList.AddRange(GetConceptTypeElementLinks(absorbedConceptTypes[i]));
 			}
-			elementLinkList.AddRange(Search.FindTreesInForest(store));
-			ModelElement[] elementLinkArray = new ModelElement[elementLinkList.Count];
-			elementLinkList.CopyTo(elementLinkArray);
-			Debug.Assert(store.DefaultPartition, elementLinkArray);
+			return elementLinkList;
 		}
 #endif // DEBUG && VIEW_ELEMENT_LINKS
 		#endregion // Initializers and Debugging
@@ -912,10 +940,6 @@ namespace Neumont.Tools.ORM.OIALModel
 						}
 						myAbsorbedFactTypes.Add(factType.Id, new AbsorbedFactType(absorberGuid, type));
 					}
-					//else if (factType.SetConstraintCollection.Count == 0)
-					//{
-					//    stopProcessing = true;
-					//}
 				}
 			}
 		}
@@ -1120,11 +1144,12 @@ namespace Neumont.Tools.ORM.OIALModel
 
 			// We loop through the dictionary of absorbed object types to look for any more concept types that will be children
 			// of the current concept type
+			IElementDirectory elementDirectory = store.ElementDirectory;
 			foreach (KeyValuePair<Guid, Guid> absorbedObjectTypeGuidPair in myAbsorbedObjectTypes)
 			{
 				if (absorbedObjectTypeGuidPair.Value.Equals(objectGuid))
 				{
-					ConceptTypes(store, store.ElementDirectory.GetElement(absorbedObjectTypeGuidPair.Key) as ObjectType, conceptType);
+					ConceptTypes(store, elementDirectory.GetElement(absorbedObjectTypeGuidPair.Key) as ObjectType, conceptType);
 				}
 			}
 			// Either add the concept type to the root (OIALModel) or to another ConceptType
@@ -1215,7 +1240,6 @@ namespace Neumont.Tools.ORM.OIALModel
 						AbsorbedFactType absorbedFactType;
 						myAbsorbedFactTypes.TryGetValue(factType.Id, out absorbedFactType);
 						Guid id = absorbedFactType.AbsorberId;
-						// if (id == objectType.Id) no longer accounted for to dismiss nested concept types
 						if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null)
 						{
 							factList.Add(factType);
@@ -1313,15 +1337,8 @@ namespace Neumont.Tools.ORM.OIALModel
 									break;
 							}
 						}
-						foreach (SingleChildConstraint singleChildConstraint in constraints)
-						{
-							conceptTypeRef.SingleChildConstraintCollection.Add(singleChildConstraint);
-						}
+						conceptTypeRef.SingleChildConstraintCollection.AddRange(constraints);
 					}
-				}
-				else
-				{
-					continue;
 				}
 			}
 		}
@@ -1356,6 +1373,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			// We will most likely add on to the baseName parameter passed to this method.
 			string newBaseName = null;
 			ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
+			Guid oppositeRolePlayerId = oppositeRolePlayer.Id;
 			// We have found the value type which corresponds to this information type, so we will create the information type
 			// and add our Roles (Path Roles) to the ElementLink created (ConceptTypeHasInformationType).
 			if (oppositeRolePlayer.IsValueType)
@@ -1394,6 +1412,33 @@ namespace Neumont.Tools.ORM.OIALModel
 					conceptTypeInformationType.SingleChildConstraintCollection.Add(singleChildConstraint);
 				}
 			}
+			else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
+			{
+				ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
+				conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
+				ReadOnlyCollection<ConceptTypeRef> conceptTypeRefs = ConceptTypeRef.GetLinksToReferencingConceptType(conceptType);
+				int count = conceptTypeRefs.Count;
+				ConceptTypeRef conceptTypeRef = conceptTypeRefs[count - 1] as ConceptTypeRef;
+				conceptTypeRef.PathRoleCollection.Add(oppositeRole);
+				conceptTypeRef.OppositeName = referencedConceptType.ObjectType.Name;
+				conceptTypeRef.Mandatory = mandatory;
+				//if (thisRole.IsMandatory)
+				//{
+				//    switch (thisRole.MandatoryConstraintModality)
+				//    {
+				//        case ConstraintModality.Alethic:
+				//            conceptTypeRef.Mandatory = MandatoryConstraintModality.Alethic;
+				//            break;
+				//        case ConstraintModality.Deontic:
+				//            conceptTypeRef.Mandatory = MandatoryConstraintModality.Deontic;
+				//            break;
+				//    }
+				//}
+				foreach (SingleChildConstraint singleChildConstraint in constraints)
+				{
+					conceptTypeRef.SingleChildConstraintCollection.Add(singleChildConstraint);
+				}
+			}
 			else
 			{
 				pathNodes.AddLast(oppositeRole);
@@ -1413,7 +1458,9 @@ namespace Neumont.Tools.ORM.OIALModel
 					{
 						UniquenessConstraint uConstraint = roleSequenceConstraints[j] as UniquenessConstraint;
 
-						if (uConstraint != null && uConstraint.IsPreferred)
+						// We cannot be sure that constraints that we receive span only one role,
+						// so we must check for this.
+						if (uConstraint != null && uConstraint.IsPreferred && ((uConstraint.RoleCollection.Count == 1 && uConstraint.IsInternal) || !uConstraint.IsInternal))
 						{
 							if (isFirst)
 							{
@@ -1471,23 +1518,34 @@ namespace Neumont.Tools.ORM.OIALModel
 				// Checking the role collection count is not equal to zero ensures that we have only ExternalUniquenessConstraints
 				if (!uConstraint.IsInternal && roleCollection.Count != 1)
 				{
-					ChildSequenceUniquenessConstraint childSequenceUniquenessConstraint = new ChildSequenceUniquenessConstraint(store,
-						new PropertyAssignment(ChildSequenceUniquenessConstraint.NameDomainPropertyId, uConstraint.Name),
-						new PropertyAssignment(ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
-						new PropertyAssignment(ChildSequenceUniquenessConstraint.ModalityDomainPropertyId, uConstraint.Modality));
 					MinTwoChildrenChildSequence minTwoChildrenChildSequence = new MinTwoChildrenChildSequence(store);
 					foreach (Role role in roleCollection)
 					{
 						// Converting to common base for the null coalescing operator to work.
 						RoleBase thisRole = role.Proxy as RoleBase ?? role;
+						if (thisRole is RoleProxy)
+						{
+							thisRole = thisRole.Role;
+						}
 						ReadOnlyCollection<ConceptTypeHasChildHasPathRole> roleConceptTypeHasChildren = ConceptTypeHasChildHasPathRole.GetLinksToConceptTypeHasChild(thisRole);
 						foreach (ConceptTypeHasChildHasPathRole conceptTypeHasChildHasPathRole in roleConceptTypeHasChildren)
 						{
 							minTwoChildrenChildSequence.ConceptTypeHasChildCollection.Add(conceptTypeHasChildHasPathRole.ConceptTypeHasChild);
 						}
 					}
-					childSequenceUniquenessConstraint.ChildSequence = minTwoChildrenChildSequence;
-					childSequenceUniquenessConstraint.OIALModel = this;
+					if (minTwoChildrenChildSequence.ConceptTypeHasChildCollection.Count != 0)
+					{
+						ChildSequenceUniquenessConstraint childSequenceUniquenessConstraint = new ChildSequenceUniquenessConstraint(store,
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.NameDomainPropertyId, uConstraint.Name),
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.ModalityDomainPropertyId, uConstraint.Modality));
+						childSequenceUniquenessConstraint.ChildSequence = minTwoChildrenChildSequence;
+						childSequenceUniquenessConstraint.OIALModel = this;
+					}
+					else
+					{
+						minTwoChildrenChildSequence.Delete();
+					}
 				}
 			}
 		}
@@ -1859,6 +1917,5 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 		#endregion // Peripheral OIAL Implementation
 	}
-	#endregion // OIALModel Algorithms
 	#endregion // Live OIAL Implementation
 }

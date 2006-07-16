@@ -29,12 +29,40 @@
 	<xs:complexType name="ModelType">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="ORMModel" type="RefType" />
+			<xs:element minOccurs="0" name="ChildSequenceConstraints" type="ChildSequenceConstraintsType" />
 			<xs:element minOccurs="0" name="InformationTypeFormats" type="InformationTypeFormatsType" />
 			<xs:element minOccurs="0" name="ConceptTypes" type="ConceptTypesType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
 
+	<xs:complexType name="ChildSequenceConstraintsType">
+		<!-- TODO: Add more constraint types here once we have accounted for them in the Live OIAL model. -->
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="ChildSequenceUniquenessConstraint" type="ChildSequenceUniquenessConstraintType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ChildSequenceUniquenessConstraintType">
+		<xs:sequence>
+			<xs:element name="ChildSequence" type="ChildSequenceType" />
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_IsPreferred_Group" />
+	</xs:complexType>
+
+	<xs:complexType name="ChildSequenceType">
+		<xs:sequence>
+			<xs:element name="MinTwoChildrenChildSequence" type="MinTwoChildrenChildSequenceType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MinTwoChildrenChildSequenceType">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ConceptTypeHasChild" type="RefType" />
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_Group" />
+	</xs:complexType>
+	
 	<xs:complexType name="InformationTypeFormatsType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="InformationTypeFormat" type="InformationTypeFormatType" />
@@ -116,8 +144,7 @@
 	</xs:complexType>
 
 	<xs:complexType name="SingleChildUniquenessConstraintType">
-		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="IsPreferred" type="xs:boolean" />
+		<xs:attributeGroup ref="Id_Name_IsPreferred_Group" />
 	</xs:complexType>
 
 	<xs:simpleType name="ModalityEnum">
@@ -134,6 +161,11 @@
 	<xs:attributeGroup name="Id_Name_Group">
 		<xs:attribute name="id" type="xs:ID" />
 		<xs:attribute name="Name" type="xs:string" />
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="Id_Name_IsPreferred_Group">
+		<xs:attributeGroup ref="Id_Name_Group" />
+		<xs:attribute name="IsPreferred" type="xs:boolean" />
 	</xs:attributeGroup>
 
 </xs:schema>
