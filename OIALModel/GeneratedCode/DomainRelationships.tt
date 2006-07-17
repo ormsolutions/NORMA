@@ -14,6 +14,6 @@
 \**************************************************************************/
 #endregion
 <#@ include file="Dsl\DomainRelationshipCodeGenerator.tt" #>
-<#@ Dsl processor="DslImportDirectiveProcessor"  requires="fileName='..\..\ORMModel\ObjectModel\ORMCore.dsl'" #>
+<#@ Dsl processor="DslImportDirectiveProcessor" requires="fileName='..\..\ORMModel\ObjectModel\ORMCore.dsl'" provides="dslLibrary='ORMCoreDslLibrary'" #>
 <#@ Dsl processor="DslDirectiveProcessor" requires="fileName='..\OIALModel.dsl'" #>
 <#@ Dsl processor="DslImportEndDirectiveProcessor" #>

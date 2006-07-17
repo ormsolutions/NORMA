@@ -46,15 +46,7 @@ namespace Neumont.Tools.ORM.Framework
 			base.GenerateTransformCode("Dsl", new System.Text.StringBuilder(), languageProvider, requiresArguments, providesArguments);
 		}
 
-		protected override void InitializeProvidesDictionary(string directiveName, System.Collections.Generic.IDictionary<string, string> providesDictionary)
-		{
-			if (string.Equals(directiveName, "Dsl", StringComparison.InvariantCultureIgnoreCase))
-			{
-				providesDictionary["DslLibrary"] = "ImportedDslLibrary";
-			}
-		}
-
-		protected override void GeneratePreInitializationCode(string directiveName, System.Text.StringBuilder codeBuffer, System.CodeDom.Compiler.CodeDomProvider languageProvider, System.Collections.Generic.IDictionary<string, string> requiresArguments, System.Collections.Generic.IDictionary<string, string> providesArguments)
+		protected override void GeneratePreInitializationCode(string directiveName, System.Text.StringBuilder codeBuffer, System.CodeDom.Compiler.CodeDomProvider languageProvider, IDictionary<string, string> requiresArguments, IDictionary<string, string> providesArguments)
 		{
 			// Do nothing, and don't call the base implementation.
 			// This prevents the calls to AddDomainModel from being generated.
@@ -62,7 +54,7 @@ namespace Neumont.Tools.ORM.Framework
 
 		public override string GetPostInitializationCodeForProcessingRun()
 		{
-			return "using (Microsoft.VisualStudio.Modeling.Transaction outterDslImportTransaction = this.Store.TransactionManager.BeginTransaction(\"Load Files\", true)) { " + base.GetPostInitializationCodeForProcessingRun();
+			return "using (Microsoft.VisualStudio.Modeling.Transaction outerDslImportTransaction = this.Store.TransactionManager.BeginTransaction(\"Load Files\", true)) { " + base.GetPostInitializationCodeForProcessingRun();
 		}
 	}
 
@@ -70,7 +62,7 @@ namespace Neumont.Tools.ORM.Framework
 	{
 		public override string GetPostInitializationCodeForProcessingRun()
 		{
-			return " outterDslImportTransaction.Commit(); }";
+			return " outerDslImportTransaction.Commit(); }";
 		}
 
 		#region Does nothing
