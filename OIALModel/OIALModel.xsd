@@ -46,8 +46,11 @@
 	<xs:complexType name="ChildSequenceUniquenessConstraintType">
 		<xs:sequence>
 			<xs:element name="ChildSequence" type="ChildSequenceType" />
+			<!-- TODO: Remove this once serialization has been addressed -->
+			<xs:any processContents="lax" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_IsPreferred_Group" />
+		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
 	</xs:complexType>
 
 	<xs:complexType name="ChildSequenceType">
@@ -58,7 +61,12 @@
 
 	<xs:complexType name="MinTwoChildrenChildSequenceType">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="ConceptTypeHasChild" type="RefType" />
+			<!-- TODO: Change this back to RefType once serialization is more solid -->
+			<xs:element name="ConceptTypeHasChild">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:token" />
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
@@ -89,6 +97,18 @@
 			<xs:element name="ObjectType" type="RefType" />
 			<xs:element name="ContainedTypes" type="ContainedTypesType" />
 			<xs:element name="ConceptTypeLink" type="ConceptTypeLinkType" />
+			<!-- TODO: Remove this once serialization has been addressed, and change the xs:choice compositor to xs:all -->
+			<xs:element name="ConceptTypeHasChild.Child">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:token" />
+				</xs:complexType>
+			</xs:element>
+			<!-- TODO: Remove this once serialization has been addressed, and change the xs:choice compositor to xs:all -->
+			<xs:element name="ConceptTypeHasChild.Parent">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:token" />
+				</xs:complexType>
+			</xs:element>
 		</xs:choice>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
@@ -109,7 +129,7 @@
 		</xs:choice>
 		<xs:attribute name="id" type="xs:ID" />
 		<xs:attribute name="ref" type="xs:IDREF" />
-		<xs:attribute name="Mandatory" type="ModalityEnum" />
+		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
 		<xs:attribute name="OppositeName" type="xs:string" />
 	</xs:complexType>
 
@@ -122,8 +142,14 @@
 
 	<xs:complexType name="InformationTypeType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="InformationTypeLink" type="InformationTypeLinkType" />
 			<xs:element name="InformationTypeFormat" type="RefType" />
+			<xs:element name="InformationTypeLink" type="InformationTypeLinkType" />
+			<!-- TODO: Remove this once serialization has been addressed, and change the xs:choice compositor to xs:all -->
+			<xs:element name="ConceptTypeHasChild.Parent">
+				<xs:complexType>
+					<xs:attribute name="ref" type="xs:token" />
+				</xs:complexType>
+			</xs:element>
 		</xs:choice>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
@@ -134,7 +160,7 @@
 			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
 		</xs:choice>
 		<xs:attribute name="id" type="xs:ID" />
-		<xs:attribute name="Mandatory" type="ModalityEnum" />
+		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
 	</xs:complexType>
 
 	<xs:complexType name="SingleChildConstraintsType">
@@ -146,13 +172,6 @@
 	<xs:complexType name="SingleChildUniquenessConstraintType">
 		<xs:attributeGroup ref="Id_Name_IsPreferred_Group" />
 	</xs:complexType>
-
-	<xs:simpleType name="ModalityEnum">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Alethic" />
-			<xs:enumeration value="Deontic" />
-		</xs:restriction>
-	</xs:simpleType>
 
 	<xs:complexType name="RefType">
 		<xs:attribute name="ref" type="xs:IDREF" />
