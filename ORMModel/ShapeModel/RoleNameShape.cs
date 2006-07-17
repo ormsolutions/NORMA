@@ -87,12 +87,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static void RemoveRoleNameShapeFromRole(Role role)
 		{
-			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(role))
+			PresentationElement[] presentationElements = PresentationViewsSubject.GetPresentation(role).ToArray();
+			for (int i = 0; i < presentationElements.Length; i++)
 			{
-				RoleNameShape rns = element as RoleNameShape;
-				if (rns != null)
+				PresentationElement presentationElement = presentationElements[i];
+				if (presentationElement is RoleNameShape)
 				{
-					rns.Delete();
+					presentationElement.Delete();
 				}
 			}
 		}
