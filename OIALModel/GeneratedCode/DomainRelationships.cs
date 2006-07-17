@@ -528,7 +528,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("7acc3b69-dc50-4e97-897f-a25c4dd39e48")]
 	public abstract partial class ConceptTypeHasChild : DslModeling::ElementLink
 	{
@@ -788,24 +788,6 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one ConceptTypeHasChild link between a given ConceptTypeand a ParentableType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.ParentableType target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.ParentDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild link in links )
-			{
-				if ( target.Equals(link.Child) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }
@@ -1621,7 +1603,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeRef.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeRef.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("8ee4ca1c-f47e-49e8-b732-c33da9e56fc7")]
 	public partial class ConceptTypeRef : ConceptTypeHasChild
 	{
@@ -1954,24 +1936,6 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one ConceptTypeRef link between a given ConceptTypeand a ConceptType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.ConceptType target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef.ReferencingConceptTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef link in links )
-			{
-				if ( target.Equals(link.ReferencedConceptType) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }

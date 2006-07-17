@@ -13,20 +13,16 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
-// Uncomment the following line to view element links in a debug: view store window during every change
-// in the model. (One per "user" change i.e. adding an internal uniqueness constraint fires multiple rules
-// but really makes only one change in the user's perspective.)
-// #define VIEW_ELEMENT_LINKS
 #region Using Directives
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Diagnostics;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Framework;
 using System.Globalization;
 using System.Collections;
+using System.Diagnostics;
 #endregion // Using Directives
 
 namespace Neumont.Tools.ORM.OIALModel
@@ -764,56 +760,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				InformationTypesAndConceptTypeRefs(store, thisConceptTypeCollection[i]);
 			}
 			GetExternalConstraints(store, model);
-#if DEBUG && VIEW_ELEMENT_LINKS
-
-			ViewElementLinks(store, thisConceptTypeCollection, conceptTypeCount);
-#endif // DEBUG && VIEW_ELEMENT_LINKS
 		}
-#if DEBUG && VIEW_ELEMENT_LINKS
-		/// <summary>
-		/// Shows the Element Links in a Debug.Assert()-style window
-		/// </summary>
-		/// <param name="store">The store currently attached to the model.</param>
-		/// <param name="conceptTypes">A collection of <see cref="ConceptType"/> objects whose
-		/// links are of interest.</param>
-		/// <param name="conceptTypeCount">The number of <see cref="ConceptType"/>s in the collection</param>
-		private void ViewElementLinks(Store store, LinkedElementCollection<ConceptType> conceptTypes, int conceptTypeCount)
-		{
-			// UNDONE: To be able to view ElementLinks in the debugger window, we have to add the
-			// ElementLinks of each ConceptType to a ModelElement array. Then we use an overload
-			// of Debug.Assert() to view this information. The Search.FindTreesInForest() does the
-			// same thing for the ModelElements (not ElementLinks) of the store.
-			
-			ArrayList modelElementList = new ArrayList();
-			for (int i = 0; i < conceptTypeCount; ++i)
-			{
-				modelElementList.AddRange(GetConceptTypeElementLinks(conceptTypes[i]));
-			}	
-			// Get the existing information, like ORMModel, ORMDiagram, and OIALModel elements.
-			modelElementList.AddRange(Search.FindTreesInForest(store));
-			ModelElement[] modelElementArray = new ModelElement[modelElementList.Count];
-			modelElementList.CopyTo(modelElementArray);
-			Debug.Assert(store.DefaultPartition, modelElementArray);
-		}
-		/// <summary>
-		/// Gets the <see cref="ElementLink"/>s of the <see cref="ConceptType"/> passed to it as well
-		/// as the links of all its absorbed <see cref="ConceptType"/>s.
-		/// </summary>
-		/// <param name="conceptType">The <see cref="ConceptType"/> whose element links and children element links are of interest.</param>
-		/// <returns>A list of <see cref="ElementLink"/>s.</returns>
-		private IList GetConceptTypeElementLinks(ConceptType conceptType)
-		{
-			ArrayList elementLinkList = new ArrayList();
-			elementLinkList.AddRange(conceptType.GetElementLinks());
-			ConceptTypeMoveableCollection absorbedConceptTypes = conceptType.AbsorbedConceptTypeCollection;
-			int absorbedConceptTypesCount = absorbedConceptTypes.Count;
-			for (int i = 0; i < absorbedConceptTypesCount; ++i)
-			{
-				elementLinkList.AddRange(GetConceptTypeElementLinks(absorbedConceptTypes[i]));
-			}
-			return elementLinkList;
-		}
-#endif // DEBUG && VIEW_ELEMENT_LINKS
 		#endregion // Initializers and Debugging
 		#region ORMToOIAL Algorithms
 		/// <summary>
@@ -1320,6 +1267,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
 				{
 					ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
+					Debug.Assert(referencedConceptType != null, "Referenced concept type should not be null.");
 					conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
 					foreach (ConceptTypeRef conceptTypeRef in ConceptTypeRef.GetLinksToReferencingConceptType(conceptType))
 					{
@@ -1354,7 +1302,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// passed to this method, or if that is an empty string, the name of that <see cref="Role"/>'s role player.</param>
 		private void GetInformationTypes(Store store, ConceptType conceptType, Role oppositeRole, string baseName, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
 		{
-			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<Role>(), mandatory, constraints);
+			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<RoleBase>(), mandatory, constraints);
 		}
 		/// <summary>
 		/// Gets an <see cref="InformationType"/> for the particular <see cref="ConceptType"/> passed to it, based on the <see cref="Role"/>
@@ -1368,7 +1316,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// passed to this method, or if that is an empty string, the name of that <see cref="Role"/>'s role player. AS more calls to this
 		/// method are made recursively, baseName will be added onto.</param>
 		/// <param name="isFirst">If this is the first time through this method, true. Otherwise, false.</param>
-		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<Role> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
+		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<RoleBase> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
 		{
 			// We will most likely add on to the baseName parameter passed to this method.
 			string newBaseName = null;
@@ -1401,44 +1349,44 @@ namespace Neumont.Tools.ORM.OIALModel
 				int count = conceptTypeInformationTypeCollection.Count;
 				ConceptTypeHasInformationType conceptTypeInformationType = conceptTypeInformationTypeCollection[count - 1];
 
-				foreach (Role pathRole in pathNodes)
-				{
-					conceptTypeInformationType.PathRoleCollection.Add(pathRole);
-				}
+				conceptTypeInformationType.PathRoleCollection.AddRange(pathNodes);
+				//foreach (Role pathRole in pathNodes)
+				//{
+				//    conceptTypeInformationType.PathRoleCollection.Add(pathRole);
+				//}
 				conceptTypeInformationType.PathRoleCollection.Add(oppositeRole);
 				conceptTypeInformationType.Mandatory = mandatory;
-				foreach (SingleChildConstraint singleChildConstraint in constraints)
-				{
-					conceptTypeInformationType.SingleChildConstraintCollection.Add(singleChildConstraint);
-				}
-			}
-			else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
-			{
-				ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
-				conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
-				ReadOnlyCollection<ConceptTypeRef> conceptTypeRefs = ConceptTypeRef.GetLinksToReferencingConceptType(conceptType);
-				int count = conceptTypeRefs.Count;
-				ConceptTypeRef conceptTypeRef = conceptTypeRefs[count - 1] as ConceptTypeRef;
-				conceptTypeRef.PathRoleCollection.Add(oppositeRole);
-				conceptTypeRef.OppositeName = referencedConceptType.ObjectType.Name;
-				conceptTypeRef.Mandatory = mandatory;
-				//if (thisRole.IsMandatory)
+				conceptTypeInformationType.SingleChildConstraintCollection.AddRange(constraints);
+				//foreach (SingleChildConstraint singleChildConstraint in constraints)
 				//{
-				//    switch (thisRole.MandatoryConstraintModality)
-				//    {
-				//        case ConstraintModality.Alethic:
-				//            conceptTypeRef.Mandatory = MandatoryConstraintModality.Alethic;
-				//            break;
-				//        case ConstraintModality.Deontic:
-				//            conceptTypeRef.Mandatory = MandatoryConstraintModality.Deontic;
-				//            break;
-				//    }
+				//    conceptTypeInformationType.SingleChildConstraintCollection.Add(singleChildConstraint);
 				//}
-				foreach (SingleChildConstraint singleChildConstraint in constraints)
-				{
-					conceptTypeRef.SingleChildConstraintCollection.Add(singleChildConstraint);
-				}
 			}
+			// TODO: Figure out a way to account for ConceptTypeRefs across multiple path role links.
+			//else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
+			//{
+			//    ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
+			//    conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
+			//    ReadOnlyCollection<ConceptTypeRef> conceptTypeRefs = ConceptTypeRef.GetLinksToReferencingConceptType(conceptType);
+			//    int count = conceptTypeRefs.Count;
+			//    ConceptTypeRef conceptTypeRef = conceptTypeRefs[count - 1] as ConceptTypeRef;
+			//    conceptTypeRef.PathRoleCollection.Add(oppositeRole);
+			//    conceptTypeRef.OppositeName = referencedConceptType.ObjectType.Name;
+			//    conceptTypeRef.Mandatory = mandatory;
+			//    //if (thisRole.IsMandatory)
+			//    //{
+			//    //    switch (thisRole.MandatoryConstraintModality)
+			//    //    {
+			//    //        case ConstraintModality.Alethic:
+			//    //            conceptTypeRef.Mandatory = MandatoryConstraintModality.Alethic;
+			//    //            break;
+			//    //        case ConstraintModality.Deontic:
+			//    //            conceptTypeRef.Mandatory = MandatoryConstraintModality.Deontic;
+			//    //            break;
+			//    //    }
+			//    //}
+			//    conceptTypeRef.SingleChildConstraintCollection.AddRange(constraints);
+			//}
 			else
 			{
 				pathNodes.AddLast(oppositeRole);

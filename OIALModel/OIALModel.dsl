@@ -272,7 +272,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeHasChild" Namespace="Neumont.Tools.ORM.OIALModel" InheritanceModifier="Abstract" Id="7ACC3B69-DC50-4E97-897F-A25C4DD39E48">
+		<DomainRelationship Name="ConceptTypeHasChild" AllowsDuplicates="true" Namespace="Neumont.Tools.ORM.OIALModel" InheritanceModifier="Abstract" Id="7ACC3B69-DC50-4E97-897F-A25C4DD39E48">
 			<Properties>
 				<DomainProperty Name="Mandatory" DefaultValue="NotMandatory" DisplayName="Mandatory" Id="15E5A8F5-BDB7-44DB-80E0-F5D45872B8F6">
 					<Type>
@@ -353,7 +353,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeRef" Namespace="Neumont.Tools.ORM.OIALModel" Id="8EE4CA1C-F47E-49E8-B732-C33DA9E56FC7">
+		<DomainRelationship Name="ConceptTypeRef" Namespace="Neumont.Tools.ORM.OIALModel" Id="8EE4CA1C-F47E-49E8-B732-C33DA9E56FC7" AllowsDuplicates="true">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ConceptTypeHasChild" />
 			</BaseRelationship>
