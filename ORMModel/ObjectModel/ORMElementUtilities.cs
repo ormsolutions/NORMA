@@ -264,15 +264,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// If ExtensionExpandableTopLevelPropertyGuid is invalid or Guid.Empty, FindDomainProperty returns null.
 				bool readOnly = (extensionExpandableTopLevelPropertyInfo == null);
 
-				PropertyDescriptor descriptor = null;
-				ExpandableObjectConverter expandableConverter = null;
+				PropertyDescriptor descriptor;
+				ExpandableObjectConverter expandableConverter;
 
 				if (!readOnly)
 				{
-					expandableConverter = new ExpandableExtensionConverter(extensionElement, Design.ORMTypeDescriptor.CreatePropertyDescriptor(element, extensionExpandableTopLevelPropertyInfo));
+					descriptor = Design.ORMTypeDescriptor.CreatePropertyDescriptor(element, extensionExpandableTopLevelPropertyInfo);
+					expandableConverter = new ExpandableExtensionConverter(extensionElement, descriptor);
 				}
 				else
 				{
+					descriptor = null;
 					expandableConverter = new ExpandableObjectConverter();
 				}
 
