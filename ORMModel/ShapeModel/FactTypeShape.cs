@@ -3492,8 +3492,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static bool ShouldDrawObjectification(Objectification objectification)
 		{
-			ObjectType nestingType;
-			if (objectification == null || (!(nestingType = objectification.NestingType).IsDeleted && nestingType.Model == null))
+			return ShouldDrawObjectification(objectification, null);
+		}
+		/// <summary>
+		/// Return true if the specified objectification should be drawn as such.
+		/// </summary>
+		private static bool ShouldDrawObjectification(Objectification objectification, ObjectType nestingType)
+		{
+			if (objectification == null)
+			{
+				return false;
+			}
+			if (nestingType == null)
+			{
+				nestingType = objectification.NestingType;
+			}
+			if (!nestingType.IsDeleted && nestingType.Model == null)
 			{
 				return false;
 			}
@@ -3787,15 +3801,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private sealed class SwitchToNestedFact : AddRule
 		{
-			public static void ProcessObjectification(Objectification link)
+			/// <summary>
+			/// Switch to displaying a nested fact
+			/// </summary>
+			/// <param name="link">The Objectification relationship to process</param>
+			/// <param name="nestedFactType">The nestedFactType to change. If this is null, then use the NestedFactType from the link argument.</param>
+			/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
+			public static void ProcessObjectification(Objectification link, FactType nestedFactType, ObjectType nestingType)
 			{
-				FactType nestedFactType = link.NestedFactType;
-				ObjectType nestingType = link.NestingType;
+				if (nestedFactType == null)
+				{
+					nestedFactType = link.NestedFactType;
+				}
+				if (nestingType == null)
+				{
+					nestingType = link.NestingType;
+				}
 
 				// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
-				if (!ShouldDrawObjectification(link))
+				if (!ShouldDrawObjectification(link, nestingType))
 				{
-					PresentationViewsSubject.GetPresentation(nestingType).Clear();
+					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
+					int pelCount = pels.Count;
+					for (int i = pelCount - 1; i >= 0; --i)
+					{
+						ObjectTypeShape pel = pels[i] as ObjectTypeShape;
+						if (pel != null)
+						{
+							pel.Delete();
+						}
+					}
 					return;
 				}
 
@@ -3884,7 +3919,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// players doesn't blow the labels away. Also, FixUpDiagram will attempt
 				// to fix up the existing shapes instead of creating new ones if the existing
 				// ones are not cleared away.
-				PresentationViewsSubject.GetPresentation(nestingType).Clear();
+				{
+					LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(nestingType);
+					int pelCount = pels.Count;
+					for (int i = pelCount - 1; i >= 0; --i)
+					{
+						ObjectTypeShape pel = pels[i] as ObjectTypeShape;
+						if (pel != null)
+						{
+							pel.Delete();
+						}
+					}
+				}
 
 				// Part4: Resize the fact type wherever it is displayed and add the
 				// labels for the fact type display.
@@ -3900,16 +3946,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ProcessObjectification(e.ModelElement as Objectification);
+				ProcessObjectification(e.ModelElement as Objectification, null, null);
 			}
 		}
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private sealed class SwitchFromNestedFact : DeleteRule
 		{
-			public static void ProcessObjectification(Objectification link, bool switchingToImplied)
+			/// <summary>
+			/// Switch to displaying a nested fact
+			/// </summary>
+			/// <param name="link">The Objectification relationship to process</param>
+			/// <param name="nestedFactType">The nestedFactType to change. If this is null, then use the NestedFactType from the link argument.</param>
+			/// <param name="nestingType">The nestingType to change. If this is null, then use the NestingType from the link argument.</param>
+			/// <param name="switchingToImplied">Change the objectification to implied from explicit.</param>
+			public static void ProcessObjectification(Objectification link, FactType nestedFactType, ObjectType nestingType, bool switchingToImplied)
 			{
-				FactType nestedFactType = link.NestedFactType;
-				ObjectType nestingType = link.NestingType;
+				if (nestedFactType == null)
+				{
+					nestedFactType = link.NestedFactType;
+				}
+				if (nestingType == null)
+				{
+					nestingType = link.NestingType;
+				}
 
 				bool nestingTypeRemoved = nestingType.IsDeleted;
 				bool nestedFactTypeRemoved = nestedFactType.IsDeleted;
@@ -4063,10 +4122,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return;
 				}
-				ProcessObjectification(link, false);
+				ProcessObjectification(link, null, null, false);
 			}
 		}
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private sealed class ObjectificationIsImpliedChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4079,7 +4138,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (!(bool)e.NewValue)
 						{
 							// It is now explicit
-							SwitchToNestedFact.ProcessObjectification(e.ModelElement as Objectification);
+							SwitchToNestedFact.ProcessObjectification(e.ModelElement as Objectification, null, null);
 						}
 					}
 					else
@@ -4088,10 +4147,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if ((bool)e.NewValue)
 						{
 							// It is now implied
-							SwitchFromNestedFact.ProcessObjectification(e.ModelElement as Objectification, true);
+							SwitchFromNestedFact.ProcessObjectification(e.ModelElement as Objectification, null, null, true);
 						}
 					}
 				}
+			}
+		}
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Objectification link = e.ElementLink as Objectification;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				Guid changedRoleGuid = e.DomainRole.Id;
+				ObjectType oldObjectType = null;
+				FactType oldFactType = null;
+				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
+				{
+					oldObjectType = (ObjectType)e.OldRolePlayer;
+				}
+				else
+				{
+					oldFactType = (FactType)e.OldRolePlayer;
+				}
+				SwitchFromNestedFact.ProcessObjectification(link, oldFactType, oldObjectType, false);
+				SwitchToNestedFact.ProcessObjectification(link, null, null);
 			}
 		}
 		#region ConstraintDisplayPositionChangeRule class

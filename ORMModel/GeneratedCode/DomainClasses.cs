@@ -1862,6 +1862,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region NestedFactType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NestedFactType.
+		/// </summary>
+		public virtual FactType NestedFactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeDomainRoleId) as FactType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.Objectification.NestingTypeDomainRoleId, value);
+			}
+		}
+		#endregion
 		#region PlayedRoleCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of PlayedRoleCollection.
@@ -2840,6 +2858,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<SetConstraint>(this, global::Neumont.Tools.ORM.ObjectModel.FactSetConstraint.FactTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#region NestingType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets NestingType.
+		/// </summary>
+		public virtual ObjectType NestingType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.Objectification.NestedFactTypeDomainRoleId, value);
 			}
 		}
 		#endregion

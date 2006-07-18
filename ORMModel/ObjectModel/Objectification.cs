@@ -172,17 +172,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(Objectification))]
 		private sealed class ObjectificationAddRule : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			/// <summary>
+			/// Create implied facts and constraints as needed
+			/// </summary>
+			/// <param name="objectification">The objectification relationship to process</param>
+			/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
+			/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
+			public static void ProcessObjectificationAdded(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 			{
-				Objectification objectificationLink = e.ModelElement as Objectification;
-				FactType nestedFact = objectificationLink.NestedFactType;
-				if (nestedFact.ImpliedByObjectification != null)
+				if (nestedFactType == null)
+				{
+					nestedFactType = objectification.NestedFactType;
+				}
+				if (nestedFactType.ImpliedByObjectification != null)
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionObjectificationImpliedFactObjectified);
 				}
-				Store store = nestedFact.Store;
-				ObjectType nestingType = objectificationLink.NestingType;
-				ORMModel model = nestedFact.Model;
+				if (nestingType == null)
+				{
+					nestingType = objectification.NestingType;
+				}
+				Store store = nestedFactType.Store;
+				ORMModel model = nestedFactType.Model;
 
 				// Comments in this and other related procedures will refer to
 				// the 'near' end and 'far' end of the implied elements. The
@@ -200,19 +211,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// this relationship is established.
 
 				// Add implied fact types, one for each role
-				LinkedElementCollection<RoleBase> roles = nestedFact.RoleCollection;
+				LinkedElementCollection<RoleBase> roles = nestedFactType.RoleCollection;
 				int roleCount = roles.Count;
 				if (roleCount != 0)
 				{
 					for (int i = 0; i < roleCount; ++i)
 					{
 						Role role = roles[i].Role;
-						if (role.Proxy == null)
+						RoleProxy proxy = role.Proxy;
+						if (proxy == null)
 						{
-							CreateImpliedFactTypeForRole(model, nestingType, role, objectificationLink);
+							CreateImpliedFactTypeForRole(model, nestingType, role, objectification);
+						}
+						else
+						{
+							RoleBase oppositeRoleBase;
+							Role oppositeRole;
+							if (null != (oppositeRoleBase = proxy.OppositeRole) &&
+								null != (oppositeRole = oppositeRoleBase as Role) &&
+								(nestingType != oppositeRole.RolePlayer))
+							{
+								// Move an existing proxy fact to the correct nesting type
+								oppositeRole.RolePlayer = nestingType;
+							}
 						}
 					}
 				}
+			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ProcessObjectificationAdded(e.ModelElement as Objectification, null, null);
 			}
 		}
 		#endregion // ObjectificationAddRule class
@@ -223,12 +251,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(Objectification))]
 		private sealed class ObjectificationDeleteRule : DeleteRule
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			/// <summary>
+			/// Remove the implied objectifying ObjectType when Objectification is removed
+			/// and delay validated the previously nested fact type.
+			/// </summary>
+			/// <param name="objectification">The objectification relationship to process</param>
+			/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
+			/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
+			public static void ProcessObjectificationDeleted(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 			{
-				Objectification objectification = e.ModelElement as Objectification;
 				if (objectification.IsImplied)
 				{
-					ObjectType nestingType = objectification.NestingType;
+					if (nestingType == null)
+					{
+						nestingType = objectification.NestingType;
+					}
 					if (!nestingType.IsDeleted)
 					{
 						nestingType.Delete();
@@ -236,15 +273,52 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					FactType nestedFact = objectification.NestedFactType;
-					if (!nestedFact.IsDeleted)
+					if (nestedFactType == null)
 					{
-						ORMCoreModel.DelayValidateElement(nestedFact, DelayProcessFactTypeForImpliedObjectification);
+						nestedFactType = objectification.NestedFactType;
+					}
+					if (!nestedFactType.IsDeleted)
+					{
+						ORMCoreModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 			}
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ProcessObjectificationDeleted(e.ModelElement as Objectification, null, null);
+			}
 		}
 		#endregion // ObjectificationDeleteRule class
+		#region ObjectificationRolePlayerChangeRule class
+		/// <summary>
+		/// Process Objectification role player changes
+		/// </summary>
+		[RuleOn(typeof(Objectification))]
+		private class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Objectification link = e.ElementLink as Objectification;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				Guid changedRoleGuid = e.DomainRole.Id;
+				ObjectType oldObjectType = null;
+				FactType oldFactType = null;
+				if (changedRoleGuid == Objectification.NestingTypeDomainRoleId)
+				{
+					oldObjectType = (ObjectType)e.OldRolePlayer;
+				}
+				else
+				{
+					oldFactType = (FactType)e.OldRolePlayer;
+				}
+				ObjectificationDeleteRule.ProcessObjectificationDeleted(link, oldFactType, oldObjectType);
+				ObjectificationAddRule.ProcessObjectificationAdded(link, null, null);
+			}
+		}
+		#endregion // ObjectificationRolePlayerChangeRule class
 		#region ImpliedFactTypeAddRule class
 		/// <summary>
 		/// Rule class to block objectification of implied facts
@@ -1056,9 +1130,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							Role targetRole;
 							if (proxy == null ||
 								null == (targetRole = proxy.Role) ||
-								// UNDONE: 2006-06 DSL Tools port: This line was performing a reference equality check on targetRole and nestedFact, which would always return false.
-								// For the moment, I'm assuming it was supposed to be targetRole.FactType, but that obviously needs to be verified.
-								targetRole.FactType != nestedFact)
+								nestedFact != targetRole.FactType)
 							{
 								RemoveFact(impliedFact);
 								--leftToRemove;

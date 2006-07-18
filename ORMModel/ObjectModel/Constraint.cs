@@ -2649,16 +2649,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(Objectification))]
 		private sealed class TestRemovePreferredIdentifierObjectificationAddRule : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void TestRemovePreferredIdentifiers(FactType factType)
 			{
-				Objectification link = e.ModelElement as Objectification;
-				FactType factType = link.NestedFactType;
 				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 				int roleCount = roles.Count;
 				for (int i = 0; i < roleCount; ++i)
 				{
 					// Implied facts cannot be objectified, we will never see
-					// role proxies here, so the exception case is fine.
+					// role proxies here, so the exception cast is fine.
 					Role role = (Role)roles[i];
 					ObjectType rolePlayer;
 					UniquenessConstraint pid;
@@ -2672,8 +2670,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				TestRemovePreferredIdentifiers((e.ModelElement as Objectification).NestedFactType);
+			}
 		}
 		#endregion // TestRemovePreferredIdentifierObjectificationAddRule class
+		#region TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule class
+		[RuleOn(typeof(Objectification))]
+		private sealed class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Objectification link = e.ElementLink as Objectification;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				Guid changedRoleGuid = e.DomainRole.Id;
+				if (changedRoleGuid == Objectification.NestedFactTypeDomainRoleId)
+				{
+					TestRemovePreferredIdentifierObjectificationAddRule.TestRemovePreferredIdentifiers(link.NestedFactType);
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule class
 		#region PreferredIdentifierAddedRule class
 		/// <summary>
 		/// Verify that all preconditions hold for adding a primary

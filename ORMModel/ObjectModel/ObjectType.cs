@@ -241,22 +241,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // PreferredIdentifier Property
-		#region NestedFactType Property
-		/// <summary>
-		/// Gets the FactType that this ObjectType is objectifying.
-		/// </summary>
-		public FactType NestedFactType
-		{
-			get
-			{
-				return Objectification.GetNestedFactType(this);
-			}
-			set
-			{
-				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestingTypeDomainRoleId, Objectification.NestedFactTypeDomainRoleId, typeof(Objectification));
-			}
-		}
-		#endregion // NestedFactType Property
 		#region Customize property display
 		/// <summary>
 		/// Return a simple name instead of a name decorated with the type (the
@@ -1309,7 +1293,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ValueTypeHasDataType))]
-		private sealed class UnspecifiedDataRoleRolePlayerChanged : RolePlayerChangeRule
+		private sealed class UnspecifiedDataRoleRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
 			{
@@ -2203,20 +2187,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// This is an object model backup for the UI, which does not offer these
 		/// conditions to the user.
 		/// </summary>
-		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))]
 		private sealed class CheckForIncompatibleRelationshipRule : AddRule
 		{
 			/// <summary>
-			/// Called when an attempt is made to turn an ObjectType into either
-			/// a value type or a nesting type.
+			/// Helper function called by ElementAdded and the corresponding RolePlayerChanged role
 			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			/// <param name="element"></param>
+			public static void Process(ModelElement element)
 			{
 				Objectification nester;
 				ValueTypeHasDataType valType;
 				ObjectTypePlaysRole roleLink;
 				FactTypeHasRole newRole;
-				ModelElement element = e.ModelElement;
 				bool incompatibleValueTypeCombination = false;
 				bool incompatibleNestingAndRoleCombination = false;
 				bool subtypesNotNested = false;
@@ -2294,6 +2277,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			/// <summary>
+			/// Called when an attempt is made to turn an ObjectType into either
+			/// a value type or a nesting type.
+			/// </summary>
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement);
+			}
+			/// <summary>
 			/// Fire early. There is no reason to put this in the transaction log
 			/// if it isn't valid.
 			/// </summary>
@@ -2306,6 +2297,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // CheckForIncompatibleRelationshipRule class
+		#region CheckForIncompatibleRelationshipRule class
+		/// <summary>
+		/// Ensure consistency among relationships attached to ObjectType roles.
+		/// This is an object model backup for the UI, which does not offer these
+		/// conditions to the user.
+		/// </summary>
+		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))]
+		private sealed class CheckForIncompatibleRelationshipRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				CheckForIncompatibleRelationshipRule.Process(e.ElementLink);
+			}
+			/// <summary>
+			/// Fire early. There is no reason to put this in the transaction log
+			/// if it isn't valid.
+			/// </summary>
+			public sealed override bool FireBefore
+			{
+				get
+				{
+					return true;
+				}
+			}
+		}
+		#endregion // CheckForIncompatibleRelationshipRolePlayerChangeRule class
 	}
 	#region ValueTypeHasDataType class
 	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner

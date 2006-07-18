@@ -21,6 +21,7 @@
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule"/>
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleAdded"/>
@@ -49,6 +50,7 @@
 		<arg:Rule class="FactType.ValidateFactNameForReadingReorder"/>
 		<arg:Rule class="FactType.ValidateFactNameForRolePlayerAdded"/>
 		<arg:Rule class="FactType.ValidateFactNameForRolePlayerDelete"/>
+		<arg:Rule class="FactType.ValidateFactNameForRolePlayerRolePlayerChange"/>
 		<arg:Rule class="FactTypeDerivationExpression.FactTypeDerivationExpressionChangeRule"/>
 		<arg:Rule class="FactTypeInstance.FactTypeHasRoleAdded"/>
 		<arg:Rule class="FactTypeInstance.FactTypeHasRoleDeleted"/>
@@ -78,11 +80,13 @@
 		<arg:Rule class="Objectification.InternalConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>
 		<arg:Rule class="Objectification.ObjectificationDeleteRule"/>
+		<arg:Rule class="Objectification.ObjectificationRolePlayerChangeRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>
 		<arg:Rule class="Objectification.RoleDeletingRule"/>
 		<arg:Rule class="Objectification.RolePlayerDeletingRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
+		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule"/>
 		<arg:Rule class="ObjectType.MandatoryRoleAddedRule"/>
 		<arg:Rule class="ObjectType.MandatoryRoleDeletingRule"/>
 		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
@@ -93,7 +97,7 @@
 		<arg:Rule class="ObjectType.SupertypeDeleteRule"/>
 		<arg:Rule class="ObjectType.SupertypeDeletingRule"/>
 		<arg:Rule class="ObjectType.UnspecifiedDataTypeAddRule"/>
-		<arg:Rule class="ObjectType.UnspecifiedDataRoleRolePlayerChanged"/>
+		<arg:Rule class="ObjectType.UnspecifiedDataRoleRolePlayerChangeRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeDeleteRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>

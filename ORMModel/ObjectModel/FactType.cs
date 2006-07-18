@@ -231,20 +231,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return Objectification.GetLinkToNestingType(this);
 			}
 		}
-		/// <summary>
-		/// Gets the <see cref="ObjectType"/> that is objectifying this <see cref="FactType"/>.
-		/// </summary>
-		public ObjectType NestingType
-		{
-			get
-			{
-				return Objectification.GetNestingType(this);
-			}
-			set
-			{
-				Utility.SetPropertyValidateOneToOne(this, value, Objectification.NestedFactTypeDomainRoleId, Objectification.NestingTypeDomainRoleId, typeof(Objectification));
-			}
-		}
 		#endregion // FactType Specific
 		#region FactConstraintCollection implementation
 		private sealed class FactConstraintCollectionImpl : ICollection<IFactConstraint>
@@ -1478,43 +1464,72 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ValidateFactNameForRolePlayerAdded : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(ObjectTypePlaysRole link, Role playedRole)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				FactType factType = link.PlayedRole.FactType;
+				if (playedRole == null)
+				{
+					playedRole = link.PlayedRole;
+				}
+				FactType factType = playedRole.FactType;
 				if (factType != null)
 				{
 					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 				RoleProxy proxy;
-				if (null != (proxy = link.PlayedRole.Proxy) &&
+				if (null != (proxy = playedRole.Proxy) &&
 					null != (factType = proxy.FactType))
 				{
 					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as ObjectTypePlaysRole, null);
+			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private sealed class ValidateFactNameForRolePlayerDelete : DeleteRule
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			public static void Process(ObjectTypePlaysRole link, Role playedRole)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
-				FactType factType;
-				if (!role.IsDeleted)
+				if (playedRole == null)
 				{
-					if (null != (factType = role.FactType))
+					playedRole = link.PlayedRole;
+				}
+				FactType factType;
+				if (!playedRole.IsDeleted)
+				{
+					if (null != (factType = playedRole.FactType))
 					{
 						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 					RoleProxy proxy;
-					if (null != (proxy = role.Proxy) &&
+					if (null != (proxy = playedRole.Proxy) &&
 						null != (factType = proxy.FactType))
 					{
 						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 				}
+			}
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				Process(e.ModelElement as ObjectTypePlaysRole, null);
+			}
+		}
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private sealed class ValidateFactNameForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRoleGuid = e.DomainRole.Id;
+				Role oldRole = null;
+				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+				{
+					oldRole = (Role)e.OldRolePlayer;
+				}
+				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+				ValidateFactNameForRolePlayerDelete.Process(link, oldRole);
+				ValidateFactNameForRolePlayerAdded.Process(link, null);
 			}
 		}
 		[RuleOn(typeof(ObjectType))]

@@ -44,24 +44,40 @@ namespace Neumont.Tools.ORM.Design
 		{
 			Role instance = (Role)EditorUtility.ResolveContextInstance(context.Instance, true);
 			ReadOnlyCollection<ObjectType> candidates = instance.Store.ElementDirectory.FindElements<ObjectType>();
-			if (candidates.Count > 1)
+			int count = candidates.Count;
+			switch (candidates.Count)
 			{
-				// Make sure we're sorted
-				List<ObjectType> types = new List<ObjectType>(candidates.Count);
-				Objectification thisObjectification = instance.FactType.Objectification;
-				foreach (ObjectType objType in candidates)
-				{
-					Objectification objectification = objType.Objectification;
-					if (objectification == null || (objectification != thisObjectification && !objectification.IsImplied))
+				case 0:
+					break;
+				case 1:
 					{
-						types.Add(objType);
+						ObjectType objType = candidates[0]; 
+						Objectification objectification = objType.Objectification;
+						if (objectification != null && !objectification.IsImplied && objectification == instance.FactType.Objectification)
+						{
+							candidates = null;
+						}
 					}
-				}
-				if (types.Count > 1)
-				{
-					types.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
-				}
-				return types;
+					break;
+				default:
+					{
+						// Make sure we're sorted
+						List<ObjectType> types = new List<ObjectType>(candidates.Count);
+						Objectification thisObjectification = instance.FactType.Objectification;
+						foreach (ObjectType objType in candidates)
+						{
+							Objectification objectification = objType.Objectification;
+							if (objectification == null || (objectification != thisObjectification && !objectification.IsImplied))
+							{
+								types.Add(objType);
+							}
+						}
+						if (types.Count > 1)
+						{
+							types.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+						}
+						return types;
+					}
 			}
 			return candidates;
 		}

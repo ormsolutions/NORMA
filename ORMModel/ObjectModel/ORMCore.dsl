@@ -1299,14 +1299,14 @@
 				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="NestingType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
+				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="NestedFactType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
+				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>

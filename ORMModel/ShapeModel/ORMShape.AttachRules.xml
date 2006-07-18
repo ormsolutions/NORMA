@@ -24,6 +24,7 @@
 		<arg:Rule class="FactTypeShape.ExternalConstraintShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.FactTypeShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.ObjectificationIsImpliedChangeRule"/>
+		<arg:Rule class="FactTypeShape.ObjectificationRolePlayerChangeRule"/>
 		<arg:Rule class="FactTypeShape.RoleDisplayOrderChanged"/>
 		<arg:Rule class="FactTypeShape.SwitchFromNestedFact"/>
 		<arg:Rule class="FactTypeShape.SwitchToNestedFact"/>
