@@ -1319,18 +1319,14 @@ namespace Neumont.Tools.ORM.OIALModel
 		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<RoleBase> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
 		{
 			// We will most likely add on to the baseName parameter passed to this method.
-			string newBaseName = null;
+			string newBaseName = baseName;
 			ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
 			Guid oppositeRolePlayerId = oppositeRolePlayer.Id;
 			// We have found the value type which corresponds to this information type, so we will create the information type
 			// and add our Roles (Path Roles) to the ElementLink created (ConceptTypeHasInformationType).
 			if (oppositeRolePlayer.IsValueType)
 			{
-				if (isFirst)
-				{
-					newBaseName = baseName;
-				}
-				else
+				if (!isFirst)
 				{
 					string concatName = oppositeRole.Name;
 					if (string.IsNullOrEmpty(concatName))
@@ -1350,17 +1346,9 @@ namespace Neumont.Tools.ORM.OIALModel
 				ConceptTypeHasInformationType conceptTypeInformationType = conceptTypeInformationTypeCollection[count - 1];
 
 				conceptTypeInformationType.PathRoleCollection.AddRange(pathNodes);
-				//foreach (Role pathRole in pathNodes)
-				//{
-				//    conceptTypeInformationType.PathRoleCollection.Add(pathRole);
-				//}
 				conceptTypeInformationType.PathRoleCollection.Add(oppositeRole);
 				conceptTypeInformationType.Mandatory = mandatory;
 				conceptTypeInformationType.SingleChildConstraintCollection.AddRange(constraints);
-				//foreach (SingleChildConstraint singleChildConstraint in constraints)
-				//{
-				//    conceptTypeInformationType.SingleChildConstraintCollection.Add(singleChildConstraint);
-				//}
 			}
 			// TODO: Figure out a way to account for ConceptTypeRefs across multiple path role links.
 			//else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
@@ -1410,11 +1398,7 @@ namespace Neumont.Tools.ORM.OIALModel
 						// so we must check for this.
 						if (uConstraint != null && uConstraint.IsPreferred && ((uConstraint.RoleCollection.Count == 1 && uConstraint.IsInternal) || !uConstraint.IsInternal))
 						{
-							if (isFirst)
-							{
-								newBaseName = baseName;
-							}
-							else
+							if (!isFirst)
 							{
 								string concatName = oppRole.Name;
 								if (string.IsNullOrEmpty(concatName))
@@ -1469,13 +1453,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					MinTwoChildrenChildSequence minTwoChildrenChildSequence = new MinTwoChildrenChildSequence(store);
 					foreach (Role role in roleCollection)
 					{
-						// Converting to common base for the null coalescing operator to work.
-						RoleBase thisRole = role.Proxy as RoleBase ?? role;
-						if (thisRole is RoleProxy)
-						{
-							thisRole = thisRole.Role;
-						}
-						ReadOnlyCollection<ConceptTypeHasChildHasPathRole> roleConceptTypeHasChildren = ConceptTypeHasChildHasPathRole.GetLinksToConceptTypeHasChild(thisRole);
+						ReadOnlyCollection<ConceptTypeHasChildHasPathRole> roleConceptTypeHasChildren = ConceptTypeHasChildHasPathRole.GetLinksToConceptTypeHasChild(role);
 						foreach (ConceptTypeHasChildHasPathRole conceptTypeHasChildHasPathRole in roleConceptTypeHasChildren)
 						{
 							minTwoChildrenChildSequence.ConceptTypeHasChildCollection.Add(conceptTypeHasChildHasPathRole.ConceptTypeHasChild);

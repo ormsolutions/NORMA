@@ -78,7 +78,7 @@
 							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
 							<xsl:with-param name="attributes" select="count(se:Attribute)"/>
 							<xsl:with-param name="links" select="count(se:Link)"/>
-							<xsl:with-param name="aggregatingLinks" select="se:Link[@WriteStyle='AggregatingLinkElement']"/>
+							<xsl:with-param name="aggregatingLinks" select="se:Link[@WriteStyle='EmbeddingLinkElement']"/>
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
 							<xsl:with-param name="mixedTypedAttributes" select="@HasMixedTypedAttributes='true'"/>
 						</xsl:call-template>

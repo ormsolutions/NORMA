@@ -63,6 +63,15 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			return GetCustomElementNamespaces();
 		}
+		private Dictionary<DomainClassInfo, object> myCustomSerializationOmissions;
+		private static Dictionary<DomainClassInfo, object> BuildCustomSerializationOmissions(Store store)
+		{
+			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
+			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			retVal[dataDir.FindDomainRelationship(ConceptTypeHasChild.DomainClassId)] = null;
+			retVal[dataDir.FindDomainRelationship(ChildSequenceConstraintHasChildSequence.DomainClassId)] = null;
+			return retVal;
+		}
 		private static Dictionary<string, Guid> myClassNameMap;
 		private static Collection<string> myValidNamespaces;
 		/// <summary>
@@ -70,7 +79,13 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected bool ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
-			return true;
+			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
+			if (omissions == null)
+			{
+				omissions = OIALMetaModel.BuildCustomSerializationOmissions(store);
+				this.myCustomSerializationOmissions = omissions;
+			}
+			return !(omissions.ContainsKey(classInfo));
 		}
 		bool IORMCustomSerializedDomainModel.ShouldSerializeDomainClass(Store store, DomainClassInfo classInfo)
 		{
@@ -774,7 +789,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles);
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | (ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles | ORMCustomSerializedElementSupportedOperations.EmbeddingLinkInfo));
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -983,7 +998,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+				return ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.EmbeddingLinkInfo;
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
