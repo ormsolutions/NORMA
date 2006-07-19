@@ -201,11 +201,6 @@ namespace Neumont.Tools.ORM.Shell
 						// So, we have duplicates when a file is reloaded
 						// (after a custom extension is removed or added)!
 						this.TaskProvider.RemoveAllTasks();
-						// UNDONE: MSBUG Reload of the framework completely disables the undo stack.
-						// This appears to be related to the fact that the UndoManager for the docdata
-						// is disposed when ModelingDocStore is disposed, but is never recreated on the shell.
-						// This temporary hack works around the problem.
-						typeof(DocData).GetField("undoManager", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, null);
 					}
 					retVal = base.LoadDocData(fileName, isReload);
 				}

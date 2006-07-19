@@ -927,6 +927,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					element.Delete();
 				}
 			}
+			/// <summary>
+			/// Enable post-load roles
+			/// </summary>
+			protected override void PhaseCompleted(Store store)
+			{
+				// UNDONE: Get a cleaner way to do this. We're enabling the
+				// generated shape model rule, but may not generate this rule
+				// indefinitely.
+				store.RuleManager.EnableRule(typeof(ConnectorRolePlayerChanged));
+			}
 		}
 		#endregion // EliminateOrphanedShapesFixupListener class
 		#endregion // PresentationViewsSubject fixup

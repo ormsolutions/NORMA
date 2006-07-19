@@ -628,13 +628,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (baseLinkShape = child as ORMBaseBinaryLinkShape))
 			{
-				// UNDONE: 2006-06 DSL Tools port: Old RouteJumpType setting code. Hopefully can be permanently removed now...
 				// ORM lines cross, they don't jump. However, the RouteJumpType cannot
 				// be set before the diagram is in place, so this property cannot be set
 				// from initialization code in the shape itself.
-				//baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
-				baseLinkShape.InitializeLineRouting();
-				baseLinkShape.RecalculateRoute();
+				baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
 				baseLinkShape.ConfiguringAsChildOf(this);
 			}
 		}

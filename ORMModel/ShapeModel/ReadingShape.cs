@@ -299,14 +299,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Location = new PointD(0, yOffset);
 		}
 		/// <summary>
-		/// Changed to allow resizing of the label
-		/// </summary>
-		public override NodeSides ResizableSides
-		{
-			get { return NodeSides.All; }
-		}
-
-		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.
 		/// </summary>
 		protected override AutoSizeTextField CreateAutoSizeTextField()

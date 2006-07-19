@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -33,6 +34,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseBinaryLinkShape, ModelElement, Design.ORMBaseBinaryLinkShapeTypeDescriptor<ORMBaseBinaryLinkShape, ModelElement>>))]
 	public partial class ORMBaseBinaryLinkShape
 	{
+		#region ConnectionPoint Workaround Hacks
 		#region GetVGEdge method
 		private delegate VGEdge GetVGEdgeDelegate(LinkShape @this);
 		private static readonly GetVGEdgeDelegate GetVGEdgeInternal = InitializeGetVGEdgeInternal();
@@ -83,9 +85,67 @@ namespace Neumont.Tools.ORM.ShapeModel
 			GetVGEdgeDelegate getVGEdgeInternal = GetVGEdgeInternal;
 			// If GetVGEdgeInternal is null, the internals of one of the DSL Tools assemblies may have changed.
 			// If that is the case, GetVGEdgeInternal needs to be updated...
-			System.Diagnostics.Debug.Assert(getVGEdgeInternal != null);
+			Debug.Assert(getVGEdgeInternal != null);
 			return (getVGEdgeInternal != null) ? getVGEdgeInternal(this) : null;
 		}
+		#endregion // GetVGEdge method
+		/// <summary>
+		/// Calls <see cref="InitializeLineRouting()"/>.
+		/// </summary>
+		public override void OnInitialize()
+		{
+			base.OnInitialize();
+			this.InitializeLineRouting();
+		}
+		/// <summary>
+		/// Calls <see cref="InitializeLineRouting()"/>.
+		/// </summary>
+		public override void Connect(NodeShape fromShape, NodeShape toShape)
+		{
+			base.Connect(fromShape, toShape);
+			InitializeLineRouting();
+		}
+		/// <summary>
+		/// Calls <see cref="InitializeLineRouting()"/>.
+		/// </summary>
+		public override void OnShapeInserted()
+		{
+			base.OnShapeInserted();
+			this.InitializeLineRouting();
+		}
+		/// <summary>
+		/// Initializes line routing with correct settings.
+		/// </summary>
+		private void InitializeLineRouting()
+		{
+			VGEdge vgEdge = GetVGEdge();
+			if (vgEdge != null)
+			{
+				// ORM lines cross, they don't jump.
+				vgEdge.RouteJumpType = (int)VGObjectLineJumpCode.VGObjectJumpCodeNever;
+				vgEdge.RoutingStyle = VGRoutingStyle.VGRouteCenterToCenter;
+
+				// This call will be ignored if we're not in a transaction, but that's OK...
+				base.RecalculateRoute();
+			}
+		}
+		[RuleOn(typeof(LinkConnectsToNode), Priority=100)] // Priority after the default rule
+		private class HackConnectionPointRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == LinkConnectsToNode.NodesDomainRoleId)
+				{
+					ORMBaseBinaryLinkShape shape = (e.ElementLink as LinkConnectsToNode).Link as ORMBaseBinaryLinkShape;
+					if (shape != null)
+					{
+						shape.InitializeLineRouting();
+					}
+				}
+			}
+		}
+		#endregion // ConnectionPoint Workaround Hacks
+		#region Customize appearance
 		/// <summary>
 		/// Specify CenterToCenter routing style so we can
 		/// locate our objects in DoFoldToShape
@@ -99,8 +159,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return LineRoutingStyle.Straight;
 			}
 		}
-		#endregion // GetVGEdge method
-		#region Customize appearance
 		/// <summary>
 		/// Selecting links gets in the way of selecting roleboxes, etc.
 		/// It is best just to turn them off. This also eliminates a bunch of unnamed
@@ -122,38 +180,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return false;
-			}
-		}
-		/// <summary>
-		/// Calls <see cref="InitializeLineRouting()"/>.
-		/// </summary>
-		public override void OnInitialize()
-		{
-			base.OnInitialize();
-			this.InitializeLineRouting();
-		}
-		/// <summary>
-		/// Calls <see cref="InitializeLineRouting()"/>.
-		/// </summary>
-		public override void OnShapeInserted()
-		{
-			base.OnShapeInserted();
-			this.InitializeLineRouting();
-		}
-		/// <summary>
-		/// Initializes line routing with correct settings.
-		/// </summary>
-		public void InitializeLineRouting()
-		{
-			VGEdge vgEdge = GetVGEdge();
-			if (vgEdge != null)
-			{
-				// ORM lines cross, they don't jump.
-				vgEdge.RouteJumpType = (int)VGObjectLineJumpCode.VGObjectJumpCodeNever;
-				vgEdge.RoutingStyle = VGRoutingStyle.VGRouteCenterToCenter;
-
-				// This call will be ignored if we're not in a transaction, but that's OK...
-				base.RecalculateRoute();
 			}
 		}
 		/// <summary>
@@ -222,6 +248,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
 			return retVal;
 		}
+
 		#region LinkChangeRule class
 		/// <summary>
 		/// Keep relative child elements a fixed distance away from the fact
@@ -337,6 +364,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Link connect shapes do not show a shadow
+		/// </summary>
+		/// <value>false</value>
+		public override bool HasShadow
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Link connector shapes cannot be moved
 		/// </summary>
 		public override bool CanMove
@@ -344,6 +382,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return false;
+			}
+		}
+		/// <summary>
+		/// Default to no sides being resizable.
+		/// </summary>
+		public override NodeSides ResizableSides
+		{
+			get
+			{
+				return NodeSides.None;
+			}
+		}
+		/// <summary>
+		/// Link connector shapes do not have an outline
+		/// </summary>
+		public override bool HasOutline
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// The default implementation picks up the diagram grid size
+		/// as the minimum, which makes this visible. We don't want it visible.
+		/// </summary>
+		public override SizeD MinimumSize
+		{
+			get
+			{
+				return SizeD.Empty;
 			}
 		}
 		/// <summary>

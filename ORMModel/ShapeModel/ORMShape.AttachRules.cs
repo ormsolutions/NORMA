@@ -53,6 +53,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseBinaryLinkShape).GetNestedType("HackConnectionPointRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorDeleting", BindingFlags.Public | BindingFlags.NonPublic),

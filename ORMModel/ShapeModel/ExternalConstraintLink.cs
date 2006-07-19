@@ -231,7 +231,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (efc is FactSetComparisonConstraint)
 				{
 					SubsetConstraint sConstraint;
-					if (null != (sConstraint = efc.LinkedElements[0] as SubsetConstraint))
+					if (null != (sConstraint = efc.LinkedElements[1] as SubsetConstraint))
 					{
 						LinkConnectsToNode fromNode = FromLinkConnectsToNode;
 						Debug.Assert(fromNode.Nodes is FactTypeShape); // expect connection to a FactTypeShape only
