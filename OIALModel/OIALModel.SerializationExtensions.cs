@@ -68,7 +68,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
-			retVal[dataDir.FindDomainRelationship(ConceptTypeHasChild.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ChildSequenceConstraintHasChildSequence.DomainClassId)] = null;
 			return retVal;
 		}
@@ -868,6 +867,14 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == ConceptTypeHasChild.ParentDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "Parent", null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ConceptTypeHasChild.ChildDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "Child", null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
 		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
@@ -895,6 +902,10 @@ namespace Neumont.Tools.ORM.OIALModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeRef.ReferencingConceptTypeDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasChild.ParentDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 4;
+				domainRole = domainDataDirectory.FindDomainRole(ConceptTypeHasChild.ChildDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 5;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -1060,6 +1071,10 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (roleId == ConceptTypeHasInformationType.ConceptTypeDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "InformationTypeLink", null, ORMCustomSerializedElementWriteStyle.EmbeddingLinkElement, null);
+			}
+			if (roleId == ConceptTypeHasChild.ParentDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "Parent", null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}

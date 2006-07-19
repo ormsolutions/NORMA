@@ -1187,7 +1187,13 @@ namespace Neumont.Tools.ORM.OIALModel
 						AbsorbedFactType absorbedFactType;
 						myAbsorbedFactTypes.TryGetValue(factType.Id, out absorbedFactType);
 						Guid id = absorbedFactType.AbsorberId;
-						if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null)
+						// UNDONE: We need to check that the factList collection does not already contain the fact type. However,
+						// this condition will only be true in very rare cases, i.e. when a concept type plays a role with itself
+						// and we need to generate only one ConceptTypeRef instead of two. Is there a better way to do this without
+						// the check
+						int factListCount = factList.Count;
+						if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null &&
+							(factListCount == 0 || factList[factListCount - 1] != factType))
 						{
 							factList.Add(factType);
 							break;
@@ -1241,7 +1247,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					}
 					GetInformationTypes(store, conceptType, oppositeRole, baseName, constraintModality, constraints);
 				}
-				else if (oppositeRolePlayerDesiredParentOrTopLevelTypeId.Equals(objectId))
+				else if (oppositeRolePlayerDesiredParentOrTopLevelTypeId.Equals(objectId) && oppositeRolePlayer != conceptObjectType)
 				{
 					// CHANGE: Look at the immediate absorbed concept types of the current concept type. If the concept type is not present,
 					// we do not do any processing, because we know that later on another concept type will account for the information types
@@ -1258,10 +1264,8 @@ namespace Neumont.Tools.ORM.OIALModel
 							break;
 						}
 					}
-					if (absorbedConceptType == null)
-					{
-						return;
-					}
+					Debug.Assert(absorbedConceptType != null, "AbsorbedConceptType cannot be null.");
+					
 					InformationTypesAndConceptTypeRefs(store, absorbedConceptType);
 				}
 				else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
@@ -1269,24 +1273,29 @@ namespace Neumont.Tools.ORM.OIALModel
 					ConceptType referencedConceptType = GetConceptType(ConceptTypeCollection, oppositeRolePlayer, store);
 					Debug.Assert(referencedConceptType != null, "Referenced concept type should not be null.");
 					conceptType.ReferencedConceptTypeCollection.Add(referencedConceptType);
-					foreach (ConceptTypeRef conceptTypeRef in ConceptTypeRef.GetLinksToReferencingConceptType(conceptType))
+					ReadOnlyCollection<ConceptTypeRef> conceptTypeRefCollection = ConceptTypeRef.GetLinksToReferencingConceptType(referencedConceptType);
+					Debug.Assert(conceptTypeRefCollection.Count != 0, "ConceptTypeRefCollection should not be empty.");
+					ConceptTypeRef conceptTypeRef = conceptTypeRefCollection[conceptTypeRefCollection.Count - 1];
+					conceptTypeRef.PathRoleCollection.Add(oppositeRole);
+					string oppName = oppositeRole.Name;
+					if (string.Empty == oppName)
 					{
-						conceptTypeRef.PathRoleCollection.Add(oppositeRole);
-						conceptTypeRef.OppositeName = referencedConceptType.ObjectType.Name;
-						if (thisRole.IsMandatory)
-						{
-							switch (thisRole.MandatoryConstraintModality)
-							{
-								case ConstraintModality.Alethic:
-									conceptTypeRef.Mandatory = MandatoryConstraintModality.Alethic;
-									break;
-								case ConstraintModality.Deontic:
-									conceptTypeRef.Mandatory = MandatoryConstraintModality.Deontic;
-									break;
-							}
-						}
-						conceptTypeRef.SingleChildConstraintCollection.AddRange(constraints);
+						oppName = oppositeRolePlayer.Name;
 					}
+					conceptTypeRef.OppositeName = oppName;
+					if (thisRole.IsMandatory)
+					{
+						switch (thisRole.MandatoryConstraintModality)
+						{
+							case ConstraintModality.Alethic:
+								conceptTypeRef.Mandatory = MandatoryConstraintModality.Alethic;
+								break;
+							case ConstraintModality.Deontic:
+								conceptTypeRef.Mandatory = MandatoryConstraintModality.Deontic;
+								break;
+						}
+					}
+					conceptTypeRef.SingleChildConstraintCollection.AddRange(constraints);
 				}
 			}
 		}
@@ -1303,6 +1312,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		private void GetInformationTypes(Store store, ConceptType conceptType, Role oppositeRole, string baseName, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
 		{
 			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<RoleBase>(), mandatory, constraints);
+			// Later on there will be more processing here to handle nullable equality constraints, etc.
 		}
 		/// <summary>
 		/// Gets an <see cref="InformationType"/> for the particular <see cref="ConceptType"/> passed to it, based on the <see cref="Role"/>
@@ -1428,8 +1438,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			for (int i = 0; i < constraintCount; ++i)
 			{
 				UniquenessConstraint uConstraint = constraintCollection[i] as UniquenessConstraint;
-				if (uConstraint != null && uConstraint.IsInternal)
+				if (uConstraint != null && uConstraint.RoleCollection.Count == 1)
 				{
+					Debug.Assert(uConstraint.IsInternal, "Uniqueness Constraint with role collection count of 1 must be internal.");
 					yield return new SingleChildUniquenessConstraint(store,
 						new PropertyAssignment(SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
 						new PropertyAssignment(SingleChildUniquenessConstraint.ModalityDomainPropertyId, uConstraint.Modality));
@@ -1448,7 +1459,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				LinkedElementCollection<Role> roleCollection = uConstraint.RoleCollection;
 				// Checking the role collection count is not equal to zero ensures that we have only ExternalUniquenessConstraints
-				if (!uConstraint.IsInternal && roleCollection.Count != 1)
+				if (roleCollection.Count != 1)
 				{
 					MinTwoChildrenChildSequence minTwoChildrenChildSequence = new MinTwoChildrenChildSequence(store);
 					foreach (Role role in roleCollection)

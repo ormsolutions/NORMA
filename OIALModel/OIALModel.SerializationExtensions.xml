@@ -25,7 +25,6 @@
 			<se:RootElement Class="OIALModel" Name="Model"/>
 		</se:RootElements>
 		<se:OmittedDomainElements>
-			<se:OmitRelationship Class="ConceptTypeHasChild"/>
 			<se:OmitRelationship Class="ChildSequenceConstraintHasChildSequence"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
@@ -68,11 +67,14 @@
 		<se:Link Name="ConceptTypeLink" RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbingConceptType" WriteStyle="EmbeddingLinkElement"/>
 		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptType" Name="ReferencedConceptType" WriteStyle="PrimaryLinkElement" />
 		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencingConceptType" WriteStyle="NotWritten"/>
+		<se:Link Name="Parent" RelationshipName="ConceptTypeHasChild" RoleName="Parent" WriteStyle="NotWritten"/>
+		<se:Link Name="Child" RelationshipName="ConceptTypeHasChild" RoleName="Child" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- InformationTypes -->
 	<se:Element Class="InformationType">
 		<se:Link Name="InformationTypeFormat" RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
 		<se:Link Name="InformationTypeLink" RelationshipName="ConceptTypeHasInformationType" RoleName="ConceptType" WriteStyle="EmbeddingLinkElement"/>
+		<se:Link Name="Parent" RelationshipName="ConceptTypeHasChild" RoleName="Parent" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- ConceptTypeHasChild -->
 	<se:Element Class="ConceptTypeHasChild">
