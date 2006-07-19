@@ -103,7 +103,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // Event handlers
 
 			#region Dispose method
-			protected override void Dispose(bool disposing)
+			protected sealed override void Dispose(bool disposing)
 			{
 				if (disposing && !base.IsDisposed)
 				{
@@ -132,7 +132,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // Dispose method
 
 			#region OnGotFocus method
-			protected override void OnGotFocus(EventArgs e)
+			protected sealed override void OnGotFocus(EventArgs e)
 			{
 				DiagramView designer = Designer;
 				if (designer != null)
@@ -143,7 +143,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // OnGotFocus method
 
 			#region ResetText method
-			public override void ResetText()
+			public sealed override void ResetText()
 			{
 				Diagram diagram = Diagram;
 				if (diagram != null)
@@ -158,7 +158,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion
 
 			#region Text property
-			public override string Text
+			public sealed override string Text
 			{
 				get
 				{
@@ -169,8 +169,8 @@ namespace Neumont.Tools.ORM.Framework
 					// more elegant workaround.
 					string text = base.Text;
 					int textLength = text.Length;
-					int reducedLength = (int)(text.Length * 0.8);
-					return (reducedLength < textLength) ? text.Remove(reducedLength) : text;
+					int reducedLength = (int)(textLength * 0.8);
+					return (reducedLength < textLength && textLength > 4) ? text.Remove(reducedLength) : text;
 				}
 				set
 				{
@@ -188,7 +188,7 @@ namespace Neumont.Tools.ORM.Framework
 							Debug.Assert(diagram.Name == base.Text);
 							if (diagram.Name != value)
 							{
-								DomainClassInfo.SetName(diagram, value);
+								new ElementPropertyDescriptor(diagram, diagram.GetDomainClass().NameDomainProperty, null).SetValue(diagram, value);
 							}
 							// base.Text will be updated via the DiagramNameChanged event handler
 						}
@@ -199,7 +199,7 @@ namespace Neumont.Tools.ORM.Framework
 
 			#region Font property
 			// This is not currently used by TabControl (it just uses its own), but just in case that changes in the future...
-			public override Font Font
+			public sealed override Font Font
 			{
 				get
 				{
@@ -213,7 +213,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // Font property
 
 			#region DefaultMargin property
-			protected override Padding DefaultMargin
+			protected sealed override Padding DefaultMargin
 			{
 				get
 				{

@@ -1124,7 +1124,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NestedFactTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
-		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.Design.ExpandableElementConverter))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/NestedFactTypeDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/NestedFactTypeDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -2534,7 +2533,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NestingTypePicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
-		[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.Design.ExpandableElementConverter))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/NestingTypeDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/NestingTypeDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]

@@ -56,7 +56,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						break;
 					case 2:
 						// ObjectifiedFactType
-						group.AddGraph(new Objectification(objectType, AddFactType(store, group, 2)), true);
+						group.AddGraph(new Objectification(objectType, AddFactType(store, group, 2)), false);
 						break;
 					default:
 						unknownItem = true;
@@ -66,7 +66,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			else if (domainClassId.Equals(FactType.DomainClassId))
 			{
 				Debug.Assert(myFactTypeCount < 3);
-				group.AddGraph(AddFactType(store, group, ++myFactTypeCount), true);
+				AddFactType(store, group, ++myFactTypeCount);
 			}
 			else if (domainClassId.Equals(UniquenessConstraint.DomainClassId))
 			{
@@ -117,15 +117,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return unknownItem ? null : group.CreatePrototype();
 		}
 		/// <summary>
-		/// Helper function for CreateElementToolPrototype
+		/// Creates a new <see cref="FactType"/> with the specified <paramref name="arity"/>.
 		/// </summary>
-		/// <param name="store">The context store</param>
-		/// <param name="group">The group to create</param>
-		/// <param name="arity">The number of roles to put on the fact type</param>
-		/// <returns>The created fact type. The fact itself is not added to the group.</returns>
+		/// <param name="store">
+		/// The <see cref="Store"/> in which the new <see cref="FactType"/> should be created.
+		/// </param>
+		/// <param name="group">
+		/// The <see cref="ElementGroup"/> to which the new <see cref="FactType"/> and its <see cref="Role"/>s should
+		/// be added.
+		/// </param>
+		/// <param name="arity">
+		/// The number of <see cref="Role"/>s that the new <see cref="FactType"/> should contain.
+		/// </param>
+		/// <returns>
+		/// The newly created <see cref="FactType"/>.
+		/// </returns>
+		/// <remarks>
+		/// The new <see cref="FactType"/> is added to <paramref name="group"/> as a root element.
+		/// </remarks>
 		private static FactType AddFactType(Store store, ElementGroup group, int arity)
 		{
 			FactType factType = new FactType(store, null);
+			group.AddGraph(factType, true);
 			LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
 			for (int i = 0; i < arity; i++)
 			{

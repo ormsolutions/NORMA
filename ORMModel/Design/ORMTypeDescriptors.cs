@@ -318,8 +318,7 @@ namespace Neumont.Tools.ORM.Design
 			}
 			if (element != null)
 			{
-				TypeDescriptionProvider typeDescriptorProvider = TypeDescriptor.GetProvider(element);
-				ICustomTypeDescriptor typeDescriptor = typeDescriptorProvider.GetTypeDescriptor(element.GetType(), element);
+				ICustomTypeDescriptor typeDescriptor = TypeDescriptor.GetProvider(element).GetTypeDescriptor(element.GetType(), element);
 				Type propertyType = domainPropertyInfo.PropertyType;
 				string propertyName = domainPropertyInfo.Name;
 				PropertyDescriptorCollection propertyDescriptors = typeDescriptor.GetProperties();
@@ -1232,16 +1231,16 @@ namespace Neumont.Tools.ORM.Design
 						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(DisplayRoleNamesDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(NameDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(IsIndependentDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
-						NestedFactTypeDisplayDomainPropertyAttributes = FilterAttributes(GetDomainPropertyAttributes(NestedFactTypeDisplayDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.NestedFactTypeDisplayDomainPropertyId)));
-						NestingTypeDisplayDomainPropertyAttributes = FilterAttributes(GetDomainPropertyAttributes(NestingTypeDisplayDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactType.NestingTypeDisplayDomainPropertyId)));
+						NestedFactTypeDisplayDomainPropertyAttributes = ProcessAttributes(GetDomainPropertyAttributes(NestedFactTypeDisplayDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.NestedFactTypeDisplayDomainPropertyId)));
+						NestingTypeDisplayDomainPropertyAttributes = ProcessAttributes(GetDomainPropertyAttributes(NestingTypeDisplayDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactType.NestingTypeDisplayDomainPropertyId)));
 						Initialized = true;
 					}
 				}
 			}
 		}
-		private static Attribute[] FilterAttributes(Attribute[] attributes)
+		private static Attribute[] ProcessAttributes(Attribute[] attributes)
 		{
-			// Remove the EditorAtttribute if present
+			// Remove the EditorAtttribute if it is present
 			int editorAttributeIndex = -1;
 			for (int i = 0; i < attributes.Length; i++)
 			{
@@ -1251,22 +1250,18 @@ namespace Neumont.Tools.ORM.Design
 					break;
 				}
 			}
-			if (editorAttributeIndex >= 0)
+			Attribute[] newAttributes = new Attribute[attributes.Length + (editorAttributeIndex < 0 ? 1 : 0)];
+			int destIndex = 0;
+			for (int sourceIndex = 0; sourceIndex < attributes.Length; sourceIndex++)
 			{
-				Attribute[] newAttributes = new Attribute[attributes.Length - 1];
-				for (int sourceIndex = 0, destIndex = 0; sourceIndex < attributes.Length; sourceIndex++)
+				if (sourceIndex != editorAttributeIndex)
 				{
-					if (sourceIndex != editorAttributeIndex)
-					{
-						newAttributes[destIndex++] = attributes[sourceIndex];
-					}
+					newAttributes[destIndex++] = attributes[sourceIndex];
 				}
-				return newAttributes;
 			}
-			else
-			{
-				return attributes;
-			}
+			// Add the TypeConverterAttribute
+			newAttributes[destIndex] = new TypeConverterAttribute(typeof(ExpandableElementConverter));
+			return newAttributes;
 		}
 
 		/// <summary>

@@ -144,11 +144,6 @@
 								<AttributeParameter Value="false"/>
 							</Parameters>
 						</ClrAttribute>
-						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ExpandableElementConverter)"/>
-							</Parameters>
-						</ClrAttribute>
 					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
@@ -258,11 +253,6 @@
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
 								<AttributeParameter Value="false"/>
-							</Parameters>
-						</ClrAttribute>
-						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ExpandableElementConverter)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>

@@ -46,11 +46,11 @@ namespace Neumont.Tools.ORM.Framework
 					base.TabStop = false;
 					base.BackColor = Color.Transparent;
 				}
-				protected override void OnGotFocus(EventArgs e)
+				protected sealed override void OnGotFocus(EventArgs e)
 				{
 					base.Controls[0].Focus();
 				}
-				protected override void OnMouseClick(MouseEventArgs e)
+				protected sealed override void OnMouseClick(MouseEventArgs e)
 				{
 					// Show context menu on single right click if it is not in the child's display area
 					Control docViewControl;
@@ -60,14 +60,14 @@ namespace Neumont.Tools.ORM.Framework
 					}
 					base.OnMouseClick(e);
 				}
-				protected override Padding DefaultMargin
+				protected sealed override Padding DefaultMargin
 				{
 					get
 					{
 						return Padding.Empty;
 					}
 				}
-				protected override void Dispose(bool disposing)
+				protected sealed override void Dispose(bool disposing)
 				{
 					try
 					{
@@ -125,7 +125,7 @@ namespace Neumont.Tools.ORM.Framework
 			#region Properties
 
 			#region DefaultMargin property
-			protected override Padding DefaultMargin
+			protected sealed override Padding DefaultMargin
 			{
 				get
 				{
@@ -135,7 +135,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // DefaultMargin property
 
 			#region DisplayRectangle property
-			public override Rectangle DisplayRectangle
+			public sealed override Rectangle DisplayRectangle
 			{
 				get
 				{
@@ -161,7 +161,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // SelectedDiagramTab property
 
 			#region Font property
-			public override Font Font
+			public sealed override Font Font
 			{
 				get
 				{
@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // SetFonts method
 
 			#region Dispose method
-			protected override void Dispose(bool disposing)
+			protected sealed override void Dispose(bool disposing)
 			{
 				try
 				{
@@ -229,7 +229,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // Dispose method
 
 			#region OnGotFocus method
-			protected override void OnGotFocus(EventArgs e)
+			protected sealed override void OnGotFocus(EventArgs e)
 			{
 				TabPage tabPage = base.SelectedTab;
 				if (tabPage != null)
@@ -240,7 +240,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // OnGotFocus method
 
 			#region OnDoubleClick method
-			protected override void OnMouseDoubleClick(MouseEventArgs e)
+			protected sealed override void OnMouseDoubleClick(MouseEventArgs e)
 			{
 				Point point = e.Location;
 				if (e.Button == MouseButtons.Left && !DisplayRectangle.Contains(point))
@@ -285,7 +285,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // RenameTabAtPoint method
 
 			#region OnSelectedIndexChanged method
-			protected override void OnSelectedIndexChanged(EventArgs e)
+			protected sealed override void OnSelectedIndexChanged(EventArgs e)
 			{
 				base.OnSelectedIndexChanged(e);
 				DiagramTabPage tabPage = SelectedDiagramTab;
@@ -386,7 +386,7 @@ namespace Neumont.Tools.ORM.Framework
 			#endregion // GetDesignerFromTabAtPoint method
 
 			#region OnPaint method
-			protected override void OnPaint(PaintEventArgs e)
+			protected sealed override void OnPaint(PaintEventArgs e)
 			{
 				Graphics g = e.Graphics;
 				TabPageCollection tabPages = base.TabPages;
@@ -491,7 +491,7 @@ namespace Neumont.Tools.ORM.Framework
 					base.Focus();
 				}
 
-				protected override void Dispose(bool disposing)
+				protected sealed override void Dispose(bool disposing)
 				{
 					if (disposing)
 					{
@@ -501,14 +501,16 @@ namespace Neumont.Tools.ORM.Framework
 					base.Dispose(disposing);
 				}
 
+				private bool mySavedChanges;
 				public void Close(bool saveChanges)
 				{
 					base.Visible = false;
 					if (!base.Disposing && !base.IsDisposed)
 					{
-						if (saveChanges && base.Modified)
+						if (!mySavedChanges && saveChanges && base.Modified)
 						{
 							RenamingTabPage.Text = base.Text;
+							mySavedChanges = true;
 						}
 						if (base.Focused)
 						{
@@ -519,12 +521,12 @@ namespace Neumont.Tools.ORM.Framework
 					}
 				}
 
-				protected override void OnLostFocus(EventArgs e)
+				protected sealed override void OnLostFocus(EventArgs e)
 				{
 					base.OnLostFocus(e);
 					Close(true);
 				}
-				protected override bool ProcessDialogKey(Keys keyData)
+				protected sealed override bool ProcessDialogKey(Keys keyData)
 				{
 					if (keyData == Keys.Enter || keyData == Keys.Escape)
 					{
@@ -537,14 +539,14 @@ namespace Neumont.Tools.ORM.Framework
 					}
 				}
 
-				protected override Padding DefaultMargin
+				protected sealed override Padding DefaultMargin
 				{
 					get
 					{
 						return Padding.Empty;
 					}
 				}
-				public override Font Font
+				public sealed override Font Font
 				{
 					get
 					{

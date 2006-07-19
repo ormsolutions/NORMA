@@ -463,17 +463,18 @@ namespace Neumont.Tools.ORM.Design
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			object component;
-			PropertyDescriptor propertyDescriptor;
+			PropertyDescriptor elementPropertyDescriptor;
 			string stringValue;
 			ModelElement element;
+			PropertyDescriptor namePropertyDescriptor;
 			if (context != null &&
 				(component = context.Instance) != null &&
-				(propertyDescriptor = context.PropertyDescriptor) != null &&
+				(elementPropertyDescriptor = context.PropertyDescriptor) != null &&
 				(object)(stringValue = value as string) != null &&
-				(element = propertyDescriptor.GetValue(component) as ModelElement) != null &&
-				DomainClassInfo.HasNameProperty(element))
+				(element = elementPropertyDescriptor.GetValue(component) as ModelElement) != null &&
+				(namePropertyDescriptor = ORMTypeDescriptor.CreateNamePropertyDescriptor(element)) != null)
 			{
-				DomainClassInfo.SetName(element, stringValue);
+				namePropertyDescriptor.SetValue(element, stringValue);
 				return element;
 			}
 			return base.ConvertFrom(context, culture, value);
