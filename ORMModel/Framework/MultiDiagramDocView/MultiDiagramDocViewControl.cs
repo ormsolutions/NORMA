@@ -94,7 +94,7 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // ParentControl
-
+			#region Constructor
 			public readonly MultiDiagramDocView DocView;
 			public MultiDiagramDocViewControl(MultiDiagramDocView docView)
 			{
@@ -121,9 +121,8 @@ namespace Neumont.Tools.ORM.Framework
 				base.ResumeLayout(false);
 				parentControl.ResumeLayout(false);
 			}
-
+			#endregion // Constructor
 			#region Properties
-
 			#region DefaultMargin property
 			protected sealed override Padding DefaultMargin
 			{
@@ -133,7 +132,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // DefaultMargin property
-
 			#region DisplayRectangle property
 			public sealed override Rectangle DisplayRectangle
 			{
@@ -148,7 +146,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // DisplayRectangle property
-
 			#region SelectedDiagramTab property
 			public DiagramTabPage SelectedDiagramTab
 			{
@@ -159,7 +156,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // SelectedDiagramTab property
-
 			#region Font property
 			public sealed override Font Font
 			{
@@ -178,9 +174,7 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // Font property
-
 			#endregion // Properties
-
 			#region SetFonts method
 			private void SetFonts(object sender, EventArgs e)
 			{
@@ -195,7 +189,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // SetFonts method
-
 			#region Dispose method
 			protected sealed override void Dispose(bool disposing)
 			{
@@ -227,7 +220,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // Dispose method
-
 			#region OnGotFocus method
 			protected sealed override void OnGotFocus(EventArgs e)
 			{
@@ -238,7 +230,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // OnGotFocus method
-
 			#region OnDoubleClick method
 			protected sealed override void OnMouseDoubleClick(MouseEventArgs e)
 			{
@@ -250,7 +241,6 @@ namespace Neumont.Tools.ORM.Framework
 				base.OnMouseDoubleClick(e);
 			}
 			#endregion // OnDoubleClick method
-
 			#region RenameTab method
 			private void RenameTab(DiagramTabPage tabPage)
 			{
@@ -276,14 +266,12 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // RenameTab method
-
 			#region RenameTabAtPoint method
 			public void RenameTabAtPoint(Point point)
 			{
 				RenameTab(GetTabAtPoint(base.PointToClient(point)));
 			}
 			#endregion // RenameTabAtPoint method
-
 			#region OnSelectedIndexChanged method
 			protected sealed override void OnSelectedIndexChanged(EventArgs e)
 			{
@@ -301,7 +289,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // OnSelectedIndexChanged method
-
 			#region IndexOf methods
 			public int IndexOf(DiagramView designer, int startingIndex)
 			{
@@ -330,7 +317,6 @@ namespace Neumont.Tools.ORM.Framework
 				return -1;
 			}
 			#endregion // IndexOf methods
-
 			#region GetTabAtPoint method
 			[System.Security.SuppressUnmanagedCodeSecurity]
 			private static class UnsafeNativeMethods
@@ -376,7 +362,6 @@ namespace Neumont.Tools.ORM.Framework
 				return null;
 			}
 			#endregion // GetTabAtPoint method
-
 			#region GetDesignerFromTabAtPoint method
 			public DiagramView GetDesignerFromTabAtPoint(Point point)
 			{
@@ -384,7 +369,6 @@ namespace Neumont.Tools.ORM.Framework
 				return (tabPage != null) ? tabPage.Designer : null;
 			}
 			#endregion // GetDesignerFromTabAtPoint method
-
 			#region OnPaint method
 			protected sealed override void OnPaint(PaintEventArgs e)
 			{
@@ -411,7 +395,6 @@ namespace Neumont.Tools.ORM.Framework
 				base.OnPaint(e);
 			}
 			#endregion // OnPaint method
-
 			#region DrawTab method
 			private const int TabOutsideBorderInflate = -2;
 			private const int TabInsideBorderInflate = -3;
@@ -467,7 +450,6 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 			#endregion // DrawTab method
-
 			#region Inline rename support
 			private InlineTabRenameTextBox myRenamingTextBox;
 			

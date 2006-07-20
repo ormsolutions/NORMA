@@ -33,6 +33,7 @@ namespace Neumont.Tools.ORM.Framework
 	[CLSCompliant(false)]
 	public abstract partial class MultiDiagramDocView : DiagramDocView
 	{
+		#region Constructor
 		/// <summary>
 		/// Instantiates a new instance of <see cref="MultiDiagramDocView"/>.
 		/// </summary>
@@ -43,17 +44,20 @@ namespace Neumont.Tools.ORM.Framework
 		{
 			myDiagramRefCounts = new Dictionary<Diagram, int>();
 		}
-
+		#endregion // Constructor
+		#region DocViewControl Delayed Creation
 		private readonly Dictionary<Diagram, int> myDiagramRefCounts;
 		private MultiDiagramDocViewControl myDocViewControl;
-		private void EnsureDocViewControl()
+		private MultiDiagramDocViewControl EnsureDocViewControl()
 		{
-			if (myDocViewControl == null)
+			MultiDiagramDocViewControl retVal = myDocViewControl;
+			if (retVal == null)
 			{
-				myDocViewControl = new MultiDiagramDocViewControl(this);
+				myDocViewControl = retVal = new MultiDiagramDocViewControl(this);
 			}
+			return retVal;
 		}
-
+		#endregion // DocViewControl Delayed Creation
 		#region Constants
 		/// <summary>
 		/// The <see cref="Size.Width"/> of <see cref="Image"/>s displayed on tabs.
@@ -68,7 +72,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// </summary>
 		public static readonly Size DiagramImageSize = new Size(DiagramImageWidth, DiagramImageHeight);
 		#endregion // Constants
-
+		#region Properties
 		#region ContextMenuStrip property
 		/// <summary>
 		/// Gets or sets the <see cref="ContextMenuStrip"/> for this <see cref="MultiDiagramDocView"/>.
@@ -81,24 +85,20 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			set
 			{
-				EnsureDocViewControl();
-				myDocViewControl.ContextMenuStrip = value;
+				EnsureDocViewControl().ContextMenuStrip = value;
 			}
 		}
 		#endregion // ContextMenuStrip property
-
 		#region Window property
 		/// <summary>See <see cref="Microsoft.VisualStudio.Shell.WindowPane.Window"/>.</summary>
 		public override IWin32Window Window
 		{
 			get
 			{
-				EnsureDocViewControl();
-				return myDocViewControl.Parent;
+				return EnsureDocViewControl().Parent;
 			}
 		}
 		#endregion // Window property
-
 		#region CurrentDesigner property
 		/// <summary>See <see cref="DiagramDocView.CurrentDesigner"/>.</summary>
 		public override VSDiagramView CurrentDesigner
@@ -118,7 +118,6 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // CurrentDesigner property
-
 		#region CurrentDiagram property
 		/// <summary>See <see cref="DiagramDocView.CurrentDiagram"/>.</summary>
 		public override Diagram CurrentDiagram
@@ -138,7 +137,8 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // CurrentDiagram property
-
+		#endregion // Properties
+		#region Methods
 		#region RegisterImageForDiagramType method
 		/// <summary>
 		/// Associates the <see cref="Image"/> specified by <paramref name="image"/> with the <see cref="Type"/>
@@ -162,8 +162,7 @@ namespace Neumont.Tools.ORM.Framework
 			{
 				throw new ArgumentNullException("diagramType");
 			}
-			EnsureDocViewControl();
-			MultiDiagramDocViewControl docViewControl = myDocViewControl;
+			MultiDiagramDocViewControl docViewControl = EnsureDocViewControl();
 			ImageList imageList = docViewControl.ImageList;
 			if (imageList == null)
 			{
@@ -190,7 +189,6 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // RegisterImageForDiagramType method
-
 		#region GetDesignerAtPoint method
 		/// <summary>
 		/// Returns the <see cref="DiagramView"/> displayed on the tab at the <see cref="Point"/> specified
@@ -214,7 +212,6 @@ namespace Neumont.Tools.ORM.Framework
 			return null;
 		}
 		#endregion // GetDesignerAtPoint method
-
 		#region RenameDiagramAtPoint method
 		/// <summary>
 		/// Activates the user interface for renaming the <see cref="Diagram"/> displayed on the tab at the
@@ -233,7 +230,6 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // RenameDiagramAtPoint method
-
 		#region Add methods
 		/// <summary>
 		/// Adds the <see cref="Diagram"/> specified by <paramref name="diagram"/> to this <see cref="MultiDiagramDocView"/>.
@@ -277,8 +273,7 @@ namespace Neumont.Tools.ORM.Framework
 			{
 				throw new ArgumentNullException("designer");
 			}
-			EnsureDocViewControl();
-			MultiDiagramDocViewControl docViewControl = myDocViewControl;
+			MultiDiagramDocViewControl docViewControl = EnsureDocViewControl();
 			int tabCount = docViewControl.TabCount;
 			DiagramTabPage tabPage = new DiagramTabPage(docViewControl, designer);
 			Diagram diagram = designer.Diagram;
@@ -300,7 +295,6 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // Add methods
-
 		#region Remove methods
 		/// <summary>
 		/// Removes all <see cref="Diagram"/>s from this <see cref="MultiDiagramDocView"/>.
@@ -398,14 +392,58 @@ namespace Neumont.Tools.ORM.Framework
 			tabPage.Dispose();
 		}
 		#endregion // Remove methods
-
+		#region Activate Methods
+		/// <summary>
+		/// Activate the <see cref="Diagram"/> specified by <paramref name="diagram"/> from this <see cref="MultiDiagramDocView"/>.
+		/// </summary>
+		/// <param name="diagram">The <see cref="Diagram"/> to be activated.</param>
+		/// <returns>Returns true if activation succeeds</returns>
+		public bool ActivateDiagram(Diagram diagram)
+		{
+			if (diagram == null)
+			{
+				throw new ArgumentNullException("diagram");
+			}
+			MultiDiagramDocViewControl control = myDocViewControl;
+			bool retVal = false;
+			int index;
+			if (control != null &&
+				(index = control.IndexOf(diagram, 0)) >= 0)
+			{
+				control.SelectedIndex = index;
+				retVal = true;
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Activates the <see cref="DiagramView"/> specified by <paramref name="designer"/> from this <see cref="MultiDiagramDocView"/>.
+		/// </summary>
+		/// <param name="designer">The <see cref="DiagramView"/> to be activated.</param>
+		/// <returns>Returns true if activation succeeds</returns>
+		public bool ActivateDesigner(DiagramView designer)
+		{
+			if (designer == null)
+			{
+				throw new ArgumentNullException("designer");
+			}
+			MultiDiagramDocViewControl control = myDocViewControl;
+			bool retVal = false;
+			int index;
+			if (control != null &&
+				(index = control.IndexOf(designer, 0)) >= 0)
+			{
+				control.SelectedIndex = index;
+				retVal = true;
+			}
+			return retVal;
+		}
+		#endregion // Activate Methods
 		#region DiagramRemoved event handler
 		private void DiagramRemoved(object sender, ElementDeletedEventArgs e)
 		{
 			RemoveDiagram(e.ModelElement as Diagram);
 		}
 		#endregion // DiagramRemoved event handler
-
 		#region Dispose method
 		/// <summary>See <see cref="DiagramDocView.Dispose"/>.</summary>
 		protected override void Dispose(bool disposing)
@@ -426,5 +464,6 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // Dispose method
+		#endregion // Methods
 	}
 }

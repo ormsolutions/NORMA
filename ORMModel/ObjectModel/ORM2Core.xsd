@@ -222,6 +222,7 @@
 			<xs:element name="TrueOrFalseLogicalDataType" type="TrueOrFalseLogicalDataType"/>
 			<xs:element name="YesOrNoLogicalDataType" type="YesOrNoLogicalDataType"/>
 			<xs:element name="RowIdOtherDataType" type="RowIdOtherDataType"/>
+			<xs:element name="ObjectIdOtherDataType" type="ObjectIdOtherDataType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="DataType" abstract="true">
@@ -336,6 +337,11 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RowIdOtherDataType">
+		<xs:complexContent>
+			<xs:extension base="DataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObjectIdOtherDataType">
 		<xs:complexContent>
 			<xs:extension base="DataType"/>
 		</xs:complexContent>

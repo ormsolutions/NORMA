@@ -25,7 +25,11 @@ using Microsoft.VisualStudio.Shell;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.ORM.Framework;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell.Interop;
+using System.Runtime.InteropServices;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -402,13 +406,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			/// <param name="task"></param>
 			/// <returns></returns>
-			protected static bool NavigateTo(IORMToolTaskItem task)
+			protected bool NavigateTo(IORMToolTaskItem task)
 			{
-				ModelElementLocator elementLocator = ORMDesignerDocView.ElementLocator;
-				if (elementLocator == null)
-				{
-					return false;
-				}
 				ModelElement element = null;
 				IRepresentModelElements locator = task.ElementLocator;
 				if (locator != null)
@@ -423,6 +422,22 @@ namespace Neumont.Tools.ORM.Shell
 				ModelElement startElement = element;
 				IProxyDisplayProvider proxyProvider = null;
 				bool useProxy = false;
+				bool haveCurrentDesigner = false;
+				DiagramDocView currentDocView = null;
+				VSDiagramView currentDesigner = null;
+
+				// The shape priority is:
+				// 1) The first shape on a diagram which is the ActiveDiagramView for the current designer
+				// 2) The first shape with an active diagram view
+				// 3) The first shape.
+				// We'll walk through the collection first to pick up the different elements
+				const int ActiveViewOnActiveDocView = 0;
+				const int ActiveView = 1;
+				const int FirstShape = 2;
+				const int SelectShapesSize = 3;
+				ShapeElement[] selectShapes = new ShapeElement[SelectShapesSize];
+				bool selectShapesInitialized = true;
+				ORMDesignerDocData targetDocData = myDocument;
 				// UNDONE: Move navigation code from here down into 
 				// docdata and docview classes so we can use it elsewhere
 				while (element != null)
@@ -443,37 +458,187 @@ namespace Neumont.Tools.ORM.Shell
 					if (selectElement != null)
 					{
 						bool continueNow = false;
+
+						// Grab the shapes in priority order
+						if (!selectShapesInitialized)
+						{
+							selectShapes.Initialize();
+							selectShapesInitialized = true;
+						}
 						foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(selectElement))
 						{
 							ShapeElement shape = pel as ShapeElement;
 							if (shape != null)
 							{
-								if (proxyProvider == null)
+								// Get the current active designer
+								if (!haveCurrentDesigner)
 								{
-									proxyProvider = shape as IProxyDisplayProvider;
-								}
-								if (element is ORMModel && !useProxy && element != startElement)
-								{
-									if (proxyProvider != null)
+									haveCurrentDesigner = true;
+									IServiceProvider serviceProvider;
+									IMonitorSelectionService selectionService;
+									DiagramDocView currentView;
+									if (null != (serviceProvider = targetDocData.ServiceProvider) &&
+										null != (selectionService = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService))) &&
+										null != (currentView = selectionService.CurrentDocumentView as DiagramDocView) &&
+										currentView.DocData == targetDocData)
 									{
-										useProxy = true;
-										element = startElement;
-										continueNow = true;
-										break;
+										currentDocView = currentView;
+										currentDesigner = currentDocView.CurrentDesigner;
 									}
 								}
-								// Select the shape
-								bool retVal = elementLocator.NavigateTo(Guid.Empty, shape);
-								if (retVal)
+
+								// Get the shapes in priority
+								Diagram diagram = shape.Diagram;
+								if (diagram != null)
 								{
-									ModelError error;
-									IModelErrorActivation activator;
-									if (null != (error = locator as ModelError) &
-										null != (activator = shape as IModelErrorActivation))
+									selectShapesInitialized = false;
+									if (selectShapes[FirstShape] == null)
 									{
-										activator.ActivateModelError(error);
+										selectShapes[FirstShape] = shape;
 									}
-									return true;
+									VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
+									if (diagramView != null)
+									{
+										if (selectShapes[ActiveView] == null)
+										{
+											selectShapes[ActiveView] = shape;
+										}
+										if (diagramView == currentDesigner)
+										{
+											if (selectShapes[ActiveViewOnActiveDocView] == null)
+											{
+												selectShapes[ActiveViewOnActiveDocView] = shape;
+											}
+										}
+									}
+								}
+							}
+						}
+
+						// Walk the shapes in priority order and try to select them
+						if (!selectShapesInitialized)
+						{
+							for (int i = 0; i < SelectShapesSize; ++i)
+							{
+								ShapeElement shape = selectShapes[i];
+								if (shape != null)
+								{
+									if (proxyProvider == null)
+									{
+										proxyProvider = shape as IProxyDisplayProvider;
+									}
+									if (!useProxy && element is ORMModel && element != startElement)
+									{
+										if (proxyProvider != null)
+										{
+											useProxy = true;
+											element = startElement;
+											continueNow = true;
+											break;
+										}
+									}
+
+									// Select the correct document, activate it, select the correct tab,
+									// then select the shape.
+									Diagram diagram = shape.Diagram;
+									Debug.Assert(diagram != null); // Checked in first pass through shape elements
+									VSDiagramView diagramView = diagram.ActiveDiagramView as VSDiagramView;
+									MultiDiagramDocView docView;
+									VSDiagramView selectOnView = null;
+									if (diagramView != null)
+									{
+										if (currentDesigner != null && diagramView == currentDesigner)
+										{
+											selectOnView = diagramView;
+										}
+										else if (null != (docView = diagramView.DocView as MultiDiagramDocView))
+										{
+											selectOnView = diagramView;
+											docView.Show();
+										}
+									}
+									else if (null != (docView = currentDocView as MultiDiagramDocView))
+									{
+										if (docView.ActivateDiagram(diagram))
+										{
+											selectOnView = docView.CurrentDesigner;
+										}
+									}
+									else
+									{
+										// Walk all the documents and invalidate ORM diagrams if the options have changed
+										#region Walk RunningDocumentTable
+										IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)targetDocData.ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+										IEnumRunningDocuments docIter;
+										ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
+										int hrIter;
+										uint[] currentDocs = new uint[1];
+										uint fetched = 0;
+										do
+										{
+											ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
+											if (hrIter == 0)
+											{
+												uint grfRDTFlags;
+												uint dwReadLocks;
+												uint dwEditLocks;
+												string bstrMkDocument;
+												IVsHierarchy pHier;
+												uint itemId;
+												IntPtr punkDocData = IntPtr.Zero;
+												ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
+													currentDocs[0],
+													out grfRDTFlags,
+													out dwReadLocks,
+													out dwEditLocks,
+													out bstrMkDocument,
+													out pHier,
+													out itemId,
+													out punkDocData));
+												try
+												{
+													ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
+													if (targetDocData == docData)
+													{
+														IList<ModelingDocView> views = docData.DocViews;
+														int viewCount = views.Count;
+														for (int j = 0; j < viewCount; ++j)
+														{
+															docView = views[j] as MultiDiagramDocView;
+															if (docView != null && docView.ActivateDiagram(diagram))
+															{
+																docView.Show();
+																selectOnView = docView.CurrentDesigner;
+																break;
+															}
+														}
+													}
+												}
+												finally
+												{
+													if (punkDocData != IntPtr.Zero)
+													{
+														Marshal.Release(punkDocData);
+													}
+												}
+											}
+										} while (fetched != 0 && selectOnView == null);
+										#endregion // Walk RunningDocumentTable
+									}
+
+									if (selectOnView != null)
+									{
+										selectOnView.Selection.Set(new DiagramItem(shape));
+										selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[]{shape});
+										ModelError error;
+										IModelErrorActivation activator;
+										if (null != (error = locator as ModelError) &
+											null != (activator = shape as IModelErrorActivation))
+										{
+											activator.ActivateModelError(error);
+										}
+										return true;
+									}
 								}
 							}
 						}

@@ -215,25 +215,41 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int roleCount = roles.Count;
 				if (roleCount != 0)
 				{
-					for (int i = 0; i < roleCount; ++i)
+					bool ruleDisabled = false;
+					try
 					{
-						Role role = roles[i].Role;
-						RoleProxy proxy = role.Proxy;
-						if (proxy == null)
+						for (int i = 0; i < roleCount; ++i)
 						{
-							CreateImpliedFactTypeForRole(model, nestingType, role, objectification);
-						}
-						else
-						{
-							RoleBase oppositeRoleBase;
-							Role oppositeRole;
-							if (null != (oppositeRoleBase = proxy.OppositeRole) &&
-								null != (oppositeRole = oppositeRoleBase as Role) &&
-								(nestingType != oppositeRole.RolePlayer))
+							Role role = roles[i].Role;
+							RoleProxy proxy = role.Proxy;
+							if (proxy == null)
 							{
-								// Move an existing proxy fact to the correct nesting type
-								oppositeRole.RolePlayer = nestingType;
+								CreateImpliedFactTypeForRole(model, nestingType, role, objectification);
 							}
+							else
+							{
+								RoleBase oppositeRoleBase;
+								Role oppositeRole;
+								if (null != (oppositeRoleBase = proxy.OppositeRole) &&
+									null != (oppositeRole = oppositeRoleBase as Role) &&
+									(nestingType != oppositeRole.RolePlayer))
+								{
+									// Move an existing proxy fact to the correct nesting type
+									if (!ruleDisabled)
+									{
+										store.RuleManager.DisableRule(typeof(RolePlayerAddRule));
+										ruleDisabled = true;
+									}
+									oppositeRole.RolePlayer = nestingType;
+								}
+							}
+						}
+					}
+					finally
+					{
+						if (ruleDisabled)
+						{
+							store.RuleManager.EnableRule(typeof(RolePlayerAddRule));
 						}
 					}
 				}

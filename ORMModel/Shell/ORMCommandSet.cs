@@ -52,7 +52,6 @@ namespace Neumont.Tools.ORM.Shell
 			private IMenuCommandService myMenuService;
 			private IMonitorSelectionService myMonitorSelection;
 			private IServiceProvider myServiceProvider;
-			private ModelElementLocator myElementLocator;
 
 			/// <summary>
 			/// Commands
@@ -308,7 +307,6 @@ namespace Neumont.Tools.ORM.Shell
 				myMonitorSelection = null;
 				myServiceProvider = null;
 				myCommands = null;
-				myElementLocator = null;
 			}
 
 			/// <summary>
@@ -1009,22 +1007,6 @@ namespace Neumont.Tools.ORM.Shell
 						myMonitorSelection = monitorSelect = (IMonitorSelectionService)myServiceProvider.GetService(typeof(IMonitorSelectionService));
 					}
 					return monitorSelect;
-				}
-			}
-			/// <summary>
-			/// An element locator. Used to navigate to items.
-			/// </summary>
-			/// <value></value>
-			public ModelElementLocator ElementLocator
-			{
-				get
-				{
-					ModelElementLocator locator = myElementLocator;
-					if (locator == null)
-					{
-						myElementLocator = locator = new ModelElementLocator((ModelingPackage)myServiceProvider);
-					}
-					return locator;
 				}
 			}
 			/// <summary>

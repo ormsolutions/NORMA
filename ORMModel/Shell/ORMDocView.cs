@@ -2386,20 +2386,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-		/// <summary>
-		/// Get the element locator associate with this view.
-		/// The locator is used to jump to a specific element.
-		/// </summary>
-		public static ModelElementLocator ElementLocator
-		{
-			get
-			{
-				// The element locator available from the command
-				// set associate with the current package.
-				ORMDesignerCommandSet commandSet = ORMDesignerPackage.CommandSet as ORMDesignerCommandSet;
-				return (commandSet != null) ? commandSet.ElementLocator : null;
-			}
-		}
 		#endregion // ORMDesignerDocView Specific
 	}
 }
