@@ -10,6 +10,8 @@ SET PLiXDir=%CommonProgramFiles%\Neumont\PLiX
 
 :: Install Custom Tool DLL
 DEL /F /Q "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.ORMCustomTool.*" 1>NUL 2>&1
+DEL /F /Q "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
+IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll" (REN "%NORMADir%\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "Neumont.Tools.ORM.ORMCustomTool.dll.delete.%RANDOM%")
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.dll" "%NORMADir%\bin\"
 XCOPY /Y /D /V /Q "%~dp0\bin\Neumont.Tools.ORM.ORMCustomTool.pdb" "%NORMADir%\bin\"
 :: For some reason, the next copy is randomly giving errors about half the time. They can be safely ignored, so they've been redirected to NUL.
