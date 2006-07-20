@@ -35,14 +35,14 @@
 	<Relationships>
 		<DomainRelationship Name="FactTypeShapeHasRoleDisplayOrder" Namespace="Neumont.Tools.ORM.ShapeModel" Id="94B3AEEF-4C8D-4D1A-A7CC-42F7EBDC68A2">
 			<Source>
-				<DomainRole Name="FactTypeShape" PropertyName="RoleDisplayOrderCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeShape" Id="30C6B725-2D74-47F7-852A-D02C644A447B">
+				<DomainRole Name="FactTypeShape" PropertyName="RoleDisplayOrderCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeShape" Id="30C6B725-2D74-47F7-852A-D02C644A447B">
 					<RolePlayer>
 						<GeometryShapeMoniker Name="FactTypeShape"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="RoleDisplayOrder" PropertyName="FactTypeShapeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RoleDisplayOrder" Id="4CA45C6E-0400-4976-AF8C-0CAD7C7BC2EE">
+				<DomainRole Name="RoleDisplayOrder" PropertyName="FactTypeShapeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RoleDisplayOrder" Id="4CA45C6E-0400-4976-AF8C-0CAD7C7BC2EE">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/RoleBase"/>
 					</RolePlayer>

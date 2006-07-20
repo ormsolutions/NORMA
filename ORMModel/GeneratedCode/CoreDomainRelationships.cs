@@ -68,7 +68,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactConstraint/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactConstraint/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactConstraint/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactConstraint/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("d60cb2bf-7de7-4ced-a00f-bf7c3a2e5248")]
 		public abstract FactType FactType
 		{
@@ -101,7 +101,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactConstraint/Constraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactConstraint/Constraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactConstraint/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactConstraint/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("9b305629-1efa-404f-ae8e-475117b287ae")]
 		public abstract ORMNamedElement Constraint
 		{
@@ -287,7 +287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("f7733faf-1029-480e-8fea-96fdd65ab212")]
 		public override FactType FactType
 		{
@@ -329,7 +329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("575f65e4-682e-427a-b273-3d30d909a816")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -528,7 +528,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactSetConstraint/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactSetConstraint/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetConstraint/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetConstraint/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("de9a381f-5346-4c95-9d48-e468b8cf8a29")]
 		public override FactType FactType
 		{
@@ -569,7 +569,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactSetConstraint/SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactSetConstraint/SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetConstraint/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactSetConstraint/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7789fd46-6e28-4ab7-afc5-7f17b95ac4d9")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -769,7 +769,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement/ExtendedElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement/ExtendedElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExtensionCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement/ExtendedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExtensionCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement/ExtendedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("9105a491-7fc1-408e-8e07-f8e79ca0bfa4")]
 		public virtual ORMModelElement ExtendedElement
 		{
@@ -1010,7 +1010,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError/ExtendedElement.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError/ExtendedElement.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExtensionModelErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError/ExtendedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExtensionModelErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionModelError/ExtendedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("415c3ef5-7524-45a9-9307-3d8b53bd88d6")]
 		public virtual ORMModelElement ExtendedElement
 		{
@@ -1249,7 +1249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/ValueType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/ValueType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DataType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DataType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("3f6d8d0a-cec5-47ef-8f81-ef25f59593e0")]
 		public virtual ObjectType ValueType
 		{
@@ -1290,7 +1290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/DataType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/DataType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/DataType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType/DataType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("0414c824-f797-4f95-8f25-7d275fd632b8")]
 		public virtual DataType DataType
 		{
@@ -1709,7 +1709,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NestedFactType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NestedFactType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.Objectification/NestingType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("2660cf3e-2a56-496d-98cd-bffac5e73198")]
 		public virtual ObjectType NestingType
 		{
@@ -1760,7 +1760,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "NestingType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "NestingType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.Objectification/NestedFactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("69f805cc-874f-4e03-8364-0a0445168b26")]
 		public virtual FactType NestedFactType
 		{
@@ -2083,7 +2083,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/PlayedRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/PlayedRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RolePlayer", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/PlayedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RolePlayer", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/PlayedRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a87b6eeb-1753-4ad3-a00d-431e34b05ac2")]
 		public virtual Role PlayedRole
 		{
@@ -2124,7 +2124,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/RolePlayer.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/RolePlayer.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PlayedRoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/RolePlayer.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PlayedRoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole/RolePlayer.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8ec5c761-2e7c-422c-b5e7-354788a18f59")]
 		public virtual ObjectType RolePlayer
 		{
@@ -2321,7 +2321,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasObjectType/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasObjectType/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasObjectType/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasObjectType/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("e3fa6f15-ef49-4b72-b02f-ec7c2ba718ec")]
 		public virtual ORMModel Model
 		{
@@ -2559,7 +2559,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasFactType/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasFactType/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasFactType/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasFactType/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("cc174187-4e88-4230-adbd-b468f58ab58d")]
 		public virtual ORMModel Model
 		{
@@ -2797,7 +2797,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasError/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasError/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasError/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasError/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8f57fa08-7038-4cdb-900a-450a9a9dd8dc")]
 		public virtual ORMModel Model
 		{
@@ -3035,7 +3035,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceModeKindCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceModeKindCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("966465e7-6bad-4100-a082-b4aa20511a7d")]
 		public virtual ORMModel Model
 		{
@@ -3274,7 +3274,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasReferenceMode/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasReferenceMode/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceModeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasReferenceMode/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceModeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasReferenceMode/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("88b428c5-e93f-4739-82e5-440e6b13921a")]
 		public virtual ORMModel Model
 		{
@@ -3513,7 +3513,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasSetConstraint/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("54b0d8a2-91b9-41a3-8571-103dcb7beccd")]
 		public virtual ORMModel Model
 		{
@@ -3753,7 +3753,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasSetComparisonConstraint/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("0d5738fb-77ef-41c2-82ee-a98e5484b11b")]
 		public virtual ORMModel Model
 		{
@@ -3992,7 +3992,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelHasDataType/Model.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelHasDataType/Model.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DataTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasDataType/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DataTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ModelHasDataType/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("41f9a40e-dedd-4bba-9c79-8548acfbcb9a")]
 		public virtual ORMModel Model
 		{
@@ -4453,7 +4453,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence/ExternalConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence/ExternalConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleSequenceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence/ExternalConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleSequenceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasRoleSequence/ExternalConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("1d11fc93-6110-44f7-bfe1-38fc7dc81170")]
 		public virtual SetComparisonConstraint ExternalConstraint
 		{
@@ -4692,7 +4692,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintRoleSequenceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintRoleSequenceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("1a5a347e-1d5d-4045-9ea0-13b2338fc898")]
 		public virtual Role Role
 		{
@@ -4734,7 +4734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("9ad53904-280a-4329-a6f0-20e2c44f5607")]
 		public virtual ConstraintRoleSequence ConstraintRoleSequence
 		{
@@ -4929,7 +4929,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("0178c877-8906-4bdc-b3f8-0322a578741d")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -5189,7 +5189,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooManyRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooManyRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasTooManyRoleSequencesError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("76082669-3e03-4837-8824-526bb25dacb8")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -5448,7 +5448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a2252380-7cac-4d36-8857-2426ae558c08")]
 		public virtual ObjectType ObjectType
 		{
@@ -5926,7 +5926,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReadingOrderCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReadingOrderCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("d77a6514-b8f0-4c0c-b856-ee74dbbc1c41")]
 		public virtual FactType FactType
 		{
@@ -6208,7 +6208,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/Kind.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/Kind.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceModeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/Kind.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceModeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind/Kind.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("cd7ed96f-ddb9-4242-94cf-b10255822f66")]
 		public virtual ReferenceModeKind Kind
 		{
@@ -6406,7 +6406,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasDuplicateNameError/SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasDuplicateNameError/SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasDuplicateNameError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasDuplicateNameError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("b4623963-690d-4687-a95e-0fc998aa59ec")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -6647,7 +6647,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasDuplicateNameError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("86a9cb44-0050-4e7c-9df5-692f980f96ec")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -6887,7 +6887,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifierFor.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifierFor.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PreferredIdentifier", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifierFor.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PreferredIdentifier", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifierFor.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("04d998ee-030e-4a81-88bc-666ce4efb3ed")]
 		public virtual ObjectType PreferredIdentifierFor
 		{
@@ -6939,7 +6939,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifier.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifier.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PreferredIdentifierFor", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "PreferredIdentifierFor", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier/PreferredIdentifier.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6195ce84-7ca8-4e13-b8c8-24438e2cf300")]
 		public virtual UniquenessConstraint PreferredIdentifier
 		{
@@ -7146,7 +7146,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError/Reading.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError/Reading.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooManyRolesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError/Reading.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooManyRolesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError/Reading.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("aa517583-0a1b-4129-905e-a9ee3f59ee17")]
 		public virtual Reading Reading
 		{
@@ -7404,7 +7404,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError/Reading.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError/Reading.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewRolesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError/Reading.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewRolesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError/Reading.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("3a9889aa-6152-4e1e-a1ec-b100ad24a60a")]
 		public virtual Reading Reading
 		{
@@ -7664,7 +7664,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError/Constraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError/Constraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ArityMismatchError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ArityMismatchError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasExternalConstraintRoleSequenceArityMismatchError/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("e75c8b14-01c7-4cef-879d-be6a1d922aa4")]
 		public virtual SetComparisonConstraint Constraint
 		{
@@ -7924,7 +7924,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReadingRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReadingRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("c79d68bd-dbed-4487-a448-70b9edc5e4d9")]
 		public virtual FactType FactType
 		{
@@ -8184,7 +8184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InternalUniquenessConstraintRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InternalUniquenessConstraintRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("42aed551-7f1a-4f16-aa39-682c9dbb8607")]
 		public virtual FactType FactType
 		{
@@ -8443,7 +8443,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint/ValueType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint/ValueType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("2f42a8fd-ab49-4e0f-af3a-1098ba77a4c1")]
 		public virtual ObjectType ValueType
 		{
@@ -8701,7 +8701,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("af99b941-1811-4dfb-bd26-8f4148d3f1d9")]
 		public virtual Role Role
 		{
@@ -9201,7 +9201,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError/ValueTypeHasDataType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError/ValueTypeHasDataType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DataTypeNotSpecifiedError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError/ValueTypeHasDataType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DataTypeNotSpecifiedError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError/ValueTypeHasDataType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("e8122190-ae46-40d8-8040-118d577735a6")]
 		public virtual ValueTypeHasDataType ValueTypeHasDataType
 		{
@@ -9461,7 +9461,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError/SetComparisonConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError/SetComparisonConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleRolePlayerTypeErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleRolePlayerTypeErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError/SetComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("b1660d4f-f77a-4fe2-9ddc-dfbfab545b92")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -9702,7 +9702,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError/SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError/SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleRolePlayerTypeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleRolePlayerTypeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("171d82ac-46ae-486d-b602-62a0f49cebc0")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -9962,7 +9962,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError/Constraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError/Constraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NMinusOneError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "NMinusOneError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasNMinusOneError/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6165ad47-fb70-4f43-936e-e162d0e8e917")]
 		public virtual UniquenessConstraint Constraint
 		{
@@ -10221,7 +10221,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RolePlayerRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RolePlayerRequiredError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("529b2bed-f8f3-4a9b-95b7-55d9a1ed5b44")]
 		public virtual Role Role
 		{
@@ -10481,7 +10481,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EqualityImpliedByMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EqualityImpliedByMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityImpliedByMandatoryError/EqualityConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("fbf0117a-a2b8-4ef9-b263-24288f40cb4e")]
 		public virtual EqualityConstraint EqualityConstraint
 		{
@@ -10741,7 +10741,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceSchemeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ReferenceSchemeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("7cff7155-b46f-4492-a054-8028772d7529")]
 		public virtual ObjectType ObjectType
 		{
@@ -11001,7 +11001,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedByMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedByMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasMandatoryImpliedByMandatoryError/MandatoryConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("2a540753-3f31-4b4a-9501-bf4ae4779ccf")]
 		public virtual MandatoryConstraint MandatoryConstraint
 		{
@@ -11261,7 +11261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError/FrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError/FrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintMinMaxError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError/FrequencyConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintMinMaxError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError/FrequencyConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("80542fe3-3450-42ee-9c22-b17e868b7695")]
 		public virtual FrequencyConstraint FrequencyConstraint
 		{
@@ -11760,7 +11760,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError/ValueRange.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError/ValueRange.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MaxValueMismatchError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError/ValueRange.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MaxValueMismatchError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError/ValueRange.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a5f8e444-85da-40d0-97e2-91eb8e36a6b0")]
 		public virtual ValueRange ValueRange
 		{
@@ -12019,7 +12019,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError/ValueRange.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError/ValueRange.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MinValueMismatchError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError/ValueRange.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "MinValueMismatchError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError/ValueRange.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("cfafda20-c375-431d-89df-cdbf14419773")]
 		public virtual ValueRange ValueRange
 		{
@@ -12279,7 +12279,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedInternalUniquenessConstraintError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedInternalUniquenessConstraintError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("87737b64-9709-4dde-8d77-290a2cceed1c")]
 		public virtual FactType FactType
 		{
@@ -12539,7 +12539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError/SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError/SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooFewRoleSequencesError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("1df0f9d7-63bd-4577-8c8f-fcab97fff98c")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -12799,7 +12799,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError/SetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError/SetConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooManyRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooManyRoleSequencesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.SetConstraintHasTooManyRoleSequencesError/SetConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("f7eedd61-28a3-48cc-b83d-c18ecee2d582")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -13059,7 +13059,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError/FrequencyConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4a87a658-be43-4337-a7e1-db66219cb52c")]
 		public virtual FrequencyConstraint FrequencyConstraint
 		{
@@ -13301,7 +13301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("d2203f28-3cb7-4474-892c-25ee95ab22a6")]
 		public virtual FactType FactType
 		{
@@ -13543,7 +13543,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError/RingConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError/RingConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RingConstraintTypeNotSpecifiedError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError/RingConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RingConstraintTypeNotSpecifiedError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError/RingConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("4e7dea3b-acf3-4e71-a4f2-5c08fb8077d2")]
 		public virtual RingConstraint RingConstraint
 		{
@@ -13803,7 +13803,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError/ValueConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError/ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("8d9cde68-22d7-48ff-abe2-1617b5d2bb92")]
 		public virtual ValueConstraint ValueConstraint
 		{
@@ -14044,7 +14044,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeRequiresPrimarySupertypeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeRequiresPrimarySupertypeError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySupertypeError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("e968cd16-0fad-4d46-be86-478b12cd8fcc")]
 		public virtual ObjectType ObjectType
 		{
@@ -14302,7 +14302,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("bedcb56b-cad7-45fd-b781-2a437aef5141")]
 		public virtual FactType FactType
 		{
@@ -14353,7 +14353,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/Note.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/Note.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("0ee3d4e9-714c-404f-ae40-5c140a335f42")]
 		public virtual Note Note
 		{
@@ -14559,7 +14559,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("a75b240c-06cc-4f48-b787-8536c58e4cd8")]
 		public virtual ObjectType ObjectType
 		{
@@ -14610,7 +14610,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/Note.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/Note.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("b2bc6ecc-430a-48ae-a862-d4d876748130")]
 		public virtual Note Note
 		{
@@ -14818,7 +14818,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleSupertypesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleSupertypesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("ff50f039-b38b-41a2-9d06-0aefbe62c6a9")]
 		public virtual ObjectType ObjectType
 		{
@@ -15078,7 +15078,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedByUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ImpliedByUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.UniquenessConstraintHasUniquenessImpliedByUniquenessError/UniquenessConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("dc738b91-f33f-409a-b397-2d18f77acc65")]
 		public virtual UniquenessConstraint UniquenessConstraint
 		{
@@ -15338,7 +15338,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError/ObjectType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError/ObjectType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PreferredIdentifierRequiresMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PreferredIdentifierRequiresMandatoryError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasPreferredIdentifierRequiresMandatoryError/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("e7851c84-d822-4ea5-ab3f-2648538158c5")]
 		public virtual ObjectType ObjectType
 		{
@@ -15598,7 +15598,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError/ValueConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError/ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueRangeOverlapError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueRangeOverlapError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeOverlapError/ValueConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("6011898a-4cf2-429a-986e-f0ed8d938064")]
 		public virtual ValueConstraint ValueConstraint
 		{
@@ -16364,7 +16364,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole/TargetRole.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole/TargetRole.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Proxy", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole/TargetRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Proxy", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleProxyHasRole/TargetRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("ae004027-be74-4e53-99d7-d3e894f4124d")]
 		public virtual Role TargetRole
 		{
@@ -16571,7 +16571,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DerivationRule", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DerivationRule", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasDerivationExpression/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("73b1a9d8-42a4-44e0-b906-aef10e346db6")]
 		public virtual FactType FactType
 		{
@@ -16830,7 +16830,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "EntityTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeHasEntityTypeInstance/EntityType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("5a293722-12d6-4b42-a336-3281a404e785")]
 		public virtual ObjectType EntityType
 		{
@@ -17070,7 +17070,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueTypeInstance/ValueType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("9558751b-6ae9-424d-8b62-66b71f01a207")]
 		public virtual ObjectType ValueType
 		{
@@ -17266,7 +17266,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleInstance/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstance/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleInstance/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleInstance/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("c927c1aa-2e2d-41cf-9d87-0a69a63f3e99")]
 		public abstract Role Role
 		{
@@ -17902,7 +17902,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance/FactType.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance/FactType.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeInstance/FactType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4690eaff-667b-4aa6-93ed-9487e109c7bc")]
 		public virtual FactType FactType
 		{
@@ -18383,7 +18383,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewEntityTypeRoleInstancesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewEntityTypeRoleInstancesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError/EntityTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("715ed45e-2c85-491e-a577-3a6985347687")]
 		public virtual EntityTypeInstance EntityTypeInstance
 		{
@@ -18643,7 +18643,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewFactTypeRoleInstancesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TooFewFactTypeRoleInstancesError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeInstanceHasTooFewFactTypeRoleInstancesError/FactTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("ac1f89f9-1dbc-4826-8035-6ea0c1d35eb1")]
 		public virtual FactTypeInstance FactTypeInstance
 		{
@@ -18903,7 +18903,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleValueTypeInstanceValueError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CompatibleValueTypeInstanceValueError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ValueTypeInstanceHasCompatibleValueTypeInstanceValueError/ValueTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("5c173594-aa0c-45ba-92f1-8d80a74e1300")]
 		public virtual ValueTypeInstance ValueTypeInstance
 		{

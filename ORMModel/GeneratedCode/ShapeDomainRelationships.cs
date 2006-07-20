@@ -112,7 +112,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleDisplayOrderCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleDisplayOrderCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("30c6b725-2d74-47f7-852a-d02c644a447b")]
 		public virtual FactTypeShape FactTypeShape
 		{
@@ -154,7 +154,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeShapeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeShapeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4ca45c6e-0400-4976-af8c-0cad7c7bc2ee")]
 		public virtual global::Neumont.Tools.ORM.ObjectModel.RoleBase RoleDisplayOrder
 		{

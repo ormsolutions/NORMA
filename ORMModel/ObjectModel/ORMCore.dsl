@@ -1150,14 +1150,14 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="ConstraintCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="FactType" Id="D60CB2BF-7DE7-4CED-A00F-BF7C3A2E5248">
+				<DomainRole Name="FactType" PropertyName="ConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="FactType" Id="D60CB2BF-7DE7-4CED-A00F-BF7C3A2E5248">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Constraint" PropertyName="FactTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Constraint" Id="9B305629-1EFA-404F-AE8E-475117B287AE">
+				<DomainRole Name="Constraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Constraint" Id="9B305629-1EFA-404F-AE8E-475117B287AE">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMNamedElement"/>
 					</RolePlayer>
@@ -1170,14 +1170,14 @@
 				<DomainRelationshipMoniker Name="FactConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FactType" PropertyName="SetComparisonConstraintCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="F7733FAF-1029-480E-8FEA-96FDD65AB212">
+				<DomainRole Name="FactType" PropertyName="SetComparisonConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="F7733FAF-1029-480E-8FEA-96FDD65AB212">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="FactTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="575F65E4-682E-427A-B273-3D30D909A816">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="575F65E4-682E-427A-B273-3D30D909A816">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1190,14 +1190,14 @@
 				<DomainRelationshipMoniker Name="FactConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FactType" PropertyName="SetConstraintCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="DE9A381F-5346-4C95-9D48-E468B8CF8A29">
+				<DomainRole Name="FactType" PropertyName="SetConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="DE9A381F-5346-4C95-9D48-E468B8CF8A29">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SetConstraint" PropertyName="FactTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="7789FD46-6E28-4AB7-AFC5-7F17B95AC4D9">
+				<DomainRole Name="SetConstraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="7789FD46-6E28-4AB7-AFC5-7F17B95AC4D9">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
@@ -1210,7 +1210,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ExtendedElement" PropertyName="ExtensionCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExtendedElement" Id="9105A491-7FC1-408E-8E07-F8E79CA0BFA4">
+				<DomainRole Name="ExtendedElement" PropertyName="ExtensionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExtendedElement" Id="9105A491-7FC1-408E-8E07-F8E79CA0BFA4">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModelElement"/>
 					</RolePlayer>
@@ -1230,7 +1230,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ExtendedElement" PropertyName="ExtensionModelErrorCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExtendedElement" Id="415C3EF5-7524-45A9-9307-3D8B53BD88D6">
+				<DomainRole Name="ExtendedElement" PropertyName="ExtensionModelErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExtendedElement" Id="415C3EF5-7524-45A9-9307-3D8B53BD88D6">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModelElement"/>
 					</RolePlayer>
@@ -1262,14 +1262,14 @@
 				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="ValueType" PropertyName="DataType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="3F6D8D0A-CEC5-47EF-8F81-EF25F59593E0">
+				<DomainRole Name="ValueType" PropertyName="DataType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="3F6D8D0A-CEC5-47EF-8F81-EF25F59593E0">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="DataType" PropertyName="ValueTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DataType" Id="0414C824-F797-4F95-8F25-7D275FD632B8">
+				<DomainRole Name="DataType" PropertyName="ValueTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DataType" Id="0414C824-F797-4F95-8F25-7D275FD632B8">
 					<RolePlayer>
 						<DomainClassMoniker Name="DataType"/>
 					</RolePlayer>
@@ -1289,14 +1289,14 @@
 				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
+				<DomainRole Name="NestingType" PropertyName="NestedFactType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestingType" Id="2660CF3E-2A56-496D-98CD-BFFAC5E73198">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
+				<DomainRole Name="NestedFactType" PropertyName="NestingType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NestedFactType" Id="69F805CC-874F-4E03-8364-0A0445168B26">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -1309,14 +1309,14 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="PlayedRole" PropertyName="RolePlayer" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PlayedRole" Id="A87B6EEB-1753-4AD3-A00D-431E34B05AC2">
+				<DomainRole Name="PlayedRole" PropertyName="RolePlayer" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PlayedRole" Id="A87B6EEB-1753-4AD3-A00D-431E34B05AC2">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="RolePlayer" PropertyName="PlayedRoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RolePlayer" Id="8EC5C761-2E7C-422C-B5E7-354788A18F59">
+				<DomainRole Name="RolePlayer" PropertyName="PlayedRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RolePlayer" Id="8EC5C761-2E7C-422C-B5E7-354788A18F59">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -1329,7 +1329,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="ObjectTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="E3FA6F15-EF49-4B72-B02F-EC7C2BA718EC">
+				<DomainRole Name="Model" PropertyName="ObjectTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="E3FA6F15-EF49-4B72-B02F-EC7C2BA718EC">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1349,7 +1349,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="FactTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="CC174187-4E88-4230-ADBD-B468F58AB58D">
+				<DomainRole Name="Model" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="CC174187-4E88-4230-ADBD-B468F58AB58D">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1369,7 +1369,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="ErrorCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Model" Id="8F57FA08-7038-4CDB-900A-450A9A9DD8DC">
+				<DomainRole Name="Model" PropertyName="ErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Model" Id="8F57FA08-7038-4CDB-900A-450A9A9DD8DC">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1389,7 +1389,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="ReferenceModeKindCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="966465E7-6BAD-4100-A082-B4AA20511A7D">
+				<DomainRole Name="Model" PropertyName="ReferenceModeKindCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="966465E7-6BAD-4100-A082-B4AA20511A7D">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1409,7 +1409,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="ReferenceModeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="88B428C5-E93F-4739-82E5-440E6B13921A">
+				<DomainRole Name="Model" PropertyName="ReferenceModeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="88B428C5-E93F-4739-82E5-440E6B13921A">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1429,7 +1429,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="SetConstraintCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="54B0D8A2-91B9-41A3-8571-103DCB7BECCD">
+				<DomainRole Name="Model" PropertyName="SetConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="54B0D8A2-91B9-41A3-8571-103DCB7BECCD">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1449,7 +1449,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="SetComparisonConstraintCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="0D5738FB-77EF-41C2-82EE-A98E5484B11B">
+				<DomainRole Name="Model" PropertyName="SetComparisonConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="0D5738FB-77EF-41C2-82EE-A98E5484B11B">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1469,7 +1469,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Model" PropertyName="DataTypeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="41F9A40E-DEDD-4BBA-9C79-8548ACFBCB9A">
+				<DomainRole Name="Model" PropertyName="DataTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="41F9A40E-DEDD-4BBA-9C79-8548ACFBCB9A">
 					<RolePlayer>
 						<DomainClassMoniker Name="ORMModel"/>
 					</RolePlayer>
@@ -1509,7 +1509,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ExternalConstraint" PropertyName="RoleSequenceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExternalConstraint" Id="1D11FC93-6110-44F7-BFE1-38FC7DC81170">
+				<DomainRole Name="ExternalConstraint" PropertyName="RoleSequenceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExternalConstraint" Id="1D11FC93-6110-44F7-BFE1-38FC7DC81170">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1529,14 +1529,14 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Role" PropertyName="ConstraintRoleSequenceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="1A5A347E-1D5D-4045-9EA0-13B2338FC898">
+				<DomainRole Name="Role" PropertyName="ConstraintRoleSequenceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="1A5A347E-1D5D-4045-9EA0-13B2338FC898">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ConstraintRoleSequence" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConstraintRoleSequence" Id="9AD53904-280A-4329-A6F0-20E2C44F5607">
+				<DomainRole Name="ConstraintRoleSequence" PropertyName="RoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConstraintRoleSequence" Id="9AD53904-280A-4329-A6F0-20E2C44F5607">
 					<RolePlayer>
 						<DomainClassMoniker Name="ConstraintRoleSequence"/>
 					</RolePlayer>
@@ -1549,7 +1549,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="TooFewRoleSequencesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="0178C877-8906-4BDC-B3F8-0322A578741D">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="TooFewRoleSequencesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="0178C877-8906-4BDC-B3F8-0322A578741D">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1569,7 +1569,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="TooManyRoleSequencesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="76082669-3E03-4837-8824-526BB25DACB8">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="TooManyRoleSequencesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="76082669-3E03-4837-8824-526BB25DACB8">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1589,7 +1589,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="DuplicateNameError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="A2252380-7CAC-4D36-8857-2426AE558C08">
+				<DomainRole Name="ObjectType" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="A2252380-7CAC-4D36-8857-2426AE558C08">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -1629,7 +1629,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="ReadingOrderCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="D77A6514-B8F0-4C0C-B856-EE74DBBC1C41">
+				<DomainRole Name="FactType" PropertyName="ReadingOrderCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="D77A6514-B8F0-4C0C-B856-EE74DBBC1C41">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -1656,7 +1656,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Kind" PropertyName="ReferenceModeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Kind" Id="CD7ED96F-DDB9-4242-94CF-B10255822F66">
+				<DomainRole Name="Kind" PropertyName="ReferenceModeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Kind" Id="CD7ED96F-DDB9-4242-94CF-B10255822F66">
 					<RolePlayer>
 						<DomainClassMoniker Name="ReferenceModeKind"/>
 					</RolePlayer>
@@ -1669,7 +1669,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetConstraint" PropertyName="DuplicateNameError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="B4623963-690D-4687-A95E-0FC998AA59EC">
+				<DomainRole Name="SetConstraint" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="B4623963-690D-4687-A95E-0FC998AA59EC">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
@@ -1689,7 +1689,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="DuplicateNameError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="86A9CB44-0050-4E7C-9DF5-692F980F96EC">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="86A9CB44-0050-4E7C-9DF5-692F980F96EC">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1709,14 +1709,14 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="PreferredIdentifierFor" PropertyName="PreferredIdentifier" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PreferredIdentifierFor" Id="04D998EE-030E-4A81-88BC-666CE4EFB3ED">
+				<DomainRole Name="PreferredIdentifierFor" PropertyName="PreferredIdentifier" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PreferredIdentifierFor" Id="04D998EE-030E-4A81-88BC-666CE4EFB3ED">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="PreferredIdentifier" PropertyName="PreferredIdentifierFor" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PreferredIdentifier" Id="6195CE84-7CA8-4E13-B8C8-24438E2CF300">
+				<DomainRole Name="PreferredIdentifier" PropertyName="PreferredIdentifierFor" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PreferredIdentifier" Id="6195CE84-7CA8-4E13-B8C8-24438E2CF300">
 					<RolePlayer>
 						<DomainClassMoniker Name="UniquenessConstraint"/>
 					</RolePlayer>
@@ -1729,7 +1729,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Reading" PropertyName="TooManyRolesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Reading" Id="AA517583-0A1B-4129-905E-A9EE3F59EE17">
+				<DomainRole Name="Reading" PropertyName="TooManyRolesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Reading" Id="AA517583-0A1B-4129-905E-A9EE3F59EE17">
 					<RolePlayer>
 						<DomainClassMoniker Name="Reading"/>
 					</RolePlayer>
@@ -1749,7 +1749,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Reading" PropertyName="TooFewRolesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Reading" Id="3A9889AA-6152-4E1E-A1EC-B100AD24A60A">
+				<DomainRole Name="Reading" PropertyName="TooFewRolesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Reading" Id="3A9889AA-6152-4E1E-A1EC-B100AD24A60A">
 					<RolePlayer>
 						<DomainClassMoniker Name="Reading"/>
 					</RolePlayer>
@@ -1769,7 +1769,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Constraint" PropertyName="ArityMismatchError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Constraint" Id="E75C8B14-01C7-4CEF-879D-BE6A1D922AA4">
+				<DomainRole Name="Constraint" PropertyName="ArityMismatchError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Constraint" Id="E75C8B14-01C7-4CEF-879D-BE6A1D922AA4">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1789,7 +1789,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="ReadingRequiredError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="C79D68BD-DBED-4487-A448-70B9EDC5E4D9">
+				<DomainRole Name="FactType" PropertyName="ReadingRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="C79D68BD-DBED-4487-A448-70B9EDC5E4D9">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -1809,7 +1809,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="InternalUniquenessConstraintRequiredError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="42AED551-7F1A-4F16-AA39-682C9DBB8607">
+				<DomainRole Name="FactType" PropertyName="InternalUniquenessConstraintRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="42AED551-7F1A-4F16-AA39-682C9DBB8607">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -1829,7 +1829,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueType" PropertyName="ValueConstraint" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="2F42A8FD-AB49-4E0F-AF3A-1098BA77A4C1">
+				<DomainRole Name="ValueType" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="2F42A8FD-AB49-4E0F-AF3A-1098BA77A4C1">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -1849,7 +1849,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Role" PropertyName="ValueConstraint" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="AF99B941-1811-4DFB-BD26-8F4148D3F1D9">
+				<DomainRole Name="Role" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="AF99B941-1811-4DFB-BD26-8F4148D3F1D9">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
@@ -1889,7 +1889,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueTypeHasDataType" PropertyName="DataTypeNotSpecifiedError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueTypeHasDataType" Id="E8122190-AE46-40D8-8040-118D577735A6">
+				<DomainRole Name="ValueTypeHasDataType" PropertyName="DataTypeNotSpecifiedError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueTypeHasDataType" Id="E8122190-AE46-40D8-8040-118D577735A6">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="ValueTypeHasDataType"/>
 					</RolePlayer>
@@ -1909,7 +1909,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="CompatibleRolePlayerTypeErrorCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="B1660D4F-F77A-4FE2-9DDC-DFBFAB545B92">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="CompatibleRolePlayerTypeErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="B1660D4F-F77A-4FE2-9DDC-DFBFAB545B92">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -1929,7 +1929,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetConstraint" PropertyName="CompatibleRolePlayerTypeError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="171D82AC-46AE-486D-B602-62A0F49CEBC0">
+				<DomainRole Name="SetConstraint" PropertyName="CompatibleRolePlayerTypeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="171D82AC-46AE-486D-B602-62A0F49CEBC0">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
@@ -1949,7 +1949,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Constraint" PropertyName="NMinusOneError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Constraint" Id="6165AD47-FB70-4F43-936E-E162D0E8E917">
+				<DomainRole Name="Constraint" PropertyName="NMinusOneError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Constraint" Id="6165AD47-FB70-4F43-936E-E162D0E8E917">
 					<RolePlayer>
 						<DomainClassMoniker Name="UniquenessConstraint"/>
 					</RolePlayer>
@@ -1969,7 +1969,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Role" PropertyName="RolePlayerRequiredError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="529B2BED-F8F3-4A9B-95B7-55D9A1ED5B44">
+				<DomainRole Name="Role" PropertyName="RolePlayerRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="529B2BED-F8F3-4A9B-95B7-55D9A1ED5B44">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
@@ -1989,7 +1989,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="EqualityConstraint" PropertyName="EqualityImpliedByMandatoryError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EqualityConstraint" Id="FBF0117A-A2B8-4EF9-B263-24288F40CB4E">
+				<DomainRole Name="EqualityConstraint" PropertyName="EqualityImpliedByMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EqualityConstraint" Id="FBF0117A-A2B8-4EF9-B263-24288F40CB4E">
 					<RolePlayer>
 						<DomainClassMoniker Name="EqualityConstraint"/>
 					</RolePlayer>
@@ -2009,7 +2009,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="ReferenceSchemeError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="7CFF7155-B46F-4492-A054-8028772D7529">
+				<DomainRole Name="ObjectType" PropertyName="ReferenceSchemeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="7CFF7155-B46F-4492-A054-8028772D7529">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2029,7 +2029,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="MandatoryConstraint" PropertyName="ImpliedByMandatoryError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="2A540753-3F31-4B4A-9501-BF4AE4779CCF">
+				<DomainRole Name="MandatoryConstraint" PropertyName="ImpliedByMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="2A540753-3F31-4B4A-9501-BF4AE4779CCF">
 					<RolePlayer>
 						<DomainClassMoniker Name="MandatoryConstraint"/>
 					</RolePlayer>
@@ -2049,7 +2049,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintMinMaxError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="80542FE3-3450-42EE-9C22-B17E868B7695">
+				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintMinMaxError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="80542FE3-3450-42EE-9C22-B17E868B7695">
 					<RolePlayer>
 						<DomainClassMoniker Name="FrequencyConstraint"/>
 					</RolePlayer>
@@ -2089,7 +2089,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueRange" PropertyName="MaxValueMismatchError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueRange" Id="A5F8E444-85DA-40D0-97E2-91EB8E36A6B0">
+				<DomainRole Name="ValueRange" PropertyName="MaxValueMismatchError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueRange" Id="A5F8E444-85DA-40D0-97E2-91EB8E36A6B0">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueRange"/>
 					</RolePlayer>
@@ -2109,7 +2109,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueRange" PropertyName="MinValueMismatchError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueRange" Id="CFAFDA20-C375-431D-89DF-CDBF14419773">
+				<DomainRole Name="ValueRange" PropertyName="MinValueMismatchError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueRange" Id="CFAFDA20-C375-431D-89DF-CDBF14419773">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueRange"/>
 					</RolePlayer>
@@ -2129,7 +2129,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="ImpliedInternalUniquenessConstraintError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="87737B64-9709-4DDE-8D77-290A2CCEED1C">
+				<DomainRole Name="FactType" PropertyName="ImpliedInternalUniquenessConstraintError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="87737B64-9709-4DDE-8D77-290A2CCEED1C">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -2149,7 +2149,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetConstraint" PropertyName="TooFewRoleSequencesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="1DF0F9D7-63BD-4577-8C8F-FCAB97FFF98C">
+				<DomainRole Name="SetConstraint" PropertyName="TooFewRoleSequencesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="1DF0F9D7-63BD-4577-8C8F-FCAB97FFF98C">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
@@ -2169,7 +2169,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="SetConstraint" PropertyName="TooManyRoleSequencesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="F7EEDD61-28A3-48CC-B83D-C18ECEE2D582">
+				<DomainRole Name="SetConstraint" PropertyName="TooManyRoleSequencesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="F7EEDD61-28A3-48CC-B83D-C18ECEE2D582">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
@@ -2189,7 +2189,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="4A87A658-BE43-4337-A7E1-DB66219CB52C">
+				<DomainRole Name="FrequencyConstraint" PropertyName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FrequencyConstraint" Id="4A87A658-BE43-4337-A7E1-DB66219CB52C">
 					<RolePlayer>
 						<DomainClassMoniker Name="FrequencyConstraint"/>
 					</RolePlayer>
@@ -2209,7 +2209,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="D2203F28-3CB7-4474-892C-25EE95AB22A6">
+				<DomainRole Name="FactType" PropertyName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="D2203F28-3CB7-4474-892C-25EE95AB22A6">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -2229,7 +2229,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="RingConstraint" PropertyName="RingConstraintTypeNotSpecifiedError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RingConstraint" Id="4E7DEA3B-ACF3-4E71-A4F2-5C08FB8077D2">
+				<DomainRole Name="RingConstraint" PropertyName="RingConstraintTypeNotSpecifiedError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RingConstraint" Id="4E7DEA3B-ACF3-4E71-A4F2-5C08FB8077D2">
 					<RolePlayer>
 						<DomainClassMoniker Name="RingConstraint"/>
 					</RolePlayer>
@@ -2249,7 +2249,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueConstraint" PropertyName="DuplicateNameError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="8D9CDE68-22D7-48FF-ABE2-1617B5D2BB92">
+				<DomainRole Name="ValueConstraint" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="8D9CDE68-22D7-48FF-ABE2-1617B5D2BB92">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueConstraint"/>
 					</RolePlayer>
@@ -2269,7 +2269,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="ObjectTypeRequiresPrimarySupertypeError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="E968CD16-0FAD-4D46-BE86-478B12CD8FCC">
+				<DomainRole Name="ObjectType" PropertyName="ObjectTypeRequiresPrimarySupertypeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="E968CD16-0FAD-4D46-BE86-478B12CD8FCC">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2289,14 +2289,14 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="Note" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="BEDCB56B-CAD7-45FD-B781-2A437AEF5141">
+				<DomainRole Name="FactType" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="BEDCB56B-CAD7-45FD-B781-2A437AEF5141">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Note" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="0EE3D4E9-714C-404F-AE40-5C140A335F42">
+				<DomainRole Name="Note" PropertyName="FactType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="0EE3D4E9-714C-404F-AE40-5C140A335F42">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
 					</RolePlayer>
@@ -2309,14 +2309,14 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="Note" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="A75B240C-06CC-4F48-B787-8536C58E4CD8">
+				<DomainRole Name="ObjectType" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="A75B240C-06CC-4F48-B787-8536C58E4CD8">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Note" PropertyName="ObjectType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="B2BC6ECC-430A-48AE-A862-D4D876748130">
+				<DomainRole Name="Note" PropertyName="ObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="B2BC6ECC-430A-48AE-A862-D4D876748130">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
 					</RolePlayer>
@@ -2329,7 +2329,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="CompatibleSupertypesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="FF50F039-B38B-41A2-9D06-0AEFBE62C6A9">
+				<DomainRole Name="ObjectType" PropertyName="CompatibleSupertypesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="FF50F039-B38B-41A2-9D06-0AEFBE62C6A9">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2349,7 +2349,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="UniquenessConstraint" PropertyName="ImpliedByUniquenessError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="UniquenessConstraint" Id="DC738B91-F33F-409A-B397-2D18F77ACC65">
+				<DomainRole Name="UniquenessConstraint" PropertyName="ImpliedByUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="UniquenessConstraint" Id="DC738B91-F33F-409A-B397-2D18F77ACC65">
 					<RolePlayer>
 						<DomainClassMoniker Name="UniquenessConstraint"/>
 					</RolePlayer>
@@ -2369,7 +2369,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ObjectType" PropertyName="PreferredIdentifierRequiresMandatoryError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="E7851C84-D822-4EA5-AB3F-2648538158C5">
+				<DomainRole Name="ObjectType" PropertyName="PreferredIdentifierRequiresMandatoryError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="E7851C84-D822-4EA5-AB3F-2648538158C5">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2389,7 +2389,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueConstraint" PropertyName="ValueRangeOverlapError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="6011898A-4CF2-429A-986E-F0ED8D938064">
+				<DomainRole Name="ValueConstraint" PropertyName="ValueRangeOverlapError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueConstraint" Id="6011898A-4CF2-429A-986E-F0ED8D938064">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueConstraint"/>
 					</RolePlayer>
@@ -2456,7 +2456,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="TargetRole" PropertyName="Proxy" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="TargetRole" Id="AE004027-BE74-4E53-99D7-D3E894F4124D">
+				<DomainRole Name="TargetRole" PropertyName="Proxy" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="TargetRole" Id="AE004027-BE74-4E53-99D7-D3E894F4124D">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
@@ -2469,7 +2469,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="DerivationRule" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="73B1A9D8-42A4-44E0-B906-AEF10E346DB6">
+				<DomainRole Name="FactType" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="73B1A9D8-42A4-44E0-B906-AEF10E346DB6">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -2489,7 +2489,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="EntityType" PropertyName="EntityTypeInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityType" Id="5A293722-12D6-4B42-A336-3281A404E785">
+				<DomainRole Name="EntityType" PropertyName="EntityTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityType" Id="5A293722-12D6-4B42-A336-3281A404E785">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2509,7 +2509,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueType" PropertyName="ValueTypeInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="9558751B-6AE9-424D-8B62-66B71F01A207">
+				<DomainRole Name="ValueType" PropertyName="ValueTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="9558751B-6AE9-424D-8B62-66B71F01A207">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2530,7 +2530,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="C927C1AA-2E2D-41CF-9D87-0A69A63F3E99">
+				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="C927C1AA-2E2D-41CF-9D87-0A69A63F3E99">
 					<RolePlayer>
 						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
@@ -2583,7 +2583,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="FactTypeInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="4690EAFF-667B-4AA6-93ED-9487E109C7BC">
+				<DomainRole Name="FactType" PropertyName="FactTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="4690EAFF-667B-4AA6-93ED-9487E109C7BC">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -2624,7 +2624,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="EntityTypeInstance" PropertyName="TooFewEntityTypeRoleInstancesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="715ED45E-2C85-491E-A577-3A6985347687">
+				<DomainRole Name="EntityTypeInstance" PropertyName="TooFewEntityTypeRoleInstancesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="EntityTypeInstance" Id="715ED45E-2C85-491E-A577-3A6985347687">
 					<RolePlayer>
 						<DomainClassMoniker Name="EntityTypeInstance"/>
 					</RolePlayer>
@@ -2644,7 +2644,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactTypeInstance" PropertyName="TooFewFactTypeRoleInstancesError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="AC1F89F9-1DBC-4826-8035-6EA0C1D35EB1">
+				<DomainRole Name="FactTypeInstance" PropertyName="TooFewFactTypeRoleInstancesError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactTypeInstance" Id="AC1F89F9-1DBC-4826-8035-6EA0C1D35EB1">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactTypeInstance"/>
 					</RolePlayer>
@@ -2664,7 +2664,7 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="ValueTypeInstance" PropertyName="CompatibleValueTypeInstanceValueError" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueTypeInstance" Id="5C173594-AA0C-45BA-92F1-8D80A74E1300">
+				<DomainRole Name="ValueTypeInstance" PropertyName="CompatibleValueTypeInstanceValueError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueTypeInstance" Id="5C173594-AA0C-45BA-92F1-8D80A74E1300">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueTypeInstance"/>
 					</RolePlayer>
