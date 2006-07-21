@@ -429,13 +429,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
 		private sealed class ObjectTypePlaysRoleAdded : AddRule
 		{
+			public static void Process(ObjectTypePlaysRole link)
+			{
+				FixupRolePlayerLink(link);
+			}
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				if (link != null)
-				{
-					FixupRolePlayerLink(link);
-				}
+				Process(e.ModelElement as ObjectTypePlaysRole);
 			}
 		}
 		#endregion // ObjectTypePlaysRoleAdded class
@@ -463,24 +463,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
-		#region ObjectTypePlaysRoleRemoved class
+		#region ObjectTypePlaysRoleDeleted class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
 		private sealed class ObjectTypePlaysRoleDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated RolePlayer link is removed
 			/// </summary>
+			public static void Process(ObjectTypePlaysRole link)
+			{
+				// This will fire the PresentationLinkRemoved rule
+				PresentationViewsSubject.GetPresentation(link).Clear();
+			}
+			/// <summary>
+			/// Remove presentation elements when the associated RolePlayer link is removed
+			/// </summary>
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				if (link != null)
-				{
-					// This will fire the PresentationLinkRemoved rule
-					PresentationViewsSubject.GetPresentation(link).Clear();
-				}
+				Process(e.ModelElement as ObjectTypePlaysRole);
 			}
 		}
-		#endregion // ObjectTypePlaysRoleRemoved class
+		#endregion // ObjectTypePlaysRoleDeleted class
+		#region ObjectTypePlaysRoleRolePlayerChange class
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ObjectTypePlaysRoleRolePlayerChange : RolePlayerChangeRule
+		{
+			/// <summary>
+			/// Add and remove links when a role player changes
+			/// </summary>
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				ObjectTypePlaysRoleDeleted.Process(link);
+				ObjectTypePlaysRoleAdded.Process(link);
+			}
+		}
+		#endregion // ObjectTypePlaysRoleRolePlayerChange class
 		/// <summary>
 		/// Helper function to display role player links.
 		/// </summary>
@@ -926,16 +948,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					element.Delete();
 				}
-			}
-			/// <summary>
-			/// Enable post-load roles
-			/// </summary>
-			protected override void PhaseCompleted(Store store)
-			{
-				// UNDONE: Get a cleaner way to do this. We're enabling the
-				// generated shape model rule, but may not generate this rule
-				// indefinitely.
-				store.RuleManager.EnableRule(typeof(ConnectorRolePlayerChanged));
 			}
 		}
 		#endregion // EliminateOrphanedShapesFixupListener class
