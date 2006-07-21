@@ -81,10 +81,13 @@
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>
 		<arg:Rule class="Objectification.ObjectificationDeleteRule"/>
 		<arg:Rule class="Objectification.ObjectificationRolePlayerChangeRule"/>
+		<arg:Rule class="Objectification.PreferredIdentifierDeletingRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>
 		<arg:Rule class="Objectification.RoleDeletingRule"/>
 		<arg:Rule class="Objectification.RolePlayerDeletingRule"/>
+		<arg:Rule class="Objectification.UniquenessConstraintAddRule"/>
+		<arg:Rule class="Objectification.UniquenessConstraintDeletingRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule"/>
 		<arg:Rule class="ObjectType.MandatoryRoleAddedRule"/>

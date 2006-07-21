@@ -37,7 +37,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ORMCoreModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
+				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
+				if (factType != null)
+				{
+					ORMCoreModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+					ObjectType nestingType = factType.NestingType;
+					if (nestingType != null && null == nestingType.PreferredIdentifier)
+					{
+						ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					}
+				}
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule class
@@ -99,6 +108,81 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ImpliedObjectificationUniquenessConstraintIsInternalChangeRule class
+		#region UniquessConstraintAddRule class
+		/// <summary>
+		/// Ensure that an objectifying type with a single candidate internal uniqueness
+		/// constraint on the objectified fact uses that constraint as its preferred identifier.
+		/// </summary>
+		[RuleOn(typeof(ModelHasSetConstraint))]
+		private sealed class UniquenessConstraintAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
+				if (constraint != null && constraint.IsInternal)
+				{
+					LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
+					if (facts.Count != 0)
+					{
+						ObjectType nestingType = facts[0].NestingType;
+						if (nestingType != null)
+						{
+							ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+						}
+					}
+				}
+			}
+		}
+		#endregion // UniquessConstraintAddRule class
+		#region UniquessConstraintDeletingRule class
+		/// <summary>
+		/// Ensure that an objectifying type with a single candidate internal uniqueness
+		/// constraint on the objectified fact uses that constraint as its preferred identifier.
+		/// </summary>
+		[RuleOn(typeof(ModelHasSetConstraint))]
+		private sealed class UniquenessConstraintDeletingRule : DeletingRule
+		{
+			public override void ElementDeleting(ElementDeletingEventArgs e)
+			{
+				UniquenessConstraint constraint = (e.ModelElement as ModelHasSetConstraint).SetConstraint as UniquenessConstraint;
+				if (constraint != null && constraint.IsInternal)
+				{
+					LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
+					FactType testFact;
+					Objectification objectification;
+					if (facts.Count != 0 &&
+						!(testFact = facts[0]).IsDeleting &&
+						null != (objectification = testFact.Objectification) &&
+						!objectification.IsDeleting)
+					{
+						ORMCoreModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					}
+				}
+			}
+		}
+		#endregion // UniquessConstraintDeletingRule class
+		#region PreferredIdentifierDeletingRule class
+		/// <summary>
+		/// Make sure than an objectifying type gets a preferred identifier if
+		/// the existing preferred identifier is deleted and a single internal
+		/// uniqueness constraint on the objectified fact is available.
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		private sealed class PreferredIdentifierDeletingRule : DeletingRule
+		{
+			public override void  ElementDeleting(ElementDeletingEventArgs e)
+			{
+				ObjectType objectType = (e.ModelElement as EntityTypeHasPreferredIdentifier).PreferredIdentifierFor;
+				Objectification objectification;
+				if (!objectType.IsDeleting &&
+					null != (objectification = objectType.Objectification) &&
+					!objectification.IsDeleting)
+				{
+					ORMCoreModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+				}
+			}
+		}
+		#endregion // PreferredIdentifierDeletingRule class
 		#region ImpliedObjectificationIsImpliedChangeRule class
 		/// <summary>
 		/// Validates that an objectification that is implied matches the implied objectification pattern.
@@ -192,6 +276,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					nestingType = objectification.NestingType;
 				}
+				ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				Store store = nestedFactType.Store;
 				ORMModel model = nestedFactType.Model;
 
@@ -952,6 +1037,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				// We don't have an implied Objectification, so we don't need to do anything special.
 				nestedFactType.NestingType = nestingType;
+			}
+		}
+		/// <summary>
+		/// Make sure that an objectifying EntityType without a preferred identifier attached
+		/// to a fact type with one internal uniqueness constraint is assigned that uniqueness
+		/// constraint as its preferred identifier.
+		/// </summary>
+		/// <param name="element">ObjectType to process</param>
+		private static void DelayProcessObjectifyingTypeForPreferredIdentifier(ModelElement element)
+		{
+			ObjectType objectType;
+			FactType nestedFactType;
+			if (null != (objectType = element as ObjectType) &&
+				!objectType.IsDeleted &&
+				null == objectType.PreferredIdentifier &&
+				null != (nestedFactType = objectType.NestedFactType))
+			{
+				UniquenessConstraint useConstraint = null;
+				foreach (UniquenessConstraint testConstraint in nestedFactType.GetInternalConstraints<UniquenessConstraint>())
+				{
+					if (testConstraint.RoleCollection.Count != 0)
+					{
+						if (useConstraint == null)
+						{
+							useConstraint = testConstraint;
+						}
+						else
+						{
+							useConstraint = null;
+							break;
+						}
+					}
+				}
+				if (useConstraint != null)
+				{
+					objectType.PreferredIdentifier = useConstraint;
+				}
 			}
 		}
 		#region Exception Helpers
