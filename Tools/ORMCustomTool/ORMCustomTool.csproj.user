@@ -1,0 +1,19 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="">
+    <LastOpenVersion>8.0.50215</LastOpenVersion>
+    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectTrust>0</ProjectTrust>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
+    <StartAction>Program</StartAction>
+    <StartArguments>/RootSuffix Exp</StartArguments>
+    <StartWorkingDirectory>$(SolutionDir)/../..</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
+    <StartAction>Program</StartAction>
+    <StartArguments>/RootSuffix Exp</StartArguments>
+    <StartWorkingDirectory>$(SolutionDir)/../..</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>
