@@ -71,6 +71,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			retVal[dataDir.FindDomainRelationship(FactConstraint.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(FactSetComparisonConstraint.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ExternalRoleConstraint.DomainClassId)] = null;
+			retVal[dataDir.FindDomainRelationship(RoleInstance.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(IntrinsicReferenceMode.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(Microsoft.VisualStudio.Modeling.Diagrams.PresentationViewsSubject.DomainClassId)] = null;
 			return retVal;
@@ -1059,9 +1060,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == RoleInstance.RoleDomainRoleId)
+			if (roleId == EntityTypeRoleInstance.RoleDomainRoleId)
 			{
-				return new ORMCustomSerializedElementInfo(null, "ValueTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == FactTypeRoleInstance.RoleDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == ValueTypeInstanceHasCompatibleValueTypeInstanceValueError.CompatibleValueTypeInstanceValueErrorDomainRoleId)
 			{
@@ -1185,7 +1190,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, "EntityTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == RoleInstance.RoleDomainRoleId)
+			if (roleId == EntityTypeRoleInstance.RoleDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == FactTypeRoleInstance.RoleDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -2436,7 +2445,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, "FactTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == RoleInstance.RoleDomainRoleId)
+			if (roleId == EntityTypeRoleInstance.RoleDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == FactTypeRoleInstance.RoleDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3272,7 +3285,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					baseInfo.CopyTo(ret, 2);
 				}
 				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ValueRestriction", null, ORMCustomSerializedElementWriteStyle.Element, null, RoleHasValueConstraint.ValueConstraintDomainRoleId);
-				ret[1] = new ORMCustomSerializedChildElementInfo(null, "RoleInstances", null, ORMCustomSerializedElementWriteStyle.Element, null, RoleInstance.ObjectTypeInstanceDomainRoleId, RoleInstance.ObjectTypeInstanceDomainRoleId);
+				ret[1] = new ORMCustomSerializedChildElementInfo(null, "RoleInstances", null, ORMCustomSerializedElementWriteStyle.Element, null, EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId, FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
 				Role.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -3310,35 +3323,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId)
-			{
-				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ObjectTypePlaysRole.RolePlayerDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, "RolePlayer", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "EntityTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
+			}
+			if (roleId == FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "FactTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
+			}
+			if (roleId == RoleProxyHasRole.ProxyDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == ReadingOrderHasRole.ReadingOrderDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorDomainRoleId)
-			{
-				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == RoleInstance.ObjectTypeInstanceDomainRoleId)
-			{
-				Guid elementLinkDomainId = elementLink.GetDomainRelationship().Id;
-				if (elementLinkDomainId == FactTypeRoleInstance.DomainClassId)
-				{
-					return new ORMCustomSerializedElementInfo(null, "FactTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
-				}
-				else if (elementLinkDomainId == EntityTypeRoleInstance.DomainClassId)
-				{
-					return new ORMCustomSerializedElementInfo(null, "EntityTypeRoleInstance", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
-				}
-			}
-			if (roleId == RoleProxyHasRole.ProxyDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -3367,9 +3376,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(RoleHasValueConstraint.ValueConstraintDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
-				domainRole = domainDataDirectory.FindDomainRole(RoleInstance.ObjectTypeInstanceDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
-				domainRole = domainDataDirectory.FindDomainRole(RoleInstance.ObjectTypeInstanceDomainRoleId).OppositeDomainRole;
+				domainRole = domainDataDirectory.FindDomainRole(FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				domainRole = domainDataDirectory.FindDomainRole(RoleProxyHasRole.ProxyDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
@@ -3445,9 +3454,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(ObjectTypePlaysRole.RolePlayerDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|RolePlayer", match);
-				match.InitializeRolesWithExplicitRelationship(EntityTypeRoleInstance.DomainClassId, RoleInstance.ObjectTypeInstanceDomainRoleId);
+				match.InitializeRoles(EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances|http://schemas.neumont.edu/ORM/2006-04/ORMCore|EntityTypeRoleInstance", match);
-				match.InitializeRolesWithExplicitRelationship(FactTypeRoleInstance.DomainClassId, RoleInstance.ObjectTypeInstanceDomainRoleId);
+				match.InitializeRoles(FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances|http://schemas.neumont.edu/ORM/2006-04/ORMCore|FactTypeRoleInstance", match);
 				match.InitializeRoles(RoleHasValueConstraint.ValueConstraintDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueRestriction||", match);

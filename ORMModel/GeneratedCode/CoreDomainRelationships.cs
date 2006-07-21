@@ -17456,6 +17456,89 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 		}
 		#endregion
+		#region Role domain role code
+		
+		/// <summary>
+		/// Role domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid RoleDomainRoleId = new global::System.Guid(0x26d1bf78, 0xfc2b, 0x4d86, 0xbd, 0xb3, 0xc1, 0x85, 0xfe, 0x44, 0x3d, 0xac);
+		
+		/// <summary>
+		/// DomainRole Role
+		/// Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.Role
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("26d1bf78-fc2b-4d86-bdb3-c185fe443dac")]
+		public override Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RoleCollection of a ObjectTypeInstance
+		/// <summary>
+		/// Gets a list of RoleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<Role> GetRoleCollection(ObjectTypeInstance element)
+		{
+			return new DslModeling::LinkedElementCollection<Role>(element, ObjectTypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region ObjectTypeInstance domain role code
+		
+		/// <summary>
+		/// ObjectTypeInstance domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0xb24b068f, 0xbf3c, 0x4d4a, 0x95, 0x69, 0x03, 0x05, 0xf9, 0xb5, 0xaa, 0x7e);
+		
+		/// <summary>
+		/// DomainRole ObjectTypeInstance
+		/// Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.ObjectTypeI
+		/// nstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("b24b068f-bf3c-4d4a-9569-0305f9b5aa7e")]
+		public override ObjectTypeInstance ObjectTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectTypeInstanceCollection of a Role
+		/// <summary>
+		/// Gets a list of ObjectTypeInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<ObjectTypeInstance> GetObjectTypeInstanceCollection(Role element)
+		{
+			return new DslModeling::LinkedElementCollection<ObjectTypeInstance>(element, RoleDomainRoleId);
+		}
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region EntityTypeInstance opposite domain role accessor
 		/// <summary>
@@ -17475,6 +17558,67 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#endregion
+		#region Role link accessor
+		/// <summary>
+		/// Get the list of EntityTypeRoleInstance links to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> GetLinksToObjectTypeInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.Role @role )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance>(@role, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.RoleDomainRoleId);
+		}
+		#endregion
+		#region ObjectTypeInstance link accessor
+		/// <summary>
+		/// Get the list of EntityTypeRoleInstance links to a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> GetLinksToRoleCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance @objectTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance>(@objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region EntityTypeRoleInstance instance accessors
+		
+		/// <summary>
+		/// Get any EntityTypeRoleInstance links between a given Role and a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> GetLinks( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.RoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance link in links )
+			{
+				if ( target.Equals(link.ObjectTypeInstance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one EntityTypeRoleInstance link between a given Roleand a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.RoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance link in links )
+			{
+				if ( target.Equals(link.ObjectTypeInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
 		#endregion
 	}
 }
@@ -17552,6 +17696,89 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 		}
 		#endregion
+		#region Role domain role code
+		
+		/// <summary>
+		/// Role domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid RoleDomainRoleId = new global::System.Guid(0xbdeb47fc, 0xdd0a, 0x4509, 0x92, 0x69, 0x2e, 0xa5, 0xc1, 0x96, 0xf6, 0x8f);
+		
+		/// <summary>
+		/// DomainRole Role
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.Role
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/Role.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/Role.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectTypeInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/Role.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("bdeb47fc-dd0a-4509-9269-2ea5c196f68f")]
+		public override Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RoleCollection of a ObjectTypeInstance
+		/// <summary>
+		/// Gets a list of RoleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<Role> GetRoleCollection(ObjectTypeInstance element)
+		{
+			return new DslModeling::LinkedElementCollection<Role>(element, ObjectTypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region ObjectTypeInstance domain role code
+		
+		/// <summary>
+		/// ObjectTypeInstance domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x2cde9b25, 0x54c8, 0x42b6, 0xa5, 0x4f, 0x61, 0x21, 0x03, 0x45, 0xe9, 0xa0);
+		
+		/// <summary>
+		/// DomainRole ObjectTypeInstance
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.ObjectTypeIns
+		/// tance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("2cde9b25-54c8-42b6-a54f-61210345e9a0")]
+		public override ObjectTypeInstance ObjectTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectTypeInstanceCollection of a Role
+		/// <summary>
+		/// Gets a list of ObjectTypeInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new DslModeling::LinkedElementCollection<ObjectTypeInstance> GetObjectTypeInstanceCollection(Role element)
+		{
+			return new DslModeling::LinkedElementCollection<ObjectTypeInstance>(element, RoleDomainRoleId);
+		}
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region FactTypeInstance opposite domain role accessor
 		/// <summary>
@@ -17571,6 +17798,67 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#endregion
+		#region Role link accessor
+		/// <summary>
+		/// Get the list of FactTypeRoleInstance links to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> GetLinksToObjectTypeInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.Role @role )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance>(@role, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.RoleDomainRoleId);
+		}
+		#endregion
+		#region ObjectTypeInstance link accessor
+		/// <summary>
+		/// Get the list of FactTypeRoleInstance links to a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> GetLinksToRoleCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance @objectTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance>(@objectTypeInstance, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region FactTypeRoleInstance instance accessors
+		
+		/// <summary>
+		/// Get any FactTypeRoleInstance links between a given Role and a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> GetLinks( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.RoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance link in links )
+			{
+				if ( target.Equals(link.ObjectTypeInstance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one FactTypeRoleInstance link between a given Roleand a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static new global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.RoleDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance link in links )
+			{
+				if ( target.Equals(link.ObjectTypeInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
 		#endregion
 	}
 }

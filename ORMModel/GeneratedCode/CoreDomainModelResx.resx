@@ -3653,6 +3653,30 @@
     <value>Entity Type Role Instance</value>
     <comment>DisplayName for DomainClass &apos;EntityTypeRoleInstance&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/Role.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.ObjectTypeInstance</value>
+    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.DisplayName" xml:space="preserve">
+    <value>ObjectTypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Role Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;EntityTypeRoleInstance&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance</value>
     <comment>Description for DomainClass &apos;FactTypeRoleInstance&apos;</comment>
@@ -3660,6 +3684,30 @@
   <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.DisplayName" xml:space="preserve">
     <value>Fact Type Role Instance</value>
     <comment>DisplayName for DomainClass &apos;FactTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/Role.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type Instance Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.ObjectTypeInstance</value>
+    <comment>Description for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.DisplayName" xml:space="preserve">
+    <value>ObjectTypeInstance</value>
+    <comment>DisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance/ObjectTypeInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Role Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectTypeInstance&apos; on DomainRelationship &apos;FactTypeRoleInstance&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasRoleInstance.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.EntityTypeInstanceHasRoleInstance</value>

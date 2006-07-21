@@ -2549,12 +2549,48 @@
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstance"/>
 			</BaseRelationship>
+			<!-- The Source and Target elements here should be redundant.
+				 Tracking issue at http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=164144
+				 If this issue is fixed up, go back to using CreateAsRelationshipName tags in the ORMCore.SerializationExtensions.xml
+				 file corresponding to this relationship (reverse changes for changeset 706). -->
+				 <Source>
+				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Role" Id="26D1BF78-FC2B-4D86-BDB3-C185FE443DAC">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectTypeInstance" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ObjectTypeInstance" Id="B24B068F-BF3C-4D4A-9569-0305F9B5AA7E">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
 		</DomainRelationship>
 
 		<DomainRelationship Name="FactTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="FC7C9715-6886-46C2-A7A0-3BFD95CD0766">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstance"/>
 			</BaseRelationship>
+			<!-- The Source and Target elements here should be redundant.
+				 Tracking issue at http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=164144
+				 If this issue is fixed up, go back to using CreateAsRelationshipName tags in the ORMCore.SerializationExtensions.xml
+				 file corresponding to this relationship (reverse changes for changeset 706). -->
+			<Source>
+				<DomainRole Name="Role" PropertyName="ObjectTypeInstanceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Role" Id="BDEB47FC-DD0A-4509-9269-2EA5C196F68F">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ObjectTypeInstance" PropertyName="RoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ObjectTypeInstance" Id="2CDE9B25-54C8-42B6-A54F-61210345E9A0">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
 		</DomainRelationship>
 
 		<!-- UNDONE: 2006-06 DSL Tools port: @IsEmbedding was true on this relationship, but that is no longer allowed when the target role player is itself a DomainRelationship. -->

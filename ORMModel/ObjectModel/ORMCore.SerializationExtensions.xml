@@ -28,7 +28,11 @@
 			<se:OmitRelationship Class="FactConstraint"/>
 			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
+			<se:OmitRelationship Class="RoleInstance"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
+			<!-- Omitting links to the presentation layers is not strictly required because all
+				 links to external models do not serializae by default, but this one is very common,
+				 and including it here allows us to block it earlier in the serialization process. -->
 			<se:OmitRelationship Class="PresentationViewsSubject" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
@@ -167,7 +171,8 @@
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
 		<se:Attribute ID="Value" WriteStyle="Element"/>
-		<se:Link Name="ValueTypeRoleInstance" RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
@@ -175,7 +180,8 @@
 			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:ChildElement>
 		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-		<se:Link RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="TooFewEntityTypeRoleInstancesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRoleInstance">
@@ -332,7 +338,8 @@
 			<se:Link RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:ChildElement>
 		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
-		<se:Link RelationshipName="RoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="TooFewFactTypeRoleInstancesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeRoleInstance">
@@ -387,13 +394,11 @@
 			<se:Link RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="RoleInstances">
-			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="EntityTypeRoleInstance"/>
-			<se:Link RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="FactTypeRoleInstance"/>
+			<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance"/>
+			<se:Link RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance"/>
 		</se:ChildElement>
-		<se:Link Name="EntityTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="EntityTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
-		<se:Link Name="FactTypeRoleInstance" RelationshipName="RoleInstance" RoleName="ObjectTypeInstance" CreateAsRelationshipName="FactTypeRoleInstance" WriteStyle="PrimaryLinkElement"/>
-		<!--Need to add this attribute as custom storage.-->
-		<!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
+		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement"/>
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
