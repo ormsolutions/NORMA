@@ -768,11 +768,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private sealed class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
+		private sealed class EnforceRoleSequenceValidityForRolePlayerAdd : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(ObjectTypePlaysRole link)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				Role role = link.PlayedRole;
 				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
@@ -785,18 +784,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as ObjectTypePlaysRole);
+			}
 		}
 
 		/// <summary>
 		///Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private sealed class EnforceRoleSequenceValidityForFactTypeDelete : DeleteRule
+		private sealed class EnforceRoleSequenceValidityForRolePlayerDelete : DeleteRule
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			public static void Process(ObjectTypePlaysRole link, Role role)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
+				if (role == null)
+				{
+					role = link.PlayedRole;
+				}
 				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
 				for (int i = 0; i < count; ++i)
@@ -807,6 +812,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						ORMCoreModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 					}
+				}
+			}
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				Process(e.ModelElement as ObjectTypePlaysRole, null);
+			}
+		}
+		/// <summary>
+		/// Forward ObjectTypePlaysRole role player changes to corresponding Add/Delete rules
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private sealed class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				Guid changedRoleGuid = e.DomainRole.Id;
+				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+				{
+					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, (Role)e.OldRolePlayer);
+					EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
+				}
+				else
+				{
+					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, null);
+					// Both add and delete end up calling the same delay validation routine, just run one of them
+					// EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
 				}
 			}
 		}
@@ -1567,13 +1603,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		//Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
+		/// <summary>
+		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
+		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private sealed class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
+		private sealed class EnforceRoleSequenceValidityForRolePlayerAdd : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(ObjectTypePlaysRole link)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				Role role = link.PlayedRole;
 				LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
 				int count = roleSequences.Count;
@@ -1590,16 +1627,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as ObjectTypePlaysRole);
+			}
 		}
 
-		//Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		/// <summary>
+		/// Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))]
-		private sealed class EnforceRoleSequenceValidityForFactTypeDelete : DeleteRule
+		private sealed class EnforceRoleSequenceValidityForRolePlayerDelete : DeleteRule
 		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			public static void Process(ObjectTypePlaysRole link, Role role)
 			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				Role role = link.PlayedRole;
+				if (role == null)
+				{
+					role = link.PlayedRole;
+				}
 				if (!role.IsDeleted)
 				{
 					LinkedElementCollection<ConstraintRoleSequence> roleSequences = role.ConstraintRoleSequenceCollection;
@@ -1616,6 +1661,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 						}
 					}
+				}
+			}
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				Process(e.ModelElement as ObjectTypePlaysRole, null);
+			}
+		}
+		/// <summary>
+		/// Forward ObjectTypePlaysRole role player changes to corresponding Add/Delete rules
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private sealed class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ElementLink as ObjectTypePlaysRole;
+				if (link.IsDeleted)
+				{
+					return;
+				}
+				Guid changedRoleGuid = e.DomainRole.Id;
+				if (changedRoleGuid == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
+				{
+					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, (Role)e.OldRolePlayer);
+					EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
+				}
+				else
+				{
+					EnforceRoleSequenceValidityForRolePlayerDelete.Process(link, null);
+					// Both add and delete end up calling the same delay validation routine, just run one of them
+					// EnforceRoleSequenceValidityForRolePlayerAdd.Process(link);
 				}
 			}
 		}
@@ -2180,16 +2256,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 									bool rolePlayerOK = false;
 									if (!oppositeRole.IsDeleting)
 									{
-										ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(oppositeRole, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
-										int rolePlayerLinksCount = rolePlayerLinks.Count;
-										for (int i = 0; i < rolePlayerLinksCount; ++i)
+										ObjectTypePlaysRole rolePlayerLink = ObjectTypePlaysRole.GetLinkToRolePlayer(oppositeRole);
+										if (rolePlayerLink != null &&
+											!rolePlayerLink.IsDeleting &&
+											forType == rolePlayerLink.RolePlayer)
 										{
-											ObjectTypePlaysRole rolePlayerLink = rolePlayerLinks[i];
-											if (!rolePlayerLink.IsDeleting)
-											{
-												rolePlayerOK = true;
-												break;
-											}
+											rolePlayerOK = true;
 										}
 									}
 
@@ -2441,19 +2513,39 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (rolePlayer != null && !rolePlayer.IsDeleting)
 				{
-					ReadOnlyCollection<EntityTypeHasPreferredIdentifier> links = DomainRoleInfo.GetElementLinks<EntityTypeHasPreferredIdentifier>(rolePlayer, EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId);
-					// Don't for each, the iterator doesn't like it when you remove elements
-					int linksCount = links.Count;
-					Debug.Assert(linksCount <= 1); // Should be a 1-1 relationship
-					for (int i = linksCount - 1; i >= 0; --i)
+					EntityTypeHasPreferredIdentifier identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer);
+					if (identifierLink != null)
 					{
-						EntityTypeHasPreferredIdentifier identifierLink = links[i];
 						identifierLink.TestRemovePreferredIdentifier();
 					}
 				}
 			}
 		}
 		#endregion // TestRemovePreferredIdentifierDeletingRule class
+		#region TestRemovePreferredIdentifierRolePlayerChangeRule class
+		/// <summary>
+		/// A rule to determine if a mandatory condition for
+		/// a preferred identifier link has been eliminated.
+		/// Remove the preferred identifier if this happens.
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private sealed class TestRemovePreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+				{
+					ObjectType rolePlayer = (ObjectType)e.OldRolePlayer;
+					EntityTypeHasPreferredIdentifier identifierLink;
+					if (!rolePlayer.IsDeleted &&
+						null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer)))
+					{
+						identifierLink.TestRemovePreferredIdentifier();
+					}
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierRolePlayerChangeRule class
 		#region TestRemovePreferredIdentifierRoleAddRule class
 		/// <summary>
 		/// A rule to determine if a role has been added to a fact that
