@@ -221,7 +221,7 @@ namespace Neumont.Tools.ORM.Shell
 							while (factShape == null)
 							{
 								shape = shape.ParentShape;
-								if (shape is Diagram)
+								if (shape == null)
 								{
 									break;
 								}

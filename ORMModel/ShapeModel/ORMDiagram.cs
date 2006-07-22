@@ -204,9 +204,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 						foreach (RoleBase roleBase in factType.RoleCollection)
 						{
 							Role role = roleBase.Role;
+
+							// Pick up role players
 							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+
+							// Pick up attached constraints
 							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
 							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
+							
+							// Pick up the role shape
+							FixUpDiagram(factType, role);
+
+							// Get the role value constraint and the link to it.
+							RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
+							if (valueConstraintLink != null)
+							{
+								FixUpDiagram(factType, valueConstraintLink.ValueConstraint);
+								FixUpDiagram(droppedOnElement, valueConstraintLink);
+							}
+						}
+						LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
+						if (orders.Count != 0)
+						{
+							FixUpDiagram(factType, orders[0]);
 						}
 					}
 					else if (objectType != null)
@@ -237,6 +257,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 								FixUpDiagram(droppedOnElement, link);
 							}
 						}
+						ValueTypeValueConstraint valueConstraint = objectType.ValueConstraint;
+						if (valueConstraint != null)
+						{
+							FixUpDiagram(objectType, valueConstraint);
+						}
+						// UNDONE: This won't add the value constraint shape on an object type with
+						// a collapsed ref mode. These are shown as role value constraints
+						// UNDONE: The placement here is not good
 					}
 					else if (singleCol != null)
 					{
@@ -475,7 +503,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return ShouldDisplayObjectType(objType);
 			}
-			return base.ShouldAddShapeForElement(element);
+			return false;
 		}
 		/// <summary>
 		/// Determine if an ObjectType element should be displayed on

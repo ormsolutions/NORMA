@@ -704,7 +704,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					Diagram.FixUpDiagram(model, objectType);
 					Diagram.FixUpDiagram(objectType, valueTypeValueConstraint);
-					Diagram.FixUpDiagram(model, link);
 				}
 			}
 		}
