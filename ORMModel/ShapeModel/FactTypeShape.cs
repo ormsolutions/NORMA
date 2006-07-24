@@ -4328,6 +4328,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					FactTypeShape parentShape = e.ModelElement as FactTypeShape;
 					RectangleD oldBounds = (RectangleD)e.OldValue;
+					if (oldBounds.IsEmpty ||
+						e.ModelElement.Store.TransactionManager.CurrentTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes))
+					{
+						// Initializing, let normal placement win
+						return;
+					}
 					RectangleD newBounds = (RectangleD)e.NewValue;
 					SizeD oldSize = oldBounds.Size;
 					SizeD newSize = newBounds.Size;

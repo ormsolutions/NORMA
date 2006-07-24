@@ -264,7 +264,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						// UNDONE: This won't add the value constraint shape on an object type with
 						// a collapsed ref mode. These are shown as role value constraints
-						// UNDONE: The placement here is not good
 					}
 					else if (singleCol != null)
 					{

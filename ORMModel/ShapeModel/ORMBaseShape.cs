@@ -32,6 +32,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseShape, ORMModelElement, Design.ORMBaseShapeTypeDescriptor<ORMBaseShape, ORMModelElement>>))]
 	public partial class ORMBaseShape
 	{
+		#region Public token values
+		/// <summary>
+		/// Set this context key in the current transaction to
+		/// force all child shapes to be explicitly placed.
+		/// </summary>
+		public static readonly object PlaceAllChildShapes = new object();
+		#endregion // Public token values
 		#region Constructor
 		/// <summary>
 		/// Constructor.
@@ -250,6 +257,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// not previously placed.</param>
 		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced)
 		{
+			// Don't check childWasPlaced here during drag-drop. In this case,
+			// childWasPlace will be true if the parent shape was placed, so is
+			// only relevant for our code base for the top-level shapes, in which
+			// case the OnChildConfigured for the dropped shape is called on the
+			// diagram, not a base shape. Any derived shape that allows placed
+			// drag from the toolbox (etc) onto child shapes (which none of
+			// the shapes in ORMShapeModel allow), then childWasPlaced should
+			// be tested.
+			if (childWasPlaced)
+			{
+				Transaction transaction = Store.TransactionManager.CurrentTransaction;
+				if (transaction != null &&
+					(DropTargetContext.HasDropTargetContext(transaction) ||
+					transaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes)))
+				{
+					childWasPlaced = false;
+				}
+			}
 			if (!childWasPlaced)
 			{
 				ORMBaseShape baseShape;

@@ -70,13 +70,12 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 
 				ORMDesignerDocView docView = (ORMDesignerDocView)myCurrentDocument.DocViews[0];
 				ORMDiagram diagram = docView.CurrentDiagram as ORMDiagram;
-				Dictionary<ModelElement, bool> modelElements = new Dictionary<ModelElement, bool>();
-				bool newObjectsCreated = false;
 
 				// We've got a model, now lets start a transaction to add our fact to the model.
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
 				{
 					Dictionary<object, object> topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
+					topLevelTransactionContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
 					LinkedElementCollection<RoleBase> factRoles = null;
 					ReadingOrder readOrd;
 					Reading primaryReading = null;
@@ -124,7 +123,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 							currentObject = new ObjectType(store);
 							currentObject.Name = objectName;
 							currentObject.Model = myModel;
-							newObjectsCreated = true;
 							newlyCreatedObjects.Add(objectName, currentObject);
 
 							// If the object DOES NOT already exist AND it's a value type
@@ -234,17 +232,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 
 							} // end of if (currentObject.NestedFactType == null)
 						} // end of use existing object
-						if (!modelElements.ContainsKey(currentObject))
-						{
-							if (!isEmptyElement)
-							{
-								isEmptyElement = null == diagram.FindShapeForElement(currentObject);
-							}
-							if (isEmptyElement)
-							{
-								modelElements.Add(currentObject, isEmptyElement);
-							}
-						}
 
 						// Add this object to the fact role collection, default the role name to the object name
 						Role role = new Role(store);
@@ -257,15 +244,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 						}
 
 					} // end foreach (FactObject o in myParsedFact.FactObjects)
-
-//					if (currentFact.Model == null)
-//					{
-//						currentFact.Model = myModel;
-//					}
-					if (currentFact != myEditFact)
-					{
-						modelElements.Add(currentFact, true);
-					}
 
 					// If we're creating a new fact, add the reading to the reading collection
 					if (myEditFact == null)
@@ -309,34 +287,6 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					// Commit the changes to the model.
 					t.Commit();
 				} // end transaction
-
-				#region Autolayout
-				// Only perform autlayout if new objects have been created AND there are objects
-				// in the modelElements collection.
-				if (newObjectsCreated && modelElements.Count > 0)
-				{
-					// Create a new transaction to perform autolayout (You cannot do this inside the same transaction)
-					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
-					{
-						// New stuff for autolayout
-						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
-						foreach (KeyValuePair<ModelElement, bool> modelElement in modelElements)
-						{
-							if (modelElement.Value)
-							{
-								ShapeElement shapeElement = diagram.FindShapeForElement(modelElement.Key);
-								if (shapeElement != null)
-								{
-									shapeElements.Add(shapeElement, true);
-								}
-							}
-						}
-
-						diagram.AutoLayoutChildShapes(shapeElements);
-						t.Commit();
-					}
-				}
-				#endregion // Autolayout
 			}
 		}
 	}
