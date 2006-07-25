@@ -457,7 +457,7 @@ namespace Neumont.Tools.ORM.Design
 	}
 	/// <summary>
 	/// A base class used to display a list of elements in a
-	/// VirtualTreeGrid control. Override the Get Tree property to
+	/// VirtualTreeGrid control. Override the GetTree method to
 	/// populate the constrol, and alternately the LastControlSize property.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
@@ -545,10 +545,12 @@ namespace Neumont.Tools.ORM.Design
 			if (myEditor != null)
 			{
 				object newObject = value;
-				// Get the list contents and add a null handler if needed
+				// Get the tree contents
 				ITree tree = GetTree(context, value);
 				// Proceed if there is anything to show
-				if (tree != null) // UNDONE: Turn this back on? && tree.VisibleItemCount != 0)
+				// Don't check tree.VisibleItemCount. Allows the derived class to display an empty dropdown
+				// by returning a tree with no visible elements.
+				if (tree != null)
 				{
 					DropDownTreeControl treeControl = null;
 					try
@@ -588,8 +590,9 @@ namespace Neumont.Tools.ORM.Design
 						// Record the final size, we'll use it next time for this type of control
 						LastControlSize = treeControl.Size;
 
-						// Make sure the user didn't cancel, and translate the null placeholder
-						// back to null if necessary
+						// Make sure the user didn't cancel, and give derived classes a chance
+						// to translate the value displayed in the tree to an appropriately
+						// typed value for the associated property.
 						if (!treeControl.EscapePressed)
 						{
 							int lastRow = treeControl.LastSelectedRow;
@@ -681,6 +684,146 @@ namespace Neumont.Tools.ORM.Design
 				return true;
 			}
 		}
+		/// <summary>
+		/// Controls the size of the dropdown for a given type as it opens and closes. Override
+		/// both the setter and getter to change the value for specific controls
+		/// </summary>
+		protected virtual Size LastControlSize
+		{
+			get
+			{
+				return myLastControlSize;
+			}
+			set
+			{
+				myLastControlSize = value;
+			}
+		}
+		#endregion // TreePicker Specifics
+	}
+	/// <summary>
+	/// A base class used to display text in a multi-line text box control.
+	/// This editor and derived classes can be directly applied to any string
+	/// property. Overriding the LastControlSize property allows dropdown
+	/// size to be control for each editor implementation.
+	/// </summary>
+	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
+	public class MultilineTextEditor : UITypeEditor
+	{
+		#region TextBoxControl class. Handles Escape key for TextBox
+		private sealed class TextBoxControl : TextBox
+		{
+			private bool myEscapePressed;
+			/// <summary>
+			/// Set the appropriate TextBox styles
+			/// </summary>
+			public TextBoxControl() : base()
+			{
+				Multiline = true;
+				ScrollBars = ScrollBars.Vertical;
+			}
+			protected override bool IsInputKey(Keys keyData)
+			{
+				if ((keyData & Keys.KeyCode) == Keys.Escape)
+				{
+					myEscapePressed = true;
+				}
+				return base.IsInputKey(keyData);
+			}
+			public bool EscapePressed
+			{
+				get
+				{
+					return myEscapePressed;
+				}
+			}
+		}
+		#endregion // TextBoxControl class. Handles Escape key for TextBox
+		#region UITypeEditor overrides
+		private IWindowsFormsEditorService myEditor;
+		/// <summary>
+		/// The default value used for the LastControlSize property the first time
+		/// the control is shown.
+		/// </summary>
+		protected static readonly Size DefaultInitialControlSize = new Size(272, 128);
+		private static Size myLastControlSize = DefaultInitialControlSize;
+		/// <summary>
+		/// Required UITypeEditor override. Opens dropdown modally
+		/// and waits for user input.
+		/// </summary>
+		/// <param name="context">The descriptor context. Used to retrieve
+		/// the live instance and other data.</param>
+		/// <param name="provider">The service provider for the given context.</param>
+		/// <param name="value">The current property value</param>
+		/// <returns>The updated property value, or the orignal value to effect a cancel</returns>
+		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+		{
+			myEditor = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+			if (myEditor != null)
+			{
+				string newText = value as string;
+				if (newText == null)
+				{
+					newText = string.Empty;
+				}
+				TextBoxControl textControl = null;
+				try
+				{
+					// Create a textbox with its events
+					textControl = new TextBoxControl();
+
+					// Manage the size of the control
+					Size lastSize = LastControlSize;
+					if (!lastSize.IsEmpty)
+					{
+						textControl.Size = lastSize;
+					}
+
+					textControl.Text = newText;
+					textControl.Select(0, 0);
+					myEditor.DropDownControl(textControl);
+
+					// Record the final size, we'll use it next time for this type of control
+					LastControlSize = textControl.Size;
+
+					// Make sure the user didn't cancel, and translate the null placeholder
+					// back to null if necessary
+					if (!textControl.EscapePressed)
+					{
+						newText = textControl.Text;
+					}
+				}
+				finally
+				{
+					if (textControl != null && !textControl.IsDisposed)
+					{
+						textControl.Dispose();
+					}
+				}
+				return newText;
+			}
+			return value;
+		}
+		/// <summary>
+		/// Select a drop down style
+		/// </summary>
+		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+		{
+			return UITypeEditorEditStyle.DropDown;
+		}
+		/// <summary>
+		/// Allow resizing
+		/// </summary>
+		public override bool IsDropDownResizable
+		{
+			get
+			{
+				return true;
+			}
+		}
+		#endregion // UITypeEditor overrides
+		#region MultilineTextEditor Specifics
 		/// <summary>
 		/// Controls the size of the dropdown for a given type as it opens and closes. Override
 		/// both the setter and getter to change the value for specific controls

@@ -458,4 +458,38 @@ namespace Neumont.Tools.ORM.Design
 		}
 	}
 	#endregion // ReferenceModePicker class
+	#region NoteEditor class
+	/// <summary>
+	/// An editor for Note field dropdowns
+	/// </summary>
+	public class NoteEditor : MultilineTextEditor
+	{
+		private static Size myLastControlSize = DefaultInitialControlSize;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
+		}
+	}
+	#endregion // NoteEditor class
+	#region DerivationRuleEditor class
+	/// <summary>
+	/// An editor for a derivation rule dropdown
+	/// </summary>
+	public class DerivationRuleEditor : MultilineTextEditor
+	{
+		private static Size myLastControlSize = new Size(272, 64);
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
+		}
+	}
+	#endregion // DerivationRuleEditor class
 }

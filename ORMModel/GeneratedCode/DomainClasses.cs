@@ -123,6 +123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.ORMNamedElement.Name
 		/// </summary>
+		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMNamedElement/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMNamedElement/Name.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::ElementName]
@@ -601,8 +602,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.NoteText
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.Note
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NoteEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/NoteText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/NoteText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -2213,8 +2215,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of NoteText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.NoteText
+		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.Note
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NoteEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/NoteText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/NoteText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -2637,6 +2640,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Gets or sets the value of DerivationRuleDisplay domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.FactType.DerivationRule
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.DerivationRuleEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactType/DerivationRuleDisplay.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -3982,6 +3987,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.ObjectModel.Role.Name
 		/// </summary>
+		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/Name.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainObjectId("f173d0fa-8f94-479d-8794-2572b8cd8d9a")]
@@ -4077,9 +4083,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ObjectificationOppositeRoleName domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ObjectificationOppositeRoleNa
-		/// me
+		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ImpliedRoleName
 		/// </summary>
+		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/ObjectificationOppositeRoleName.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
@@ -5435,7 +5441,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsPreferred domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsPreferred
+		/// Description for Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.IsPreferredId
+		/// entifier
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraint/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.UniquenessConstraint/IsPreferred.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]

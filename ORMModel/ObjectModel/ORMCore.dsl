@@ -34,6 +34,13 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="4A557C1E-0A89-49B7-B4BD-FA095F6267D7">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -92,8 +99,14 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="NoteText" Id="17C4E23D-CA49-4329-982F-48F4EFCA23BD" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Id="17C4E23D-CA49-4329-982F-48F4EFCA23BD" Kind="CustomStorage">
 					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NoteEditor)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
 								<AttributeParameter Value="false"/>
@@ -213,8 +226,14 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="NoteText" Id="AF6200B1-068D-434A-98D3-44E872B921BD" Kind="CustomStorage">
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Id="AF6200B1-068D-434A-98D3-44E872B921BD" Kind="CustomStorage">
 					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NoteEditor)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
 						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
 							<Parameters>
 								<AttributeParameter Value="false"/>
@@ -261,6 +280,19 @@
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="DerivationRuleDisplay" DefaultValue="" DisplayName="DerivationRule" Id="7AF5C436-C28A-49BA-B8E0-05C409B67358" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -273,7 +305,7 @@
 			</Properties>
 		</DomainClass>
 
-		<DomainClass Name="SubtypeFact" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7A957450-AD7E-4C29-AF59-A10F8C8052CC" DisplayName="SubtypeFact">
+		<DomainClass Name="SubtypeFact" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7A957450-AD7E-4C29-AF59-A10F8C8052CC" DisplayName="Subtype">
 			<BaseClass>
 				<DomainClassMoniker Name="FactType"/>
 			</BaseClass>
@@ -349,11 +381,25 @@
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" Id="F173D0FA-8F94-479D-8794-2572B8CD8D9A">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ObjectificationOppositeRoleName" DefaultValue="" DisplayName="ObjectificationOppositeRoleName" Id="4719AAC4-E0E7-467A-B261-CDB8AE9826ED" Kind="CustomStorage">
+				<DomainProperty Name="ObjectificationOppositeRoleName" DefaultValue="" DisplayName="ImpliedRoleName" Id="4719AAC4-E0E7-467A-B261-CDB8AE9826ED" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -455,7 +501,7 @@
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="IsPreferred" DefaultValue="false" DisplayName="IsPreferred" Id="585DE7A0-8E09-43F3-8463-F20609A16790" Kind="CustomStorage">
+				<DomainProperty Name="IsPreferred" DefaultValue="false" DisplayName="IsPreferredIdentifier" Id="585DE7A0-8E09-43F3-8463-F20609A16790" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
