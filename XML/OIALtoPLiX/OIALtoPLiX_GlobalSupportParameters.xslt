@@ -14,5 +14,5 @@
 	
 	<xsl:variable name="SprocSuffix" select="'SP'"/>
 	<xsl:variable name="CollectionSuffix" select="'Collections'"/>
-	<xsl:variable name="debugMode" select="true()"/>
+	<xsl:variable name="debugMode" select="false()"/>
 </xsl:stylesheet>

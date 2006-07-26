@@ -32,10 +32,12 @@ XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt" "%ORMTrans
 
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_Abstract.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt" "%ORMTransformsDir%\"
+XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt" "%ORMTransformsDir%\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\OIALtoCLIProperties.xslt" "%ORMTransformsDir%\"
+
 
 CALL:_AddXslORMGenerator "CoRefORM" "ORM Co-Referencer" "Co-references (binarizes) an ORM file." ".CoRef.orm" "ORM" "CoRefORM" "%ORMTransformsDir%\CoRefORM.xslt"
 CALL:_AddXslORMGenerator "ORMtoOIAL" "ORM to OIAL" "Transforms a coreferenced ORM file to OIAL." ".OIAL.xml" "CoRefORM" "OIAL" "%ORMTransformsDir%\ORMtoOIAL.xslt"
@@ -46,7 +48,8 @@ CALL:_AddXslORMGenerator "OIALtoDCIL" "OIAL to DCIL" "Transforms an OIAL file to
 CALL:_AddXslORMGenerator "OIALtoCLIProperties" "OIAL to CLI Properties" "Transforms an OIAL file to CLI (Common Language Infrastructure) Properties" ".CLIProperties.xml" "OIAL" "CLIProperties" "%ORMTransformsDir%\OIALtoCLIProperties.xslt"
 CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "OIAL" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
 CALL:_AddXslORMGenerator "CLIPropertiesToPLiXAbstract" "CLIProperties to PLiX Abstract" "Transforms a CLI Properties file to Abstract PLiX" ".Abstract.PLiX.xml" "CLIProperties" "PLiX_Abstract" "%ORMTransformsDir%\OIALtoPLiX_Abstract.xslt" "" "OIAL\0" "PLiX_Support\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayer" "CLIProperties to PLiX Data Layer" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayerWithSproc" "CLIProperties to PLiX Data Layer with Sprocs" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLPPropertiesToPliXDataLayerSprocFree" "CLIProperties to PLiX Sproc Free Data Layer" "Transforms a CLI Properties file to Sproc Free Data Layer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "" "OIAL\0" "PLiX_Abstract\0"
 CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "" "OIAL\0" "PLiX_Abstract\0"
 
 

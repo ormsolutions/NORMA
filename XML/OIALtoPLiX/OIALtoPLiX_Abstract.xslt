@@ -205,7 +205,7 @@
 				<plx:returns dataTypeName="{$ModelContextName}"/>
 				<plx:get/>
 			</plx:property>
-			<xsl:apply-templates select="$eventProperties" mode="GeneratePropertyChangeEvents">
+			<xsl:apply-templates select="$eventProperties[not(@isIdentity='true')]" mode="GeneratePropertyChangeEvents">
 				<xsl:with-param name="ClassName" select="$className"/>
 			</xsl:apply-templates>
 			<xsl:apply-templates select="$Properties" mode="GenerateAbstractProperty"/>
@@ -409,7 +409,7 @@
 						</plx:callInstance>
 					</plx:return>
 				</plx:get>
-				<xsl:if test="not(@isCollection='true')">
+				<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
 					<plx:set>
 						<plx:assign>
 							<plx:left>
@@ -426,7 +426,7 @@
 					</plx:set>
 				</xsl:if>
 			</plx:property>
-			<xsl:if test="not(@isCollection='true')">
+			<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
 				<plx:event visibility="public" name="{@name}Changing">
 					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 					<plx:explicitDelegateType dataTypeName="EventHandler"/>
@@ -557,7 +557,7 @@
 				<xsl:copy-of select="prop:DataType/child::*"/>
 			</plx:returns>
 			<plx:get/>
-			<xsl:if test="not(@isCollection='true')">
+			<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
 				<plx:set/>
 			</xsl:if>
 		</plx:property>
@@ -1094,7 +1094,7 @@
 		<xsl:param name="Model"/>
 		<xsl:param name="Properties"/>
 		<plx:function visibility="public" modifier="abstract" name="Create{@name}">
-			<xsl:for-each select="$Properties[@mandatory='alethic']">
+			<xsl:for-each select="$Properties[@mandatory='alethic' and not(@isIdentity='true')]">
 				<plx:param name="{@name}">
 					<xsl:copy-of select="prop:DataType/@*"/>
 					<xsl:copy-of select="prop:DataType/child::*"/>

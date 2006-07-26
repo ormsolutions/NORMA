@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:odt="http://schemas.orm.net/ORMDataTypes" 
-	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	targetNamespace="urn:schemas-orm-net:PLiX:CLI:Properties"
-	elementFormDefault="qualified"
-	attributeFormDefault="unqualified"
-	version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:odt="http://schemas.orm.net/ORMDataTypes" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" targetNamespace="urn:schemas-orm-net:PLiX:CLI:Properties" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
 			Copyright © Neumont University. All rights reserved.
@@ -19,19 +10,28 @@
 			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Jaron Briggs, Benjamin Kiefer</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen, Jaron Briggs, Benjamin Kiefer, Roland Sanidad</xs:appinfo>
 	</xs:annotation>
+	<xs:import namespace="http://schemas.orm.net/OIAL" />
+	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" />
 
-	<xs:import namespace="http://schemas.orm.net/OIAL"/>
-	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
-	
+	<xs:element name="AllProperties">
+		<xs:annotation>
+			<xs:documentation>A collection of Property elements for an oil:model</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="prop:Properties" maxOccurs="unbounded" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="Properties">
 		<xs:annotation>
 			<xs:documentation>A collection of Property elements for an oil:conceptType.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="prop:Property" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="prop:Property" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
 			<xs:attribute name="conceptTypeName" use="required" type="xs:string">
 				<xs:annotation>
@@ -40,12 +40,12 @@
 			</xs:attribute>
 		</xs:complexType>
 		<xs:key name="PropertiesKey">
-			<xs:selector xpath="."/>
-			<xs:field xpath="@conceptTypeName"/>
+			<xs:selector xpath="." />
+			<xs:field xpath="@conceptTypeName" />
 		</xs:key>
 		<xs:key name="PropertyKey">
-			<xs:selector xpath="prop:Property"/>
-			<xs:field xpath="@name"/>
+			<xs:selector xpath="prop:Property" />
+			<xs:field xpath="@name" />
 		</xs:key>
 	</xs:element>
 	<xs:element name="Property">
@@ -54,7 +54,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="prop:DataType"/>
+				<xs:element ref="prop:DataType" />
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="xs:token">
 				<xs:annotation>
@@ -82,6 +82,11 @@
 					<xs:documentation>Note that a Property can have both @isCollection and @isCutomType be true, meaning that it is a collection of custom types.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="isIdentity" use="optional" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>If true, the value of this Property is auto-generated; therefore, any property generated must be read-only.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Can the prop:DataType contained within this prop:Property be null?</xs:documentation>
@@ -101,7 +106,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="plx:typeRefType"/>
+				<xs:extension base="plx:typeRefType" />
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
@@ -111,7 +116,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence minOccurs="0">
-				<xs:element ref="prop:DataType"/>
+				<xs:element ref="prop:DataType" />
 				<xs:any minOccurs="0" processContents="strict" namespace="http://schemas.neumont.edu/CodeGeneration/PLiX">
 					<xs:annotation>
 						<xs:documentation>Constraint enforcement code, if any, for this data type. Should return plx:trueKeyword if the value is valid.</xs:documentation>

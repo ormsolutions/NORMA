@@ -11,6 +11,7 @@
 	the terms of this license.
 
 	You must not remove this notice, or any other, from this software.
+
 -->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -50,7 +51,9 @@
 	</xsl:template>
 
 	<xsl:template match="odt:identity" mode="GenerateInformationTypeFormatMapping">
-		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true"/>
+		<prop:FormatMapping name="{@name}" canBeNull="false" isIdentity="true">
+			<prop:DataType dataTypeName=".object"/>
+		</prop:FormatMapping>
 	</xsl:template>
 	<xsl:template match="odt:boolean" mode="GenerateInformationTypeFormatMapping">
 		<prop:FormatMapping name="{@name}" canBeNull="false">
@@ -148,9 +151,15 @@
 			as well as nested oil:conceptType elements and oil:conceptType elements that we are nested within.
 			Also process all oil:conceptTypeRef elements that are targetted at us.-->
 
-		<xsl:for-each select="oil:informationType[not(@formatRef=$identityFormatRefNames)]">
+		<!--<xsl:for-each select="oil:informationType[not(@formatRef=$identityFormatRefNames)]">-->
+		<xsl:for-each select="oil:informationType">
 			<xsl:variable name="informationTypeFormatMapping" select="$InformationTypeFormatMappings[@name=current()/@formatRef]"/>
 			<prop:Property name="{@name}" mandatory="{@mandatory}" isUnique="{boolean(oil:singleRoleUniquenessConstraint)}" canBeNull="{not(@mandatory='alethic') or $informationTypeFormatMapping/@canBeNull='true'}" isCollection="false" isCustomType="false">
+				<xsl:if test="$InformationTypeFormatMappings[@name=current()/@formatRef]/@isIdentity">
+					<xsl:attribute name="isIdentity">
+						<xsl:value-of select="$InformationTypeFormatMappings[@name=current()/@formatRef]/@isIdentity"/>
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="not(@mandatory='alethic') and $informationTypeFormatMapping/@canBeNull='false'">
 						<prop:DataType dataTypeName="Nullable">

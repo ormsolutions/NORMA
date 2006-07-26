@@ -26,10 +26,13 @@
 	<!--<xsl:import href="OIALtoPLiX.xslt"/>-->
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
 	<xsl:param name="OIAL"/>
+	<!--<xsl:param name="SprocParam" />-->
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
 	<xsl:variable name="ConceptTypes" select="$OIAL//oil:conceptType"/>
+	<!--<xsl:variable name="SprocFree" select="boolean($SprocParam/dataLayerImplementation/@sprocFree)"/>-->
+	<xsl:variable name="SprocFree" select="false()"/>
 	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties"/>
 	<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$OIAL//oil:roleSequenceUniquenessConstraint"/>
 
@@ -496,19 +499,11 @@
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:branch>
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandType">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
-						</plx:right>
-					</plx:assign>
 
+					<!-- Determine CommandType (either StoredProcedure or Text) -->
+					<xsl:call-template name="GenerateIDBCommandType">
+						<xsl:with-param name="commandName" select="'command'"/>
+					</xsl:call-template>
 					<plx:assign>
 						<plx:left>
 							<plx:callInstance type="property" name="CommandText">
@@ -518,7 +513,41 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:string><xsl:value-of select="concat('Get',$uniqueConceptTypeName,'By',@name)"/></plx:string>
+							<xsl:choose>
+								<xsl:when test="$SprocFree">
+									<!-- Nodeset representing the WHERE Clause of the SQL statement -->
+									<xsl:variable name="selectStringFragment">
+										<xsl:for-each select="$ParametersWithPreferredIdentifiers">
+											<xsl:choose>
+												<xsl:when test="@parentName">
+													<plx:string>
+														<xsl:value-of select="@parentName"/>_<xsl:value-of select="@name"/> = @<xsl:value-of select="@parentName"/><xsl:value-of select="@name"/><xsl:if test="position() != last()"> and </xsl:if>
+													</plx:string>
+												</xsl:when>
+												<xsl:otherwise>
+													<plx:string>
+														<xsl:value-of select="@name"/> = @<xsl:value-of select="@name"/><xsl:if test="position() != last()"> and </xsl:if>
+													</plx:string>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:for-each>
+									</xsl:variable>
+
+									<xsl:variable name="selectString" select="exsl:node-set($selectStringFragment)/child::*"/>
+									<plx:string>
+										<xsl:value-of select="concat('SELECT * FROM ', $Model/@name, '.', $uniqueConceptTypeName, ' WHERE ')"/>
+										<xsl:for-each select="$selectString">
+											<xsl:value-of select="."/>
+										</xsl:for-each>
+									</plx:string>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:string>
+										<xsl:value-of select="concat('Get',$uniqueConceptTypeName,'By',@name)"/>
+									</plx:string>
+								</xsl:otherwise>
+							</xsl:choose>
+
 						</plx:right>
 					</plx:assign>
 					<xsl:for-each select="$ParametersWithPreferredIdentifiers">
@@ -539,7 +568,7 @@
 									</commandParameter>
 								</xsl:otherwise>
 							</xsl:choose>
-							
+
 						</xsl:variable>
 						<xsl:variable name="commandParameter" select="exsl:node-set($commandParameterFragment)/child::*"/>
 						<xsl:call-template name="GenerateIDataParameter">
@@ -558,7 +587,7 @@
 					</plx:finally>
 				</plx:try>
 			</plx:function>
-			
+
 			<xsl:if test="$debugMode">
 				<plx:comment>OIALtoPLiX_Implementation.xslt Marker006</plx:comment>
 			</xsl:if>
@@ -693,18 +722,8 @@
 						</plx:callInstance>
 					</plx:branch>
 
-					<plx:assign>
-						<plx:left>
-							<plx:callInstance type="property" name="CommandType">
-								<plx:callObject>
-									<plx:nameRef type="local" name="command"/>
-							</plx:callObject>
-							</plx:callInstance>
-						</plx:left>
-						<plx:right>
-							<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
-						</plx:right>
-					</plx:assign>
+					<xsl:call-template name="GenerateIDBCommandType" />
+					
 					<plx:assign>
 						<plx:left>
 							<plx:callInstance type="property" name="CommandText">
@@ -714,7 +733,18 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<plx:string><xsl:value-of select="concat('Get',$uniqueConceptTypeName,'By',@name)"/></plx:string>
+							<xsl:choose>
+								<xsl:when test="$SprocFree">
+									<plx:string>
+										<xsl:value-of select="concat('SELECT * FROM ', $Model/@name, '.', $uniqueConceptTypeName, ' WHERE ', @name, ' = @', @name)"/>
+									</plx:string>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:string>
+										<xsl:value-of select="concat('Get',$uniqueConceptTypeName,'By',@name)"/>
+									</plx:string>
+								</xsl:otherwise>
+							</xsl:choose>
 						</plx:right>
 					</plx:assign>
 					<xsl:variable name="commandParameterFragment">
@@ -829,7 +859,7 @@
 				<plx:pragma type="region" data="{$ClassName}"/>
 			</plx:leadingInfo>
 			<plx:interfaceMember memberName="Create{$ClassName}" dataTypeName="I{$ModelContextName}"/>
-			<xsl:for-each select="$mandatoryProperties">
+			<xsl:for-each select="$mandatoryProperties[not(@isIdentity='true')]">
 				<plx:param name="{@name}">
 					<xsl:copy-of select="prop:DataType/@*"/>
 					<xsl:copy-of select="prop:DataType/child::*"/>
@@ -875,18 +905,8 @@
 				</plx:initialize>
 			</plx:local>
 
-			<plx:assign>
-				<plx:left>
-					<plx:callInstance type="property" name="CommandType">
-						<plx:callObject>
-							<plx:nameRef type="local" name="command"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:left>
-				<plx:right>
-					<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
-				</plx:right>
-			</plx:assign>
+			<xsl:call-template name="GenerateIDBCommandType" />
+
 			<plx:assign>
 				<plx:left>
 					<plx:callInstance name="CommandText" type="property">
@@ -896,35 +916,112 @@
 					</plx:callInstance>
 				</plx:left>
 				<plx:right>
-					<plx:string><xsl:value-of select="concat('Create',$ClassName,$SprocSuffix)"/></plx:string>
-				</plx:right>
+					<xsl:choose>
+						<xsl:when test="$SprocFree">
+							<plx:string>
+								<plx:string>
+									<xsl:value-of select="concat('INSERT INTO ', $ModelName, '.', $ClassName, ' (')"/>
+									<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
+										<xsl:choose>
+											<xsl:when test="@parentName">
+												<xsl:if test="position() != 1">
+													<xsl:text>, </xsl:text>
+												</xsl:if>
+												<xsl:value-of select="concat(@parentName, '_', @name)"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:if test="not(@isIdentity = 'true')">
+													<xsl:if test="position() != 1">
+														<xsl:text>, </xsl:text>
+													</xsl:if>
+													<xsl:value-of select="@name"/>
+												</xsl:if>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+									<xsl:text>) VALUES (</xsl:text>
+									<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
+										<xsl:choose>
+											<xsl:when test="@parentName">
+												<xsl:if test="position() != 1">
+													<xsl:text>, </xsl:text>
+												</xsl:if>
+												<xsl:value-of select="concat('@',@parentName, @name)"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:if test="not(@isIdentity = 'true')">
+													<xsl:if test="position() != 1">
+														<xsl:text>, </xsl:text>
+													</xsl:if>
+													<xsl:value-of select="concat('@',@name)"/>
+												</xsl:if>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+									<xsl:text>)</xsl:text>
+									<xsl:if test="$mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true' and not(@parentName)]">
+										<xsl:text>; SELECT @@IDENTITY;</xsl:text>
+										<!-- Instead of using a parameter to get the identity, use ExecuteScalar method of the command object and just return the identity -->
+										<!--<xsl:choose>
+											<xsl:when test="$mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName">
+												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@parentName, $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')" />
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="concat('SELECT @', $mandatoryPropertiesWithPreferredIdentifiers[@isIdentity = 'true']/@name, ' = @@Identity;')"/>
+											</xsl:otherwise>
+										</xsl:choose>-->
+									</xsl:if>
+								</plx:string>
+							</plx:string>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:string>
+								<xsl:value-of select="concat('Create',$ClassName,$SprocSuffix)"/>
+							</plx:string>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:right>				
 			</plx:assign>
 			<xsl:variable name="commandParameterFragment">
 				<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
-					<xsl:choose>
-						<xsl:when test="@parentName">
-							<commandParameter name="{@name}" parentName="{@parentName}">
+					<commandParameter name="{@name}">
+						<xsl:attribute name="isIdentity">
+							<xsl:choose>
+								<xsl:when test="@isIdentity='true'">
+									<xsl:value-of select="'true'"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="'false'"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:choose>
+							<xsl:when test="@parentName">
+								<xsl:attribute name="parentName">
+									<xsl:value-of select="@parentName"/>
+								</xsl:attribute>
 								<plx:callInstance name="{@name}" type="property">
 									<plx:callObject>
 										<plx:nameRef type="parameter" name="{@parentName}"/>
 									</plx:callObject>
 								</plx:callInstance>
-							</commandParameter>
-						</xsl:when>
-						<xsl:otherwise>
-							<commandParameter name="{@name}">
+							</xsl:when>
+							<xsl:otherwise>
 								<plx:nameRef type="parameter" name="{@name}"/>
-							</commandParameter>
-						</xsl:otherwise>
-					</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>
+					</commandParameter>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="commandParameter" select="exsl:node-set($commandParameterFragment)/child::*"/>
+			
 			<xsl:for-each select="$commandParameter">
 				<xsl:call-template name="GenerateIDataParameter">
 					<xsl:with-param name="commandName" select="'command'"/>
 					<xsl:with-param name="parameterName" select="concat(@parentName, @name)"/>
 					<xsl:with-param name="parameterValue" select="*"/>
+					<xsl:with-param name="isIdentity" select="@isIdentity"/>
+					<xsl:with-param name="parentName" select="@parentName" />
 				</xsl:call-template>
 			</xsl:for-each>
 
@@ -959,12 +1056,28 @@
 						</plx:callObject>
 					</plx:callInstance>
 				</plx:branch>
-				
-				<plx:callInstance name="ExecuteNonQuery" type="methodCall">
-					<plx:callObject>
-						<plx:nameRef name="command" type="local"/>
-					</plx:callObject>
-				</plx:callInstance>
+
+				<xsl:choose>
+					<xsl:when test="$SprocFree">
+						<plx:local name="identity" dataTypeName=".object">
+							<plx:initialize>
+								<plx:callInstance name="ExecuteScalar" type="methodCall">
+									<plx:callObject>
+										<plx:nameRef name="command" type="local"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:initialize>
+						</plx:local>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:callInstance name="ExecuteNonQuery" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="command" type="local"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</xsl:otherwise>
+				</xsl:choose>
+
 				<plx:return>
 					<plx:callNew dataTypeName="{concat($ClassName,$ImplementationClassSuffix)}" type="new">
 						<plx:passParam>
@@ -979,6 +1092,20 @@
 												<plx:nameRef name="{@parentName}" type="parameter"/>
 											</plx:callObject>
 										</plx:callInstance>
+									</xsl:when>
+									<xsl:when test="@isIdentity='true'">
+										<xsl:choose>
+											<xsl:when test="$SprocFree">
+												<plx:nameRef name="identity" type="local"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:callInstance name="Value" type="property">
+													<plx:callObject>
+														<plx:nameRef name="parameter{@name}" />
+													</plx:callObject>
+												</plx:callInstance>
+											</xsl:otherwise>
+										</xsl:choose>
 									</xsl:when>
 									<xsl:otherwise>
 										<plx:nameRef name="{@name}" type="parameter"/>
@@ -1021,6 +1148,7 @@
 						</plx:callInstance>
 					</plx:initialize>
 				</plx:local>
+				<xsl:call-template name="GenerateIDBCommandType" />
 				<plx:assign>
 					<plx:left>
 						<plx:callInstance name="CommandText" type="property">
@@ -1030,7 +1158,18 @@
 						</plx:callInstance>
 					</plx:left>
 					<plx:right>
-						<plx:string><xsl:value-of select="@name"/><xsl:value-of select="$CollectionSuffix"/><xsl:value-of select="$SprocSuffix"/></plx:string>
+						<plx:string>
+							<xsl:choose>
+								<xsl:when test="$SprocFree">
+									<xsl:value-of select="concat('SELECT * FROM ', $Model/@name, '.', @name)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@name"/>
+									<xsl:value-of select="$CollectionSuffix"/>
+									<xsl:value-of select="$SprocSuffix"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:string>
 					</plx:right>
 				</plx:assign>
 				<plx:branch>
@@ -1062,7 +1201,7 @@
 						</plx:callObject>
 					</plx:callInstance>
 				</plx:branch>
-				
+
 				<plx:return>
 					<plx:callNew dataTypeName="DataReaderEnumerator" type="new">
 						<plx:passTypeParam dataTypeName="{@name}" />
@@ -1173,7 +1312,7 @@
 						<plx:nameRef type="parameter" name="context"/>
 					</plx:right>
 				</plx:assign>
-				
+
 				<xsl:for-each select="$mandatoryPropertiesWithPreferredIdentifiers">
 					<plx:assign>
 						<plx:left>
@@ -1223,9 +1362,37 @@
 			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="NonCollectionCustomTypePreferredIdentifiers" select="exsl:node-set($NonCollectionCustomTypePreferredIdentifiersFragment)/child::*"/>
+
+		<!-- Generate variable that has the preferred identifier(s) of the class -->
+		<xsl:variable name="ConceptTypePreferredIdentifiersFragment" >
+			<xsl:for-each select="$Model/oil:conceptType[@name=$ClassName]">
+				<xsl:choose>
+					<xsl:when test="oil:roleSequenceUniquenessConstraint/@isPreferred='true'">
+						<xsl:for-each select="oil:conceptTypeRef[@name=current()/oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef/@targetChild]">
+							<xsl:call-template name="GetPreferredIdentifierProperties">
+								<xsl:with-param name="Model" select="$Model"/>
+								<xsl:with-param name="AllProperties" select="$AllProperties"/>
+								<xsl:with-param name="TargetConceptTypeName" select="@target"/>
+								<xsl:with-param name="ParentName" select="@name"/>
+							</xsl:call-template>
+						</xsl:for-each>
+						<xsl:for-each select="oil:informationType[@name=current()/oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef/@targetChild]">
+							<xsl:copy-of select="$AllProperties[@conceptTypeName=$ClassName]/prop:Property[@name=current()/@name]"/>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:for-each select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']">
+							<xsl:copy-of select="$AllProperties[@conceptTypeName=$ClassName]/prop:Property[@name=current()/@name]"/>
+						</xsl:for-each>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="ConceptTypePreferredIdentifiers" select="exsl:node-set($ConceptTypePreferredIdentifiersFragment)/child::*"/>
+		
 		<xsl:if test="$debugMode">
 			<plx:comment>OIALtoPLiX_Implementation.xslt Marker013</plx:comment>
-		</xsl:if>	
+		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="@isCollection='true'"/>
 			<xsl:when test="@isCustomType='true'">
@@ -1287,6 +1454,9 @@
 								</plx:callInstance>
 							</plx:initialize>
 						</plx:local>
+						
+						<xsl:call-template name="GenerateIDBCommandType" />
+						
 						<plx:assign>
 							<plx:left>
 								<plx:callInstance name="CommandText" type="property">
@@ -1297,11 +1467,21 @@
 							</plx:left>
 							<plx:right>
 								<plx:string>
-									<xsl:value-of select="$procedureName"/>
-									<xsl:value-of select="$SprocSuffix"/>
+									<xsl:choose>
+										<xsl:when test="$SprocFree">
+											<xsl:value-of select="concat('SELECT * FROM ', $Model/@name, '.', prop:DataType/plx:passTypeParam/@dataTypeName, ' WHERE ', @oppositeName, '_', $ThisConceptTypePreferredIdentifiers/@name, ' = @', $ThisConceptTypePreferredIdentifiers/@name)"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$procedureName"/>
+											<xsl:value-of select="$SprocSuffix"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</plx:string>
 							</plx:right>
 						</plx:assign>
+
+
+
 						<xsl:for-each select="$ThisConceptTypePreferredIdentifiers">
 							<xsl:variable name="commandParameterFragment">
 								<xsl:choose>
@@ -1432,7 +1612,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:get>
-			<xsl:if test="not(@isCollection='true')">
+			<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
 				<xsl:if test="$debugMode">
 					<plx:comment>OIALtoPLiX_Implementation.xslt Marker015</plx:comment>
 				</xsl:if>
@@ -1481,7 +1661,7 @@
 							</plx:local>
 						</xsl:otherwise>
 					</xsl:choose>
-					
+
 					<plx:branch>
 						<plx:condition>
 							<xsl:choose>
@@ -1579,19 +1759,7 @@
 									</plx:callInstance>
 								</plx:initialize>
 							</plx:local>
-							<plx:assign>
-								<plx:left>
-									<plx:callInstance type="property" name="CommandType">
-										<plx:callObject>
-											<plx:nameRef type="local" name="command"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:left>
-								<plx:right>
-									<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
-								</plx:right>
-							</plx:assign>
-
+							<xsl:call-template name="GenerateIDBCommandType" />
 							<plx:assign>
 								<plx:left>
 									<plx:callInstance type="property" name="CommandText">
@@ -1603,11 +1771,43 @@
 								<plx:right>
 									<plx:string>
 										<xsl:choose>
-											<xsl:when test="$NonCollectionCustomTypePreferredIdentifiers">
-												<xsl:value-of select="concat('Update',$ClassName,'Via',$NonCollectionCustomTypePreferredIdentifiers/@parentName,$NonCollectionCustomTypePreferredIdentifiers/@name,$SprocSuffix)"/>
+											<xsl:when test="$SprocFree">
+												<xsl:value-of select="concat('UPDATE ', $Model/@name, '.', $ClassName, ' SET ')"/>
+												<!-- Set the new value of the column -->
+												<xsl:choose>
+													<xsl:when test="$NonCollectionCustomTypePreferredIdentifiers">
+														<xsl:value-of select="concat($NonCollectionCustomTypePreferredIdentifiers/@parentName, '_', $NonCollectionCustomTypePreferredIdentifiers/@name, ' = @New', $NonCollectionCustomTypePreferredIdentifiers/@parentName, $NonCollectionCustomTypePreferredIdentifiers/@name)"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="concat(@name, ' = @New', @name)"/>
+													</xsl:otherwise>
+												</xsl:choose>
+												<xsl:text> WHERE </xsl:text>
+												<!-- Build WHERE condition(s) -->
+												<xsl:for-each select="$ConceptTypePreferredIdentifiers">
+													<xsl:choose>
+														<xsl:when test="@parentName">
+															<xsl:value-of select="concat(@parentName, '_', @name, ' = @', @parentName, @name)"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:value-of select="concat(@name, ' = @', @name)"/>
+														</xsl:otherwise>
+													</xsl:choose>
+													<xsl:if test="position() != last()">
+														<xsl:text> AND </xsl:text>
+													</xsl:if>
+												</xsl:for-each>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="concat('Update',$ClassName,@name,$SprocSuffix)"/>
+												<!-- Uses stored procedures to update -->
+												<xsl:choose>
+													<xsl:when test="$NonCollectionCustomTypePreferredIdentifiers">
+														<xsl:value-of select="concat('Update',$ClassName,'Via',$NonCollectionCustomTypePreferredIdentifiers/@parentName,$NonCollectionCustomTypePreferredIdentifiers/@name,$SprocSuffix)"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="concat('Update',$ClassName,@name,$SprocSuffix)"/>
+													</xsl:otherwise>
+												</xsl:choose>
 											</xsl:otherwise>
 										</xsl:choose>
 									</plx:string>
@@ -1643,33 +1843,8 @@
 									<xsl:with-param name="parameterValue" select="*"/>
 								</xsl:call-template>
 							</xsl:for-each>
+
 							
-							<!-- Generate variable that has the preferred identifier(s) of the class -->
-							<xsl:variable name="ConceptTypePreferredIdentifiersFragment" >
-								<xsl:for-each select="$Model/oil:conceptType[@name=$ClassName]">
-									<xsl:choose>
-										<xsl:when test="oil:roleSequenceUniquenessConstraint/@isPreferred='true'">
-											<xsl:for-each select="oil:conceptTypeRef[@name=current()/oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef/@targetChild]">
-												<xsl:call-template name="GetPreferredIdentifierProperties">
-													<xsl:with-param name="Model" select="$Model"/>
-													<xsl:with-param name="AllProperties" select="$AllProperties"/>
-													<xsl:with-param name="TargetConceptTypeName" select="@target"/>
-													<xsl:with-param name="ParentName" select="@name"/>
-												</xsl:call-template>
-											</xsl:for-each>
-											<xsl:for-each select="oil:informationType[@name=current()/oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef/@targetChild]">
-												<xsl:copy-of select="$AllProperties[@conceptTypeName=$ClassName]/prop:Property[@name=current()/@name]"/>
-											</xsl:for-each>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:for-each select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']">
-												<xsl:copy-of select="$AllProperties[@conceptTypeName=$ClassName]/prop:Property[@name=current()/@name]"/>
-											</xsl:for-each>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
-							</xsl:variable>
-							<xsl:variable name="ConceptTypePreferredIdentifiers" select="exsl:node-set($ConceptTypePreferredIdentifiersFragment)/child::*"/>
 							<!-- Generate parameters variable for each preferred identifier -->
 							<xsl:variable name="commandParametersFragment">
 								<xsl:for-each select="$ConceptTypePreferredIdentifiers">
@@ -1921,7 +2096,7 @@
 			</xsl:choose>
 		</plx:passParam>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateCreateObjectReaderBlock">
 		<xsl:param name="ObjectToCreateName"/>
 		<xsl:param name="CommandName" />
@@ -2008,62 +2183,88 @@
 			</plx:fallbackBranch>
 		</plx:autoDispose>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateIDataParameter">
 		<xsl:param name="commandName"/>
 		<xsl:param name="parameterName"/>
 		<xsl:param name="parameterValue"/>
-		<!-- Declare and initialize parameter -->
-		<plx:local name="parameter{$parameterName}" dataTypeName="IDataParameter">
-			<plx:initialize>
-				<plx:callInstance name="CreateParameter" type="methodCall">
-					<plx:callObject>
-						<plx:nameRef name="{$commandName}"/>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:initialize>
-		</plx:local>
-		<!-- Assing parameter name -->
-		<plx:assign>
-			<plx:left>
-				<plx:callInstance name="ParameterName" type="property">
-					<plx:callObject>
-						<plx:nameRef name="parameter{$parameterName}"/>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:left>
-			<plx:right>
-				<plx:string><xsl:value-of select="$parameterName"/></plx:string>
-			</plx:right>
-		</plx:assign>
-		<!-- Assign parameter value-->
-		<plx:assign>
-			<plx:left>
-				<plx:callInstance name="Value" type="property">
-					<plx:callObject>
-						<plx:nameRef name="parameter{$parameterName}"/>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:left>
-			<plx:right>
-				<xsl:copy-of select="$parameterValue"/>
-			</plx:right>
-		</plx:assign>
-		<!-- Add parameter to the command object-->
-		<plx:callInstance name="Add" type="methodCall">
-			<plx:callObject>
-				<plx:callInstance name="Parameters" type="property">
-					<plx:callObject>
-						<plx:nameRef name="{$commandName}"/>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:callObject>
-			<plx:passParam>
-				<plx:nameRef name="{concat('parameter', $parameterName)}" type="local"/>
-			</plx:passParam>
-		</plx:callInstance>
+		<xsl:param name="isIdentity" select="'false'"/>
+		<xsl:param name="parentName" />
+		<xsl:if test="(($parentName or ($isIdentity != 'true')) and $SprocFree) or not($SprocFree)">
+			<!-- Declare and initialize parameter -->
+			<plx:local name="parameter{$parameterName}" dataTypeName="IDataParameter">
+				<plx:initialize>
+					<plx:callInstance name="CreateParameter" type="methodCall">
+						<plx:callObject>
+							<plx:nameRef name="{$commandName}"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<!-- Assign parameter name -->
+			<plx:assign>
+				<plx:left>
+					<plx:callInstance name="ParameterName" type="property">
+						<plx:callObject>
+							<plx:nameRef name="parameter{$parameterName}"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:string>
+						<xsl:value-of select="$parameterName"/>
+					</plx:string>
+				</plx:right>
+			</plx:assign>
+			<xsl:choose>
+				<xsl:when test="$isIdentity='true' and not(@parentName)">
+					<!-- Set parameter direction to output -->
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Direction" type="property">
+								<plx:callObject>
+									<plx:nameRef name="parameter{$parameterName}"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic name="Output" type="property" dataTypeName="ParameterDirection" />
+						</plx:right>
+					</plx:assign>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- Assign parameter value-->
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name="Value" type="property">
+								<plx:callObject>
+									<plx:nameRef name="parameter{$parameterName}"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<xsl:copy-of select="$parameterValue"/>
+						</plx:right>
+					</plx:assign>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- Add parameter to the command object-->
+			<plx:callInstance name="Add" type="methodCall">
+				<plx:callObject>
+					<plx:callInstance name="Parameters" type="property">
+						<plx:callObject>
+							<plx:nameRef name="{$commandName}"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:callObject>
+				<plx:passParam>
+					<plx:nameRef name="{concat('parameter', $parameterName)}" type="local"/>
+				</plx:passParam>
+			</plx:callInstance>
+		</xsl:if>
+		
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateCompoundComparison">
 		<xsl:param name="Identifiers"/>
 		<xsl:param name="mainOperator"/>
@@ -2115,7 +2316,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template name="GenerateCommandObjectCleanup">
 		<xsl:param name="cmdName" select="'command'"/>
 		<!-- Close connection if open -->
@@ -2154,5 +2355,27 @@
 				<plx:nameRef name="{$cmdName}" type="local"/>
 			</plx:callObject>
 		</plx:callInstance>
+	</xsl:template>
+	<xsl:template name="GenerateIDBCommandType">
+		<xsl:param name="commandName" select="'command'"/>
+		<plx:assign>
+			<plx:left>
+				<plx:callInstance type="property" name="CommandType">
+					<plx:callObject>
+						<plx:nameRef type="local" name="{$commandName}"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:left>
+			<plx:right>
+				<xsl:choose>
+					<xsl:when test="$SprocFree">
+						<plx:callStatic type="field" name="Text" dataTypeName="CommandType" />
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:callStatic type="field" name="StoredProcedure" dataTypeName="CommandType" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:right>
+		</plx:assign>
 	</xsl:template>
 </xsl:stylesheet>

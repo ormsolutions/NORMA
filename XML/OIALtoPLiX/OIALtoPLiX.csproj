@@ -11,7 +11,10 @@
   <ItemGroup>
     <Content Include="OIALtoCLIProperties.xslt" />
     <Content Include="OIALtoPLiX_Abstract.xslt" />
+    <Content Include="OIALtoPLiX_DataLayerTestForm.xslt" />
+    <Content Include="OIALtoPLiX_DataLayerTestForm_Designer.xslt" />
     <Content Include="OIALtoPLiX_DataLayer_Implementation.xslt" />
+    <Content Include="OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" />
     <Content Include="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" />
     <Content Include="OIALtoPLiX_GenerateTuple.xslt" />
     <Content Include="OIALtoPLiX_GlobalSupportFunctions.xslt" />
@@ -22,6 +25,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OIALtoPLiX_Properties.xsx">
+      <DependentUpon>OIALtoPLiX_Properties.xsd</DependentUpon>
+    </None>
     <None Include="SampleModel.PLiX.xml" />
     <None Include="SampleModel.PLiX.cs" />
   </ItemGroup>
