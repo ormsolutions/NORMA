@@ -640,7 +640,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuAddReading(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.AddReading();
+				ReadingEditor.Instance.OnMenuAddReading();
 			}
 			/// <summary>
 			/// Status callback
@@ -654,7 +654,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuAddReadingOrder(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.AddReadingOrder();
+				ReadingEditor.Instance.OnMenuAddReadingOrder();
 			}
 			/// <summary>
 			/// Status callback
@@ -668,7 +668,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuDeleteReading(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.DeleteSelectedReading();
+				ReadingEditor.Instance.OnMenuDeleteSelectedReading();
 			}
 			/// <summary>
 			/// Status callback
@@ -682,7 +682,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuPromoteReading(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.PromoteReading();
+				ReadingEditor.Instance.OnMenuPromoteReading();
 			}
 			/// <summary>
 			/// Status callback
@@ -696,7 +696,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuDemoteReading(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.DemoteReading();
+				ReadingEditor.Instance.OnMenuDemoteReading();
 			}
 			/// <summary>
 			/// Status callback
@@ -710,7 +710,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuReadingEditorPromoteReadingOrder(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.PromoteReadingOrder();
+				ReadingEditor.Instance.OnMennuPromoteReadingOrder();
 			}
 			/// <summary>
 			/// Status callback
@@ -724,7 +724,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuReadingEditorDemoteReadingOrder(object sender, EventArgs e)
 			{
-				ReadingEditor.Instance.DemoteReadingOrder();
+				ReadingEditor.Instance.OnMenuDemoteReadingOrder();
 			}
 			#endregion // ReadingEditor context menu handlers
 

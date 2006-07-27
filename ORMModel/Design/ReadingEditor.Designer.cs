@@ -8,8 +8,8 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 
@@ -74,8 +74,8 @@ namespace Neumont.Tools.ORM.Design
 			this.vtrReadings.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.vtrReadings.HasHorizontalGridLines = true;
 			this.vtrReadings.HasLines = false;
-			this.vtrReadings.HasRootButtons = false;
 			this.vtrReadings.HasRootLines = false;
+			this.vtrReadings.HasRootButtons = true;
 			this.vtrReadings.ImageList = this.myImageList;
 			this.vtrReadings.LabelEditSupport = ((VirtualTreeLabelEditActivationStyles)((((VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed)
 						| VirtualTreeLabelEditActivationStyles.ImmediateMouse)
@@ -85,7 +85,7 @@ namespace Neumont.Tools.ORM.Design
 			this.vtrReadings.Size = new System.Drawing.Size(541, 276);
 			this.vtrReadings.TabIndex = 1;
 			this.vtrReadings.Text = "Readings";
-			this.vtrReadings.ContextMenuInvoked += new ContextMenuEventHandler(this.OnContextMenuInvoked);
+			this.vtrReadings.ContextMenuInvoked += new ContextMenuEventHandler(this.OnMenuInvoked);
 			this.vtrReadings.SelectionChanged += new EventHandler(this.OnTreeControlSelectionChanged);
 			// 
 			// ReadingEditor
