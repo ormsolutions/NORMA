@@ -37,6 +37,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 				}
 
 				private IORMGenerator _selectedORMGenerator;
+				private readonly List<IORMGenerator> _ormGenerators;
+				private readonly MainBranch _mainBranch;
+				
 				public IORMGenerator SelectedORMGenerator
 				{
 					get
@@ -49,7 +52,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					}
 				}
 
-				private readonly List<IORMGenerator> _ormGenerators;
 				public IList<IORMGenerator> ORMGenerators
 				{
 					get
@@ -58,7 +60,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					}
 				}
 
-				private readonly MainBranch _mainBranch;
 				private MainBranch MainBranch
 				{
 					get
@@ -67,11 +68,11 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					}
 				}
 
-
 				public override string GetText(int row, int column)
 				{
 					return this.ORMGenerators[row].DisplayName;
 				}
+
 				public override string GetTipText(int row, int column, ToolTipType tipType)
 				{
 					if (tipType == ToolTipType.StateIcon)
