@@ -60,9 +60,9 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			this.myCtorServiceProvider = serviceProvider;
 			ORMReadingEditorToolWindow.TheMenuService = this.MenuService;
-			
+
 		}
-		
+
 		#endregion
 		#region ToolWindow overrides
 		/// <summary>
@@ -76,7 +76,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 
-		
+
 		private object myCommandSet;
 		private bool myCommandsPopulated;
 		/// <summary>
@@ -85,8 +85,8 @@ namespace Neumont.Tools.ORM.Shell
 		public override IMenuCommandService MenuService
 		{
 			get
-			{ 
-				IMenuCommandService retVal = base.MenuService;  
+			{
+				IMenuCommandService retVal = base.MenuService;
 				if (retVal != null && !myCommandsPopulated)
 				{
 					myCommandsPopulated = true;
@@ -179,6 +179,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ICollection selectedObjects = base.GetSelectedComponents();
 				FactType theFact = null;
+				FactType secondaryFact = null;
 				foreach (object o in selectedObjects)
 				{
 					FactType testFact = EditorUtility.ResolveContextFactType(o);
@@ -187,21 +188,35 @@ namespace Neumont.Tools.ORM.Shell
 					if (theFact == null)
 					{
 						theFact = testFact;
+						Role testImpliedRole;
+						RoleProxy proxy;
+						if (null != (testImpliedRole = o as Role) &&
+							null != (proxy = testImpliedRole.Proxy))
+						{
+							secondaryFact = proxy.FactType;
+						}
 					}
-					else if (testFact != theFact)
+					else if (!object.ReferenceEquals(testFact, theFact))
 					{
 						theFact = null;
 						break;
 					}
+					else
+					{
+						secondaryFact = null;
+					}
 				}
 				ActiveFactType activeFact = EditingFactType;
+
 				FactType currentFact = activeFact.FactType;
+				FactType currentImpliedFact = activeFact.ImpliedFactType;
+
 				if (theFact == null && currentFact != null)
 				{
 					EditingFactType = ActiveFactType.Empty;
 				}
 				//selection could change between the shapes that are related to the fact
-				else if (theFact != currentFact)
+				else if (!object.ReferenceEquals(theFact, currentFact) || !object.ReferenceEquals(secondaryFact, currentImpliedFact))
 				{
 					LinkedElementCollection<RoleBase> displayOrder = null;
 					ORMDesignerDocView docView = CurrentORMSelectionContainer as ORMDesignerDocView;
@@ -233,7 +248,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 					}
-					EditingFactType = new ActiveFactType(theFact, displayOrder);
+					EditingFactType = new ActiveFactType(theFact, secondaryFact, displayOrder);
 				}
 			}
 			else
@@ -242,6 +257,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Selection Monitoring
+
 		#region properties
 
 		/// <summary>
@@ -264,14 +280,20 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion
+
 		#region nested class ReadingsViewForm
 		private sealed class ReadingsViewForm : ContainerControl
 		{
-			private readonly ReadingEditor myReadingEditor;
-			private readonly Label myNoSelectionLabel;
+			private ReadingEditor myReadingEditor;
+			private Label myNoSelectionLabel;
 
 			#region construction
 			public ReadingsViewForm()
+			{
+				Initialize();
+			}
+
+			private void Initialize()
 			{
 				myReadingEditor = new ReadingEditor();
 				this.Controls.Add(myReadingEditor);
@@ -288,7 +310,6 @@ namespace Neumont.Tools.ORM.Shell
 			#endregion
 
 			#region properties
-		
 			public ActiveFactType EditingFactType
 			{
 				get
@@ -297,13 +318,12 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				set
 				{
-					  bool editVisible = !value.IsEmpty;
-					  myReadingEditor.Visible = editVisible;
-					  myNoSelectionLabel.Visible = !editVisible;
-					  myReadingEditor.EditingFactType = value;
+					bool editVisible = !value.IsEmpty;
+					myReadingEditor.Visible = editVisible;
+					myNoSelectionLabel.Visible = !editVisible;
+					myReadingEditor.EditingFactType = value;
 				}
 			}
-			
 			public ReadingEditor ReadingEditor
 			{
 				get
@@ -337,7 +357,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			public void DeleteSelectedReading()
 			{
-				myReadingEditor.DeleteSelectedReading();
+				myReadingEditor.OnMenuDeleteSelectedReading();
 			}
 
 			public void EditSelectedReading()
@@ -409,9 +429,22 @@ namespace Neumont.Tools.ORM.Shell
 				ModelingDocData docData = CurrentDocument;
 				if (docData != null)
 				{
-					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
-					// If the command wasn't handled already, forward it to the undo manager.
-					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+					MSOLE.IOleCommandTarget forwardTo = null;
+					Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager = docData.UndoManager;
+					if (undoManager != null)
+					{
+						forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
+					}
+					if (forwardTo == null)
+					{
+						forwardTo = this.GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget;
+					}
+					Debug.Assert(forwardTo != null);
+					if (forwardTo != null)
+					{
+						// If the command wasn't handled already, forward it to the undo manager.
+						hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+					}
 				}
 			}
 			return hr;
