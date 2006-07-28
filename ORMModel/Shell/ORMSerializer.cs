@@ -120,7 +120,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Write style for property custom serialization.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ORMCustomSerializedAttributeWriteStyle
 	{
 		/// <summary>
@@ -191,7 +190,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Custom serialization information.
 	/// </summary>
-	[CLSCompliant(true)]
 	public abstract class ORMCustomSerializedInfo
 	{
 		/// <summary>
@@ -271,7 +269,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Custom serialization information for elements.
 	/// </summary>
-	[CLSCompliant(true)]
 	public class ORMCustomSerializedElementInfo : ORMCustomSerializedInfo
 	{
 		/// <summary>
@@ -333,7 +330,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Custom serialization information for properties.
 	/// </summary>
-	[CLSCompliant(true)]
 	public class ORMCustomSerializedPropertyInfo : ORMCustomSerializedInfo
 	{
 		/// <summary>
@@ -396,7 +392,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Custom serialization information for child elements.
 	/// </summary>
-	[CLSCompliant(true)]
 	public class ORMCustomSerializedChildElementInfo : ORMCustomSerializedElementInfo
 	{
 		/// <summary>
@@ -448,7 +443,6 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Data returned by IORMCustomSerializedElement.MapElementName.
 	/// </summary>
-	[CLSCompliant(true)]
 	public struct ORMCustomSerializedElementMatch
 	{
 		/// <summary>

@@ -31,7 +31,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// except we don't touch the cursor, and we chain to
 	/// the RoleConnectAction when dragging starts.
 	/// </summary>
-	[CLSCompliant(true)]
 	public class RoleDragPendingAction : SelectAction
 	{
 		/// <summary>
@@ -116,7 +115,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// A connect action for attaching a role to
 	/// its role player.
 	/// </summary>
-	[CLSCompliant(true)]
 	public class RoleConnectAction : ConnectAction
 	{
 		#region ExternalConstraintConnectionType class

@@ -29,7 +29,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// A connect action for attaching a base type to its derived type
 	/// </summary>
-	[CLSCompliant(true)]
 	public class SubtypeConnectAction : ConnectAction
 	{
 		#region ExternalConstraintConnectionType class

@@ -30,7 +30,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The service provider passed to the constructor. The base class messes with this.
 		/// </summary>
-		private IServiceProvider myCtorServiceProvider;
+		private readonly IServiceProvider myCtorServiceProvider;
 		#endregion // Local Data Members
 		#region Properties for CurrentDocument and CurrentORMSelectionContainer
 		/// <summary>
@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Constructs a new ORM tool window. Initialization is performed in the Initialize method.
 		/// </summary>
-		public ORMToolWindow(IServiceProvider serviceProvider)
+		protected ORMToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
 			myCtorServiceProvider = serviceProvider;
@@ -216,13 +216,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns></returns>
 		public override ICollection GetSelectedComponents()
 		{
-			ICollection retVal = null;
 			ModelingWindowPane pane = myCurrentORMSelectionContainer as ModelingWindowPane;
 			if (pane != null)
 			{
-				retVal = pane.GetSelectedComponents();
+				return pane.GetSelectedComponents();
 			}
-			return retVal;
+			return null;
 		}
 		/// <summary>
 		/// Passes the get request through to myCurrentORMSelectionContainer.

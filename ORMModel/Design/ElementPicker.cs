@@ -950,8 +950,8 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		/// <param name="serviceProvider">The service provider to use</param>
 		/// <param name="targetDescriptor">The property descriptor to activate</param>
-		/// <param name="openDropdown">true to open the dropdown when the edit field is activated.</param>
-		public static void ActivatePropertyEditor(IServiceProvider serviceProvider, PropertyDescriptor targetDescriptor, bool openDropdown)
+		/// <param name="openDropDown">true to open the dropdown when the edit field is activated.</param>
+		public static void ActivatePropertyEditor(IServiceProvider serviceProvider, PropertyDescriptor targetDescriptor, bool openDropDown)
 		{
 			IVsUIShell shell;
 			if (null != serviceProvider &&
@@ -1083,7 +1083,7 @@ namespace Neumont.Tools.ORM.Design
 					{
 						SendKeys.Flush();
 						SendKeys.SendWait("{TAB}");
-						if (openDropdown)
+						if (openDropDown)
 						{
 							SendKeys.SendWait("%{DOWN}");
 						}

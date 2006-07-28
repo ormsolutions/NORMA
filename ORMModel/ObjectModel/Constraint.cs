@@ -37,7 +37,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// in multiple rolesets are modeled as a single role
 	/// set to reduce the object model size.
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IConstraint
 	{
 		/// <summary>
@@ -4709,7 +4708,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Represents the current setting on an exclusion constraint
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ExclusionType
 	{
 		/// <summary>
@@ -4732,7 +4730,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// by each type of constraint
 	/// </summary>
 	[Flags]
-	[CLSCompliant(true)]
 	public enum RoleSequenceStyles
 	{
 		/// <summary>
@@ -4790,7 +4787,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// A list of constraint types.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ConstraintType
 	{
 		/// <summary>
@@ -4844,7 +4840,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// A list of possible ways to store a constraint's role sequences.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ConstraintStorageStyle
 	{
 		/// <summary>

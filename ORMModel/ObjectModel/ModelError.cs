@@ -29,7 +29,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// a GenerateErrorText call.
 	/// </summary>
 	[Flags]
-	[CLSCompliant(true)]
 	public enum RegenerateErrorTextEvents
 	{
 		/// <summary>
@@ -57,7 +56,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// are listed with a specific element so they will not
 	/// </summary>
 	[Flags]
-	[CLSCompliant(true)]
 	public enum ModelErrorUses
 	{
 		/// <summary>

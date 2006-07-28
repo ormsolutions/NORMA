@@ -35,7 +35,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="portableType">PortableDataType value</param>
 		/// <returns>Known type, or throws if out of range</returns>
-		[CLSCompliant(true)]
 		public DataType GetPortableDataType(PortableDataType portableType)
 		{
 			return myPortableTypes[(int)portableType];

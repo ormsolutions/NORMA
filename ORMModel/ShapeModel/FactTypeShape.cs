@@ -1881,15 +1881,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 					Graphics g = e.Graphics;
 					double offsetBy = bounds.Width / roleCount;
-					float offsetByF = (float)offsetBy;
 					double lastX = bounds.Left;
 					StyleSet styleSet = parentShape.StyleSet;
 					Pen pen = styleSet.GetPen(FactTypeShape.RoleBoxResource);
 					int activeRoleIndex;
 					float top = (float)bounds.Top;
-					float bottom = (float)bounds.Bottom;
 					float verticalLineTop = top + (float)margin;
-					float verticalLineBottom = bottom - (float)margin;
+					float verticalLineBottom = (float)bounds.Bottom - (float)margin;
 					float height = (float)bounds.Height;
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
 					InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
@@ -1904,8 +1902,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						for (int i = 0; i < roleCount; ++i)
 						{
-							float lastXF = (float)lastX;
-							RectangleF roleBounds = new RectangleF(lastXF, top, offsetByF, height);
+							RectangleF roleBounds = new RectangleF((float)lastX, top, (float)offsetBy, height);
 							RoleBase currentRole = roles[i];
 							highlightThisRole = i == highlightRoleBox || factShapeHighlighted;
 
@@ -1982,7 +1979,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										SetComparisonConstraint mcec;
 										SetConstraint scec;
 										bool drawIndexNumbers = false;
-										string indexString = "";
+										string indexString = null;
 
 										if (activeExternalAction == null)
 										{
@@ -2014,7 +2011,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 																indexString = ResourceStrings.SetConstraintStickyRoleOverlapping;
 															}
 														}
-														if (indexString.Length == 0)
+														if ((object)indexString == null)
 														{
 															// Show 1-based position of the role in the MCEC.
 															indexString = string.Format(CultureInfo.InvariantCulture, ResourceStrings.SetConstraintStickyRoleFormatString, sequenceIndex + 1, roleIndex + 1);
@@ -2028,21 +2025,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 												indexString = (scec.RoleCollection.IndexOf(currentRole.Role) + 1).ToString();
 											}
 
-											if (stringFormat == null)
+											if ((object)indexString != null)
 											{
-												stringFormat = new StringFormat();
-												stringFormat.LineAlignment = StringAlignment.Center;
-												stringFormat.Alignment = StringAlignment.Center;
+												if (stringFormat == null)
+												{
+													stringFormat = new StringFormat();
+													stringFormat.LineAlignment = StringAlignment.Center;
+													stringFormat.Alignment = StringAlignment.Center;
+												}
+												if (constraintSequenceFont == null)
+												{
+													constraintSequenceFont = styleSet.GetFont(RoleBoxResource);
+												}
+												if (constraintSequenceBrush == null)
+												{
+													constraintSequenceBrush = currentDiagram.StyleSet.GetBrush(ORMDiagram.StickyForegroundResource);
+												}
+												g.DrawString(indexString, constraintSequenceFont, constraintSequenceBrush, roleBounds, stringFormat);
 											}
-											if (constraintSequenceFont == null)
-											{
-												constraintSequenceFont = styleSet.GetFont(RoleBoxResource);
-											}
-											if (constraintSequenceBrush == null)
-											{
-												constraintSequenceBrush = currentDiagram.StyleSet.GetBrush(ORMDiagram.StickyForegroundResource);
-											}
-											g.DrawString(indexString, constraintSequenceFont, constraintSequenceBrush, roleBounds, stringFormat);
 										}
 									}
 									else if (highlightThisRole)
@@ -2055,8 +2055,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									if (ModelError.HasErrors(currentRole, ModelErrorUses.DisplayPrimary))
 									{
-										Brush errorHighlight = styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource);
-										g.FillRectangle(errorHighlight, roleBounds);
+										g.FillRectangle(styleSet.GetBrush(ORMDiagram.HighlightedErrorBackgroundResource), roleBounds);
 									}
 									else
 									{
@@ -2089,7 +2088,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							// Draw the line between the role boxes
 							if (i != 0)
 							{
-								g.DrawLine(pen, lastXF, verticalLineTop, lastXF, verticalLineBottom);
+								g.DrawLine(pen, (float)lastX, verticalLineTop, (float)lastX, verticalLineBottom);
 							}
 							lastX += offsetBy;
 						}
@@ -2110,8 +2109,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 					}
 					// Draw the outside border of the role boxes
-					RectangleF boundsF = RectangleD.ToRectangleF(bounds);
-					g.DrawRectangle(pen, boundsF.Left, boundsF.Top, boundsF.Width, boundsF.Height);
+					g.DrawRectangle(pen, (float)bounds.Left, (float)bounds.Top, (float)bounds.Width, (float)bounds.Height);
 				}
 			}
 			/// <summary>

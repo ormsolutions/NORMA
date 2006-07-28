@@ -31,7 +31,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// A ConnectAction to add role sequences to an external constraint
 	/// </summary>
-	[CLSCompliant(true)]
 	public class ExternalConstraintConnectAction : ConnectAction
 	{
 		#region ExternalConstraintConnectionType class
@@ -628,7 +627,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// A toolbox action to add an external constraint and activate
 	/// the external constraint connect action
 	/// </summary>
-	[CLSCompliant(true)]
 	public class ExternalConstraintAction : ToolboxAction
 	{
 		#region Member variables

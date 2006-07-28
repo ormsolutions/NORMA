@@ -31,7 +31,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// A ConnectAction to add role sequences to an Internal constraint
 	/// </summary>
-	[CLSCompliant(true)]
 	public class InternalUniquenessConstraintConnectAction : ConnectAction
 	{
 		#region InternalUniquenessConstraintConnectionType class
@@ -515,7 +514,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// A toolbox action to add an Internal constraint
 	/// </summary>
-	[CLSCompliant(true)]
 	public class InternalUniquenessConstraintAction : ToolboxAction
 	{
 		#region Member variables

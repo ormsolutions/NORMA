@@ -38,12 +38,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <param name="depth">The distance from the initial recursion point. depth
 	/// 0 is the starting object.</param>
 	/// <returns>true to continue iteration, false to stop</returns>
-	[CLSCompliant(true)]
 	public delegate ObjectTypeVisitorResult ObjectTypeVisitor(ObjectType type, int depth);
 	/// <summary>
 	/// Expected results from the ObjectTypeVisitor delegate
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum ObjectTypeVisitorResult
 	{
 		/// <summary>

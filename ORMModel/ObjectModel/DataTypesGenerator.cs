@@ -22,7 +22,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// A list of predefined data types. One DataType-derived class is defined for each value.
 	/// </summary>
-	[CLSCompliant(true)]
 	public enum PortableDataType
 	{
 		/// <summary>

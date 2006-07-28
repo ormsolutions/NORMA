@@ -50,11 +50,6 @@
 					<plx:trailingInfo>
 						<plx:pragma type="closeRegion" data="PortableDataType Enum"/>
 					</plx:trailingInfo>
-					<plx:attribute dataTypeName="CLSCompliant">
-						<plx:passParam>
-							<plx:trueKeyword/>
-						</plx:passParam>
-					</plx:attribute>
 					<xsl:for-each select="DataType">
 						<xsl:variable name="dataTypeName" select="@name"/>
 						<xsl:for-each select="SubType">
