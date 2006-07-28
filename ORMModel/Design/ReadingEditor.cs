@@ -1,4 +1,5 @@
-﻿/**************************************************************************\
+﻿#region Common Public License Copyright Notice
+/**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
@@ -11,6 +12,8 @@
 *                                                                          *
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
+#endregion
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,10 +39,7 @@ using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 
 #if Buffered_TextView_Control_Test
-using OleInterop = Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Shell.Interop;
-using Neumont.Tools.ORM.FactEditor;
+using Neumont.Tools.ORM.Shell.FactEditor;
 #endif //Buffered_TextView_Control_Test
 
 namespace Neumont.Tools.ORM.Design
@@ -136,15 +136,14 @@ namespace Neumont.Tools.ORM.Design
 		/// the display order for a graphical representation of the fact</param>
 		public ActiveFactType(FactType factType, FactType impliedFactType, LinkedElementCollection<RoleBase> displayOrder)
 		{
+			myFactType = factType;
 			if (factType != null)
 			{
-				myFactType = factType;
 				myImpliedFactType = impliedFactType;
 				myDisplayOrder = (displayOrder != null) ? displayOrder : factType.RoleCollection;
 			}
 			else
 			{
-				myFactType = null;
 				myImpliedFactType = null;
 				myDisplayOrder = null;
 			}
@@ -198,35 +197,19 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override bool Equals(object obj)
 		{
-			return (obj is ActiveFactType) ? Equals((ActiveFactType)obj) : false;
+			return (obj is ActiveFactType) && Equals((ActiveFactType)obj);
 		}
 		/// <summary>
 		/// Typed Equals method
 		/// </summary>
 		public bool Equals(ActiveFactType obj)
 		{
-			bool leftEmpty = IsEmpty;
-			bool rightEmpty = obj.IsEmpty;
-			if (leftEmpty && rightEmpty)
-			{
-				return true;
-			}
-			else if (!leftEmpty && !rightEmpty)
-			{
-				if (myFactType == obj.myFactType)
-				{
-					if (myImpliedFactType == obj.myImpliedFactType)
-					{
-						if (AreDisplayOrdersEqual(myDisplayOrder, obj.myDisplayOrder))
-						{
-							return true;
-						}
-					}
-				}
-			}
-			return false;
+			return IsEmpty ? obj.IsEmpty :
+				(myFactType == obj.myFactType &&
+				myImpliedFactType == obj.myImpliedFactType &&
+				AreDisplayOrdersEqual(myDisplayOrder, obj.myDisplayOrder));
 		}
-		private bool AreDisplayOrdersEqual(LinkedElementCollection<RoleBase> order1, LinkedElementCollection<RoleBase> order2)
+		private static bool AreDisplayOrdersEqual(LinkedElementCollection<RoleBase> order1, LinkedElementCollection<RoleBase> order2)
 		{
 			if (order1 == order2)
 			{
@@ -306,7 +289,6 @@ namespace Neumont.Tools.ORM.Design
 			void RemoveSelectedItem();
 			ReadingEditorCommands SupportedSelectionCommands(int itemLocation);
 			void UpdateReading(Reading reading);
-			int VisibleItemsCount { get; }
 		}
 		#endregion //OrderBranch Interface
 
@@ -440,14 +422,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			get
 			{
-				if (mySecondaryFact != null)
-				{
-					return new ActiveFactType(myFact, mySecondaryFact, myDisplayRoleOrder);
-				}
-				else
-				{
-					return new ActiveFactType(myFact, myDisplayRoleOrder);
-				}
+				return new ActiveFactType(myFact, mySecondaryFact, myDisplayRoleOrder);
 			}
 			set
 			{
@@ -918,13 +893,14 @@ namespace Neumont.Tools.ORM.Design
 		private void ReadingOrderLinkRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+			FactType factType = link.FactType;
 
-			if ((link.FactType == myFact || link.FactType == mySecondaryFact) && !link.FactType.IsDeleting)
+			if ((factType == myFact || factType == mySecondaryFact) && !factType.IsDeleting && !factType.IsDeleted)
 			{
-				//VirtualTreeCoordinate coords = ReadingEditor.TreeControl.Tree.LocateObject(myMainBranch, link.FactType, (int)ObjectStyle.TrackingObject, 0);
+				//VirtualTreeCoordinate coords = ReadingEditor.TreeControl.Tree.LocateObject(myMainBranch, factType, (int)ObjectStyle.TrackingObject, 0);
 				//VirtualTreeItemInfo info = ReadingEditor.TreeControl.Tree.GetItemInfo(coords.Row, coords.Column, false);
-				//(info.Branch as IReadingEditorBranch).ReadingOrderRemoved(link.ReadingOrder, link.FactType);
-				myMainBranch.ReadingOrderRemoved(link.ReadingOrder, link.FactType);
+				//(info.Branch as IReadingEditorBranch).ReadingOrderRemoved(link.ReadingOrder, factType);
+				myMainBranch.ReadingOrderRemoved(link.ReadingOrder, factType);
 			}
 		}
 		#endregion
@@ -994,8 +970,7 @@ namespace Neumont.Tools.ORM.Design
 		#region FactType Event Handlers
 		private void FactTypeHasRoleAddedOrDeletedEvent(object sender, ElementEventArgs e)
 		{ //UNDONE: should this be valid when selecting a role for deletion
-			if (myFact != null && myFact == (e.ModelElement as FactTypeHasRole).FactType && !myFact.IsDeleted) // test line from previous svn commit
-			//if (myFact != null && object.ReferenceEquals(myFact, ((FactTypeHasRole)e.ModelElement).FactType) && !myFact.IsDeleted)
+			if (myFact != null && myFact == ((FactTypeHasRole)e.ModelElement).FactType && !myFact.IsDeleted)
 			{
 				this.PopulateControl();
 			}
@@ -1024,14 +999,11 @@ namespace Neumont.Tools.ORM.Design
 		#region nested class FactTypeBranch
 		private sealed class FactTypeBranch : IReadingEditorBranch
 		{
-			private enum Column
-			{
-				OrderBranch = 0,
-				ImpliedBranch = 1
-			}
-			private FactType myFact;
-			private FactType mySecondaryFact;
-			private BranchModificationEventHandler myModificationEvents;
+			private const int OrderBranchRow = 0;
+			private const int ImpliedBranchRow = 1;
+
+			private readonly FactType myFact;
+			private readonly FactType mySecondaryFact;
 			private ReadingOrderBranch myReadingOrderBranch;
 			private ReadingOrderBranch myImpliedFactTypeBranch;
 
@@ -1043,35 +1015,35 @@ namespace Neumont.Tools.ORM.Design
 			}
 			#endregion //Construction
 
-			#region IBranch Member Mirror/Implementations
-			VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			#region IBranch Interface Members
+			public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				return VirtualTreeLabelEditData.Default;
 			}
-			LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			public LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
 				return LabelEditResult.CancelEdit;
 			}
-			static BranchFeatures Features
+			public  BranchFeatures Features
 			{
 				get
 				{
 					return BranchFeatures.Expansions;
 				}
 			}
-			static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+			public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 			{
 				return VirtualTreeAccessibilityData.Empty;
 			}
-			VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
 				retval.ForeColor = Color.Gray;
 				return retval;
 			}
-			object GetObject(int row, int column, ObjectStyle style, ref int options)
+			public object GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
-				if (row == (int)Column.OrderBranch)
+				if (row == OrderBranchRow)
 				{
 					return OrderBranch;
 				}
@@ -1080,19 +1052,19 @@ namespace Neumont.Tools.ORM.Design
 					return ImpliedBranch;
 				}
 			}
-			string GetText(int row, int column)
+			public string GetText(int row, int column)
 			{
-				return (row == (int)Column.OrderBranch) ? "Fact Readings" : "Implied Readings";
+				return (row == OrderBranchRow) ? "Fact Readings" : "Implied Readings";
 			}
-			static string GetTipText(int row, int column, ToolTipType tipType)
+			public string GetTipText(int row, int column, ToolTipType tipType)
 			{
 				return null;
 			}
-			bool IsExpandable(int row, int column)
+			public bool IsExpandable(int row, int column)
 			{
-				return true; // (mySecondaryFact != null) ? true : false;
+				return true; // mySecondaryFact != null;
 			}
-			LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+			public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
 				switch (style)
 				{
@@ -1105,63 +1077,62 @@ namespace Neumont.Tools.ORM.Design
 							order = reading.ReadingOrder;
 							fact = order.FactType;
 						}
-						else if (typeof(FactType) == obj)
+						else
 						{
 							fact = (obj as FactType);
 						}
 
 						if (fact == myFact)
 						{
-							return new LocateObjectData((int)Column.OrderBranch, 1, (int)TrackingObjectAction.NextLevel);
+							return new LocateObjectData(OrderBranchRow, 1, (int)TrackingObjectAction.NextLevel);
 						}
 						else if (fact == mySecondaryFact)
 						{
-							return new LocateObjectData((int)Column.ImpliedBranch, 1, (int)TrackingObjectAction.NextLevel);
+							return new LocateObjectData(ImpliedBranchRow, 1, (int)TrackingObjectAction.NextLevel);
 						}
 						break;
 				}
 				return new LocateObjectData();
 			}
-			event BranchModificationEventHandler OnBranchModification
+			event BranchModificationEventHandler IBranch.OnBranchModification
 			{
+				// Do nothing. We never raise this event, so we don't need to keep track of who is subscribed to it.
 				add
 				{
-					myModificationEvents += value;
 				}
 				remove
 				{
-					myModificationEvents -= value;
 				}
 			}
-			static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
 			}
-			static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 			{
 			}
-			static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 			{
 			}
-			static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+			public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 			{
 				return VirtualTreeStartDragData.Empty;
 			}
-			StateRefreshChanges ToggleState(int row, int column)
+			public StateRefreshChanges ToggleState(int row, int column)
 			{
 				return StateRefreshChanges.None;
 			}
-			static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 			{
 				return StateRefreshChanges.None;
 			}
-			static int UpdateCounter
+			public int UpdateCounter
 			{
 				get
 				{
 					return 0;
 				}
 			}
-			int VisibleItemCount
+			public int VisibleItemCount
 			{
 				get
 				{
@@ -1170,109 +1141,7 @@ namespace Neumont.Tools.ORM.Design
 			}
 			#endregion
 
-			#region IBranch Interface Members
-			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				return BeginLabelEdit(row, column, activationStyle);
-			}
-			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
-			{
-				return CommitLabelEdit(row, column, newText);
-			}
-			BranchFeatures IBranch.Features
-			{
-				get
-				{
-					return Features;
-				}
-			}
-			VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
-			{
-				return GetAccessibilityData(row, column);
-			}
-			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-			{
-				return GetDisplayData(row, column, requiredData);
-			}
-			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
-			{
-				return GetObject(row, column, style, ref options);
-			}
-			string IBranch.GetText(int row, int column)
-			{
-				return GetText(row, column);
-			}
-			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
-			{
-				return GetTipText(row, column, tipType);
-			}
-			bool IBranch.IsExpandable(int row, int column)
-			{
-				return IsExpandable(row, column);
-			}
-			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
-			{
-				return LocateObject(obj, style, locateOptions);
-			}
-			event BranchModificationEventHandler IBranch.OnBranchModification
-			{
-				add
-				{
-					OnBranchModification += value;
-				}
-				remove
-				{
-					OnBranchModification -= value;
-				}
-			}
-			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-			{
-				OnDragEvent(sender, row, column, eventType, args);
-			}
-			void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-			{
-				OnGiveFeedback(args, row, column);
-			}
-			void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-			{
-				OnQueryContinueDrag(args, row, column);
-			}
-			VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
-			{
-				return OnStartDrag(sender, row, column, reason);
-			}
-			StateRefreshChanges IBranch.ToggleState(int row, int column)
-			{
-				return ToggleState(row, column);
-			}
-			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-			{
-				return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
-			}
-			int IBranch.UpdateCounter
-			{
-				get
-				{
-					return 0;
-				}
-			}
-			int IBranch.VisibleItemCount
-			{
-				get
-				{
-					return VisibleItemCount;
-				}
-			}
-			#endregion
-
 			#region Properties
-			public int VisibleItemsCount
-			{
-				get
-				{
-					return this.VisibleItemCount;
-				}
-			}
 			private ReadingOrderBranch OrderBranch
 			{
 				get
@@ -1280,7 +1149,7 @@ namespace Neumont.Tools.ORM.Design
 					ReadingOrderBranch retVal = myReadingOrderBranch;
 					if (retVal == null)
 					{
-						myReadingOrderBranch = retVal = new ReadingOrderBranch(myFact, ReadingEditor.instance.myDisplayRoleOrder);
+						return myReadingOrderBranch = new ReadingOrderBranch(myFact, ReadingEditor.instance.myDisplayRoleOrder);
 					}
 					return retVal;
 				}
@@ -1293,14 +1162,14 @@ namespace Neumont.Tools.ORM.Design
 					ReadingOrderBranch retVal = myImpliedFactTypeBranch;
 					if (retVal == null)
 					{
-						myImpliedFactTypeBranch = retVal = new ReadingOrderBranch(mySecondaryFact, null);
+						return myImpliedFactTypeBranch = new ReadingOrderBranch(mySecondaryFact, null);
 					}
 					return retVal;
 				}
 			}
 			#endregion //Properties
 
-			#region IReadingEditorBranch Member Mirror/Implementations
+			#region IReadingEditorBranch Interface Members
 			#region Reading Methods
 			/// <summary>
 			/// Initiates a New Reading within the selected Reading Order
@@ -1315,7 +1184,7 @@ namespace Neumont.Tools.ORM.Design
 			public void ReadingAdded(Reading reading)
 			{
 				ReadingOrder order = reading.ReadingOrder;
-				if (object.ReferenceEquals(order.FactType, myFact))
+				if (order.FactType == myFact)
 				{
 					this.OrderBranch.ReadingAdded(reading);
 				}
@@ -1331,7 +1200,7 @@ namespace Neumont.Tools.ORM.Design
 			public void UpdateReading(Reading reading)
 			{
 				ReadingOrder order = reading.ReadingOrder;
-				if (object.ReferenceEquals(order.FactType, myFact))
+				if (order.FactType == myFact)
 				{
 					this.OrderBranch.UpdateReading(reading);
 				}
@@ -1348,7 +1217,7 @@ namespace Neumont.Tools.ORM.Design
 			public void ReadingLocationUpdate(Reading reading)
 			{
 				ReadingOrder order = reading.ReadingOrder;
-				if (object.ReferenceEquals(order.FactType, myFact))
+				if (order.FactType == myFact)
 				{
 					this.OrderBranch.ReadingLocationUpdate(reading);
 				}
@@ -1364,7 +1233,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="order">The order of the link</param>
 			public void ReadingRemoved(Reading reading, ReadingOrder order)
 			{
-				if (object.ReferenceEquals(order.FactType, myFact))
+				if (order.FactType == myFact)
 				{
 					this.OrderBranch.ReadingRemoved(reading, order);
 				}
@@ -1397,7 +1266,7 @@ namespace Neumont.Tools.ORM.Design
 			{
 				get
 				{
-					return (OrderBranch.IsAdding || ImpliedBranch.IsAdding) ? true : false;
+					return (OrderBranch.IsAdding || ImpliedBranch.IsAdding);
 				}
 			}
 			/// <summary>
@@ -1408,9 +1277,9 @@ namespace Neumont.Tools.ORM.Design
 				//not implemented
 			}
 			/// <summary>
-			/// Initiate edit for first reading within the LinkedElementCollection<![CDATA[<RoleBase>]]> (will create a new item if needed)
+			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
 			/// </summary>
-			/// <param name="collection">LinkedElementCollection<![CDATA[<RoleBase>]]> collection</param>
+			/// <param name="collection"><see cref="LinkedElementCollection{RoleBase}"/> collection</param>
 			public void EditReadingOrder(LinkedElementCollection<RoleBase> collection)
 			{
 				this.OrderBranch.EditReadingOrder(collection); //only need to call on order branch as you cannot create a new order (as they already exist) for  an implied fact 
@@ -1445,15 +1314,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="order">The ReadingOrder affected</param>
 			public void ReadingOrderLocationUpdate(ReadingOrder order)
 			{
-				VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, 0, true);
-				if (object.ReferenceEquals(itemInfo.Branch, this.OrderBranch))
-				{
-					this.OrderBranch.ReadingOrderLocationUpdate(order);
-				}
-				else
-				{
-					this.ImpliedBranch.ReadingOrderLocationUpdate(order);
-				}
+				((IReadingEditorBranch)ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, 0, true).Branch).ReadingOrderLocationUpdate(order);
 			}
 			/// <summary>
 			/// CallBack notification that a ReadingOrder has been removed from the branch.
@@ -1462,7 +1323,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="fact">The Fact to which the Reading Order belongs</param>
 			public void ReadingOrderRemoved(ReadingOrder order, FactType fact)
 			{
-				if (object.ReferenceEquals(fact, myFact))
+				if (fact == myFact)
 				{
 					this.OrderBranch.ReadingOrderRemoved(order, fact);
 				}
@@ -1481,124 +1342,31 @@ namespace Neumont.Tools.ORM.Design
 				return ReadingEditorCommands.None;
 			}
 			#endregion //ReadingOrder Methods
-			#endregion //IReadingEditorBranch Member Mirror/Implementations
+			#endregion //IReadingEditorBranch Interface Members
 
-			#region IMultiColumnBranch Members
+			#region IMultiColumnBranch Interface Members
 
 			public int ColumnCount
 			{
-				get { return 0; }
+				get
+				{
+					return 0;
+				}
 			}
 
 			public SubItemCellStyles ColumnStyles(int column)
 			{
-				throw new Exception("The method or operation is not implemented.");
+				// UNDONE: This was just throwing an Exception...
+				return 0;
 			}
 
 			public int GetJaggedColumnCount(int row)
 			{
-				throw new Exception("The method or operation is not implemented.");
-			}
-
-			int IMultiColumnBranch.ColumnCount
-			{
-				get { return this.ColumnCount; }
-			}
-
-			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
-			{
-				throw new Exception("The method or operation is not implemented.");
-			}
-
-			int IMultiColumnBranch.GetJaggedColumnCount(int row)
-			{
-				throw new Exception("The method or operation is not implemented.");
+				// UNDONE: This was just throwing an Exception...
+				return 0;
 			}
 
 			#endregion
-
-			#region IReadingEditorBranch Interface Members
-
-			void IReadingEditorBranch.AddNewReading(int itemLocation)
-			{
-				this.AddNewReading(itemLocation);
-			}
-
-			void IReadingEditorBranch.AddNewReadingOrder()
-			{
-				this.AddNewReadingOrder();
-			}
-
-			void IReadingEditorBranch.DemoteSelectedReading(int readingItemLocation, int orderItemLocation)
-			{
-				this.DemoteSelectedReading(readingItemLocation, orderItemLocation);
-			}
-
-			void IReadingEditorBranch.DemoteSelectedReadingOrder(int itemLocation)
-			{
-				this.DemoteSelectedReadingOrder(itemLocation);
-			}
-
-			bool IReadingEditorBranch.IsAdding
-			{
-				get { return this.IsAdding; }
-			}
-
-			void IReadingEditorBranch.PromoteSelectedReading(int readingItemLocation, int orderItemLocation)
-			{
-				this.PromoteSelectedReading(readingItemLocation, orderItemLocation);
-			}
-
-			void IReadingEditorBranch.PromoteSelectedReadingOrder(int itemLocation)
-			{
-				this.PromoteSelectedReadingOrder(itemLocation);
-			}
-
-			void IReadingEditorBranch.ReadingAdded(Reading reading)
-			{
-				this.ReadingAdded(reading);
-			}
-
-			void IReadingEditorBranch.ReadingLocationUpdate(Reading reading)
-			{
-				this.ReadingLocationUpdate(reading);
-			}
-
-			void IReadingEditorBranch.ReadingOrderLocationUpdate(ReadingOrder order)
-			{
-				this.ReadingOrderLocationUpdate(order);
-			}
-
-			void IReadingEditorBranch.ReadingOrderRemoved(ReadingOrder order, FactType fact)
-			{
-				this.ReadingOrderRemoved(order, fact);
-			}
-
-			void IReadingEditorBranch.ReadingRemoved(Reading reading, ReadingOrder order)
-			{
-				this.ReadingRemoved(reading, order);
-			}
-
-			void IReadingEditorBranch.RemoveSelectedItem()
-			{
-				this.RemoveSelectedItem();
-			}
-
-			ReadingEditorCommands IReadingEditorBranch.SupportedSelectionCommands(int itemLocation)
-			{
-				return SupportedSelectionCommands(itemLocation);
-			}
-
-			void IReadingEditorBranch.UpdateReading(Reading reading)
-			{
-				UpdateReading(reading);
-			}
-
-			int IReadingEditorBranch.VisibleItemsCount
-			{
-				get { return this.VisibleItemCount; }
-			}
-			#endregion //IReadingEditorBranch Interface Members
 		}
 		#endregion //nested class FactTypeBranch
 
@@ -1606,11 +1374,10 @@ namespace Neumont.Tools.ORM.Design
 		private sealed class ReadingOrderBranch : IReadingEditorBranch
 		{
 			public const int COLUMN_COUNT = 2;
-			private BranchModificationEventHandler myModificationEvents;
-			private FactType myFact;
-			private ReadingOrderKeyedCollection myReadingOrderKeyedCollection;
+			private readonly FactType myFact;
+			private readonly ReadingOrderKeyedCollection myReadingOrderKeyedCollection;
 			private ReadingOrderKeyedCollection myReadingOrderPermutations;
-			private LinkedElementCollection<RoleBase> myRoleDisplayOrder;
+			private readonly LinkedElementCollection<RoleBase> myRoleDisplayOrder;
 			private string[] myRoleNames;
 			private int myInsertedRow = -1;
 
@@ -1619,11 +1386,7 @@ namespace Neumont.Tools.ORM.Design
 			{
 				myFact = fact; //impliedbyobjectification
 				myReadingOrderKeyedCollection = new ReadingOrderKeyedCollection();
-				if (roleDisplayOrder == null)
-				{
-					roleDisplayOrder = fact.RoleCollection;
-				}
-				myRoleDisplayOrder = roleDisplayOrder;
+				myRoleDisplayOrder = roleDisplayOrder ?? fact.RoleCollection;
 				this.PopulateReadingOrderInfo(-1); //Populate for all readings
 			}
 			#endregion
@@ -1643,17 +1406,10 @@ namespace Neumont.Tools.ORM.Design
 					return myFact;
 				}
 			}
-			/// <summary>
-			/// Returns the number of items visible
-			/// </summary>
-			public int VisibleItemsCount
-			{
-				get { return this.VisibleItemCount; }
-			}
 			#endregion //Branch Properties
 
-			#region IBranch Member Mirror/Implementations
-			VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+			#region IBranch Interface Members
+			public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
 				if (column == (int)ColumnIndex.ReadingBranch && rowType == RowType.TypeEditorHost)
@@ -1714,7 +1470,7 @@ namespace Neumont.Tools.ORM.Design
 					return VirtualTreeLabelEditData.Invalid;
 				}
 			}
-			LabelEditResult CommitLabelEdit(int row, int column, string newText)
+			public LabelEditResult CommitLabelEdit(int row, int column, string newText)
 			{
 				if (myReadingOrderKeyedCollection.GetRowType(row) == RowType.UnCommitted)
 				{
@@ -1740,18 +1496,18 @@ namespace Neumont.Tools.ORM.Design
 				}
 				return LabelEditResult.AcceptEdit;
 			}
-			static BranchFeatures Features
+			public BranchFeatures Features
 			{
 				get
 				{
 					return BranchFeatures.ExplicitLabelEdits | BranchFeatures.PositionTracking | BranchFeatures.DelayedLabelEdits | BranchFeatures.InsertsAndDeletes | BranchFeatures.ComplexColumns;
 				}
 			}
-			static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+			public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 			{
 				return VirtualTreeAccessibilityData.Empty;
 			}
-			VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+			public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
 				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
@@ -1769,161 +1525,114 @@ namespace Neumont.Tools.ORM.Design
 				}
 				return retval;
 			}
-			object GetObject(int row, int column, ObjectStyle style, ref int options)
+			public object GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
-				switch (style)
+				if (style == ObjectStyle.SubItemRootBranch && myReadingOrderKeyedCollection.GetRowType(row) == RowType.Committed)
 				{
-					case ObjectStyle.SubItemRootBranch:
-						if (myReadingOrderKeyedCollection.GetRowType(row) == RowType.Committed)
-						{
-							return myReadingOrderKeyedCollection[row].Branch;
-						}
-						else
-						{
-							return null;
-						}
-					case ObjectStyle.TrackingObject:
-						return null;
-					default:
-						return null;
+					return myReadingOrderKeyedCollection[row].Branch;
 				}
+				return null;
 			}
-			string GetText(int row, int column)
+			public string GetText(int row, int column)
 			{
-				string retVal;
 				if (column == (int)ColumnIndex.ReadingBranch)
 				{
-					RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
-					switch (rowType)
+					switch (myReadingOrderKeyedCollection.GetRowType(row))
 					{
 						case RowType.TypeEditorHost:
-							retVal = "New Reading...";
-							break;
+							return "New Reading..."; //UNDONE: Localize
 						case RowType.UnCommitted:
-							retVal = myReadingOrderKeyedCollection[row].Text;
-							break;
-						default:
-							retVal = null;
-							break;
+							return myReadingOrderKeyedCollection[row].Text;
 					}
 				}
-				else
-				{
-					retVal = null;
-				}
-				return retVal;
+				return null;
 			}
-			string GetTipText(int row, int column, ToolTipType tipType)
+			public string GetTipText(int row, int column, ToolTipType tipType)
 			{
 				if (column == (int)ColumnIndex.ReadingOrder)
 				{
-					string retval;
-					RowType rowType = myReadingOrderKeyedCollection.GetRowType(row);
-					switch (rowType)
+					switch (myReadingOrderKeyedCollection.GetRowType(row))
 					{
 						case RowType.Committed:
-							retval = myReadingOrderKeyedCollection[row].ToString();
-							break;
+							return myReadingOrderKeyedCollection[row].ToString();
 						case RowType.UnCommitted:
-							retval = myReadingOrderKeyedCollection[row].Text;
-							break;
+							return myReadingOrderKeyedCollection[row].Text;
 						case RowType.TypeEditorHost:
-							retval = "Choose a New Reading Order from the Drop Down List"; //UNDONE: Localize 
-							break;
-						default:
-							retval = null;
-							break;
+							return "Choose a New Reading Order from the Drop Down List"; //UNDONE: Localize 
 					}
-					return retval;
 				}
-				else
-				{
-					return null;
-				}
+				return null;
 			}
-			static bool IsExpandable(int row, int column)
+			public bool IsExpandable(int row, int column)
 			{
 				return false;
 			}
-			LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+			public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
-				switch (style)
+				if (style == ObjectStyle.TrackingObject)
 				{
-					case ObjectStyle.TrackingObject:
-						ReadingOrderInformation info;
-						LinkedElementCollection<RoleBase> roles;
-						Reading reading;
-						FactType fact;
-						int location = -1;
+					ReadingOrderInformation info;
+					LinkedElementCollection<RoleBase> roles;
+					Reading reading;
+					FactType fact;
+					int location = -1;
 
-						if (null != (info = obj as ReadingOrderInformation))
-						{
-							location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
-						}
-						else if (null != (roles = obj as LinkedElementCollection<RoleBase>))
-						{
-							location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[roles]);
-						}
-						else if (null != (reading = (obj as Reading)))
-						{
-							ReadingOrder order = reading.ReadingOrder;
-							location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[order.RoleCollection]);
-						}
-						else if (null != (fact = (obj as FactType)))
-						{
-							return new LocateObjectData(0, (int)ColumnIndex.ReadingOrder, (int)TrackingObjectAction.ThisLevel);
-						}
-						else if (RowType.TypeEditorHost.Equals(obj))
-						{
-							return new LocateObjectData(this.VisibleItemCount - 1, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
-						}
+					if (null != (info = obj as ReadingOrderInformation))
+					{
+						location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
+					}
+					else if (null != (roles = obj as LinkedElementCollection<RoleBase>))
+					{
+						location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[roles]);
+					}
+					else if (null != (reading = (obj as Reading)))
+					{
+						ReadingOrder order = reading.ReadingOrder;
+						location = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[order.RoleCollection]);
+					}
+					else if (null != (fact = (obj as FactType)))
+					{
+						return new LocateObjectData(0, (int)ColumnIndex.ReadingOrder, (int)TrackingObjectAction.ThisLevel);
+					}
+					else if (RowType.TypeEditorHost.Equals(obj))
+					{
+						return new LocateObjectData(this.VisibleItemCount - 1, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
+					}
 
-						if (-1 != location && myReadingOrderKeyedCollection.GetRowType(location) == RowType.UnCommitted)
-						{
-							return new LocateObjectData(location, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
-						}
-						else if (location >= 0)
-						{
-							return new LocateObjectData(location, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.NextLevel);
-						}
-						break;
+					if (-1 != location && myReadingOrderKeyedCollection.GetRowType(location) == RowType.UnCommitted)
+					{
+						return new LocateObjectData(location, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.ThisLevel);
+					}
+					else if (location >= 0)
+					{
+						return new LocateObjectData(location, (int)ColumnIndex.ReadingBranch, (int)TrackingObjectAction.NextLevel);
+					}
 				}
 				return new LocateObjectData();
 			}
-			event BranchModificationEventHandler OnBranchModification
-			{
-				add
-				{
-					myModificationEvents += value;
-				}
-				remove
-				{
-					myModificationEvents -= value;
-				}
-			}
-			static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			public event BranchModificationEventHandler OnBranchModification;
+			public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
 			}
-			static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 			{
 			}
-			static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 			{
 			}
-			static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+			public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 			{
 				return VirtualTreeStartDragData.Empty;
 			}
-			StateRefreshChanges ToggleState(int row, int column)
-			{
-				StateRefreshChanges retval = StateRefreshChanges.None;
-				return retval;
-			}
-			static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			public StateRefreshChanges ToggleState(int row, int column)
 			{
 				return StateRefreshChanges.None;
 			}
-			static int UpdateCounter
+			public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return StateRefreshChanges.None;
+			}
+			public int UpdateCounter
 			{
 				get
 				{
@@ -1939,138 +1648,25 @@ namespace Neumont.Tools.ORM.Design
 			}
 			#endregion
 
-			#region IBranch Interface Members
-			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				return BeginLabelEdit(row, column, activationStyle);
-			}
-			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
-			{
-				return CommitLabelEdit(row, column, newText);
-			}
-			BranchFeatures IBranch.Features
-			{
-				get
-				{
-					return Features;
-				}
-			}
-			VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
-			{
-				return GetAccessibilityData(row, column);
-			}
-			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-			{
-				return GetDisplayData(row, column, requiredData);
-			}
-			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
-			{
-				return GetObject(row, column, style, ref options);
-			}
-			string IBranch.GetText(int row, int column)
-			{
-				return GetText(row, column);
-			}
-			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
-			{
-				return GetTipText(row, column, tipType);
-			}
-			bool IBranch.IsExpandable(int row, int column)
-			{
-				return IsExpandable(row, column);
-			}
-			LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
-			{
-				return LocateObject(obj, style, locateOptions);
-			}
-			event BranchModificationEventHandler IBranch.OnBranchModification
-			{
-				add
-				{
-					OnBranchModification += value;
-				}
-				remove
-				{
-					OnBranchModification -= value;
-				}
-			}
-			void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-			{
-				OnDragEvent(sender, row, column, eventType, args);
-			}
-			void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-			{
-				OnGiveFeedback(args, row, column);
-			}
-			void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-			{
-				OnQueryContinueDrag(args, row, column);
-			}
-			VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
-			{
-				return OnStartDrag(sender, row, column, reason);
-			}
-			StateRefreshChanges IBranch.ToggleState(int row, int column)
-			{
-				return ToggleState(row, column);
-			}
-			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-			{
-				return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
-			}
-			int IBranch.UpdateCounter
-			{
-				get
-				{
-					return UpdateCounter;
-				}
-			}
-			int IBranch.VisibleItemCount
-			{
-				get
-				{
-					return VisibleItemCount;
-				}
-			}
-			#endregion
-
-			#region IMultiColumnBranch Member Mirror/Implementation
-			static int ColumnCount
+			#region IMultiColumnBranch Interface Members
+			public int ColumnCount
 			{
 				get
 				{
 					return COLUMN_COUNT;
 				}
 			}
-			static SubItemCellStyles ColumnStyles(int column)
+			public SubItemCellStyles ColumnStyles(int column)
 			{
 				return SubItemCellStyles.Complex;
 			}
-			int GetJaggedColumnCount(int row)
+			public int GetJaggedColumnCount(int row)
 			{
 				return COLUMN_COUNT;
 			}
 			#endregion
 
-			#region IMultiColumnBranch Interface Members
-			int IMultiColumnBranch.ColumnCount
-			{
-				get
-				{
-					return ColumnCount;
-				}
-			}
-			SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
-			{
-				return ColumnStyles(column);
-			}
-			int IMultiColumnBranch.GetJaggedColumnCount(int row)
-			{
-				return GetJaggedColumnCount(row);
-			}
-			#endregion
-
-			#region IReadingEditorBranch Member Implementations
+			#region IReadingEditorBranch Interface Members
 			#region Reading Branch Methods
 			/// <summary>
 			/// Initiates a New Reading within the selected Reading Order
@@ -2095,11 +1691,11 @@ namespace Neumont.Tools.ORM.Design
 				if (location < 0)
 				{
 					this.PopulateReadingOrderInfo(order);
-					if (myModificationEvents != null)
+					if (OnBranchModification != null)
 					{
 						int newLoc = this.LocateCollectionItem(order);
-						myModificationEvents.Invoke(this, BranchModificationEventArgs.InsertItems(this, newLoc - 1, 1));
-						myModificationEvents.Invoke(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.ReadingBranch, true)); //may not be needed due to callback on update
+						OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, newLoc - 1, 1));
+						OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, newLoc, (int)ColumnIndex.ReadingBranch, true)); //may not be needed due to callback on update
 						//redraw off and back on in the branch if it has no more than 1 reading
 					}
 				}
@@ -2107,9 +1703,9 @@ namespace Neumont.Tools.ORM.Design
 				if (location >= 0)
 				{
 					myReadingOrderKeyedCollection[location].Branch.AddReading(reading);
-					if (myModificationEvents != null)
+					if (OnBranchModification != null)
 					{
-						myModificationEvents(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
+						OnBranchModification(this, BranchModificationEventArgs.UpdateCellStyle(this, location, (int)ColumnIndex.ReadingBranch, true));
 
 						int actualIndex = myFact.ReadingOrderCollection.IndexOf(order);
 						if (actualIndex != location)
@@ -2118,8 +1714,8 @@ namespace Neumont.Tools.ORM.Design
 						}
 						else
 						{
-							myModificationEvents(this, BranchModificationEventArgs.Redraw(false));
-							myModificationEvents(this, BranchModificationEventArgs.Redraw(true));
+							OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
+							OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
 						}
 					}
 				}
@@ -2159,7 +1755,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="reading">The Reading moved</param>
 			public void ReadingLocationUpdate(Reading reading)
 			{
-				if (myModificationEvents != null)
+				if (OnBranchModification != null)
 				{
 					ReadingOrder order = reading.ReadingOrder;
 					int currentLocation = this.LocateCollectionItem(order);
@@ -2177,7 +1773,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="order">The order of the link</param>
 			public void ReadingRemoved(Reading reading, ReadingOrder order)
 			{
-				if (myModificationEvents != null)
+				if (OnBranchModification != null)
 				{
 					int location = this.LocateCollectionItem(order);
 					if (location >= 0)
@@ -2222,9 +1818,9 @@ namespace Neumont.Tools.ORM.Design
 				TreeControl.BeginLabelEdit();
 			}
 			/// <summary>
-			/// Initiate edit for first reading within the LinkedElementCollection<![CDATA[<RoleBase>]]> (will create a new item if needed)
+			/// Initiate edit for first reading within the <see cref="LinkedElementCollection{RoleBase}"/> (will create a new item if needed)
 			/// </summary>
-			/// <param name="collection">The LinkedElementCollection<![CDATA[<RoleBase>]]> to use</param>
+			/// <param name="collection">The <see cref="LinkedElementCollection{RoleBase}"/> to use</param>
 			public void EditReadingOrder(LinkedElementCollection<RoleBase> collection)
 			{
 				Debug.Assert(collection != null, "LinkedElementCollection<RoleBase> is null");
@@ -2273,7 +1869,7 @@ namespace Neumont.Tools.ORM.Design
 				}
 				else if (rowType == RowType.UnCommitted) //remove the row from the readingOrderBranch
 				{
-					myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, orderItem.Row, 1));
+					OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, orderItem.Row, 1));
 					myReadingOrderKeyedCollection.RemoveAt(orderItem.Row);
 				}
 			}
@@ -2284,7 +1880,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="order">The ReadingOrder affected</param>
 			public void ReadingOrderLocationUpdate(ReadingOrder order)
 			{
-				if (myModificationEvents != null)
+				if (OnBranchModification != null)
 				{
 					int currentLocation = this.LocateCollectionItem(order);
 					if (currentLocation >= 0) //make sure it was found
@@ -2293,7 +1889,7 @@ namespace Neumont.Tools.ORM.Design
 						int newLocation = myFact.ReadingOrderCollection.IndexOf(order);
 						myReadingOrderKeyedCollection.RemoveAt(currentLocation);
 						myReadingOrderKeyedCollection.Insert(newLocation, readingOrderInfo);
-						myModificationEvents(this, BranchModificationEventArgs.MoveItem(this, currentLocation, newLocation));
+						OnBranchModification(this, BranchModificationEventArgs.MoveItem(this, currentLocation, newLocation));
 					}
 				}
 			}
@@ -2304,7 +1900,7 @@ namespace Neumont.Tools.ORM.Design
 			/// <param name="fact">The Fact for the ReadingOrder</param>
 			public void ReadingOrderRemoved(ReadingOrder order, FactType fact)
 			{
-				if (myModificationEvents != null)
+				if (OnBranchModification != null)
 				{
 					int location = this.LocateCollectionItem(order);
 					if (location >= 0) //make sure it was found
@@ -2314,7 +1910,7 @@ namespace Neumont.Tools.ORM.Design
 							myReadingOrderKeyedCollection[location].Branch.ShowNewRow(false);
 						}
 						myReadingOrderKeyedCollection.RemoveAt(location);
-						myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
+						OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
 					}
 				}
 			}
@@ -2372,7 +1968,7 @@ namespace Neumont.Tools.ORM.Design
 				return retval;
 			}
 			#endregion //ReadingOrder Branch Methods
-			#endregion //IReadingEditorBranch Member Implementations
+			#endregion //IReadingEditorBranch Interface Members
 
 			#region Branch Helper Functions
 			private string[] GetRoleNames()
@@ -2386,7 +1982,7 @@ namespace Neumont.Tools.ORM.Design
 					if (factArity == 1)
 					{
 						rolePlayer = factRoles[0].Role.RolePlayer;
-						myRoleNames = new string[] { (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText };
+						retVal = new string[] { (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText };
 					}
 					else
 					{
@@ -2396,7 +1992,7 @@ namespace Neumont.Tools.ORM.Design
 						{
 							rolePlayers[i] = roleDisplayOrder[i].Role.RolePlayer;
 						}
-						myRoleNames = new string[factArity];
+						retVal = new string[factArity];
 						for (int i = 0; i < factArity; ++i)
 						{
 							rolePlayer = roleDisplayOrder[i].Role.RolePlayer;
@@ -2421,29 +2017,30 @@ namespace Neumont.Tools.ORM.Design
 							}
 							if (useSubscript)
 							{
-								myRoleNames[i] = string.Format(CultureInfo.InvariantCulture, "{0}({1})", (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText, subscript + 1); //UNDONE: localize
+								retVal[i] = string.Format(CultureInfo.InvariantCulture, "{0}({1})", (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText, subscript + 1); //UNDONE: localize
 							}
 							else
 							{
-								myRoleNames[i] = (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+								retVal[i] = (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
 							}
 						}
 					}
-					retVal = myRoleNames;
+					return myRoleNames = retVal;
 				}
 				return retVal;
 			}
 			private int ShowNewOrder(IList<RoleBase> order)
 			{
-				int retVal;
 				ReadingOrderInformation info = new ReadingOrderInformation(this, order as RoleBase[]);
 				if (!myReadingOrderKeyedCollection.Contains(order))
 				{
 					myReadingOrderKeyedCollection.Add(info);
-					myModificationEvents(this, BranchModificationEventArgs.InsertItems(this, this.VisibleItemCount - 2, 1));
+					if (OnBranchModification != null)
+					{
+						OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, this.VisibleItemCount - 2, 1));
+					}
 				}
-				retVal = myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
-				return retVal;
+				return myReadingOrderKeyedCollection.IndexOf(myReadingOrderKeyedCollection[info.RoleOrder]);
 			}
 			/// <summary>
 			/// Populates the tree
@@ -2480,14 +2077,7 @@ namespace Neumont.Tools.ORM.Design
 				int currentLocation = -1, newLocation = 0;
 				Debug.Assert(orderRow >= 0, "Why is this not in the KeyedCollection?");
 				currentLocation = orderRow; // orderItemInfo.Row;
-				if (promote)
-				{
-					newLocation = currentLocation - 1;
-				}
-				else
-				{
-					newLocation = currentLocation + 1;
-				}
+				newLocation = currentLocation + (promote ? -1 : 1);
 				using (Transaction t = myFact.Store.TransactionManager.BeginTransaction("Moving Reading Order"))  //UNDONE: Localize
 				{
 					myFact.ReadingOrderCollection.Move(currentLocation, newLocation);
@@ -2501,7 +2091,6 @@ namespace Neumont.Tools.ORM.Design
 			/// <returns>index of item in the collection, -1 if not found</returns>
 			private int LocateCollectionItem(ReadingOrder order)
 			{
-				int retVal = -1;
 				if (order != null)
 				{
 					ReadingOrderKeyedCollection orders = myReadingOrderKeyedCollection;
@@ -2513,8 +2102,7 @@ namespace Neumont.Tools.ORM.Design
 						{
 							if (orders[i].ReadingOrder == order)
 							{
-								retVal = i;
-								break;
+								return i;
 							}
 						}
 					}
@@ -2523,11 +2111,11 @@ namespace Neumont.Tools.ORM.Design
 						LinkedElementCollection<RoleBase> roleCollection = order.RoleCollection;
 						if (orders.Contains(roleCollection)) //UNDONE: need to re-work "IndexOf" to return -1 if non-existent
 						{
-							retVal = orders.IndexOf(orders[roleCollection]);
+							return orders.IndexOf(orders[roleCollection]);
 						}
 					}
 				}
-				return retVal;
+				return -1;
 			}
 			/// <summary>
 			/// Information about the current selected cell in a tree for the ReadingOrderBranch
@@ -2564,7 +2152,7 @@ namespace Neumont.Tools.ORM.Design
 						tmpList = new List<RoleBase>(count - 1);
 						for (int j = 0; j < count; ++j)
 						{
-							if (!roleList[j].Equals(currentRole))
+							if (roleList[j] != currentRole)
 							{
 								tmpList.Add(roleList[j]);
 							}
@@ -2694,19 +2282,6 @@ namespace Neumont.Tools.ORM.Design
 				}
 
 				/// <summary>
-				/// Compare ReadingBranch object reference
-				/// </summary>
-				/// <param name="branch">ReadingBranch to compare</param>
-				/// <returns>true if reference is equal, false otherwise</returns>
-				public bool ReadingBranchReferenceEquals(ReadingBranch branch)
-				{
-					if (!object.ReferenceEquals(this.myReadingBranch, branch))
-					{
-						return false;
-					}
-					return true;
-				}
-				/// <summary>
 				/// Returns the ReadingOrder of this Reading Order Information Item
 				/// </summary>
 				public ReadingOrder ReadingOrder
@@ -2731,7 +2306,7 @@ namespace Neumont.Tools.ORM.Design
 								myReadingOrder = FactType.GetReadingOrder(myParentBranch.Fact, this.myRoleOrder);
 							}
 							myReadingBranch = new ReadingBranch(myParentBranch.Fact, myReadingOrder, this);
-							retval = myReadingBranch;
+							return myReadingBranch;
 						}
 						return retval;
 					}
@@ -2754,10 +2329,9 @@ namespace Neumont.Tools.ORM.Design
 					get
 					{
 						string retVal = myText;
-						if (myText == null)
+						if ((object)retVal == null)
 						{
-							retVal = string.Join(", ", OrderedReplacementFields); //UNDONE: Localize separator
-							myText = retVal;
+							return myText = string.Join(", ", OrderedReplacementFields); //UNDONE: Localize separator
 						}
 						return retVal;
 					}
@@ -2775,7 +2349,7 @@ namespace Neumont.Tools.ORM.Design
 							string[] roleNames = myParentBranch.GetRoleNames();
 							LinkedElementCollection<RoleBase> displayOrder = myParentBranch.DisplayOrder;
 							int arity = roleNames.Length;
-							Debug.Assert(arity == displayOrder.Count);
+							Debug.Assert(roleNames.Length == displayOrder.Count);
 							IList<RoleBase> roles = myRoleOrder;
 							switch (arity)
 							{
@@ -2801,7 +2375,7 @@ namespace Neumont.Tools.ORM.Design
 									}
 									break;
 							}
-							myOrderedReplacementFields = retVal;
+							return myOrderedReplacementFields = retVal;
 						}
 						return retVal;
 					}
@@ -2837,7 +2411,11 @@ namespace Neumont.Tools.ORM.Design
 					}
 					protected sealed override System.Collections.IList GetContentList(ITypeDescriptorContext context, object value)
 					{
-						return context.Instance as IList;
+						if (context != null)
+						{
+							return context.Instance as IList;
+						}
+						return null;
 					}
 				}
 				public ReadingOrderDescriptor(FactType fact, ReadingOrderBranch branch, string name)
@@ -2907,12 +2485,11 @@ namespace Neumont.Tools.ORM.Design
 			private sealed class ReadingBranch : IBranch
 			{
 				public const int COLUMN_COUNT = 1;
-				private FactType myFact;
-				private LinkedElementCollection<Reading> myReadingMC;
-				private BranchModificationEventHandler myModificationEvents;
-				private List<ReadingData> myReadings = new List<ReadingData>();
-				private ReadingOrder myReadingOrder;
-				private ReadingOrderInformation myReadingInformation;
+				private readonly FactType myFact;
+				private readonly LinkedElementCollection<Reading> myReadingMC;
+				private readonly List<ReadingData> myReadings = new List<ReadingData>();
+				private readonly ReadingOrder myReadingOrder;
+				private readonly ReadingOrderInformation myReadingInformation;
 				private bool showNewRow = false;
 				int myInsertedRow = -1;
 
@@ -2950,9 +2527,9 @@ namespace Neumont.Tools.ORM.Design
 				}
 				#endregion //Branch Properties
 
-				#region IBranch Member Mirror/Implementations
+				#region IBranch Interface Methods
 
-				VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+				public VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 				{
 					VirtualTreeLabelEditData retval = VirtualTreeLabelEditData.Default;
 					if (row == myReadings.Count - 1 && this.showNewRow)
@@ -2974,7 +2551,7 @@ namespace Neumont.Tools.ORM.Design
 					return retval;
 				}
 
-				LabelEditResult CommitLabelEdit(int row, int column, string newText)
+				public LabelEditResult CommitLabelEdit(int row, int column, string newText)
 				{
 					Reading theReading;
 					if (this.showNewRow && row == myReadings.Count - 1)
@@ -3010,7 +2587,7 @@ namespace Neumont.Tools.ORM.Design
 					return LabelEditResult.AcceptEdit;
 				}
 
-				static BranchFeatures Features
+				public BranchFeatures Features
 				{
 					get
 					{
@@ -3018,24 +2595,27 @@ namespace Neumont.Tools.ORM.Design
 					}
 				}
 
-				static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+				public VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 				{
 					return VirtualTreeAccessibilityData.Empty;
 				}
 
-				VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+				public VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 				{
-					VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
-					retval.ForeColor = (row == this.VisibleItemCount - 1 && this.showNewRow) ? Color.Gray : retval.ForeColor;
-					return retval;
+					VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+					if (row == this.VisibleItemCount - 1 && this.showNewRow)
+					{
+						retVal.ForeColor = Color.Gray;
+					}
+					return retVal;
 				}
 
-				object GetObject(int row, int column, ObjectStyle style, ref int options)
+				public object GetObject(int row, int column, ObjectStyle style, ref int options)
 				{
 					return null;
 				}
 
-				string GetText(int row, int column)
+				public string GetText(int row, int column)
 				{
 					if (row < this.VisibleItemCount)
 					{
@@ -3047,79 +2627,67 @@ namespace Neumont.Tools.ORM.Design
 					}
 				}
 
-				static string GetTipText(int row, int column, ToolTipType tipType)
+				public string GetTipText(int row, int column, ToolTipType tipType)
 				{
 					return null;
 				}
 
-				static bool IsExpandable(int row, int column)
+				public bool IsExpandable(int row, int column)
 				{
 					return false;
 				}
 
-				LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+				public LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 				{
 					Reading reading;
-					switch (style)
+					if (style == ObjectStyle.TrackingObject)
 					{
-						case ObjectStyle.TrackingObject:
-							if ((obj as LinkedElementCollection<RoleBase>) == myReadingInformation.RoleOrder || showNewRow)
+						if (obj == myReadingInformation.RoleOrder || showNewRow)
+						{
+							return new LocateObjectData(this.VisibleItemCount - 1, 0, (int)TrackingObjectAction.ThisLevel);
+						}
+						else if (null != (reading = (obj as Reading)))
+						{
+							int row = myReadingMC.IndexOf(reading);
+							if (row >= 0)
 							{
-								return new LocateObjectData(this.VisibleItemCount - 1, 0, (int)TrackingObjectAction.ThisLevel);
+								return new LocateObjectData(row, 0, (int)TrackingObjectAction.ThisLevel);
 							}
-							else if (null != (reading = (obj as Reading)))
-							{
-								int row = myReadingMC.IndexOf(reading);
-								if (row >= 0)
-								{
-									return new LocateObjectData(row, 0, (int)TrackingObjectAction.ThisLevel);
-								}
-							}
-							break;
+						}
 					}
 					return new LocateObjectData();
 				}
 
-				event BranchModificationEventHandler OnBranchModification
-				{
-					add
-					{
-						myModificationEvents += value;
-					}
-					remove
-					{
-						myModificationEvents -= value;
-					}
-				}
+				public event BranchModificationEventHandler OnBranchModification;
 
-				static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+				public void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 				{
 				}
 
-				static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+				public void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 				{
 				}
 
-				static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+				public void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 				{
 				}
 
-				static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+				public VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 				{
 					return VirtualTreeStartDragData.Empty;
 				}
 
-				StateRefreshChanges ToggleState(int row, int column)
+				public StateRefreshChanges ToggleState(int row, int column)
 				{
 					return StateRefreshChanges.None;
 				}
 
-				static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+				public StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 				{
 					return StateRefreshChanges.None;
 				}
 
-				static int UpdateCounter
+				public int UpdateCounter
 				{
 					get
 					{
@@ -3127,7 +2695,7 @@ namespace Neumont.Tools.ORM.Design
 					}
 				}
 
-				int VisibleItemCount
+				public int VisibleItemCount
 				{
 					get
 					{
@@ -3135,101 +2703,6 @@ namespace Neumont.Tools.ORM.Design
 					}
 				}
 
-				#endregion
-
-				#region IBranch Interface Members
-				VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-				{
-					return BeginLabelEdit(row, column, activationStyle);
-				}
-				LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
-				{
-					return CommitLabelEdit(row, column, newText);
-				}
-				BranchFeatures IBranch.Features
-				{
-					get
-					{
-						return Features;
-					}
-				}
-				VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
-				{
-					return GetAccessibilityData(row, column);
-				}
-				VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-				{
-					return GetDisplayData(row, column, requiredData);
-				}
-				object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
-				{
-					return GetObject(row, column, style, ref options);
-				}
-				string IBranch.GetText(int row, int column)
-				{
-					return GetText(row, column);
-				}
-				string IBranch.GetTipText(int row, int column, ToolTipType tipType)
-				{
-					return GetTipText(row, column, tipType);
-				}
-				bool IBranch.IsExpandable(int row, int column)
-				{
-					return IsExpandable(row, column);
-				}
-				LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
-				{
-					return LocateObject(obj, style, locateOptions);
-				}
-				event BranchModificationEventHandler IBranch.OnBranchModification
-				{
-					add
-					{
-						OnBranchModification += value;
-					}
-					remove
-					{
-						OnBranchModification -= value;
-					}
-				}
-				void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
-				{
-					OnDragEvent(sender, row, column, eventType, args);
-				}
-				void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
-				{
-					OnGiveFeedback(args, row, column);
-				}
-				void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
-				{
-					OnQueryContinueDrag(args, row, column);
-				}
-				VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
-				{
-					return OnStartDrag(sender, row, column, reason);
-				}
-				StateRefreshChanges IBranch.ToggleState(int row, int column)
-				{
-					return ToggleState(row, column);
-				}
-				StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-				{
-					return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
-				}
-				int IBranch.UpdateCounter
-				{
-					get
-					{
-						return 0;
-					}
-				}
-				int IBranch.VisibleItemCount
-				{
-					get
-					{
-						return VisibleItemCount;
-					}
-				}
 				#endregion
 
 				#region Branch update methods
@@ -3243,9 +2716,9 @@ namespace Neumont.Tools.ORM.Design
 					{
 						int index = myReadingMC.IndexOf(reading);
 						myReadings.Insert(index, new ReadingData(FactType.PopulatePredicateText(reading, myReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading));
-						if (myModificationEvents != null)
+						if (OnBranchModification != null)
 						{
-							myModificationEvents(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
+							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
 						}
 					}
 					else
@@ -3287,12 +2760,18 @@ namespace Neumont.Tools.ORM.Design
 					{
 						this.showNewRow = true;
 						myReadings.Add(new ReadingData(myReadingInformation.Text, null));
-						myModificationEvents(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
+						if (OnBranchModification != null)
+						{
+							OnBranchModification(this, BranchModificationEventArgs.InsertItems(this, -1, 1));
+						}
 					}
 					else if (this.showNewRow && show == false)
 					{
 						this.showNewRow = false;
-						myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, this.VisibleItemCount - 1, 1));
+						if (OnBranchModification != null)
+						{
+							OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, this.VisibleItemCount - 1, 1));
+						}
 						myReadings.Remove(new ReadingData(myReadingInformation.Text, null));
 					}
 				}
@@ -3306,11 +2785,11 @@ namespace Neumont.Tools.ORM.Design
 
 					myReadings[location] = new ReadingData(FactType.PopulatePredicateText(reading, reading.ReadingOrder.RoleCollection, myReadingInformation.OrderedReplacementFields), reading);
 
-					if (myModificationEvents != null)
+					if (OnBranchModification != null)
 					{
-						myModificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 0, 1)));
-						myModificationEvents(this, BranchModificationEventArgs.Redraw(false));
-						myModificationEvents(this, BranchModificationEventArgs.Redraw(true));
+						OnBranchModification(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 0, 1)));
+						OnBranchModification(this, BranchModificationEventArgs.Redraw(false));
+						OnBranchModification(this, BranchModificationEventArgs.Redraw(true));
 					}
 				}
 				/// <summary>
@@ -3324,7 +2803,10 @@ namespace Neumont.Tools.ORM.Design
 						if (myReadings[i].Reading == reading)
 						{
 							myReadings.RemoveAt(i);
-							myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, i, 1));
+							if (OnBranchModification != null)
+							{
+								OnBranchModification(this, BranchModificationEventArgs.DeleteItems(this, i, 1));
+							}
 						}
 					}
 				}
@@ -3340,7 +2822,7 @@ namespace Neumont.Tools.ORM.Design
 					}
 					else
 					{
-						this.CommitLabelEdit(row, 0, "");
+						this.CommitLabelEdit(row, 0, string.Empty);
 					}
 				}
 				/// <summary>
@@ -3373,9 +2855,9 @@ namespace Neumont.Tools.ORM.Design
 						myReadings.RemoveAt(oldRow);
 						myReadings.Insert(currentRow, readingData);
 
-						if (myModificationEvents != null)
+						if (OnBranchModification != null)
 						{
-							myModificationEvents(this, BranchModificationEventArgs.MoveItem(this, oldRow, currentRow));
+							OnBranchModification(this, BranchModificationEventArgs.MoveItem(this, oldRow, currentRow));
 						}
 					}
 				}
@@ -3398,10 +2880,10 @@ namespace Neumont.Tools.ORM.Design
 				/// <summary>
 				/// Structure to hold Cached Reading Display Text with Populated Role Names, and the Reading Object associated
 				/// </summary>
-				public struct ReadingData : IEquatable<ReadingData>
+				private struct ReadingData : IEquatable<ReadingData>
 				{
-					private Reading myReading;
-					private string myText;
+					private readonly Reading myReading;
+					private readonly string myText;
 
 					/// <summary>
 					/// Constructor
@@ -3429,14 +2911,27 @@ namespace Neumont.Tools.ORM.Design
 					{
 						get { return this.myReading; }
 					}
-					/// <summary>
-					/// 
-					/// </summary>
 					/// <param name="other">Reading to compare</param>
 					/// <returns>True if reading passed matches current</returns>
 					public bool Equals(ReadingData other)
 					{
 						return (object)other.myReading == myReading;
+					}
+					public override bool Equals(object obj)
+					{
+						return obj is ReadingData && this.Equals((ReadingData)obj);
+					}
+					public override int GetHashCode()
+					{
+						return this.myReading.GetHashCode();
+					}
+					public static bool operator ==(ReadingData left, ReadingData right)
+					{
+						return left.Equals(right);
+					}
+					public static bool operator !=(ReadingData left, ReadingData right)
+					{
+						return !left.Equals(right);
 					}
 				}
 				/// <summary>
@@ -3456,11 +2951,11 @@ namespace Neumont.Tools.ORM.Design
 			}
 			#endregion
 #if Buffered_TextView_Control_Test
-			private class TextViewHostControl : ContainerControl, IVirtualTreeInPlaceControl, IVirtualTreeInPlaceControlDefer
+			private sealed class TextViewHostControl : ContainerControl, IVirtualTreeInPlaceControl, IVirtualTreeInPlaceControlDefer
 			{
-				private IVirtualTreeInPlaceControlDefer myInPlaceHelper;
+				private readonly IVirtualTreeInPlaceControlDefer myInPlaceHelper;
 				private IVsTextView myTextView;
-				private IServiceProvider myServiceProvider;
+				private readonly IServiceProvider myServiceProvider;
 
 				public TextViewHostControl(IServiceProvider serviceProvider)
 				{
@@ -3471,7 +2966,7 @@ namespace Neumont.Tools.ORM.Design
 
 				protected override void OnHandleCreated(EventArgs e)
 				{
-					IVsTextView view = TextView; // Force creation
+					GC.KeepAlive(TextView); // Force creation
 				}
 
 				public IVsTextView TextView
@@ -3481,7 +2976,7 @@ namespace Neumont.Tools.ORM.Design
 						IVsTextView view = myTextView;
 						if (view == null)
 						{
-							myTextView = view = TextViewHostControl.CreateTextView(myServiceProvider, Handle);
+							return myTextView = TextViewHostControl.CreateTextView(myServiceProvider, Handle);
 						}
 						return view;
 					}
@@ -3684,7 +3179,7 @@ namespace Neumont.Tools.ORM.Design
 		#endregion Nested ReadingOrderBranch class
 
 		#region nested class ReadingVirtualTree
-		private class ReadingVirtualTree : MultiColumnTree, IMultiColumnTree
+		private sealed class ReadingVirtualTree : MultiColumnTree, IMultiColumnTree
 		{
 			public ReadingVirtualTree(IBranch root)
 				: base(ReadingOrderBranch.COLUMN_COUNT)

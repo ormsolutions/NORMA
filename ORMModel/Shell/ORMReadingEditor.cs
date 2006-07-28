@@ -196,7 +196,7 @@ namespace Neumont.Tools.ORM.Shell
 							secondaryFact = proxy.FactType;
 						}
 					}
-					else if (!object.ReferenceEquals(testFact, theFact))
+					else if (testFact != theFact)
 					{
 						theFact = null;
 						break;
@@ -216,7 +216,7 @@ namespace Neumont.Tools.ORM.Shell
 					EditingFactType = ActiveFactType.Empty;
 				}
 				//selection could change between the shapes that are related to the fact
-				else if (!object.ReferenceEquals(theFact, currentFact) || !object.ReferenceEquals(secondaryFact, currentImpliedFact))
+				else if (theFact != currentFact || secondaryFact != currentImpliedFact)
 				{
 					LinkedElementCollection<RoleBase> displayOrder = null;
 					ORMDesignerDocView docView = CurrentORMSelectionContainer as ORMDesignerDocView;
@@ -284,16 +284,11 @@ namespace Neumont.Tools.ORM.Shell
 		#region nested class ReadingsViewForm
 		private sealed class ReadingsViewForm : ContainerControl
 		{
-			private ReadingEditor myReadingEditor;
-			private Label myNoSelectionLabel;
+			private readonly ReadingEditor myReadingEditor;
+			private readonly Label myNoSelectionLabel;
 
 			#region construction
 			public ReadingsViewForm()
-			{
-				Initialize();
-			}
-
-			private void Initialize()
 			{
 				myReadingEditor = new ReadingEditor();
 				this.Controls.Add(myReadingEditor);
