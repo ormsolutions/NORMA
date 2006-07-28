@@ -970,7 +970,7 @@ namespace Neumont.Tools.ORM.Design
 		#region FactType Event Handlers
 		private void FactTypeHasRoleAddedOrDeletedEvent(object sender, ElementEventArgs e)
 		{ //UNDONE: should this be valid when selecting a role for deletion
-			if (myFact != null && myFact == ((FactTypeHasRole)e.ModelElement).FactType && !myFact.IsDeleted)
+			if (myFact != null && myFact == ((FactTypeHasRole)e.ModelElement).FactType && !myFact.IsDeleted && !myFact.IsDeleting)
 			{
 				this.PopulateControl();
 			}
@@ -983,13 +983,13 @@ namespace Neumont.Tools.ORM.Design
 				ORMDesignerPackage.ReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
 			}
 
-			if (myFact != null && myFact == link.FactType)
+			if (myFact != null && myFact == link.FactType && !myFact.IsDeleted && !myFact.IsDeleting)
 			{
 				this.PopulateControl();
 			}
 			else
 			{
-				this.vtrReadings = null;
+				this.vtrReadings.Tree.Root = null;
 			}
 		}
 
