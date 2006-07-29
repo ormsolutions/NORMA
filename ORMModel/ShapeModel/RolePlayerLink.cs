@@ -357,6 +357,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			base.InitializeResources(classStyleSet);
 			PenSettings penSettings = new PenSettings();
 			penSettings.Width = 1.2F / 72.0F; // 1.2 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;

@@ -27,14 +27,17 @@ using System.Globalization;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class RoleNameShape
+	public partial class RoleNameShape : ISelectionContainerFilter
 	{
+		#region Member Variables
 		private static AutoSizeTextField myTextField;
 
 		/// <summary>
 		/// A brush used to draw the value range text
 		/// </summary>
 		protected static readonly StyleSetResourceId RoleNameTextBrush = new StyleSetResourceId("Neumont", "RoleNameTextBrush");
+		#endregion // Member Variables
+		#region Base overrides
 		/// <summary>
 		/// Sets the AutoSizeTextField to be added to the ShapeFieldCollection, is only run once
 		/// </summary>
@@ -42,7 +45,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			AutoSizeTextField newTextField = new RoleNameAutoSizeTextField();
 			newTextField.DefaultFocusable = true;
-			newTextField.FillBackground = true;
 			newTextField.DefaultTextBrushId = RoleNameTextBrush;
 			return newTextField;
 		}
@@ -51,6 +53,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			base.InitializeResources(classStyleSet);
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.RoleName);
@@ -81,7 +84,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myTextField = value;
 			}
 		}
-
+		/// <summary>
+		/// Place a newly added role name shape
+		/// </summary>
+		/// <param name="parent">Parent FactTypeShape</param>
+		public override void PlaceAsChildOf(NodeShape parent)
+		{
+			FactTypeShape factShape = (FactTypeShape)parent;
+			double x = -0.2;
+			double y = -0.2;
+			FactType factType = factShape.AssociatedFactType;
+			// Cascades RoleNameShapes for facts that contain more than one role
+			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
+			int roleIndex = roles.IndexOf((RoleBase)ModelElement);
+			if (roleIndex != -1)
+			{
+				x += roleIndex * 0.15;
+				y -= roleIndex * 0.15;
+			}
+			Location = new PointD(x, y);
+		}
+		/// <summary>
+		/// Display a solid background
+		/// </summary>
+		protected override bool HasTransparentBackground
+		{
+			get
+			{
+				return false;
+			}
+		}
+		#endregion // Base overrides
+		#region RoleNameShape specific
 		/// <summary>
 		/// Removes the RoleNameShape from the associated Role
 		/// </summary>
@@ -169,26 +203,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // RoleNameShape specific
+		#region ISelectionContainerFilter Implementation
 		/// <summary>
-		/// Place a newly added role name shape
+		/// Implements ISelectionContainerFilter.IncludeInSelectionContainer
 		/// </summary>
-		/// <param name="parent">Parent FactTypeShape</param>
-		public override void PlaceAsChildOf(NodeShape parent)
+		protected static bool IncludeInSelectionContainer
 		{
-			FactTypeShape factShape = (FactTypeShape)parent;
-			double x = -0.2;
-			double y = -0.2;
-			FactType factType = factShape.AssociatedFactType;
-			// Cascades RoleNameShapes for facts that contain more than one role
-			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
-			int roleIndex = roles.IndexOf((RoleBase)ModelElement);
-			if (roleIndex != -1)
+			get
 			{
-				x += roleIndex * 0.15;
-				y -= roleIndex * 0.15;
+				return false;
 			}
-			Location = new PointD(x, y);
 		}
+		bool ISelectionContainerFilter.IncludeInSelectionContainer
+		{
+			get
+			{
+				return IncludeInSelectionContainer;
+			}
+		}
+		#endregion // ISelectionContainerFilter Implementation
+		#region RoleNameAutoSizeTextField class
 		/// <summary>
 		/// Inherited AutoSizeTextField class so the display GetDisplayText could be overridden
 		/// </summary>
@@ -202,5 +237,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return string.Format(CultureInfo.InvariantCulture, "[{0}]", base.GetDisplayText(parentShape)); // UNDONE: Localize format string
 			}
 		}
+		#endregion // RoleNameAutoSizeTextField class
 	}
 }

@@ -163,15 +163,27 @@
     <comment xml:space="preserve">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteFactTypeShape.Text">
-    <value xml:space="preserve">Delete Fact &amp;Shape</value>
+    <value xml:space="preserve">Delete Fact Type &amp;Shape</value>
     <comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteModelNote.Text">
+    <value xml:space="preserve">&amp;Delete Note</value>
+    <comment xml:space="preserve">This text appears in the edit menu when model notes are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteModelNoteReference.Text">
+    <value xml:space="preserve">&amp;Delete Note Reference</value>
+    <comment xml:space="preserve">This text appears in the edit menu when reference to model notes are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteModelNoteShape.Text">
+    <value xml:space="preserve">Delete Note &amp;Shape</value>
+    <comment xml:space="preserve">This text appears in the edit menu when model notes are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteMultipleShape.Text">
     <value xml:space="preserve">Delete Selected &amp;Shapes</value>
     <comment xml:space="preserve">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteObjectTypeShape.Text">
-    <value xml:space="preserve">Delete Object &amp;Shape</value>
+    <value xml:space="preserve">Delete Object Type &amp;Shape</value>
     <comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteRole.Text">
@@ -401,6 +413,18 @@
   <data name="MessageBox.FinalShapeDeletion.Message">
     <value xml:space="preserve">The only shape representing this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
     <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
+  </data>
+  <data name="ModelNoteConnectAction.TransactionName">
+    <value xml:space="preserve">Associate Note</value>
+    <comment xml:space="preserve">The transaction name used by the modelnote connect action. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
+  <data name="ModelNoteLink.Accessible.Description">
+    <value xml:space="preserve">Connects a model note with associated fact types and object types</value>
+    <comment xml:space="preserve">Returned as the accessible description for a model note link</comment>
+  </data>
+  <data name="ModelNoteLink.Accessible.Name">
+    <value xml:space="preserve">NoteReference</value>
+    <comment xml:space="preserve">Returned as the accessible name for a model note link</comment>
   </data>
   <data name="MoveRoleOrder.TransactionName">
     <value xml:space="preserve">Move Role Order</value>

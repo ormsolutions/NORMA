@@ -613,6 +613,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The transaction name used by the model note connect action. The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string ModelNoteConnectActionTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelNoteConnectAction.TransactionName");
+			}
+		}
+		/// <summary>
 		/// The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.
 		/// </summary>
 		public static string OptionsPageChangeTransactionName
@@ -1110,6 +1120,36 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteConstraintShape.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when model notes are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteModelNoteText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteModelNote.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when references to model notes are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteModelNoteReferenceText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteModelNoteReference.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when model notes are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteModelNoteShapeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteModelNoteShape.Text");
 			}
 		}
 		/// <summary>
@@ -2190,6 +2230,26 @@ namespace Neumont.Tools.ORM
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintLink.Accessible.Name");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible description for a model note link
+		/// </summary>
+		public static string ModelNoteLinkAccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelNoteLink.Accessible.Description");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible name for a model note link
+		/// </summary>
+		public static string ModelNoteLinkAccessibleName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelNoteLink.Accessible.Name");
 			}
 		}
 		/// <summary>

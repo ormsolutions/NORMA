@@ -121,4 +121,61 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INoteOwner Implementation
 	}
+	public partial class ModelNote : INoteOwner
+	{
+		#region INoteOwner Implementation
+		/// <summary>
+		/// Implements INoteOwner.NoteText
+		/// </summary>
+		protected string Name
+		{
+			get
+			{
+				// UNDONE: Display an index with the NoteText property
+				return TypeDescriptor.GetClassName(this);
+			}
+		}
+		string INoteOwner.Name
+		{
+			get
+			{
+				return Name;
+			}
+		}
+		/// <summary>
+		/// Implements INoteOwner.NoteText
+		/// </summary>
+		protected string NoteText
+		{
+			get
+			{
+				return Text;
+			}
+		}
+		string INoteOwner.NoteText
+		{
+			get
+			{
+				return NoteText;
+			}
+		}
+		/// <summary>
+		/// Implements INoteOwner.NoteTextPropertyDescriptor
+		/// </summary>
+		protected PropertyDescriptor NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return ORMTypeDescriptor.CreatePropertyDescriptor(this, TextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return NoteTextPropertyDescriptor;
+			}
+		}
+		#endregion // INoteOwner Implementation
+	}
 }

@@ -68,6 +68,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Toolbox item filter string used to identify ExternalConstraintConnector connector tool.
 		/// </summary>
 		public const string ExternalConstraintConnectorFilterString = "ExternalConstraintConnector.1.0";
+		/// <summary>
+		/// Toolbox item filter string used to identify ModelNoteConnector connector tool.
+		/// </summary>
+		public const string ModelNoteConnectorFilterString = "ModelNoteConnector.1.0";
 
 		private global::System.IServiceProvider sp;
 		
@@ -368,6 +372,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString), 
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ExternalConstraintConnectorFilterString)
+						}));
+
+					// Add ModelNote shape tool.
+					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
+						"ModelNoteToolboxItem", // Unique identifier (non-localized) for the toolbox item.
+						70, // Position relative to other items in the same toolbox tab.
+						resourceManager.GetString("ModelNoteToolboxItem", resourceCulture), // Localized display name for the item.
+						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ModelNoteToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
+						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
+						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
+						"ModelNote", // F1 help keyword for the toolbox item.
+						resourceManager.GetString("ModelNoteToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
+						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ModelNote.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+						}));
+
+					// Add ModelNoteConnector connector tool.
+					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
+						"ModelNoteConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
+						75, // Position relative to other items in the same toolbox tab.
+						resourceManager.GetString("ModelNoteConnectorToolboxItem", resourceCulture), // Localized display name for the item.
+						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ModelNoteConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
+						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
+						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
+						"ModelNoteConnector", // F1 help keyword for the toolbox item.
+						resourceManager.GetString("ModelNoteConnectorToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
+						null, // Connector toolbox items do not have an underlying data object.
+						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString), 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ModelNoteConnectorFilterString)
 						}));
 
 					t.Rollback();

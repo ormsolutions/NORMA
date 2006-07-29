@@ -1,0 +1,188 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
+using System;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Text;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
+namespace Neumont.Tools.ORM.ShapeModel
+{
+	#region ModelNoteShape class
+	public partial class ModelNoteShape
+	{
+		private static AutoSizeTextField myTextField;
+		private const double EdgeMargin = .012;
+		/// <summary>
+		/// Gets and sets the AutoSizeTextField shape for this object
+		/// </summary>
+		protected override AutoSizeTextField TextShapeField
+		{
+			get
+			{
+				return myTextField;
+			}
+			set
+			{
+				Debug.Assert(myTextField == null);
+				myTextField = value;
+			}
+		}
+		/// <summary>
+		/// Adjust the outline pen width
+		/// </summary>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			base.InitializeResources(classStyleSet);
+			PenSettings penSettings = new PenSettings();
+			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Color = SystemColors.GrayText;
+			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
+		}
+		/// <summary>
+		/// Gets the DomainProperty to bind to the text field
+		/// </summary>
+		protected override Guid AssociatedModelDomainPropertyId
+		{
+			get
+			{
+				return Note.TextDomainPropertyId;
+			}
+		}
+		/// <summary>
+		/// Add an outline to the note shape
+		/// </summary>
+		public override bool HasOutline
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Highlight the shape when the mouse moves over it
+		/// </summary>
+		public override bool HasHighlighting
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Ensure initial size
+		/// </summary>
+		public override void ConfiguringAsChildOf(NodeShape parent)
+		{
+			AutoResize();
+		}
+		/// <summary>
+		/// Show a shadow if this <see cref="ModelNoteShape"/> represents an <see cref="ModelNote"/> that appears
+		/// in more than one location.
+		/// </summary>
+		public override bool HasShadow
+		{
+			get
+			{
+				return ORMBaseShape.ElementHasMultiplePresentations(this);
+			}
+		}
+		/// <summary>
+		/// Connect lines to the edge of the rectangular shape
+		/// </summary>
+		public override ShapeGeometry ShapeGeometry
+		{
+			get
+			{
+				return CustomFoldRectangleShapeGeometry.ShapeGeometry;
+			}
+		}
+		/// <summary>
+		/// Get an initial default size
+		/// </summary>
+		public override SizeD DefaultSize
+		{
+			get
+			{
+				// Include margin 
+				return new SizeD(.3 + EdgeMargin, .12 + EdgeMargin);
+			}
+		}
+		/// <summary>
+		/// Adjust the content size
+		/// </summary>
+		protected override SizeD ContentSize
+		{
+			get
+			{
+				SizeD size = base.ContentSize;
+				SizeD defaultSize = DefaultSize;
+				size.Width += EdgeMargin;
+				size.Height += EdgeMargin;
+				size.Width = Math.Max(size.Width, defaultSize.Width);
+				size.Height = Math.Max(size.Height, defaultSize.Height);
+				return size;
+			}
+		}
+		/// <summary>
+		/// Create the text field
+		/// </summary>
+		/// <returns></returns>
+		protected override AutoSizeTextField CreateAutoSizeTextField()
+		{
+			return new NoteTextField();
+		}
+		/// <summary>
+		/// An auto-size text field for the diagram shape
+		/// </summary>
+		private class NoteTextField : AutoSizeTextField
+		{
+			public NoteTextField() : base()
+			{
+				DefaultMultipleLine = true;
+			}
+		}
+		#region Shape display update rules
+		[RuleOn(typeof(Note), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class NoteChangeRule : ChangeRule
+		{
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == Note.TextDomainPropertyId)
+				{
+					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(e.ModelElement))
+					{
+						ORMBaseShape shape = pel as ORMBaseShape;
+						if (shape != null)
+						{
+							shape.AutoResize();
+						}
+					}
+				}
+			}
+		}
+		#endregion // Shape display update rules
+	}
+	#endregion // ModelNoteShape class
+}

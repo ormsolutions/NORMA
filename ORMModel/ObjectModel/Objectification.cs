@@ -92,23 +92,56 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule class
-		#region ImpliedObjectificationUniquenessConstraintIsInternalChangeRule class
+		#region ImpliedObjectificationUniquenessConstraintChangeRule class
 		/// <summary>
-		/// Adds or removes an implied Objectification if necessary.
+		/// Adds or removes an implied Objectification if necessary as well as ensuring
+		/// that an objectifying type with a single candidate internal uniqueness
+		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
 		[RuleOn(typeof(UniquenessConstraint))]
-		private sealed class ImpliedObjectificationUniquenessConstraintIsInternalChangeRule : ChangeRule
+		private sealed class ImpliedObjectificationUniquenessConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				if (e.DomainProperty.Id == UniquenessConstraint.IsInternalDomainPropertyId)
+				UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
+				if (!constraint.IsDeleted)
 				{
-					ProcessUniquenessConstraintForImpliedObjectification(e.ModelElement as UniquenessConstraint, true);
+					Guid attributeId = e.DomainProperty.Id;
+					if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId)
+					{
+						ProcessUniquenessConstraintForImpliedObjectification(constraint, true, false);
+					}
+					else if (attributeId == UniquenessConstraint.ModalityDomainPropertyId)
+					{
+						if (constraint.IsInternal)
+						{
+							ProcessUniquenessConstraintForImpliedObjectification(constraint, false, true);
+							LinkedElementCollection<FactType> facts = constraint.FactTypeCollection;
+							if (facts.Count != 0)
+							{
+								ObjectType nestingType = facts[0].NestingType;
+								if (nestingType != null)
+								{
+									ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+								}
+							}
+						}
+
+						// Preferred identifiers must be alethic
+						if (constraint.Modality != ConstraintModality.Alethic)
+						{
+							EntityTypeHasPreferredIdentifier identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifierFor(constraint);
+							if (identifierLink != null)
+							{
+								identifierLink.Delete();
+							}
+						}
+					}
 				}
 			}
 		}
-		#endregion // ImpliedObjectificationUniquenessConstraintIsInternalChangeRule class
-		#region UniquessConstraintAddRule class
+		#endregion // ImpliedObjectificationUniquenessConstraintChangeRule class
+		#region UniquenessConstraintAddRule class
 		/// <summary>
 		/// Ensure that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
@@ -133,7 +166,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // UniquessConstraintAddRule class
+		#endregion // UniquenessConstraintAddRule class
 		#region UniquessConstraintDeletingRule class
 		/// <summary>
 		/// Ensure that an objectifying type with a single candidate internal uniqueness
@@ -722,7 +755,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private static void ProcessUniquenessConstraintForImpliedObjectification(UniquenessConstraint uniquenessConstraint, bool changingIsInternal)
+		private static void ProcessUniquenessConstraintForImpliedObjectification(UniquenessConstraint uniquenessConstraint, bool changingIsInternal, bool verifyPreferredIdentifier)
 		{
 			if (uniquenessConstraint == null || (!uniquenessConstraint.IsInternal && !changingIsInternal))
 			{
@@ -732,7 +765,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int factsCount = facts.Count;
 			for (int i = 0; i < factsCount; ++i)
 			{
-				ORMCoreModel.DelayValidateElement(facts[i], DelayProcessFactTypeForImpliedObjectification);
+				FactType factType = facts[i];
+				ORMCoreModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				if (changingIsInternal)
+				{
+					ObjectType nestingType = facts[0].NestingType;
+					if (nestingType != null)
+					{
+						ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -766,7 +808,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Make sure that we still have a uniqueness constraint that implies the objectification
 					foreach (UniquenessConstraint uniquenessConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
 					{
-						if (uniquenessConstraint.RoleCollection.Count > 1)
+						if (uniquenessConstraint.Modality == ConstraintModality.Alethic &&
+							uniquenessConstraint.RoleCollection.Count > 1)
 						{
 							return;
 						}
@@ -794,7 +837,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// See if we now have a uniqueness constraint that implies an objectification
 				foreach (UniquenessConstraint uniquenessConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
 				{
-					if (uniquenessConstraint.RoleCollection.Count > 1)
+					if (uniquenessConstraint.Modality == ConstraintModality.Alethic &&
+						uniquenessConstraint.RoleCollection.Count > 1)
 					{
 						// We now have a uniqueness constraint that implies an objectification, so create it
 						CreateObjectificationForFactType(factType, true, null);
@@ -853,17 +897,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				foreach (UniquenessConstraint candidateConstraint in factType.GetInternalConstraints<UniquenessConstraint>())
 				{
-					if (preferredConstraint != null)
+					if (candidateConstraint.Modality == ConstraintModality.Alethic)
 					{
-						// We found more than one, don't use it
-						preferredConstraint = null;
-						break;
+						if (preferredConstraint != null)
+						{
+							// We found more than one, don't use it
+							preferredConstraint = null;
+							break;
+						}
+						else if (candidateConstraint.PreferredIdentifierFor != null)
+						{
+							break;
+						}
+						preferredConstraint = candidateConstraint;
 					}
-					else if (candidateConstraint.PreferredIdentifierFor != null)
-					{
-						break;
-					}
-					preferredConstraint = candidateConstraint;
 				}
 				if (preferredConstraint != null)
 				{
@@ -887,7 +934,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						UniquenessConstraint candidateConstraint;
 						if (null != (candidateConstraint = sequences[j] as UniquenessConstraint) &&
-							candidateConstraint.IsInternal)
+							candidateConstraint.IsInternal &&
+							candidateConstraint.Modality == ConstraintModality.Alethic)
 						{
 							if (preferredConstraint != null)
 							{
@@ -1057,7 +1105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				UniquenessConstraint useConstraint = null;
 				foreach (UniquenessConstraint testConstraint in nestedFactType.GetInternalConstraints<UniquenessConstraint>())
 				{
-					if (testConstraint.RoleCollection.Count != 0)
+					if (testConstraint.RoleCollection.Count != 0 && testConstraint.Modality == ConstraintModality.Alethic)
 					{
 						if (useConstraint == null)
 						{

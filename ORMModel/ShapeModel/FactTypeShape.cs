@@ -4584,7 +4584,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// A specialized display of the nesting type as a relative
 	/// child element of an objectified fact type
 	/// </summary>
-	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation
+	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation, ISelectionContainerFilter
 	{
 		private static AutoSizeTextField myTextShapeField;
 		/// <summary>
@@ -4621,6 +4621,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SizeD size = Size;
 			Location = new PointD(0, -1.5 * size.Height);
 		}
+		/// <summary>
+		/// Connect lines to the edge of the rectangular shape
+		/// </summary>
+		public override ShapeGeometry ShapeGeometry
+		{
+			get
+			{
+				return CustomFoldRectangleShapeGeometry.ShapeGeometry;
+			}
+		}
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
@@ -4628,10 +4638,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected bool ActivateModelError(ModelError error)
 		{
 			ObjectTypeDuplicateNameError duplicateName;
+			EntityTypeRequiresReferenceSchemeError requiresReferenceSchemeError;
 			bool retVal = true;
 			if (null != (duplicateName = error as ObjectTypeDuplicateNameError))
 			{
 				ActivateNameProperty(duplicateName.ObjectTypeCollection[0]);
+			}
+			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
+			{
+				Store store = Store;
+				EditorUtility.ActivatePropertyEditor(
+					(store as IORMToolServices).ServiceProvider,
+					ORMTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
+					true);
 			}
 			else
 			{
@@ -4644,6 +4663,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region ISelectionContainerFilter Implementation
+		/// <summary>
+		/// Implements ISelectionContainerFilter.IncludeInSelectionContainer
+		/// </summary>
+		protected static bool IncludeInSelectionContainer
+		{
+			get
+			{
+				return false;
+			}
+		}
+		bool ISelectionContainerFilter.IncludeInSelectionContainer
+		{
+			get
+			{
+				return IncludeInSelectionContainer;
+			}
+		}
+		#endregion // ISelectionContainerFilter Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation

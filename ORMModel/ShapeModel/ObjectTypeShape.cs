@@ -192,14 +192,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Initialize reference mode field
 			AutoSizeTextField referenceModeField = CreateReferenceModeTextField();
 			referenceModeField.DrawBorder = false;
-			referenceModeField.FillBackground = false;
 			referenceModeField.DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
 			referenceModeField.DefaultPenId = DiagramPens.ShapeOutline;
 			referenceModeField.DefaultFontId = DiagramFonts.ShapeTitle;
-			referenceModeField.DefaultFocusable = true;
 			referenceModeField.DefaultText = string.Empty;
 			referenceModeField.DefaultStringFormat = fieldFormat;
-			referenceModeField.AssociateValueWith(Store, ObjectType.ReferenceModeDisplayDomainPropertyId);
+			// Note that the reference mode field is associated with the ReferenceModeString
+			// property, not ReferenceModeDisplay. The field will only activate for editing
+			// if it is a string property.
+			referenceModeField.AssociateValueWith(Store, ObjectType.ReferenceModeStringDomainPropertyId);
 
 			// Add all shapes before modifying anchoring behavior
 			shapeFields.Add(field);
@@ -665,7 +666,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public ReferenceModeTextField()
 			{
 				DefaultFocusable = true;
-				DefaultSelectable = true;
 			}
 
 			/// <summary>

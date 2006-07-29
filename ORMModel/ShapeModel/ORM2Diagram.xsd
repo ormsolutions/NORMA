@@ -28,6 +28,7 @@
 						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape" minOccurs="0" maxOccurs="unbounded" />
 						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape" minOccurs="0" maxOccurs="unbounded" />
 						<xs:element name="RingConstraintShape" type="RingConstraintShape" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="ModelNoteShape" type="ModelNoteShape" minOccurs="0" maxOccurs="unbounded" />
 					</xs:choice>
 				</xs:complexType>
 			</xs:element>
@@ -167,6 +168,15 @@
 	<xs:complexType name="RingConstraintShape">
 		<xs:complexContent>
 			<xs:extension base="ExternalConstraintShape"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModelNoteShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:sequence>
+					<xs:element name="Subject" type="SubjectRef"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SubjectRef">

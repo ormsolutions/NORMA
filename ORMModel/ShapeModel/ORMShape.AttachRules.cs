@@ -47,6 +47,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(FactTypeShape).GetNestedType("SwitchFromNestedFact", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("SwitchToNestedFact", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModelNoteShape).GetNestedType("NoteChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("DataTypeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -65,6 +66,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(FactTypedAdded),
 						typeof(FactTypeShapeChanged),
 						typeof(LinkConnectsToNodeDeleted),
+						typeof(ModelNoteAdded),
+						typeof(ModelNoteReferenceAdded),
 						typeof(ObjectTypedAdded),
 						typeof(ObjectTypePlaysRoleAdded),
 						typeof(ObjectTypePlaysRoleDeleted),
@@ -92,7 +95,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(RolePlayerLink).GetNestedType("RolePlayerDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueRangeChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMShapeModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}

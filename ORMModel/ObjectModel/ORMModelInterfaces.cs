@@ -74,6 +74,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ModelElement[] GetRepresentedElements();
 	}
 	#endregion // IRepresentedModelElements interface
+	#region ISelectionContainerFilter interface
+	/// <summary>
+	/// Implement this interface to dynamically stop a selectable
+	/// object from appearing in the diagrams selection container
+	/// list of all objects. The most prominent place this appears
+	/// is in the properties window
+	/// </summary>
+	public interface ISelectionContainerFilter
+	{
+		/// <summary>
+		/// Return false from IncludeInSelectionContainer to allow
+		/// an item to be selectable without appearing in the
+		/// list of all available objects
+		/// </summary>
+		bool IncludeInSelectionContainer { get;}
+	}
+	#endregion // ISelectionContainerFilter interface
 	#region IORMToolTaskItem interface
 	/// <summary>
 	/// An item that can be added to a task provider. At design time,

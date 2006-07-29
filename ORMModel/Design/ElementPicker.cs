@@ -722,6 +722,7 @@ namespace Neumont.Tools.ORM.Design
 			{
 				Multiline = true;
 				ScrollBars = ScrollBars.Vertical;
+				BorderStyle = BorderStyle.None;
 			}
 			protected override bool IsInputKey(Keys keyData)
 			{

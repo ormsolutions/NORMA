@@ -340,6 +340,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region NoteCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of NoteCollection.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ModelNote> NoteCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ModelNote>(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.ModelDomainRoleId);
+			}
+		}
+		#endregion
 		#region ElementGroupPrototype Merge methods
 		/// <summary>
 		/// Returns a value indicating whether the source element represented by the
@@ -360,15 +373,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				DslModeling::DomainClassInfo rootElementDomainInfo = this.Partition.DomainDataDirectory.GetDomainClass(rootElement.DomainClassId);
 				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.DomainClassId)) 
+				{
+					return true;
+				}
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ModelNote.DomainClassId)) 
+				{
+					return true;
+				}
+				
 				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetConstraint.DomainClassId)) 
 				{
 					// Call custom method implemented in partial class
 					return this.CanMergeSetConstraint(rootElement, elementGroupPrototype);
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint.DomainClassId)) 
-				{
-					return true;
 				}
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId)) 
@@ -407,22 +425,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			base.MergeRelate(sourceElement, elementGroup);
 				
 			{
-				global::Neumont.Tools.ORM.ObjectModel.SetConstraint sourceSetConstraint = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetConstraint;
-				if (sourceSetConstraint != null)
+				global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint;
+				if (sourceSetComparisonConstraint != null)
 				{
-					// Create link for path ModelHasSetConstraint.SetConstraintCollection
-					this.SetConstraintCollection.Add(sourceSetConstraint);
+					// Create link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
+					this.SetComparisonConstraintCollection.Add(sourceSetComparisonConstraint);
 
 					return;
 				}
 			}
 				
 			{
-				global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint;
-				if (sourceSetComparisonConstraint != null)
+				global::Neumont.Tools.ORM.ObjectModel.ModelNote sourceModelNote = sourceElement as global::Neumont.Tools.ORM.ObjectModel.ModelNote;
+				if (sourceModelNote != null)
 				{
-					// Create link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
-					this.SetComparisonConstraintCollection.Add(sourceSetComparisonConstraint);
+					// Create link for path ModelHasModelNote.NoteCollection
+					this.NoteCollection.Add(sourceModelNote);
+
+					return;
+				}
+			}
+				
+			{
+				global::Neumont.Tools.ORM.ObjectModel.SetConstraint sourceSetConstraint = sourceElement as global::Neumont.Tools.ORM.ObjectModel.SetConstraint;
+				if (sourceSetConstraint != null)
+				{
+					// Create link for path ModelHasSetConstraint.SetConstraintCollection
+					this.SetConstraintCollection.Add(sourceSetConstraint);
 
 					return;
 				}
@@ -2002,6 +2031,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ModelNoteCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ModelNoteCollection.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ModelNote> ModelNoteCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ModelNote>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.ElementDomainRoleId);
+			}
+		}
+		#endregion
 		#region CompatibleSupertypesError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets CompatibleSupertypesError.
@@ -3013,6 +3055,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.FactTypeHasNote.FactTypeDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ModelNoteCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ModelNoteCollection.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ModelNote> ModelNoteCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ModelNote>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.ElementDomainRoleId);
 			}
 		}
 		#endregion
@@ -11175,8 +11230,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Text domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Note.Text
+		/// Description for Neumont.Tools.ORM.ObjectModel.Note.Note
 		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.Design.NoteEditor), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Note/Text.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Note/Text.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslModeling::DomainObjectId("0ef3bc12-45ff-46a8-b325-cdfcc105a1e1")]
@@ -11295,6 +11352,102 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote.NoteDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ModelNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ModelNote.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ModelNote.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("41d610c9-bacc-473d-bfe6-7034e6ff0b11")]
+	public partial class ModelNote : Note
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ModelNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x41d610c9, 0xbacc, 0x473d, 0xbf, 0xe6, 0x70, 0x34, 0xe6, 0xff, 0x0b, 0x11);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ModelNote(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ModelNote(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// </summary>
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.NoteDomainRoleId) as ORMModel;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.NoteDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ElementCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ElementCollection.
+		/// </summary>
+		public virtual DslModeling::ReadOnlyLinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> ElementCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::ReadOnlyLinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.NoteDomainRoleId);
+			}
+		}
+		#endregion
+		#region FactTypeCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of FactTypeCollection.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<FactType> FactTypeCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<FactType>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.NoteDomainRoleId);
+			}
+		}
+		#endregion
+		#region ObjectTypeCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ObjectTypeCollection.
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ObjectType> ObjectTypeCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ObjectType>(this, global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.NoteDomainRoleId);
 			}
 		}
 		#endregion

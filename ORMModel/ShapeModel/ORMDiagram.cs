@@ -103,7 +103,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (Array.IndexOf(dataFormats, typeof(ObjectType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(FactType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(SetComparisonConstraint).FullName) >= 0 ||
-				Array.IndexOf(dataFormats, typeof(SetConstraint).FullName) >= 0)
+				Array.IndexOf(dataFormats, typeof(SetConstraint).FullName) >= 0 ||
+				Array.IndexOf(dataFormats, typeof(ModelNote).FullName) >= 0)
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -125,6 +126,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactType factType = null;
 			SetComparisonConstraint multiCol = null;
 			SetConstraint singleCol = null;
+			ModelNote modelNote = null;
 			ModelElement element = null;
 			bool[] factsContained;
 			int factsRemaining;
@@ -190,6 +192,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			else if (null != (modelNote = dataObject.GetData(typeof(ModelNote)) as ModelNote))
+			{
+				element = modelNote;
+			}
 			if (element != null)
 			{
 				e.Effect = DragDropEffects.All;
@@ -228,6 +234,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							FixUpDiagram(factType, orders[0]);
 						}
+						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
+						Objectification objectification = factType.Objectification;
+						if (objectification != null && !objectification.IsImplied)
+						{
+							ObjectType nestingType = objectification.NestingType;
+							FixUpDiagram(factType, nestingType);
+							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+						}
 					}
 					else if (objectType != null)
 					{
@@ -264,6 +278,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						// UNDONE: This won't add the value constraint shape on an object type with
 						// a collapsed ref mode. These are shown as role value constraints
+						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 					}
 					else if (singleCol != null)
 					{
@@ -272,6 +287,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					else if (multiCol != null)
 					{
 						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId));
+					}
+					else if (modelNote != null)
+					{
+						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
 					}
 					transaction.Commit();
 				}
@@ -328,6 +347,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public const string ORMDiagramConnectRoleFilterString = ORMShapeModelToolboxHelper.RoleConnectorFilterString;
 		//public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
+		/// <summary>
+		/// The filter string used to associate a model note with other model element
+		/// </summary>
+		public const string ORMDiagramConnectModelNoteFilterString = ORMShapeModelToolboxHelper.ModelNoteConnectorFilterString;
 		#endregion // Toolbox filter strings
 		#region StickyEditObject
 		/// <summary>
@@ -445,7 +468,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			FactType factType;
 			ObjectTypePlaysRole objectTypePlaysRole;
 			SetConstraint setConstraint;
-			FactConstraint factConstraint;
 			if (null != (factType = element as FactType))
 			{
 				if (factType is SubtypeFact)
@@ -485,16 +507,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 #endif
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
 			}
-			else if (null != (factConstraint = element as FactConstraint))
-			{
-				return true;
-			}
 			else if (null != (setConstraint = element as SetConstraint))
 			{
 				return !setConstraint.Constraint.ConstraintIsInternal;
 			}
 			else if (element is SetComparisonConstraint ||
-					 element is RoleHasValueConstraint)
+					 element is RoleHasValueConstraint ||
+					 element is FactConstraint ||
+					 element is ModelNote ||
+					 element is ModelNoteReferencesModelElement)
 			{
 				return true;
 			}
@@ -797,6 +818,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					action = SubtypeConnectAction;
 				}
+				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectModelNoteFilterString))
+				{
+					action = ModelNoteConnectAction;
+				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString))
 				{
 					action = ToolboxAction;
@@ -1060,6 +1085,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return new SubtypeConnectAction(this);
 		}
 		#endregion // Subtype create action
+		#region ModelNote create action
+		[NonSerialized]
+		private ModelNoteConnectAction myModelNoteConnectAction;
+		/// <summary>
+		/// The connect action used to connect a note to a referenced element
+		/// </summary>
+		public ModelNoteConnectAction ModelNoteConnectAction
+		{
+			get
+			{
+				ModelNoteConnectAction retVal = myModelNoteConnectAction;
+				if (retVal == null)
+				{
+					myModelNoteConnectAction = retVal = CreateModelNoteConnectAction();
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Create the connect action used to connect a note to a referenced element
+		/// </summary>
+		/// <returns>ModelNoteConnectAction instance</returns>
+		protected virtual ModelNoteConnectAction CreateModelNoteConnectAction()
+		{
+			return new ModelNoteConnectAction(this);
+		}
+		#endregion // ModelNote create action
 		#endregion // Toolbox support
 		#region Other base overrides
 		/// <summary>

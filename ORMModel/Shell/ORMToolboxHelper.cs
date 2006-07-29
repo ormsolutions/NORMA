@@ -34,11 +34,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// in the .dsl file changes, or if the DSL Tools text template that is used to generate ORMShapeModelToolboxHelperBase
 			// changes, this method will most likely need to be changed as well.
 
-			ElementGroup group = new ElementGroup(store);
+			ElementGroup group = null;
 			bool unknownItem = false;
 
 			if (domainClassId.Equals(ObjectType.DomainClassId))
 			{
+				group = new ElementGroup(store);
 				ObjectType objectType = new ObjectType(store);
 				group.AddGraph(objectType, true);
 				switch (myObjectTypeCount++)
@@ -65,11 +66,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (domainClassId.Equals(FactType.DomainClassId))
 			{
+				group = new ElementGroup(store);
 				Debug.Assert(myFactTypeCount < 3);
 				AddFactType(store, group, ++myFactTypeCount);
 			}
 			else if (domainClassId.Equals(UniquenessConstraint.DomainClassId))
 			{
+				group = new ElementGroup(store);
 				if (myUniquenessConstraintCount == 0)
 				{
 					// Add this here so that we can distinguish between internal and external uniqueness
@@ -85,36 +88,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				myUniquenessConstraintCount++;
 			}
-			else if (domainClassId.Equals(EqualityConstraint.DomainClassId))
-			{
-				group.AddGraph(new EqualityConstraint(store), true);
-			}
-			else if (domainClassId.Equals(ExclusionConstraint.DomainClassId))
-			{
-				group.AddGraph(new ExclusionConstraint(store), true);
-			}
-			else if (domainClassId.Equals(MandatoryConstraint.DomainClassId))
-			{
-				group.AddGraph(new MandatoryConstraint(store), true);
-			}
-			else if (domainClassId.Equals(SubsetConstraint.DomainClassId))
-			{
-				group.AddGraph(new SubsetConstraint(store), true);
-			}
-			else if (domainClassId.Equals(FrequencyConstraint.DomainClassId))
-			{
-				group.AddGraph(new FrequencyConstraint(store), true);
-			}
-			else if (domainClassId.Equals(RingConstraint.DomainClassId))
-			{
-				group.AddGraph(new RingConstraint(store), true);
-			}
-			else
-			{
-				unknownItem = true;
-			}
-			Debug.Assert(!unknownItem, "Unexpected toolbox item type.");
-			return unknownItem ? null : group.CreatePrototype();
+			return (group == null || unknownItem) ? base.CreateElementToolPrototype(store, domainClassId) : group.CreatePrototype();
 		}
 		/// <summary>
 		/// Creates a new <see cref="FactType"/> with the specified <paramref name="arity"/>.

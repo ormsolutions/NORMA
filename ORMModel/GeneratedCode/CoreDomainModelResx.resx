@@ -1294,12 +1294,20 @@
     <comment>DisplayName for DomainClass &apos;Note&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Note/Text.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Note.Text</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.Note.Note</value>
     <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;Note&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Note/Text.DisplayName" xml:space="preserve">
-    <value>Text</value>
+    <value>Note</value>
     <comment>DisplayName for DomainProperty &apos;Text&apos; on DomainClass &apos;Note&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNote.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNote.DisplayName" xml:space="preserve">
+    <value>ModelNote</value>
+    <comment>DisplayName for DomainClass &apos;ModelNote&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.CompatibleSupertypesError.Description" xml:space="preserve">
     <value></value>
@@ -3292,6 +3300,134 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasNote/Note.PropertyDisplayName" xml:space="preserve">
     <value>Object Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ObjectTypeHasNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelNote</value>
+    <comment>Description for DomainClass &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.DisplayName" xml:space="preserve">
+    <value>Model Has Model Note</value>
+    <comment>DisplayName for DomainClass &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote/Model.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Note Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote/Note.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelHasModelNote/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelHasModelNote&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement</value>
+    <comment>Description for DomainClass &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.DisplayName" xml:space="preserve">
+    <value>Model Note References Model Element</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement/Note.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Element Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesModelElement/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Model Note Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesModelElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType</value>
+    <comment>Description for DomainClass &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.DisplayName" xml:space="preserve">
+    <value>Model Note References Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Note.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Model Note Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesFactType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType</value>
+    <comment>Description for DomainClass &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.DisplayName" xml:space="preserve">
+    <value>Model Note References Object Type</value>
+    <comment>DisplayName for DomainClass &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Note.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Element.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType.Element</value>
+    <comment>Description for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Element.DisplayName" xml:space="preserve">
+    <value>Element</value>
+    <comment>DisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType/Element.PropertyDisplayName" xml:space="preserve">
+    <value>Model Note Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Element&apos; on DomainRelationship &apos;ModelNoteReferencesObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeHasCompatibleSupertypesError</value>

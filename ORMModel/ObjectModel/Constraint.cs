@@ -2975,7 +2975,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the test succeeds</returns>
 		public bool TestAllowPreferred(ObjectType forType, bool throwIfFalse)
 		{
-			if (forType != null || !IsPreferred)
+			if ((forType != null || !IsPreferred) &&
+				Modality == ConstraintModality.Alethic)
 			{
 				// To be considered for the preferred reference
 				// mode on an object, the following must hold:

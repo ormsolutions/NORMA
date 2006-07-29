@@ -1093,6 +1093,74 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
+		#region ModelNote fixup
+		#region ModelNoteAdded class
+		[RuleOn(typeof(ModelHasModelNote), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ModelNoteAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelHasModelNote link = e.ModelElement as ModelHasModelNote;
+				if (link != null)
+				{
+					Diagram.FixUpDiagram(link.Model, link.Note);
+				}
+			}
+		}
+		#endregion // ModelNoteAdded class
+		#region ModelNoteReferencedAdded class
+		[RuleOn(typeof(ModelNoteReferencesModelElement), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ModelNoteReferenceAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FixupModelNoteLink(e.ModelElement as ModelNoteReferencesModelElement);
+			}
+		}
+		#endregion // ModelNoteReferencedAdded class
+		#region DisplayModelNoteLinksFixupListener class
+		/// <summary>
+		/// A fixup class to display external constraint links for
+		/// when both endpoints are represented on the diagram
+		/// </summary>
+		private sealed class DisplayModelNoteLinksFixupListener : DeserializationFixupListener<ModelNoteReferencesModelElement>
+		{
+			/// <summary>
+			/// Create a new DisplayModelNoteLinksFixupListener
+			/// </summary>
+			public DisplayModelNoteLinksFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add model note links on the diagram
+			/// </summary>
+			/// <param name="element">A ModelNoteReferencesModelElement instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(ModelNoteReferencesModelElement element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FixupModelNoteLink(element);
+			}
+		}
+		#endregion // DisplayModelNoteLinksFixupListener class
+		/// <summary>
+		/// Helper function to display model note links.
+		/// </summary>
+		/// <param name="link">An ModelNoteReferencesModelElement element</param>
+		private static void FixupModelNoteLink(ModelNoteReferencesModelElement link)
+		{
+			// Make sure the element and note are displayed on the
+			ModelNote note = link.Note;
+			ModelElement element = link.Element;
+			ORMModel model;
+			if (!(note.IsDeleted || element.IsDeleted) &&
+				null != (model = note.Model))
+			{
+				Diagram.FixUpDiagram(model, link);
+			}
+		}
+		#endregion // ModelNote fixup
 		#endregion // View Fixup Rules
 	}
 }

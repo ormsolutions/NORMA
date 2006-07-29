@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ReadingShape : IModelErrorActivation
+	public partial class ReadingShape : IModelErrorActivation, ISelectionContainerFilter
 	{
 		#region Member Variables and Constants
 		private static AutoSizeTextField myTextShapeField;
@@ -698,6 +698,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region ISelectionContainerFilter Implementation
+		/// <summary>
+		/// Implements ISelectionContainerFilter.IncludeInSelectionContainer
+		/// </summary>
+		protected static bool IncludeInSelectionContainer
+		{
+			get
+			{
+				return false;
+			}
+		}
+		bool ISelectionContainerFilter.IncludeInSelectionContainer
+		{
+			get
+			{
+				return IncludeInSelectionContainer;
+			}
+		}
+		#endregion // ISelectionContainerFilter Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation

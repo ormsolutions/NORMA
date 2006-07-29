@@ -35,6 +35,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			base.InitializeResources(classStyleSet);
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			PenSettings settings = new PenSettings();
 			settings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);

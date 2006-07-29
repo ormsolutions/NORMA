@@ -217,6 +217,12 @@ namespace Neumont.Tools.ORM.Shell
 				case ORMDesignerCommands.DeleteRole:
 					commandText = ResourceStrings.CommandDeleteRoleText;
 					break;
+				case ORMDesignerCommands.DeleteModelNote:
+					commandText = ResourceStrings.CommandDeleteModelNoteText;
+					break;
+				case ORMDesignerCommands.DeleteModelNoteReference:
+					commandText = ResourceStrings.CommandDeleteModelNoteReferenceText;
+					break;
 				default:
 					commandText = null;
 					break;
@@ -263,6 +269,11 @@ namespace Neumont.Tools.ORM.Shell
 				else if ((element = resolvedObject as ObjectType) != null || (element  = resolvedObject as FactType)!= null)
 				{
 					ObjectModelBrowser.DoDragDrop(element, DragDropEffects.All);
+				}
+				else if (null != (element = resolvedObject as ModelNote))
+				{
+					elementData.SetData(typeof(ModelNote), element);
+					ObjectModelBrowser.DoDragDrop(elementData, DragDropEffects.All);
 				}
 			}
 			/// <summary>

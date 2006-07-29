@@ -26,7 +26,7 @@ using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ValueConstraintShape : IModelErrorActivation
+	public partial class ValueConstraintShape : IModelErrorActivation, ISelectionContainerFilter
 	{
 		private static AutoSizeTextField myTextShapeField;
 		private string myDisplayText;
@@ -43,10 +43,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">StyleSet</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			base.InitializeResources(classStyleSet);
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
+		}
+		/// <summary>
+		/// Turn off background filling so errors don't display
+		/// </summary>
+		public override bool HasFilledBackground
+		{
+			get
+			{
+				// UNDONE: Delete this method to display error state
+				// when IModelErrorActivation is implemented on this class
+				return false;
+			}
 		}
 		#endregion // Customize appearance
 		#region overrides
@@ -55,7 +68,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected override Guid AssociatedModelDomainPropertyId
 		{
-			get { return ValueRange.TextDomainPropertyId; }
+			get { return ValueConstraint.TextDomainPropertyId; }
 		}
 		/// <summary>
 		/// Store per-type value for the base class
@@ -99,13 +112,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			SizeD size = Size;
 			RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
 			Location = new PointD(parentBounds.Width, -1 * size.Height);
-		}
-		/// <summary>
-		/// Changed to allow resizing of the label
-		/// </summary>
-		public override NodeSides ResizableSides
-		{
-			get { return NodeSides.All; }
 		}
 		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.
@@ -180,15 +186,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // properties
 		#region change rules
 		/// <summary>
-		/// Rule to update an associated ValueConstraintShape when a DataType is added (or changed).
+		/// Rule to update an associated ValueConstraintShape when a DataType is added.
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private sealed class ValueTypeHasDataTypeAdded : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(ValueTypeHasDataType link)
 			{
-				base.ElementAdded(e);
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ObjectType objectType = link.ValueType;
 				ValueConstraint defn = objectType.ValueConstraint;
 				//Update the display on the objectType
@@ -201,6 +205,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 						defn = r.ValueConstraint;
 						UpdatePresentationRolePlayers(defn);
 					}
+				}
+			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as ValueTypeHasDataType);
+			}
+		}
+		/// <summary>
+		/// Rule to update an associated ValueConstraintShape when a DataType is changed.
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class ValueTypeHasDataTypeRolePlayerChange : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+				{
+					ValueTypeHasDataTypeAdded.Process(e.ElementLink as ValueTypeHasDataType);
 				}
 			}
 		}
@@ -295,6 +317,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region ISelectionContainerFilter Implementation
+		/// <summary>
+		/// Implements ISelectionContainerFilter.IncludeInSelectionContainer
+		/// </summary>
+		protected static bool IncludeInSelectionContainer
+		{
+			get
+			{
+				return false;
+			}
+		}
+		bool ISelectionContainerFilter.IncludeInSelectionContainer
+		{
+			get
+			{
+				return IncludeInSelectionContainer;
+			}
+		}
+		#endregion // ISelectionContainerFilter Implementation
 		#region Mouse handling
 		/// <summary>
 		/// Attempt model error activation

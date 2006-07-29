@@ -85,6 +85,14 @@
 						<DomainPath>ModelHasSetComparisonConstraint.SetComparisonConstraintCollection</DomainPath>
 					</LinkCreationPaths>
 				</ElementMergeDirective>
+				<ElementMergeDirective UsesCustomAccept="false" UsesCustomMerge="false">
+					<Index>
+						<DomainClassMoniker Name="ModelNote"/>
+					</Index>
+					<LinkCreationPaths>
+						<DomainPath>ModelHasModelNote.NoteCollection</DomainPath>
+					</LinkCreationPaths>
+				</ElementMergeDirective>
 			</ElementMergeDirectives>
 		</DomainClass>
 
@@ -1075,13 +1083,31 @@
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="0EF3BC12-45FF-46A8-B325-CDFCC105A1E1">
+				<DomainProperty Name="Text" DefaultValue="" DisplayName="Note" Id="0EF3BC12-45FF-46A8-B325-CDFCC105A1E1">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NoteEditor)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
+		</DomainClass>
 
+		<DomainClass Name="ModelNote" Namespace="Neumont.Tools.ORM.ObjectModel" Id="41D610C9-BACC-473D-BFE6-7034E6FF0B11" DisplayName="ModelNote" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="Note"/>
+			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="CompatibleSupertypesError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="70A9ED25-7A0E-4DEC-B39D-83BB1A6294B8" DisplayName="CompatibleSupertypesError" Description="">
@@ -2365,6 +2391,86 @@
 				<DomainRole Name="Note" PropertyName="ObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="B2BC6ECC-430A-48AE-A862-D4D876748130">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ModelHasModelNote" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="783EA177-E965-4C01-9D4A-A89C016203B6">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Model" PropertyName="NoteCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Model" Id="197F0666-B426-44A9-BCA8-833FFE54135D">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="A07BE562-6AC3-4C86-9612-894048C94E5D">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ModelNoteReferencesModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="57A1D17B-DB15-418A-8D82-3D44B3D1169F" AllowsDuplicates="false" InheritanceModifier="Abstract">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Note" PropertyName="ElementCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Note" Id="9B8920D2-BE41-4E4A-B39F-50394050A019">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="ModelNoteCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Element" Id="9D0C7587-F135-4619-86FA-33C80C4EB769">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ModelNoteReferencesFactType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="A6F1EB10-F929-4389-B584-38DFE11A85C2">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Note" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Note" Id="B2D991E2-3F04-4471-93F5-72D4E4DDF087">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="ModelNoteCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Element" Id="C176868F-94E3-4F5E-A855-A33CA7D6544B">
+					<RolePlayer>
+						<DomainClassMoniker Name="FactType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ModelNoteReferencesObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="false" Id="CB83FD24-7819-4C34-AF59-B4E14AE3BE8F">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ModelNoteReferencesModelElement"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Note" PropertyName="ObjectTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Note" Id="C1350ACB-4CB5-444E-8E97-76E525006233">
+					<RolePlayer>
+						<DomainClassMoniker Name="ModelNote"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Element" PropertyName="ModelNoteCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Element" Id="FE3BF94E-B5B1-4152-8F73-2FBC16C08BE6">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

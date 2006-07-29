@@ -25,6 +25,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An enum with one value for each recognized snippet
 	/// </summary>
+	[CLSCompliant(true)]
 	public enum CoreVerbalizationSnippetType
 	{
 		/// <summary>
@@ -822,6 +823,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// A class derving from VerbalizationSets.
 	/// </summary>
+	[CLSCompliant(true)]
 	public class CoreVerbalizationSets : VerbalizationSets<CoreVerbalizationSnippetType>
 	{
 		/// <summary>

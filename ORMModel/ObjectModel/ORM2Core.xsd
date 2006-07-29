@@ -29,6 +29,7 @@
 			<xs:element name="Constraints" type="Constraints" minOccurs="0"/>
 			<xs:element name="DataTypes" type="DataTypes" minOccurs="0"/>
 			<xs:element name="CustomReferenceModes" type="CustomReferenceModes" minOccurs="0"/>
+			<xs:element name="ModelNotes" type="ModelNotes" minOccurs="0"/>
 			<xs:element name="ModelErrors" type="ModelErrors" minOccurs="0"/>
 			<xs:element name="ReferenceModeKinds" type="ReferenceModeKinds" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
@@ -47,6 +48,26 @@
 			<xs:element name="Text" type="xs:string" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID"/>
+	</xs:complexType>
+	<xs:complexType name="ModelNotes">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ModelNote" type="ModelNote"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ModelNote">
+		<xs:complexContent>
+			<xs:extension base="NoteType">
+				<xs:sequence minOccurs="0">
+					<xs:element name="ReferencedBy" type="NoteReferencedBy"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NoteReferencedBy">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="FactType" type="FactRef"/>
+			<xs:element name="ObjectType" type="ObjectRef"/>
+		</xs:choice>
 	</xs:complexType>
 	<!--Objects and Object Types-->
 	<xs:complexType name="ObjectRef">

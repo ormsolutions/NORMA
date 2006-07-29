@@ -21,6 +21,7 @@ using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
+using System.Drawing;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public abstract partial class FloatingTextShape
@@ -40,7 +41,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Debug.Fail("Must override");
 			}
 		}
-
+		/// <summary>
+		/// Set up our background pen to be transparent. Combining this with
+		/// HasFilledBackground of true enables errors to draw on floating text shapes.
+		/// </summary>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			base.InitializeResources(classStyleSet);
+			if (HasTransparentBackground)
+			{
+				BrushSettings brushSettings = new BrushSettings();
+				// ORMBaseShape sets the background to DiagramBackground, not ShapeBackground
+				SolidBrush baseOnBrush = classStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
+				brushSettings.ForeColor = (baseOnBrush != null) ? Color.FromArgb(0, baseOnBrush.Color) : Color.Transparent;
+				classStyleSet.OverrideBrush(DiagramBrushes.DiagramBackground, brushSettings);
+			}
+		}
+		/// <summary>
+		/// Allow the floating shape to both display errors
+		/// and appear transparent when there are no associated errors.
+		/// An element can be transparent all the time if HasFilledBackground
+		/// returns false.
+		/// </summary>
+		protected virtual bool HasTransparentBackground
+		{
+			get
+			{
+				return true;
+			}
+		}
 		/// <summary>
 		/// Associate the value of the text field with a property
 		/// specified by the derived class. Called one per class type.
@@ -88,17 +117,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return false;
 			}
 		}
-		/// <summary>
-		/// Changed to make the background transparent
-		/// </summary>
-		public override bool HasFilledBackground
-		{
-			get
-			{
-				return false;
-			}
-		}
-
 		/// <summary>
 		/// Retrieve the property on the associated model element to be bound to
 		/// the text field. This property should be xpath-bound to a property on

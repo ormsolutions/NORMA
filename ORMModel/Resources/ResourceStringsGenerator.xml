@@ -249,6 +249,9 @@
 	<ResourceString name="SubtypeConnectActionTransactionName" model="Diagram" resourceName="SubtypeConnectAction.TransactionName">
 		<comment type="summary">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
+	<ResourceString name="ModelNoteConnectActionTransactionName" model="Diagram" resourceName="ModelNoteConnectAction.TransactionName">
+		<comment type="summary">The transaction name used by the model note connect action. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
 	<ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName">
 		<comment type="summary">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
@@ -398,6 +401,15 @@
 	</ResourceString>
 	<ResourceString name="CommandDeleteConstraintShapeText" model="Diagram" resourceName="Command.DeleteConstraintShape.Text">
 		<comment type="summary">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteModelNoteText" model="Diagram" resourceName="Command.DeleteModelNote.Text">
+		<comment type="summary">This text appears in the edit menu when model notes are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteModelNoteReferenceText" model="Diagram" resourceName="Command.DeleteModelNoteReference.Text">
+		<comment type="summary">This text appears in the edit menu when references to model notes are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteModelNoteShapeText" model="Diagram" resourceName="Command.DeleteModelNoteShape.Text">
+		<comment type="summary">This text appears in the edit menu when model notes are selected in the diagram.</comment>
 	</ResourceString>
 	<ResourceString name="CommandDeleteMultipleShapeText" model="Diagram" resourceName="Command.DeleteMultipleShape.Text">
 		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
@@ -722,6 +734,12 @@
 	</ResourceString>
 	<ResourceString name="ExternalConstraintLinkAccessibleName" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Name">
 		<comment type="summary">Returned as the accessible name for an external constraint link</comment>
+	</ResourceString>
+	<ResourceString name="ModelNoteLinkAccessibleDescription" model="Diagram" resourceName="ModelNoteLink.Accessible.Description">
+		<comment type="summary">Returned as the accessible description for a model note link</comment>
+	</ResourceString>
+	<ResourceString name="ModelNoteLinkAccessibleName" model="Diagram" resourceName="ModelNoteLink.Accessible.Name">
+		<comment type="summary">Returned as the accessible name for a model note link</comment>
 	</ResourceString>
 	<ResourceString name="ValueRangeLinkAccessibleDescription" model="Diagram" resourceName="ValueRangeLink.Accessible.Description">
 		<comment type="summary">Returned as the accessible description for a value range link</comment>

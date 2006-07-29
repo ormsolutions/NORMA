@@ -71,6 +71,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(RolePlayerLink),
 				typeof(ExternalConstraintLink),
 				typeof(ValueRangeLink),
+				typeof(ModelNoteLink),
 				typeof(ORMBaseShape),
 				typeof(ObjectTypeShape),
 				typeof(FactTypeShape),
@@ -83,6 +84,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ReadingShape),
 				typeof(ValueConstraintShape),
 				typeof(RoleNameShape),
+				typeof(ModelNoteShape),
 				typeof(LinkConnectorShape),
 				typeof(global::Neumont.Tools.ORM.ShapeModel.FixUpDiagram),
 				typeof(global::Neumont.Tools.ORM.ShapeModel.ConnectorRolePlayerChanged),
@@ -135,22 +137,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(18);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(20);
 				createElementMap.Add(typeof(ORMDiagram), 0);
 				createElementMap.Add(typeof(RolePlayerLink), 1);
 				createElementMap.Add(typeof(ExternalConstraintLink), 2);
 				createElementMap.Add(typeof(ValueRangeLink), 3);
-				createElementMap.Add(typeof(ObjectTypeShape), 4);
-				createElementMap.Add(typeof(FactTypeShape), 5);
-				createElementMap.Add(typeof(SubtypeLink), 6);
-				createElementMap.Add(typeof(ExternalConstraintShape), 7);
-				createElementMap.Add(typeof(FrequencyConstraintShape), 8);
-				createElementMap.Add(typeof(RingConstraintShape), 9);
-				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 10);
-				createElementMap.Add(typeof(ReadingShape), 11);
-				createElementMap.Add(typeof(ValueConstraintShape), 12);
-				createElementMap.Add(typeof(RoleNameShape), 13);
-				createElementMap.Add(typeof(LinkConnectorShape), 14);
+				createElementMap.Add(typeof(ModelNoteLink), 4);
+				createElementMap.Add(typeof(ObjectTypeShape), 5);
+				createElementMap.Add(typeof(FactTypeShape), 6);
+				createElementMap.Add(typeof(SubtypeLink), 7);
+				createElementMap.Add(typeof(ExternalConstraintShape), 8);
+				createElementMap.Add(typeof(FrequencyConstraintShape), 9);
+				createElementMap.Add(typeof(RingConstraintShape), 10);
+				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 11);
+				createElementMap.Add(typeof(ReadingShape), 12);
+				createElementMap.Add(typeof(ValueConstraintShape), 13);
+				createElementMap.Add(typeof(RoleNameShape), 14);
+				createElementMap.Add(typeof(ModelNoteShape), 15);
+				createElementMap.Add(typeof(LinkConnectorShape), 16);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -165,17 +169,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				case 1: return new RolePlayerLink(partition, propertyAssignments);
 				case 2: return new ExternalConstraintLink(partition, propertyAssignments);
 				case 3: return new ValueRangeLink(partition, propertyAssignments);
-				case 4: return new ObjectTypeShape(partition, propertyAssignments);
-				case 5: return new FactTypeShape(partition, propertyAssignments);
-				case 6: return new SubtypeLink(partition, propertyAssignments);
-				case 7: return new ExternalConstraintShape(partition, propertyAssignments);
-				case 8: return new FrequencyConstraintShape(partition, propertyAssignments);
-				case 9: return new RingConstraintShape(partition, propertyAssignments);
-				case 10: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
-				case 11: return new ReadingShape(partition, propertyAssignments);
-				case 12: return new ValueConstraintShape(partition, propertyAssignments);
-				case 13: return new RoleNameShape(partition, propertyAssignments);
-				case 14: return new LinkConnectorShape(partition, propertyAssignments);
+				case 4: return new ModelNoteLink(partition, propertyAssignments);
+				case 5: return new ObjectTypeShape(partition, propertyAssignments);
+				case 6: return new FactTypeShape(partition, propertyAssignments);
+				case 7: return new SubtypeLink(partition, propertyAssignments);
+				case 8: return new ExternalConstraintShape(partition, propertyAssignments);
+				case 9: return new FrequencyConstraintShape(partition, propertyAssignments);
+				case 10: return new RingConstraintShape(partition, propertyAssignments);
+				case 11: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
+				case 12: return new ReadingShape(partition, propertyAssignments);
+				case 13: return new ValueConstraintShape(partition, propertyAssignments);
+				case 14: return new RoleNameShape(partition, propertyAssignments);
+				case 15: return new ModelNoteShape(partition, propertyAssignments);
+				case 16: return new LinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}

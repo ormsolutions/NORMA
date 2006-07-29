@@ -189,33 +189,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected override DslDiagrams::ShapeElement CreateChildShape(DslModeling::ModelElement element)
 		{
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNote)
+			{
+				return new global::Neumont.Tools.ORM.ShapeModel.ModelNoteShape(this.Partition);
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			{
+				return new global::Neumont.Tools.ORM.ShapeModel.RolePlayerLink(this.Partition);
+			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)
 			{
 				return new global::Neumont.Tools.ORM.ShapeModel.ReadingShape(this.Partition);
-			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
-			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.Role)
 			{
 				return new global::Neumont.Tools.ORM.ShapeModel.RoleNameShape(this.Partition);
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ValueRangeLink(this.Partition);
+				return new global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink(this.Partition);
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType)
+			{
+				return new global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink(this.Partition);
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.FactConstraint)
 			{
 				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink(this.Partition);
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.RolePlayerLink(this.Partition);
+				return new global::Neumont.Tools.ORM.ShapeModel.ValueRangeLink(this.Partition);
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
+			{
+				return new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)
 			{
@@ -224,6 +232,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if(element is global::Neumont.Tools.ORM.ObjectModel.FactType)
 			{
 				return new global::Neumont.Tools.ORM.ShapeModel.FactTypeShape(this.Partition);
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
+			{
+				return new global::Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape(this.Partition);
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.ObjectType)
 			{
@@ -238,19 +250,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// the method should return a new shape or connector instance that should be associated with this element.  If no shape or connector should be created, the method should return null.
 				return CreateShapeForObjectType((global::Neumont.Tools.ORM.ObjectModel.ObjectType)element);
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
-			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.RingConstraint)
 			{
 				return new global::Neumont.Tools.ORM.ShapeModel.RingConstraintShape(this.Partition);
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape(this.Partition);
+				return new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.SetConstraint)
+			{
+				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
 			{
 				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
 			}
@@ -428,20 +440,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
 	/// </summary>
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNote), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SubtypeFact), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RingConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RingConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
 	internal sealed partial class FixUpDiagram : DslModeling::AddRule
 	{
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -455,21 +470,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				parentElement = GetParentForRelationship((DslModeling::ElementLink)childElement);
 			} else
+			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ModelNote)
+			{
+				parentElement = GetParentForModelNote((global::Neumont.Tools.ORM.ObjectModel.ModelNote)e.ModelElement);
+			} else
 			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)
 			{
 				parentElement = GetParentForReadingOrder((global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)e.ModelElement);
 			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
-			{
-				parentElement = GetParentForValueTypeValueConstraint((global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
-			{
-				parentElement = GetParentForRoleValueConstraint((global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)e.ModelElement);
-			} else
 			if(childElement is global::Neumont.Tools.ORM.ObjectModel.Role)
 			{
 				parentElement = GetParentForRole((global::Neumont.Tools.ORM.ObjectModel.Role)e.ModelElement);
+			} else
+			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
+			{
+				parentElement = GetParentForValueTypeValueConstraint((global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)e.ModelElement);
 			} else
 			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)
 			{
@@ -479,25 +494,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				parentElement = GetParentForFactType((global::Neumont.Tools.ORM.ObjectModel.FactType)e.ModelElement);
 			} else
+			if(childElement is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
+			{
+				parentElement = GetParentForFrequencyConstraint((global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)e.ModelElement);
+			} else
 			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ObjectType)
 			{
 				parentElement = GetParentForObjectType((global::Neumont.Tools.ORM.ObjectModel.ObjectType)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
-			{
-				parentElement = GetParentForSetComparisonConstraint((global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)e.ModelElement);
 			} else
 			if(childElement is global::Neumont.Tools.ORM.ObjectModel.RingConstraint)
 			{
 				parentElement = GetParentForRingConstraint((global::Neumont.Tools.ORM.ObjectModel.RingConstraint)e.ModelElement);
 			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
+			if(childElement is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
 			{
-				parentElement = GetParentForFrequencyConstraint((global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)e.ModelElement);
+				parentElement = GetParentForRoleValueConstraint((global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)e.ModelElement);
 			} else
 			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetConstraint)
 			{
 				parentElement = GetParentForSetConstraint((global::Neumont.Tools.ORM.ObjectModel.SetConstraint)e.ModelElement);
+			} else
+			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
+			{
+				parentElement = GetParentForSetComparisonConstraint((global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)e.ModelElement);
 			} else
 			{
 				parentElement = null;
@@ -600,6 +619,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if ( result == null ) return null;
 			return result;
 		}
+		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForModelNote( global::Neumont.Tools.ORM.ObjectModel.ModelNote root )
+		{
+			// Segments 0 and 1
+			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+			if ( result == null ) return null;
+			return result;
+		}
 		private static DslModeling::ModelElement GetParentForRelationship(DslModeling::ElementLink elementLink)
 		{
 			global::System.Collections.ObjectModel.ReadOnlyCollection<DslModeling::ModelElement> linkedElements = elementLink.LinkedElements;
@@ -674,6 +700,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 	internal sealed class ConnectorRolePlayerChanged : DslModeling::RolePlayerChangeRule
 	{
 		/// <summary>

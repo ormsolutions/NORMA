@@ -180,6 +180,11 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseClass>
 		</GeometryShape>
+		<GeometryShape Name="ModelNoteShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8252E1D1-3C59-4595-8C32-9FB79E84924E" FillGradientMode="None">
+			<BaseClass>
+				<GeometryShapeMoniker Name="FloatingTextShape"/>
+			</BaseClass>
+		</GeometryShape>
 		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0"/>
 	</Shapes>
 
@@ -196,6 +201,11 @@
 			</BaseClass>
 		</Connector>
 		<Connector Name="ValueRangeLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="374E43C3-C294-49C4-8A61-3C3CA5FC86E8">
+			<BaseClass>
+				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
+			</BaseClass>
+		</Connector>
+		<Connector Name="ModelNoteLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="21E7C585-BC80-446F-8517-BC4FD465971F" DisplayName="ModelNoteReference">
 			<BaseClass>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
 			</BaseClass>
@@ -307,6 +317,13 @@
 				</ParentElementPath>
 				<GeometryShapeMoniker Name="RoleNameShape"/>
 			</ShapeMap>
+			<ShapeMap>
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNote"/>
+				<ParentElementPath>
+					<DomainPath>Neumont.Tools.ORM.ObjectModel.ModelHasModelNote.Model/!Model</DomainPath>
+				</ParentElementPath>
+				<GeometryShapeMoniker Name="ModelNoteShape"/>
+			</ShapeMap>
 		</ShapeMaps>
 		<ConnectorMaps>
 			<ConnectorMap>
@@ -320,6 +337,14 @@
 			<ConnectorMap>
 				<ConnectorMoniker Name="ValueRangeLink"/>
 				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/RoleHasValueConstraint"/>
+			</ConnectorMap>
+			<ConnectorMap>
+				<ConnectorMoniker Name="ModelNoteLink"/>
+				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNoteReferencesFactType"/>
+			</ConnectorMap>
+			<ConnectorMap>
+				<ConnectorMoniker Name="ModelNoteLink"/>
+				<DomainRelationshipMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNoteReferencesObjectType"/>
 			</ConnectorMap>
 		</ConnectorMaps>
 	</Diagram>
@@ -378,6 +403,10 @@
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/RingConstraint"/>
 			</ElementTool>
 			<ConnectionTool Name="ExternalConstraintConnector" Order="60" ToolboxIcon="../Resources/Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" Caption="Constraint Connector" Tooltip="Constraint Connector Tool"/>
+			<ElementTool Name="ModelNote" Order="70" ToolboxIcon="../Resources/Toolbox.ModelNote.Bitmap.Id.bmp" Caption="Model Note" Tooltip="New Model Note">
+				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNote"/>
+			</ElementTool>
+			<ConnectionTool Name="ModelNoteConnector" Order="75" ToolboxIcon="../Resources/Toolbox.ModelNoteConnector.Bitmap.Id.bmp" Caption="Model Note Connector" Tooltip="Model Note Connector Tool"/>
 		</ToolboxTab>
 		<DiagramMoniker Name="/Neumont.Tools.ORM.ShapeModel/ORMDiagram"/>
 	</Designer>

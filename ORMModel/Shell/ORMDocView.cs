@@ -44,7 +44,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// Valid commands
 	/// </summary>
 	[Flags]
-	public enum ORMDesignerCommands
+	public enum ORMDesignerCommands : long
 	{
 		/// <summary>
 		/// Commands not set
@@ -177,13 +177,25 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		ObjectifyFactType = 0x20000000,
 		/// <summary>
+		/// Delete Model Note
+		/// </summary>
+		DeleteModelNote = 0x40000000,
+		/// <summary>
+		/// Delete Model Note Shape
+		/// </summary>
+		DeleteModelNoteShape = 0x80000000,
+		/// <summary>
+		/// Delete Model Note Reference
+		/// </summary>
+		DeleteModelNoteReference = 0x100000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
-		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
+		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference,
 		/// <summary>
 		/// Mask field representing individual shape delete commands
 		/// </summary>
-		DeleteShape = DeleteObjectShape | DeleteFactShape | DeleteConstraintShape,
+		DeleteShape = DeleteObjectShape | DeleteFactShape | DeleteConstraintShape | DeleteModelNoteShape,
 		/// <summary>
 		/// Mask field representing individual RoleSeqeuence edit commands
 		/// </summary>
@@ -811,6 +823,24 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
+			else if (element is ModelNote)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteModelNote | ORMDesignerCommands.DeleteAny;
+				if (presentationElement is ModelNoteShape)
+				{
+					visibleCommands |= ORMDesignerCommands.DeleteModelNoteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+					enabledCommands |= ORMDesignerCommands.DeleteModelNoteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+				}
+				else if (null != presentationElement)
+				{
+					otherShape = true;
+				}
+			}
+			else if (element is ModelNoteReferencesModelElement)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteModelNoteReference | ORMDesignerCommands.DeleteAny;
+				otherShape = true;
+			}
 			else if ((null != (nodeShape = presentationElement as NodeShape)) &&
 					!(nodeShape.ParentShape is Diagram))
 			{
@@ -1053,6 +1083,12 @@ namespace Neumont.Tools.ORM.Shell
 				case ORMDesignerCommands.DeleteRole:
 					commandText = ResourceStrings.CommandDeleteRoleText;
 					break;
+				case ORMDesignerCommands.DeleteModelNote:
+					commandText = ResourceStrings.CommandDeleteModelNoteText;
+					break;
+				case ORMDesignerCommands.DeleteModelNoteReference:
+					commandText = ResourceStrings.CommandDeleteModelNoteReferenceText;
+					break;
 				default:
 					commandText = null;
 					break;
@@ -1084,6 +1120,9 @@ namespace Neumont.Tools.ORM.Shell
 				case ORMDesignerCommands.DeleteConstraintShape:
 					commandText = ResourceStrings.CommandDeleteConstraintShapeText;
 					break;
+				case ORMDesignerCommands.DeleteModelNoteShape:
+					commandText = ResourceStrings.CommandDeleteModelNoteShapeText;
+					break;
 				default:
 					commandText = null;
 					break;
@@ -1097,6 +1136,111 @@ namespace Neumont.Tools.ORM.Shell
 			command.Text = commandText;
 		}
 		#endregion // Base overrides
+		#region SelectionContainer filtering
+		/// <summary>
+		/// Return the number of objects to display as part of the selection container
+		/// </summary>
+		protected override uint CountAllObjects()
+		{
+			ShapeElement startingShape = CurrentDiagram;
+			return (startingShape != null) ? CountAllShapes(startingShape) : base.CountAllObjects();
+		}
+		/// <summary>
+		/// Replacement helper function for DiagramDocView.CountShapes
+		/// that respects the ISelectionContainerFilter interface
+		/// </summary>
+		/// <param name="parentShapeElement">The parent shape element.
+		/// This is called recursively.</param>
+		/// <returns>The number of selectable shapes</returns>
+		private static uint CountAllShapes(ShapeElement parentShapeElement)
+		{
+			uint total = 0;
+			if (parentShapeElement != null)
+			{
+				if (parentShapeElement.CanSelect)
+				{
+					ISelectionContainerFilter filter;
+					if (null == (filter = parentShapeElement as ISelectionContainerFilter) ||
+						filter.IncludeInSelectionContainer)
+					{
+						++total;
+					}
+				}
+				foreach (ShapeElement nestedShape in parentShapeElement.NestedChildShapes)
+				{
+					total += CountAllShapes(nestedShape);
+				}
+				foreach (ShapeElement relativeShape in parentShapeElement.RelativeChildShapes)
+				{
+					total += CountAllShapes(relativeShape);
+				}
+			}
+			return total;
+		}
+		/// <summary>
+		/// Return all objects to the selection container
+		/// </summary>
+		protected override void GetAllObjects(uint count, object[] objects)
+		{
+			ShapeElement startingShape = CurrentDiagram;
+			if (startingShape != null)
+			{
+				GetAllShapes(startingShape, 0, count, objects);
+			}
+			else
+			{
+				base.GetAllObjects(count, objects);
+			}
+		}
+		/// <summary>
+		/// Replacement helper function for DiagramDocView.GrabObjects
+		/// that respects the ISelectionContainerFilter interface
+		/// </summary>
+		/// <param name="parentShapeElement">The parent shape element.
+		/// This is called recursively.</param>
+		/// <param name="index">The next index to populate</param>
+		/// <param name="count">The total number of available slots.
+		/// The count value is based on the CountAllObjects implementation.</param>
+		/// <param name="shapes">An array of all shape objects to return.</param>
+		/// <returns>The number of selectable shapes</returns>
+		private static uint GetAllShapes(ShapeElement parentShapeElement, uint index, uint count, object[] shapes)
+		{
+			if (index < count)
+			{
+				if (parentShapeElement == null)
+				{
+					return index;
+				}
+				if (parentShapeElement.CanSelect)
+				{
+					ISelectionContainerFilter filter;
+					if (null == (filter = parentShapeElement as ISelectionContainerFilter) ||
+						filter.IncludeInSelectionContainer)
+					{
+						shapes[index] = parentShapeElement;
+						++index;
+					}
+				}
+				foreach (ShapeElement element1 in parentShapeElement.NestedChildShapes)
+				{
+					index = GetAllShapes(element1, index, count, shapes);
+					if (index >= count)
+					{
+						return index;
+					}
+				}
+				foreach (ShapeElement element2 in parentShapeElement.RelativeChildShapes)
+				{
+					index = GetAllShapes(element2, index, count, shapes);
+					if (index >= count)
+					{
+						return index;
+					}
+				}
+			}
+			return index;
+		}
+		#endregion // SelectionContainer filtering
 		#region ORMDesignerDocView Specific
 		/// <summary>
 		/// Called by ORMDesignerDocData during Load

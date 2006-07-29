@@ -52,6 +52,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			base.InitializeResources(classStyleSet);
 			IORMFontAndColorService colorService = (this.Store as IORMToolServices).FontAndColorService;
 			Color lineColor = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			Color stickyColor = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);

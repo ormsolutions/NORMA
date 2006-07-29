@@ -29,6 +29,7 @@
 			<se:OmitRelationship Class="FactSetComparisonConstraint"/>
 			<se:OmitRelationship Class="ExternalRoleConstraint"/>
 			<se:OmitRelationship Class="RoleInstance"/>
+			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<!-- Omitting links to the presentation layers is not strictly required because all
 				 links to external models do not serializae by default, but this one is very common,
@@ -60,6 +61,9 @@
 		<se:ChildElement Name="CustomReferenceModes">
 			<se:Link RelationshipName="ModelHasReferenceMode" RoleName="ReferenceMode"/>
 		</se:ChildElement>
+		<se:ChildElement Name="ModelNotes">
+			<se:Link RelationshipName="ModelHasModelNote" RoleName="Note"/>
+		</se:ChildElement>
 		<se:ChildElement Name="ModelErrors">
 			<se:Link RelationshipName="ModelHasError" RoleName="Error"/>
 		</se:ChildElement>
@@ -69,6 +73,14 @@
 	</se:Element>
 	<se:Element Class="Note" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
+	</se:Element>
+	<se:Element Class="ModelNote" Override="true">
+		<se:ChildElement Name="ReferencedBy">
+			<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Element"/>
+			<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
+		</se:ChildElement>
+		<se:Link Name="FactType" RelationshipName="ModelNoteReferencesFactType" RoleName="Element"/>
+		<se:Link Name="ObjectType" RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
 	</se:Element>
 	<!--Object Types-->
 	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
@@ -168,6 +180,7 @@
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
 		<se:Attribute ID="Value" WriteStyle="Element"/>
@@ -332,6 +345,7 @@
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ModelNoteReferencesFactType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FactTypeInstance" Name="FactTypeInstance" Override="true">
 		<se:ChildElement Name="RoleInstances">

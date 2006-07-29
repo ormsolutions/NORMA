@@ -254,6 +254,10 @@ namespace Neumont.Tools.ORM
 		/// The identifier for a Ring Constraint
 		/// </summary>
 		public const string ToolboxRingConstraintItemId = "RingConstraintToolboxItem";
+		/// <summary>
+		/// The identifier for an ModelNoteConnector toolbox item
+		/// </summary>
+		public const string ToolboxModelNoteConnectorItemId = "ModelNoteConnectorToolboxItem";
 		#endregion // Toolbox Item Ids
 
 		#region OptionsPage Ids

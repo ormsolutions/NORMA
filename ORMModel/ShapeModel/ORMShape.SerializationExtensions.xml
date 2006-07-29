@@ -29,6 +29,7 @@
 			<se:OmitClass Class="ValueRangeLink"/>
 			<se:OmitClass Class="RolePlayerLink"/>
 			<se:OmitClass Class="SubtypeLink"/>
+			<se:OmitClass Class="ModelNoteLink"/>
 			<se:OmitClass Class="LinkConnectorShape"/>
 			<se:OmitRelationship Class="LinkConnectsToNode" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
 		</se:OmittedDomainElements>

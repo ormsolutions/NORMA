@@ -474,38 +474,34 @@ namespace Neumont.Tools.ORM.Design
 
 	#region ORM ModelElement TypeDescriptor classes
 
-	#region ORMModelElementTypeDescriptor class
+	#region ModelElementTypeDescriptor class
 	/// <summary>
-	/// <see cref="ElementTypeDescriptor"/> for <see cref="ORMModelElement"/>s of type <typeparamref name="TModelElement"/>.
+	/// <see cref="ElementTypeDescriptor"/> for <see cref="ModelElement"/>s of type <typeparamref name="TModelElement"/>.
 	/// </summary>
 	/// <typeparam name="TModelElement">
-	/// The type of the <see cref="ORMModelElement"/> that this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> is for.
+	/// The type of the <see cref="ModelElement"/> that this <see cref="ModelElementTypeDescriptor{TModelElement}"/> is for.
 	/// </typeparam>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMModelElementTypeDescriptor<TModelElement> : ElementTypeDescriptor
-		where TModelElement : ORMModelElement
+	public class ModelElementTypeDescriptor<TModelElement> : ElementTypeDescriptor
+		where TModelElement : ModelElement
 	{
 		/// <summary>
-		/// Instantiates a new instance of <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> for
+		/// Instantiates a new instance of <see cref="ModelElementTypeDescriptor{TModelElement}"/> for
 		/// the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
-		public ORMModelElementTypeDescriptor(TModelElement selectedElement)
+		public ModelElementTypeDescriptor(TModelElement selectedElement)
 			: base(selectedElement)
 		{
-			// The ElementTypeDescriptor constructor already checked selectedElement for null.
-			myElement = selectedElement;
 		}
-
-		private readonly TModelElement myElement;
 		/// <summary>
 		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> is for.
+		/// this <see cref="ModelElementTypeDescriptor{TModelElement}"/> is for.
 		/// </summary>
-		protected TModelElement ORMElement
+		protected new TModelElement ModelElement
 		{
 			get
 			{
-				return myElement;
+				return (TModelElement)base.ModelElement;
 			}
 		}
 
@@ -516,25 +512,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ORMElement.GetDomainClass().DisplayName;
-		}
-
-		/// <summary>
-		/// Calls <see cref="GetProperties(Attribute[])"/>, passing <see langword="null"/> as the parameter.
-		/// </summary>
-		public sealed override PropertyDescriptorCollection GetProperties()
-		{
-			return GetProperties(null);
-		}
-		/// <summary>
-		/// Adds extension properties to the <see cref="PropertyDescriptorCollection"/> before returning it.
-		/// </summary>
-		/// <seealso cref="ElementTypeDescriptor.GetProperties(Attribute[])"/>.
-		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
-		{
-			PropertyDescriptorCollection properties = base.GetProperties(attributes);
-			ExtendableElementUtility.GetExtensionProperties(myElement, properties);
-			return properties;
+			return base.ModelElement.GetDomainClass().DisplayName;
 		}
 
 		/// <summary>
@@ -555,6 +533,46 @@ namespace Neumont.Tools.ORM.Design
 			// UNDONE: MSBUG RolePlayerPropertyDescriptor should respect the System.ComponentModel.EditorAttribute on the
 			// generated property.
 			return false;
+		}
+	}
+	#endregion // ModelElementTypeDescriptor class
+
+	#region ORMModelElementTypeDescriptor class
+	/// <summary>
+	/// <see cref="ElementTypeDescriptor"/> for <see cref="ORMModelElement"/>s of type <typeparamref name="TModelElement"/>.
+	/// </summary>
+	/// <typeparam name="TModelElement">
+	/// The type of the <see cref="ORMModelElement"/> that this <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> is for.
+	/// </typeparam>
+	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+	public class ORMModelElementTypeDescriptor<TModelElement> : ModelElementTypeDescriptor<TModelElement>
+		where TModelElement : ORMModelElement
+	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> for
+		/// the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
+		/// </summary>
+		public ORMModelElementTypeDescriptor(TModelElement selectedElement)
+			: base(selectedElement)
+		{
+		}
+
+		/// <summary>
+		/// Calls <see cref="GetProperties(Attribute[])"/>, passing <see langword="null"/> as the parameter.
+		/// </summary>
+		public sealed override PropertyDescriptorCollection GetProperties()
+		{
+			return GetProperties(null);
+		}
+		/// <summary>
+		/// Adds extension properties to the <see cref="PropertyDescriptorCollection"/> before returning it.
+		/// </summary>
+		/// <seealso cref="ElementTypeDescriptor.GetProperties(Attribute[])"/>.
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection properties = base.GetProperties(attributes);
+			ExtendableElementUtility.GetExtensionProperties(ModelElement, properties);
+			return properties;
 		}
 	}
 	#endregion // ORMModelElementTypeDescriptor class
@@ -581,7 +599,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ORMElement.IsInternal ? ResourceStrings.InternalUniquenessConstraint : ResourceStrings.ExternalUniquenessConstraint;
+			return ModelElement.IsInternal ? ResourceStrings.InternalUniquenessConstraint : ResourceStrings.ExternalUniquenessConstraint;
 		}
 
 		/// <summary>
@@ -593,8 +611,44 @@ namespace Neumont.Tools.ORM.Design
 		{
 			if (propertyDescriptor.DomainPropertyInfo.Id == UniquenessConstraint.IsPreferredDomainPropertyId)
 			{
-				UniquenessConstraint uniquenessConstraint = ORMElement;
-				return uniquenessConstraint.IsPreferred ? false : !uniquenessConstraint.TestAllowPreferred(null, false);
+				UniquenessConstraint uniquenessConstraint = ModelElement;
+				ObjectType identifierFor = uniquenessConstraint.PreferredIdentifierFor;
+				if (identifierFor != null)
+				{
+					// If this is the preferred identifier for an objectifying type and
+					// is the only alethic internal uniqueness constraint for the fact, then
+					// it will automatically be readded as the preferred identifier if it is
+					// changed to false. Don't allow it to change.
+					FactType nestedFact;
+					if (uniquenessConstraint.IsInternal &&
+						(null != (nestedFact = identifierFor.NestedFactType)) &&
+						// Note there is only fact with an internal constraint
+						(nestedFact == uniquenessConstraint.FactTypeCollection[0]))
+					{
+						UniquenessConstraint candidate = null;
+						foreach (UniquenessConstraint constraint in nestedFact.GetInternalConstraints<UniquenessConstraint>())
+						{
+							if (constraint.Modality == ConstraintModality.Alethic)
+							{
+								if (candidate != null || constraint != uniquenessConstraint)
+								{
+									candidate = null;
+									break;
+								}
+								else
+								{
+									candidate = constraint;
+								}
+							}
+						}
+						return candidate != null;
+					}
+					return false;
+				}
+				else
+				{
+					return !uniquenessConstraint.TestAllowPreferred(null, false);
+				}
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -623,7 +677,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ORMElement.IsSimple ? ResourceStrings.SimpleMandatoryConstraint : ResourceStrings.DisjunctiveMandatoryConstraint;
+			return ModelElement.IsSimple ? ResourceStrings.SimpleMandatoryConstraint : ResourceStrings.DisjunctiveMandatoryConstraint;
 		}
 	}
 	#endregion // MandatoryConstraintTypeDescriptor class
@@ -653,11 +707,11 @@ namespace Neumont.Tools.ORM.Design
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
 			if (propertyId.Equals(Reading.IsPrimaryForReadingOrderDomainPropertyId))
 			{
-				return ORMElement.IsPrimaryForReadingOrder;
+				return ModelElement.IsPrimaryForReadingOrder;
 			}
 			else if (propertyId.Equals(Reading.IsPrimaryForFactTypeDomainPropertyId))
 			{
-				return ORMElement.IsPrimaryForFactType;
+				return ModelElement.IsPrimaryForFactType;
 			}
 			else
 			{
@@ -667,7 +721,7 @@ namespace Neumont.Tools.ORM.Design
 		/// <summary>See <see cref="ElementTypeDescriptor.GetComponentName"/>.</summary>
 		public override string GetComponentName()
 		{
-			Reading reading = ORMElement;
+			Reading reading = ModelElement;
 			ReadingOrder readingOrder = reading.ReadingOrder;
 			if (readingOrder != null)
 			{
@@ -699,7 +753,7 @@ namespace Neumont.Tools.ORM.Design
 		/// <summary>See <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.</summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
-			ObjectType objectType = ORMElement;
+			ObjectType objectType = ModelElement;
 			Guid propertyId = domainProperty.Id;
 			if (propertyId.Equals(ObjectType.DataTypeDisplayDomainPropertyId) ||
 				propertyId.Equals(ObjectType.ScaleDomainPropertyId) ||
@@ -724,7 +778,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return ORMElement.IsValueType ? ResourceStrings.ValueType : ResourceStrings.EntityType;
+			return ModelElement.IsValueType ? ResourceStrings.ValueType : ResourceStrings.EntityType;
 		}
 
 		/// <summary>
@@ -733,7 +787,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			ObjectType objectType = ORMElement;
+			ObjectType objectType = ModelElement;
 			Guid propertyId = propertyDescriptor.DomainPropertyInfo.Id;
 			if (propertyId.Equals(ObjectType.IsValueTypeDomainPropertyId))
 			{
@@ -801,18 +855,18 @@ namespace Neumont.Tools.ORM.Design
 			Guid propertyId = domainProperty.Id;
 			if (propertyId.Equals(Role.MultiplicityDomainPropertyId))
 			{
-				FactType fact = ORMElement.FactType;
+				FactType fact = ModelElement.FactType;
 				// Display for binary fact types
 				return fact != null && fact.RoleCollection.Count == 2;
 			}
 			else if (propertyId.Equals(Role.MandatoryConstraintNameDomainPropertyId) ||
 				propertyId.Equals(Role.MandatoryConstraintModalityDomainPropertyId))
 			{
-				return ORMElement.SimpleMandatoryConstraint != null;
+				return ModelElement.SimpleMandatoryConstraint != null;
 			}
 			else if (propertyId.Equals(Role.ObjectificationOppositeRoleNameDomainPropertyId))
 			{
-				FactType fact = ORMElement.FactType;
+				FactType fact = ModelElement.FactType;
 				return fact != null && fact.Objectification != null;
 			}
 			else
@@ -828,7 +882,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			if (propertyDescriptor.DomainPropertyInfo.Id == Role.ValueRangeTextDomainPropertyId)
 			{
-				Role role = ORMElement;
+				Role role = ModelElement;
 				FactType fact = role.FactType;
 				ObjectType rolePlayer = role.RolePlayer;
 				return fact != null && rolePlayer != null && !(rolePlayer.IsValueType || rolePlayer.HasReferenceMode);
@@ -863,7 +917,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(FactType.NameDomainPropertyId))
 			{
-				return ORMElement.Objectification == null;
+				return ModelElement.Objectification == null;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -876,7 +930,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			if (domainProperty.Id.Equals(FactType.DerivationStorageDisplayDomainPropertyId))
 			{
-				return ORMElement.DerivationRule != null;
+				return ModelElement.DerivationRule != null;
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
@@ -886,7 +940,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			Objectification objectification = ORMElement.Objectification;
+			Objectification objectification = ModelElement.Objectification;
 			return (objectification == null || objectification.IsImplied) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
 		}
 	}
@@ -923,7 +977,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetComponentName()
 		{
-			SubtypeFact subtypeFact = ORMElement;
+			SubtypeFact subtypeFact = ModelElement;
 			ObjectType subtype;
 			ObjectType supertype;
 			if ((subtype = subtypeFact.Subtype) != null && (supertype = subtypeFact.Supertype) != null)
@@ -953,7 +1007,7 @@ namespace Neumont.Tools.ORM.Design
 		{
 			if (propertyDescriptor.DomainPropertyInfo.Id.Equals(SubtypeFact.IsPrimaryDomainPropertyId))
 			{
-				return ORMElement.IsPrimary;
+				return ModelElement.IsPrimary;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -988,35 +1042,28 @@ namespace Neumont.Tools.ORM.Design
 		protected ORMPresentationElementTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
 			: base(presentationElement, selectedElement)
 		{
-			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
-			myPresentationElement = presentationElement;
-			// The ElementTypeDescriptor constructor already checked selectedElement for null.
-			myElement = selectedElement;
+		}
+		/// <summary>
+		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
+		/// this <see cref="ModelElementTypeDescriptor{TModelElement}"/> is for.
+		/// </summary>
+		protected new TModelElement ModelElement
+		{
+			get
+			{
+				return (TModelElement)base.ModelElement;
+			}
 		}
 
-		private readonly TPresentationElement myPresentationElement;
 		/// <summary>
 		/// The <see cref="PresentationElement"/> of type <typeparamref name="TPresentationElement"/> that
 		/// this <see cref="ORMPresentationElementTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
 		/// </summary>
-		protected TPresentationElement ORMPresentationElement
+		protected new TPresentationElement PresentationElement
 		{
 			get
 			{
-				return myPresentationElement;
-			}
-		}
-
-		private readonly TModelElement myElement;
-		/// <summary>
-		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="ORMPresentationElementTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
-		/// </summary>
-		protected TModelElement ORMElement
-		{
-			get
-			{
-				return myElement;
+				return (TPresentationElement)base.PresentationElement;
 			}
 		}
 
@@ -1034,7 +1081,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return TypeDescriptor.GetClassName(ORMElement);
+			return TypeDescriptor.GetClassName(base.ModelElement);
 		}
 
 		/// <summary>
@@ -1042,7 +1089,7 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override string GetComponentName()
 		{
-			return TypeDescriptor.GetComponentName(ORMElement);
+			return TypeDescriptor.GetComponentName(base.ModelElement);
 		}
 
 		/// <summary>
@@ -1271,10 +1318,10 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			FactType factType = ORMElement;
+			FactType factType = ModelElement;
 			if (FactTypeShape.ShouldDrawObjectification(factType))
 			{
-				FactTypeShape factTypeShape = ORMPresentationElement;
+				FactTypeShape factTypeShape = PresentationElement;
 				ObjectType nestingType = factType.NestingType;
 				EnsureDomainPropertiesInitialized(factType.Store.DomainDataDirectory);
 
