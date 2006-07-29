@@ -608,8 +608,16 @@ namespace Neumont.Tools.ORM.Design
 		}
 		private void UpdateMenuItems()
 		{
-			VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
-			myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
+			int currentIndex = TreeControl.CurrentIndex;
+			if (currentIndex != -1)
+			{
+				VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
+				myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
+			}
+			else
+			{
+				myVisibleCommands = ReadingEditorCommands.None;
+			}
 		}
 		/// <summary>
 		/// Event for selection changed
