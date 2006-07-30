@@ -29,7 +29,6 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Design
 {
@@ -724,7 +723,7 @@ namespace Neumont.Tools.ORM.Design
 				ScrollBars = ScrollBars.Vertical;
 				BorderStyle = BorderStyle.None;
 			}
-			protected override bool IsInputKey(Keys keyData)
+			protected sealed override bool IsInputKey(Keys keyData)
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
 				{
@@ -742,12 +741,21 @@ namespace Neumont.Tools.ORM.Design
 		}
 		#endregion // TextBoxControl class. Handles Escape key for TextBox
 		#region UITypeEditor overrides
-		private IWindowsFormsEditorService myEditor;
 		/// <summary>
-		/// The default value used for the LastControlSize property the first time
-		/// the control is shown.
+		/// The default <see cref="Size.Width"/> used for the <see cref="LastControlSize"/> property
+		/// the first time the control is shown.
 		/// </summary>
-		protected static readonly Size DefaultInitialControlSize = new Size(272, 128);
+		protected const int DefaultInitialControlWidth = 272;
+		/// <summary>
+		/// The default <see cref="Size.Height"/> used for the <see cref="LastControlSize"/> property
+		/// the first time the control is shown.
+		/// </summary>
+		protected const int DefaultInitialControlHeight = 128;
+		/// <summary>
+		/// The default <see cref="Size"/> used for the <see cref="LastControlSize"/> property
+		/// the first time the control is shown.
+		/// </summary>
+		protected static readonly Size DefaultInitialControlSize = new Size(DefaultInitialControlWidth, DefaultInitialControlHeight);
 		private static Size myLastControlSize = DefaultInitialControlSize;
 		/// <summary>
 		/// Required UITypeEditor override. Opens dropdown modally
@@ -760,20 +768,14 @@ namespace Neumont.Tools.ORM.Design
 		/// <returns>The updated property value, or the orignal value to effect a cancel</returns>
 		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 		{
-			myEditor = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
-			if (myEditor != null)
+			IWindowsFormsEditorService editor = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+			if (editor != null)
 			{
-				string newText = value as string;
-				if (newText == null)
-				{
-					newText = string.Empty;
-				}
-				TextBoxControl textControl = null;
-				try
-				{
-					// Create a textbox with its events
-					textControl = new TextBoxControl();
+				string newText = value as string ?? string.Empty;
 
+				// Create a textbox with its events
+				using (TextBoxControl textControl = new TextBoxControl())
+				{
 					// Manage the size of the control
 					Size lastSize = LastControlSize;
 					if (!lastSize.IsEmpty)
@@ -783,23 +785,15 @@ namespace Neumont.Tools.ORM.Design
 
 					textControl.Text = newText;
 					textControl.Select(0, 0);
-					myEditor.DropDownControl(textControl);
+					editor.DropDownControl(textControl);
 
 					// Record the final size, we'll use it next time for this type of control
 					LastControlSize = textControl.Size;
 
-					// Make sure the user didn't cancel, and translate the null placeholder
-					// back to null if necessary
+					// Make sure the user didn't cancel
 					if (!textControl.EscapePressed)
 					{
 						newText = textControl.Text;
-					}
-				}
-				finally
-				{
-					if (textControl != null && !textControl.IsDisposed)
-					{
-						textControl.Dispose();
 					}
 				}
 				return newText;
@@ -843,8 +837,8 @@ namespace Neumont.Tools.ORM.Design
 		#endregion // TreePicker Specifics
 	}
 	/// <summary>
-	/// Static helper functions to use with UITypeEditor
-	/// implementations
+	/// Static helper functions to use with <see cref="UITypeEditor"/>
+	/// implementations.
 	/// </summary>
 	public static class EditorUtility
 	{
@@ -880,68 +874,6 @@ namespace Neumont.Tools.ORM.Design
 				instance = treeNode.ModelElement;
 			}
 			return instance;
-		}
-		/// <summary>
-		/// Find the FactType associated with the specified instance. The
-		/// instance will first be stripped of any wrapping objects by the
-		/// ResolveConstextInstance method.
-		/// </summary>
-		/// <param name="instance">The selected object returned by ITypeDescriptorContext.Instance</param>
-		/// <returns>A FactType, or null if the item is not associated with a FactType.</returns>
-		public static FactType ResolveContextFactType(object instance)
-		{
-			instance = EditorUtility.ResolveContextInstance(instance, false);
-			FactType retval = null;
-			ModelElement elem;
-
-			if (null != (elem = instance as ModelElement))
-			{
-				FactType fact;
-				Role role;
-				SetConstraint internalConstraint;
-				Reading reading;
-				ReadingOrder readingOrder;
-				ObjectType objType;
-				if (null != (fact = elem as FactType))
-				{
-					retval = fact;
-				}
-				else if (null != (role = elem as Role))
-				{
-					//this one coming straight through on the selection so handling
-					//and returning here.
-					retval = role.FactType;
-				}
-				else if (null != (internalConstraint = elem as SetConstraint))
-				{
-					if (internalConstraint.Constraint.ConstraintIsInternal)
-					{
-						LinkedElementCollection<FactType> facts = internalConstraint.FactTypeCollection;
-						if (facts.Count == 1)
-						{
-							retval = facts[0];
-						}
-					}
-				}
-				else if (null != (reading = elem as Reading))
-				{
-					readingOrder = reading.ReadingOrder;
-					if (null != readingOrder)
-					{
-						retval = readingOrder.FactType;
-					}
-				}
-				else if (null != (readingOrder = elem as ReadingOrder))
-				{
-					retval = readingOrder.FactType;
-				}
-				else if (null != (objType = elem as ObjectType))
-				{
-					retval = objType.NestedFactType;
-				}
-			}
-			// Handle weird teardown scenarios where the Store is going away
-			return (retval != null && retval.Store != null) ? retval : null;
 		}
 		[DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
 		private static extern IntPtr GetFocus();

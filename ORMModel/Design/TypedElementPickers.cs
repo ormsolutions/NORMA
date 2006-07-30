@@ -481,7 +481,7 @@ namespace Neumont.Tools.ORM.Design
 	/// </summary>
 	public class DerivationRuleEditor : MultilineTextEditor
 	{
-		private static Size myLastControlSize = new Size(272, 64);
+		private static Size myLastControlSize = new Size(DefaultInitialControlWidth, DefaultInitialControlHeight / 2);
 		/// <summary>
 		/// Manage control size independently
 		/// </summary>

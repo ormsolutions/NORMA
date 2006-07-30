@@ -18,7 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
-namespace Neumont.Tools.ORM.Framework
+
+namespace Neumont.Tools.Modeling
 {
 	/// <summary>
 	/// Contains general-purpose utility methods.

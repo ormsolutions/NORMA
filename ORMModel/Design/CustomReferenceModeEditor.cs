@@ -32,23 +32,44 @@ namespace Neumont.Tools.ORM.Design
 	///	</summary>
 	public partial class CustomReferenceModeEditor : UserControl
 	{
-		private ReferenceModeHeaderBranch myHeaders;
+		private readonly VirtualTreeControl myTree;
+		private readonly ReferenceModeHeaderBranch myHeaders;
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
 		public CustomReferenceModeEditor()
 		{
-			InitializeComponent();
-			myTree.SetColumnHeaders(new VirtualTreeColumnHeader[]{
+			VirtualTreeControl tree = this.myTree = new VirtualTreeControl();
+			this.SuspendLayout();
+			// 
+			// myTree
+			// 
+			tree.Dock = DockStyle.Fill;
+			tree.HasGridLines = true;
+			tree.HasLines = false;
+			tree.HasRootLines = false;
+			tree.IsDragSource = false;
+			tree.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Explicit | VirtualTreeLabelEditActivationStyles.Delayed;
+			tree.MultiColumnHighlight = true;
+			tree.Name = "myTree";
+			tree.TabIndex = 0;
+			// 
+			// CustomReferenceModeEditor
+			// 
+			this.Controls.Add(tree);
+			this.Name = "CustomReferenceModeEditor";
+			this.Size = new System.Drawing.Size(313, 329);
+			this.ResumeLayout(false);
+			
+			tree.SetColumnHeaders(new VirtualTreeColumnHeader[]{
 				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorNameColumn),
 				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
 				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn)}
 				, true);
-			ITree treeData = new MultiColumnTree(3);
-			myHeaders = new ReferenceModeHeaderBranch();
-			treeData.Root = myHeaders;
-			myTree.MultiColumnTree = (IMultiColumnTree)treeData;
+			MultiColumnTree treeData = new MultiColumnTree(3);
+			((ITree)treeData).Root = myHeaders = new ReferenceModeHeaderBranch();
+			tree.MultiColumnTree = (IMultiColumnTree)treeData;
 		}
 
 		#region methods

@@ -23,7 +23,7 @@ using System.IO;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {

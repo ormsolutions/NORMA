@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 
-namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
+namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	#region ISurveyQuestionProvider
 	/// <summary>
@@ -43,7 +43,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <summary>
 		/// The type of question that this ISurveyQuestionTypeInfo represents
 		/// </summary>
-		Type QuestionType { get;}
+		Type QuestionType { get; }
 		/// <summary>
 		/// Retrieve the answer of any object to my question
 		/// </summary>
@@ -56,8 +56,9 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 	/// <summary>
 	/// Any object which is going to be displayed in the survey tree must implement this interface
 	/// </summary>
-	/// <typeparam name="T">an enum representing the potential answers to this question</typeparam>
-	public interface IAnswerSurveyQuestion<T>
+	/// <typeparam name="TAnswerEnum">an enum representing the potential answers to this question</typeparam>
+	public interface IAnswerSurveyQuestion<TAnswerEnum>
+		where TAnswerEnum : struct, IFormattable, IComparable
 	{
 		/// <summary>
 		/// called by survey tree to create node data of the implementing object's answers
@@ -75,27 +76,26 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <summary>
 		/// whether or not this objects name is editable
 		/// </summary>
-		bool IsEditable { get;}
+		bool IsEditable { get; }
 		/// <summary>
 		/// the display name for the survey tree
 		/// </summary>
-		string SurveyName { get;}
+		string SurveyName { get; }
 		/// <summary>
 		/// the name that will be displayed in edit mode, may be more complex than display name, is settable
 		/// </summary>
-		string EditableSurveyName { get; set;}
+		string EditableSurveyName { get; set; }
 	}
 	#endregion //ISurveyName
 	#region ISurveyNodeProvider
 	/// <summary>
-	/// Interface for a MetaModel to provide an enumeration of SampleDataElementNodes for the SurveyTree
+	/// Interface for a <see cref="DomainModel"/> to provide an <see cref="IEnumerable{SampleDataElementNode}"/> for the <see cref="SurveyTreeControl"/>.
 	/// </summary>
 	public interface ISurveyNodeProvider
 	{
 		/// <summary>
-		/// retrieve an enumeration of SampleDataElementNdoes from this MetaModel
+		/// Retrieve an <see cref="IEnumerable{SampleDataElementNode}"/> for this <see cref="DomainModel"/>.
 		/// </summary>
-		/// <returns>IEnumerable of SampleDataElementNodes</returns>
 		IEnumerable<SampleDataElementNode> GetSurveyNodes();
 	}
 	#endregion //ISurveyNodeProvider

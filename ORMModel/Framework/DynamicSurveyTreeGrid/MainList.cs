@@ -16,34 +16,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Text;
-using Microsoft.VisualStudio.VirtualTreeGrid;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 
-namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
+namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	/// <summary>
 	/// main branch provider for a SurveyTree, implements IBranch, main branch can be retrieved from RootBranch
 	/// </summary>
-	public class MainList : IBranch, INotifySurveyElementChanged
+	public partial class MainList : IBranch, INotifySurveyElementChanged
 	{
 		#region survey question display struct
 		//TODO: ask Matt, probably want to move this inside of the survey along with myCurrentDisplays, and have the survey manage it all
 		private struct SurveyQuestionDisplay
 		{
-			public SurveyQuestion Question;
+			public readonly SurveyQuestion Question;
 			/// <summary>
 			/// Limited to Sorting | Grouping
 			/// </summary>
-			public SurveyQuestionUISupport CurrentGrouping;
+			public readonly SurveyQuestionUISupport CurrentGrouping;
 			/// <summary>
 			/// Allows reordering of answers in the display
 			/// </summary>
-			public int[] AnswerOrder;
-			public bool NeutralOnTop;
+			public readonly int[] AnswerOrder;
+			public readonly bool NeutralOnTop;
 			public SurveyQuestionDisplay(SurveyQuestion question)
 			{
 				Question = question;
@@ -53,40 +50,47 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 			}
 		}
 		#endregion //survey question display struct
-		#region .ctor and instance variables
-		List<SampleDataElementNode> myNodes;
-		private Survey mySurvey;
-		private List<SurveyQuestionDisplay> myCurrentDisplays;
+
+		#region Constructor and instance fields
+		private readonly List<SampleDataElementNode> myNodes;
+		private readonly Survey mySurvey;
+		private readonly List<SurveyQuestionDisplay> myCurrentDisplays;
 		/// <summary>
-		/// public constructor
+		/// Public constructor
 		/// </summary>
-		/// <param name="nodeProviderList">enumeration of ISurveyNodeProviders</param>
-		/// <param name="questionProviderList">enumeration of ISurveyQuestionProvider</param>
 		public MainList(IEnumerable<ISurveyNodeProvider> nodeProviderList, IEnumerable<ISurveyQuestionProvider> questionProviderList)
 		{
-			this.myNodes = new List<SampleDataElementNode>();
+			if (nodeProviderList == null)
+			{
+				throw new ArgumentNullException("nodeProviderList");
+			}
+			if (questionProviderList == null)
+			{
+				throw new ArgumentNullException("questionProviderList");
+			}
+			List<SampleDataElementNode> nodes = myNodes = new List<SampleDataElementNode>();
 			foreach(ISurveyNodeProvider nodeProvider in nodeProviderList)
 			{
 				int count = 0;
-				IEnumerable<SampleDataElementNode> nodeEnumeration = nodeProvider.GetSurveyNodes();
-				foreach (SampleDataElementNode elementNode in nodeEnumeration)
+				foreach (SampleDataElementNode elementNode in nodeProvider.GetSurveyNodes())
 				{
-					SampleDataElementNode tempElement = elementNode;
-					tempElement.Index = myNodes.Count + count;
-					myNodes.Add(tempElement);
+					SampleDataElementNode tempElementNode = elementNode;
+					tempElementNode.Index = nodes.Count + count;
+					nodes.Add(tempElementNode);
 					++count;
 				}
 			}
-			mySurvey = new Survey(questionProviderList);
-			myCurrentDisplays = new List<SurveyQuestionDisplay>();
-			for (int i = 0; i < mySurvey.Count; ++i)
+			Survey survey = mySurvey = new Survey(questionProviderList);
+			List<SurveyQuestionDisplay> currentDisplays = myCurrentDisplays = new List<SurveyQuestionDisplay>();
+			int surveyCount = survey.Count;
+			for (int i = 0; i < surveyCount; ++i)
 			{
-				SurveyQuestionDisplay display = new SurveyQuestionDisplay(mySurvey[i]);
-				myCurrentDisplays.Add(display);
+				currentDisplays.Add(new SurveyQuestionDisplay(survey[i]));
 			}
-			mySurvey.ProcessNodes(myNodes);
+			survey.ProcessNodes(nodes);
 		}
-		#endregion //.ctor and instance variables.
+		#endregion // Constructor and instance fields
+
 		#region root branch and survey properties
 		/// <summary>
 		/// provides the RootBranch for a SurveyTree
@@ -101,7 +105,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 				}
 				else
 				{
-					return new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1,myCurrentDisplays[0].NeutralOnTop);
+					return new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop);
 				}
 			}
 		}
@@ -116,6 +120,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 			}
 		}
 		#endregion //root branch and survey properties
+
 		#region sort list methods
 		/// <summary>
 		/// This tells you which groups are used for sorting and grouping. The order
@@ -181,81 +186,59 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 			}
 		}
 		#endregion //end sort list methods
+
 		#region IBranch Members
 		/// <summary>
-		/// Implements IBranch.BeginLabelEdit
+		/// Returned by IBranch.BeginLabelEdit
 		/// </summary>
-		/// <returns>An Invalid Edit Data</returns>
-		protected static VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-		{
-			return VirtualTreeLabelEditData.Invalid;
-		}
+		protected static readonly VirtualTreeLabelEditData BeginLabelEditResult = VirtualTreeLabelEditData.Invalid;
 		VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 		{
-			return BeginLabelEdit(row, column, activationStyle);
+			return BeginLabelEditResult;
 		}
 
 		/// <summary>
-		/// Implements IBranch.CommitLabelEdit
+		/// Returned by IBranch.CommitLabelEdit
 		/// </summary>
-		/// <returns>Cancels The Edit</returns>
-		protected static LabelEditResult CommitLabelEdit(int row, int column, string newText)
-		{
-			return LabelEditResult.CancelEdit;
-		}
+		protected const LabelEditResult CommitLabelEditResult = LabelEditResult.CancelEdit;
 		LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 		{
-			return CommitLabelEdit(row, column, newText);
+			return CommitLabelEditResult;
 		}
 		/// <summary>
-		/// Implements IBranch.Features
+		/// Returned by IBranch.Features
 		/// </summary>
-		protected static BranchFeatures Features
-		{
-			get { return BranchFeatures.PositionTracking; }
-		}
+		protected const BranchFeatures FeaturesResult = BranchFeatures.PositionTracking;
 		BranchFeatures IBranch.Features
 		{
-			get { return Features; }
+			get
+			{
+				return FeaturesResult;
+			}
 		}
 		/// <summary>
-		/// Implements IBranch.GetAccessiblityData
+		/// Returned by IBranch.GetAccessiblityData
 		/// </summary>
-		/// <returns>Empty</returns>
-		protected static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
-		{
-			return VirtualTreeAccessibilityData.Empty;
-		}
+		protected static readonly VirtualTreeAccessibilityData GetAccessibilityDataResult = VirtualTreeAccessibilityData.Empty;
 		VirtualTreeAccessibilityData IBranch.GetAccessibilityData(int row, int column)
 		{
-			return GetAccessibilityData(row, column);
+			return GetAccessibilityDataResult;
 		}
 		/// <summary>
-		/// Implements IBranch.GetDisplayData
+		/// Returned by IBranch.GetDisplayData
 		/// </summary>
-		/// <returns>Empty</returns>
-		protected static VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
-		{
-			return VirtualTreeDisplayData.Empty;
-		}
+		protected static readonly VirtualTreeDisplayData GetDisplayDataResult = VirtualTreeDisplayData.Empty;
 		VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 		{
-			return GetDisplayData(row,column,requiredData);
+			return GetDisplayDataResult;
 		}
 
 		/// <summary>
 		/// Implements IBranch.GetObject
 		/// </summary>
-		/// <param name="row">Index of The Object</param>
-		/// <param name="column"></param>
-		/// <param name="options"></param>
-		/// <param name="style"></param>
-		/// <returns>Object</returns>
 		protected object GetObject(int row, int column, ObjectStyle style, ref int options)
 		{
-			if(style == ObjectStyle.TrackingObject)
-				return myNodes[row];
-			return null;
+			return (style == ObjectStyle.TrackingObject) ? (object)myNodes[row] : null;
 		}
 		object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 		{
@@ -264,12 +247,10 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <summary>
 		/// Implements IBranch.GetText
 		/// </summary>
-		/// <param name="row">index of the Node</param>
-		/// <param name="column">not currently used, 0</param>
 		/// <returns>The Display Name Of The Node</returns>
 		protected string GetText(int row, int column)
 		{
-			return myNodes[row].ElementName;
+			return myNodes[row].SurveyName;
 		}
 		string IBranch.GetText(int row, int column)
 		{
@@ -278,220 +259,138 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <summary>
 		/// Implements IBranch.GetTipText
 		/// </summary>
-		/// <param name="row">index Of The Node</param>
-		/// <param name="column">not currently used, 0</param>
-		/// <param name="tipType"></param>
 		/// <returns>Returns The Display Text Of The Node</returns>
 		protected string GetTipText(int row, int column, ToolTipType tipType)
 		{
-			return myNodes[row].ElementName;
+			return myNodes[row].SurveyName;
 		}
 		string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 		{
 			return GetTipText(row, column, tipType);
 		}
 		/// <summary>
-		/// Implements IBranch.IsExpandable
+		/// Returned by IBranch.IsExpandable
 		/// </summary>
-		/// <returns>False</returns>
-		protected static bool IsExpandable(int row, int column)
-		{
-			return false;
-		}
+		protected const bool IsExpandableResult = false;
 		bool IBranch.IsExpandable(int row, int column)
 		{
-			return IsExpandable(row, column);
+			return IsExpandableResult;
 		}
 		/// <summary>
-		/// Implementing IBranch.LocateObject
+		/// Implements IBranch.LocateObject
 		/// </summary>
-		/// <param name="obj"></param>
-		/// <param name="style"></param>
-		/// <param name="locateOptions"></param>
-		/// <returns>New LocateObjectData</returns>
 		protected LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 		{
 			if (style == ObjectStyle.TrackingObject)
 			{
-				for (int i = 0; i < myNodes.Count; ++i)
+				int nodeIndex = myNodes.IndexOf((SampleDataElementNode)obj);
+				if (nodeIndex >= 0)
 				{
-					if (((SampleDataElementNode)obj).Equals(myNodes[i]))
-					{
-						return new LocateObjectData(i, 0, 0);
-					}
+					return new LocateObjectData(nodeIndex, 0, locateOptions);
 				}
 			}
-			return new LocateObjectData(-1, 0, locateOptions);
+			return new LocateObjectData(VirtualTreeConstant.NullIndex, VirtualTreeConstant.NullIndex, locateOptions);
 		}
 		LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 		{
 			return LocateObject(obj, style, locateOptions);
 		}
-		///<summary>
-		/// Implementation of IBranch.OnBranchModification
-		/// </summary>
-		protected event BranchModificationEventHandler OnBranchModification;
+
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		event BranchModificationEventHandler IBranch.OnBranchModification
 		{
+			// Do nothing. We never raise this event, so we don't need to keep track of who is subscribed to it.
 			add
 			{
-				OnBranchModification += value;
 			}
 			remove
 			{
-				OnBranchModification -= value;
 			}
 		}
-		/// <summary>
-		/// Implementation of IBranch.OnDragEvent
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="row"></param>
-		/// <param name="column"></param>
-		/// <param name="eventType"></param>
-		/// <param name="args"></param>
-		protected static void OnDragEvent(object sender, int row, int column, DragEventType eventType, System.Windows.Forms.DragEventArgs args)
-		{
-
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, System.Windows.Forms.DragEventArgs args)
 		{
-			OnDragEvent(sender, row, column, eventType, args);
 		}
-		/// <summary>
-		/// Implements IBranch.OnGiveFeedback
-		/// </summary>
-		/// <param name="args"></param>
-		/// <param name="row"></param>
-		/// <param name="column"></param>
-		protected static void OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs args, int row, int column)
-		{
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs args, int row, int column)
 		{
-			OnGiveFeedback(args,row, column);
 		}
-		/// <summary>
-		/// Implements IBranch.OnQueryContinueDrag
-		/// </summary>
-		/// <param name="args"></param>
-		/// <param name="row"></param>
-		/// <param name="column"></param>
-		protected static void OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs args, int row, int column)
-		{
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs args, int row, int column)
 		{
-			OnQueryContinueDrag(args, row, column);
 		}
 		/// <summary>
-		/// Implements IBranch.OnStartDrag
+		/// Returned by IBranch.OnStartDrag
 		/// </summary>
-		/// <returns>Empty</returns>
-		protected static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
-		{
-			return VirtualTreeStartDragData.Empty;
-		}
+		protected static readonly VirtualTreeStartDragData OnStartDragResult = VirtualTreeStartDragData.Empty;
 		VirtualTreeStartDragData IBranch.OnStartDrag(object sender, int row, int column, DragReason reason)
 		{
-			return OnStartDrag(sender, row, column, reason);
+			return OnStartDragResult;
 		}
 		/// <summary>
-		/// Implements IBranch.SynchronizeState
+		/// Returned by IBranch.SynchronizeState
 		/// </summary>
-		/// <returns>None</returns>
-		protected static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
-		{
-			return StateRefreshChanges.None;
-		}
+		protected const StateRefreshChanges SynchronizeStateResult = StateRefreshChanges.None;
 		StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
 		{
-			return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
+			return SynchronizeStateResult;
 		}
 		/// <summary>
-		/// Implements IBranch.ToggleState
+		/// Returned by IBranch.ToggleState
 		/// </summary>
-		/// <returns>None</returns>
-		protected static StateRefreshChanges ToggleState(int row, int column)
-		{
-			return StateRefreshChanges.None;
-		}
+		protected const StateRefreshChanges ToggleStateResult = StateRefreshChanges.None;
 		StateRefreshChanges IBranch.ToggleState(int row, int column)
 		{
-			return ToggleState(row, column);
+			return ToggleStateResult;
 		}
 		/// <summary>
-		/// Implements IBranch.UpdateCounter
+		/// Returned by IBranch.UpdateCounter
 		/// </summary>
-		protected static int UpdateCounter
-		{
-			get { return 0; }
-		}
+		protected const int UpdateCounterResult = 0;
 		int IBranch.UpdateCounter
 		{
-			get { return UpdateCounter; }
+			get
+			{
+				return UpdateCounterResult;
+			}
 		}
 		/// <summary>
 		/// Implements IBranch.VisibleItemCount
 		/// </summary>
 		protected int VisibleItemCount
 		{
-			get { return myNodes.Count; }
+			get
+			{
+				return myNodes.Count;
+			}
 		}
 		int IBranch.VisibleItemCount
 		{
-			get { return VisibleItemCount; }
+			get
+			{
+				return VisibleItemCount;
+			}
 		}
 
 		#endregion
 
 		#region INotifySurveyElementChanged Members
-		/// <summary>
-		/// called when an element is added to a node provider
-		/// </summary>
-		/// <param name="sender">object that was added</param>
-		protected static void ElementAdded(object sender)
-		{
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void INotifySurveyElementChanged.ElementAdded(object sender)
 		{
-			ElementAdded(sender);
 		}
-		/// <summary>
-		/// called when an element in a node provider is changed
-		/// </summary>
-		/// <param name="sender">object that was changed</param>
-		/// <param name="questions">array of questions that need to be reasked of this node</param>
-		protected static void ElementChanged(object sender, ISurveyQuestionTypeInfo[] questions)
-		{
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void INotifySurveyElementChanged.ElementChanged(object sender, ISurveyQuestionTypeInfo[] questions)
 		{
-			ElementChanged(sender,questions);
 		}
-		/// <summary>
-		/// called when an element in a node provider is removed
-		/// </summary>
-		/// <param name="sender">object that was removed</param>
-		protected static void ElementDeleted(object sender)
-		{
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void INotifySurveyElementChanged.ElementDeleted(object sender)
 		{
-			ElementDeleted(sender);
 		}
-		/// <summary>
-		/// called when an element in a node provider is renamed
-		/// </summary>
-		/// <param name="sender">object that was renamed</param>
-		protected static void ElementRenamed(object sender)
-		{
-		}
+		/// <summary><see cref="MainList"/>'s implementation of this does nothing.</summary>
 		void INotifySurveyElementChanged.ElementRenamed(object sender)
 		{
-			ElementRenamed(sender);
 		}
-
 		#endregion //INotifySurveyElementChanged Members
 	}
 }

@@ -15,7 +15,7 @@
 #endregion
 
 // Work items:
-// 1) The property change events on the links are firing too late to find the parent. Switch to remove on the ORMNamedElement itself. (not working)
+// 1) The property change events on the links are firing too late to find the parent. Switch to remove on the ModelElement itself. (not working)
 // 2) RolePlayerChanged needs to be handled
 // 3) Check earlier if the element has a string or not. We go a very long way before bailing for lack of a name.
 using System;
@@ -26,8 +26,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
-namespace Neumont.Tools.ORM.Framework
+
+namespace Neumont.Tools.Modeling
 {
 	#region LocatedElement structure
 	/// <summary>
@@ -44,15 +44,15 @@ namespace Neumont.Tools.ORM.Framework
 		/// <summary>
 		/// Construct with a single element
 		/// </summary>
-		/// <param name="singleElement">A ORMNamedElement object</param>
-		public LocatedElement(ORMNamedElement singleElement)
+		/// <param name="singleElement">A ModelElement object</param>
+		public LocatedElement(ModelElement singleElement)
 		{
 			myElement = singleElement;
 		}
 		/// <summary>
 		/// Construct with multiple elements
 		/// </summary>
-		/// <param name="multipleElements">A collection of ORMNamedElement objects</param>
+		/// <param name="multipleElements">A collection of ModelElement objects</param>
 		public LocatedElement(ICollection multipleElements)
 		{
 			myElement = multipleElements;
@@ -60,21 +60,21 @@ namespace Neumont.Tools.ORM.Framework
 		/// <summary>
 		/// Construct with single or multiple elements
 		/// </summary>
-		/// <param name="element">A ORMNamedElement or a collection of NamedElements</param>
+		/// <param name="element">A ModelElement or a collection of NamedElements</param>
 		public LocatedElement(object element)
 		{
-			Debug.Assert(element is ORMNamedElement || element is ICollection);
+			Debug.Assert(element is ModelElement || element is ICollection);
 			myElement = element;
 		}
 		/// <summary>
 		/// Get a single element. Returns null
 		/// if multiple elements were found with the same name.
 		/// </summary>
-		public ORMNamedElement SingleElement
+		public ModelElement SingleElement
 		{
 			get
 			{
-				return myElement as ORMNamedElement;
+				return myElement as ModelElement;
 			}
 		}
 		/// <summary>
@@ -112,18 +112,18 @@ namespace Neumont.Tools.ORM.Framework
 		/// <summary>
 		/// Get either the SingleElement or the first of the multiple elements
 		/// </summary>
-		public ORMNamedElement FirstElement
+		public ModelElement FirstElement
 		{
 			get
 			{
-				ORMNamedElement retVal = null;
+				ModelElement retVal = null;
 				object element = myElement;
 				if (element != null)
 				{
-					retVal = element as ORMNamedElement;
+					retVal = element as ModelElement;
 					if (retVal == null)
 					{
-						foreach (ORMNamedElement multiElement in (ICollection)element)
+						foreach (ModelElement multiElement in (ICollection)element)
 						{
 							retVal = multiElement;
 							break;
@@ -137,7 +137,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// Return true if the element is already represented
 		/// by this LocatedElement
 		/// </summary>
-		public bool ContainsElement(ORMNamedElement element)
+		public bool ContainsElement(ModelElement element)
 		{
 			object testElement = myElement;
 			ICollection collection;
@@ -189,7 +189,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="notifyAdded">Used during deserialization fixup to
 		/// track elements that are added while rules are disabled</param>
 		/// <returns>A new (or modified) collection containing all elements.</returns>
-		ICollection OnDuplicateElementAdded(ICollection elementCollection, ORMNamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded);
+		ICollection OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded);
 		/// <summary>
 		/// A duplicate element has been removed. This method is also responsible
 		/// for destroying the collection as the last element is removed.
@@ -202,7 +202,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// events, which only interaction with the name dictionaries during undo/redo.
 		/// In this state, a collection implemented through the IMS should not be modified.</param>
 		/// <returns>A new (or modified) collection containing all elements.</returns>
-		ICollection OnDuplicateElementRemoved(ICollection elementCollection, ORMNamedElement element, bool afterTransaction);
+		ICollection OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction);
 	}
 	#endregion // IDuplicateNameCollectionManager
 	#region DuplicateNameAction enum
@@ -246,7 +246,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="duplicateAction">Specify the action
 		/// to take if the name is already in use in the dictionary.</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-		void AddElement(ORMNamedElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded);
+		void AddElement(ModelElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded);
 		/// <summary>
 		/// An element is being removed.
 		/// </summary>
@@ -256,7 +256,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="duplicateAction">Specify the action
 		/// to take if the name is already in use in the dictionary.</param>
 		/// <returns>true if the element was successfully removed</returns>
-		bool RemoveElement(ORMNamedElement element, string alternateElementName, DuplicateNameAction duplicateAction);
+		bool RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction);
 		/// <summary>
 		/// An element is being replaced with another element.
 		/// </summary>
@@ -264,7 +264,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="replacementElement">The element to replace it with</param>
 		/// <param name="duplicateAction">Specify the action
 		/// to take if the name is already in use in the dictionary.</param>
-		void ReplaceElement(ORMNamedElement originalElement, ORMNamedElement replacementElement, DuplicateNameAction duplicateAction);
+		void ReplaceElement(ModelElement originalElement, ModelElement replacementElement, DuplicateNameAction duplicateAction);
 		/// <summary>
 		/// An element has been renamed.
 		/// </summary>
@@ -273,7 +273,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="newName">The new name for the element</param>
 		/// <param name="duplicateAction">Specify the action
 		/// to take if the name is already in use in the dictionary.</param>
-		void RenameElement(ORMNamedElement element, string oldName, string newName, DuplicateNameAction duplicateAction);
+		void RenameElement(ModelElement element, string oldName, string newName, DuplicateNameAction duplicateAction);
 		/// <summary>
 		/// Find elements matching the given name 
 		/// </summary>
@@ -322,7 +322,7 @@ namespace Neumont.Tools.ORM.Framework
 	/// <summary>
 	/// An interface to mark a child element as a participant
 	/// in a named element dictionary. This interface should
-	/// only be specified on ORMNamedElement-derived classes.
+	/// only be specified on ModelElement-derived classes.
 	/// </summary>
 	public interface INamedElementDictionaryChild
 	{
@@ -391,7 +391,7 @@ namespace Neumont.Tools.ORM.Framework
 	#region NamedElementDictionary class
 	/// <summary>
 	/// A class used to enforce naming across a relationship
-	/// representing a collection of ORMNamedElement children.
+	/// representing a collection of ModelElement children.
 	/// Duplicate element collection creation, name generation,
 	/// and exception handling can all be controlled by derived classes.
 	/// </summary>
@@ -435,14 +435,14 @@ namespace Neumont.Tools.ORM.Framework
 			private SimpleDuplicateCollectionManager()
 			{
 			}
-			ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ORMNamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+			ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 			{
-				ORMNamedElement[] elements = (ORMNamedElement[])elementCollection;
-				ORMNamedElement[] retVal = null;
+				ModelElement[] elements = (ModelElement[])elementCollection;
+				ModelElement[] retVal = null;
 				if (elements == null)
 				{
 					// Create a new collection and prepare for a second call
-					retVal = new ORMNamedElement[] { element, null };
+					retVal = new ModelElement[] { element, null };
 				}
 				else
 				{
@@ -459,18 +459,18 @@ namespace Neumont.Tools.ORM.Framework
 						// Obviously, this makes the assumption that >2 duplicates
 						// is unusual. Otherwise, we would use a growable collection
 						// instead of reallocating arrays each time.
-						retVal = new ORMNamedElement[elementCount + 1];
+						retVal = new ModelElement[elementCount + 1];
 						elements.CopyTo(retVal, 0);
 						retVal[elementCount] = element;
 					}
 				}
 				return retVal;
 			}
-			ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ORMNamedElement element, bool afterTransaction)
+			ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
 			{
-				ORMNamedElement[] elements = (ORMNamedElement[])elementCollection;
+				ModelElement[] elements = (ModelElement[])elementCollection;
 				int elementCount = elements.Length;
-				ORMNamedElement[] retVal = null;
+				ModelElement[] retVal = null;
 				// There is nothing to do when there are 1 or 2 elements. A call
 				// with 2 elements will immediately be followed by a call with
 				// 1 element, at which point the collection will be abandoned.
@@ -480,11 +480,11 @@ namespace Neumont.Tools.ORM.Framework
 				}
 				else
 				{
-					retVal = new ORMNamedElement[elementCount - 1];
+					retVal = new ModelElement[elementCount - 1];
 					int newIndex = 0;
 					for (int i = 0; i < elementCount; ++i)
 					{
-						ORMNamedElement testElement = elements[i];
+						ModelElement testElement = elements[i];
 						if (testElement == element)
 						{
 							for (int j = i + 1; j < elementCount; ++j)
@@ -548,7 +548,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="element">The element to generate a name for</param>
 		/// <returns>A string to use as the base name. Can include {0} to
 		/// indicate where the unique numbers should be included in the string.</returns>
-		protected virtual string GetRootNamePattern(ORMNamedElement element)
+		protected virtual string GetRootNamePattern(ModelElement element)
 		{
 			return TypeDescriptor.GetClassName(element);
 		}
@@ -559,7 +559,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// </summary>
 		/// <param name="element">The element to get a name for</param>
 		/// <returns>null, or a default name for the element</returns>
-		protected virtual string GetDefaultName(ORMNamedElement element)
+		protected virtual string GetDefaultName(ModelElement element)
 		{
 			return null;
 		}
@@ -569,7 +569,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// </summary>
 		/// <param name="element">The element that could not be added due to the duplicate name</param>
 		/// <param name="requestedName"></param>
-		protected virtual void ThrowDuplicateNameException(ORMNamedElement element, string requestedName)
+		protected virtual void ThrowDuplicateNameException(ModelElement element, string requestedName)
 		{
 			// UNDONE: Localize
 			throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The name '{0}' is already used in this context.", requestedName));
@@ -580,10 +580,10 @@ namespace Neumont.Tools.ORM.Framework
 		/// Generate a unique name for this element. Defers to
 		/// GetRootNamePattern to get a starting name pattern
 		/// </summary>
-		/// <param name="element">ORMNamedElement</param>
+		/// <param name="element">ModelElement</param>
 		/// <param name="forceAllowDuplicateName">Set to true if the GetDefaultName returns a non-empty string</param>
 		/// <returns>A name that is not currently in the dictionary.</returns>
-		private string GenerateUniqueName(ORMNamedElement element, out bool forceAllowDuplicateName)
+		private string GenerateUniqueName(ModelElement element, out bool forceAllowDuplicateName)
 		{
 			string rootName = GetDefaultName(element);
 			if (!string.IsNullOrEmpty(rootName))
@@ -609,33 +609,33 @@ namespace Neumont.Tools.ORM.Framework
 		}
 		#endregion // Unique name generation
 		#region INamedElementDictionary Members
-		void INamedElementDictionary.AddElement(ORMNamedElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
+		void INamedElementDictionary.AddElement(ModelElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
 		{
 			AddElement(element, duplicateAction, notifyAdded);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionary.AddElement
 		/// </summary>
-		/// <param name="element">ORMNamedElement</param>
+		/// <param name="element">ModelElement</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
 		/// <param name="notifyAdded">Set if a callback is required when an element is added
 		/// during the IDuplicateNameCollectionManager.OnDuplicateElementAdded. Used
 		/// during deserialization fixup</param>
-		protected void AddElement(ORMNamedElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
+		protected void AddElement(ModelElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
 		{
-			AddElement(element, duplicateAction, element.Name, notifyAdded);
+			AddElement(element, duplicateAction, DomainClassInfo.GetName(element), notifyAdded);
 		}
 		/// <summary>
 		/// Add an element with a provided name (ignores the current element name).
 		/// Helper function for AddElement and ReplaceElement
 		/// </summary>
-		/// <param name="element">ORMNamedElement</param>
+		/// <param name="element">ModelElement</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
 		/// <param name="elementName">Name to use as the remove key</param>
 		/// <param name="notifyAdded">Set if a callback is required when an element is added
 		/// during the IDuplicateNameCollectionManager.OnDuplicateElementAdded. Used
 		/// during deserialization fixup</param>
-		private void AddElement(ORMNamedElement element, DuplicateNameAction duplicateAction, string elementName, INotifyElementAdded notifyAdded)
+		private void AddElement(ModelElement element, DuplicateNameAction duplicateAction, string elementName, INotifyElementAdded notifyAdded)
 		{
 			if (elementName.Length == 0)
 			{
@@ -662,7 +662,7 @@ namespace Neumont.Tools.ORM.Framework
 									ruleManager.DisableRule(typeof(NamedElementChangedRule));
 									ruleDisabled = true;
 								}
-								element.Name = elementName;
+								DomainClassInfo.SetName(element, elementName);
 							}
 							finally
 							{
@@ -674,7 +674,7 @@ namespace Neumont.Tools.ORM.Framework
 						}
 						else
 						{
-							element.Name = elementName;
+							DomainClassInfo.SetName(element, elementName);
 							if (notifyAdded == null)
 							{
 								// The name change rule will not fire during deserialization, just fall through here
@@ -720,7 +720,7 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			else
 			{
-				ORMNamedElement singleElement = locateData.SingleElement;
+				ModelElement singleElement = locateData.SingleElement;
 				ICollection newCollection = null;
 				if (singleElement == null)
 				{
@@ -756,7 +756,7 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 		}
-		bool INamedElementDictionary.RemoveElement(ORMNamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+		bool INamedElementDictionary.RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
 			return RemoveElement(element, alternateElementName, duplicateAction);
 		}
@@ -766,25 +766,25 @@ namespace Neumont.Tools.ORM.Framework
 		/// Remove an element with a provided name. The current element name is
 		/// used if the alternate is not provided.
 		/// </summary>
-		/// <param name="element">ORMNamedElement</param>
+		/// <param name="element">ModelElement</param>
 		/// <param name="alternateElementName">If specified, a name to use instead of
 		/// the current element name value</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
 		/// <returns>true if the element was successfully removed</returns>
-		private bool RemoveElement(ORMNamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+		private bool RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
 			string elementName = alternateElementName;
 			if (string.IsNullOrEmpty(elementName))
 			{
-				elementName = element.Name;
+				elementName = DomainClassInfo.GetName(element);
 			}
-			if (elementName.Length != 0)
+			if (!string.IsNullOrEmpty(elementName))
 			{
 				LocatedElement locateData = GetElement(elementName);
 				if (!locateData.IsEmpty)
 				{
 					bool afterTransaction = duplicateAction == DuplicateNameAction.RetrieveDuplicateCollection;
-					ORMNamedElement singleElement = locateData.SingleElement;
+					ModelElement singleElement = locateData.SingleElement;
 					if (singleElement != null)
 					{
 						if (!afterTransaction)
@@ -800,8 +800,8 @@ namespace Neumont.Tools.ORM.Framework
 						Debug.Assert(elementCount >= 2);
 						if (elementCount == 2)
 						{
-							ORMNamedElement otherElement = null;
-							foreach (ORMNamedElement testOtherElement in existingCollection)
+							ModelElement otherElement = null;
+							foreach (ModelElement testOtherElement in existingCollection)
 							{
 								if (element != testOtherElement)
 								{
@@ -838,34 +838,34 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			return false;
 		}
-		void INamedElementDictionary.ReplaceElement(ORMNamedElement originalElement, ORMNamedElement replacementElement, DuplicateNameAction duplicateAction)
+		void INamedElementDictionary.ReplaceElement(ModelElement originalElement, ModelElement replacementElement, DuplicateNameAction duplicateAction)
 		{
 			ReplaceElement(originalElement, replacementElement, duplicateAction);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionary.ReplaceElement
 		/// </summary>
-		/// <param name="originalElement">ORMNamedElement</param>
-		/// <param name="replacementElement">ORMNamedElement</param>
+		/// <param name="originalElement">ModelElement</param>
+		/// <param name="replacementElement">ModelElement</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
-		protected void ReplaceElement(ORMNamedElement originalElement, ORMNamedElement replacementElement, DuplicateNameAction duplicateAction)
+		protected void ReplaceElement(ModelElement originalElement, ModelElement replacementElement, DuplicateNameAction duplicateAction)
 		{
 			// Consider optimizing if the old/new names are the same
 			RemoveElement(originalElement, null, duplicateAction);
 			AddElement(replacementElement, duplicateAction, null);
 		}
-		void INamedElementDictionary.RenameElement(ORMNamedElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
+		void INamedElementDictionary.RenameElement(ModelElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
 		{
 			RenameElement(element, oldName, newName, duplicateAction);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionary.RenameElement
 		/// </summary>
-		/// <param name="element">ORMNamedElement</param>
+		/// <param name="element">ModelElement</param>
 		/// <param name="oldName">string</param>
 		/// <param name="newName">string</param>
 		/// <param name="duplicateAction">duplicateAction</param>
-		protected void RenameElement(ORMNamedElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
+		protected void RenameElement(ModelElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
 		{
 			// UNDONE: If AddElement fails, this does not readd the
 			// removed element. Delay the remove until we're relatively
@@ -936,7 +936,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// <param name="element">The element to add</param>
 		/// <param name="contextKey">The key to look for</param>
 		/// <returns>DuplicateNameAction (ModifyDuplicateCollection or ThrowOnDuplicateName)</returns>
-		private static DuplicateNameAction GetDuplicateNameActionForRule(ORMNamedElement element, object contextKey)
+		private static DuplicateNameAction GetDuplicateNameActionForRule(ModelElement element, object contextKey)
 		{
 			DuplicateNameAction duplicateAction = DuplicateNameAction.ThrowOnDuplicateName;
 			if (contextKey == null)
@@ -1234,10 +1234,10 @@ namespace Neumont.Tools.ORM.Framework
 				}
 			}
 		}
-		private static Dictionary<ORMNamedElement, DetachedElementRecord> myDetachedElementRecords;
+		private static Dictionary<ModelElement, DetachedElementRecord> myDetachedElementRecords;
 		private static void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
-			Dictionary<ORMNamedElement, DetachedElementRecord> changes = myDetachedElementRecords;
+			Dictionary<ModelElement, DetachedElementRecord> changes = myDetachedElementRecords;
 
 			// Toss unused tracked changes when events are finished
 			myDetachedElementRecords = null;
@@ -1245,11 +1245,11 @@ namespace Neumont.Tools.ORM.Framework
 			// The name will have stabilized at this point, remove it
 			if (changes != null)
 			{
-				foreach (KeyValuePair<ORMNamedElement, DetachedElementRecord> keyAndValue in changes)
+				foreach (KeyValuePair<ModelElement, DetachedElementRecord> keyAndValue in changes)
 				{
 					DetachedElementRecord changeRecord = keyAndValue.Value;
 					string startingName = changeRecord.OldName;
-					ORMNamedElement element = keyAndValue.Key;
+					ModelElement element = keyAndValue.Key;
 					if (changeRecord.SingleDictionary != null)
 					{
 						changeRecord.SingleDictionary.RemoveElement(element, startingName, DuplicateNameAction.RetrieveDuplicateCollection);
@@ -1313,10 +1313,10 @@ namespace Neumont.Tools.ORM.Framework
 			{
 				INamedElementDictionaryParent parent;
 				INamedElementDictionaryChild child;
-				ORMNamedElement namedChild;
+				ModelElement namedChild;
 				if ((null != (parent = link.ParentRolePlayer)) &&
 					(null != (child = link.ChildRolePlayer)) &&
-					(null != (namedChild = child as ORMNamedElement)))
+					(null != (namedChild = child as ModelElement)))
 				{
 					Guid parentRoleGuid;
 					Guid childRoleGuid;
@@ -1350,13 +1350,13 @@ namespace Neumont.Tools.ORM.Framework
 							if (!dictionary.RemoveElement(namedChild, null, duplicateAction) &&
 								forEvent)
 							{
-								string elementName = namedChild.Name;
+								string elementName = DomainClassInfo.GetName(namedChild);
 								if (elementName != null)
 								{
 									DetachedElementRecord changeRecord;
 									if (myDetachedElementRecords == null)
 									{
-										myDetachedElementRecords = new Dictionary<ORMNamedElement, DetachedElementRecord>();
+										myDetachedElementRecords = new Dictionary<ModelElement, DetachedElementRecord>();
 										changeRecord = new DetachedElementRecord(dictionary);
 									}
 									else
@@ -1414,7 +1414,7 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		// UNDONE: RolePlayerChange
-		[RuleOn(typeof(ORMNamedElement), Priority = NamedElementDictionary.RulePriority)]
+		[RuleOn(typeof(ModelElement), Priority = NamedElementDictionary.RulePriority)]
 		private sealed class NamedElementChangedRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -1440,12 +1440,12 @@ namespace Neumont.Tools.ORM.Framework
 			INamedElementDictionaryChild child = element as INamedElementDictionaryChild;
 			if (child != null)
 			{
-				if (e.DomainProperty.Id == ORMNamedElement.NameDomainPropertyId)
+				if (e.DomainProperty == e.DomainClass.NameDomainProperty)
 				{
 					Guid parentRoleGuid;
 					Guid childRoleGuid;
 					child.GetRoleGuids(out parentRoleGuid, out childRoleGuid);
-					ORMNamedElement namedChild = child as ORMNamedElement;
+					ModelElement namedChild = child as ModelElement;
 					LinkedElementCollection<ModelElement> parents = namedChild.Store.DomainDataDirectory.GetDomainRole(childRoleGuid).GetLinkedElements(namedChild);
 					int parentsCount = parents.Count;
 					if (parentsCount == 0 && forEvent && element.IsDeleted)
@@ -1459,7 +1459,7 @@ namespace Neumont.Tools.ORM.Framework
 						{
 							if (myDetachedElementRecords == null)
 							{
-								myDetachedElementRecords = new Dictionary<ORMNamedElement, DetachedElementRecord>();
+								myDetachedElementRecords = new Dictionary<ModelElement, DetachedElementRecord>();
 							}
 							else
 							{
@@ -1514,8 +1514,8 @@ namespace Neumont.Tools.ORM.Framework
 			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent));
 			// UNDONE: RolePlayerChanged
 
-			// Track ORMNamedElement 
-			classInfo = dataDirectory.FindDomainClass(ORMNamedElement.DomainClassId);
+			// Track ModelElement 
+			classInfo = dataDirectory.FindDomainClass(ModelElement.DomainClassId);
 			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent));
 
 			eventDirectory.ElementEventsEnded.Add(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));
@@ -1540,8 +1540,8 @@ namespace Neumont.Tools.ORM.Framework
 			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementLinkRemovedEvent));
 			// UNDONE: RolePlayerChanged
 
-			// Track ORMNamedElement 
-			classInfo = dataDirectory.FindDomainClass(ORMNamedElement.DomainClassId);
+			// Track ModelElement 
+			classInfo = dataDirectory.FindDomainClass(ModelElement.DomainClassId);
 			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(NamedElementChangedEvent));
 
 			eventDirectory.ElementEventsEnded.Remove(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent));

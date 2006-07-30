@@ -182,7 +182,7 @@ namespace Neumont.Tools.ORM.Shell
 				FactType secondaryFact = null;
 				foreach (object o in selectedObjects)
 				{
-					FactType testFact = EditorUtility.ResolveContextFactType(o);
+					FactType testFact = ORMEditorUtility.ResolveContextFactType(o);
 					// Handle selection of multiple elements as long as
 					// they all resolve to the same fact
 					if (theFact == null)

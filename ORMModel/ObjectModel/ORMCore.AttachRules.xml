@@ -65,9 +65,9 @@
 		<arg:Rule class="MandatoryConstraint.VerifyImpliedMandatoryRoleDeleting"/>
 		<arg:Rule class="ModelError.SynchronizeErrorForOwnerRule"/>
 		<arg:Rule class="ModelError.SynchronizeErrorTextForModelRule"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.ORM.Framework"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkDeleteRule" namespace="Neumont.Tools.ORM.Framework"/>
-		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Neumont.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.Modeling"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkDeleteRule" namespace="Neumont.Tools.Modeling"/>
+		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Neumont.Tools.Modeling"/>
 		<arg:Rule class="Note.NoteChangeRule"/>
 		<arg:Rule class="Objectification.ImpliedFactTypeAddRule"/>
 		<arg:Rule class="Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule"/>

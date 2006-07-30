@@ -1045,7 +1045,7 @@ namespace Neumont.Tools.ORM.Design
 		}
 		/// <summary>
 		/// The <see cref="ModelElement"/> of type <typeparamref name="TModelElement"/> that
-		/// this <see cref="ModelElementTypeDescriptor{TModelElement}"/> is for.
+		/// this <see cref="ORMPresentationElementTypeDescriptor{TPresentationElement,TModelElement}"/> is for.
 		/// </summary>
 		protected new TModelElement ModelElement
 		{

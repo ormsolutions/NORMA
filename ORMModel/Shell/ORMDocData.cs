@@ -27,9 +27,10 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 using EnvDTE;
 
 namespace Neumont.Tools.ORM.Shell

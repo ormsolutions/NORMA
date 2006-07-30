@@ -25,7 +25,7 @@
 	<xsl:template match="qp:surveyQuestionProvider">
 		<plx:root>
 			<plx:namespaceImport name="System"/>
-			<plx:namespaceImport name="Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid"/>
+			<plx:namespaceImport name="Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid"/>
 			<plx:namespace name="{$CustomToolNamespace}">
 				<plx:class name="{@class}" partial="true" visibility="public">
 					<plx:implementsInterface dataTypeName="ISurveyQuestionProvider"/>

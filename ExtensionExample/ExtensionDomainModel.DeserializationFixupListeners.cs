@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ExtensionExample

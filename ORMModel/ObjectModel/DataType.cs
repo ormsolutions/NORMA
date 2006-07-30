@@ -21,7 +21,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -231,11 +231,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// UNDONE: How are we going to localize this properly? We may need to
 			// get the y/n/yes/no values from the resource file.
-			return (value != null && value.Length != 0 &&
-				(0 == string.Compare(value, "y", true, CultureInfo.InvariantCulture) ||
-				0 == string.Compare(value, "n", true, CultureInfo.InvariantCulture) ||
-				0 == string.Compare(value, "yes", true, CultureInfo.InvariantCulture) ||
-				0 == string.Compare(value, "no", true, CultureInfo.InvariantCulture)));
+			return (!string.IsNullOrEmpty(value) &&
+				(string.Equals(value, "Y", StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(value, "N", StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(value, "YES", StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(value, "NO", StringComparison.OrdinalIgnoreCase)));
 		}
 		/// <summary>
 		/// There are values we can't parse
@@ -254,13 +254,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// UNDONE: How are we going to localize this properly? We may need to
 			// get the y/n/yes/no values from the resource file.
-			bool v1 = 0 == string.Compare(value1, "y", true, CultureInfo.InvariantCulture) || 0 == string.Compare(value1, "yes", true, CultureInfo.InvariantCulture);
-			bool v2 = 0 == string.Compare(value2, "y", true, CultureInfo.InvariantCulture) || 0 == string.Compare(value2, "yes", true, CultureInfo.InvariantCulture);
-			if (v1 == v2)
-			{
-				return 0;
-			}
-			return 1;
+			bool v1 = string.Equals(value1, "Y", StringComparison.OrdinalIgnoreCase) || string.Equals(value1, "YES", StringComparison.OrdinalIgnoreCase);
+			bool v2 = string.Equals(value2, "Y", StringComparison.OrdinalIgnoreCase) || string.Equals(value2, "YES", StringComparison.OrdinalIgnoreCase);
+			return v1.CompareTo(v2);
 		}
 	}
 	#endregion // Custom CanParse implementations

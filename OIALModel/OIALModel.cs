@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 using System.Globalization;
 using System.Collections;
 using System.Diagnostics;

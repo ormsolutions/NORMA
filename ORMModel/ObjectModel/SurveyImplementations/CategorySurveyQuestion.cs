@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// element type enum question answers

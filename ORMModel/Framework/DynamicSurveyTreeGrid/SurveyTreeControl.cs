@@ -15,39 +15,48 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
-namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
+namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	/// <summary>
-	/// container for VirtualTreeControl
+	/// Container for <see cref="VirtualTreeControl"/>.
 	/// </summary>
-	public partial class SurveyTreeControl : UserControl
+	public class SurveyTreeControl : UserControl
 	{
+		private readonly VirtualTreeControl myTreeControl;
+
 		/// <summary>
-		/// public constructor
+		/// Instantiates a new instance of <see cref="SurveyTreeControl"/>.
 		/// </summary>
 		public SurveyTreeControl()
 		{
-			InitializeComponent();
+			this.myTreeControl = new VirtualTreeControl();
+			this.SuspendLayout();
+			// 
+			// myTreeControl
+			// 
+			this.myTreeControl.Dock = DockStyle.Fill;
+			this.myTreeControl.Name = "myTreeControl";
+			this.myTreeControl.TabIndex = 0;
+			// 
+			// SurveyTreeControl
+			// 
+			this.Controls.Add(this.myTreeControl);
+			this.Name = "SurveyTreeControl";
+			this.ResumeLayout(false);
 		}
+
 		/// <summary>
-		/// Tree control of VirtualTreeControl
+		/// <see cref="VirtualTreeControl.Tree"/> of <see cref="VirtualTreeControl"/>.
 		/// </summary>
 		public ITree Tree
 		{
 			get
 			{
-				if (myTreeControl == null)
-				{
-					myTreeControl = new VirtualTreeControl();
-				}
 				return myTreeControl.Tree;
 			}
 			set

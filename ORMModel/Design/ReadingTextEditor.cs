@@ -56,7 +56,7 @@ namespace Neumont.Tools.ORM.Design
 			IWindowsFormsEditorService edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 			if (edSvc != null)
 			{
-				FactType fact = EditorUtility.ResolveContextFactType(context.Instance);
+				FactType fact = ORMEditorUtility.ResolveContextFactType(context.Instance);
 				if (fact != null)
 				{
 					ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;

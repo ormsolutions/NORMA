@@ -208,7 +208,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <see cref="DiagramDocView"/> designed to contain multiple <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
-	public partial class ORMDesignerDocView : Neumont.Tools.ORM.Framework.MultiDiagramDocView, IORMSelectionContainer
+	public partial class ORMDesignerDocView : Neumont.Tools.Modeling.Shell.MultiDiagramDocView, IORMSelectionContainer
 	{
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
@@ -2442,7 +2442,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				foreach (ModelElement mel in GetSelectedComponents())
 				{
-					FactType factType = EditorUtility.ResolveContextFactType(mel);
+					FactType factType = ORMEditorUtility.ResolveContextFactType(mel);
 					if (factType != null)
 					{
 						Store store = factType.Store;

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel

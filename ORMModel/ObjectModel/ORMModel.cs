@@ -21,7 +21,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -320,7 +320,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ORMNamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					ObjectType objectType = (ObjectType)element;
 					if (afterTransaction)
@@ -392,7 +392,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						return elementCollection;
 					}
 				}
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ORMNamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
 				{
 					TrackingList trackingList = (TrackingList)elementCollection;
 					ObjectType objectType = (ObjectType)element;
@@ -421,14 +421,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">The element to test</param>
 			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(ORMNamedElement element)
+			protected override string GetRootNamePattern(ModelElement element)
 			{
 				return ((ObjectType)element).IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
 			}
 			/// <summary>
 			/// Return a default name and allow duplicates for auto-generated names on objectifying types
 			/// </summary>
-			protected override string GetDefaultName(ORMNamedElement element)
+			protected override string GetDefaultName(ModelElement element)
 			{
 				ObjectType objectType = (ObjectType)element;
 				Objectification objectificationLink;
@@ -445,7 +445,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void ThrowDuplicateNameException(ORMNamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(ModelElement element, string requestedName)
 			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
@@ -463,7 +463,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
 				#region TrackingList class
-				private sealed class TrackingList : List<ORMNamedElement>
+				private sealed class TrackingList : List<ModelElement>
 				{
 					private readonly LinkedElementCollection<SetComparisonConstraint> myNativeMCCollection;
 					private readonly LinkedElementCollection<SetConstraint> myNativeSCCollection;
@@ -498,8 +498,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ORMNamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
+					ORMNamedElement namedElement = (ORMNamedElement)element;
 					SetConstraint scConstraint = null;
 					SetComparisonConstraint mcConstraint = null;
 					ValueConstraint vConstraint = null;
@@ -550,7 +551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// it down and verify that it is a legitimate error.
 								// If it is not legitimate, then generate a new one.
 								error = existingError;
-								if (error != null && !error.ValidateDuplicates(element))
+								if (error != null && !error.ValidateDuplicates(namedElement))
 								{
 									error = null;
 								}
@@ -626,7 +627,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						return elementCollection;
 					}
 				}
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ORMNamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
 				{
 					TrackingList trackingList = (TrackingList)elementCollection;
 					trackingList.Remove(element);
@@ -668,7 +669,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Ignored. Should be a FactType</param>
 			/// <returns>A base name string pattern</returns>
-			protected override string GetRootNamePattern(ORMNamedElement element)
+			protected override string GetRootNamePattern(ModelElement element)
 			{
 				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
 				// UNDONE: How explicit do we want to be on constraint naming?
@@ -679,7 +680,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void ThrowDuplicateNameException(ORMNamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(ModelElement element, string requestedName)
 			{
 				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}

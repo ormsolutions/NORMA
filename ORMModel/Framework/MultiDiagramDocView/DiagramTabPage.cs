@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Framework
+namespace Neumont.Tools.Modeling.Shell
 {
 	partial class MultiDiagramDocView
 	{

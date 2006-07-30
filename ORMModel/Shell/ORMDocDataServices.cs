@@ -15,21 +15,21 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Shell;
-using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Shell;
-using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
-using Neumont.Tools.ORM.Framework;
-using Microsoft.VisualStudio.VirtualTreeGrid;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.Modeling.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.Shell
 {

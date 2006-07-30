@@ -25,8 +25,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM;
-using Neumont.Tools.ORM.Framework;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {

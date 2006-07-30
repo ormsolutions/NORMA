@@ -25,7 +25,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {

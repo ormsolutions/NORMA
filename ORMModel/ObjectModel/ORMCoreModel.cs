@@ -20,8 +20,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.Framework;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -221,9 +221,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.GetSurveyNodes();
 		}
 		/// <summary>
-		/// provides an IEnumerable of sampleDataElementNodes for the SurveyTree
+		/// Provides an <see cref="IEnumerable{SampleDataElementNode}"/> for the <see cref="SurveyTreeControl"/>.
 		/// </summary>
-		/// <returns></returns>
 		protected IEnumerable<SampleDataElementNode> GetSurveyNodes()
 		{
 			foreach (ModelElement element in this.Store.ElementDirectory.FindElements(FactType.DomainClassId, true))

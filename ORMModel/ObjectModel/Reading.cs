@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
 using System.Globalization;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region Reading class

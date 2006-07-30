@@ -205,11 +205,6 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$VerbalizationTextSnippetType} enum"/>
 			</plx:trailingInfo>
-			<plx:attribute dataTypeName="CLSCompliant">
-				<plx:passParam>
-					<plx:trueKeyword/>
-				</plx:passParam>
-			</plx:attribute>
 			<xsl:for-each select="$alethicPositive">
 				<plx:enumItem name="{@type}">
 					<plx:leadingInfo>
@@ -863,11 +858,6 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$CoreVerbalizationSets} class"/>
 			</plx:trailingInfo>
-			<plx:attribute dataTypeName="CLSCompliant">
-				<plx:passParam>
-					<plx:trueKeyword/>
-				</plx:passParam>
-			</plx:attribute>
 			<plx:derivesFromClass dataTypeName="{$VerbalizationSets}">
 				<plx:passTypeParam dataTypeName="{$VerbalizationTextSnippetType}"/>
 			</plx:derivesFromClass>

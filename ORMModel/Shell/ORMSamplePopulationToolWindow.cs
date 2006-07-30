@@ -170,7 +170,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					else
 					{
-						FactType testFactType = EditorUtility.ResolveContextFactType(selectedObject) as FactType;
+						FactType testFactType = ORMEditorUtility.ResolveContextFactType(selectedObject) as FactType;
 						if (testFactType != null)
 						{
 							SelectedFactType = testFactType;

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {

@@ -21,7 +21,7 @@ using System.Text;
 using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;

@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Design\ORMEditorUtility.cs" />
     <Compile Include="Design\ORMTypeConverters.cs" />
     <Compile Include="Design\ORMTypeDescriptors.cs" />
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
@@ -106,7 +107,7 @@
     <Compile Include="Shell\FactEditor\FactParser.cs" />
     <Compile Include="Shell\FactEditor\FactSaver.cs" />
     <Compile Include="Shell\FactEditor\FactTextViewFilter.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\CategorySurveyQuestion.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\CategorySurveyQuestion.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyInterfaces.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\ListGrouper.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\MainList.cs" />
@@ -115,9 +116,6 @@
     <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyClasses.cs" />
     <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyTreeControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyTreeControl.Designer.cs">
-      <DependentUpon>SurveyTreeControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Framework\MultiDiagramDocView\DiagramTabPage.cs" />
     <Compile Include="Framework\MultiDiagramDocView\MultiDiagramDocViewControl.cs" />
@@ -133,9 +131,6 @@
     <Compile Include="ObjectModel\SurveyImplementations\ObjectTypeAnswers.cs" />
     <Compile Include="Design\SamplePopulationEditor.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Design\SamplePopulationEditor.Designer.cs">
-      <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneratedCode\CoreDomainRelationships.cs">
       <AutoGen>True</AutoGen>
@@ -203,9 +198,6 @@
     <Compile Include="Design\ReadingTextEditor.cs" />
     <Compile Include="Design\CustomReferenceModeEditor.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Design\CustomReferenceModeEditor.Designer.cs">
-      <DependentUpon>CustomReferenceModeEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Shell\CustomReferenceModesBranch.cs" />
     <Compile Include="Shell\IntrinsicReferenceModesBranch.cs" />

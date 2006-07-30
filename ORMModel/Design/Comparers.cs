@@ -33,7 +33,7 @@ namespace Neumont.Tools.ORM.Design
 	/// </remarks>
 	public sealed class HashCodeComparer<T> : Comparer<T>, IEqualityComparer<T>, IEqualityComparer, IEquatable<HashCodeComparer<T>>
 	{
-		private HashCodeComparer()
+		private HashCodeComparer() : base()
 		{
 		}
 		/// <summary>
@@ -75,11 +75,11 @@ namespace Neumont.Tools.ORM.Design
 		/// <summary>See <see cref="IEqualityComparer.Equals"/>.</summary>
 		bool IEqualityComparer.Equals(object x, object y)
 		{
-			if (x == null)
+			if (x == y)
 			{
-				return (y == null);
+				return true;
 			}
-			else if (y == null)
+			else if (x == null || y == null)
 			{
 				return false;
 			}
@@ -123,6 +123,7 @@ namespace Neumont.Tools.ORM.Design
 		}
 	}
 	#endregion // HashCodeComparer class
+
 	#region NamedElementComparer class
 	/// <summary>
 	/// Name-based <see cref="Comparer{TModelElement}"/> implementation for <see cref="ModelElement"/> instances.
@@ -140,7 +141,7 @@ namespace Neumont.Tools.ORM.Design
 		/// <see cref="StringComparer"/> specified by <paramref name="stringComparer"/> to
 		/// compare Names.
 		/// </summary>
-		public NamedElementComparer(StringComparer stringComparer)
+		public NamedElementComparer(StringComparer stringComparer) : base()
 		{
 			if (stringComparer == null)
 			{

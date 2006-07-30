@@ -22,7 +22,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Text.RegularExpressions;
 using System.Text;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {

@@ -1607,7 +1607,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int location1 = -1;
 							for (int i = 0; i < typesCount; ++i)
 							{
-								if (0 == string.CompareOrdinal(types[i].EnumTypeName, typeName1))
+								if (types[i].EnumTypeName == typeName1)
 								{
 									location1 = i;
 									break;
@@ -1616,7 +1616,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							int location2 = -1;
 							for (int i = 0; i < typesCount; ++i)
 							{
-								if (0 == string.CompareOrdinal(types[i].EnumTypeName, typeName2))
+								if (types[i].EnumTypeName == typeName2)
 								{
 									location2 = i;
 									break;
@@ -1662,14 +1662,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					bool matchedCurrent = currentIdentifiers == null;
 					for (; nextIdentifier < allIdentifiersCount; ++nextIdentifier)
 					{
-						if (0 != string.CompareOrdinal(allIdentifiers[nextIdentifier].EnumTypeName, matchTypeName))
+						if (allIdentifiers[nextIdentifier].EnumTypeName != matchTypeName)
 						{
 							break;
 						}
 						currentType.LastIdentifier = nextIdentifier;
 						if (!matchedCurrent)
 						{
-							if (((ICollection<VerbalizationSnippetsIdentifier>)currentIdentifiers).Contains(allIdentifiers[nextIdentifier]))
+							if (Array.IndexOf<VerbalizationSnippetsIdentifier>(currentIdentifiers, allIdentifiers[nextIdentifier]) >= 0)
 							{
 								currentType.CurrentIdentifier = nextIdentifier;
 								matchedCurrent = true;

@@ -20,6 +20,8 @@ namespace Neumont.Tools.ORM.Design
 	public partial class SamplePopulationEditor : UserControl
 	{
 		#region Member Variables
+		private readonly VirtualTreeControl vtrSamplePopulation;
+		private readonly Label lblNoSelection;
 		private SamplePopulationBaseBranch myBranch;
 		private ObjectType mySelectedValueType;
 		private ObjectType mySelectedEntityType;
@@ -39,8 +41,42 @@ namespace Neumont.Tools.ORM.Design
 		/// </summary>
 		public SamplePopulationEditor()
 		{
-			InitializeComponent();
-			SamplePopulationEditor.TreeControl = this.vtrSamplePopulation;
+			VirtualTreeControl treeControl = this.vtrSamplePopulation = new VirtualTreeControl();
+			Label label = this.lblNoSelection = new Label();
+			this.SuspendLayout();
+			// 
+			// vtrSamplePopulation
+			// 
+			treeControl.Dock = DockStyle.Fill;
+			treeControl.HasGridLines = true;
+			treeControl.HasHorizontalGridLines = true;
+			treeControl.HasVerticalGridLines = true;
+			treeControl.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Delayed;
+			treeControl.Name = "vtrSamplePopulation";
+			treeControl.TabIndex = 0;
+			treeControl.Visible = false;
+			treeControl.SelectionChanged += this.vtrSamplePopulation_SelectionChanged;
+			// 
+			// lblNoSelection
+			// 
+			label.FlatStyle = FlatStyle.System;
+			label.Dock = DockStyle.Fill;
+			label.Name = "lblNoSelection";
+			label.TabIndex = 1;
+			// UNDONE: Localize this.
+			label.Text = "Please select a FactType, a ValueType, or an EntityType with a preferred identifier to begin editing instances.";
+			label.TextAlign = ContentAlignment.MiddleCenter;
+			// 
+			// SamplePopulationEditor
+			// 
+			this.AutoScaleDimensions = new SizeF(6F, 13F);
+			this.AutoScaleMode = AutoScaleMode.Font;
+			this.Controls.Add(treeControl);
+			this.Controls.Add(label);
+			this.Name = "SamplePopulationEditor";
+			this.Size = new System.Drawing.Size(407, 179);
+			this.ResumeLayout(false);
+			SamplePopulationEditor.TreeControl = treeControl;
 		}
 		#endregion
 		#region Properties
@@ -1636,7 +1672,7 @@ namespace Neumont.Tools.ORM.Design
 								{
 									CellEditContext editContext = (CellEditContext)context.Instance;
 									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
-									if (currentInstance != null && 0 == string.CompareOrdinal(stringValue, RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer)))
+									if (currentInstance != null && stringValue == RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer))
 									{
 										return currentInstance;
 									}
@@ -2199,7 +2235,7 @@ namespace Neumont.Tools.ORM.Design
 								{
 									CellEditContext editContext = (CellEditContext)context.Instance;
 									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
-									if (currentInstance != null && 0 == string.CompareOrdinal(stringValue, RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer)))
+									if (currentInstance != null && stringValue == RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer))
 									{
 										return currentInstance;
 									}

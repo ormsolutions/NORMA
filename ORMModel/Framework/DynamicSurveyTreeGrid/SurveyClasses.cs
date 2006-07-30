@@ -16,12 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
+namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 {
 	/// <summary>
 	/// survey question ui support enum
@@ -30,19 +28,23 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 	public enum SurveyQuestionUISupport
 	{
 		/// <summary>
+		/// If nothing is supported by question
+		/// </summary>
+		None = 0,
+		/// <summary>
 		/// If sorting is supported by question
 		/// </summary>
 		Sorting = 1,
 		/// <summary>
-		/// if grouping is supported, defaults to sorting supported too
+		/// If grouping is supported, defaults to sorting supported too
 		/// </summary>
 		Grouping = 2,
 		/// <summary>
-		/// if question supports glyphs
+		/// If question supports glyphs
 		/// </summary>
 		Glyph = 4,
 		/// <summary>
-		/// if overlay is supported by question
+		/// If overlay is supported by question
 		/// </summary>
 		Overlay = 8,
 	}
@@ -51,7 +53,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 	/// </summary>
 	public class Survey
 	{
-		private IList<SurveyQuestion> myQuestions;
+		private readonly List<SurveyQuestion> myQuestions;
 		private int totalShift;
 		/// <summary>
 		/// public constructor
@@ -59,11 +61,16 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <param name="questionProviderList">enumerable object of ISurveyQuestion providers</param>
 		public Survey(IEnumerable<ISurveyQuestionProvider> questionProviderList)
 		{
+			if (questionProviderList == null)
+			{
+				throw new ArgumentNullException("questionProviderList");
+			}
+			myQuestions = new List<SurveyQuestion>();
 			LoadQuestions(questionProviderList);
 		}
 		#region ProcessNodes
 		/// <summary>
-		/// cycles through all SampleDataEmlementNodes in the list and creates their node data based on the answer to this survey's questions
+		/// cycles through all SampleDataElementNodes in the list and creates their node data based on the answer to this survey's questions
 		/// </summary>
 		/// <param name="nodeList"></param>
 		/// <returns></returns>
@@ -86,17 +93,16 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		}
 		#endregion //ProcessNodes
 		#region LoadQuestions
-		private void LoadQuestions(IEnumerable<ISurveyQuestionProvider> providerCollection)
+		private void LoadQuestions(IEnumerable<ISurveyQuestionProvider> providers)
 		{
-			myQuestions = new List<SurveyQuestion>();
-			foreach (ISurveyQuestionProvider provider in providerCollection)
+			foreach (ISurveyQuestionProvider provider in providers)
 			{
 				ISurveyQuestionTypeInfo[] currentQuestions = provider.GetSurveyQuestionTypeInfo();
 				for (int i = 0; i < currentQuestions.Length; ++i)
 				{
 					SurveyQuestion currentQuestion = new SurveyQuestion(currentQuestions[i]);
 					currentQuestion.Shift = totalShift;
-					currentQuestion.Mask = generateMask(currentQuestion.BitCount, currentQuestion.Shift);
+					currentQuestion.Mask = GenerateMask(currentQuestion.BitCount, currentQuestion.Shift);
 					currentQuestion.QuestionList = this;
 					totalShift += currentQuestion.BitCount;
 					myQuestions.Add(currentQuestion);
@@ -112,7 +118,10 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <returns>survey question at the location</returns>
 		public SurveyQuestion this[int i]
 		{
-			get { return myQuestions[i]; }
+			get
+			{
+				return myQuestions[i];
+			}
 		}
 		/// <summary>
 		/// indexer for question list
@@ -140,14 +149,15 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// </summary>
 		public int Count
 		{
-			get { return myQuestions.Count; }
+			get
+			{
+				return myQuestions.Count;
+			}
 		}
 		/// <summary>
 		/// returns index of question type passed in
 		/// </summary>
-		/// <param name="question"></param>
-		/// <returns></returns>
-		public int getIndex(Type question)
+		public int GetIndex(Type question)
 		{
 			for (int i = 0; i < myQuestions.Count; ++i)
 			{
@@ -158,7 +168,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 			}
 			return -1;
 		}
-		private int generateMask(int bitCount, int shift)
+		private static int GenerateMask(int bitCount, int shift)
 		{
 			return ((1 << bitCount) - 1) << shift;
 		}
@@ -166,9 +176,10 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 	/// <summary>
 	/// wrapper for ISurveyQeustionTypeInfo, holds some metadata about the question
 	/// </summary>
-	public class SurveyQuestion
+	public sealed class SurveyQuestion
 	{
-		private ISurveyQuestionTypeInfo myQuestion;
+		private readonly ISurveyQuestionTypeInfo myQuestion;
+		private readonly string[] myHeaders;
 		#region MetaData and local members
 		private int shift;
 		/// <summary>
@@ -232,7 +243,6 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 			}
 		}
 		#endregion //MetaData and local members
-		private string[] Headers;
 		/// <summary>
 		/// returns the wrapped ISurveyQuestionTypeInfo
 		/// </summary>
@@ -250,7 +260,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		{
 			get
 			{
-				return Headers.Length;
+				return myHeaders.Length;
 			}
 		}
 		/// <summary>
@@ -260,12 +270,7 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		{
 			get
 			{
-
-				if (Headers == null)
-				{
-					return 0; 
-				}
-				int itemCount = Headers.Length + 1;
+				int itemCount = myHeaders.Length + 1;
 				int bitCount = 0;
 				while (itemCount > 0)
 				{
@@ -283,11 +288,12 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		/// <returns></returns>
 		public string CategoryHeader(int answer)
 		{
-			if (answer < 0 || answer > Headers.Length - 1)
+			if (answer < 0 || answer > myHeaders.Length - 1)
 			{
+				// UNDONE: Localize this.
 				return "Not Applicable";
 			}
-			return Headers[answer];
+			return myHeaders[answer];
 		}
 		/// <summary>
 		/// returns the answer value to this question in the integer node data passed in
@@ -305,7 +311,8 @@ namespace Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid
 		public SurveyQuestion(ISurveyQuestionTypeInfo question)
 		{
 			myQuestion = question;
-			Headers = Enum.GetNames(question.QuestionType);
+			// UNDONE: This needs to be changed to get the localized enum names
+			myHeaders = Enum.GetNames(question.QuestionType);
 		}
 	}
 }

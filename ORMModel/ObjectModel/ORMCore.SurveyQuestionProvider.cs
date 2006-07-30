@@ -1,5 +1,5 @@
 ﻿using System;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ORMCoreModel : ISurveyQuestionProvider

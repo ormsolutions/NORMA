@@ -25,7 +25,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Neumont.Tools.ORM.Framework
+namespace Neumont.Tools.Modeling.Shell
 {
 	/// <summary>
 	/// Base class for <see cref="DiagramDocView"/> implementations that support multiple <see cref="Diagram"/>s.
@@ -45,19 +45,17 @@ namespace Neumont.Tools.ORM.Framework
 			myDiagramRefCounts = new Dictionary<Diagram, int>();
 		}
 		#endregion // Constructor
-		#region DocViewControl Delayed Creation
+		#region Fields and Private Properties
 		private readonly Dictionary<Diagram, int> myDiagramRefCounts;
 		private MultiDiagramDocViewControl myDocViewControl;
-		private MultiDiagramDocViewControl EnsureDocViewControl()
+		private MultiDiagramDocViewControl DocViewControl
 		{
-			MultiDiagramDocViewControl retVal = myDocViewControl;
-			if (retVal == null)
+			get
 			{
-				myDocViewControl = retVal = new MultiDiagramDocViewControl(this);
+				return myDocViewControl ?? (myDocViewControl = new MultiDiagramDocViewControl(this));
 			}
-			return retVal;
 		}
-		#endregion // DocViewControl Delayed Creation
+		#endregion // Fields and Private Properties
 		#region Constants
 		/// <summary>
 		/// The <see cref="Size.Width"/> of <see cref="Image"/>s displayed on tabs.
@@ -72,7 +70,7 @@ namespace Neumont.Tools.ORM.Framework
 		/// </summary>
 		public static readonly Size DiagramImageSize = new Size(DiagramImageWidth, DiagramImageHeight);
 		#endregion // Constants
-		#region Properties
+		#region Public Properties
 		#region ContextMenuStrip property
 		/// <summary>
 		/// Gets or sets the <see cref="ContextMenuStrip"/> for this <see cref="MultiDiagramDocView"/>.
@@ -85,7 +83,7 @@ namespace Neumont.Tools.ORM.Framework
 			}
 			set
 			{
-				EnsureDocViewControl().ContextMenuStrip = value;
+				DocViewControl.ContextMenuStrip = value;
 			}
 		}
 		#endregion // ContextMenuStrip property
@@ -95,7 +93,7 @@ namespace Neumont.Tools.ORM.Framework
 		{
 			get
 			{
-				return EnsureDocViewControl().Parent;
+				return DocViewControl.Parent;
 			}
 		}
 		#endregion // Window property
@@ -137,7 +135,7 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		#endregion // CurrentDiagram property
-		#endregion // Properties
+		#endregion // Public Properties
 		#region Methods
 		#region RegisterImageForDiagramType method
 		/// <summary>
@@ -162,7 +160,7 @@ namespace Neumont.Tools.ORM.Framework
 			{
 				throw new ArgumentNullException("diagramType");
 			}
-			MultiDiagramDocViewControl docViewControl = EnsureDocViewControl();
+			MultiDiagramDocViewControl docViewControl = DocViewControl;
 			ImageList imageList = docViewControl.ImageList;
 			if (imageList == null)
 			{
@@ -273,7 +271,7 @@ namespace Neumont.Tools.ORM.Framework
 			{
 				throw new ArgumentNullException("designer");
 			}
-			MultiDiagramDocViewControl docViewControl = EnsureDocViewControl();
+			MultiDiagramDocViewControl docViewControl = DocViewControl;
 			int tabCount = docViewControl.TabCount;
 			DiagramTabPage tabPage = new DiagramTabPage(docViewControl, designer);
 			Diagram diagram = designer.Diagram;

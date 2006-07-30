@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -26,7 +25,7 @@ using Microsoft.VisualStudio.Modeling;
 using ShapeElement = Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement;
 using LinkShape = Microsoft.VisualStudio.Modeling.Diagrams.LinkShape;
 
-namespace Neumont.Tools.ORM.Framework
+namespace Neumont.Tools.Modeling
 {
 	#region INotifyElementAdded interface
 	/// <summary>
