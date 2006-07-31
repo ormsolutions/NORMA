@@ -26,12 +26,11 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Neumont.Tools.ORM.Design;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseBinaryLinkShape, ModelElement, Design.ORMBaseBinaryLinkShapeTypeDescriptor<ORMBaseBinaryLinkShape, ModelElement>>))]
 	public partial class ORMBaseBinaryLinkShape
 	{
 		#region ConnectionPoint Workaround Hacks
@@ -200,7 +199,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Store store = Store;
 			EditorUtility.ActivatePropertyEditor(
 				(store as IORMToolServices).ServiceProvider,
-				ORMTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
+				DomainTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
 				false);
 		}
 		#endregion // DuplicateNameError Activation Helper

@@ -23,7 +23,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Neumont.Tools.ORM.Design;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
@@ -363,7 +363,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (column == (int)Columns.ReferenceModeKind)
 			{
 				ModelElement element = myCustomReferenceModesList[row];
-				PropertyDescriptor descriptor = ORMTypeDescriptor.CreatePropertyDescriptor(element, ReferenceMode.KindDisplayDomainPropertyId);
+				PropertyDescriptor descriptor = DomainTypeDescriptor.CreatePropertyDescriptor(element, ReferenceMode.KindDisplayDomainPropertyId);
 
 				TypeEditorHost hostControl = TypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
 				hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.SizeToText;

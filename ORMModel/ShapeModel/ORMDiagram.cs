@@ -66,7 +66,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#endregion // IStickyObject interface
 
 	// NOTE: ORMDiagram must be the first class in this file or ORMDiagram.resx will end up with the wrong name in the assembly
-	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMDiagram, ORMModel, Design.ORMDiagramTypeDescriptor<ORMDiagram, ORMModel>>))]
 	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider
 	{

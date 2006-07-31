@@ -32,6 +32,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ORMBaseBinaryLinkShape
 	/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMBaseBinaryLinkShape, DslModeling::ModelElement, Design.ORMBaseBinaryLinkShapeTypeDescriptor<ORMBaseBinaryLinkShape, DslModeling::ModelElement>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

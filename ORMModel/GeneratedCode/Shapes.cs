@@ -32,6 +32,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ORMBaseShape
 	/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseShape
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMBaseShape, global::Neumont.Tools.ORM.ObjectModel.ORMModelElement, Design.ORMBaseShapeTypeDescriptor<ORMBaseShape, global::Neumont.Tools.ORM.ObjectModel.ORMModelElement>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -412,6 +413,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass FactTypeShape
 	/// Description for Neumont.Tools.ORM.ShapeModel.FactTypeShape
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<FactTypeShape, global::Neumont.Tools.ORM.ObjectModel.FactType, Design.FactTypeShapeTypeDescriptor<FactTypeShape, global::Neumont.Tools.ORM.ObjectModel.FactType>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

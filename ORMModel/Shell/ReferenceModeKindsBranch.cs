@@ -21,7 +21,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell

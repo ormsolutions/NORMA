@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ExtensionExample
 {
@@ -33,12 +32,12 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// The user is allowed to specify a value that is not in the drop down list by typing it in.
 		/// If the current value is not in the list of predefined values, it is added to the drop down list.
 		/// </remarks>
-		public class TestElementPicker : Neumont.Tools.ORM.Design.ElementPicker
+		public sealed class TestElementPicker : Neumont.Tools.Modeling.Design.ElementPicker<TestElementPicker>
 		{
 			private static readonly string[] predefinedValues =
 				new string[] { "Default value", "Not the default value", "Another value" };
 
-			protected override System.Collections.IList GetContentList(System.ComponentModel.ITypeDescriptorContext context, object value)
+			protected sealed override System.Collections.IList GetContentList(System.ComponentModel.ITypeDescriptorContext context, object value)
 			{
 				// UNDONE: If this UITypeEditor is being used for the top-level value of an expandable property,
 				// the value parameter will be the value of the extension element rather than the property.
@@ -47,7 +46,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 
 				string valueString = value as string ?? (value as MyCustomExtensionElement).TestProperty;
 
-				if (Array.IndexOf(predefinedValues, valueString) != -1)
+				if (Array.IndexOf(predefinedValues, valueString) >= 0)
 				{
 					return Array.AsReadOnly(predefinedValues);
 				}
@@ -104,8 +103,8 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					myExtensionExpandableTopLevelPropertyId = Guid.Empty;
 					break;
 				case 1:
-					// MetaClassGuid is not a valid Guid for ExtensionExpandableTopLevelAttributeGuid
-					// since a MetaAttributeInfo cannot be retrieved for it. We are intentionally
+					// DomainClassId is not a valid Guid for ExtensionExpandableTopLevelPropertyId
+					// since a DomainPropertyInfo cannot be retrieved for it. We are intentionally
 					// including it as a possible return value in order to test the handling
 					// of invalid Guids. The result in this case should be the same as if we specified
 					// Guid.Empty.

@@ -29,8 +29,8 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.Shell.FactEditor
@@ -60,7 +60,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 			myPackage = package;
 			
 			// initialize the comparer used for sorting
-			myComparer = Design.NamedElementComparer<ObjectType>.CurrentCulture;
+			myComparer = Modeling.NamedElementComparer<ObjectType>.CurrentCulture;
 
 			// create the list of object types in the model
 			myObjectEntries = new List<ObjectType>();

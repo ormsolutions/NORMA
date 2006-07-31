@@ -25,7 +25,6 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<SubtypeFact, Design.SubtypeFactTypeDescriptor<SubtypeFact>>))]
 	public partial class SubtypeFact
 	{
 		#region Create functions

@@ -26,7 +26,15 @@
 
 	<Classes>
 
-		<DomainClass Name="ORMModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description=""/>
+		<DomainClass Name="ORMModelElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BFBBEE5E-C691-4299-B958-77AC1B701F28" DisplayName="ORMModelElement" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ORMModelElement, Design.ORMModelElementTypeDescriptor&lt;ORMModelElement&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainClass>
 
 		<DomainClass Name="ORMNamedElement" Namespace="Neumont.Tools.ORM.ObjectModel" Id="C2BE18BA-BC16-4764-BAA1-18E721435BCE" DisplayName="ORMNamedElement" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
@@ -98,6 +106,13 @@
 
 
 		<DomainClass Name="ObjectType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="2FED415E-1786-4FBF-8556-A507F2F765FD" DisplayName="ObjectType" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;ObjectType, Design.ObjectTypeTypeDescriptor&lt;ObjectType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
@@ -111,7 +126,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NoteEditor)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -156,7 +171,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NestedFactTypePicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestedFactTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -174,13 +189,13 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ReferenceModePicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
 						<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ReferenceModeConverter)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModeConverter)"/>
 							</Parameters>
 						</ClrAttribute>
 					</Attributes>
@@ -202,7 +217,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.DataTypePicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DataTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -225,6 +240,13 @@
 		</DomainClass>
 
 		<DomainClass Name="FactType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="723A2B28-6CDA-4185-B597-87866E257265" DisplayName="FactType" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;FactType, Design.FactTypeTypeDescriptor&lt;FactType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -238,7 +260,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NoteEditor)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -273,7 +295,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NestingTypePicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.NestingTypePicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -291,7 +313,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.DerivationRuleEditor)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.DerivationRuleEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -314,6 +336,13 @@
 		</DomainClass>
 
 		<DomainClass Name="SubtypeFact" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7A957450-AD7E-4C29-AF59-A10F8C8052CC" DisplayName="Subtype">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;SubtypeFact, Design.SubtypeFactTypeDescriptor&lt;SubtypeFact&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="FactType"/>
 			</BaseClass>
@@ -339,6 +368,13 @@
 		</DomainClass>
 
 		<DomainClass Name="Role" Namespace="Neumont.Tools.ORM.ObjectModel" Id="291FEB71-371A-4B23-9DDC-61154A10A3D7" DisplayName="Role" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Role, Design.RoleTypeDescriptor&lt;Role&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="RoleBase"/>
 			</BaseClass>
@@ -347,7 +383,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.RolePlayerPicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.RolePlayerPicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -505,6 +541,13 @@
 		</DomainClass>
 
 		<DomainClass Name="UniquenessConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="49C7E3CE-C4F9-417D-B49C-27EA4016371E" DisplayName="UniquenessConstraint" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;UniquenessConstraint, Design.UniquenessConstraintTypeDescriptor&lt;UniquenessConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
@@ -523,6 +566,13 @@
 		</DomainClass>
 
 		<DomainClass Name="MandatoryConstraint" Namespace="Neumont.Tools.ORM.ObjectModel" Id="F054BE4D-BFCA-4CD3-A0D8-97F61C165753" DisplayName="MandatoryConstraint" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;MandatoryConstraint, Design.MandatoryConstraintTypeDescriptor&lt;MandatoryConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="SetConstraint"/>
 			</BaseClass>
@@ -725,7 +775,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ReferenceModeKindPicker)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReferenceModeKindPicker)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -912,12 +962,26 @@
 		</DomainClass>
 
 		<DomainClass Name="DataType" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9D0C6367-617F-4A8C-A0E5-5DA23828ED61" DisplayName="DataType" InheritanceModifier="Abstract" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;DataType, Design.DataTypeTypeDescriptor&lt;DataType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="Reading" Namespace="Neumont.Tools.ORM.ObjectModel" Id="7544854F-A4A7-4429-8859-F1D3B0E52B03" DisplayName="Reading" Description="">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.ElementTypeDescriptionProvider&lt;Reading, Design.ReadingTypeDescriptor&lt;Reading&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
@@ -954,7 +1018,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ReadingTextEditor)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.ObjectModel.Design.ReadingTextEditor)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -1087,7 +1151,7 @@
 					<Attributes>
 						<ClrAttribute Name="global::System.ComponentModel.Editor">
 							<Parameters>
-								<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.NoteEditor)"/>
+								<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.MultilineTextEditor&lt;global::Neumont.Tools.ORM.ObjectModel.Note&gt;)"/>
 								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
 							</Parameters>
 						</ClrAttribute>
@@ -2890,7 +2954,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -2903,7 +2967,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -2936,7 +3000,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -2966,7 +3030,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -2980,7 +3044,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -3002,7 +3066,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

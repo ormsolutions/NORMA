@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Generated code behind for ReadingEditor control.
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.Design
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReadingEditor));
 			this.myImageList = new System.Windows.Forms.ImageList(this.components);
 			this.mySplitContainer = new System.Windows.Forms.ContainerControl();
-			this.vtrReadings = new Neumont.Tools.ORM.Design.ReadingEditor.CustomVirtualTreeControl();
+			this.vtrReadings = new CustomVirtualTreeControl();
 			this.mySplitContainer.SuspendLayout();
 			this.SuspendLayout();
 			// 

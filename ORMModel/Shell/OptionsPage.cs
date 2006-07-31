@@ -29,9 +29,8 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
-using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -772,9 +771,9 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Accessor properties
 		#region Custom dropdown for CustomVerbalizationSnippets option
 		/// <summary>
-		/// Provide context for the AvailableVerbalizationSnippetsEditor
+		/// Provide context for the AvailableVerbalizationSnippetsPicker
 		/// </summary>
-		private sealed class CustomVerbalizationSnippetsEditor : AvailableVerbalizationSnippetsEditor
+		private sealed class CustomVerbalizationSnippetsEditor : AvailableVerbalizationSnippetsPicker<CustomVerbalizationSnippetsEditor>
 		{
 			/// <summary>
 			/// Provide the root directory for verbalization snippets. Individual packages

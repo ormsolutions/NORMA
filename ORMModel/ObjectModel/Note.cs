@@ -19,8 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Diagnostics;
-using Neumont.Tools.ORM.Design;
+using Neumont.Tools.Modeling.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -87,7 +86,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ORMTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
 			}
 		}
 		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
@@ -109,7 +108,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ORMTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
 			}
 		}
 		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor
@@ -166,7 +165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ORMTypeDescriptor.CreatePropertyDescriptor(this, TextDomainPropertyId);
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, TextDomainPropertyId);
 			}
 		}
 		PropertyDescriptor INoteOwner.NoteTextPropertyDescriptor

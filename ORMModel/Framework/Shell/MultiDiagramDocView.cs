@@ -35,7 +35,7 @@ namespace Neumont.Tools.Modeling.Shell
 	{
 		#region Constructor
 		/// <summary>
-		/// Instantiates a new instance of <see cref="MultiDiagramDocView"/>.
+		/// Initializes a new instance of <see cref="MultiDiagramDocView"/>.
 		/// </summary>
 		/// <remarks>
 		/// For parameter descriptions, see <see cref="DiagramDocView(ModelingDocData,IServiceProvider)"/>.

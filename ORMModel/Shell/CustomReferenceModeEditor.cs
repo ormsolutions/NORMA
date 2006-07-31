@@ -23,9 +23,8 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Shell;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.ORM.Shell
 {
 	///	<summary>
 	///	Custom reference mode editor.

@@ -22,10 +22,9 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using System.ComponentModel;
+
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<ModelNoteLink, Design.ModelElementTypeDescriptor<ModelNoteLink>>))]
 	public partial class ModelNoteLink : ISelectionContainerFilter
 	{
 		#region Customize appearance

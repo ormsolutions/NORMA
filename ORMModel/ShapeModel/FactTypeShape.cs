@@ -32,14 +32,13 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.Design;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region FactTypeShape class
-	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<FactTypeShape, FactType, Design.FactTypeShapeTypeDescriptor<FactTypeShape, FactType>>))]
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
 	{
 		#region Public token values
@@ -3447,7 +3446,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					ORMTypeDescriptor.CreatePropertyDescriptor(role, Role.ValueRangeTextDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.ValueRangeTextDomainPropertyId),
 					false);
 			}
 			return retVal;
@@ -4649,7 +4648,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					ORMTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
 					true);
 			}
 			else

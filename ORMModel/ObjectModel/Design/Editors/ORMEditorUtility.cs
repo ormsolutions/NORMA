@@ -21,9 +21,10 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.ORM.ObjectModel.Design
 {
 	#region ORMEditorUtility class
 	/// <summary>

@@ -15,25 +15,26 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
-using MSOLE = Microsoft.VisualStudio.OLE.Interop;
-using System.Diagnostics;
-using Microsoft.VisualStudio;
-using System.ComponentModel.Design;
-using Microsoft.VisualStudio.Modeling;
-using Neumont.Tools.ORM.Shell;
-using System.Collections;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Microsoft.VisualStudio.Modeling.Diagrams;
+using MSOLE = Microsoft.VisualStudio.OLE.Interop;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Shell;
+
 namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>

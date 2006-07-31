@@ -73,17 +73,16 @@
 				<EnumerationLiteral Name="Two" Value="2"/>
 				<EnumerationLiteral Name="Three" Value="3"/>
 			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;TestEnumeration, global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 		</DomainEnumeration>
 	</Types>
 
-	<Shapes/>
-
-	<Connectors/>
-
 	<XmlSerializationBehavior Name="ExtensionDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ExtensionExample"/>
-
-	<ExplorerBehavior Name="ExtensionDomainModelExplorer"/>
-
-	<ConnectionBuilders/>
 
 </Dsl>

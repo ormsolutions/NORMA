@@ -24,28 +24,25 @@ using System.Resources;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
-using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.Modeling.Design
 {
-	#region ORMEnumConverter class
-
-	#region ORMEnumConverterBase class
+	#region EnumConverterBase class
 	/// <summary>
 	/// This class should not be used directly.
-	/// See <see cref="ORMEnumConverter{TEnum,TResourceManagerSource}"/> instead.
+	/// See <see cref="EnumConverter{TEnum,TResourceManagerSource}"/> instead.
 	/// </summary>
 	[Browsable(false)]
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public abstract class ORMEnumConverterBase<TResourceManagerSource> : EnumConverter
+	public abstract class EnumConverterBase<TResourceManagerSource> : EnumConverter
 	{
 		// This class exists solely as a performance hack, so that only one reference to the ResourceManager
 		// is kept per type of TResourceManagerSource, and so that it only has to be looked up once.
 		// Pretend it is not even here.
 
 		// This is internal so that this class cannot be dervied from from outside this assembly.
-		internal ORMEnumConverterBase(Type type)
+		internal EnumConverterBase(Type type)
 			: base(type)
 		{
 		}
@@ -58,7 +55,7 @@ namespace Neumont.Tools.ORM.Design
 				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy,
 				null, typeof(ResourceManager), Type.EmptyTypes, null).GetValue(null, null);
 	}
-	#endregion // ORMEnumConverterBase class
+	#endregion // EnumConverterBase class
 
 	/// <summary>
 	/// Supports localized display names for <see cref="Enum"/>s, and ensures that the current value is always shown
@@ -75,7 +72,7 @@ namespace Neumont.Tools.ORM.Design
 	[Browsable(true)]
 	[EditorBrowsable(EditorBrowsableState.Always)]
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public sealed class ORMEnumConverter<TEnum, TResourceManagerSource> : ORMEnumConverterBase<TResourceManagerSource>
+	public sealed class EnumConverter<TEnum, TResourceManagerSource> : EnumConverterBase<TResourceManagerSource>
 		where TEnum : struct, IFormattable, IComparable, IConvertible // This is as close as we can get to 'System.Enum'
 	{
 		#region EnumValueInfo struct
@@ -152,7 +149,7 @@ namespace Neumont.Tools.ORM.Design
 		#endregion // LocalizedNameDictionary struct
 
 		#region Static helper methods
-		static ORMEnumConverter()
+		static EnumConverter()
 		{
 			Type enumType = EnumType = typeof(TEnum);
 			if (!enumType.IsEnum)
@@ -348,15 +345,15 @@ namespace Neumont.Tools.ORM.Design
 		#endregion // Static helper methods
 
 		/// <summary>
-		/// Instantiates a new instance of <see cref="ORMEnumConverter{TEnum,TResourceManagerSource}"/>.
+		/// Initializes a new instance of <see cref="EnumConverter{TEnum,TResourceManagerSource}"/>.
 		/// </summary>
-		public ORMEnumConverter()
+		public EnumConverter()
 			: base(EnumType)
 		{
 		}
 
 		/// <summary>See <see cref="EnumConverter.ConvertFrom"/>.</summary>
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		public sealed override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			string stringValue = value as string;
 			if ((object)stringValue != null && culture != null && !culture.Equals(CultureInfo.InvariantCulture))
@@ -371,7 +368,7 @@ namespace Neumont.Tools.ORM.Design
 		}
 
 		/// <summary>See <see cref="EnumConverter.ConvertTo"/>.</summary>
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+		public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
 			if (destinationType == typeof(string) && culture != null && !culture.Equals(CultureInfo.InvariantCulture) && value is TEnum)
 			{
@@ -426,128 +423,4 @@ namespace Neumont.Tools.ORM.Design
 		}
 		#endregion // GetStandardValues method
 	}
-	#endregion // ORMEnumConverter class
-
-	#region ExpandableElementConverter class
-	/// <summary>
-	/// An <see cref="ExpandableObjectConverter"/> for <see cref="ModelElement"/>s.
-	/// </summary>
-	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ExpandableElementConverter : ExpandableObjectConverter
-	{
-		/// <summary>
-		/// Instantiates a new instance of <see cref="ExpandableElementConverter"/>.
-		/// </summary>
-		public ExpandableElementConverter()
-		{
-		}
-
-		/// <summary>See <see cref="TypeConverter.CanConvertFrom(ITypeDescriptorContext,Type)"/>.</summary>
-		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-		{
-			object component;
-			PropertyDescriptor propertyDescriptor;
-			ModelElement element;
-			if (sourceType == typeof(string) &&
-				context != null &&
-				(component = context.Instance) != null &&
-				(propertyDescriptor = context.PropertyDescriptor) != null &&
-				(element = propertyDescriptor.GetValue(component) as ModelElement) != null)
-			{
-				return DomainClassInfo.HasNameProperty(element);
-			}
-			return base.CanConvertFrom(context, sourceType);
-		}
-
-		/// <summary>See <see cref="TypeConverter.ConvertFrom(ITypeDescriptorContext,CultureInfo,Object)"/>.</summary>
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-		{
-			object component;
-			PropertyDescriptor elementPropertyDescriptor;
-			string stringValue;
-			ModelElement element;
-			PropertyDescriptor namePropertyDescriptor;
-			if (context != null &&
-				(component = context.Instance) != null &&
-				(elementPropertyDescriptor = context.PropertyDescriptor) != null &&
-				(object)(stringValue = value as string) != null &&
-				(element = elementPropertyDescriptor.GetValue(component) as ModelElement) != null &&
-				(namePropertyDescriptor = ORMTypeDescriptor.CreateNamePropertyDescriptor(element)) != null)
-			{
-				namePropertyDescriptor.SetValue(element, stringValue);
-				return element;
-			}
-			return base.ConvertFrom(context, culture, value);
-		}
-
-		/// <summary>See <see cref="TypeConverter.ConvertTo(ITypeDescriptorContext,CultureInfo,Object,Type)"/>.</summary>
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			ModelElement element;
-			string name;
-			if (destinationType == typeof(string) && (element = value as ModelElement) != null && DomainClassInfo.TryGetName(element, out name))
-			{
-				return name;
-			}
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-	}
-	#endregion // ExpandableElementConverter class
-
-	#region ReferenceModeConverter class
-	/// <summary>
-	/// <see cref="TypeConverter"/> for <see cref="ReferenceMode"/>s.
-	/// </summary>
-	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ReferenceModeConverter : TypeConverter
-	{
-		/// <summary>
-		/// Instantiates a new instance of <see cref="ReferenceModeConverter"/>.
-		/// </summary>
-		public ReferenceModeConverter()
-		{
-		}
-		/// <summary>See <see cref="TypeConverter.CanConvertFrom(ITypeDescriptorContext,Type)"/>.</summary>
-		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-		{
-			return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-		}
-		/// <summary>See <see cref="TypeConverter.ConvertFrom(ITypeDescriptorContext,CultureInfo,Object)"/>.</summary>
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-		{
-			if (context != null)
-			{
-				string refMode = value as string;
-				if ((object)refMode != null)
-				{
-					ObjectType instance = EditorUtility.ResolveContextInstance(context.Instance, true) as ObjectType;
-					if (instance != null)
-					{
-						IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(refMode, instance.Model);
-						switch (referenceModes.Count)
-						{
-							case 0:
-								return refMode;
-							case 1:
-								return referenceModes[0];
-							default:
-								throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
-						}
-					}
-				}
-			}
-			return base.ConvertFrom(context, culture, value);
-		}
-		/// <summary>See <see cref="TypeConverter.ConvertTo(ITypeDescriptorContext,CultureInfo,Object,Type)"/>.</summary>
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			ReferenceMode referenceMode;
-			if (destinationType == typeof(string) && (referenceMode = value as ReferenceMode) != null)
-			{
-				return referenceMode.Name;
-			}
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-	}
-	#endregion // ReferenceModeConverter class
 }

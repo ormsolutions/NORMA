@@ -31,6 +31,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// Double-derived base class for DomainClass ORMDiagram
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMDiagram, global::Neumont.Tools.ORM.ObjectModel.ORMModel, global::Neumont.Tools.Modeling.Diagrams.Design.DiagramTypeDescriptor<ORMDiagram, global::Neumont.Tools.ORM.ObjectModel.ORMModel>>))]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

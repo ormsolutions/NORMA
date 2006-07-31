@@ -10,9 +10,10 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Editor Control for changing sample instances
@@ -1593,18 +1594,9 @@ namespace Neumont.Tools.ORM.Design
 					/// <summary>
 					/// An ElementPicker list used to display available instance values
 					/// </summary>
-					private sealed class InstanceDropDown : ElementPicker
+					private sealed class InstanceDropDown : ElementPicker<InstanceDropDown>
 					{
 						private IList myInstances;
-						private static Size myLastControlSize = Size.Empty;
-						/// <summary>
-						/// Manage control size independently
-						/// </summary>
-						protected sealed override Size LastControlSize
-						{
-							get { return myLastControlSize; }
-							set { myLastControlSize = value; }
-						}
 						/// <summary>
 						/// Translate the displayed text to the underlying instance
 						/// </summary>
@@ -2156,18 +2148,9 @@ namespace Neumont.Tools.ORM.Design
 					/// <summary>
 					/// An ElementPicker list used to display available instance values
 					/// </summary>
-					private sealed class InstanceDropDown : ElementPicker
+					private sealed class InstanceDropDown : ElementPicker<InstanceDropDown>
 					{
 						private IList myInstances;
-						private static Size myLastControlSize = Size.Empty;
-						/// <summary>
-						/// Manage control size independently
-						/// </summary>
-						protected sealed override Size LastControlSize
-						{
-							get { return myLastControlSize; }
-							set { myLastControlSize = value; }
-						}
 						/// <summary>
 						/// Translate the displayed text to the underlying instance
 						/// </summary>

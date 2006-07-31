@@ -26,12 +26,12 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
-using Neumont.Tools.ORM.Design;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 

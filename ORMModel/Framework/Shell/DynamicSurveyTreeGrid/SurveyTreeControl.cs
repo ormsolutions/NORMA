@@ -30,7 +30,7 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		private readonly VirtualTreeControl myTreeControl;
 
 		/// <summary>
-		/// Instantiates a new instance of <see cref="SurveyTreeControl"/>.
+		/// Initializes a new instance of <see cref="SurveyTreeControl"/>.
 		/// </summary>
 		public SurveyTreeControl()
 		{

@@ -26,7 +26,6 @@ using Neumont.Tools.Modeling;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region Reading class
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<Reading, Design.ReadingTypeDescriptor<Reading>>))]
 	public partial class Reading : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Base overrides

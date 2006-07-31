@@ -609,7 +609,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALMetaModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALMetaModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

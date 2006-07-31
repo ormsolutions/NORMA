@@ -92,9 +92,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Design\ORMEditorUtility.cs" />
-    <Compile Include="Design\ORMTypeConverters.cs" />
-    <Compile Include="Design\ORMTypeDescriptors.cs" />
+    <Compile Include="Framework\Design\ExpandableElementConverter.cs" />
+    <Compile Include="Framework\Design\DomainTypeDescriptor.cs" />
+    <Compile Include="Framework\Design\ElementTypeDescriptor.cs" />
+    <Compile Include="Framework\Design\ElementTypeDescriptionProvider.cs" />
+    <Compile Include="Framework\Diagrams\Design\DiagramTypeDescriptor.cs" />
+    <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptor.cs" />
+    <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptionProvider.cs" />
+    <Compile Include="ObjectModel\Design\FactTypeTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\RoleTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\DataTypeTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\ObjectTypeTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\ReadingTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\MandatoryConstraintTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\UniquenessConstraintTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\ORMModelElementTypeDescriptor.cs" />
+    <Compile Include="ObjectModel\Design\Editors\ORMEditorUtility.cs" />
+    <Compile Include="Framework\Design\EnumConverter.cs" />
+    <Compile Include="ObjectModel\Design\SubtypeFactTypeDescriptor.cs" />
+    <Compile Include="Framework\Design\Editors\SizePreservingEditor.cs" />
+    <Compile Include="Framework\Design\Editors\EditorUtility.cs" />
+    <Compile Include="Framework\Design\Editors\TreePicker.cs" />
+    <Compile Include="Framework\Design\Editors\ElementPicker.cs" />
+    <Compile Include="ObjectModel\Design\Editors\AvailableVerbalizationSnippetsPicker.cs" />
+    <Compile Include="ObjectModel\Design\ReferenceModeConverter.cs" />
+    <Compile Include="ObjectModel\Design\Editors\RolePlayerPicker.cs" />
+    <Compile Include="ObjectModel\Design\Editors\DataTypePicker.cs" />
+    <Compile Include="ObjectModel\Design\Editors\ReferenceModePickers.cs" />
+    <Compile Include="ObjectModel\Design\Editors\ObjectificationPickers.cs" />
+    <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />
+    <Compile Include="ShapeModel\Design\ORMBaseBinaryLinkShapeTypeDescriptor.cs" />
+    <Compile Include="ShapeModel\Design\ORMPresentationElementTypeDescriptor.cs" />
+    <Compile Include="ShapeModel\Design\FactTypeShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
     <Compile Include="ShapeModel\ModelNoteConnectAction.cs" />
     <Compile Include="ShapeModel\ModelNoteShape.cs" />
@@ -108,19 +137,19 @@
     <Compile Include="Shell\FactEditor\FactSaver.cs" />
     <Compile Include="Shell\FactEditor\FactTextViewFilter.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\CategorySurveyQuestion.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyInterfaces.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\ListGrouper.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\MainList.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\SampleDataElementNode.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\SimpleListShifter.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyClasses.cs" />
-    <Compile Include="Framework\DynamicSurveyTreeGrid\SurveyTreeControl.cs">
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\SurveyInterfaces.cs" />
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\ListGrouper.cs" />
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\MainList.cs" />
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\SampleDataElementNode.cs" />
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\SimpleListShifter.cs" />
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\SurveyClasses.cs" />
+    <Compile Include="Framework\Shell\DynamicSurveyTreeGrid\SurveyTreeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Framework\MultiDiagramDocView\DiagramTabPage.cs" />
-    <Compile Include="Framework\MultiDiagramDocView\MultiDiagramDocViewControl.cs" />
-    <Compile Include="Framework\MultiDiagramDocView\MultiDiagramDocView.cs" />
-    <Compile Include="Design\Comparers.cs" />
+    <Compile Include="Framework\Shell\DiagramTabPage.cs" />
+    <Compile Include="Framework\Shell\MultiDiagramDocViewControl.cs" />
+    <Compile Include="Framework\Shell\MultiDiagramDocView.cs" />
+    <Compile Include="Framework\Comparers.cs" />
     <Compile Include="Framework\Utility.cs" />
     <Compile Include="ObjectModel\ORMCore.SurveyQuestionProvider.cs">
       <AutoGen>True</AutoGen>
@@ -129,7 +158,7 @@
     <Compile Include="ObjectModel\SurveyImplementations\FactTypeAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ORMNamedElement.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ObjectTypeAnswers.cs" />
-    <Compile Include="Design\SamplePopulationEditor.cs">
+    <Compile Include="Shell\SamplePopulationEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GeneratedCode\CoreDomainRelationships.cs">
@@ -189,14 +218,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DataTypesGenerator.xml</DependentUpon>
     </Compile>
-    <Compile Include="Design\ReadingEditor.cs">
+    <Compile Include="Shell\ReadingEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Design\ReadingEditor.Designer.cs">
+    <Compile Include="Shell\ReadingEditor.Designer.cs">
       <DependentUpon>ReadingEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\ReadingTextEditor.cs" />
-    <Compile Include="Design\CustomReferenceModeEditor.cs">
+    <Compile Include="ObjectModel\Design\Editors\ReadingTextEditor.cs" />
+    <Compile Include="Shell\CustomReferenceModeEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Shell\CustomReferenceModesBranch.cs" />
@@ -208,8 +237,8 @@
     <Compile Include="ObjectModel\ORMElementInterfaces.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
     <Compile Include="Framework\NamedElementDictionary.cs" />
-    <Compile Include="Design\ElementPicker.cs" />
-    <Compile Include="Design\TypedElementPickers.cs" />
+    <Compile Include="Framework\Design\Editors\MultilineTextEditor.cs" />
+    <Compile Include="ObjectModel\Design\Editors\DerivationRuleEditor.cs" />
     <Compile Include="ObjectModel\Constraint.cs" />
     <Compile Include="ObjectModel\FactType.cs" />
     <Compile Include="ObjectModel\ORMCore.DeserializationFixupListeners.cs" />
@@ -325,7 +354,7 @@
     <None Include="ObjectModel\VerbalizationGenerator.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="Design\ReadingEditor.resx">
+    <EmbeddedResource Include="Shell\ReadingEditor.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ReadingEditor.cs</DependentUpon>
     </EmbeddedResource>

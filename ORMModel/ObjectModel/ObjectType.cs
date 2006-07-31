@@ -58,7 +58,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SkipChildren,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<ObjectType, Design.ObjectTypeTypeDescriptor<ObjectType>>))]
 	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Public token values

@@ -18,39 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using System.ComponentModel;
 using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ORMModelElement
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<ORMModelElement, Design.ORMModelElementTypeDescriptor<ORMModelElement>>))]
 	public abstract partial class ORMModelElement : IORMExtendableElement, IModelErrorOwner
 	{
-		#region Accessibility properties
-		/// <summary>
-		/// Get the default accessible name for this element. Defers to GetClassName
-		/// </summary>
-		public virtual string AccessibleName
-		{
-			// UNDONE: In the pre-2006-06 drops of DSL Tools, this was inherited from ModelElement.
-			get
-			{
-				return TypeDescriptor.GetClassName(this);
-			}
-		}
-		/// <summary>
-		/// Get the default accessible value for this element. Defers to GetComponentName
-		/// </summary>
-		public virtual string AccessibleValue
-		{
-			// UNDONE: In the pre-2006-06 drops of DSL Tools, this was inherited from ModelElement.
-			get
-			{
-				return TypeDescriptor.GetComponentName(this);
-			}
-		}
-		#endregion // Accessibility properties
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Implements IModelErrorOwner.GetErrorCollection
@@ -96,16 +70,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public abstract partial class ORMNamedElement
 	{
 		#region Base overrides
-		/// <summary>
-		/// Get the default accessible value for this element. Returns the Name.
-		/// </summary>
-		public override string AccessibleValue
-		{
-			get
-			{
-				return Name;
-			}
-		}
 		/// <summary>
 		/// Override to use our own name handling
 		/// </summary>

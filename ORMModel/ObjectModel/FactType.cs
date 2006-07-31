@@ -58,7 +58,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<FactType, Design.FactTypeTypeDescriptor<FactType>>))]
 	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren
 	{
 		#region ReadingOrder acquisition

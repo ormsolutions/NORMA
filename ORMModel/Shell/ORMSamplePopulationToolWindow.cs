@@ -29,8 +29,9 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
+using Neumont.Tools.ORM.ObjectModel.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {

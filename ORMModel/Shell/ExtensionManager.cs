@@ -1,23 +1,38 @@
+#region Common Public License Copyright Notice
+/**************************************************************************\
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
+*                                                                          *
+* Copyright © Neumont University. All rights reserved.                     *
+*                                                                          *
+* The use and distribution terms for this software are covered by the      *
+* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
+* can be found in the file CPL.txt at the root of this distribution.       *
+* By using this software in any fashion, you are agreeing to be bound by   *
+* the terms of this license.                                               *
+*                                                                          *
+* You must not remove this notice, or any other, from this software.       *
+\**************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Modeling;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Neumont.Tools.ORM.Design;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {
-	public partial class ExtensionManager : Form
+	public sealed partial class ExtensionManager : Form
 	{
 		private readonly Store _store;
 		private readonly List<Type> _loadedDomainModelTypes;
@@ -71,7 +86,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					if (stream != null)
 					{
-						(stream as IDisposable).Dispose();
+						stream.Dispose();
 					}
 				}
 			}
@@ -188,7 +203,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// extension then we populate the <see cref="ListView"/> with the list.
 		/// </summary>
 		/// <param name="e">The event arguments.</param>
-		protected override void OnLoad(EventArgs e)
+		protected sealed override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 			lvExtensions.Items.Clear();
@@ -214,10 +229,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			//Add the DisplayName
-			lvi.SubItems.Add(ORMTypeDescriptor.GetDisplayName(type));
+			lvi.SubItems.Add(DomainTypeDescriptor.GetDisplayName(type));
 			
 			//Add the Description
-			lvi.SubItems.Add(ORMTypeDescriptor.GetDescription(type));
+			lvi.SubItems.Add(DomainTypeDescriptor.GetDescription(type));
 
 			lvExtensions.Items.Add(lvi);
 		}
@@ -252,12 +267,9 @@ namespace Neumont.Tools.ORM.Shell
 			Type resourceType = typeof(ExtensionManager);
 			using (Stream transformStream = resourceType.Assembly.GetManifestResourceStream(resourceType, "ExtensionStripper.xslt"))
 			{
-				using (StreamReader reader = new StreamReader(transformStream))
+				using (XmlReader reader = XmlReader.Create(transformStream))
 				{
-					using (XmlReader xmlReader = new XmlTextReader(reader))
-					{
-						retVal.Load(xmlReader, null, null);
-					}
+					retVal.Load(reader, XsltSettings.TrustedXslt, new XmlUrlResolver());
 				}
 			}
 			return retVal;

@@ -34,6 +34,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using OleInterop = Microsoft.VisualStudio.OLE.Interop;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
@@ -42,7 +43,7 @@ using Neumont.Tools.ORM.Shell;
 using Neumont.Tools.ORM.Shell.FactEditor;
 #endif //Buffered_TextView_Control_Test
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Valid Commands for context menu
@@ -608,16 +609,8 @@ namespace Neumont.Tools.ORM.Design
 		}
 		private void UpdateMenuItems()
 		{
-			int currentIndex = TreeControl.CurrentIndex;
-			if (currentIndex != -1)
-			{
-				VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
-				myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
-			}
-			else
-			{
-				myVisibleCommands = ReadingEditorCommands.None;
-			}
+			VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
+			myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
 		}
 		/// <summary>
 		/// Event for selection changed
@@ -2405,7 +2398,7 @@ namespace Neumont.Tools.ORM.Design
 				private readonly FactType myFact;
 				private readonly ReadingOrderBranch myBranch;
 
-				private sealed class ReadingOrderEditor : ElementPicker
+				private sealed class ReadingOrderEditor : ElementPicker<ReadingOrderEditor>
 				{
 					public ReadingOrderEditor() { }
 					protected sealed override object TranslateFromDisplayObject(int newIndex, object newObject)
@@ -2441,7 +2434,7 @@ namespace Neumont.Tools.ORM.Design
 				{
 					return false;
 				}
-				public override Type ComponentType
+				public sealed override Type ComponentType
 				{
 					get { return typeof(ReadingOrderInformation); }
 				}

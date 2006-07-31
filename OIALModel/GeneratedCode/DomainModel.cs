@@ -549,7 +549,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// A list of constraint modalities for simple mandatory role constraints used in <s
 	/// ee cref="ConceptTypeHasChild"/> relationships.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALMetaModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALMetaModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum MandatoryConstraintModality
 	{

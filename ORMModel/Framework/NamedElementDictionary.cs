@@ -39,7 +39,7 @@ namespace Neumont.Tools.Modeling
 		/// <summary>
 		/// An empty LocatedElement structure
 		/// </summary>
-		public static LocatedElement Empty = new LocatedElement();
+		public static readonly LocatedElement Empty = new LocatedElement();
 		private object myElement;
 		/// <summary>
 		/// Construct with a single element

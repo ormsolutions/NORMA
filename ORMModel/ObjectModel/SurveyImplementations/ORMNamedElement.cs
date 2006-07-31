@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.ObjectModel
@@ -44,7 +45,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				// UNDONE: 2006-06 DSL Tools port: This seemed to be returning the same value as IsReadOnly, rather than its opposite,
 				// which seemed to be rather backwards. For now, I've changed it to return !IsReadOnly...
-				return !Design.ORMTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
+				return !DomainTypeDescriptor.CreateNamePropertyDescriptor(this).IsReadOnly;
 			}
 		}
 

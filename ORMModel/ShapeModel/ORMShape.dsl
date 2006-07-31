@@ -63,7 +63,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;ConstraintDisplayPosition, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -77,7 +77,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter&lt;DisplayRoleNames, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -86,6 +86,13 @@
 
 	<Shapes>
 		<GeometryShape Name="ORMBaseShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="55131F4B-0F9A-408D-BED0-79451BA7F4F0" HasCustomConstructor="true" FillGradientMode="None">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ORMBaseShape, global::Neumont.Tools.ORM.ObjectModel.ORMModelElement, Design.ORMBaseShapeTypeDescriptor&lt;ORMBaseShape, global::Neumont.Tools.ORM.ObjectModel.ORMModelElement&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<Properties>
 				<DomainProperty Name="UpdateCounter" Id="85E23BA2-451A-4CD3-B233-64973E6133F6" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
 					<Type>
@@ -107,6 +114,13 @@
 			</Properties>
 		</GeometryShape>
 		<GeometryShape Name="FactTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8E440A3B-275E-42F7-868B-D5D473158ACD" FillGradientMode="None">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;FactTypeShape, global::Neumont.Tools.ORM.ObjectModel.FactType, Design.FactTypeShapeTypeDescriptor&lt;FactTypeShape, global::Neumont.Tools.ORM.ObjectModel.FactType&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseClass>
@@ -189,7 +203,15 @@
 	</Shapes>
 
 	<Connectors>
-		<Connector Name="ORMBaseBinaryLinkShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="CEFF4339-48D0-4FFE-B052-2F9DA167B1DB"/>
+		<Connector Name="ORMBaseBinaryLinkShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="CEFF4339-48D0-4FFE-B052-2F9DA167B1DB">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ORMBaseBinaryLinkShape, DslModeling::ModelElement, Design.ORMBaseBinaryLinkShapeTypeDescriptor&lt;ORMBaseBinaryLinkShape, DslModeling::ModelElement&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</Connector>
 		<Connector Name="RolePlayerLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="2B3F0AAE-B1B1-4727-8862-5C34B494B499">
 			<BaseClass>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
@@ -217,6 +239,13 @@
 	<!-- Diagram is double-derived so that we can override ShouldAddShapeForElement and OnChildConfiguring. -->
 	<!-- Diagram has custom constructor so that we can turn off snap-to-grid and set the initial name. -->
 	<Diagram Name="ORMDiagram" DisplayName="ORMDiagram" Namespace="Neumont.Tools.ORM.ShapeModel" Id="948F992D-C9B8-46F9-BE3C-B48347F8AB0B" GeneratesDoubleDerived="true" HasCustomConstructor="true">
+		<Attributes>
+			<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+				<Parameters>
+					<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ORMDiagram, global::Neumont.Tools.ORM.ObjectModel.ORMModel, global::Neumont.Tools.Modeling.Diagrams.Design.DiagramTypeDescriptor&lt;ORMDiagram, global::Neumont.Tools.ORM.ObjectModel.ORMModel&gt;&gt;)"/>
+				</Parameters>
+			</ClrAttribute>
+		</Attributes>
 		<Properties>
 			<DomainProperty Name="AutoPopulateShapes" Id="D3F7A171-CE39-4944-BE80-D55127423C83" DefaultValue="false" IsBrowsable="false">
 				<Type>

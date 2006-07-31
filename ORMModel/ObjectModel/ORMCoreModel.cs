@@ -82,7 +82,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private struct ElementValidatorKey
 		{
 			/// <summary>
-			/// Instantiates a new instance of <see cref="ElementValidatorKey"/>.
+			/// Initializes a new instance of <see cref="ElementValidatorKey"/>.
 			/// </summary>
 			public ElementValidatorKey(ModelElement element, ElementValidator validator)
 			{

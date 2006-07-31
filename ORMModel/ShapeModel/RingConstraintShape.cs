@@ -24,9 +24,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.Design;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class RingConstraintShape : ExternalConstraintShape, IModelErrorActivation
@@ -394,7 +394,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RingConstraint constraint = ringTypeError.RingConstraint;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					ORMTypeDescriptor.CreatePropertyDescriptor(constraint, RingConstraint.RingTypeDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(constraint, RingConstraint.RingTypeDomainPropertyId),
 					true);
 			}
 			else

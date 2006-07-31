@@ -381,6 +381,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	/// DomainEnumeration: TestEnumeration
 	/// Provides test values for our enum sample dropdown.
 	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<TestEnumeration, global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum TestEnumeration
 	{

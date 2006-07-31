@@ -23,13 +23,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	[TypeDescriptionProvider(typeof(Design.ORMPresentationTypeDescriptionProvider<ORMBaseShape, ORMModelElement, Design.ORMBaseShapeTypeDescriptor<ORMBaseShape, ORMModelElement>>))]
 	public partial class ORMBaseShape
 	{
 		#region Public token values
@@ -458,7 +457,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Store store = Store;
 			EditorUtility.ActivatePropertyEditor(
 				(store as IORMToolServices).ServiceProvider,
-				ORMTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
+				DomainTypeDescriptor.CreateNamePropertyDescriptor(targetElement),
 				false);
 		}
 		#endregion // DuplicateNameError Activation Helper

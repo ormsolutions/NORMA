@@ -35,13 +35,14 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.Xsl;
 using System.Xml.XPath;
+using System.Xml.Xsl;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.Modeling;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 
@@ -856,7 +857,7 @@ namespace Neumont.Tools.ORM.Shell
 					return XmlConvert.ToString((TimeSpan)value);
 				}
 			}
-			Design.ORMTypeDescriptor.TypeDescriptorContext context = Design.ORMTypeDescriptor.CreateTypeDescriptorContext(element, property);
+			DomainTypeDescriptor.TypeDescriptorContext context = DomainTypeDescriptor.CreateTypeDescriptorContext(element, property);
 			return context.PropertyDescriptor.Converter.ConvertToInvariantString(context, value);
 		}
 		/// <summary>
@@ -2657,7 +2658,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (objectValue == null)
 			{
-				Design.ORMTypeDescriptor.TypeDescriptorContext context = Design.ORMTypeDescriptor.CreateTypeDescriptorContext(element, domainPropertyInfo);
+				DomainTypeDescriptor.TypeDescriptorContext context = DomainTypeDescriptor.CreateTypeDescriptorContext(element, domainPropertyInfo);
 				objectValue = context.PropertyDescriptor.Converter.ConvertFromInvariantString(context, stringValue);
 			}
 			if (objectValue != null)

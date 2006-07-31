@@ -24,9 +24,9 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
@@ -311,7 +311,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectType valueType = dataTypeError.ValueTypeHasDataType.ValueType;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					ORMTypeDescriptor.CreatePropertyDescriptor(valueType, ObjectType.DataTypeDisplayDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(valueType, ObjectType.DataTypeDisplayDomainPropertyId),
 					true);
 			}
 			else if (null != (requiresReferenceSchemeError = error as EntityTypeRequiresReferenceSchemeError))
@@ -319,7 +319,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					ORMTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(requiresReferenceSchemeError.ObjectType, ObjectType.ReferenceModeDisplayDomainPropertyId),
 					true);
 			}
 			else if (null != (duplicateName = error as ObjectTypeDuplicateNameError))

@@ -164,7 +164,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // DataTypeRangeSupport enum
 	#region DataType class
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<DataType, Design.DataTypeTypeDescriptor<DataType>>))]
 	public abstract partial class DataType
 	{
 		/// <summary>

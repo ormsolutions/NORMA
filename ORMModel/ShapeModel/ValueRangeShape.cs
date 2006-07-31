@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
@@ -307,7 +307,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Store store = Store;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
-					ORMTypeDescriptor.CreatePropertyDescriptor(this, ValueConstraint.TextDomainPropertyId),
+					DomainTypeDescriptor.CreatePropertyDescriptor(this, ValueConstraint.TextDomainPropertyId),
 					false);
 			}
 			return retVal;

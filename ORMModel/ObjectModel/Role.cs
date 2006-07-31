@@ -27,7 +27,6 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<Role, Design.RoleTypeDescriptor<Role>>))]
 	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner
 	{
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>

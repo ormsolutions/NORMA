@@ -23,8 +23,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
-using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 
 namespace Neumont.Tools.ORM.Shell
 {

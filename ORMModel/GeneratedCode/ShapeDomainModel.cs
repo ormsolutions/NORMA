@@ -480,7 +480,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainEnumeration: ConstraintDisplayPosition
 	/// Determines where internal constraints are drawn on FactTypeShapes.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter<ConstraintDisplayPosition, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ConstraintDisplayPosition
 	{
@@ -506,7 +506,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// presented by the FactTypeShape using this enumeration, overriding the global set
 	/// ting.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.ORM.Design.ORMEnumConverter<DisplayRoleNames, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum DisplayRoleNames
 	{

@@ -310,6 +310,10 @@ namespace Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid
 		/// <param name="question">the qeustion to be wrapped by this class</param>
 		public SurveyQuestion(ISurveyQuestionTypeInfo question)
 		{
+			if (question == null)
+			{
+				throw new ArgumentNullException("question");
+			}
 			myQuestion = question;
 			// UNDONE: This needs to be changed to get the localized enum names
 			myHeaders = Enum.GetNames(question.QuestionType);

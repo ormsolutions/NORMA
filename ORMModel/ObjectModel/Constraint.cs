@@ -2951,7 +2951,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // EntityTypeHasPreferredIdentifier pattern enforcement
 	#region UniquenessConstraint class
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<UniquenessConstraint, Design.UniquenessConstraintTypeDescriptor<UniquenessConstraint>>))]
 	public partial class UniquenessConstraint : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region CustomStorage handlers
@@ -3430,7 +3429,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // UniquenessConstraint class
 	#region MandatoryConstraint class
-	[TypeDescriptionProvider(typeof(Design.ORMTypeDescriptionProvider<MandatoryConstraint, Design.MandatoryConstraintTypeDescriptor<MandatoryConstraint>>))]
 	public partial class MandatoryConstraint : IModelErrorOwner
 	{
 		#region IModelErrorOwner Implementation

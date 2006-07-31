@@ -42,7 +42,7 @@ namespace Neumont.Tools.ORM.Shell
 			// 
 			// lvExtensions
 			// 
-			this.lvExtensions.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+			this.lvExtensions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.lvExtensions.CheckBoxes = true;
@@ -52,7 +52,7 @@ namespace Neumont.Tools.ORM.Shell
             this.columnHeader6});
 			this.lvExtensions.Location = new System.Drawing.Point(12, 57);
 			this.lvExtensions.Name = "lvExtensions";
-			this.lvExtensions.Size = new System.Drawing.Size(289, 249);
+			this.lvExtensions.Size = new System.Drawing.Size(510, 249);
 			this.lvExtensions.TabIndex = 0;
 			this.lvExtensions.UseCompatibleStateImageBehavior = false;
 			this.lvExtensions.View = System.Windows.Forms.View.Details;
@@ -60,36 +60,36 @@ namespace Neumont.Tools.ORM.Shell
 			// columnHeader4
 			// 
 			this.columnHeader4.Text = "Load";
-			this.columnHeader4.Width = 39;
+			this.columnHeader4.Width = 25;
 			// 
 			// columnHeader5
 			// 
 			this.columnHeader5.Text = "Name";
-			this.columnHeader5.Width = 75;
+			this.columnHeader5.Width = 215;
 			// 
 			// columnHeader6
 			// 
 			this.columnHeader6.Text = "Description";
-			this.columnHeader6.Width = 170;
+			this.columnHeader6.Width = 266;
 			// 
 			// label1
 			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.label1.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.label1.Location = new System.Drawing.Point(13, 13);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(288, 41);
+			this.label1.Size = new System.Drawing.Size(509, 41);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Available extensions are listed below.  To load individual extensions, make sure " +
 				"the checkbox in the column \'Load\' is checked for that specific extension.";
 			// 
 			// btnOK
 			// 
-			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnOK.Location = new System.Drawing.Point(145, 312);
+			this.btnOK.Location = new System.Drawing.Point(366, 312);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 2;
@@ -98,10 +98,10 @@ namespace Neumont.Tools.ORM.Shell
 			// 
 			// btnCancel
 			// 
-			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnCancel.Location = new System.Drawing.Point(226, 312);
+			this.btnCancel.Location = new System.Drawing.Point(447, 312);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 3;
@@ -114,7 +114,7 @@ namespace Neumont.Tools.ORM.Shell
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(313, 339);
+			this.ClientSize = new System.Drawing.Size(534, 339);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.label1);

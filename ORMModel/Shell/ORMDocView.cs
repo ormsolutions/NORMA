@@ -32,9 +32,10 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM;
-using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Design;
 using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.Shell
@@ -1242,14 +1243,6 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // SelectionContainer filtering
 		#region ORMDesignerDocView Specific
-		/// <summary>
-		/// Called by ORMDesignerDocData during Load
-		/// </summary>
-		/// <param name="document">ORMDesignerDocData</param>
-		public void InitializeView(ORMDesignerDocData document)
-		{
-			
-		}
 		private void DocumentClosing(object sender, EventArgs e)
 		{
 			(sender as DocData).DocumentClosing -= new EventHandler(DocumentClosing);
@@ -1262,12 +1255,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				IMonitorSelectionService monitorSelect = myMonitorSelection;
-				if (monitorSelect == null)
-				{
-					myMonitorSelection = monitorSelect = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
-				}
-				return monitorSelect;
+				return myMonitorSelection ?? (myMonitorSelection = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService)));
 			}
 		}
 		/// <summary>
@@ -1783,8 +1771,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected virtual void OnMenuToggleSimpleMandatory()
 		{
-			ICollection components = GetSelectedComponents();
-			foreach (object component in components)
+			foreach (object component in GetSelectedComponents())
 			{
 				Role role = component as Role;
 				if (role != null)
@@ -1792,7 +1779,7 @@ namespace Neumont.Tools.ORM.Shell
 					// Use the standard property descriptor to pick up the
 					// same transaction name, etc. This emulates toggling the
 					// property in the properties window.
-					ORMTypeDescriptor.CreatePropertyDescriptor(role, Role.IsMandatoryDomainPropertyId).SetValue(role, !role.IsMandatory);
+					DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.IsMandatoryDomainPropertyId).SetValue(role, !role.IsMandatory);
 				}
 			}
 		}

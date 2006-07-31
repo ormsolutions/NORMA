@@ -29,7 +29,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.Design;
 using Microsoft.VisualStudio.Shell;
 
 namespace Neumont.Tools.ORM.Shell

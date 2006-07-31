@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.Modeling;
 
 using IEqualityComparer = System.Collections.IEqualityComparer;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.Modeling
 {
 	#region HashCodeComparer class
 	/// <summary>
@@ -137,7 +137,7 @@ namespace Neumont.Tools.ORM.Design
 	{
 		private readonly StringComparer myStringComparer;
 		/// <summary>
-		/// Instantiates a new instance of <see cref="NamedElementComparer{TModelElement}"/> that uses the
+		/// Initializes a new instance of <see cref="NamedElementComparer{TModelElement}"/> that uses the
 		/// <see cref="StringComparer"/> specified by <paramref name="stringComparer"/> to
 		/// compare Names.
 		/// </summary>

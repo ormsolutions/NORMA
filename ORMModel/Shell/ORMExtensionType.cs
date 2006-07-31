@@ -10,7 +10,7 @@ namespace Neumont.Tools.ORM.Shell
 		private readonly string myNamespaceUri;
 		private readonly Type myType;
 		/// <summary>
-		/// Instantiates a new instance of <see cref="ORMExtensionType"/>.
+		/// Initializes a new instance of <see cref="ORMExtensionType"/>.
 		/// </summary>
 		/// <param name="namespaceUri">The XML namespace URI of the <see cref="ORMExtensionType"/>.</param>
 		/// <param name="type">The <see cref="Type"/> of the <see cref="ORMExtensionType"/>.</param>

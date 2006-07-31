@@ -23,7 +23,6 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Neumont.Tools.ORM.Design;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel

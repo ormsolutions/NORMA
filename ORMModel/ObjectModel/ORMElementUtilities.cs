@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using Neumont.Tools.Modeling.Design;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -269,7 +270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (!readOnly)
 				{
-					descriptor = Design.ORMTypeDescriptor.CreatePropertyDescriptor(element, extensionExpandableTopLevelPropertyInfo);
+					descriptor = DomainTypeDescriptor.CreatePropertyDescriptor(element, extensionExpandableTopLevelPropertyInfo);
 					expandableConverter = new ExpandableExtensionConverter(extensionElement, descriptor);
 				}
 				else

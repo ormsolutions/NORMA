@@ -21,16 +21,18 @@ using System.Drawing.Design;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 
-namespace Neumont.Tools.ORM.Design
+namespace Neumont.Tools.ORM.ObjectModel.Design
 {
 	/// <summary>
 	/// Type editor for use on ReadingText properties in the property grid.
 	/// </summary>
-	public class ReadingTextEditor : UITypeEditor
+	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	public sealed class ReadingTextEditor : UITypeEditor
 	{
 		/// <summary>
 		/// Default constructor.
@@ -42,7 +44,7 @@ namespace Neumont.Tools.ORM.Design
 		/// <summary>
 		/// Changes the style of the editor.
 		/// </summary>
-		public override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
+		public sealed override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
 		{
 			return UITypeEditorEditStyle.Modal;
 		}
@@ -50,20 +52,17 @@ namespace Neumont.Tools.ORM.Design
 		/// <summary>
 		/// Called when a value using this editor is modified.
 		/// </summary>
-		public override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
+		public sealed override object EditValue(System.ComponentModel.ITypeDescriptorContext context, IServiceProvider provider, object value)
 		{
-			object retval = value;
-			IWindowsFormsEditorService edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-			if (edSvc != null)
+			if (provider.GetService(typeof(IWindowsFormsEditorService)) != null)
 			{
 				FactType fact = ORMEditorUtility.ResolveContextFactType(context.Instance);
 				if (fact != null)
 				{
-					ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;
-					editorWindow.Show();
+					ORMDesignerPackage.ReadingEditorWindow.Show();
 				}
 			}
-			return retval;
+			return value;
 		}
 	}
 }
