@@ -79,11 +79,31 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					LinkedElementCollection<RoleBase> factRoles = null;
 					ReadingOrder readOrd;
 					Reading primaryReading = null;
-					FactType currentFact;
+					FactType startingFact = myEditFact;
 					Dictionary<string, ObjectType> newlyCreatedObjects = new Dictionary<string, ObjectType>();
 
+					// Make sure that we aren't trying to use the objectifying type
+					// of the active fact as one of the objects.
+					if (startingFact != null)
+					{
+						ObjectType nestingType = startingFact.NestingType;
+						if (nestingType != null)
+						{
+							string nestingName = nestingType.Name;
+							foreach (FactObject factObject in myParsedFact.FactObjects)
+							{
+								if (nestingName == factObject.Name)
+								{
+									startingFact = null;
+									break;
+								}
+							}
+						}
+					}
+
+					FactType currentFact;
 					// Get the fact if it exists, otherwise create a new one.
-					if (myEditFact == null)
+					if (startingFact == null)
 					{
 						currentFact = new FactType(store);
 						readOrd = new ReadingOrder(store);
@@ -94,7 +114,7 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 					}
 					else
 					{
-						currentFact = myEditFact;
+						currentFact = startingFact;
 						readOrd = FactType.FindMatchingReadingOrder(currentFact);
 						primaryReading = readOrd.PrimaryReading;
 					}
@@ -237,16 +257,10 @@ namespace Neumont.Tools.ORM.Shell.FactEditor
 						Role role = new Role(store);
 						role.RolePlayer = currentObject;
 						factRoles.Add(role);
-						// add the role to the reading order's role collection
-						if (myEditFact == null)
-						{
-//							roles.Add(role);
-						}
-
 					} // end foreach (FactObject o in myParsedFact.FactObjects)
 
 					// If we're creating a new fact, add the reading to the reading collection
-					if (myEditFact == null)
+					if (startingFact == null)
 					{
 						primaryReading = new Reading(store);
 						primaryReading.ReadingOrder = readOrd;
