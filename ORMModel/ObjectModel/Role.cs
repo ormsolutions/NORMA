@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // CustomStorage handlers
 		#region RoleChangeRule class
-		[RuleOn(typeof(Role))]
+		[RuleOn(typeof(Role))] // ChangeRule
 		private sealed class RoleChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -648,7 +648,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region RolePlayer validation rules
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class RolePlayerRequiredAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -657,7 +657,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.PlayedRole.VerifyRolePlayerRequiredForRule(null);
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
 		private sealed class RolePlayerRequiredDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -670,7 +670,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class RolePlayerRequiredForNewRoleAddRule : AddRule
 		{
 			/// <summary>
@@ -689,7 +689,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
 		private sealed class UpdatedRolePlayerRequiredErrorsDeleteRule : DeleteRule
 		{
 			/// <summary>

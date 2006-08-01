@@ -582,7 +582,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return FactType.FindMatchingReadingOrder(theFact.AssociatedFactType, roleOrder);
 		}
 		#region RoleDisplayOrderChanged class
-		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
 		private sealed class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -3795,7 +3795,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
 		private sealed class SwitchToNestedFact : AddRule
 		{
 			/// <summary>
@@ -3946,7 +3946,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ProcessObjectification(e.ModelElement as Objectification, null, null);
 			}
 		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
 		private sealed class SwitchFromNestedFact : DeleteRule
 		{
 			/// <summary>
@@ -4122,7 +4122,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ProcessObjectification(link, null, null, false);
 			}
 		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
 		private sealed class ObjectificationIsImpliedChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4150,7 +4150,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // RolePlayerChangeRule
 		private sealed class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -4176,7 +4176,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#region ConstraintDisplayPositionChangeRule class
-		[RuleOn(typeof(FactTypeShape))]
+		[RuleOn(typeof(FactTypeShape))] // ChangeRule
 		private sealed class ConstraintDisplayPositionChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4207,7 +4207,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Class to force the external constraint link bars to redraw and/or reposition
 		/// when an external constraint shape is moved.
 		/// </summary>
-		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.LocalCommit)] // ChangeRule
 		private sealed class ExternalConstraintShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4315,7 +4315,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Keep relative child elements a fixed distance away from the fact
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
 		private sealed class FactTypeShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4525,7 +4525,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // CustomFactTypeShapeGeometry
 		#region Derivation Rules
-		[RuleOn(typeof(FactTypeDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		[RuleOn(typeof(FactTypeDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
 		private sealed class DerivationRuleChanged : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -4545,7 +4545,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 
-		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // AddRule
 		private sealed class DerivationRuleAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -4558,7 +4558,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 
-		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // DeleteRule
 		private sealed class DerivationRuleDelete : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

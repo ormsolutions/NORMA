@@ -514,7 +514,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
-		[RuleOn(typeof(ReferenceMode))]
+		[RuleOn(typeof(ReferenceMode))] // ChangeRule
 		protected class ReferenceModeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -536,7 +536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Make sure that every added reference mode has a valid
 		/// reference mode kind. Default to general.
 		/// </summary>
-		[RuleOn(typeof(ModelHasReferenceMode), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ModelHasReferenceMode), FireTime = TimeToFire.LocalCommit)] // AddRule
 		protected class ReferenceModeAddedRule : AddRule
 		{
 			/// <summary>
@@ -617,7 +617,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
-		[RuleOn(typeof(CustomReferenceMode))]
+		[RuleOn(typeof(CustomReferenceMode))] // ChangeRule
 		protected class CustomReferenceModeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -722,7 +722,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
-		[RuleOn(typeof(ReferenceModeKind))]
+		[RuleOn(typeof(ReferenceModeKind))] // ChangeRule
 		protected class ReferenceModeKindChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -787,7 +787,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
-		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))]
+		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))] // RolePlayerChangeRule
 		protected class ReferenceModeHasReferenceModeKindChangeRule : RolePlayerChangeRule
 		{
 			/// <summary>
@@ -839,7 +839,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Rule to forward the KindDisplay property to the generated
 		/// Kind property
 		/// </summary>
-		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))]
+		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))] // DeletingRule
 		protected class ReferenceModeHasReferenceModeKindDeletingRule : DeletingRule
 		{
 			/// <summary>

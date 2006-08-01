@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Enforces Change Rules
 		/// </summary>
-		[RuleOn(typeof(Note))]
+		[RuleOn(typeof(Note))] // ChangeRule
 		private sealed class NoteChangeRule : ChangeRule
 		{
 			/// <summary>

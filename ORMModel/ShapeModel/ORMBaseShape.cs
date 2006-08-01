@@ -462,7 +462,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // DuplicateNameError Activation Helper
 		#region Update shapes on ModelError added/removed
-		[RuleOn(typeof(ModelHasError))]
+		[RuleOn(typeof(ModelHasError))] // AddRule
 		private sealed class ModelErrorAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -470,7 +470,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ProcessModelErrorChange(e.ModelElement as ModelHasError);
 			}
 		}
-		[RuleOn(typeof(ModelHasError))]
+		[RuleOn(typeof(ModelHasError))] // DeletingRule
 		private sealed class ModelErrorDeleting : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)

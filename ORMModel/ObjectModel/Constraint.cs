@@ -145,7 +145,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Rule that fires when a constraint has a RoleSequence Removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
 		private sealed class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
 		{
 			/// <summary>
@@ -247,7 +247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Ensure that a fact and constraint have a consistent owning model
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactSetConstraint))] // AddRule
 		private sealed class FactSetConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -258,7 +258,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Ensure that an internal constraint always goes away with its fact
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
 		private sealed class FactSetConstraintDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -275,7 +275,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure that a newly added fact that is already attached to constraints
 		/// has a consistent model for the constraints
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))]
+		[RuleOn(typeof(ModelHasFactType))] // AddRule
 		private sealed class FactAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -292,7 +292,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class EnforceRoleSequenceValidityForAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -310,7 +310,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Remove Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
 		private sealed class EnforceRoleSequenceValidityForDelete : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -329,7 +329,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -363,7 +363,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// objects are created for each role. Note that a single column external
 		/// constraint is a role sequence.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))]
+		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
 		private sealed class ConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -766,7 +766,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class EnforceRoleSequenceValidityForRolePlayerAdd : AddRule
 		{
 			public static void Process(ObjectTypePlaysRole link)
@@ -792,7 +792,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		///Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
 		private sealed class EnforceRoleSequenceValidityForRolePlayerDelete : DeleteRule
 		{
 			public static void Process(ObjectTypePlaysRole link, Role role)
@@ -821,7 +821,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Forward ObjectTypePlaysRole role player changes to corresponding Add/Delete rules
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
 		private sealed class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -1016,7 +1016,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Ensure that a fact and constraint have a consistent owning model
 		/// </summary>
-		[RuleOn(typeof(FactSetComparisonConstraint))]
+		[RuleOn(typeof(FactSetComparisonConstraint))] // AddRule
 		private sealed class FactSetComparisonConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1028,7 +1028,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure that a newly added fact that is already attached to constraints
 		/// has a consistent model for the constraints
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))]
+		[RuleOn(typeof(ModelHasFactType))] // AddRule
 		private sealed class FactAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1046,7 +1046,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding FactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1079,7 +1079,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// make sure the corresponding FactConstraint and ExternalRoleConstraint
 		/// objects are created for each role.
 		/// </summary>
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
 		private sealed class ConstraintHasRoleSequenceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1133,7 +1133,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// goes away. Note that this rule also affects single column external
 		/// constraints, but we only need to write it once.
 		/// </summary>
-		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 1000)]
+		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 1000)] // DeleteRule
 		private sealed class ExternalRoleConstraintDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1508,7 +1508,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // VerifyCompatibleRolePlayerTypeForRule
 		#region Add/Remove Rules
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
 		private sealed class EnforceRoleSequenceCardinalityForAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1517,7 +1517,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCoreModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
 			}
 		}
-		[RuleOn(typeof(ModelHasSetComparisonConstraint))]
+		[RuleOn(typeof(ModelHasSetComparisonConstraint))] // AddRule
 		private sealed class EnforceRoleSequenceCardinalityForConstraintAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1530,7 +1530,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))]
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence))] // AddRule
 		private sealed class EnforceRoleSequenceCardinalityForDelete : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1546,7 +1546,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Add Rule for arity and compatibility checking when ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class EnforceRoleSequenceValidityForAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1566,7 +1566,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		//Remove Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are removed
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
 		private sealed class EnforceRoleSequenceValidityForDelete : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1584,7 +1584,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerPositionChangeRule
 		private sealed class EnforceRoleSequenceValidityForReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -1605,7 +1605,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class EnforceRoleSequenceValidityForRolePlayerAdd : AddRule
 		{
 			public static void Process(ObjectTypePlaysRole link)
@@ -1635,7 +1635,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
 		private sealed class EnforceRoleSequenceValidityForRolePlayerDelete : DeleteRule
 		{
 			public static void Process(ObjectTypePlaysRole link, Role role)
@@ -1670,7 +1670,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Forward ObjectTypePlaysRole role player changes to corresponding Add/Delete rules
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
 		private sealed class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -2121,7 +2121,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Check to see if mandatory constraints are still implied by equality when removing a mandatory
 		/// constraint.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.Inline)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
 		private sealed class ConstraintRoleSequenceHasRoleDeleting : DeletingRule
 		{
 			/// <summary>
@@ -2155,7 +2155,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Check to see if mandatory constraints are implied by equality when adding an equality
 		/// constraint.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			/// <summary>
@@ -2471,7 +2471,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// a preferred identifier link has been eliminated.
 		/// Remove the preferred identifier if this happens.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
 		private sealed class TestRemovePreferredIdentifierDeletingRule : DeletingRule
 		{
 			/// <summary>
@@ -2527,7 +2527,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// a preferred identifier link has been eliminated.
 		/// Remove the preferred identifier if this happens.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
 		private sealed class TestRemovePreferredIdentifierRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -2550,7 +2550,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// A rule to determine if a role has been added to a fact that
 		/// has a preferred identifier attached to one of its constraints.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class TestRemovePreferredIdentifierRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -2588,7 +2588,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// A rule to determine if a role has been added to a constraint
 		/// that is acting as a preferred identifier
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class TestRemovePreferredIdentifierConstraintRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -2737,7 +2737,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// roles is the preferred identifier for a direct role player. This
 		/// pattern is not allowed.
 		/// </summary>
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification))] // AddRule
 		private sealed class TestRemovePreferredIdentifierObjectificationAddRule : AddRule
 		{
 			public static void TestRemovePreferredIdentifiers(FactType factType)
@@ -2768,7 +2768,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // TestRemovePreferredIdentifierObjectificationAddRule class
 		#region TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule class
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification))] // RolePlayerChangeRule
 		private sealed class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -2791,7 +2791,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Verify that all preconditions hold for adding a primary
 		/// identifier and extend modifiable conditions as needed.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
 		private sealed class PreferredIdentifierAddedRule : AddRule
 		{
 			/// <summary>
@@ -3237,7 +3237,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// Checks when Internal constraint is added
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactSetConstraint))] // AddRule
 		private sealed class NMinusOneAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -3254,7 +3254,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Only validates NMinusOneError
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class NMinusOneAddRuleModelConstraintAddValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -3270,7 +3270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Only validates NMinusOneError
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
 		private sealed class NMinusOneDeleteRuleModelConstraintDeleteValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -3287,7 +3287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// Used for Adding roles to the role sequence check
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class NMinusOneAddRuleModelFactAddValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -3307,7 +3307,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// Used for Removing roles to the role sequence check
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
 		private sealed class NMinusOneDeleteRuleModelFactDeleteValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -3358,7 +3358,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Internal constraint handling
 		#region UniquenessConstraintChangeRule class
-		[RuleOn(typeof(UniquenessConstraint))]
+		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
 		private sealed class UniquenessConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -3675,7 +3675,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Handle changes to the IsSimple property
 		/// </summary>
-		[RuleOn(typeof(MandatoryConstraint))]
+		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
 		private sealed class MandatoryConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -3691,7 +3691,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // MandatoryConstraintChangeRule class
 		#endregion // Simple mandatory constraint handling
 		#region VerifyImpliedMandatoryRole Add/Remove Methods
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class VerifyImpliedMandatoryRoleAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -3699,7 +3699,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ValidateIntersectingMandatoryConstraints(e.ModelElement as ConstraintRoleSequenceHasRole);
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
 		private sealed class VerifyImpliedMandatoryRoleDeleting : DeletingRule
 		{
 			/// <summary>
@@ -3940,7 +3940,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // MinMaxError Validation
 		#region FrequencyConstraintMinMaxRule class
-		[RuleOn(typeof(FrequencyConstraint))]
+		[RuleOn(typeof(FrequencyConstraint))] // ChangeRule
 		private sealed class FrequencyConstraintMinMaxRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -3966,7 +3966,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// is removed automatically for us in this case, so we go ahead and clear
 		/// out the appropriate errors here.
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
 		private sealed class RemoveContradictionErrorsWithFactTypeRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -4092,7 +4092,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //Type Not Specified Error Rule
 		#region RingConstraintTypeChangeRule class
-		[RuleOn(typeof(RingConstraint))]
+		[RuleOn(typeof(RingConstraint))] // ChangeRule
 		private sealed class RingConstraintTypeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

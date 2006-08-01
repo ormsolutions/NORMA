@@ -243,7 +243,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryParent implementation
 		#region Rules to remove duplicate name errors
-		[RuleOn(typeof(ObjectTypeHasDuplicateNameError))]
+		[RuleOn(typeof(ObjectTypeHasDuplicateNameError))] // DeleteRule
 		private sealed class RemoveDuplicateObjectTypeNameErrorRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -259,7 +259,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError)), RuleOn(typeof(SetConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))]
+		[RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError)), RuleOn(typeof(SetConstraintHasDuplicateNameError)), RuleOn(typeof(ValueConstraintHasDuplicateNameError))] // DeleteRule
 		private sealed class RemoveDuplicateConstraintNameErrorRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

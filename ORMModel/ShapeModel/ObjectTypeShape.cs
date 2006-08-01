@@ -338,7 +338,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // IModelErrorActivation Implementation
 		#region Shape display update rules
-		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
 		private sealed class ShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -406,7 +406,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed class PreferredIdentifierDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -459,7 +459,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
 		private sealed class PreferredIdentifierAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -479,11 +479,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			} //method
 		} //class
+
+		// Note that we do not need a RolePlayerChangeRule for ValueTypeHasDataType as
+		// this will not change whether a given type is used as a refmode or not
+
 		/// <summary>
 		/// An object type can be a preferred identifier. Changing it to a value
 		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
 		private sealed class DataTypeAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -520,7 +524,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// role player. Attaching a role player will match the reference mode pattern, which then needs
 		/// to ensure that the ExpandRefMode property is correct.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class RolePlayerAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -550,7 +554,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// preferred identifier, so there is no notification to the shape that the refmode is gone.
 		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime=TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime=TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed class RolePlayerDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// This Rule calls the DelayValidateElement method when a ObjectType is added to the Diagram.
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType))]
+		[RuleOn(typeof(ModelHasObjectType))] // AddRule
 		public class ExtensionObjectTypeAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -134,7 +134,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// This method calls the DelayValidateElement method when an ObjectType has been changed.
 		/// </summary>
-		[RuleOn(typeof(ObjectType))]
+		[RuleOn(typeof(ObjectType))] // ChangeRule
 		public class ExtensionObjectTypeChangeRule : ChangeRule
 		{
 			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

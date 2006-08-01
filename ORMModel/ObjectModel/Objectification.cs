@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -68,7 +68,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// 1) Creates a new implied Objectification if the implied objectification pattern is now present.
 		/// 2) Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class ImpliedObjectificationFactTypeHasRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -83,7 +83,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Removes an existing implied Objectification if the implied objectification pattern is no longer present.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // DeletingRule
 		private sealed class ImpliedObjectificationFactTypeHasRoleDeletingRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
@@ -98,7 +98,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
-		[RuleOn(typeof(UniquenessConstraint))]
+		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
 		private sealed class ImpliedObjectificationUniquenessConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -146,7 +146,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))]
+		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
 		private sealed class UniquenessConstraintAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -172,7 +172,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Ensure that an objectifying type with a single candidate internal uniqueness
 		/// constraint on the objectified fact uses that constraint as its preferred identifier.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))]
+		[RuleOn(typeof(ModelHasSetConstraint))] // DeletingRule
 		private sealed class UniquenessConstraintDeletingRule : DeletingRule
 		{
 			public override void ElementDeleting(ElementDeletingEventArgs e)
@@ -200,7 +200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the existing preferred identifier is deleted and a single internal
 		/// uniqueness constraint on the objectified fact is available.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeletingRule
 		private sealed class PreferredIdentifierDeletingRule : DeletingRule
 		{
 			public override void  ElementDeleting(ElementDeletingEventArgs e)
@@ -220,7 +220,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validates that an objectification that is implied matches the implied objectification pattern.
 		/// </summary>
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification))] // ChangeRule
 		private sealed class ImpliedObjectificationIsImpliedChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -249,7 +249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Changes an implied Objectification to being explicit if IsIndependent is changed.
 		/// </summary>
-		[RuleOn(typeof(ObjectType))]
+		[RuleOn(typeof(ObjectType))] // ChangeRule
 		private sealed class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -271,7 +271,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Changes an implied Objectification to being explicit if a Role in a non-implied FactType is played.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -286,7 +286,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Create implied facts and constraints when an item is objectified
 		/// </summary>
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification))] // AddRule
 		private sealed class ObjectificationAddRule : AddRule
 		{
 			/// <summary>
@@ -382,7 +382,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Remove the implied objectifying ObjectType when Objectification is removed.
 		/// </summary>
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification))] // DeleteRule
 		private sealed class ObjectificationDeleteRule : DeleteRule
 		{
 			/// <summary>
@@ -427,7 +427,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Process Objectification role player changes
 		/// </summary>
-		[RuleOn(typeof(Objectification))]
+		[RuleOn(typeof(Objectification))] // RolePlayerChangeRule
 		private class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -457,7 +457,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Rule class to block objectification of implied facts
 		/// </summary>
-		[RuleOn(typeof(ObjectificationImpliesFactType))]
+		[RuleOn(typeof(ObjectificationImpliesFactType))] // AddRule
 		private sealed class ImpliedFactTypeAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -475,7 +475,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Synchronize implied fact types when a role is added
 		/// to the nested type.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole)), RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole)), RuleOn(typeof(FactSetConstraint))] // AddRule
 		private sealed class RoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -555,7 +555,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Synchronize implied fact types when a role is removed from
 		/// the nested type.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
 		private sealed class RoleDeletingRule : DeletingRule
 		{
 			private bool myAllowModification;
@@ -651,7 +651,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Synchronize implied fact types when a role player is
 		/// set on an objectified role
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class RolePlayerAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -674,7 +674,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Synchronize implied fact types when a role player is
 		/// being removed from an objectified role
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
 		private sealed class RolePlayerDeletingRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
@@ -704,7 +704,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Ensure that implied internal constraints cannot change the Modality property
 		/// </summary>
-		[RuleOn(typeof(SetConstraint))]
+		[RuleOn(typeof(SetConstraint))] // ChangeRule
 		private sealed class InternalConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

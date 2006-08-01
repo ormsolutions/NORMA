@@ -128,7 +128,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				base.RecalculateRoute();
 			}
 		}
-		[RuleOn(typeof(LinkConnectsToNode), Priority=100)] // Priority after the default rule
+		[RuleOn(typeof(LinkConnectsToNode), Priority=100)] // RolePlayerChangeRule // Priority after the default rule
 		private class HackConnectionPointRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -253,7 +253,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Keep relative child elements a fixed distance away from the fact
 		/// when the shape changes.
 		/// </summary>
-		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)]
+		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
 		private sealed class LinkChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

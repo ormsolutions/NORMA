@@ -244,7 +244,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Also rejects trying to change the current primary reading's IsPrimary to false.
 		/// Validates that the reading text has the necessary number of placeholders.
 		/// </summary>
-		[RuleOn(typeof(Reading))]
+		[RuleOn(typeof(Reading))] // ChangeRule
 		private sealed class ReadingPropertiesChanged : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -312,7 +312,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region ReadingOrderHasRoleRemoved rule class
-		[RuleOn(typeof(ReadingOrderHasRole))]
+		[RuleOn(typeof(ReadingOrderHasRole))] // DeleteRule
 		private sealed class ReadingOrderHasRoleDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)

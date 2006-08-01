@@ -536,7 +536,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
 		#region RoleChangeRule class
-		[RuleOn(typeof(FactType))]
+		[RuleOn(typeof(FactType))] // ChangeRule
 		private sealed class FactTypeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -1199,7 +1199,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class FactTypeHasRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1213,7 +1213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
 		/// validation when roles are added and removed.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
 		private sealed class FactTypeHasRoleDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1229,7 +1229,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactSetConstraint))] // AddRule
 		private sealed class ModelHasInternalConstraintAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1246,7 +1246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
-		[RuleOn(typeof(FactSetConstraint))]
+		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
 		private sealed class ModelHasInternalConstraintDeleteRuleModelValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1261,7 +1261,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(UniquenessConstraint))]
+		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
 		private sealed class InternalUniquenessConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -1282,7 +1282,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class InternalConstraintCollectionHasConstraintAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1299,7 +1299,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
 		private sealed class InternalConstraintCollectionHasConstraintDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1323,7 +1323,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Calls the validation of all FactType related errors
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))]
+		[RuleOn(typeof(ModelHasFactType))] // AddRule
 		private sealed class ModelHasFactTypeAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1343,7 +1343,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Only validates ReadingRequiredError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasReadingOrder))]
+		[RuleOn(typeof(FactTypeHasReadingOrder))] // AddRule
 		private sealed class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1356,7 +1356,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Only validates ReadingRequiredError
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasReadingOrder))]
+		[RuleOn(typeof(FactTypeHasReadingOrder))] // DeleteRule
 		private sealed class FactTypeHasReadingOrderDeleteRuleModelValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1389,7 +1389,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Only validates ReadingRequiredError
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading))]
+		[RuleOn(typeof(ReadingOrderHasReading))] // DeleteRule
 		private sealed class ReadingOrderHasReadingDeleteRuleModelValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1405,7 +1405,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(Reading))]
+		[RuleOn(typeof(Reading))] // ChangeRule
 		private sealed class ValidateFactNameForReadingChange : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -1427,7 +1427,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeHasReadingOrder))]
+		[RuleOn(typeof(FactTypeHasReadingOrder))] // RolePlayerPositionChangeRule
 		private sealed class ValidateFactNameForReadingOrderReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -1442,7 +1442,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ReadingOrderHasReading))]
+		[RuleOn(typeof(ReadingOrderHasReading))] // RolePlayerPositionChangeRule
 		private sealed class ValidateFactNameForReadingReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -1460,7 +1460,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class ValidateFactNameForRolePlayerAdded : AddRule
 		{
 			public static void Process(ObjectTypePlaysRole link, Role playedRole)
@@ -1486,7 +1486,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Process(e.ModelElement as ObjectTypePlaysRole, null);
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
 		private sealed class ValidateFactNameForRolePlayerDelete : DeleteRule
 		{
 			public static void Process(ObjectTypePlaysRole link, Role playedRole)
@@ -1515,7 +1515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Process(e.ModelElement as ObjectTypePlaysRole, null);
 			}
 		}
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
 		private sealed class ValidateFactNameForRolePlayerRolePlayerChange : RolePlayerChangeRule
 		{
 			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -1531,7 +1531,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ValidateFactNameForRolePlayerAdded.Process(link, null);
 			}
 		}
-		[RuleOn(typeof(ObjectType))]
+		[RuleOn(typeof(ObjectType))] // ChangeRule
 		private sealed class ValidateFactNameForObjectTypeNameChange : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -2308,7 +2308,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region FactTypeDerivationExpression
 	public partial class FactTypeDerivationExpression
 	{
-		[RuleOn(typeof(FactTypeDerivationExpression))]
+		[RuleOn(typeof(FactTypeDerivationExpression))] // ChangeRule
 		private sealed class FactTypeDerivationExpressionChangeRule : ChangeRule
 		{
 			/// <summary>

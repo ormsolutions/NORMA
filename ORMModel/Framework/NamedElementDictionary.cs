@@ -962,7 +962,7 @@ namespace Neumont.Tools.Modeling
 			}
 			return duplicateAction;
 		}
-		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)]
+		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)] // AddRule
 		private sealed class ElementLinkAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -970,7 +970,7 @@ namespace Neumont.Tools.Modeling
 				HandleAddRemove(e.ModelElement, false, false);
 			}
 		}
-		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)]
+		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)] // DeletingRule
 		private sealed class ElementLinkDeleteRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
@@ -1414,7 +1414,7 @@ namespace Neumont.Tools.Modeling
 			}
 		}
 		// UNDONE: RolePlayerChange
-		[RuleOn(typeof(ModelElement), Priority = NamedElementDictionary.RulePriority)]
+		[RuleOn(typeof(ModelElement), Priority = NamedElementDictionary.RulePriority)] // ChangeRule
 		private sealed class NamedElementChangedRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

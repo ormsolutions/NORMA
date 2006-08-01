@@ -237,7 +237,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// This rule fires when the OIALModel has a conceptType added to it.
 			/// </summary>
-			[RuleOn(typeof(OIALModelHasConceptType))]
+			[RuleOn(typeof(OIALModelHasConceptType))] // AddRule
 			private sealed class OIALModelHasConceptTypeAddRule : AddRule
 			{
 				/// <summary>
@@ -251,7 +251,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// This rule fires when the OIALModel Has a ConceptType Removed.
 			/// </summary>
-			[RuleOn(typeof(OIALModelHasConceptType))]
+			[RuleOn(typeof(OIALModelHasConceptType))] // DeleteRule
 			private sealed class OIALModelHasConceptTypeDeleteRule : DeleteRule
 			{
 				/// <summary>
@@ -265,7 +265,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// This rule fires wen the OIALModel absorbs a ConceptType.
 			/// </summary>
-			[RuleOn(typeof(ConceptTypeAbsorbedConceptType))]
+			[RuleOn(typeof(ConceptTypeAbsorbedConceptType))] // AddRule
 			private sealed class ConceptTypeAbsorbedConceptTypeAddRule : AddRule
 			{
 				/// <summary>
@@ -279,7 +279,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// This rule fires when a ConceptType that has been absorded is removed from its parent.
 			/// </summary>
-			[RuleOn(typeof(ConceptTypeAbsorbedConceptType))]
+			[RuleOn(typeof(ConceptTypeAbsorbedConceptType))] // DeleteRule
 			private sealed class ConceptTypeAbsorbedConceptTypeDeleteRule : DeleteRule
 			{
 				/// <summary>
@@ -294,7 +294,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when an ObjectType is added to the Model.
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType))]
+		[RuleOn(typeof(ModelHasObjectType))] // AddRule
 		private sealed class ModelHasObjectTypeAddRule : AddRule
 		{
 			/// <summary>
@@ -308,7 +308,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when an ObjectType is removed from the Model.
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType))]
+		[RuleOn(typeof(ModelHasObjectType))] // DeletingRule
 		private sealed class ModelHasObjectTypeDeletingRule : DeletingRule
 		{
 			/// <summary>
@@ -324,7 +324,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for any changes being made to an ObjectType.
 		/// </summary>
-		[RuleOn(typeof(ObjectType))]
+		[RuleOn(typeof(ObjectType))] // ChangeRule
 		private sealed class ObjectTypeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -342,7 +342,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when a FactType is added to the Model.
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))]
+		[RuleOn(typeof(ModelHasFactType))] // AddRule
 		private sealed class ModelHasFactTypeAddRule : AddRule
 		{
 			/// <summary>
@@ -356,7 +356,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when a FactType is removed from the Model.
 		/// </summary>
-		[RuleOn(typeof(ModelHasFactType))]
+		[RuleOn(typeof(ModelHasFactType))] // DeletingRule
 		private sealed class ModelHasFactTypeDeletingRule : DeletingRule
 		{
 			/// <summary>
@@ -372,7 +372,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when a FactType is changed.
 		/// </summary>
-		[RuleOn(typeof(FactType))]
+		[RuleOn(typeof(FactType))] // ChangeRule
 		private sealed class FactTypeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -390,7 +390,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This model listens for when A SetConstraint is added to the Model.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))]
+		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
 		private sealed class ModelHasSetConstraintAddRule : AddRule
 		{
 			/// <summary>
@@ -405,7 +405,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when A SetConstraint is changed.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))]
+		[RuleOn(typeof(ModelHasSetConstraint))] // ChangeRule
 		private sealed class ModelHasSetConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -424,7 +424,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when a SetConstraint is removed from the Model.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))]
+		[RuleOn(typeof(ModelHasSetConstraint))] // DeletingRule
 		private sealed class ModelHasSetConstraintDeletingRule : DeletingRule
 		{
 			/// <summary>
@@ -440,7 +440,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule listens for when an ObjectType plays a role.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class ObjectTypePlaysRoleAddRule : AddRule
 		{
 			/// <summary>
@@ -461,7 +461,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule fires when An ObjectType no longer plays a role.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
 		private sealed class ObjectTypePlaysRoleDeletingRule : DeletingRule
 		{
 			/// <summary>
@@ -477,7 +477,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule fires when a ConstraintRoleSequence is added to a Role.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class ConstraintRoleSequenceHasRoleAddRule : AddRule
 		{
 			/// <summary>
@@ -500,7 +500,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule fires when a ConstraintRoleSequence is removed from a Role.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
 		private sealed class ConstraintRoleSequenceHasRoleDeletingRule : DeletingRule
 		{
 			/// <summary>
@@ -517,7 +517,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule fires when a UniquenessContraint is changed.
 		/// </summary>
-		[RuleOn(typeof(UniquenessConstraint))]
+		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
 		private sealed class UniquenessConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -543,7 +543,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule fires when a MandatoryConstraint is changed.
 		/// </summary>
-		[RuleOn(typeof(MandatoryConstraint))]
+		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
 		private sealed class MandatoryConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -569,7 +569,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This rule fires when a RoleBase is changed.
 		/// </summary>
-		[RuleOn(typeof(RoleBase))]
+		[RuleOn(typeof(RoleBase))] // ChangeRule
 		private sealed class RoleBaseChangeRule : ChangeRule
 		{
 			/// <summary>

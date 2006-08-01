@@ -49,18 +49,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
 		}
-		/// <summary>
-		/// Turn off background filling so errors don't display
-		/// </summary>
-		public override bool HasFilledBackground
-		{
-			get
-			{
-				// UNDONE: Delete this method to display error state
-				// when IModelErrorActivation is implemented on this class
-				return false;
-			}
-		}
 		#endregion // Customize appearance
 		#region overrides
 		/// <summary>
@@ -188,7 +176,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Rule to update an associated ValueConstraintShape when a DataType is added.
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
 		private sealed class ValueTypeHasDataTypeAdded : AddRule
 		{
 			public static void Process(ValueTypeHasDataType link)
@@ -215,7 +203,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Rule to update an associated ValueConstraintShape when a DataType is changed.
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerChangeRule
 		private sealed class ValueTypeHasDataTypeRolePlayerChange : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -230,7 +218,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to notice changes to ValueRange properties so that the
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
-		[RuleOn(typeof(ValueRange), FireTime = TimeToFire.TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ValueRange), FireTime = TimeToFire.TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
 		private sealed class ValueRangeChanged : ChangeRule
 		{
 			/// <summary>
@@ -255,7 +243,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to notice the addition of ValueConstraintHasValueRange links so that the
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
-		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
 		private sealed class ValueConstraintAdded : AddRule
 		{
 			/// <summary>

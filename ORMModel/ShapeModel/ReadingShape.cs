@@ -496,7 +496,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region Reading text display update rules
 		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrder))] is in the ORMShapeModel
 		// for easy sharing with the deserialization fixup process
-		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
 		private sealed class ReadingOrderDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -571,7 +571,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Changing the position of a Reading in a ReadingOrder changes the
 		/// primary reading for that order, requiring a redraw
 		/// </summary>
-		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
 		private sealed class ReadingPositionChanged : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -598,7 +598,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
 		private sealed class RoleDisplayOrderAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -614,7 +614,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
 		private sealed class RoleDisplayOrderPositionChanged : RolePlayerPositionChangeRule
 		{
 			public override void  RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
@@ -635,7 +635,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to notice changes to Reading.Text properties so that the
 		/// reading shapes can have their display text invalidated.
 		/// </summary>
-		[RuleOn(typeof(Reading))]
+		[RuleOn(typeof(Reading))] // ChangeRule
 		private sealed class ReadingTextChanged : ChangeRule
 		{
 			/// <summary>

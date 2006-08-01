@@ -338,8 +338,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a Role is added to a FactType's role collection, all FactTypeInstances of that FactType
 		/// should be revalidated to ensure that they form a complete instance of the FactType
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
-
+		[RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class FactTypeHasRoleAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -359,7 +358,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// will force deletion of any FactTypeInstances which no longer have
 		/// any FactTypeRoleInstances.
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
 		private sealed class FactTypeHasRoleDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -387,7 +386,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to a FactType, make sure all of the RoleInstance Roles
 		/// have the same FactType as a parent
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasFactTypeInstance))]
+		[RuleOn(typeof(FactTypeHasFactTypeInstance))] // AddRule
 		private sealed class FactTypeHasFactTypeInstanceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -413,7 +412,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// roles have the same FactType as a parent and that a RoleInstance
 		/// for the given role doesn't already exist
 		/// </summary>
-		[RuleOn(typeof(FactTypeInstanceHasRoleInstance))]
+		[RuleOn(typeof(FactTypeInstanceHasRoleInstance))] // AddRule
 		private sealed class FactTypeInstanceHasRoleInstanceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -435,7 +434,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to ensure complete population of its roles.  If the FactTypeRoleInstance
 		/// removed was the last one, remove the FactTypeInstance.
 		/// </summary>
-		[RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeInstanceHasRoleInstance), FireTime=TimeToFire.LocalCommit)] // DeleteRule
 		private sealed class FactTypeInstanceHasRoleInstanceDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -676,7 +675,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a Role is added to an EntityType's preferred identifier collection, all EntityTypeInstances of that EntityType
 		/// should be revalidated to ensure that they form a complete instance of the EntityType
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -704,7 +703,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// will force deletion of any EntityTypeInstances which no longer have
 		/// any EntityTypeRoleInstances.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
 		private sealed class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -757,7 +756,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to an EntityType, ensure that all of the RoleInstances are hooked up to a role in the 
 		/// EntityType's preferred identifier.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeHasEntityTypeInstance))]
+		[RuleOn(typeof(EntityTypeHasEntityTypeInstance))] // AddRule
 		private sealed class EntityTypeHasEntityTypeInstanceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -783,7 +782,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// in the EntityType parent's PreferredIdentifier, and that there are no duplicates.
 		/// Also validate the EntityTypeInstance to ensure a full instance population.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
+		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // AddRule
 		private sealed class EntityTypeInstanceHasRoleInstanceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -803,7 +802,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// to ensure that the EntityTypeInstance is fully populated.  If the EntityTypeRoleInstance
 		/// removed is the last one, remove the parent EntityTypeInstance.
 		/// </summary>
-		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))]
+		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // DeleteRule
 		private sealed class EntityTypeInstanceHasRoleInstanceDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -920,23 +919,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (!IsDeleted)
 			{
 				ObjectType parent = this.ValueType;
-				CompatibleValueTypeInstanceValueError badValue = this.CompatibleValueTypeInstanceValueError;
+				bool hasError = false;
 				if (parent != null)
 				{
 					DataType dataType = parent.DataType;
-					if(!dataType.CanParse(this.Value))
+					if (!dataType.CanParseAnyValue && !dataType.CanParse(this.Value))
 					{
-						if (badValue == null)
+						hasError = true;
+					}
+				}
+				CompatibleValueTypeInstanceValueError badValue = this.CompatibleValueTypeInstanceValueError;
+				if (hasError)
+				{
+					if (badValue == null)
+					{
+						badValue = new CompatibleValueTypeInstanceValueError(this.Store);
+						badValue.ValueTypeInstance = this;
+						badValue.Model = parent.Model;
+						badValue.GenerateErrorText();
+						if (notifyAdded != null)
 						{
-							badValue = new CompatibleValueTypeInstanceValueError(this.Store);
-							badValue.ValueTypeInstance = this;
-							badValue.Model = parent.Model;
-							badValue.GenerateErrorText();
-							if (notifyAdded != null)
-							{
-								notifyAdded.ElementAdded(badValue);
-							}
+							notifyAdded.ElementAdded(badValue);
 						}
+					}
+					else
+					{
+						// Refresh the error text
+						badValue.GenerateErrorText();
 					}
 				}
 				else if (badValue != null)
@@ -948,14 +957,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region ValueTypeInstance Rules
 		/// <summary>
-		/// When the DataType changes, recheck the valueTypeInstance values
+		/// When the DataType is added, recheck the valueTypeInstance values
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
 		private sealed class ValueTypeHasDataTypeAdded : AddRule
 		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			/// <summary>
+			/// Process a data type change for the given value type
+			/// </summary>
+			/// <param name="link">The ValueTypeHasType relationship instance</param>
+			public static void Process(ValueTypeHasDataType link)
 			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				DataType dataType = link.DataType;
 				ObjectType valueType = link.ValueType;
 				bool clearErrors = dataType.CanParseAnyValue;
@@ -971,12 +983,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as ValueTypeHasDataType);
+			}
+		}
+		/// <summary>
+		/// When the DataType is changed, recheck the instance values
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
+		private sealed class ValueTypeHasDataTypeRolePlayerChange : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+				{
+					ValueTypeHasDataTypeAdded.Process(e.ElementLink as ValueTypeHasDataType);
+				}
+			}
 		}
 
 		/// <summary>
 		/// Whenever the value of a valueTypeInstance changes, make sure it can be parsed as the current DataType
 		/// </summary>
-		[RuleOn(typeof(ValueTypeInstance))]
+		[RuleOn(typeof(ValueTypeInstance))] // ChangeRule
 		private sealed class ValueTypeInstanceValueChanged : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -995,7 +1025,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// given ValueTypeInstance.Value is of the datatype defined in
 		/// ValueType.DataType
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasValueTypeInstance))]
+		[RuleOn(typeof(ValueTypeHasValueTypeInstance))] // AddRule
 		private sealed class ValueTypeHasValueTypeInstanceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)

@@ -163,7 +163,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#region Shape display update rules
-		[RuleOn(typeof(Note), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(Note), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
 		private sealed class NoteChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)

@@ -202,15 +202,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#region ValueTypeHasDataType rule
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class DataTypeAddRule : AddRule
 		{
 			/// <summary>
 			/// Test if the changed value does not match the specified data type.
 			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			public static void Process(ValueTypeHasDataType link)
 			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ObjectType valueType = link.ValueType;
 				ValidateValueConstraintForRule(valueType.ValueConstraint);
 				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
@@ -220,14 +219,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ValidateValueConstraintForRule(roles[i].ValueConstraint);
 				}
 			}
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				Process(e.ModelElement as ValueTypeHasDataType);
+			}
 		}
 		#endregion // ValueTypeHasDataType rule
+		#region DataTypeRolePlayerChangeRule rule
+		/// <summary>
+		/// When the DataType is changed, recheck the instance values
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
+		private sealed class DataTypeRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+				{
+					DataTypeAddRule.Process(e.ElementLink as ValueTypeHasDataType);
+				}
+			}
+		}
+		#endregion // DataTypeRolePlayerChangeRule rule
 		#region DataTypeChangeRule rule
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // ChangeRule
 		private sealed class DataTypeChangeRule : ChangeRule
 		{
 			/// <summary>
-			/// checks first if the data type has been chagned and then test if the 
+			/// checks first if the data type has been changed and then test if the 
 			/// value matches the datatype
 			/// </summary>
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
@@ -245,7 +264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // DataTypeChangeRule rule
 		#region ValueConstraintAddRule rule
-		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class ValueConstraintAddRule : AddRule
 		{
 			/// <summary>
@@ -266,7 +285,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ValueConstraintAddRule rule
 		#region RoleValueConstraintAdded rule
-		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class RoleValueConstraintAdded : AddRule
 		{
 			/// <summary>
@@ -287,7 +306,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // RoleValueConstraintAdded rule
 		#region ObjectTypeRoleAdded rule
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime= TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class ObjectTypeRoleAdded : AddRule
 		{
 			/// <summary>
@@ -308,7 +327,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ObjectTypeRoleAdded rule
 		#region ValueRangeAdded rule
-		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)] // AddRule
 		private sealed class ValueRangeAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -319,7 +338,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ValueRangeAdded rule
 		#region ValueRangeChangeRule rule
-		[RuleOn(typeof(ValueRange))]
+		[RuleOn(typeof(ValueRange))] // ChangeRule
 		private sealed class ValueRangeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -930,7 +949,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 		#region ValueTypeValueConstraintChangeRule class
-		[RuleOn(typeof(ValueTypeValueConstraint))]
+		[RuleOn(typeof(ValueTypeValueConstraint))] // ChangeRule
 		private sealed class ValueTypeValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -1018,7 +1037,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 		#region RoleValueConstraintChangeRule class
-		[RuleOn(typeof(RoleValueConstraint))]
+		[RuleOn(typeof(RoleValueConstraint))] // ChangeRule
 		private sealed class RoleValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>

@@ -322,7 +322,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// External constraint shapes can only be drawn if they show all of their
 		/// links, so automatically remove them if a connecting shape is removed.
 		/// </summary>
-		[RuleOn(typeof(ExternalConstraintLink))]
+		[RuleOn(typeof(ExternalConstraintLink))] // DeletingRule
 		private sealed class DeleteDanglingConstraintShapeRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)

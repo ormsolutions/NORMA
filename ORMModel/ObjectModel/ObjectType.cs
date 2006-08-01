@@ -896,7 +896,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Enforces Change Rules
 		/// </summary>
-		[RuleOn(typeof(ObjectType))]
+		[RuleOn(typeof(ObjectType))] // ChangeRule
 		private sealed class ObjectTypeChangeRule : ChangeRule
 		{
 			/// <summary>
@@ -1139,7 +1139,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Enforces Delete Rules
 		/// </summary>
-		[RuleOn(typeof(ObjectType))]
+		[RuleOn(typeof(ObjectType))] // DeletingRule
 		private sealed class ObjectTypeDeleteRule : DeletingRule
 		{
 			/// <summary>
@@ -1277,7 +1277,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// A class to add unspecified data type errors
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
 		private sealed class UnspecifiedDataTypeAddRule : AddRule
 		{
 			/// <summary>
@@ -1289,7 +1289,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCoreModel.DelayValidateElement((e.ModelElement as ValueTypeHasDataType).ValueType, DelayValidateDataTypeNotSpecifiedError);
 			}
 		}
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
 		private sealed class UnspecifiedDataRoleRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
@@ -1703,7 +1703,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // CompatibleSupertypesError Validation
 		#region EntityTypeRequiresReferenceSchemeError Rules
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
 		private sealed class VerifyReferenceSchemeAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1717,7 +1717,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeleteRule
 		private sealed class VerifyReferenceSchemeDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1734,7 +1734,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
 		private sealed class VerifyValueTypeHasDataTypeAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1743,7 +1743,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCoreModel.DelayValidateElement(link.ValueType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
-		[RuleOn(typeof(ValueTypeHasDataType))]
+		[RuleOn(typeof(ValueTypeHasDataType))] // DeleteRule
 		private sealed class VerifyValueTypeHasDataTypeDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1755,7 +1755,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Calls the validation of all FactType related errors
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType))]
+		[RuleOn(typeof(ModelHasObjectType))] // AddRule
 		private sealed class ModelHasObjectTypeAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1767,7 +1767,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The reference scheme requirements change when the supertype changes
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
 		private sealed class SupertypeAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1802,7 +1802,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The reference scheme requirements change when the supertype changes
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
 		private sealed class SupertypeDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
@@ -1823,7 +1823,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Subtypes need to check super type compatibility when a subtype link is removing
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
 		private sealed class SupertypeDeletingRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
@@ -1884,7 +1884,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
 		private sealed class MandatoryRoleAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1919,7 +1919,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
 		private sealed class MandatoryRoleDeletingRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
@@ -1962,7 +1962,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// If a subtypefact is set as primary then clear the primary
 		/// subtype from other facts.
 		/// </summary>
-		[RuleOn(typeof(SubtypeFact))]
+		[RuleOn(typeof(SubtypeFact))] // ChangeRule
 		private sealed class SubtypeFactChangeRule : ChangeRule
 		{
 			private bool myIgnoreRule;
@@ -2184,7 +2184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// This is an object model backup for the UI, which does not offer these
 		/// conditions to the user.
 		/// </summary>
-		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))] // AddRule
 		private sealed class CheckForIncompatibleRelationshipRule : AddRule
 		{
 			/// <summary>
@@ -2300,7 +2300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// This is an object model backup for the UI, which does not offer these
 		/// conditions to the user.
 		/// </summary>
-		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))]
+		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(FactTypeHasRole))] // RolePlayerChangeRule
 		private sealed class CheckForIncompatibleRelationshipRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)

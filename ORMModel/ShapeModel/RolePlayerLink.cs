@@ -590,7 +590,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// UNDONE: MSBUG This is a huge hack that will go away if
 		/// Microsoft passes link information into DoFoldToShape
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
 		private sealed class RolePlayerDeleting : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
