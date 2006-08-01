@@ -18071,7 +18071,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("d3162c67-de52-4b0d-802f-824e6ed5b74b")]
 	public abstract partial class RoleInstance : DslModeling::ElementLink
 	{
@@ -18201,24 +18201,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one RoleInstance link between a given Roleand a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.ObjectModel.RoleInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.RoleInstance.RoleDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.RoleInstance link in links )
-			{
-				if ( target.Equals(link.ObjectTypeInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }
@@ -18231,7 +18213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("5db3a2c1-c5de-4c4a-97c2-e09ce11537d3")]
 	public partial class EntityTypeRoleInstance : RoleInstance
 	{
@@ -18441,24 +18423,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one EntityTypeRoleInstance link between a given Roleand a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance.RoleDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.EntityTypeRoleInstance link in links )
-			{
-				if ( target.Equals(link.ObjectTypeInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }
@@ -18471,7 +18435,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("fc7c9715-6886-46c2-a7a0-3bfd95cd0766")]
 	public partial class FactTypeRoleInstance : RoleInstance
 	{
@@ -18681,24 +18645,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one FactTypeRoleInstance link between a given Roleand a ObjectTypeInstance.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static new global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance GetLink( global::Neumont.Tools.ORM.ObjectModel.Role source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance>(source, global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance.RoleDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.ObjectModel.FactTypeRoleInstance link in links )
-			{
-				if ( target.Equals(link.ObjectTypeInstance) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }

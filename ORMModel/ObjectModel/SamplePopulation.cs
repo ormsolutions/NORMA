@@ -672,6 +672,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region EntityTypeInstance Rules
 		/// <summary>
+		/// Clean up ValueTypeInstances when an ObjectType becomes an EntityType
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
+		private sealed class EntityTypeHasPreferredIdentifierAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (!entityType.IsValueType)
+				{
+					entityType.ValueTypeInstanceCollection.Clear();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Clean up EntityTypeInstances when an ObjectType becomes a ValueTypeInstance
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeleteRule
+		private sealed class EntityTypeHasPreferredIdentifierDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType valueType = link.PreferredIdentifierFor;
+				if (valueType.IsValueType)
+				{
+					valueType.EntityTypeInstanceCollection.Clear();
+				}
+			}
+		}
+
+		/// <summary>
 		/// If a Role is added to an EntityType's preferred identifier collection, all EntityTypeInstances of that EntityType
 		/// should be revalidated to ensure that they form a complete instance of the EntityType
 		/// </summary>
@@ -716,34 +750,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					Role removedRole = link.Role;
 					LinkedElementCollection<EntityTypeRoleInstance> roleInstances;
+					LinkedElementCollection<EntityTypeInstance> instances = parent.EntityTypeInstanceCollection;
+					EntityTypeInstance currentInstance;
 					bool cleanUp;
-					foreach (EntityTypeInstance entityTypeInstance in parent.EntityTypeInstanceCollection)
+					for(int i = 0; i < instances.Count;)
 					{
-						if (!entityTypeInstance.IsDeleted)
+						currentInstance = instances[i];
+						if (!currentInstance.IsDeleted)
 						{
 							cleanUp = true;
-							roleInstances = entityTypeInstance.RoleInstanceCollection;
-							foreach (EntityTypeRoleInstance entityTypeRoleInstance in roleInstances)
+							roleInstances = currentInstance.RoleInstanceCollection;
+							EntityTypeRoleInstance currentRoleInstance;
+							for (int j = 0; j < roleInstances.Count;)
 							{
-								if (!entityTypeRoleInstance.IsDeleted)
+								currentRoleInstance = roleInstances[j];
+								if (!currentRoleInstance.IsDeleted)
 								{
-									if (entityTypeRoleInstance.Role == removedRole)
+									if (currentRoleInstance.Role == removedRole)
 									{
-										entityTypeRoleInstance.Delete();
+										currentRoleInstance.Delete();
+										j = 0;
 									}
 									else
 									{
 										cleanUp = false;
+										++j;
 									}
 								}
 							}
 							if (cleanUp)
 							{
-								entityTypeInstance.Delete();
+								currentInstance.Delete();
+								i = 0;
 							}
 							else
 							{
-								ORMCoreModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+								ORMCoreModel.DelayValidateElement(currentInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+								++i;
 							}
 						}
 					}

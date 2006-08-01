@@ -3580,9 +3580,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(ObjectTypePlaysRole.RolePlayerDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|RolePlayer", match);
-				match.InitializeRoles(EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
+				match.InitializeRoles(true, EntityTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances|http://schemas.neumont.edu/ORM/2006-04/ORMCore|EntityTypeRoleInstance", match);
-				match.InitializeRoles(FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
+				match.InitializeRoles(true, FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances|http://schemas.neumont.edu/ORM/2006-04/ORMCore|FactTypeRoleInstance", match);
 				match.InitializeRoles(RoleHasValueConstraint.ValueConstraintDomainRoleId);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueRestriction||", match);

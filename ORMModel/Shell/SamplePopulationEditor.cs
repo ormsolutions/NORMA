@@ -21,8 +21,6 @@ namespace Neumont.Tools.ORM.Shell
 	public partial class SamplePopulationEditor : UserControl
 	{
 		#region Member Variables
-		private readonly VirtualTreeControl vtrSamplePopulation;
-		private readonly Label lblNoSelection;
 		private SamplePopulationBaseBranch myBranch;
 		private ObjectType mySelectedValueType;
 		private ObjectType mySelectedEntityType;
@@ -42,42 +40,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public SamplePopulationEditor()
 		{
-			VirtualTreeControl treeControl = this.vtrSamplePopulation = new VirtualTreeControl();
-			Label label = this.lblNoSelection = new Label();
-			this.SuspendLayout();
-			// 
-			// vtrSamplePopulation
-			// 
-			treeControl.Dock = DockStyle.Fill;
-			treeControl.HasGridLines = true;
-			treeControl.HasHorizontalGridLines = true;
-			treeControl.HasVerticalGridLines = true;
-			treeControl.LabelEditSupport = VirtualTreeLabelEditActivationStyles.Delayed;
-			treeControl.Name = "vtrSamplePopulation";
-			treeControl.TabIndex = 0;
-			treeControl.Visible = false;
-			treeControl.SelectionChanged += this.vtrSamplePopulation_SelectionChanged;
-			// 
-			// lblNoSelection
-			// 
-			label.FlatStyle = FlatStyle.System;
-			label.Dock = DockStyle.Fill;
-			label.Name = "lblNoSelection";
-			label.TabIndex = 1;
-			// UNDONE: Localize this.
-			label.Text = "Please select a FactType, a ValueType, or an EntityType with a preferred identifier to begin editing instances.";
-			label.TextAlign = ContentAlignment.MiddleCenter;
-			// 
-			// SamplePopulationEditor
-			// 
-			this.AutoScaleDimensions = new SizeF(6F, 13F);
-			this.AutoScaleMode = AutoScaleMode.Font;
-			this.Controls.Add(treeControl);
-			this.Controls.Add(label);
-			this.Name = "SamplePopulationEditor";
-			this.Size = new System.Drawing.Size(407, 179);
-			this.ResumeLayout(false);
-			SamplePopulationEditor.TreeControl = treeControl;
+			InitializeComponent();
+			SamplePopulationEditor.TreeControl = this.vtrSamplePopulation;
 		}
 		#endregion
 		#region Properties
@@ -244,7 +208,7 @@ namespace Neumont.Tools.ORM.Shell
 				headers[0] = CreateRowNumberColumn();
 				for (int i = 0; i < numColumns; ++i)
 				{
-					headers[i + 1] = new VirtualTreeColumnHeader(DeriveColumnName(roleCollection[i].Role));
+					headers[i + 1] = new VirtualTreeColumnHeader(SamplePopulationBaseBranch.DeriveColumnName(roleCollection[i].Role));
 				}
 				vtrSamplePopulation.SetColumnHeaders(headers, true);
 				myBranch = new SamplePopulationEntityTypeBranch(mySelectedEntityType, numColumns + 1);
@@ -271,7 +235,7 @@ namespace Neumont.Tools.ORM.Shell
 			headers[0] = CreateRowNumberColumn();
 			for (int i = 0; i < numColumns; ++i)
 			{
-				headers[i+1] = new VirtualTreeColumnHeader(DeriveColumnName(roleCollection[i].Role));
+				headers[i + 1] = new VirtualTreeColumnHeader(SamplePopulationBaseBranch.DeriveColumnName(roleCollection[i].Role));
 			}
 			vtrSamplePopulation.SetColumnHeaders(headers, true);
 			myBranch = new SamplePopulationFactTypeBranch(mySelectedFactType, numColumns+1);
@@ -324,22 +288,6 @@ namespace Neumont.Tools.ORM.Shell
 			this.lblNoSelection.Visible = !visibility;
 		}
 
-		private string DeriveColumnName(Role selectedRole)
-		{
-			string name;
-			ObjectType rolePlayer = selectedRole.RolePlayer;
-			if (rolePlayer == null)
-			{
-				// Use the missing roleplayer localization from the Reading Editor
-				name = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
-			}
-			else if ((name = selectedRole.Name).Length == 0)
-			{
-				name = rolePlayer.Name;
-			}
-			return name;
-		}
-
 		private void vtrSamplePopulation_SelectionChanged(object sender, EventArgs e)
 		{
 			VirtualTreeControl vtr = vtrSamplePopulation;
@@ -380,14 +328,6 @@ namespace Neumont.Tools.ORM.Shell
 			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedEvent));
 			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleRemovedEvent));
 
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasFactTypeInstanceRemovedEvent));
-
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent));
-
 			// Track EntityTypeInstance changes
 			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
 			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
@@ -396,19 +336,7 @@ namespace Neumont.Tools.ORM.Shell
 			classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
 			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
 			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
-			
-			// UNDONE: Also care about role reordering on preferred identifiers
-			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent));
-
-			classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
-
-			// Track ValueTypeInstance changes
-			classInfo = dataDirectory.FindDomainClass(ValueTypeInstance.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent));
+			eventDirectory.RolePlayerOrderChanged.Add(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerChangedEvent));
 
 			// Track fact type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
@@ -442,14 +370,6 @@ namespace Neumont.Tools.ORM.Shell
 			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedEvent));
 			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleRemovedEvent));
 
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasFactTypeInstanceRemovedEvent));
-
-			classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent));
-
 			// Track EntityTypeInstance changes
 			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
 			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
@@ -458,19 +378,7 @@ namespace Neumont.Tools.ORM.Shell
 			classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
 			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
 			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
-
-			// UNDONE: Also care about role reordering on preferred identifiers
-			classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent));
-
-			classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
-
-			// Track ValueTypeInstance changes
-			classInfo = dataDirectory.FindDomainClass(ValueTypeInstance.DomainClassId);
-			eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent));
+			eventDirectory.RolePlayerOrderChanged.Remove(classInfo, new EventHandler<RolePlayerOrderChangedEventArgs>(RolePlayerChangedEvent));
 
 			// Track fact type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
@@ -482,8 +390,6 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 		#region Fact Type Instance Event Handlers
-		//handling model events Related to changes in Readings and their
-		//connections so the reading editor can accurately reflect the model
 		private void ElementEventsBegunEvent(object sender, ElementEventsBegunEventArgs e)
 		{
 			myInEvents = false; // Sanity, should not be needed
@@ -498,6 +404,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+
 		private void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
 			if (myInEvents)
@@ -506,6 +413,7 @@ namespace Neumont.Tools.ORM.Shell
 				this.vtrSamplePopulation.Tree.DelayRedraw = false;
 			}
 		}
+
 		private void FactTypeHasRoleAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			if (myRepopulated)
@@ -530,69 +438,6 @@ namespace Neumont.Tools.ORM.Shell
 				PopulateControlForFactType();
 			}
 		}
-
-		private void FactTypeHasFactTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
-			if (link.FactType == mySelectedFactType)
-			{
-				SamplePopulationFactTypeBranch factBranch = myBranch as SamplePopulationFactTypeBranch;
-				Debug.Assert(factBranch != null);
-				factBranch.AddFactInstanceDisplay(link.FactTypeInstance);
-			}
-		}
-
-		private void FactTypeHasFactTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			FactType factType = (e.ModelElement as FactTypeHasFactTypeInstance).FactType;
-			if (!factType.IsDeleted && factType == mySelectedFactType)
-			{
-				// UNDONE: Need to find the exact location of what is being removed, can't right now
-				myBranch.RemoveInstanceDisplay();
-			}
-		}
-
-		private void FactTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			FactTypeInstance factTypeInstance = (e.ModelElement as FactTypeInstanceHasRoleInstance).FactTypeInstance;
-			FactType factType = factTypeInstance.FactType;
-			if (factType != null && factType != mySelectedFactType)
-			{
-				SamplePopulationFactTypeBranch factBranch = myBranch as SamplePopulationFactTypeBranch;
-				Debug.Assert(factBranch != null);
-				factBranch.EditFactInstanceDisplay(factTypeInstance);
-			}
-		}
-
-		private void FactTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			FactTypeInstance factTypeInstance = (e.ModelElement as FactTypeInstanceHasRoleInstance).FactTypeInstance;
-			FactType factType;
-			if (!factTypeInstance.IsDeleted &&
-				null != (factType = factTypeInstance.FactType) &&
-				factType == mySelectedFactType)
-			{
-				SamplePopulationFactTypeBranch factBranch = myBranch as SamplePopulationFactTypeBranch;
-				Debug.Assert(factBranch != null);
-				factBranch.EditFactInstanceDisplay(factTypeInstance);
-			}
-		}
 		#endregion
 		#region Entity Type Instance Event Handlers
 		private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
@@ -608,6 +453,21 @@ namespace Neumont.Tools.ORM.Shell
 				PopulateControlForEntityType();
 			}
 		}
+
+		private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			if (myRepopulated)
+			{
+				return;
+			}
+			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+			ObjectType entityType = link.PreferredIdentifierFor;
+			if (entityType != null && entityType == mySelectedEntityType)
+			{
+				PopulateControlForEntityType();
+			}
+		}
+
 		private void EntityTypeHasPreferredIdentifierRoleAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			if (myRepopulated)
@@ -627,6 +487,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+
 		private void EntityTypeHasPreferredIdentifierRoleRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			if (myRepopulated)
@@ -648,137 +509,42 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 
-		private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
+		private void RolePlayerChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
 			if (myRepopulated)
 			{
 				return;
 			}
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-			ObjectType entityType = link.PreferredIdentifierFor;
-			if (entityType != null && entityType == mySelectedEntityType)
+			ConstraintRoleSequence sequence = e.SourceElement as ConstraintRoleSequence;
+			ObjectType entityType = mySelectedEntityType;
+			if ((entityType != null && entityType.PreferredIdentifier == sequence) || RecurseIdentifierUpdate(entityType, sequence))
 			{
 				PopulateControlForEntityType();
 			}
 		}
-
-		private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+		private bool RecurseIdentifierUpdate(ObjectType objectType, ConstraintRoleSequence checkIdentifier)
 		{
-			if (myRepopulated)
+			if (!objectType.IsValueType)
 			{
-				return;
+				UniquenessConstraint identifier = objectType.PreferredIdentifier;
+				if (identifier != null)
+				{
+					if(identifier == checkIdentifier)
+					{
+						return true;
+					}
+					LinkedElementCollection<Role> roles = identifier.RoleCollection;
+					int roleCount = roles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						if (RecurseIdentifierUpdate(roles[i].RolePlayer, checkIdentifier))
+						{
+							return true;
+						}
+					}
+				}
 			}
-			//UNDONE: Need to handle these changes for the nested branches somehow, for now just reload
-			if (mySelectedEntityType != null)
-			{
-				PopulateControlForEntityType();
-			}
-			else if (mySelectedFactType != null)
-			{
-				PopulateControlForFactType();
-			}
-			//EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
-			//ObjectType entityType = link.EntityType;
-			//if (entityType != null && entityType == mySelectedEntityType)
-			//{
-			//    SamplePopulationEntityTypeBranch entityBranch = myBranch as SamplePopulationEntityTypeBranch;
-			//    Debug.Assert(entityBranch != null);
-			//    entityBranch.AddEntityInstanceDisplay(link.EntityTypeInstanceCollection);
-			//}
-		}
-
-		private void EntityTypeHasEntityTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			//UNDONE: Need to handle these changes for the nested branches somehow, for now just reload
-			if (mySelectedEntityType != null)
-			{
-				PopulateControlForEntityType();
-			}
-			else if (mySelectedFactType != null)
-			{
-				PopulateControlForFactType();
-			}
-			//EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
-			//ObjectType entityType = link.EntityType;
-			//if (entityType != null && entityType == mySelectedEntityType)
-			//{
-			//    // UNDONE: Need to find the exact location of what is being removed, can't right now
-			//    myBranch.RemoveInstanceDisplay();
-			//}
-		}
-
-		private void EntityTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			//UNDONE: Need to handle these changes for the nested branches somehow, for now just reload
-			if (mySelectedEntityType != null)
-			{
-				PopulateControlForEntityType();
-			}
-			else if (mySelectedFactType != null)
-			{
-				PopulateControlForFactType();
-			}
-			//EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-			//EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
-			//ObjectType entityType = entityTypeInstance.EntityType;
-			//if(entityType != null && entityType == mySelectedEntityType)
-			//{
-			//    SamplePopulationEntityTypeBranch entityBranch = myBranch as SamplePopulationEntityTypeBranch;
-			//    Debug.Assert(entityBranch != null);
-			//    entityBranch.EditEntityInstanceDisplay(entityTypeInstance);
-			//}
-		}
-
-		private void EntityTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			//UNDONE: Need to handle these changes for the nested branches somehow, for now just reload
-			if (mySelectedEntityType != null)
-			{
-				PopulateControlForEntityType();
-			}
-			else if (mySelectedFactType != null)
-			{
-				PopulateControlForFactType();
-			}
-			//EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
-			//EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
-			//ObjectType entityType = entityTypeInstance.EntityType;
-			//if (entityType != null && entityType == mySelectedEntityType)
-			//{
-			//    SamplePopulationEntityTypeBranch entityBranch = myBranch as SamplePopulationEntityTypeBranch;
-			//    Debug.Assert(entityBranch != null);
-			//    entityBranch.EditEntityInstanceDisplay(entityTypeInstance);
-			//}
-		}
-		#endregion
-		#region Value Type Instance Event Handlers
-		private void ValueTypeInstanceValueChangedEvent(object sender, ElementPropertyChangedEventArgs e)
-		{
-			if (myRepopulated)
-			{
-				return;
-			}
-			//UNDONE: Need to handle these changes for the nested branches somehow, for now just reload
-			if (mySelectedEntityType != null)
-			{
-				PopulateControlForEntityType();
-			}
-			else if (mySelectedFactType != null)
-			{
-				PopulateControlForFactType();
-			}
+			return false;
 		}
 		#endregion
 		#region Misc Event Handlers
@@ -830,6 +596,359 @@ namespace Neumont.Tools.ORM.Shell
 				this.myStore = store;
 			}
 			#endregion
+			#region CellEditContext class, used for label editing
+			/// <summary>
+			/// A helper class to provide a context for label editing
+			/// </summary>
+			protected sealed class CellEditContext
+			{
+				#region InstanceColumnDescriptor class
+				/// <summary>
+				/// A property descriptor to host inside the TypeEditorHost.
+				/// Handles all in-place editing.
+				/// </summary>
+				private sealed class InstanceColumnDescriptor : PropertyDescriptor
+				{
+					#region InstanceDropDown class
+					/// <summary>
+					/// An ElementPicker list used to display available instance values
+					/// </summary>
+					private sealed class InstanceDropDown : ElementPicker<InstanceDropDown>
+					{
+						private IList myInstances;
+						/// <summary>
+						/// Translate the displayed text to the underlying instance
+						/// </summary>
+						protected sealed override object TranslateFromDisplayObject(int newIndex, object newObject)
+						{
+							return (newIndex >= 0) ? myInstances[newIndex] : null;
+						}
+						/// <summary>
+						/// Translate the initial value into its corresponding text so it
+						/// can be selected in the list
+						/// </summary>
+						protected sealed override object TranslateToDisplayObject(object initialObject, IList contentList)
+						{
+							int index = myInstances.IndexOf(initialObject);
+							return (index >= 0) ? contentList[index] : null;
+						}
+						/// <summary>
+						/// Provide text for a null item at the top of the list
+						/// </summary>
+						protected sealed override string NullItemText
+						{
+							get
+							{
+								return ResourceStrings.ModelSamplePopulationEditorNullSelection;
+							}
+						}
+						/// <summary>
+						/// Return the string values for the contents of the dropdown list
+						/// </summary>
+						protected sealed override IList GetContentList(ITypeDescriptorContext context, object value)
+						{
+							CellEditContext instance = (CellEditContext)context.Instance;
+							Role role = instance.myRole;
+							ObjectType rolePlayer = role.RolePlayer;
+							if (rolePlayer != null)
+							{
+								IList instances = rolePlayer.IsValueType ? (IList)rolePlayer.ValueTypeInstanceCollection : rolePlayer.EntityTypeInstanceCollection;
+								int instanceCount = instances.Count;
+								string[] strings = new string[instanceCount];
+								for (int i = 0; i < instanceCount; ++i)
+								{
+									strings[i] = RecurseObjectTypeInstanceValue((ObjectTypeInstance)instances[i], rolePlayer);
+								}
+								myInstances = instances;
+								return strings;
+							}
+							return null;
+						}
+					}
+					#endregion // InstanceDropDown class
+					#region InstanceConverter class
+					private sealed class InstanceConverter : StringConverter
+					{
+						public sealed override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+						{
+							string stringValue = value as string;
+							if (stringValue != null)
+							{
+								if (stringValue.Length == 0)
+								{
+									return null;
+								}
+								else
+								{
+									CellEditContext editContext = (CellEditContext)context.Instance;
+									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
+									if (currentInstance != null && stringValue == RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer))
+									{
+										return currentInstance;
+									}
+									// UNDONE: We'll hit this if the user edits the text and opens the dropdown without committing
+									// Should we add a new item at this point, or just try to get the best match from the list?
+									return stringValue;
+								}
+							}
+							return base.ConvertFrom(context, culture, value);
+						}
+						public sealed override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+						{
+							CellEditContext editContext = (CellEditContext)context.Instance;
+							ObjectType rolePlayer;
+							UniquenessConstraint preferredIdentifier;
+							if (sourceType == typeof(string) &&
+								((null == (rolePlayer = ((CellEditContext)context.Instance).myRole.RolePlayer)) ||
+								(!rolePlayer.IsValueType &&
+								(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
+								preferredIdentifier.RoleCollection.Count > 1))))
+							{
+								return false;
+							}
+							return base.CanConvertFrom(context, sourceType);
+						}
+						public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+						{
+							ObjectTypeInstance typedValue = (ObjectTypeInstance)value;
+							if (typedValue != null)
+							{
+								return RecurseObjectTypeInstanceValue(typedValue, ((CellEditContext)context.Instance).myRole.RolePlayer);
+							}
+							return string.Empty;
+						}
+					}
+					#endregion // InstanceConverter class
+					#region Constructor
+					public InstanceColumnDescriptor()
+						: base(" ", null)
+					{
+					}
+					#endregion // Constructor
+					#region Base Overrides
+					private static readonly TypeConverter TypeConverter = new InstanceConverter();
+					public sealed override TypeConverter Converter
+					{
+						get
+						{
+							return TypeConverter;
+						}
+					}
+					public sealed override object GetEditor(Type editorBaseType)
+					{
+						Debug.Assert(editorBaseType == typeof(UITypeEditor));
+						return new InstanceDropDown();
+					}
+					public sealed override object GetValue(object component)
+					{
+						return (component as CellEditContext).myColumnInstance;
+					}
+					public sealed override void SetValue(object component, object value)
+					{
+						// Ignore strings coming through here with an as cast. Opening the
+						// dropdown with dirty text will attempt a set value
+						ObjectTypeInstance typedValue = value as ObjectTypeInstance;
+						CellEditContext context = (CellEditContext)component;
+						ObjectTypeInstance columnInstance = context.myColumnInstance;
+						Role role = context.myRole;
+						if (typedValue == null)
+						{
+							if (columnInstance != null)
+							{
+								if (context.myIsEntityTypeEditor)
+								{
+									EntityTypeInstance entityTypeInstance = context.myEntityTypeInstance;
+									using (Transaction t = role.Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, role.Name)))
+									{
+										entityTypeInstance.FindRoleInstance(role).Delete();
+										t.Commit();
+									}
+									// Removing the last role instance can remove the fact type instance, check
+									if (entityTypeInstance.IsDeleted)
+									{
+										context.myEntityTypeInstance = null;
+									}
+								}
+								else
+								{
+									FactTypeInstance factTypeInstance = context.myFactTypeInstance;
+									using (Transaction t = role.Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, role.Name)))
+									{
+										factTypeInstance.FindRoleInstance(role).Delete();
+										t.Commit();
+									}
+									// Removing the last role instance can remove the fact type instance, check
+									if (factTypeInstance.IsDeleted)
+									{
+										context.myFactTypeInstance = null;
+									}
+								}
+								context.myColumnInstance = null;
+							}
+						}
+						else if (columnInstance != typedValue)
+						{
+							using (Transaction t = role.Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, role.Name)))
+							{
+								SamplePopulationEntityEditorBranch entityEditorBranch = context.myEditBranch;
+								if(entityEditorBranch != null)
+								{
+									entityEditorBranch.ConnectInstance(typedValue, role);
+								}
+								else if(context.myIsEntityTypeEditor)
+								{
+									SamplePopulationEntityTypeBranch.ConnectInstance(context.myEntityType, ref context.myEntityTypeInstance, typedValue, role);
+								}
+								else
+								{
+									SamplePopulationFactTypeBranch.ConnectInstance(ref context.myFactTypeInstance, typedValue, role);
+								}
+								t.Commit();
+							}
+							context.myColumnInstance = typedValue;
+						}
+					}
+					public sealed override Type ComponentType
+					{
+						get
+						{
+							return typeof(ObjectTypeInstance);
+						}
+					}
+					public sealed override Type PropertyType
+					{
+						get
+						{
+							return typeof(ObjectTypeInstance);
+						}
+					}
+					public sealed override bool IsReadOnly
+					{
+						get
+						{
+							return false;
+						}
+					}
+					public sealed override bool CanResetValue(object component)
+					{
+						return false;
+					}
+					public sealed override void ResetValue(object component)
+					{
+					}
+					public sealed override bool ShouldSerializeValue(object component)
+					{
+						return true;
+					}
+					#endregion // Base Overrides
+				}
+				#endregion // InstanceColumnDescriptor class
+				#region Member Variables
+				private static readonly InstanceColumnDescriptor Descriptor = new InstanceColumnDescriptor();
+				private readonly SamplePopulationEntityEditorBranch myEditBranch;
+				private readonly Role myRole;
+				private readonly ObjectType myEntityType;
+				private readonly bool myIsEntityTypeEditor;
+				private EntityTypeInstance myEntityTypeInstance;
+				private FactTypeInstance myFactTypeInstance;
+				private ObjectTypeInstance myColumnInstance;
+				#endregion // Member Variables
+				#region Constructor
+				/// <summary>
+				/// Create an editing context for the given entityType role and entityTypeInstance
+				/// </summary>
+				/// <param name="entityType">The entityType to attach to instances to.</param>
+				/// <param name="role">The role being edited</param>
+				/// <param name="entityTypeInstance">The current entityTypeInstance. Can be null.</param>
+				public CellEditContext(ObjectType entityType, Role role, EntityTypeInstance entityTypeInstance)
+				{
+					Debug.Assert(entityType != null);
+					Debug.Assert(role != null);
+					myEntityType = entityType;
+					myRole = role;
+					myEntityTypeInstance = entityTypeInstance;
+					myIsEntityTypeEditor = true;
+					if (entityTypeInstance != null)
+					{
+						EntityTypeRoleInstance roleInstance = entityTypeInstance.FindRoleInstance(role);
+						if (roleInstance != null)
+						{
+							myColumnInstance = roleInstance.ObjectTypeInstance;
+						}
+					}
+				}
+
+				/// <summary>
+				/// Create an editing context for the given entityType role and entityTypeInstance for a nested branch
+				/// </summary>
+				/// <param name="role">The role being edited</param>
+				/// <param name="entityTypeInstance">The current entityTypeInstance. Can be null.</param>
+				/// <param name="editBranch">Branch the editor exists on</param>
+				public CellEditContext(Role role, EntityTypeInstance entityTypeInstance, SamplePopulationEntityEditorBranch editBranch)
+				{
+					Debug.Assert(role != null);
+					myRole = role;
+					myEntityTypeInstance = entityTypeInstance;
+					myEditBranch = editBranch;
+					myIsEntityTypeEditor = true;
+					if (entityTypeInstance != null)
+					{
+						EntityTypeRoleInstance roleInstance = entityTypeInstance.FindRoleInstance(role);
+						if (roleInstance != null)
+						{
+							myColumnInstance = roleInstance.ObjectTypeInstance;
+						}
+					}
+				}
+
+				/// <summary>
+				/// Create an editing context for the given role and factTypeInstance
+				/// </summary>
+				/// <param name="role">The role being edited</param>
+				/// <param name="factTypeInstance">The current factTypeInstance. Can be null.</param>
+				public CellEditContext(Role role, FactTypeInstance factTypeInstance)
+				{
+					Debug.Assert(role != null);
+					myRole = role;
+					myFactTypeInstance = factTypeInstance;
+					myIsEntityTypeEditor = false;
+					if (factTypeInstance != null)
+					{
+						FactTypeRoleInstance roleInstance = factTypeInstance.FindRoleInstance(role);
+						if (roleInstance != null)
+						{
+							myColumnInstance = roleInstance.ObjectTypeInstance;
+						}
+					}
+				}
+				#endregion // Constructor
+				#region CreateInPlaceEditControl method
+				/// <summary>
+				/// Create an inplace edit control that works with this context
+				/// </summary>
+				/// <returns>IVirtualTreeInPlaceControl</returns>
+				public IVirtualTreeInPlaceControl CreateInPlaceEditControl()
+				{
+					ObjectType rolePlayer;
+					UniquenessConstraint preferredIdentifier;
+					bool blockEdits =
+						(null == (rolePlayer = myRole.RolePlayer)) ||
+						(!rolePlayer.IsValueType &&
+						(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
+						preferredIdentifier.RoleCollection.Count > 1));
+					TypeEditorHost host = TypeEditorHost.Create(
+						Descriptor,
+						this,
+						blockEdits ? TypeEditorHostEditControlStyle.ReadOnlyEdit : TypeEditorHostEditControlStyle.Editable);
+					if (host != null)
+					{
+						(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText;
+					}
+					return host;
+				}
+				#endregion // CreateInPlaceEditControl method
+			}
+			#endregion // CellEditContext class, used for label editing
 			#region IBranch Member Mirror/Implementations
 			protected VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
@@ -1142,6 +1261,79 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // Accessor Properties
 			#region Helper Methods
+			public static string DeriveColumnName(Role role)
+			{
+				StringBuilder outputText = null;
+				string retVal = (role == null || role.RolePlayer == null) ? ResourceStrings.ModelSamplePopulationEditorNullSelection : RecurseColumnIdentifier(role, null, ref outputText);
+				return (outputText != null) ? outputText.ToString() : retVal;
+			}
+
+			private static string RecurseColumnIdentifier(Role role, string listSeparator, ref StringBuilder outputText)
+			{
+				ObjectType rolePlayer = role.RolePlayer;
+				if (rolePlayer == null)
+				{
+					if (outputText != null)
+					{
+						outputText.Append(" ");
+					}
+					return " ";
+				}
+				string derivedName = (role.Name.Length != 0) ? role.Name : rolePlayer.Name;
+				if (rolePlayer.IsValueType)
+				{
+					if (outputText != null)
+					{
+						outputText.Append(derivedName);
+						return null;
+					}
+					return derivedName;
+				}
+				else
+				{
+					UniquenessConstraint identifier = rolePlayer.PreferredIdentifier;
+					if (identifier == null)
+					{
+						if (outputText != null)
+						{
+							outputText.Append(derivedName);
+							return null;
+						}
+						return derivedName;
+					}
+					LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					if (outputText == null)
+					{
+						outputText = new StringBuilder();
+					}
+					outputText.Append(derivedName);
+					outputText.Append(" (");
+					if (listSeparator == null)
+					{
+						listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
+					}
+					if (identifierCount == 1)
+					{
+						outputText.Append(rolePlayer.ReferenceModeString);
+					}
+					else
+					{
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							Role identifierRole = identifierRoles[i];
+							if (i != 0)
+							{
+								outputText.Append(listSeparator);
+							}
+							RecurseColumnIdentifier(identifierRole, listSeparator, ref outputText);
+						}
+					}
+					outputText.Append(")");
+					return null;
+				}
+			}
+
 			/// <summary>
 			/// Return true if a selection for the specified column in this
 			/// branch should select the full row
@@ -1150,12 +1342,13 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return column == (int)SpecialColumnIndex.FullRowSelectColumn;
 			}
-			protected static ObjectTypeInstance RecurseValueTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string newText, ref ValueTypeInstance rootInstance)
+
+			protected static ObjectTypeInstance RecurseValueTypeInstance(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string newText, ref ValueTypeInstance rootInstance, bool create)
 			{
 				if (parentType.IsValueType)
 				{
 					DataType valueDataType = parentType.DataType;
-					if(valueDataType.CanCompare)
+					if (create && valueDataType.CanCompare)
 					{
 						LinkedElementCollection<ValueTypeInstance> instances = parentType.ValueTypeInstanceCollection;
 						int instanceCount = instances.Count;
@@ -1175,12 +1368,14 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 					}
-					ValueTypeInstance editValueTypeInstance = objectTypeInstance as ValueTypeInstance;
-					if (editValueTypeInstance == null)
+					else
 					{
-						editValueTypeInstance = new ValueTypeInstance(parentType.Store);
-						editValueTypeInstance.ValueType = parentType;
+						return objectTypeInstance;
 					}
+					Debug.Assert(parentType.Store.TransactionActive, "Transaction must be active to create new instances");
+					ValueTypeInstance editValueTypeInstance = new ValueTypeInstance(parentType.Store);
+					editValueTypeInstance.ValueType = parentType;
+					editValueTypeInstance.Value = newText;
 					rootInstance = editValueTypeInstance;
 					return editValueTypeInstance;
 				}
@@ -1191,26 +1386,36 @@ namespace Neumont.Tools.ORM.Shell
 					Role identifierRole = identifierRoles[0];
 					EntityTypeInstance editEntityTypeInstance = objectTypeInstance as EntityTypeInstance;
 					EntityTypeRoleInstance editingRoleInstance = null;
-					if (editEntityTypeInstance == null)
-					{
-						editEntityTypeInstance = new EntityTypeInstance(parentType.Store);
-						editEntityTypeInstance.EntityType = parentType;
-					}
-					else
+					if (editEntityTypeInstance != null)
 					{
 						editingRoleInstance = editEntityTypeInstance.RoleInstanceCollection[0];
 					}
+					ObjectTypeInstance objectInstance;
 					if (editingRoleInstance == null)
 					{
-						EntityTypeRoleInstance identifierInstance = new EntityTypeRoleInstance(identifierRole,
-							RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref rootInstance));
-						identifierInstance.EntityTypeInstance = editEntityTypeInstance;
-						return editEntityTypeInstance;
+						objectInstance = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref rootInstance, create);
 					}
 					else
 					{
-						return RecurseValueTypeInstance(editingRoleInstance.ObjectTypeInstance, identifierRole.RolePlayer, newText, ref rootInstance);
+						objectInstance = RecurseValueTypeInstance(editingRoleInstance.ObjectTypeInstance, identifierRole.RolePlayer, newText, ref rootInstance, create);
 					}
+					LinkedElementCollection<EntityTypeInstance> instances = parentType.EntityTypeInstanceCollection;
+					int instanceCount = instances.Count;
+					for(int i = 0; i < instanceCount; ++i)
+					{
+						if(instances[i].RoleInstanceCollection[0].ObjectTypeInstance == objectInstance)
+						{
+							return instances[i];
+						}
+					}
+					if (create)
+					{
+						editEntityTypeInstance = new EntityTypeInstance(parentType.Store);
+						editEntityTypeInstance.EntityType = parentType;
+						EntityTypeRoleInstance identifierInstance = new EntityTypeRoleInstance(identifierRole, objectInstance);
+						identifierInstance.EntityTypeInstance = editEntityTypeInstance;
+					}
+					return editEntityTypeInstance;
 				}
 			}
 
@@ -1334,7 +1539,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 			#region Branch Update Methods
-			public void AddInstanceDisplay(int location)
+			protected void AddInstanceDisplay(int location)
 			{
 				if (myModificationEvents != null)
 				{
@@ -1345,28 +1550,50 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 
-			public void EditInstanceDisplay(int location)
+			protected void EditInstanceDisplay(int location)
 			{
 				if (myModificationEvents != null)
 				{
-					myModificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, 1, 1)));
+					myModificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, location, -1, 1)));
 					// Note: These are turned on to trigger the delayed redraw. DisplayDataChanged is not enough.
 					myModificationEvents(this, BranchModificationEventArgs.Redraw(false));
 					myModificationEvents(this, BranchModificationEventArgs.Redraw(true));
 				}
 			}
 
-			public void RemoveInstanceDisplay()
+			protected void RemoveInstanceDisplay(int location)
 			{
 				if (myModificationEvents != null)
 				{
-					// Just delete at the beginning. We're never sure of
-					// the location for a deleted item
-					myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, 0, 1));
-					// UNDONE: Turn off Realign support
-					//myModificationEvents(this, BranchModificationEventArgs.Realign(this));
+					int columnCount = myColumnCount;
+					ITree parentTree = TreeControl.Tree;
+					for (int i = 1; i < myColumnCount; ++i)
+					{
+						if((this as IMultiColumnBranch).ColumnStyles(i) == SubItemCellStyles.Mixed && (this as IBranch).IsExpandable(location, i))
+						{
+							myModificationEvents(this, BranchModificationEventArgs.UpdateCellStyle(this, location, i, false)); 
+						}
+					}
+					myModificationEvents(this, BranchModificationEventArgs.DeleteItems(this, location, 1));
 				}
 			}
+
+			protected void EditColumnHeader(int column, Role newRole)
+			{
+				TreeControl.UpdateColumnHeaderAppearance(column, DeriveColumnName(newRole), VirtualTreeColumnHeaderStyles.Default, -1);
+			}
+
+			protected void EditColumnDisplay(int column)
+			{
+				if (myModificationEvents != null)
+				{
+					myModificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, 0, column, (this as IBranch).VisibleItemCount)));
+					// Note: These are turned on to trigger the delayed redraw. DisplayDataChanged is not enough.
+					myModificationEvents(this, BranchModificationEventArgs.Redraw(false));
+					myModificationEvents(this, BranchModificationEventArgs.Redraw(true));
+				}
+			}
+
 			public void RealignDisplay()
 			{
 				if (myModificationEvents != null)
@@ -1386,7 +1613,10 @@ namespace Neumont.Tools.ORM.Shell
 			protected void EditValueTypeInstance(ValueTypeInstance editInstance, string newText)
 			{
 				Debug.Assert(editInstance != null);
-				editInstance.Value = newText;
+				if (editInstance.Value != newText)
+				{
+					editInstance.Value = newText;
+				}
 			}
 
 			protected void RemoveValueTypeInstance(ValueTypeInstance removeInstance)
@@ -1406,28 +1636,21 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private sealed class SamplePopulationValueTypeBranch : SamplePopulationBaseBranch, IBranch
 		{
+			#region Member Variables
+			private readonly List<ValueTypeInstance> myCachedInstances;
 			private readonly ObjectType myValueType;
+			#endregion
 			#region Construction
 			// Value Type Branches will always have 1 column, plus the full row select column
 			public SamplePopulationValueTypeBranch(ObjectType selectedValueType) : base(2, selectedValueType.Store)
 			{
 				Debug.Assert(selectedValueType.IsValueType);
 				myValueType = selectedValueType;
+				myCachedInstances = new List<ValueTypeInstance>();
+				myCachedInstances.AddRange(selectedValueType.ValueTypeInstanceCollection);
 			}
 			#endregion
 			#region IBranch Member Mirror/Implementations
-			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
-				if (retVal.IsValid)
-				{
-					if (row != NewRowIndex)
-					{
-						retVal.AlternateText = myValueType.ValueTypeInstanceCollection[row].Value;
-					}
-				}
-				return retVal;
-			}
 			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 			{
 				bool isNewRow = (row == NewRowIndex);
@@ -1469,13 +1692,24 @@ namespace Neumont.Tools.ORM.Shell
 				return LabelEditResult.AcceptEdit;
 			}
 
+			/// <summary>
+			/// Set up immediate label edits
+			/// </summary>
+			BranchFeatures IBranch.Features
+			{
+				get
+				{
+					return (SamplePopulationBaseBranch.Features & (~BranchFeatures.ComplexColumns)) | BranchFeatures.ImmediateSelectionLabelEdits;
+				}
+			}
+
 			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
 			{
 				if (row == NewRowIndex)
 				{
 					return null;
 				}
-				return myValueType.ValueTypeInstanceCollection[row];
+				return myCachedInstances[row];
 			}
 
 			string IBranch.GetText(int row, int column)
@@ -1483,73 +1717,72 @@ namespace Neumont.Tools.ORM.Shell
 				string text = base.GetText(row, column);
 				if (text != null && text.Length == 0)
 				{
-					text = myValueType.ValueTypeInstanceCollection[row].Value;
+					text = myCachedInstances[row].Value;
 				}
 				return text;
 			}
 
-			// Cache the item count so we can get accurate event notifications
-			private int myItemCountCache = -1;
 			int IBranch.VisibleItemCount
 			{
 				get
 				{
-					int cache = myItemCountCache;
-					if (cache == -1)
-					{
-						myItemCountCache = cache = myValueType.ValueTypeInstanceCollection.Count + base.VisibleItemCount;
-					}
-					return cache;
+					return myCachedInstances.Count + base.VisibleItemCount;
 				}
 			}
 			#endregion
-			#region Branch Update Methods
+			#region Event Handlers
 			protected override void AttachEventHandlers(Store store)
 			{
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-				DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ValueTypeHasValueTypeInstance.DomainClassId);
+				DomainClassInfo classInfo;
+				
+				classInfo = dataDirectory.FindDomainRelationship(ValueTypeHasValueTypeInstance.DomainClassId);
 				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasValueTypeInstanceAddedEvent));
 				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasValueTypeInstanceDeletedEvent));
 
 				classInfo = dataDirectory.FindDomainClass(ValueTypeInstance.DomainClassId);
 				eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent));
 			}
+
 			protected override void DetachEventHandlers(Store store)
 			{
 				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-				DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ValueTypeHasValueTypeInstance.DomainClassId);
+				DomainClassInfo classInfo;
+				
+				classInfo = dataDirectory.FindDomainRelationship(ValueTypeHasValueTypeInstance.DomainClassId);
 				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ValueTypeHasValueTypeInstanceAddedEvent));
 				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ValueTypeHasValueTypeInstanceDeletedEvent));
 
 				classInfo = dataDirectory.FindDomainClass(ValueTypeInstance.DomainClassId);
 				eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ValueTypeInstanceValueChangedEvent));
 			}
+
 			private void ValueTypeHasValueTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
 			{
 				ValueTypeHasValueTypeInstance link = e.ModelElement as ValueTypeHasValueTypeInstance;
-				if (link.ValueType == myValueType)
+				ObjectType valueType = link.ValueType;
+				if (!valueType.IsDeleted && valueType == myValueType)
 				{
-					if (myItemCountCache != -1)
-					{
-						++myItemCountCache;
-					}
+					myCachedInstances.Add(link.ValueTypeInstance);
 					base.AddInstanceDisplay(VisibleItemCount - 1);
 				}
 			}
+
 			private void ValueTypeHasValueTypeInstanceDeletedEvent(object sender, ElementDeletedEventArgs e)
 			{
 				ValueTypeHasValueTypeInstance link = e.ModelElement as ValueTypeHasValueTypeInstance;
-				if (link.ValueType == myValueType)
+				ObjectType valueType = link.ValueType;
+				if (!valueType.IsDeleted && valueType == myValueType)
 				{
-					if (myItemCountCache != -1)
-					{
-						--myItemCountCache;
-					}
-					base.RemoveInstanceDisplay();
+					List<ValueTypeInstance> instances = myCachedInstances;
+					int instanceLocation = instances.IndexOf(link.ValueTypeInstance);
+					instances.RemoveAt(instanceLocation);
+					base.RemoveInstanceDisplay(instanceLocation);
 				}
 			}
+
 			private void ValueTypeInstanceValueChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
 				ValueTypeInstance instance = e.ModelElement as ValueTypeInstance;
@@ -1567,342 +1800,42 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private sealed class SamplePopulationEntityTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
+			#region Member Variables
+			private readonly List<EntityTypeInstance> myCachedInstances;
 			private readonly ObjectType myEntityType;
+			#endregion
 			#region Construction
 			public SamplePopulationEntityTypeBranch(ObjectType entityType, int numColumns)
 				: base(numColumns, entityType.Store)
 			{
 				Debug.Assert(!entityType.IsValueType);
 				myEntityType = entityType;
+				myCachedInstances = new List<EntityTypeInstance>();
+				myCachedInstances.AddRange(entityType.EntityTypeInstanceCollection);
 			}
 			#endregion
 			#region IBranch Member Mirror/Implementations
-			#region CellEditContext class, used for label editing
-			/// <summary>
-			/// A helper class to provide a context for label editing
-			/// </summary>
-			private sealed class CellEditContext
-			{
-				#region EntityTypeInstanceColumnDescriptor class
-				/// <summary>
-				/// A property descriptor to host inside the TypeEditorHost.
-				/// Handles all in-place editing.
-				/// </summary>
-				private sealed class EntityTypeInstanceColumnDescriptor : PropertyDescriptor
-				{
-					#region InstanceDropDown class
-					/// <summary>
-					/// An ElementPicker list used to display available instance values
-					/// </summary>
-					private sealed class InstanceDropDown : ElementPicker<InstanceDropDown>
-					{
-						private IList myInstances;
-						/// <summary>
-						/// Translate the displayed text to the underlying instance
-						/// </summary>
-						protected sealed override object TranslateFromDisplayObject(int newIndex, object newObject)
-						{
-							return (newIndex >= 0) ? myInstances[newIndex] : null;
-						}
-						/// <summary>
-						/// Translate the initial value into its corresponding text so it
-						/// can be selected in the list
-						/// </summary>
-						protected sealed override object TranslateToDisplayObject(object initialObject, IList contentList)
-						{
-							int index = myInstances.IndexOf(initialObject);
-							return (index >= 0) ? contentList[index] : null;
-						}
-						/// <summary>
-						/// Provide text for a null item at the top of the list
-						/// </summary>
-						protected sealed override string NullItemText
-						{
-							get
-							{
-								// UNDONE: Localize null text
-								return "<Unspecified>";
-							}
-						}
-						/// <summary>
-						/// Return the string values for the contents of the dropdown list
-						/// </summary>
-						protected sealed override IList GetContentList(ITypeDescriptorContext context, object value)
-						{
-							CellEditContext instance = (CellEditContext)context.Instance;
-							Role role = instance.myRole;
-							ObjectType rolePlayer = role.RolePlayer;
-							if (rolePlayer != null)
-							{
-								IList instances = rolePlayer.IsValueType ? (IList)rolePlayer.ValueTypeInstanceCollection : rolePlayer.EntityTypeInstanceCollection;
-								int instanceCount = instances.Count;
-								string[] strings = new string[instanceCount];
-								for (int i = 0; i < instanceCount; ++i)
-								{
-									strings[i] = RecurseObjectTypeInstanceValue((ObjectTypeInstance)instances[i], rolePlayer);
-								}
-								myInstances = instances;
-								return strings;
-							}
-							return null;
-						}
-					}
-					#endregion // InstanceDropDown class
-					#region InstanceConverter class
-					private sealed class InstanceConverter : StringConverter
-					{
-						public sealed override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-						{
-							string stringValue = value as string;
-							if (stringValue != null)
-							{
-								if (stringValue.Length == 0)
-								{
-									return null;
-								}
-								else
-								{
-									CellEditContext editContext = (CellEditContext)context.Instance;
-									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
-									if (currentInstance != null && stringValue == RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer))
-									{
-										return currentInstance;
-									}
-									// UNDONE: We'll hit this if the user edits the text and opens the dropdown without committing
-									// Should we add a new item at this point, or just try to get the best match from the list?
-									return stringValue;
-								}
-							}
-							return base.ConvertFrom(context, culture, value);
-						}
-						public sealed override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-						{
-							CellEditContext editContext = (CellEditContext)context.Instance;
-							ObjectType rolePlayer;
-							UniquenessConstraint preferredIdentifier;
-							if (sourceType == typeof(string) &&
-								((null == (rolePlayer = ((CellEditContext)context.Instance).myRole.RolePlayer)) ||
-								(!rolePlayer.IsValueType &&
-								(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
-								preferredIdentifier.RoleCollection.Count > 1))))
-							{
-								return false;
-							}
-							return base.CanConvertFrom(context, sourceType);
-						}
-						public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-						{
-							ObjectTypeInstance typedValue = (ObjectTypeInstance)value;
-							if (typedValue != null)
-							{
-								return RecurseObjectTypeInstanceValue(typedValue, ((CellEditContext)context.Instance).myRole.RolePlayer);
-							}
-							return string.Empty;
-						}
-					}
-					#endregion // InstanceConverter class
-					#region Constructor
-					public EntityTypeInstanceColumnDescriptor()
-						: base(" ", null)
-					{
-					}
-					#endregion // Constructor
-					#region Base Overrides
-					private static readonly TypeConverter TypeConverter = new InstanceConverter();
-					public sealed override TypeConverter Converter
-					{
-						get
-						{
-							return TypeConverter;
-						}
-					}
-					public sealed override object GetEditor(Type editorBaseType)
-					{
-						Debug.Assert(editorBaseType == typeof(UITypeEditor));
-						return new InstanceDropDown();
-					}
-					public sealed override object GetValue(object component)
-					{
-						return (component as CellEditContext).myColumnInstance;
-					}
-					public sealed override void SetValue(object component, object value)
-					{
-						// Ignore strings coming through here with an as cast. Opening the
-						// dropdown with dirty text will attempt a set value
-						ObjectTypeInstance typedValue = value as ObjectTypeInstance;
-						CellEditContext context = (CellEditContext)component;
-						ObjectTypeInstance columnInstance = context.myColumnInstance;
-						Role role = context.myRole;
-						if (typedValue == null)
-						{
-							if (columnInstance != null)
-							{
-								EntityTypeInstance entityTypeInstance = context.myEntityTypeInstance;
-								// UNDONE: Localize transaction name
-								using (Transaction t = role.Store.TransactionManager.BeginTransaction("Clear role instance"))
-								{
-									entityTypeInstance.FindRoleInstance(role).Delete();
-									t.Commit();
-								}
-								// Removing the last role instance can remove the fact type instance, check
-								if (entityTypeInstance.IsDeleted)
-								{
-									context.myEntityTypeInstance = null;
-								}
-								context.myColumnInstance = null;
-							}
-						}
-						else if (columnInstance != typedValue)
-						{
-							// UNDONE: Localize transaction name
-							using (Transaction t = role.Store.TransactionManager.BeginTransaction("Set role instance"))
-							{
-								ConnectInstance(context.myEntityType, ref context.myEntityTypeInstance, typedValue, role);
-								t.Commit();
-							}
-							context.myColumnInstance = typedValue;
-						}
-					}
-					public sealed override Type ComponentType
-					{
-						get { return typeof(ObjectTypeInstance); }
-					}
-					public sealed override Type PropertyType
-					{
-						get { return typeof(ObjectTypeInstance); }
-					}
-					public sealed override bool IsReadOnly
-					{
-						get { return false; }
-					}
-					public sealed override bool CanResetValue(object component)
-					{
-						return false;
-					}
-					public sealed override void ResetValue(object component)
-					{
-					}
-					public sealed override bool ShouldSerializeValue(object component)
-					{
-						return true;
-					}
-					#endregion // Base Overrides
-				}
-				#endregion // EntityTypeInstanceColumnDescriptor class
-				#region Member Variables
-				private static readonly EntityTypeInstanceColumnDescriptor Descriptor = new EntityTypeInstanceColumnDescriptor();
-				private readonly Role myRole;
-				private readonly ObjectType myEntityType;
-				private EntityTypeInstance myEntityTypeInstance;
-				private ObjectTypeInstance myColumnInstance;
-				#endregion // Member Variables
-				#region Constructor
-				/// <summary>
-				/// Create an editing context for the given entityType role and entityTypeInstance
-				/// </summary>
-				/// <param name="entityType">The entityType to attach to instances to.</param>
-				/// <param name="role">The role being edited</param>
-				/// <param name="entityTypeInstance">The current entityTypeInstance. Can be null.</param>
-				public CellEditContext(ObjectType entityType, Role role, EntityTypeInstance entityTypeInstance)
-				{
-					Debug.Assert(entityType != null);
-					Debug.Assert(role != null);
-					myEntityType = entityType;
-					myRole = role;
-					myEntityTypeInstance = entityTypeInstance;
-					if (entityTypeInstance != null)
-					{
-						EntityTypeRoleInstance roleInstance = entityTypeInstance.FindRoleInstance(role);
-						if (roleInstance != null)
-						{
-							myColumnInstance = roleInstance.ObjectTypeInstance;
-						}
-					}
-				}
-				#endregion // Constructor
-				#region CreateInPlaceEditControl method
-				/// <summary>
-				/// Create an inplace edit control that works with this context
-				/// </summary>
-				/// <returns>IVirtualTreeInPlaceControl</returns>
-				public IVirtualTreeInPlaceControl CreateInPlaceEditControl()
-				{
-					ObjectType rolePlayer;
-					UniquenessConstraint preferredIdentifier;
-					bool blockEdits =
-						(null == (rolePlayer = myRole.RolePlayer)) ||
-						(!rolePlayer.IsValueType &&
-						(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
-						preferredIdentifier.RoleCollection.Count > 1));
-					TypeEditorHost host = TypeEditorHost.Create(
-						Descriptor,
-						this,
-						blockEdits ? TypeEditorHostEditControlStyle.ReadOnlyEdit : TypeEditorHostEditControlStyle.Editable);
-					if (host != null)
-					{
-						(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText;
-					}
-					return host;
-				}
-				#endregion // CreateInPlaceEditControl method
-			}
-			#endregion // CellEditContext class, used for label editing
-
-			private VirtualTreeLabelEditData BeginLabelEdit_Start(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
-			{
-				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
-				if (retVal.IsValid)
-				{
-					if (IsExpandable(row, column))
-					{
-						//UNDONE: Set up combo boxes for selection, code for pulling collection and committing selection is below
-						// To pull a collection
-						//Role identifierRole = myEntityType.PreferredIdentifier.RoleCollection[column - 1];
-						//ObjectType rolePlayer = identifierRole.RolePlayer;
-						//if (rolePlayer.IsValueType)
-						//{
-						//    // This is the collection to be selected from
-						//    rolePlayer.ValueTypeInstanceCollection;
-						//}
-						//else
-						//{
-						//    // This is the collection to be selected from
-						//    rolePlayer.EntityTypeInstanceCollection;
-						//}
-						//// For each of the ObjectTypeInstances, pass them in to 
-						//// RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, Role identifierRole) to get the text output for each
-
-						// Might be easier to deal with a single ObjectTypeInstanceMoveableCollection, rather than either of the stronger typed versions,
-						// but not sure if there are any built in conversions, EntityTypeInstance and ValueTypeInstance are subtypes of ObjectTypeInstance,
-						// so it should be easy to get to though.
-
-						// To commit a selection
-						// int selection = current selection
-						// collection = variable containing the entire collection, be it any of the three types
-						//ObjectTypeInstance selectedInstance = collection[selection];
-						//ObjectType entityType = myEntityType;
-						//EntityTypeInstanceMoveableCollection currentInstanceCollection = entityType.EntityTypeInstanceCollection;
-						//ObjectTypeInstance selectedParentInstance = currentInstanceCollection.Count < row ? currentInstanceCollection[row] : null;
-						//Role identifierRole = entityType.PreferredIdentifier.RoleCollection[column - 1];
-						//ConnectInstance(selectedParentInstance, selectedInstance, identifierRole);
-						retVal = VirtualTreeLabelEditData.Invalid;
-					}
-				}
-				return retVal;
-			}
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
 				{
 					ObjectType entityType = myEntityType;
-					LinkedElementCollection<EntityTypeInstance> instances = entityType.EntityTypeInstanceCollection;
-					retVal.CustomInPlaceEdit = new CellEditContext(entityType, entityType.PreferredIdentifier.RoleCollection[column - 1], (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
-					retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+					ObjectType columnRolePlayer = entityType.PreferredIdentifier.RoleCollection[column - 1].RolePlayer;
+					if (columnRolePlayer.IsValueType || columnRolePlayer.PreferredIdentifier != null)
 					{
-						// Defer to the normal text edit if the control is not dirty
-						return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
-					};
+						LinkedElementCollection<EntityTypeInstance> instances = entityType.EntityTypeInstanceCollection;
+						retVal.CustomInPlaceEdit = new CellEditContext(entityType, entityType.PreferredIdentifier.RoleCollection[column - 1], (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
+						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+						{
+							// Defer to the normal text edit if the control is not dirty
+							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
+						};
+					}
+					else
+					{
+						retVal = VirtualTreeLabelEditData.Invalid;
+					}
 				}
 				return retVal;
 			}
@@ -1915,29 +1848,36 @@ namespace Neumont.Tools.ORM.Shell
 				// If editing an existing EntityTypeInstance
 				if (row != NewRowIndex)
 				{
-					EntityTypeInstance editInstance = selectedEntityType.EntityTypeInstanceCollection[row];
+					EntityTypeInstance editInstance = myCachedInstances[row];
 					Role factRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
 					EntityTypeRoleInstance editRoleInstance = editInstance.FindRoleInstance(factRole);
 					// If editing an existing EntityTypeRoleInstance
 					if (editRoleInstance != null)
 					{
 						ValueTypeInstance instance = null;
-						// RoleInstance exists, therefore the link down to a ValueTypeInstance should exist.  If the chain
-						// is broken for some reason, this will throw because it will try to self repair and it isn't inside a transaction.
-						ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance);
 						if (delete)
 						{
-							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, instance.ValueType.Name)))
+							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, "")))
 							{
-								RemoveValueTypeInstance(instance);
+								if (instance != null)
+								{
+									RemoveValueTypeInstance(instance);
+								}
+								else
+								{
+									ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, false);
+									result.Delete();
+								}
 								t.Commit();
 							}
 						}
 						else
 						{
-							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, instance.ValueType.Name)))
+							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, "")))
 							{
-								EditValueTypeInstance(instance, newText);
+								ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, true);
+								ConnectInstance(myEntityType, ref editInstance, result, factRole);
+								editRoleInstance.Delete();
 								t.Commit();
 							}
 						}
@@ -1949,8 +1889,7 @@ namespace Neumont.Tools.ORM.Shell
 						using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedEntityType.Name)))
 						{
 							ValueTypeInstance instance = null;
-							ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance);
-							EditValueTypeInstance(instance, newText);
+							ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true);
 							ConnectInstance(myEntityType, ref editInstance, result, factRole);
 							t.Commit();
 						}
@@ -1964,8 +1903,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
 						ValueTypeInstance instance = null;
-						ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance);
-						EditValueTypeInstance(instance, newText);
+						ObjectTypeInstance result = RecurseValueTypeInstance(null, identifierRole.RolePlayer, newText, ref instance, true);
 						EntityTypeInstance parentInstance = null;
 						ConnectInstance(myEntityType, ref parentInstance, result, identifierRole);
 						t.Commit();
@@ -1980,7 +1918,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (style == ObjectStyle.SubItemExpansion)
 				{
 					ObjectType selectedEntityType = myEntityType;
-					LinkedElementCollection<EntityTypeInstance> instances = selectedEntityType.EntityTypeInstanceCollection;
+					List<EntityTypeInstance> instances = myCachedInstances;
 					Role identifierRole = selectedEntityType.PreferredIdentifier.RoleCollection[column - 1];
 					EntityTypeInstance parentInstance = (row < instances.Count) ? instances[row] : null;
 					EntityTypeInstance editInstance = null;
@@ -2013,7 +1951,7 @@ namespace Neumont.Tools.ORM.Shell
 				else if (text.Length == 0)
 				{
 					ObjectType selectedEntityType = myEntityType;
-					EntityTypeInstance selectedInstance = selectedEntityType.EntityTypeInstanceCollection[row];
+					EntityTypeInstance selectedInstance = myCachedInstances[row];
 					LinkedElementCollection<EntityTypeRoleInstance> entityTypeRoleInstances = selectedInstance.RoleInstanceCollection;
 					int roleInstanceCount = entityTypeRoleInstances.Count;
 					EntityTypeRoleInstance roleInstance;
@@ -2050,7 +1988,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return myEntityType.EntityTypeInstanceCollection.Count + base.VisibleItemCount;
+					return myCachedInstances.Count + base.VisibleItemCount;
 				}
 			}
 			#endregion
@@ -2062,7 +2000,292 @@ namespace Neumont.Tools.ORM.Shell
 					case 0:
 						return SubItemCellStyles.Simple;
 					default:
-						return SubItemCellStyles.Expandable;
+						return SubItemCellStyles.Mixed;
+				}
+			}
+			#endregion
+			#region Event Handlers
+			protected override void AttachEventHandlers(Store store)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+				DomainClassInfo classInfo;
+
+				// Track EntityTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(Role.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent));
+			}
+			protected override void DetachEventHandlers(Store store)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+				DomainClassInfo classInfo;
+
+				// Track EntityTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasEntityTypeInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(Role.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent));
+			}
+
+			private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (entityType != null && !entityType.IsDeleted)
+				{
+					LinkedElementCollection<Role> identifierRoles = myEntityType.PreferredIdentifier.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					for (int i = 0; i < identifierCount; ++i)
+					{
+						if (entityType == identifierRoles[i].RolePlayer)
+						{
+							EditColumnHeader(i + 1, identifierRoles[i]);
+							EditColumnDisplay(i + 1);
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (entityType != null && !entityType.IsDeleted)
+				{
+					UniquenessConstraint identifier = myEntityType.PreferredIdentifier;
+					if (identifier != null)
+					{
+						LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (entityType == identifierRoles[i].RolePlayer)
+							{
+								base.EditColumnHeader(i + 1, identifierRoles[i]);
+								base.EditColumnDisplay(i + 1);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRoleAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint uniqueness;
+				ObjectType preferredFor;
+				if (null != (uniqueness = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!uniqueness.IsDeleted &&
+					null != (preferredFor = uniqueness.PreferredIdentifierFor))
+				{
+					UniquenessConstraint identifier = myEntityType.PreferredIdentifier;
+					if (identifier != null)
+					{
+						LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (preferredFor == identifierRoles[i].RolePlayer)
+							{
+								base.EditColumnHeader(i + 1, identifierRoles[i]);
+								base.EditColumnDisplay(i + 1);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRoleRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint uniqueness;
+				ObjectType preferredFor;
+				if (null != (uniqueness = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!uniqueness.IsDeleted &&
+					null != (preferredFor = uniqueness.PreferredIdentifierFor))
+				{
+					UniquenessConstraint identifier = myEntityType.PreferredIdentifier;
+					if (identifier != null)
+					{
+						LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (preferredFor == identifierRoles[i].RolePlayer)
+							{
+								base.EditColumnHeader(i + 1, identifierRoles[i]);
+								base.EditColumnDisplay(i + 1);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
+				ObjectType entityType = link.EntityType;
+				if (entityType != null && !entityType.IsDeleted && entityType == myEntityType)
+				{
+					myCachedInstances.Add(link.EntityTypeInstance);
+					AddEntityInstanceDisplay(link.EntityTypeInstance);
+				}
+			}
+
+			private void EntityTypeHasEntityTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
+				ObjectType entityType = link.EntityType;
+				if (entityType != null && !entityType.IsDeleted && entityType == myEntityType)
+				{
+					List<EntityTypeInstance> instances = myCachedInstances;
+					int instanceLocation = instances.IndexOf(link.EntityTypeInstance);
+					Debug.Assert(instanceLocation != -1);
+					instances.RemoveAt(instanceLocation);
+					base.RemoveInstanceDisplay(instanceLocation);
+				}
+			}
+
+			private void EntityTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
+				ObjectType entityType = entityTypeInstance.EntityType;
+				if (entityType != null && !entityType.IsDeleted)
+				{
+					if (entityType == myEntityType)
+					{
+						EditEntityInstanceDisplay(entityTypeInstance);
+					}
+					else
+					{
+						for (int i = 0; i < myCachedInstances.Count; ++i)
+						{
+							if (RecurseInstanceUpdate(myCachedInstances[i], entityTypeInstance))
+							{
+								EditInstanceDisplay(i);
+							}
+						}
+					}
+				}
+			}
+
+			private bool RecurseInstanceUpdate(ObjectTypeInstance checkInstance, EntityTypeInstance compareInstance)
+			{
+				EntityTypeInstance entityInstance;
+				if (null != (entityInstance = checkInstance as EntityTypeInstance))
+				{
+					if (entityInstance == compareInstance)
+					{
+						return true;
+					}
+					else
+					{
+						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = entityInstance.RoleInstanceCollection;
+						int roleInstancesCount = roleInstances.Count;
+						for (int i = 0; i < roleInstancesCount; ++i)
+						{
+							bool result = RecurseInstanceUpdate(roleInstances[i].ObjectTypeInstance, compareInstance);
+							if (result)
+							{
+								return result;
+							}
+						}
+					}
+				}
+				return false;
+			}
+
+			private void EntityTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
+				ObjectType entityType = entityTypeInstance.EntityType;
+				if (entityType != null && !entityType.IsDeleted)
+				{
+					if (entityType == myEntityType)
+					{
+						EditEntityInstanceDisplay(entityTypeInstance);
+					}
+					else
+					{
+						for (int i = 0; i < myCachedInstances.Count; ++i)
+						{
+							if (RecurseInstanceUpdate(myCachedInstances[i], entityTypeInstance))
+							{
+								EditInstanceDisplay(i);
+							}
+						}
+					}
+				}
+			}
+
+			private void RoleNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			{
+				Role role = e.ModelElement as Role;
+				UniquenessConstraint identifier = myEntityType.PreferredIdentifier;
+				if (identifier != null && !role.IsDeleted)
+				{
+					int location = identifier.RoleCollection.IndexOf(role);
+					if (location != -1)
+					{
+						base.EditColumnHeader(location + 1, role);
+					}
+				}
+			}
+
+			private void ObjectTypeNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			{
+				ObjectType objectType = e.ModelElement as ObjectType;
+				UniquenessConstraint identifier = myEntityType.PreferredIdentifier;
+				if (identifier != null && !objectType.IsDeleted)
+				{
+					LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+					int collectionCount = identifierRoles.Count;
+					for (int i = 0; i < collectionCount; ++i)
+					{
+						if (identifierRoles[i].RolePlayer == objectType)
+						{
+							base.EditColumnHeader(i + 1, identifierRoles[i]);
+						}
+					}
 				}
 			}
 			#endregion
@@ -2100,19 +2323,20 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 			#region Branch Update Methods
-			public void AddEntityInstanceDisplay(EntityTypeInstance entityTypeInstance)
+			private void AddEntityInstanceDisplay(EntityTypeInstance entityTypeInstance)
 			{
-				int location = myEntityType.EntityTypeInstanceCollection.IndexOf(entityTypeInstance);
+				int location = myCachedInstances.IndexOf(entityTypeInstance);
 
 				if (location != -1)
 				{
-					base.AddInstanceDisplay(location);
+					base.EditInstanceDisplay(location);
+					base.AddInstanceDisplay(myCachedInstances.Count);
 				}
 			}
 
-			public void EditEntityInstanceDisplay(EntityTypeInstance entityTypeInstance)
+			private void EditEntityInstanceDisplay(EntityTypeInstance entityTypeInstance)
 			{
-				int location = myEntityType.EntityTypeInstanceCollection.IndexOf(entityTypeInstance);
+				int location = myCachedInstances.IndexOf(entityTypeInstance);
 				if (location != -1)
 				{
 					base.EditInstanceDisplay(location);
@@ -2122,293 +2346,40 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private sealed class SamplePopulationFactTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
+			#region Member Variables
+			private readonly List<FactTypeInstance> myCachedInstances;
 			private readonly FactType myFactType;
+			#endregion
 			#region Construction
 			public SamplePopulationFactTypeBranch(FactType selectedFactType, int numColumns)
 				: base(numColumns, selectedFactType.Store)
 			{
 				myFactType = selectedFactType;
+				myCachedInstances = new List<FactTypeInstance>();
+				myCachedInstances.AddRange(selectedFactType.FactTypeInstanceCollection);
 			}
 			#endregion
 			#region IBranch Member Mirror/Implementations
-			#region CellEditContext class, used for label editing
-			/// <summary>
-			/// A helper class to provide a context for label editing
-			/// </summary>
-			private sealed class CellEditContext
-			{
-				#region FactTypeInstanceColumnDescriptor class
-				/// <summary>
-				/// A property descriptor to host inside the TypeEditorHost.
-				/// Handles all in-place editing.
-				/// </summary>
-				private sealed class FactTypeInstanceColumnDescriptor : PropertyDescriptor
-				{
-					#region InstanceDropDown class
-					/// <summary>
-					/// An ElementPicker list used to display available instance values
-					/// </summary>
-					private sealed class InstanceDropDown : ElementPicker<InstanceDropDown>
-					{
-						private IList myInstances;
-						/// <summary>
-						/// Translate the displayed text to the underlying instance
-						/// </summary>
-						protected sealed override object TranslateFromDisplayObject(int newIndex, object newObject)
-						{
-							return (newIndex >= 0) ? myInstances[newIndex] : null;
-						}
-						/// <summary>
-						/// Translate the initial value into its corresponding text so it
-						/// can be selected in the list
-						/// </summary>
-						protected sealed override object TranslateToDisplayObject(object initialObject, IList contentList)
-						{
-							int index = myInstances.IndexOf(initialObject);
-							return (index >= 0) ? contentList[index] : null;
-						}
-						/// <summary>
-						/// Provide text for a null item at the top of the list
-						/// </summary>
-						protected sealed override string NullItemText
-						{
-							get
-							{
-								// UNDONE: Localize null text
-								return "<Unspecified>";
-							}
-						}
-						/// <summary>
-						/// Return the string values for the contents of the dropdown list
-						/// </summary>
-						protected sealed override IList GetContentList(ITypeDescriptorContext context, object value)
-						{
-							CellEditContext instance = (CellEditContext)context.Instance;
-							Role role = instance.myRole;
-							ObjectType rolePlayer = role.RolePlayer;
-							if (rolePlayer != null)
-							{
-								IList instances = rolePlayer.IsValueType ? (IList)rolePlayer.ValueTypeInstanceCollection : rolePlayer.EntityTypeInstanceCollection;
-								int instanceCount = instances.Count;
-								string[] strings = new string[instanceCount];
-								for (int i = 0; i < instanceCount; ++i)
-								{
-									strings[i] = RecurseObjectTypeInstanceValue((ObjectTypeInstance)instances[i], rolePlayer);
-								}
-								myInstances = instances;
-								return strings;
-							}
-							return null;
-						}
-					}
-					#endregion // InstanceDropDown class
-					#region InstanceConverter class
-					private sealed class InstanceConverter : StringConverter
-					{
-						public sealed override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-						{
-							string stringValue = value as string;
-							if (stringValue != null)
-							{
-								if (stringValue.Length == 0)
-								{
-									return null;
-								}
-								else
-								{
-									CellEditContext editContext = (CellEditContext)context.Instance;
-									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
-									if (currentInstance != null && stringValue == RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer))
-									{
-										return currentInstance;
-									}
-									// UNDONE: We'll hit this if the user edits the text and opens the dropdown without committing
-									// Should we add a new item at this point, or just try to get the best match from the list?
-									return stringValue;
-								}
-							}
-							return base.ConvertFrom(context, culture, value);
-						}
-						public sealed override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-						{
-							CellEditContext editContext = (CellEditContext)context.Instance;
-							ObjectType rolePlayer;
-							UniquenessConstraint preferredIdentifier;
-							if (sourceType == typeof(string) &&
-								((null == (rolePlayer = ((CellEditContext)context.Instance).myRole.RolePlayer)) ||
-								(!rolePlayer.IsValueType &&
-								(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
-								preferredIdentifier.RoleCollection.Count > 1))))
-							{
-								return false;
-							}
-							return base.CanConvertFrom(context, sourceType);
-						}
-						public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-						{
-							ObjectTypeInstance typedValue = (ObjectTypeInstance)value;
-							if (typedValue != null)
-							{
-								return RecurseObjectTypeInstanceValue(typedValue, ((CellEditContext)context.Instance).myRole.RolePlayer);
-							}
-							return string.Empty;
-						}
-					}
-					#endregion // InstanceConverter class
-					#region Constructor
-					public FactTypeInstanceColumnDescriptor()
-						: base(" ", null)
-					{
-					}
-					#endregion // Constructor
-					#region Base Overrides
-					private static readonly TypeConverter TypeConverter = new InstanceConverter();
-					public sealed override TypeConverter Converter
-					{
-						get
-						{
-							return TypeConverter;
-						}
-					}
-					public sealed override object GetEditor(Type editorBaseType)
-					{
-						Debug.Assert(editorBaseType == typeof(UITypeEditor));
-						return new InstanceDropDown();
-					}
-					public sealed override object GetValue(object component)
-					{
-						return (component as CellEditContext).myColumnInstance;
-					}
-					public sealed override void SetValue(object component, object value)
-					{
-						// Ignore strings coming through here with an as cast. Opening the
-						// dropdown with dirty text will attempt a set value
-						ObjectTypeInstance typedValue = value as ObjectTypeInstance;
-						CellEditContext context = (CellEditContext)component;
-						ObjectTypeInstance columnInstance = context.myColumnInstance;
-						Role role = context.myRole;
-						if (typedValue == null)
-						{
-							if (columnInstance != null)
-							{
-								// UNDONE: Localize transaction name
-								FactTypeInstance factTypeInstance = context.myFactTypeInstance;
-								using (Transaction t = role.Store.TransactionManager.BeginTransaction("Clear role instance"))
-								{
-									factTypeInstance.FindRoleInstance(role).Delete();
-									t.Commit();
-								}
-								// Removing the last role instance can remove the fact type instance, check
-								if (factTypeInstance.IsDeleted)
-								{
-									context.myFactTypeInstance = null;
-								}
-								context.myColumnInstance = null;
-							}
-						}
-						else if (columnInstance != typedValue)
-						{
-							// UNDONE: Localize transaction name
-							using (Transaction t = role.Store.TransactionManager.BeginTransaction("Set role instance"))
-							{
-								ConnectInstance(ref context.myFactTypeInstance, typedValue, role);
-								t.Commit();
-							}
-							context.myColumnInstance = typedValue;
-						}
-					}
-					public sealed override Type ComponentType
-					{
-						get { return typeof(ObjectTypeInstance); }
-					}
-					public sealed override Type PropertyType
-					{
-						get { return typeof(ObjectTypeInstance); }
-					}
-					public sealed override bool IsReadOnly
-					{
-						get { return false; }
-					}
-					public sealed override bool CanResetValue(object component)
-					{
-						return false;
-					}
-					public sealed override void ResetValue(object component)
-					{
-					}
-					public sealed override bool ShouldSerializeValue(object component)
-					{
-						return false;
-					}
-					#endregion // Base Overrides
-				}
-				#endregion // FactTypeInstanceColumnDescriptor class
-				#region Member Variables
-				private static readonly FactTypeInstanceColumnDescriptor Descriptor = new FactTypeInstanceColumnDescriptor();
-				private Role myRole;
-				private FactTypeInstance myFactTypeInstance;
-				private ObjectTypeInstance myColumnInstance;
-				#endregion // Member Variables
-				#region Constructor
-				/// <summary>
-				/// Create an editing context for the given role and factTypeInstance
-				/// </summary>
-				/// <param name="role">The role being edited</param>
-				/// <param name="factTypeInstance">The current factTypeInstance. Can be null.</param>
-				public CellEditContext(Role role, FactTypeInstance factTypeInstance)
-				{
-					Debug.Assert(role != null);
-					myRole = role;
-					myFactTypeInstance = factTypeInstance;
-					if (factTypeInstance != null)
-					{
-						FactTypeRoleInstance roleInstance = factTypeInstance.FindRoleInstance(role);
-						if (roleInstance != null)
-						{
-							myColumnInstance = roleInstance.ObjectTypeInstance;
-						}
-					}
-				}
-				#endregion // Constructor
-				#region CreateInPlaceEditControl method
-				/// <summary>
-				/// Create an inplace edit control that works with this context
-				/// </summary>
-				/// <returns>IVirtualTreeInPlaceControl</returns>
-				public IVirtualTreeInPlaceControl CreateInPlaceEditControl()
-				{
-					ObjectType rolePlayer;
-					UniquenessConstraint preferredIdentifier;
-					bool blockEdits =
-						(null == (rolePlayer = myRole.RolePlayer)) ||
-						(!rolePlayer.IsValueType &&
-						(null == (preferredIdentifier = rolePlayer.PreferredIdentifier) ||
-						preferredIdentifier.RoleCollection.Count > 1));
-					TypeEditorHost host = TypeEditorHost.Create(
-						Descriptor,
-						this,
-						blockEdits ? TypeEditorHostEditControlStyle.ReadOnlyEdit : TypeEditorHostEditControlStyle.Editable);
-					if (host != null)
-					{
-						(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText;
-					}
-					return host;
-				}
-				#endregion // CreateInPlaceEditControl method
-			}
-			#endregion // CellEditContext class, used for label editing
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
 				{
-					LinkedElementCollection<FactTypeInstance> instances = myFactType.FactTypeInstanceCollection;
-					retVal.CustomInPlaceEdit = new CellEditContext(myFactType.RoleCollection[column - 1].Role, (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
-					retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+					ObjectType rolePlayer;
+					if (null == (rolePlayer = myFactType.RoleCollection[column - 1].Role.RolePlayer) || rolePlayer.PreferredIdentifier == null)
 					{
-						// Defer to the normal text edit if the control is not dirty
-						return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
-					};
+						retVal = VirtualTreeLabelEditData.Invalid;
+					}
+					else
+					{
+						LinkedElementCollection<FactTypeInstance> instances = myFactType.FactTypeInstanceCollection;
+						retVal.CustomInPlaceEdit = new CellEditContext(myFactType.RoleCollection[column - 1].Role, (row < instances.Count) ? instances[row] : null).CreateInPlaceEditControl();
+						retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+						{
+							// Defer to the normal text edit if the control is not dirty
+							return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
+						};
+					}
 				}
 				return retVal;
 			}
@@ -2437,20 +2408,29 @@ namespace Neumont.Tools.ORM.Shell
 					if (editRoleInstance != null)
 					{
 						ValueTypeInstance instance = null;
-						ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance);
 						if (delete)
 						{
-							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, instance.ValueType.Name)))
+							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, "")))
 							{
-								RemoveValueTypeInstance(instance);
+								if (instance != null)
+								{
+									RemoveValueTypeInstance(instance);
+								}
+								else
+								{
+									ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, false);
+									result.Delete();
+								}
 								t.Commit();
 							}
 						}
 						else
 						{
-							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, instance.ValueType.Name)))
+							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, "")))
 							{
-								EditValueTypeInstance(instance, newText);
+								myCachedInstances[row].FindRoleInstance(myFactType.RoleCollection[column].Role).Delete();
+								ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, true);
+								ConnectInstance(ref editInstance, result, factRole);
 								t.Commit();
 							}
 						}
@@ -2459,11 +2439,10 @@ namespace Neumont.Tools.ORM.Shell
 					// If editing an existing FactTypeInstance but creating a new FactTypeRoleInstance
 					else if (!delete)
 					{
-						//UNDONE: Localize the transaction name
 						using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, selectedFactType.Name)))
 						{
 							ValueTypeInstance instance = null;
-							ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance);
+							ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true);
 							EditValueTypeInstance(instance, newText);
 							FactTypeRoleInstance roleInstance = new FactTypeRoleInstance(factRole, result);
 							roleInstance.FactTypeInstance = editInstance;
@@ -2482,7 +2461,7 @@ namespace Neumont.Tools.ORM.Shell
 						newInstance.FactType = selectedFactType;
 						Role factRole = selectedFactType.RoleCollection[column - 1].Role;
 						ValueTypeInstance instance = null;
-						ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance);
+						ObjectTypeInstance result = RecurseValueTypeInstance(null, factRole.RolePlayer, newText, ref instance, true);
 						EditValueTypeInstance(instance, newText);
 						FactTypeRoleInstance roleInstance = new FactTypeRoleInstance(factRole, result);
 						roleInstance.FactTypeInstance = newInstance;
@@ -2530,7 +2509,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else if (text.Length == 0)
 				{
-					FactTypeInstance factTypeInstance = myFactType.FactTypeInstanceCollection[row];
+					FactTypeInstance factTypeInstance = myCachedInstances[row];
 					LinkedElementCollection<FactTypeRoleInstance> factTypeRoleInstances = factTypeInstance.RoleInstanceCollection;
 					int roleInstanceCount = factTypeRoleInstances.Count;
 					FactTypeRoleInstance instance;
@@ -2566,7 +2545,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return myFactType.FactTypeInstanceCollection.Count + base.VisibleItemCount;
+					return myCachedInstances.Count + base.VisibleItemCount;
 				}
 			}
 			#endregion
@@ -2578,7 +2557,368 @@ namespace Neumont.Tools.ORM.Shell
 					case 0:
 						return SubItemCellStyles.Simple;
 					default:
-						return SubItemCellStyles.Expandable;
+						return SubItemCellStyles.Mixed;
+				}
+			}
+			#endregion
+			#region Event Handlers
+			protected override void AttachEventHandlers(Store store)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+				DomainClassInfo classInfo;
+
+				// Track EntityTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
+
+				// Track FactTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasFactTypeInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(Role.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ObjectTypePlaysRole.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypePlaysRoleAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypePlaysRoleRemovedEvent));
+				eventDirectory.RolePlayerChanged.Add(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectTypeRolePlayerChangedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent));
+			}
+
+			protected override void DetachEventHandlers(Store store)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+				DomainClassInfo classInfo;
+
+				// Track EntityTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
+
+				// Track FactTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasFactTypeInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(Role.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameChangedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ObjectTypePlaysRole.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypePlaysRoleAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypePlaysRoleRemovedEvent));
+				eventDirectory.RolePlayerChanged.Remove(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ObjectTypeRolePlayerChangedEvent));
+
+				classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+				eventDirectory.ElementPropertyChanged.Remove(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent));
+			}
+
+			private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (entityType != null && !entityType.IsDeleted)
+				{
+					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					for (int i = 0; i < identifierCount; ++i)
+					{
+						if (entityType == identifierRoles[i].Role.RolePlayer)
+						{
+							base.EditColumnHeader(i + 1, identifierRoles[i].Role);
+							base.EditColumnDisplay(i + 1);
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (entityType != null && !entityType.IsDeleted)
+				{
+					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
+					if (identifierRoles != null)
+					{
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (entityType == identifierRoles[i].Role.RolePlayer)
+							{
+								base.EditColumnHeader(i + 1, identifierRoles[i].Role);
+								base.EditColumnDisplay(i + 1);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRoleAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint uniqueness;
+				ObjectType preferredFor;
+				if (null != (uniqueness = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!uniqueness.IsDeleted &&
+					null != (preferredFor = uniqueness.PreferredIdentifierFor))
+				{
+					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
+					if (identifierRoles != null)
+					{
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (preferredFor == identifierRoles[i].Role.RolePlayer)
+							{
+								base.EditColumnHeader(i + 1, identifierRoles[i].Role);
+								base.EditColumnDisplay(i + 1);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRoleRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint uniqueness;
+				ObjectType preferredFor;
+				if (null != (uniqueness = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!uniqueness.IsDeleted &&
+					null != (preferredFor = uniqueness.PreferredIdentifierFor))
+				{
+					LinkedElementCollection<RoleBase> identifierRoles = myFactType.RoleCollection;
+					if (identifierRoles != null)
+					{
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (preferredFor == identifierRoles[i].Role.RolePlayer)
+							{
+								base.EditColumnHeader(i + 1, identifierRoles[i].Role);
+								base.EditColumnDisplay(i + 1);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
+				ObjectType entityType = entityTypeInstance.EntityType;
+				if (entityType != null)
+				{
+					for (int i = 0; i < myCachedInstances.Count; ++i)
+					{
+						LinkedElementCollection<FactTypeRoleInstance> factInstances = myCachedInstances[i].RoleInstanceCollection;
+						int factInstanceCount = factInstances.Count;
+						for (int j = 0; i < factInstanceCount; ++i)
+						{
+							if (RecurseInstanceUpdate(factInstances[j].ObjectTypeInstance, entityTypeInstance))
+							{
+								EditInstanceDisplay(i);
+							}
+						}
+					}
+				}
+			}
+
+			private bool RecurseInstanceUpdate(ObjectTypeInstance checkInstance, EntityTypeInstance compareInstance)
+			{
+				EntityTypeInstance entityInstance;
+				if (null != (entityInstance = checkInstance as EntityTypeInstance))
+				{
+					if (entityInstance == compareInstance)
+					{
+						return true;
+					}
+					else
+					{
+						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = entityInstance.RoleInstanceCollection;
+						int roleInstancesCount = roleInstances.Count;
+						for (int i = 0; i < roleInstancesCount; ++i)
+						{
+							bool result = RecurseInstanceUpdate(roleInstances[i].ObjectTypeInstance, compareInstance);
+							if (result)
+							{
+								return result;
+							}
+						}
+					}
+				}
+				return false;
+			}
+
+			private void EntityTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance entityTypeInstance = link.EntityTypeInstance;
+				ObjectType entityType = entityTypeInstance.EntityType;
+				if (entityType != null)
+				{
+					for (int i = 0; i < myCachedInstances.Count; ++i)
+					{
+						LinkedElementCollection<FactTypeRoleInstance> factInstances = myCachedInstances[i].RoleInstanceCollection;
+						int factInstanceCount = factInstances.Count;
+						for (int j = 0; i < factInstanceCount; ++i)
+						{
+							if (RecurseInstanceUpdate(factInstances[j].ObjectTypeInstance, entityTypeInstance))
+							{
+								EditInstanceDisplay(i);
+							}
+						}
+					}
+				}
+			}
+
+			private void FactTypeHasFactTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
+				FactType factType = link.FactType;
+				if (!factType.IsDeleted && factType == myFactType)
+				{
+					FactTypeInstance factTypeInstance = link.FactTypeInstance;
+					myCachedInstances.Add(factTypeInstance);
+					AddFactInstanceDisplay(factTypeInstance);
+				}
+			}
+
+			private void FactTypeHasFactTypeInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
+				FactType factType = link.FactType;
+				if (!factType.IsDeleted && factType == myFactType)
+				{
+					List<FactTypeInstance> instances = myCachedInstances;
+					int instanceLocation = instances.IndexOf(link.FactTypeInstance);
+					Debug.Assert(instanceLocation != -1);
+					instances.RemoveAt(instanceLocation);
+					base.RemoveInstanceDisplay(instanceLocation);
+				}
+			}
+
+			private void FactTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				FactTypeInstance factTypeInstance = (e.ModelElement as FactTypeInstanceHasRoleInstance).FactTypeInstance;
+				FactType factType;
+				if (!factTypeInstance.IsDeleted &&
+					null != (factType = factTypeInstance.FactType) &&
+					!factType.IsDeleted &&
+					factType == myFactType)
+				{
+					EditFactInstanceDisplay(factTypeInstance);
+				}
+			}
+
+			private void FactTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				FactTypeInstance factTypeInstance = (e.ModelElement as FactTypeInstanceHasRoleInstance).FactTypeInstance;
+				FactType factType;
+				if (!factTypeInstance.IsDeleted &&
+					null != (factType = factTypeInstance.FactType) &&
+					!factType.IsDeleted &&
+					factType == myFactType)
+				{
+					EditFactInstanceDisplay(factTypeInstance);
+				}
+			}
+
+			private void RoleNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			{
+				Role role = e.ModelElement as Role;
+				if (!role.IsDeleted)
+				{
+					LinkedElementCollection<RoleBase> roleCollection = myFactType.RoleCollection;
+					int collectionCount = roleCollection.Count;
+					for (int i = 0; i < collectionCount; ++i)
+					{
+						if (roleCollection[i].Role == role)
+						{
+							base.EditColumnHeader(i + 1, role);
+						}
+					}
+				}
+			}
+
+			private void ObjectTypePlaysRoleAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				ProcessObjectTypePlaysRole(e.ModelElement as ObjectTypePlaysRole);
+			}
+
+			private void ObjectTypePlaysRoleRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				ProcessObjectTypePlaysRole(e.ModelElement as ObjectTypePlaysRole);
+			}
+
+			private void ObjectTypeRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+			{
+				ProcessObjectTypePlaysRole(e.ElementLink as ObjectTypePlaysRole);
+			}
+
+			private void ProcessObjectTypePlaysRole(ObjectTypePlaysRole link)
+			{
+				ObjectType rolePlayer = link.RolePlayer;
+				Role factRole = link.PlayedRole;
+				if (!rolePlayer.IsDeleted && !factRole.IsDeleted)
+				{
+					LinkedElementCollection<RoleBase> factRoles = myFactType.RoleCollection;
+					int roleCount = factRoles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						if (factRole == factRoles[i].Role)
+						{
+							base.EditColumnHeader(i + 1, factRole);
+						}
+					}
+				}
+			}
+
+			private void ObjectTypeNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+			{
+				ObjectType objectType = e.ModelElement as ObjectType;
+				if (!objectType.IsDeleted)
+				{
+					LinkedElementCollection<RoleBase> roleCollection = myFactType.RoleCollection;
+					int collectionCount = roleCollection.Count;
+					for (int i = 0; i < collectionCount; ++i)
+					{
+						if (roleCollection[i].Role.RolePlayer == objectType)
+						{
+							base.EditColumnHeader(i + 1, roleCollection[i].Role);
+						}
+					}
 				}
 			}
 			#endregion
@@ -2604,16 +2944,17 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 			#region Branch Update Methods
-			public void AddFactInstanceDisplay(FactTypeInstance factTypeInstance)
+			private void AddFactInstanceDisplay(FactTypeInstance factTypeInstance)
 			{
-				int location = myFactType.FactTypeInstanceCollection.IndexOf(factTypeInstance);
+				int location = myCachedInstances.IndexOf(factTypeInstance);
 				if (location != -1)
 				{
-					base.AddInstanceDisplay(location);
+					base.EditInstanceDisplay(location);
+					base.AddInstanceDisplay(myCachedInstances.Count);
 				}
 			}
 
-			public void EditFactInstanceDisplay(FactTypeInstance factTypeInstance)
+			private void EditFactInstanceDisplay(FactTypeInstance factTypeInstance)
 			{
 				int location = myFactType.FactTypeInstanceCollection.IndexOf(factTypeInstance);
 				if (location != -1)
@@ -2627,12 +2968,13 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			#region Member Variables
 			private readonly SamplePopulationBaseBranch myParentBranch;
-			private readonly EntityTypeInstance myEditInstance;
+			private EntityTypeInstance myEditInstance;
 			private EntityTypeInstance myParentEntityInstance;
 			private readonly ObjectType myParentEntityType;
 			private readonly FactType myParentFactType;
 			private FactTypeInstance myParentFactInstance;
 			private readonly Role myEditRole;
+			private int myItemCountCache;
 			#endregion // Member Variables
 			#region Construction
 			/// <summary>
@@ -2676,6 +3018,7 @@ namespace Neumont.Tools.ORM.Shell
 				myEditInstance = editInstance;
 				myEditRole = editRole;
 				myParentBranch = parentBranch;
+				myItemCountCache = editRole.RolePlayer.PreferredIdentifier.RoleCollection.Count;
 			}
 			#endregion
 			#region IBranch Member Mirror/Implementations
@@ -2692,38 +3035,18 @@ namespace Neumont.Tools.ORM.Shell
 
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
-				if (IsExpandable(row, column))
+				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
+				if (retVal.IsValid)
 				{
-					////UNDONE: Set up combo boxes for selection, code for pulling collection and committing selection is below
-					//// To pull a collection
-					//Role selectedRole = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection[row];
-					//ObjectType rolePlayer = selectedRole.RolePlayer;
-					//if (rolePlayer.IsValueType)
-					//{
-					//    // This is the collection to be selected from
-					//    rolePlayer.ValueTypeInstanceCollection;
-					//}
-					//else
-					//{
-					//    // This is the collection to be selected from
-					//    rolePlayer.EntityTypeInstanceCollection;
-					//}
-					//// For each of the ObjectTypeInstances, pass them in to 
-					//// RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, Role identifierRole) to get the text output for each
-
-					// Might be easier to deal with a single ObjectTypeInstanceMoveableCollection, rather than either of the stronger typed versions,
-					// but not sure if there are any built in conversions, EntityTypeInstance and ValueTypeInstance are subtypes of ObjectTypeInstance,
-					// so it should be easy to get to though.
-
-					// To commit a selection
-					// int selection = current selection
-					// collection = variable containing the entire collection, be it any of the three types
-					//ObjectTypeInstance selectedInstance = collection[selection];
-					//Role selectedRole = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection[row];
-					//ConnectInstance(selectedInstance, selectedRole);
-					return VirtualTreeLabelEditData.Invalid;
+					Role editRole = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection[row];
+					retVal.CustomInPlaceEdit = new CellEditContext(editRole, myEditInstance, this).CreateInPlaceEditControl();
+					retVal.CustomCommit = delegate(VirtualTreeItemInfo itemInfo, Control editControl)
+					{
+						// Defer to the normal text edit if the control is not dirty
+						return (editControl as IVirtualTreeInPlaceControl).Dirty ? itemInfo.Branch.CommitLabelEdit(itemInfo.Row, itemInfo.Column, editControl.Text) : LabelEditResult.CancelEdit;
+					};
 				}
-				return VirtualTreeLabelEditData.Default;
+				return retVal;
 			}
 
 			LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
@@ -2732,88 +3055,38 @@ namespace Neumont.Tools.ORM.Shell
 				Role identifierRole = instanceType.PreferredIdentifier.RoleCollection[row];
 				ObjectType editType = identifierRole.RolePlayer;
 				EntityTypeInstance editInstance = myEditInstance;
-				ObjectTypeInstance roleEditInstance = null;
+				EntityTypeRoleInstance roleEditInstance = null;
 				if (editInstance != null)
 				{
-					EntityTypeRoleInstance foundRoleInstance = editInstance.FindRoleInstance(identifierRole);
-					if (foundRoleInstance != null)
-					{
-						roleEditInstance = foundRoleInstance.ObjectTypeInstance;
-					}
+					roleEditInstance = editInstance.FindRoleInstance(identifierRole);
 				}
-				bool delete = newText.Length == 0;
-				Store store = Store;
-				ValueTypeInstance vEditInstance;
-				//EntityTypeInstance eEditInstance;
-				if (roleEditInstance == null)
+				if(newText.Length != 0)
 				{
-					if (delete)
+					Store store = Store;
+					ObjectType rolePlayer = identifierRole.RolePlayer;
+					using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, rolePlayer.Name)))
 					{
-						return LabelEditResult.CancelEdit;
-					}
-					using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorNewInstanceTransactionText, identifierRole.RolePlayer.Name)))
-					{
+						if (roleEditInstance != null)
+						{
+							roleEditInstance.Delete();
+						}
 						ValueTypeInstance instance = null;
-						ObjectType rolePlayer = identifierRole.RolePlayer;
-						ObjectTypeInstance result = RecurseValueTypeInstance(null, editType, newText, ref instance);
+						ObjectTypeInstance result = RecurseValueTypeInstance(null, editType, newText, ref instance, true);
 						EditValueTypeInstance(instance, newText);
 						ConnectInstance(result, identifierRole);
 						t.Commit();
 					}
 					return LabelEditResult.AcceptEdit;
 				}
-				else if (null != (vEditInstance = roleEditInstance as ValueTypeInstance))
-				{
-					ObjectType parentValueType = vEditInstance.ValueType;
-					if (delete)
-					{
-						using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, parentValueType.Name)))
-						{
-							RemoveValueTypeInstance(vEditInstance);
-							t.Commit();
-						}
-					}
-					else
-					{
-						using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, parentValueType.Name)))
-						{
-							EditValueTypeInstance(vEditInstance, newText);
-							t.Commit();
-						}
-					}
-					return LabelEditResult.AcceptEdit;
-				}
-#if FALSE // UNDONE: Inline entity editing
-				else if (null != (eEditInstance = roleEditInstance as EntityTypeInstance))
-				{
-					ObjectType parentEntityType = eEditInstance.EntityType;
-					ValueTypeInstance instance = null;
-					ObjectTypeInstance result = RecurseValueTypeInstance(eEditInstance, parentEntityType, newText, ref instance);
-					if (delete)
-					{
-						using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, parentEntityType.Name)))
-						{
-							RemoveValueTypeInstance(instance);
-							t.Commit();
-						}
-					}
-					else
-					{
-						using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, parentEntityType.Name)))
-						{
-							EditValueTypeInstance(eEditInstance, newText);
-							t.Commit();
-						}
-					}
-					return LabelEditResult.AcceptEdit;
-				}
-#endif // FALSE // UNDONE: Inline entity editing
 				return LabelEditResult.CancelEdit;
 			}
 
 			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
-				return VirtualTreeDisplayData.Empty;
+				VirtualTreeDisplayData retval = VirtualTreeDisplayData.Empty;
+				retval.Image = 0;
+				retval.SelectedImage = 0;  //you must set both .Image and .SelectedImage or an exception will be thrown
+				return retval;
 			}
 
 			object IBranch.GetObject(int row, int column, ObjectStyle style, ref int options)
@@ -2856,6 +3129,15 @@ namespace Neumont.Tools.ORM.Shell
 				return RecurseObjectTypeInstanceValue(null, identifierType);
 			}
 
+			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
+			{
+				if (tipType == ToolTipType.Icon)
+				{
+					return SamplePopulationBaseBranch.DeriveColumnName(myEditRole.RolePlayer.PreferredIdentifier.RoleCollection[row]);
+				}
+				return null;
+			}
+
 			bool IBranch.IsExpandable(int row, int column)
 			{
 				ObjectType instanceType = myEditRole.RolePlayer;
@@ -2869,8 +3151,276 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return myEditRole.RolePlayer.PreferredIdentifier.RoleCollection.Count;
+					return myItemCountCache;
 				}
+			}
+
+			#endregion
+			#region Event Handlers
+			protected override void AttachEventHandlers(Store store)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+				DomainClassInfo classInfo;
+
+				// Track EntityTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent));
+			}
+			protected override void DetachEventHandlers(Store store)
+			{
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+				DomainClassInfo classInfo;
+
+				// Track EntityTypeInstance changes
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasPreferredIdentifier.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(ConstraintRoleSequenceHasRole.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasPreferredIdentifierRoleAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeHasPreferredIdentifierRoleRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeHasEntityTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeHasEntityTypeInstanceAddedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(EntityTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(EntityTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(EntityTypeInstanceHasRoleInstanceRemovedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeHasFactTypeInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasFactTypeInstanceAddedEvent));
+
+				classInfo = dataDirectory.FindDomainRelationship(FactTypeInstanceHasRoleInstance.DomainClassId);
+				eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeInstanceHasRoleInstanceAddedEvent));
+				eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeInstanceHasRoleInstanceRemovedEvent));
+			}
+
+			private void EntityTypeHasPreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (!entityType.IsDeleted)
+				{
+					LinkedElementCollection<Role> identifierRoles = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					for (int i = 0; i < identifierCount; ++i)
+					{
+						if (entityType == identifierRoles[i].RolePlayer)
+						{
+							EditInstanceDisplay(i);
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (!entityType.IsDeleted)
+				{
+					LinkedElementCollection<Role> identifierRoles = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					for (int i = 0; i < identifierCount; ++i)
+					{
+						if (entityType == identifierRoles[i].RolePlayer)
+						{
+							EditInstanceDisplay(i);
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRoleAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint uniqueness;
+				ObjectType preferredFor;
+				if (null != (uniqueness = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!uniqueness.IsDeleted &&
+					null != (preferredFor = uniqueness.PreferredIdentifierFor) &&
+					!preferredFor.IsDeleted)
+				{
+					UniquenessConstraint identifier = myEditRole.RolePlayer.PreferredIdentifier;
+					if (identifier != null)
+					{
+						LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (preferredFor == identifierRoles[i].RolePlayer)
+							{
+								EditInstanceDisplay(i);
+							}
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasPreferredIdentifierRoleRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				UniquenessConstraint uniqueness;
+				ObjectType preferredFor;
+				if (null != (uniqueness = link.ConstraintRoleSequence as UniquenessConstraint) &&
+					!uniqueness.IsDeleted &&
+					null != (preferredFor = uniqueness.PreferredIdentifierFor) &&
+					!preferredFor.IsDeleted)
+				{
+					LinkedElementCollection<Role> identifierRoles = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection;
+					int identifierCount = identifierRoles.Count;
+					for (int i = 0; i < identifierCount; ++i)
+					{
+						if (preferredFor == identifierRoles[i].RolePlayer)
+						{
+							EditInstanceDisplay(i);
+						}
+					}
+				}
+			}
+
+			private void EntityTypeHasEntityTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeHasEntityTypeInstance link = e.ModelElement as EntityTypeHasEntityTypeInstance;
+				if (link.EntityType == myParentEntityType && myParentEntityInstance == null)
+				{
+					myParentEntityInstance = link.EntityTypeInstance;
+					EditColumnDisplay(0);
+				}
+			}
+
+			private void EntityTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance instance = RecurseInstanceUpdate(null, link.EntityTypeInstance, link.RoleInstance.Role, link.RoleInstance.ObjectTypeInstance);
+				if (instance != null)
+				{
+					myEditInstance = instance;
+					EditColumnDisplay(0);
+				}
+			}
+
+			private void EntityTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance instance = RecurseInstanceUpdate(null, link.EntityTypeInstance, link.RoleInstance.Role, link.RoleInstance.ObjectTypeInstance);
+				if (instance != null && instance == myEditInstance)
+				{
+					myEditInstance = null;
+					EditColumnDisplay(0);
+				}
+			}
+
+			private void FactTypeHasFactTypeInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				FactTypeHasFactTypeInstance link = e.ModelElement as FactTypeHasFactTypeInstance;
+				if (link.FactType == myParentFactType && myParentFactInstance == null)
+				{
+					myParentFactInstance = link.FactTypeInstance;
+					EditColumnDisplay(0);
+				}
+			}
+
+			private void FactTypeInstanceHasRoleInstanceAddedEvent(object sender, ElementAddedEventArgs e)
+			{
+				FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
+				EntityTypeInstance instance = RecurseInstanceUpdate(link.FactTypeInstance, null, link.RoleInstance.Role, link.RoleInstance.ObjectTypeInstance as EntityTypeInstance);
+				if (instance != null)
+				{
+					myEditInstance = instance;
+					EditColumnDisplay(0);
+				}
+			}
+
+			private void FactTypeInstanceHasRoleInstanceRemovedEvent(object sender, ElementDeletedEventArgs e)
+			{
+				FactTypeInstanceHasRoleInstance link = e.ModelElement as FactTypeInstanceHasRoleInstance;
+				EntityTypeInstance instance = RecurseInstanceUpdate(link.FactTypeInstance, null, link.RoleInstance.Role, link.RoleInstance.ObjectTypeInstance as EntityTypeInstance);
+				if (instance == myEditInstance)
+				{
+					myEditInstance = null;
+					EditColumnDisplay(0);
+				}
+			}
+
+			private EntityTypeInstance RecurseInstanceUpdate(FactTypeInstance parentInstance, EntityTypeInstance entityTypeInstance, Role selectedRole, ObjectTypeInstance roleInstancePlayer)
+			{
+				if ((parentInstance != null && !parentInstance.IsDeleted && myParentFactInstance == parentInstance)
+					|| (entityTypeInstance != null && !entityTypeInstance.IsDeleted && myParentEntityInstance == entityTypeInstance))
+				{
+					if (myEditRole == selectedRole)
+					{
+						return roleInstancePlayer as EntityTypeInstance;
+					}
+					return null;
+				}
+				else
+				{
+					if (myEditInstance == roleInstancePlayer)
+					{
+						base.EditColumnDisplay(0);
+					}
+					else
+					{
+						LinkedElementCollection<Role> identifierRoles = myEditRole.RolePlayer.PreferredIdentifier.RoleCollection;
+						int identifierCount = identifierRoles.Count;
+						for (int i = 0; i < identifierCount; ++i)
+						{
+							if (identifierRoles[i] == selectedRole)
+							{
+								EntityTypeRoleInstance roleInstance;
+								if (myEditInstance != null
+									&& null != (roleInstance = myEditInstance.FindRoleInstance(selectedRole))
+									&& roleInstance.ObjectTypeInstance == roleInstancePlayer)
+								{
+									base.EditInstanceDisplay(i);
+								}
+								break;
+							}
+						}
+					}
+					SamplePopulationEntityEditorBranch parentBranch;
+					if (null != (parentBranch = myParentBranch as SamplePopulationEntityEditorBranch))
+					{
+						EntityTypeInstance instance = parentBranch.RecurseInstanceUpdate(parentInstance, entityTypeInstance, selectedRole, roleInstancePlayer);
+						if (instance != null)
+						{
+							if (myParentEntityInstance == null)
+							{
+								myParentEntityInstance = instance;
+							}
+							RoleInstance foundInstance = instance.FindRoleInstance(myEditRole);
+							if (foundInstance != null)
+							{
+								return foundInstance.ObjectTypeInstance as EntityTypeInstance;
+							}
+							return null;
+						}
+						return instance;
+					}
+				}
+				return null;
 			}
 			#endregion
 			#region Helper Methods

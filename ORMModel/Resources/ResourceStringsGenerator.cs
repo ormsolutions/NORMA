@@ -1373,6 +1373,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Text to place when selection is null in the sample population window.
+		/// </summary>
+		public static string ModelSamplePopulationEditorNullSelection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NullSelection");
+			}
+		}
+		/// <summary>
 		/// The official name of the package used in the About dialog
 		/// </summary>
 		public static string PackageOfficialName

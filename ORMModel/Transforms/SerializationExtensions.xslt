@@ -1007,6 +1007,11 @@
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
+								<xsl:if test="@AllowDuplicates='true' or @AllowDuplicates=1">
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</xsl:if>
 								<xsl:if test="$createAsRelationshipName">
 									<plx:passParam>
 										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>
@@ -1066,6 +1071,7 @@
 												</xsl:attribute>
 											</xsl:otherwise>
 										</xsl:choose>
+										<xsl:copy-of select="@AllowDuplicates"/>
 									</xsl:for-each>
 								</xsl:copy>
 							</xsl:if>
@@ -1085,6 +1091,11 @@
 								<plx:callObject>
 									<plx:nameRef name="match"/>
 								</plx:callObject>
+								<xsl:if test="@AllowDuplicates='true' or @AllowDuplicates=1">
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</xsl:if>
 								<xsl:if test="$createAsRelationshipName">
 									<plx:passParam>
 										<plx:callStatic name="DomainClassId" dataTypeName="{$createAsRelationshipName}" type="property"/>

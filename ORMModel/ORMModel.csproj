@@ -347,6 +347,9 @@
     <Compile Include="Shell\ORMDesignerSettings.cs" />
     <Compile Include="Shell\ORMToolWindow.cs" />
     <Compile Include="Shell\ORMVerbalizationToolWindow.cs" />
+    <Compile Include="Shell\SamplePopulationEditor.Designer.cs">
+      <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
+    </Compile>
     <None Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
@@ -476,6 +479,10 @@
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintSearching.cur" />
     <EmbeddedResource Include="ObjectModel\VerbalizationUntypedSnippets.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shell\SamplePopulationEditor.resx">
+      <DependentUpon>SamplePopulationEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="GeneratedCode\ConnectionBuilders.tt">

@@ -477,6 +477,9 @@
 	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle">
 		<comment type="summary">Text to place in the title bar of the sample population window.</comment>
 	</ResourceString>
+	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection">
+		<comment type="summary">Text to place when selection is null in the sample population window.</comment>
+	</ResourceString>
 	<ResourceString name="PackageOfficialName" model="Diagram" resourceName="Package.OfficialName">
 		<comment type="summary">The official name of the package used in the About dialog</comment>
 	</ResourceString>

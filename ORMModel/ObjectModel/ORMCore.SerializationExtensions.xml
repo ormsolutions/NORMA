@@ -32,7 +32,7 @@
 			<se:OmitRelationship Class="ModelNoteReferencesModelElement"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<!-- Omitting links to the presentation layers is not strictly required because all
-				 links to external models do not serializae by default, but this one is very common,
+				 links to external models do not serialize by default, but this one is very common,
 				 and including it here allows us to block it earlier in the serialization process. -->
 			<se:OmitRelationship Class="PresentationViewsSubject" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
 		</se:OmittedDomainElements>
@@ -411,8 +411,8 @@
 			<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance"/>
 			<se:Link RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance"/>
 		</se:ChildElement>
-		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement"/>
-		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement"/>
+		<se:Link Name="EntityTypeRoleInstance" RelationshipName="EntityTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
+		<se:Link Name="FactTypeRoleInstance" RelationshipName="FactTypeRoleInstance" RoleName="ObjectTypeInstance" WriteStyle="PrimaryLinkElement" AllowDuplicates="true"/>
 		<se:Link RelationshipName="RoleProxyHasRole" RoleName="Proxy" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequence" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>

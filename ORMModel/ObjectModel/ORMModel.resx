@@ -485,8 +485,12 @@
     <comment>Text used to describe the transaction when removing an instance.  Replacement field 0 is the column name of the instance being removed.</comment>
   </data>
   <data name="ModelSamplePopulationEditor.WindowTitle" xml:space="preserve">
-    <value>Sample Population</value>
+    <value>ORM Sample Population Editor</value>
     <comment>Text to place in the title bar of the sample population window.</comment>
+  </data>
+  <data name="ModelSamplePopulationEditor.NullSelection" xml:space="preserve">
+    <value>&lt;Unspecified&gt;</value>
+    <comment>Text to place when selection is null in the sample population window.</comment>
   </data>
   <data name="ReferenceMode.PredicateInverseReading" xml:space="preserve">
     <value>{0} is of {1}</value>

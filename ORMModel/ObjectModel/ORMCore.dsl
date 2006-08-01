@@ -2741,7 +2741,7 @@
 		</DomainRelationship>
 
 		<!-- RoleInstance is double-derived so that we can implement the Role and ObjectTypeInstance properties. -->
-		<DomainRelationship Name="RoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" InheritanceModifier="Abstract" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
+		<DomainRelationship Name="RoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" InheritanceModifier="Abstract" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
@@ -2761,7 +2761,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="EntityTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="5DB3A2C1-C5DE-4C4A-97C2-E09CE11537D3">
+		<DomainRelationship Name="EntityTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" Id="5DB3A2C1-C5DE-4C4A-97C2-E09CE11537D3">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstance"/>
 			</BaseRelationship>
@@ -2785,7 +2785,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="FactTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="false" Id="FC7C9715-6886-46C2-A7A0-3BFD95CD0766">
+		<DomainRelationship Name="FactTypeRoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" Id="FC7C9715-6886-46C2-A7A0-3BFD95CD0766">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="RoleInstance"/>
 			</BaseRelationship>

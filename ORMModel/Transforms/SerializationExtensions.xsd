@@ -415,6 +415,11 @@
 											</xs:attribute>
 											<xs:attributeGroup ref="LinkAttributes"/>
 											<xs:attributeGroup ref="ElementAttributes"/>
+											<xs:attribute name="AllowDuplicates" type="xs:boolean">
+												<xs:annotation>
+													<xs:documentation>Allow duplicate links of this type between the parent and referenced element. Use with caution: you should only specify one end of this. The other end should be marked as NotWritten.</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
 										</xs:complexType>
 									</xs:element>
 								</xs:choice>

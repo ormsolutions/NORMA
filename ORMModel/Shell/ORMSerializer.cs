@@ -456,6 +456,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private Guid[] myMultiGuids;
 		private ORMCustomSerializedElementMatchStyle myMatchStyle;
+		private const ORMCustomSerializedElementMatchStyle StyleMask = (ORMCustomSerializedElementMatchStyle)0xFFFF;
+		private const ORMCustomSerializedElementMatchStyle AllowDuplicatesBit = (ORMCustomSerializedElementMatchStyle)((int)StyleMask + 1);
 		private string myDoubleTagName;
 		/// <summary>
 		/// The element was recognized as a meta property.
@@ -474,6 +476,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRoles(params Guid[] oppositeDomainRoleIds)
 		{
+			InitializeRoles(false, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRoles(bool allowDuplicates, params Guid[] oppositeDomainRoleIds)
+		{
 			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
 			if (oppositeDomainRoleIds.Length == 1)
 			{
@@ -487,6 +498,10 @@ namespace Neumont.Tools.ORM.Shell
 				myMultiGuids = oppositeDomainRoleIds;
 				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeDomainRoles;
 			}
+			if (allowDuplicates)
+			{
+				myMatchStyle |= AllowDuplicatesBit;
+			}
 			myDoubleTagName = null;
 		}
 		/// <summary>
@@ -496,9 +511,23 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRoles(Guid oppositeDomainRoleId)
 		{
+			InitializeRoles(false, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRoles(bool allowDuplicates, Guid oppositeDomainRoleId)
+		{
 			mySingleGuid = oppositeDomainRoleId;
 			myMultiGuids = null;
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole;
+			if (allowDuplicates)
+			{
+				myMatchStyle |= AllowDuplicatesBit;
+			}
 		}
 		/// <summary>
 		/// The element was recognized as an opposite role player of an explicit link type
@@ -506,6 +535,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
 		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
 		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, params Guid[] oppositeDomainRoleIds)
+		{
+			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, oppositeDomainRoleIds);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="oppositeDomainRoleIds">1 or more opposite meta role guids</param>
+		public void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, params Guid[] oppositeDomainRoleIds)
 		{
 			Debug.Assert(oppositeDomainRoleIds != null && oppositeDomainRoleIds.Length != 0);
 			if (oppositeDomainRoleIds.Length == 1)
@@ -520,6 +559,10 @@ namespace Neumont.Tools.ORM.Shell
 				myMultiGuids = oppositeDomainRoleIds;
 				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType;
 			}
+			if (allowDuplicates)
+			{
+				myMatchStyle |= AllowDuplicatesBit;
+			}
 			myDoubleTagName = null;
 		}
 		/// <summary>
@@ -530,9 +573,24 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
 		public void InitializeRolesWithExplicitRelationship(Guid explicitRelationshipGuid, Guid oppositeDomainRoleId)
 		{
+			InitializeRolesWithExplicitRelationship(false, explicitRelationshipGuid, oppositeDomainRoleId);
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player of an explicit link type.
+		/// Optimized overload for 1 element.
+		/// </summary>
+		/// <param name="allowDuplicates">Allow duplicates for this link</param>
+		/// <param name="explicitRelationshipGuid">The guid of the meta relationship to create</param>
+		/// <param name="oppositeDomainRoleId">The opposite meta role guid</param>
+		public void InitializeRolesWithExplicitRelationship(bool allowDuplicates, Guid explicitRelationshipGuid, Guid oppositeDomainRoleId)
+		{
 			mySingleGuid = explicitRelationshipGuid;
 			myMultiGuids = new Guid[] { oppositeDomainRoleId };
 			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType;
+			if (allowDuplicates)
+			{
+				myMatchStyle |= AllowDuplicatesBit;
+			}
 		}
 		/// <summary>
 		/// The guid identifying the meta property. Valid for a match
@@ -542,7 +600,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return (myMatchStyle == ORMCustomSerializedElementMatchStyle.Property) ? mySingleGuid : Guid.Empty;
+				return ((myMatchStyle & StyleMask) == ORMCustomSerializedElementMatchStyle.Property) ? mySingleGuid : Guid.Empty;
 			}
 		}
 		/// <summary>
@@ -553,7 +611,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				switch (myMatchStyle)
+				switch (myMatchStyle & StyleMask)
 				{
 					case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole:
 						return mySingleGuid;
@@ -572,7 +630,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				switch (myMatchStyle)
+				switch (myMatchStyle & StyleMask)
 				{
 					case ORMCustomSerializedElementMatchStyle.MultipleOppositeDomainRoles:
 					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
@@ -591,7 +649,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				switch (myMatchStyle)
+				switch (myMatchStyle & StyleMask)
 				{
 					case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRoleExplicitRelationshipType:
 					case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRolesExplicitRelationshipType:
@@ -609,7 +667,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				return myMatchStyle;
+				return myMatchStyle & StyleMask;
 			}
 		}
 		/// <summary>
@@ -621,6 +679,17 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return myDoubleTagName;
+			}
+		}
+		/// <summary>
+		/// The relationship between the two specified elements can
+		/// have duplicate elements
+		/// </summary>
+		public bool AllowDuplicates
+		{
+			get
+			{
+				return 0 != (myMatchStyle & AllowDuplicatesBit);
 			}
 		}
 	}
@@ -2215,6 +2284,7 @@ namespace Neumont.Tools.ORM.Shell
 					DomainRelationshipInfo explicitRelationshipType = null;
 					bool oppositeDomainClassFullyDeterministic = false;
 					bool resolveOppositeDomainClass = false;
+					bool allowDuplicates = false;
 					IList<Guid> oppositeDomainRoleIds = null;
 					IORMCustomSerializedDomainModel restoreCustomModel = null;
 					bool nodeProcessed = false;
@@ -2286,6 +2356,7 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								match = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName);
 							}
+							allowDuplicates = match.AllowDuplicates;
 							switch (match.MatchStyle)
 							{
 								case ORMCustomSerializedElementMatchStyle.SingleOppositeDomainRole:
@@ -2529,7 +2600,7 @@ namespace Neumont.Tools.ORM.Shell
 										return retVal;
 									});
 							}
-							if (!isNewElement)
+							if (!allowDuplicates && !isNewElement)
 							{
 								LinkedElementCollection<ModelElement> oppositeRolePlayers = oppositeDomainRole.GetLinkedElements(oppositeElement);
 								int oppositeCount = oppositeRolePlayers.Count;
@@ -2560,6 +2631,7 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						customModel = restoreCustomModel;
 					}
+					allowDuplicates = false;
 				}
 				else if (outerNodeType == XmlNodeType.EndElement)
 				{
