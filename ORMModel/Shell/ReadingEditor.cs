@@ -609,8 +609,11 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void UpdateMenuItems()
 		{
-			VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
-			myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
+			if (TreeControl.CurrentIndex >= 0) //make sure somthing is selected
+			{
+				VirtualTreeItemInfo itemInfo = ReadingEditor.TreeControl.Tree.GetItemInfo(TreeControl.CurrentIndex, (int)ColumnIndex.ReadingOrder, true);
+				myVisibleCommands = (itemInfo.Branch as IReadingEditorBranch).SupportedSelectionCommands(itemInfo.Row);
+			}
 		}
 		/// <summary>
 		/// Event for selection changed
