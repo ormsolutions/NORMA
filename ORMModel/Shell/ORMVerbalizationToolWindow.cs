@@ -459,25 +459,20 @@ namespace Neumont.Tools.ORM.Shell
 						++indentLevel;
 					}
 					filter = parentVerbalize as IVerbalizeFilterChildren;
-					DomainClassInfo currentMetaClass = element.GetDomainClass();
-					while (currentMetaClass != null)
+					ReadOnlyCollection<DomainRoleInfo> aggregatingList = element.GetDomainClass().AllDomainRolesPlayed;
+					int aggregatingCount = aggregatingList.Count;
+					for (int i = 0; i < aggregatingCount; ++i)
 					{
-						ReadOnlyCollection<DomainRoleInfo> aggregatingList = currentMetaClass.AllDomainRolesPlayed;
-						int aggregatingCount = aggregatingList.Count;
-						for (int i = 0; i < aggregatingCount; ++i)
+						DomainRoleInfo roleInfo = aggregatingList[i];
+						if (roleInfo.IsEmbedding)
 						{
-							DomainRoleInfo roleInfo = aggregatingList[i];
-							if (roleInfo.IsEmbedding)
+							LinkedElementCollection<ModelElement> children = roleInfo.GetLinkedElements(element);
+							int childCount = children.Count;
+							for (int j = 0; j < childCount; ++j)
 							{
-								LinkedElementCollection<ModelElement> children = roleInfo.GetLinkedElements(element);
-								int childCount = children.Count;
-								for (int j = 0; j < childCount; ++j)
-								{
-									VerbalizeElement(children[j], snippetsDictionary, filter, callback, isNegative, indentLevel);
-								}
+								VerbalizeElement(children[j], snippetsDictionary, filter, callback, isNegative, indentLevel);
 							}
 						}
-						currentMetaClass = currentMetaClass.BaseDomainClass;
 					}
 					// TODO: Need BeforeNaturalChildren/AfterNaturalChildren/SkipNaturalChildren settings for IVerbalizeCustomChildren
 					IVerbalizeCustomChildren customChildren = parentVerbalize as IVerbalizeCustomChildren;
