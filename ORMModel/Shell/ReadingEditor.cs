@@ -811,7 +811,11 @@ namespace Neumont.Tools.ORM.Shell
 			if (myFact != null)
 			{
 				myInEvents = true;
-				this.vtrReadings.Tree.DelayRedraw = true;
+				ITree currentTree = this.vtrReadings.Tree;
+				if (currentTree != null)
+				{
+					currentTree.DelayRedraw = true;
+				}
 			}
 		}
 		private void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
@@ -819,7 +823,11 @@ namespace Neumont.Tools.ORM.Shell
 			if (myInEvents)
 			{
 				myInEvents = false;
-				this.vtrReadings.Tree.DelayRedraw = false;
+				ITree currentTree = this.vtrReadings.Tree;
+				if (currentTree != null)
+				{
+					currentTree.DelayRedraw = false;
+				}
 			}
 		}
 		private void ReadingLinkAddedEvent(object sender, ElementAddedEventArgs e)
