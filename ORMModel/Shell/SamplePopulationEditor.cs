@@ -2365,8 +2365,8 @@ namespace Neumont.Tools.ORM.Shell
 				VirtualTreeLabelEditData retVal = base.BeginLabelEdit(row, column, activationStyle);
 				if (retVal.IsValid)
 				{
-					ObjectType rolePlayer;
-					if (null == (rolePlayer = myFactType.RoleCollection[column - 1].Role.RolePlayer) || rolePlayer.PreferredIdentifier == null)
+					ObjectType rolePlayer = myFactType.RoleCollection[column - 1].Role.RolePlayer;
+					if (rolePlayer == null || (!rolePlayer.IsValueType && rolePlayer.PreferredIdentifier == null))
 					{
 						retVal = VirtualTreeLabelEditData.Invalid;
 					}
