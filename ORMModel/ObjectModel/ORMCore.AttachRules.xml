@@ -125,7 +125,6 @@
 		<arg:Rule class="Role.RolePlayerRequiredForNewRoleAddRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredDeleteRule"/>
 		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsDeleteRule"/>
-		<arg:Rule class="RoleValueConstraint.RoleValueConstraintChangeRule"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintHasRoleSequenceAdded"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForAdd"/>
@@ -169,18 +168,19 @@
 		<arg:Rule class="UniquenessConstraint.NMinusOneDeleteRuleModelConstraintDeleteValidation"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneDeleteRuleModelFactDeleteValidation"/>
 		<arg:Rule class="UniquenessConstraint.UniquenessConstraintChangeRule"/>
-		<arg:Rule class="ValueRange.DataTypeAddRule"/>
-		<arg:Rule class="ValueRange.DataTypeChangeRule"/>
-		<arg:Rule class="ValueRange.DataTypeRolePlayerChangeRule"/>
-		<arg:Rule class="ValueRange.ObjectTypeRoleAdded"/>
-		<arg:Rule class="ValueRange.RoleValueConstraintAdded"/>
-		<arg:Rule class="ValueRange.ValueRangeAdded"/>
+		<arg:Rule class="ValueConstraint.DataTypeAddRule"/>
+		<arg:Rule class="ValueConstraint.DataTypeChangeRule"/>
+		<arg:Rule class="ValueConstraint.DataTypeRolePlayerChangeRule"/>
+		<arg:Rule class="ValueConstraint.ObjectTypeRoleAdded"/>
+		<arg:Rule class="ValueConstraint.RoleValueConstraintAdded"/>
+		<arg:Rule class="ValueConstraint.ValueConstraintAddRule"/>
+		<arg:Rule class="ValueConstraint.ValueConstraintChangeRule"/>
+		<arg:Rule class="ValueConstraint.ValueRangeAdded"/>
+		<arg:Rule class="ValueConstraint.ValueRangeChangeRule"/>
 		<arg:Rule class="ValueRange.ValueRangeChangeRule"/>
-		<arg:Rule class="ValueRange.ValueConstraintAddRule"/>
 		<arg:Rule class="ValueTypeInstance.ValueTypeHasDataTypeAdded"/>
 		<arg:Rule class="ValueTypeInstance.ValueTypeHasDataTypeRolePlayerChange"/>
 		<arg:Rule class="ValueTypeInstance.ValueTypeInstanceValueChanged"/>
 		<arg:Rule class="ValueTypeInstance.ValueTypeHasValueTypeInstanceAdded"/>
-		<arg:Rule class="ValueTypeValueConstraint.ValueTypeValueConstraintChangeRule"/>
 	</arg:Model>
 </arg:Rules>

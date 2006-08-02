@@ -981,7 +981,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void FactTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			ModelHasFactType link = e.ModelElement as ModelHasFactType; //UNDONE:  test
+			ModelHasFactType link = e.ModelElement as ModelHasFactType;
 			if (link.FactType == myFact)
 			{
 				ORMDesignerPackage.ReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
@@ -993,7 +993,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else
 			{
-				this.vtrReadings.Tree.Root = null;
+				ITree currentTree = this.vtrReadings.Tree;
+				if (currentTree != null)
+				{
+					currentTree.Root = null;
+				}
 			}
 		}
 

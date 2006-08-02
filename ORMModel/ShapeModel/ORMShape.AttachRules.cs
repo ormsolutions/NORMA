@@ -49,6 +49,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModelNoteShape).GetNestedType("NoteChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("DataTypeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeShape).GetNestedType("ObjectTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),

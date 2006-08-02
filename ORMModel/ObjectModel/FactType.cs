@@ -687,7 +687,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								yield return new ModelErrorUsage(roleError, ModelErrorUses.Verbalize);
 							}
 						}
-						if (0 == (filter & ModelErrorUses.Verbalize) || filter == (ModelErrorUses)(-1))
+						if (filter == (ModelErrorUses)(-1))
 						{
 							IModelErrorOwner valueErrors = role.ValueConstraint as IModelErrorOwner;
 							if (valueErrors != null)

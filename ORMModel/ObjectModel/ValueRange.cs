@@ -87,10 +87,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ValidateErrors
 		/// </summary>
-		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected static new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
-			// Calls added here need corresponding delayed calls in DelayValidateErrors
-			VerifyValueMatch(notifyAdded);
+			// Error validation done in ValueConstraint
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -101,7 +100,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static new void DelayValidateErrors()
 		{
-			// UNDONE: DelayedValidation (ValueRange)
+			// Error validation done in ValueConstraint
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -129,214 +128,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
-		#region ValueMatch Validation
-		private void VerifyValueMatch(INotifyElementAdded notifyAdded)
-		{
-			DataType dataType = ValueConstraint.DataType;
-			bool needMinError = false;
-			bool needMaxError = false;
-			MinValueMismatchError minMismatch;
-			MaxValueMismatchError maxMismatch;
-			if (dataType != null)
-			{
-				string min = MinValue;
-				string max = MaxValue;
-				if (min.Length != 0 && !dataType.CanParse(min))
-				{
-					needMinError = true;
-					minMismatch = MinValueMismatchError;
-					if (minMismatch == null)
-					{
-						minMismatch = new MinValueMismatchError(Store);
-						minMismatch.ValueRange = this;
-						minMismatch.Model = dataType.Model;
-						minMismatch.GenerateErrorText();
-						if (notifyAdded != null)
-						{
-							notifyAdded.ElementAdded(minMismatch, true);
-						}
-					}
-					minMismatch.GenerateErrorText();
-				}
-				if (min != max)
-				{
-					if (max.Length != 0 && !dataType.CanParse(MaxValue))
-					{
-						needMaxError = true;
-						maxMismatch = MaxValueMismatchError;
-						if (maxMismatch == null)
-						{
-							maxMismatch = new MaxValueMismatchError(Store);
-							maxMismatch.ValueRange = this;
-							maxMismatch.Model = dataType.Model;
-							maxMismatch.GenerateErrorText();
-							if (notifyAdded != null)
-							{
-								notifyAdded.ElementAdded(maxMismatch, true);
-							}
-						}
-						maxMismatch.GenerateErrorText();
-					}
-				}
-			}
-			if (!needMinError && null != (minMismatch = MinValueMismatchError))
-			{
-				minMismatch.Delete();
-			}
-			if (!needMaxError && null != (maxMismatch = MaxValueMismatchError))
-			{
-				maxMismatch.Delete();
-			}
-		}
-		private static void ValidateValueConstraintForRule(ValueConstraint valueConstraint)
-		{
-			if (valueConstraint == null)
-			{
-				return;
-			}
-			LinkedElementCollection<ValueRange> ranges = valueConstraint.ValueRangeCollection;
-			int rangesCount = ranges.Count;
-			for (int i = 0; i < rangesCount; ++i)
-			{
-				ranges[i].VerifyValueMatch(null);
-			}
-		}
-		#region ValueTypeHasDataType rule
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class DataTypeAddRule : AddRule
-		{
-			/// <summary>
-			/// Test if the changed value does not match the specified data type.
-			/// </summary>
-			public static void Process(ValueTypeHasDataType link)
-			{
-				ObjectType valueType = link.ValueType;
-				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
-				int rolesCount = roles.Count;
-				for (int i = 0; i < rolesCount; ++i)
-				{
-					ValidateValueConstraintForRule(roles[i].ValueConstraint);
-				}
-			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as ValueTypeHasDataType);
-			}
-		}
-		#endregion // ValueTypeHasDataType rule
-		#region DataTypeRolePlayerChangeRule rule
-		/// <summary>
-		/// When the DataType is changed, recheck the instance values
-		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
-		private sealed class DataTypeRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
-				{
-					DataTypeAddRule.Process(e.ElementLink as ValueTypeHasDataType);
-				}
-			}
-		}
-		#endregion // DataTypeRolePlayerChangeRule rule
-		#region DataTypeChangeRule rule
-		[RuleOn(typeof(ValueTypeHasDataType))] // ChangeRule
-		private sealed class DataTypeChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// checks first if the data type has been changed and then test if the 
-			/// value matches the datatype
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				ObjectType valueType = link.ValueType;
-				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
-				int rolesCount = roles.Count;
-				for (int i = 0; i < rolesCount; ++i)
-				{
-					ValidateValueConstraintForRule(roles[i].ValueConstraint);
-				}
-			}
-		}
-		#endregion // DataTypeChangeRule rule
-		#region ValueConstraintAddRule rule
-		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class ValueConstraintAddRule : AddRule
-		{
-			/// <summary>
-			/// checks if the new value range definition matches the data type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
-				ObjectType valueType = link.ValueType;
-				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
-				int rolesCount = roles.Count;
-				for (int i = 0; i < rolesCount; ++i)
-				{
-					ValidateValueConstraintForRule(roles[i].ValueConstraint);
-				}
-			}
-		}
-		#endregion // ValueConstraintAddRule rule
-		#region RoleValueConstraintAdded rule
-		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class RoleValueConstraintAdded : AddRule
-		{
-			/// <summary>
-			/// checks if the the value range matches the specified date type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
-				ObjectType valueType = link.Role.RolePlayer;
-				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
-				int rolesCount = roles.Count;
-				for (int i = 0; i < rolesCount; ++i)
-				{
-					ValidateValueConstraintForRule(roles[i].ValueConstraint);
-				}
-			}
-		}
-		#endregion // RoleValueConstraintAdded rule
-		#region ObjectTypeRoleAdded rule
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class ObjectTypeRoleAdded : AddRule
-		{
-			/// <summary>
-			/// checks to see if the value on the role added matches the specified data type
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				ObjectType valueType = link.RolePlayer;
-				ValidateValueConstraintForRule(valueType.ValueConstraint);
-				LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
-				int rolesCount = roles.Count;
-				for (int i = 0; i < rolesCount; ++i)
-				{
-					ValidateValueConstraintForRule(roles[i].ValueConstraint);
-				}
-			}
-		}
-		#endregion // ObjectTypeRoleAdded rule
-		#region ValueRangeAdded rule
-		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class ValueRangeAdded : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
-				link.ValueRange.VerifyValueMatch(null);
-			}
-		}
-		#endregion // ValueRangeAdded rule
 		#region ValueRangeChangeRule rule
 		[RuleOn(typeof(ValueRange))] // ChangeRule
 		private sealed class ValueRangeChangeRule : ChangeRule
@@ -384,7 +175,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ValueRangeChangeRule rule
-		#endregion // ValueMatch Validation
 		#region CustomStorage handlers
 		private string GetTextValue()
 		{
@@ -538,7 +328,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return rangeError;
 				}
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				ConstraintDuplicateNameError duplicateName = DuplicateNameError;
 				if (duplicateName != null)
@@ -569,6 +359,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
+			VerifyValueRangeValues(notifyAdded);
 			VerifyValueRangeOverlapError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
@@ -580,6 +371,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
+			ORMCoreModel.DelayValidateElement(this, DelayValidateValueRangeValues);
 			ORMCoreModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
@@ -587,8 +379,265 @@ namespace Neumont.Tools.ORM.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner implementation
+		#region ValueMatch Validation
+		private static void VerifyValueMatch(ValueRange range, DataType dataType, INotifyElementAdded notifyAdded)
+		{
+			bool needMinError = false;
+			bool needMaxError = false;
+			MinValueMismatchError minMismatch;
+			MaxValueMismatchError maxMismatch;
+			if (dataType != null)
+			{
+				string min = range.MinValue;
+				string max = range.MaxValue;
+				if (min.Length != 0 && !dataType.CanParse(min))
+				{
+					needMinError = true;
+					minMismatch = range.MinValueMismatchError;
+					if (minMismatch == null)
+					{
+						minMismatch = new MinValueMismatchError(range.Store);
+						minMismatch.ValueRange = range;
+						minMismatch.Model = dataType.Model;
+						minMismatch.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(minMismatch, true);
+						}
+					}
+					minMismatch.GenerateErrorText();
+				}
+				if (min != max)
+				{
+					if (max.Length != 0 && !dataType.CanParse(max))
+					{
+						needMaxError = true;
+						maxMismatch = range.MaxValueMismatchError;
+						if (maxMismatch == null)
+						{
+							maxMismatch = new MaxValueMismatchError(range.Store);
+							maxMismatch.ValueRange = range;
+							maxMismatch.Model = dataType.Model;
+							maxMismatch.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(maxMismatch, true);
+							}
+						}
+						maxMismatch.GenerateErrorText();
+					}
+				}
+			}
+			if (!needMinError && null != (minMismatch = range.MinValueMismatchError))
+			{
+				minMismatch.Delete();
+			}
+			if (!needMaxError && null != (maxMismatch = range.MaxValueMismatchError))
+			{
+				maxMismatch.Delete();
+			}
+		}
+		private static void DelayValidateValueRangeValues(ModelElement element)
+		{
+			(element as ValueConstraint).VerifyValueRangeValues(null);
+		}
+		private void VerifyValueRangeValues(INotifyElementAdded notifyAdded)
+		{
+			if (IsDeleted)
+			{
+				return;
+			}
+			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
+			int rangesCount = ranges.Count;
+			DataType dataType;
+			if (rangesCount != 0 &&
+				null != (dataType = this.DataType))
+			{
+				for (int i = 0; i < rangesCount; ++i)
+				{
+					VerifyValueMatch(ranges[i], dataType, notifyAdded);
+				}
+			}
+		}
+		/// <summary>
+		/// Helper function to validate value type constraints
+		/// </summary>
+		/// <param name="valueType"></param>
+		private static void DelayValidateAssociatedValueConstraints(ObjectType valueType)
+		{
+			if (valueType.IsDeleted)
+			{
+				return;
+			}
+			DelayValidateValueConstraint(valueType.ValueConstraint);
+			LinkedElementCollection<Role> roles = valueType.PlayedRoleCollection;
+			int rolesCount = roles.Count;
+			for (int i = 0; i < rolesCount; ++i)
+			{
+				DelayValidateValueConstraint(roles[i].ValueConstraint);
+			}
+		}
+		/// <summary>
+		/// Validate errors on the specified value constraint
+		/// </summary>
+		/// <param name="constraint">Constraint to validate</param>
+		private static void DelayValidateValueConstraint(ValueConstraint constraint)
+		{
+			if (constraint != null && !constraint.IsDeleted)
+			{
+				ORMCoreModel.DelayValidateElement(constraint, DelayValidateValueRangeValues);
+				ORMCoreModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
+			}
+		}
+		#region ValueTypeHasDataType rule
+		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
+		private sealed class DataTypeAddRule : AddRule
+		{
+			/// <summary>
+			/// Test if the changed value does not match the specified data type.
+			/// </summary>
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				DelayValidateAssociatedValueConstraints((e.ModelElement as ValueTypeHasDataType).ValueType);
+			}
+		}
+		#endregion // ValueTypeHasDataType rule
+		#region DataTypeRolePlayerChangeRule rule
+		/// <summary>
+		/// When the DataType is changed, recheck the instance values
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
+		private sealed class DataTypeRolePlayerChangeRule : RolePlayerChangeRule
+		{
+			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+				{
+					DelayValidateAssociatedValueConstraints((e.ElementLink as ValueTypeHasDataType).ValueType);
+				}
+			}
+		}
+		#endregion // DataTypeRolePlayerChangeRule rule
+		#region DataTypeChangeRule rule
+		[RuleOn(typeof(ValueTypeHasDataType))] // ChangeRule
+		private sealed class DataTypeChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// checks first if the data type has been changed and then test if the 
+			/// value matches the datatype
+			/// </summary>
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				Guid attributeId = e.DomainProperty.Id;
+				if (attributeId == ValueTypeHasDataType.ScaleDomainPropertyId ||
+					attributeId == ValueTypeHasDataType.LengthDomainPropertyId)
+				{
+					DelayValidateAssociatedValueConstraints((e.ModelElement as ValueTypeHasDataType).ValueType);
+				}
+			}
+		}
+		#endregion // DataTypeChangeRule rule
+		#region ValueConstraintAddRule rule
+		[RuleOn(typeof(ValueTypeHasValueConstraint))] // AddRule
+		private sealed class ValueConstraintAddRule : AddRule
+		{
+			/// <summary>
+			/// checks if the new value range definition matches the data type
+			/// </summary>
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				DelayValidateValueConstraint((e.ModelElement as ValueTypeHasValueConstraint).ValueConstraint);
+			}
+		}
+		#endregion // ValueConstraintAddRule rule
+		#region RoleValueConstraintAdded rule
+		[RuleOn(typeof(RoleHasValueConstraint))] // AddRule
+		private sealed class RoleValueConstraintAdded : AddRule
+		{
+			/// <summary>
+			/// checks if the the value range matches the specified date type
+			/// </summary>
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				DelayValidateValueConstraint((e.ModelElement as RoleHasValueConstraint).ValueConstraint);
+			}
+		}
+		#endregion // RoleValueConstraintAdded rule
+		#region ObjectTypeRoleAdded rule
+		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
+		private sealed class ObjectTypeRoleAdded : AddRule
+		{
+			/// <summary>
+			/// checks to see if the value on the role added matches the specified data type
+			/// </summary>
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectType valueType = (e.ModelElement as ObjectTypePlaysRole).RolePlayer;
+				if (valueType.DataType != null)
+				{
+					DelayValidateAssociatedValueConstraints(valueType);
+				}
+			}
+		}
+		#endregion // ObjectTypeRoleAdded rule
+		#region ValueRangeAdded rule
+		[RuleOn(typeof(ValueConstraintHasValueRange))] // AddRule
+		private sealed class ValueRangeAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				DelayValidateValueConstraint((e.ModelElement as ValueConstraintHasValueRange).ValueConstraint);
+			}
+		}
+		#endregion // ValueRangeAdded rule
+		#region ValueRangeChangeRule rule
+		[RuleOn(typeof(ValueRange))] // ChangeRule
+		private sealed class ValueRangeChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Validate values when any non-calculated properties change
+			/// </summary>
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid != ValueRange.TextDomainPropertyId)
+				{
+					DelayValidateValueConstraint((e.ModelElement as ValueRange).ValueConstraint);
+				}
+			}
+		}
+		#endregion // ValueRangeChangeRule rule
+		#region ValueConstraintChangeRule class
+		[RuleOn(typeof(ValueConstraint))] // ChangeRule
+		private sealed class ValueConstraintChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Translate the Text property
+			/// </summary>
+			/// <param name="e"></param>
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == ValueConstraint.TextDomainPropertyId)
+				{
+					ValueConstraint valueConstraint = e.ModelElement as ValueConstraint;
+					//Set the new definition
+					string newText = (string)e.NewValue;
+					if (newText.Length == 0)
+					{
+						valueConstraint.Delete();
+					}
+					else
+					{
+						valueConstraint.ParseDefinition((string)e.NewValue);
+					}
+				}
+			}
+		}
+		#endregion // ValueConstraintChangeRule class
+		#endregion // ValueMatch Validation
 		#region VerifyValueRangeOverlapError
-		private void DelayValidateValueRangeOverlapError(ModelElement element)
+		private static void DelayValidateValueRangeOverlapError(ModelElement element)
 		{
 			(element as ValueConstraint).VerifyValueRangeOverlapError(null);
 		}
@@ -642,7 +691,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return;
 			}
 			DataType dataType = DataType;
-			if (dataType != null && dataType.CanCompare == true)
+			if (dataType != null && dataType.CanCompare)
 			{
 				DataTypeRangeSupport rangeSupport = dataType.RangeSupport;
 				LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
@@ -948,34 +997,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region ValueTypeValueConstraintChangeRule class
-		[RuleOn(typeof(ValueTypeValueConstraint))] // ChangeRule
-		private sealed class ValueTypeValueConstraintChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Translate the Text property
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == ValueTypeValueConstraint.TextDomainPropertyId)
-				{
-					ValueTypeValueConstraint valueRangeDefn = e.ModelElement as ValueTypeValueConstraint;
-					//Set the new definition
-					string newText = (string)e.NewValue;
-					if (newText.Length == 0)
-					{
-						valueRangeDefn.Delete();
-					}
-					else
-					{
-						valueRangeDefn.ParseDefinition((string)e.NewValue);
-					}
-				}
-			}
-		}
-		#endregion // ValueTypeValueConstraintChangeRule class
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
@@ -1036,33 +1057,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Base overrides
-		#region RoleValueConstraintChangeRule class
-		[RuleOn(typeof(RoleValueConstraint))] // ChangeRule
-		private sealed class RoleValueConstraintChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Translate the Text property
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attributeGuid = e.DomainProperty.Id;
-				if (attributeGuid == ValueConstraint.TextDomainPropertyId)
-				{
-					RoleValueConstraint valueRangeDefn = e.ModelElement as RoleValueConstraint;
-					string newText = (string)e.NewValue;
-					if (newText.Length == 0)
-					{
-						valueRangeDefn.Delete();
-					}
-					else
-					{
-						valueRangeDefn.ParseDefinition((string)e.NewValue);
-					}
-				}
-			}
-		}
-		#endregion // RoleValueConstraintChangeRule class
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>

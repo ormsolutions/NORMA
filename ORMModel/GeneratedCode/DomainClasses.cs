@@ -1681,7 +1681,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ValueRangeText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRangeText
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRange
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
@@ -3729,7 +3729,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of ValueRangeText domain property.
-		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRangeText
+		/// Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRange
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]

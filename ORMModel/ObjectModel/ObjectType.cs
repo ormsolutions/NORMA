@@ -2030,15 +2030,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return requiredReferenceSchemeError;
 				}
 
-				IModelErrorOwner valueErrors = ValueConstraint as IModelErrorOwner;
-				if (valueErrors != null)
-				{
-					foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
-					{
-						yield return valueError;
-					}
-				}
-
 				ObjectTypeRequiresPrimarySupertypeError primarySupertypeRequired = ObjectTypeRequiresPrimarySupertypeError;
 				if (primarySupertypeRequired != null)
 				{
@@ -2095,6 +2086,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 					foreach (ModelError valueError in (valueType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
 						yield return new ModelErrorUsage(valueError, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+					}
+				}
+			}
+
+			if (filter == (ModelErrorUses)(-1))
+			{
+				// These display and verbalize with the constraints, but they use the name from this object
+				IModelErrorOwner valueErrors = ValueConstraint as IModelErrorOwner;
+				if (valueErrors != null)
+				{
+					foreach (ModelErrorUsage valueError in valueErrors.GetErrorCollection(filter))
+					{
+						yield return valueError;
 					}
 				}
 			}

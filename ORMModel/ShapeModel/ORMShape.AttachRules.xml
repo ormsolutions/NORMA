@@ -31,6 +31,7 @@
 		<arg:Rule class="FrequencyConstraintShape.FrequencyConstraintPropertyChangeRule"/>
 		<arg:Rule class="ModelNoteShape.NoteChangeRule"/>
 		<arg:Rule class="ObjectTypeShape.DataTypeAddedRule"/>
+		<arg:Rule class="ObjectTypeShape.ObjectTypeShapeChangeRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="ObjectTypeShape.RolePlayerAddedRule"/>

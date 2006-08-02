@@ -570,21 +570,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 
 			}
-			if (filter == (ModelErrorUses.DisplayPrimary))
-			{
-				RoleValueConstraint constraint;
-				if (null != (constraint = this.ValueConstraint))
-				{
-					foreach (ValueRange range in constraint.ValueRangeCollection)
-					{
-						foreach (ModelError valueError in (range as IModelErrorOwner).GetErrorCollection(filter))
-						{
-							yield return valueError;
-						}
-					}
-				}
-			}
-
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{

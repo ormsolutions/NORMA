@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
@@ -590,6 +591,68 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Update shapes on ModelError added/removed
+		#region Relative shape anchoring
+		/// <summary>
+		/// Helper function to keep all relative shapes equidistant from
+		/// a shape when the shape bounds change.
+		/// </summary>
+		/// <param name="e">ElementPropertyChangedEventArgs</param>
+		protected static void MaintainRelativeShapeOffsetsForBoundsChange(ElementPropertyChangedEventArgs e)
+		{
+			Guid attributeId = e.DomainProperty.Id;
+			if (attributeId == ORMBaseShape.AbsoluteBoundsDomainPropertyId)
+			{
+				ORMBaseShape parentShape = e.ModelElement as ORMBaseShape;
+				RectangleD oldBounds = (RectangleD)e.OldValue;
+				if (oldBounds.IsEmpty ||
+					e.ModelElement.Store.TransactionManager.CurrentTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes))
+				{
+					// Initializing, let normal placement win
+					return;
+				}
+				RectangleD newBounds = (RectangleD)e.NewValue;
+				SizeD oldSize = oldBounds.Size;
+				SizeD newSize = newBounds.Size;
+				double xChange = newSize.Width - oldSize.Width;
+				double yChange = newSize.Height - oldSize.Height;
+				bool checkX = !VGConstants.FuzzZero(xChange, VGConstants.FuzzDistance);
+				bool checkY = !VGConstants.FuzzZero(yChange, VGConstants.FuzzDistance);
+				if (checkX || checkY)
+				{
+					LinkedElementCollection<ShapeElement> childShapes = parentShape.RelativeChildShapes;
+					int childCount = childShapes.Count;
+					if (childCount != 0)
+					{
+						for (int i = 0; i < childCount; ++i)
+						{
+							bool changeBounds = false;
+							PointD change = default(PointD);
+							NodeShape childShape = childShapes[i] as NodeShape;
+							if (childShape != null)
+							{
+								RectangleD childBounds = childShape.AbsoluteBoundingBox;
+								if (checkX && (childBounds.Left > (newBounds.Right - xChange)))
+								{
+									change.X = xChange;
+									changeBounds = true;
+								}
+								if (checkY && (childBounds.Top > (newBounds.Bottom - yChange)))
+								{
+									change.Y = yChange;
+									changeBounds = true;
+								}
+								if (changeBounds)
+								{
+									childBounds.Offset(change);
+									childShape.AbsoluteBounds = childBounds;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Relative shape anchoring
 		#region Luminosity Modification
 		/// <summary>
 		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity

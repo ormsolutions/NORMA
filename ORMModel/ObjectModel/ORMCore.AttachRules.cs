@@ -143,7 +143,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Role).GetNestedType("RolePlayerRequiredForNewRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("UpdatedRolePlayerRequiredErrorsDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RoleValueConstraint).GetNestedType("RoleValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintHasRoleSequenceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("EnforceRoleSequenceCardinalityForAdd", BindingFlags.Public | BindingFlags.NonPublic),
@@ -187,19 +186,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneDeleteRuleModelConstraintDeleteValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneDeleteRuleModelFactDeleteValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("UniquenessConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("DataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("DataTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("DataTypeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("ObjectTypeRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("RoleValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("ValueRangeAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("DataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("DataTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("DataTypeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("ObjectTypeRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("RoleValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("ValueConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("ValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("ValueRangeAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("ValueRangeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueRange).GetNestedType("ValueRangeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueRange).GetNestedType("ValueConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeInstanceValueChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasValueTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueTypeValueConstraint).GetNestedType("ValueTypeValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasValueTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMCoreModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}

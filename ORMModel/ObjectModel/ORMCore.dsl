@@ -226,7 +226,7 @@
 						<ExternalTypeMoniker Name="/Neumont.Tools.ORM.ObjectModel/DataType"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRangeText" Id="F0662C59-700B-435C-B57B-93E5FD84B71F" Kind="CustomStorage">
+				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="F0662C59-700B-435C-B57B-93E5FD84B71F" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -409,7 +409,7 @@
 						<DomainEnumerationMoniker Name="RoleMultiplicity"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRangeText" Id="3882C0AC-6F4A-4CF1-B856-E57A2DD4650C" Kind="CustomStorage">
+				<DomainProperty Name="ValueRangeText" DefaultValue="" DisplayName="ValueRange" Id="3882C0AC-6F4A-4CF1-B856-E57A2DD4650C" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>

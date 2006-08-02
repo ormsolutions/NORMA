@@ -406,6 +406,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#region ObjectTypeShapeChangeRule class
+		/// <summary>
+		/// Keep relative child elements a fixed distance away from the object type shape
+		/// when the shape changes.
+		/// </summary>
+		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
+		private sealed class ObjectTypeShapeChangeRule : ChangeRule
+		{
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				MaintainRelativeShapeOffsetsForBoundsChange(e);
+			}
+		}
+		#endregion // ObjectTypeShapeChangeRule class
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed class PreferredIdentifierDeleteRule : DeleteRule
 		{

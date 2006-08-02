@@ -254,11 +254,11 @@
     <comment>DisplayName for DomainProperty &apos;DataTypeDisplay&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRangeText</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRange</value>
     <comment>Description for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueRangeText.DisplayName" xml:space="preserve">
-    <value>ValueRangeText</value>
+    <value>ValueRange</value>
     <comment>DisplayName for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsPersonal.Description" xml:space="preserve">
@@ -398,11 +398,11 @@
     <comment>DisplayName for DomainProperty &apos;Multiplicity&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRangeText</value>
+    <value>Description for Neumont.Tools.ORM.ObjectModel.Role.ValueRange</value>
     <comment>Description for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/ValueRangeText.DisplayName" xml:space="preserve">
-    <value>ValueRangeText</value>
+    <value>ValueRange</value>
     <comment>DisplayName for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;Role&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role/MandatoryConstraintName.Description" xml:space="preserve">

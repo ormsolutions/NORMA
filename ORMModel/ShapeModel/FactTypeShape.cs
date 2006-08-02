@@ -4320,58 +4320,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == FactTypeShape.AbsoluteBoundsDomainPropertyId)
-				{
-					FactTypeShape parentShape = e.ModelElement as FactTypeShape;
-					RectangleD oldBounds = (RectangleD)e.OldValue;
-					if (oldBounds.IsEmpty ||
-						e.ModelElement.Store.TransactionManager.CurrentTransaction.Context.ContextInfo.ContainsKey(ORMBaseShape.PlaceAllChildShapes))
-					{
-						// Initializing, let normal placement win
-						return;
-					}
-					RectangleD newBounds = (RectangleD)e.NewValue;
-					SizeD oldSize = oldBounds.Size;
-					SizeD newSize = newBounds.Size;
-					double xChange = newSize.Width - oldSize.Width;
-					double yChange = newSize.Height - oldSize.Height;
-					bool checkX = !VGConstants.FuzzZero(xChange, VGConstants.FuzzDistance);
-					bool checkY = !VGConstants.FuzzZero(yChange, VGConstants.FuzzDistance);
-					if (checkX || checkY)
-					{
-						LinkedElementCollection<ShapeElement> childShapes = parentShape.RelativeChildShapes;
-						int childCount = childShapes.Count;
-						if (childCount != 0)
-						{
-							for (int i = 0; i < childCount; ++i)
-							{
-								bool changeBounds = false;
-								PointD change = default(PointD);
-								NodeShape childShape = childShapes[i] as NodeShape;
-								if (childShape != null)
-								{
-									RectangleD childBounds = childShape.AbsoluteBoundingBox;
-									if (checkX && (childBounds.Left > (newBounds.Right - xChange)))
-									{
-										change.X = xChange;
-										changeBounds = true;
-									}
-									if (checkY && (childBounds.Top > (newBounds.Bottom - yChange)))
-									{
-										change.Y = yChange;
-										changeBounds = true;
-									}
-									if (changeBounds)
-									{
-										childBounds.Offset(change);
-										childShape.AbsoluteBounds = childBounds;
-									}
-								}
-							}
-						}
-					}
-				}
+				MaintainRelativeShapeOffsetsForBoundsChange(e);
 			}
 		}
 		#endregion // FactTypeShapeChangeRule class
