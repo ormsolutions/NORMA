@@ -5,10 +5,12 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyTitle("Neumont.Tools.ORM.Framework.DslImportDirectiveProcessor.dll")]
-[assembly: AssemblyDescription("DSL Import Directive Processor for Neumont ORM Architect for Visual Studio")]
+[assembly: AssemblyTitle("Neumont.Tools.Modeling.DslImportDirectiveProcessor.dll")]
+[assembly: AssemblyDescription("DSL Import Directive Processor for the Neumont Modeling Framework")]
 [assembly: AssemblyCompany("Neumont University")]
-[assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
-[assembly: AssemblyCopyright("Copyright © Neumont University. All rights reserved.")]
+[assembly: AssemblyProduct("Neumont Modeling Framework")]
+[assembly: AssemblyCopyright("This file is hereby released into the public domain by its author. This applies worldwide. " +
+	"For countries in which this is not legally possible, the author grants anyone the right to use this work for any purpose, " +
+	"without any conditions, unless such conditions are required by law.")]
 [assembly: AssemblyVersion("1.0.0.0")]
 

@@ -12,7 +12,7 @@ GOTO:EOF
 
 :_AddTextTemplateReg
 REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\TextTemplating\DirectiveProcessors\%~2 /f /ve /d "A directive processor that helps import Dsl files."
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\TextTemplating\DirectiveProcessors\%~2 /f /v "Class" /d "Neumont.Tools.ORM.Framework.%~2"
-REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\TextTemplating\DirectiveProcessors\%~2 /f /v "CodeBase" /d "%BinDir%\Neumont.Tools.ORM.Framework.DslImportDirectiveProcessor.dll"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\TextTemplating\DirectiveProcessors\%~2 /f /v "Class" /d "Neumont.Tools.Modeling.%~2"
+REG ADD HKLM\SOFTWARE\Microsoft\VisualStudio\%~1\TextTemplating\DirectiveProcessors\%~2 /f /v "CodeBase" /d "%BinDir%\Neumont.Tools.Modeling.DslImportDirectiveProcessor.dll"
 GOTO:EOF
 

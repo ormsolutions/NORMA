@@ -7,8 +7,8 @@
     <ProjectGuid>{FF511C36-4CC6-4AF4-AA5C-5F5F70E3154F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Neumont.Tools.ORM.Framework</RootNamespace>
-    <AssemblyName>Neumont.Tools.ORM.Framework.DslImportDirectiveProcessor</AssemblyName>
+    <RootNamespace>Neumont.Tools.Modeling</RootNamespace>
+    <AssemblyName>Neumont.Tools.Modeling.DslImportDirectiveProcessor</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
