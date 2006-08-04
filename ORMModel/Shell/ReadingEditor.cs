@@ -1070,7 +1070,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			public string GetText(int row, int column)
 			{
-				return (row == OrderBranchRow) ? "Fact Readings" : "Implied Readings";
+				return (row == OrderBranchRow) ? ResourceStrings.ModelReadingEditorPrimaryFactTypeReadingsText : ResourceStrings.ModelReadingEditorImpliedFactTypeReadingsText;
 			}
 			public string GetTipText(int row, int column, ToolTipType tipType)
 			{

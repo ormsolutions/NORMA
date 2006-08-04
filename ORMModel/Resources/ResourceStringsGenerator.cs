@@ -1303,6 +1303,26 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Text used as the header row for the implied readings in the reading editor for a role selection on an objectified fact type.
+		/// </summary>
+		public static string ModelReadingEditorImpliedFactTypeReadingsText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ImpliedFactTypeReadingsText");
+			}
+		}
+		/// <summary>
+		/// Text used as the header row for the primary readings in the reading editor for a role selection on an objectified fact type.
+		/// </summary>
+		public static string ModelReadingEditorPrimaryFactTypeReadingsText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.PrimaryFactTypeReadingsText");
+			}
+		}
+		/// <summary>
 		/// Text to place in the title bar of the notes tool window.
 		/// </summary>
 		public static string ModelNotesWindowTitle

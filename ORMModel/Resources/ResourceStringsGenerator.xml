@@ -456,6 +456,12 @@
 	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle">
 		<comment type="summary">Text to place in the title of the reading editor tool window.</comment>
 	</ResourceString>
+	<ResourceString name="ModelReadingEditorImpliedFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.ImpliedFactTypeReadingsText">
+		<comment type="summary">Text used as the header row for the implied readings in the reading editor for a role selection on an objectified fact type.</comment>
+	</ResourceString>
+	<ResourceString name="ModelReadingEditorPrimaryFactTypeReadingsText" model="Model" resourceName="ModelReadingEditor.PrimaryFactTypeReadingsText">
+		<comment type="summary">Text used as the header row for the primary readings in the reading editor for a role selection on an objectified fact type.</comment>
+	</ResourceString>
 	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle">
 		<comment type="summary">Text to place in the title bar of the notes tool window.</comment>
 	</ResourceString>

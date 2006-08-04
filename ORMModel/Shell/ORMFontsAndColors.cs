@@ -1250,7 +1250,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			protected sealed override void ApplySettingsChange(IServiceProvider serviceProvider)
 			{
-				ORMDesignerPackage.VerbalizationWindowSettingsChanged();
+				ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
 			}
 			#endregion // Base Overrides
 			#region Index to name mapping

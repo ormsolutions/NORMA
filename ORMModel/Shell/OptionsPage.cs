@@ -380,7 +380,7 @@ namespace Neumont.Tools.ORM.Shell
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				if (updateVerbalizer)
 				{
-					ORMDesignerPackage.VerbalizationWindowSettingsChanged();
+					ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
 				}
 				return;
 			}
@@ -444,7 +444,7 @@ namespace Neumont.Tools.ORM.Shell
 			});
 			if (updateVerbalizer)
 			{
-				ORMDesignerPackage.VerbalizationWindowSettingsChanged();
+				ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
 			}
 		}
 		#endregion // Base overrides

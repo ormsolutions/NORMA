@@ -364,6 +364,10 @@
     <value>Change Reading Text</value>
     <comment>Text used to describe the transaction created when the text of a reading is changed through the editor.</comment>
   </data>
+  <data name="ModelReadingEditor.ImpliedFactTypeReadingsText" xml:space="preserve">
+    <value>Implied Fact Type Readings</value>
+    <comment>Text used as the header row for the implied readings in the reading editor for a role selection on an objectified fact type.</comment>
+  </data>
   <data name="ModelReadingEditor.IsPrimaryToolTip" xml:space="preserve">
     <value>Indicates if the Reading is the primary one for the ReadingOrder that it belongs to.</value>
     <comment>Text used for the ToolTip on the IsPrimary column of the reading list.</comment>
@@ -387,6 +391,10 @@
   <data name="ModelReadingEditor.NewReadingTransactionText" xml:space="preserve">
     <value>Add New Reading</value>
     <comment>Text used to describe the transaction created when creating a new reading.</comment>
+  </data>
+  <data name="ModelReadingEditor.PrimaryFactTypeReadingsText" xml:space="preserve">
+    <value>Fact Type Readings</value>
+    <comment>Text used as the header row for the primary readings in the reading editor for a role selection on an objectified fact type.</comment>
   </data>
   <data name="ModelReadingEditor.UnsupportedSelectionText" xml:space="preserve">
     <value>Select an item related to a Fact</value>

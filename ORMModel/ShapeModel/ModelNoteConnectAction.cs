@@ -22,6 +22,7 @@ using System.Drawing.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -31,7 +32,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// </summary>
 	public class ModelNoteConnectAction : ConnectAction
 	{
-		#region ExternalConstraintConnectionType class
+		#region ModelNoteConnectionType class
 		/// <summary>
 		/// The ConnectionType used with this ConnectAction. The type
 		/// is a singleton, holds all of the context-independent logic,
@@ -72,18 +73,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override bool IsValidSourceAndTarget(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
 			{
 				ModelNoteConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).ModelNoteConnectAction;
-				ModelNote sourceModelNote;
-				if (null != (sourceModelNote = action.mySourceModelNote))
+				ORMModelElement sourceElement;
+				ORMModelElement targetElement;
+				if (null != (sourceElement = action.mySourceElement) &&
+					null != (targetElement = ElementFromShape<ORMModelElement>(targetShapeElement)))
 				{
-					FactType targetFactType;
-					ObjectType targetObjectType;
-					if (null != (targetFactType = ElementFromShape<FactType>(targetShapeElement)))
+					ModelNote note = null;
+					if (null == (note = sourceElement as ModelNote))
 					{
-						return !sourceModelNote.FactTypeCollection.Contains(targetFactType);
+						if (null != (note = targetElement as ModelNote))
+						{
+							// Switch the source and target
+							targetElement = sourceElement;
+						}
 					}
-					else if (null != (targetObjectType = ElementFromShape<ObjectType>(targetShapeElement)))
+					if (note != null)
 					{
-						return !sourceModelNote.ObjectTypeCollection.Contains(targetObjectType);
+						FactType factType;
+						ObjectType objectType;
+						if (null != (factType = targetElement as FactType))
+						{
+							return !note.FactTypeCollection.Contains(factType);
+						}
+						else if (null != (objectType = targetElement as ObjectType))
+						{
+							return !note.ObjectTypeCollection.Contains(objectType);
+						}
 					}
 				}
 				return false;
@@ -103,8 +118,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return true;
 			}
 			/// <summary>
-			/// Create a connection between an ExternalConstraintShape and a FactType. Roles
-			/// used in the connection are stored with the currently active connect action.
+			/// Create a connection between an ModelNoteShape and a FactType or ObjectType.
 			/// </summary>
 			/// <param name="sourceShapeElement">The source of the requested connection</param>
 			/// <param name="targetShapeElement">The target of the requested connection</param>
@@ -112,18 +126,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override void CreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, PaintFeedbackArgs paintFeedbackArgs)
 			{
 				ModelNoteConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).ModelNoteConnectAction;
-				ModelNote sourceModelNote;
-				if (null != (sourceModelNote = action.mySourceModelNote))
+				ORMModelElement sourceElement;
+				ORMModelElement targetElement;
+				if (null != (sourceElement = action.mySourceElement) &&
+					null != (targetElement = ElementFromShape<ORMModelElement>(targetShapeElement)))
 				{
-					FactType targetFactType;
-					ObjectType targetObjectType;
-					if (null != (targetFactType = ElementFromShape<FactType>(targetShapeElement)))
+					ModelNote note = null;
+					if (null == (note = sourceElement as ModelNote))
 					{
-						new ModelNoteReferencesFactType(sourceModelNote, targetFactType);
+						if (null != (note = targetElement as ModelNote))
+						{
+							// Switch the source and target
+							targetElement = sourceElement;
+						}
 					}
-					else if (null != (targetObjectType = ElementFromShape<ObjectType>(targetShapeElement)))
+					if (note != null)
 					{
-						new ModelNoteReferencesObjectType(sourceModelNote, targetObjectType);
+						FactType factType;
+						ObjectType objectType;
+						if (null != (factType = targetElement as FactType))
+						{
+							new ModelNoteReferencesFactType(note, factType);
+						}
+						else if (null != (objectType = targetElement as ObjectType))
+						{
+							new ModelNoteReferencesObjectType(note, objectType);
+						}
 					}
 				}
 			}
@@ -141,7 +169,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static Cursor myAllowedCursor = new Cursor(typeof(ModelNoteConnectAction), "ConnectModelNoteAllowed.cur");
 		private static Cursor mySearchingCursor = new Cursor(typeof(ModelNoteConnectAction), "ConnectModelNoteSearching.cur");
 		private static readonly ConnectionType[] EmptyConnectionTypes = {};
-		private ModelNote mySourceModelNote;
+		private ORMModelElement mySourceElement;
 		private bool myEmulateDrag;
 		#endregion // Member variables
 		#region Constructors
@@ -159,7 +187,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region Base overrides
 		/// <summary>
 		/// Retrieve all connect types associated with this connect action.
-		/// Returns an empty array unless the sourceShapeElement is an ExternalConstraintShape
+		/// Returns an empty array unless the sourceShapeElement is an ModelNoteShape
 		/// </summary>
 		/// <param name="sourceShapeElement">The source element</param>
 		/// <param name="targetShapeElement">The target element. Currently ignored.</param>
@@ -195,9 +223,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override void OnClicked(MouseActionEventArgs e)
 		{
 			base.OnClicked(e);
-			if (mySourceModelNote == null)
+			if (mySourceElement == null)
 			{
-				mySourceModelNote = ElementFromShape<ModelNote>(MouseDownHitShape);
+				mySourceElement = ElementFromShape<ORMModelElement>(MouseDownHitShape);
 			}
 		}
 		/// <summary>
@@ -207,7 +235,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramMouseEventArgs</param>
 		protected override void OnMouseUp(DiagramMouseEventArgs e)
 		{
-			if (myEmulateDrag && mySourceModelNote != null)
+			if (myEmulateDrag && mySourceElement != null)
 			{
 				myEmulateDrag = false;
 				DiagramClientView clientView = e.DiagramClientView;
@@ -247,7 +275,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelNoteConnectAction specific
 		private void Reset()
 		{
-			mySourceModelNote = null;
+			mySourceElement = null;
 			myEmulateDrag = false;
 		}
 		/// <summary>
@@ -267,7 +295,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// Move on to the selection action
 				clientView.ActiveMouseAction = this;
 
-				// Now emulate a mouse click in the middle of the added constraint. The click
+				// Now emulate a mouse click in the middle of the added note shape. The click
 				// actions provide a starting point for the connect action, so a mouse move
 				// provides a drag line.
 				Point emulateClickPoint = clientView.WorldToDevice(chainFromPoint);
@@ -297,4 +325,173 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ModelNoteConnectAction specific
 	}
 	#endregion // ModelNoteConnectAction class
+	#region ModelNoteAction class
+	/// <summary>
+	/// A toolbox action to add a model note and activate
+	/// the new note shape for editing when the item is first added
+	/// </summary>
+	public class ModelNoteAction : ToolboxAction
+	{
+		#region Member variables
+		/// <summary>
+		/// An event that fires after the standard MouseActionDeactivated event. The
+		/// standard event clears the toolbox, this one can be used to chain this
+		/// action to a new standard action.
+		/// </summary>
+		public event MouseActionDeactivatedEventHandler AfterMouseActionDeactivated;
+		private ModelNoteShape myAddedNoteShape;
+		#endregion // Member variables
+		#region Constructors
+		/// <summary>
+		/// Construct a new model note action for a specific diagram. The
+		/// same action can be reused multiple times by activating and
+		/// deactivating it.
+		/// </summary>
+		/// <param name="diagram">The owning diagram</param>
+		public ModelNoteAction(Diagram diagram)
+			: base(diagram)
+		{
+			Reset();
+		}
+		#endregion // Constructors
+		#region ModelNoteAction specific
+		/// <summary>
+		/// Central function to return member variables to a clean state.
+		/// Called by the constructor and the deactivation sequence.
+		/// </summary>
+		private void Reset()
+		{
+			myAddedNoteShape = null;
+		}
+		/// <summary>
+		/// Add events to the store during connect action
+		/// activation. The default implementation watches for
+		/// new note shapes added to the diagram.
+		/// </summary>
+		/// <param name="store">Store</param>
+		protected virtual void AddStoreEvents(Store store)
+		{
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			EventManagerDirectory eventManager = store.EventManagerDirectory;
+
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ModelNoteShape.DomainClassId);
+			eventManager.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteShapeAddedEvent));
+		}
+		/// <summary>
+		/// Removed any events added during the AddStoreEvents methods
+		/// </summary>
+		/// <param name="store">Store</param>
+		protected virtual void RemoveStoreEvents(Store store)
+		{
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			EventManagerDirectory eventManager = store.EventManagerDirectory;
+
+			DomainClassInfo classInfo = dataDirectory.FindDomainClass(ModelNoteShape.DomainClassId);
+			eventManager.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteShapeAddedEvent));
+		}
+		/// <summary>
+		/// An IMS event to track the shape element added to the associated
+		/// diagram during this connect action.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ModelNoteShapeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			if (myAddedNoteShape == null)
+			{
+				ModelNoteShape candidate = e.ModelElement as ModelNoteShape;
+				// Make sure the shape was added to the diagram associated with this
+				// connect action
+				if (candidate != null && candidate.Diagram == Diagram)
+				{
+					myAddedNoteShape = candidate;
+				}
+			}
+		}
+		/// <summary>
+		/// The note shape added as a result of a completed mouse action
+		/// </summary>
+		public ModelNoteShape AddedNoteShape
+		{
+			get
+			{
+				return myAddedNoteShape;
+			}
+		}
+		/// <summary>
+		/// Was this action completed successfully?
+		/// </summary>
+		public bool ActionCompleted
+		{
+			get
+			{
+				return myAddedNoteShape != null;
+			}
+		}
+		#endregion // ModelNoteAction specific
+		#region Base overrides
+		/// <summary>
+		/// Add an event on the store so we can track
+		/// the shape for a model note added during
+		/// the transaction resulting from completion of the mouse
+		/// action.
+		/// </summary>
+		/// <param name="e">DiagramEventArgs</param>
+		protected override void OnMouseActionActivated(DiagramEventArgs e)
+		{
+			AddStoreEvents(Diagram.Store);
+		}
+		/// <summary>
+		/// Deactivate the mouse action by removing the listening events,
+		/// call the base, then firing off our own AfterMouseActionDeactivated
+		/// event, if it is set.
+		/// </summary>
+		/// <param name="e">DiagramEventArgs</param>
+		protected override void OnMouseActionDeactivated(DiagramEventArgs e)
+		{
+			if (myInOnClicked)
+			{
+				myDeactivatedDuringOnClick = true;
+				return;
+			}
+			RemoveStoreEvents(e.DiagramClientView.Diagram.Store);
+			base.OnMouseActionDeactivated(e);
+			MouseActionDeactivatedEventHandler handler = AfterMouseActionDeactivated;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+			Reset();
+		}
+		#region Deactivation order HACK
+		private bool myInOnClicked;
+		private bool myDeactivatedDuringOnClick;
+		/// <summary>
+		/// Hack override to handle MSBUG where the transaction triggered
+		/// by the mouse action is committed after the mouse action is deactivated.
+		/// We don't want this because we end up tossing our state prematurely and
+		/// cannot commit our mouse action.
+		/// </summary>
+		protected override void OnClicked(MouseActionEventArgs e)
+		{
+			try
+			{
+				myInOnClicked = true;
+				myDeactivatedDuringOnClick = false;
+				base.OnClicked(e);
+				myInOnClicked = false;
+				if (myDeactivatedDuringOnClick)
+				{
+					OnMouseActionDeactivated(e);
+				}
+			}
+			finally
+			{
+				myInOnClicked = false;
+			}
+		}
+		#endregion // Deactivation order HACK
+		#endregion // Base overrides
+	}
+	#endregion // ModelNoteAction class
 }

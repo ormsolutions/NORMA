@@ -36,6 +36,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.Modeling.Design;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region IStickyObject interface
@@ -270,13 +271,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 								FixUpDiagram(droppedOnElement, link);
 							}
 						}
-						ValueTypeValueConstraint valueConstraint = objectType.ValueConstraint;
+						ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
 						if (valueConstraint != null)
 						{
 							FixUpDiagram(objectType, valueConstraint);
 						}
-						// UNDONE: This won't add the value constraint shape on an object type with
-						// a collapsed ref mode. These are shown as role value constraints
 						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 					}
 					else if (singleCol != null)
@@ -346,6 +345,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public const string ORMDiagramConnectRoleFilterString = ORMShapeModelToolboxHelper.RoleConnectorFilterString;
 		//public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
+		/// <summary>
+		/// The filter string used to create a model note. Very similar to a
+		/// normal action, except the model note property editor is activated on
+		/// completion of the action.
+		/// </summary>
+		public const string ORMDiagramModelNoteFilterString = "ORMDiagramModelNoteFilterString";
 		/// <summary>
 		/// The filter string used to associate a model note with other model element
 		/// </summary>
@@ -817,6 +822,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					action = SubtypeConnectAction;
 				}
+				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramModelNoteFilterString))
+				{
+					action = ModelNoteAction;
+				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectModelNoteFilterString))
 				{
 					action = ModelNoteConnectAction;
@@ -1086,6 +1095,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Subtype create action
 		#region ModelNote create action
 		[NonSerialized]
+		private ModelNoteAction myModelNoteAction;
+		/// <summary>
+		/// The action used to drop a model note from the toolbox
+		/// </summary>
+		public ModelNoteAction ModelNoteAction
+		{
+			get
+			{
+				if (myModelNoteAction == null)
+				{
+					myModelNoteAction = CreateModelNoteAction();
+					myModelNoteAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
+					{
+						ModelNoteAction action = sender as ModelNoteAction;
+						if (action.ActionCompleted)
+						{
+							ModelNoteShape addedShape = action.AddedNoteShape;
+							Debug.Assert(addedShape != null); // ActionCompleted should be false otherwise
+							Store store = Store;
+							EditorUtility.ActivatePropertyEditor(
+								(store as IORMToolServices).ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(addedShape.ModelElement, Note.TextDomainPropertyId),
+								true);
+						}
+					};
+				}
+				return myModelNoteAction;
+			}
+		}
+		/// <summary>
+		/// Create the action used to add an external constraint from the toolbox
+		/// </summary>
+		/// <returns>ExternalConstraintAction instance</returns>
+		protected virtual ModelNoteAction CreateModelNoteAction()
+		{
+			return new ModelNoteAction(this);
+		}
+		#endregion // ModelNote connect action
+		#region ModelNote connect action
+		[NonSerialized]
 		private ModelNoteConnectAction myModelNoteConnectAction;
 		/// <summary>
 		/// The connect action used to connect a note to a referenced element
@@ -1110,7 +1159,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return new ModelNoteConnectAction(this);
 		}
-		#endregion // ModelNote create action
+		#endregion // ModelNote connect action
 		#endregion // Toolbox support
 		#region Other base overrides
 		/// <summary>

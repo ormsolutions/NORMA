@@ -160,6 +160,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public NoteTextField() : base()
 			{
 				DefaultMultipleLine = true;
+				StringFormat fieldFormat = new StringFormat(StringFormatFlags.NoClip);
+				fieldFormat.Alignment = StringAlignment.Near;
+				DefaultStringFormat = fieldFormat;
 			}
 		}
 		#region Shape display update rules

@@ -844,15 +844,14 @@ namespace Neumont.Tools.ORM.Shell
 				command.Enabled = true;
 				command.Visible = true;
 				command.Supported = true;
-				ORMVerbalizationToolWindow window = ORMDesignerPackage.VerbalizationWindow;
-				command.Checked = (window != null) ? !window.ShowNegativeVerbalizations : false;
+				command.Checked = !ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuShowPositiveVerbalization(object sender, EventArgs e)
 			{
-				ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations = false;
+				ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations = false;
 			}
 			/// <summary>
 			/// Status callback
@@ -863,15 +862,14 @@ namespace Neumont.Tools.ORM.Shell
 				command.Enabled = true;
 				command.Visible = true;
 				command.Supported = true;
-				ORMVerbalizationToolWindow window = ORMDesignerPackage.VerbalizationWindow;
-				command.Checked = (window != null) ? window.ShowNegativeVerbalizations : true;
+				command.Checked = ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
 			protected void OnMenuShowNegativeVerbalization(object sender, EventArgs e)
 			{
-				ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations = true;
+				ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations = true;
 			}
 			/// <summary>
 			/// Status callback

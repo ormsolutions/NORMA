@@ -36,6 +36,36 @@ using Neumont.Tools.ORM.ObjectModel;
 namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
+	/// Local settings for the verbalization tool window. These are not stored
+	/// with the window because they are required to initialize the window itself.
+	/// </summary>
+	public class ORMVerbalizationToolWindowSettings
+	{
+		#region Member variables
+		private bool myShowNegativeVerbalizations;
+		#endregion // Member variables
+		#region Accessor Properties
+		/// <summary>
+		/// Show negative verbalizations if available
+		/// </summary>
+		public bool ShowNegativeVerbalizations
+		{
+			get
+			{
+				return myShowNegativeVerbalizations;
+			}
+			set
+			{
+				if (myShowNegativeVerbalizations != value)
+				{
+					myShowNegativeVerbalizations = value;
+					ORMDesignerPackage.VerbalizationWindow.WindowSettingsChanged();
+				}
+			}
+		}
+		#endregion // Accessor Properties
+	}
+	/// <summary>
 	/// ToolWindow for hosting a web browser for verbalizations
 	/// </summary>
 	[Guid("C9AA5E71-9193-46C9-971A-CB6365ACA338")]
@@ -44,7 +74,6 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		#region Member variables
 		private WebBrowser myWebBrowser;
-		private bool myShowNegativeVerbalizations;
 		private StringWriter myStringWriter;
 		private static string[] myDocumentHeaderReplacementFields;
 		private Dictionary<IVerbalize, IVerbalize> myAlreadyVerbalized;
@@ -71,26 +100,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private delegate VerbalizationResult VerbalizationHandler(IVerbalize verbalizer, int indentationLevel);
 		#endregion // Member variables
-		#region Accessor Properties
-		/// <summary>
-		/// Show negative verbalizations if available
-		/// </summary>
-		public bool ShowNegativeVerbalizations
-		{
-			get
-			{
-				return myShowNegativeVerbalizations;
-			}
-			set
-			{
-				if (myShowNegativeVerbalizations != value)
-				{
-					myShowNegativeVerbalizations = value;
-					UpdateVerbalization();
-				}
-			}
-		}
-		#endregion // Accessor Properties
 		#region Construction
 		/// <summary>
 		/// Construct a verbalization window with a monitor selection service
@@ -138,9 +147,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Called when the options dialog settings have changed
 		/// </summary>
-		public void SettingsChanged()
+		public void GlobalSettingsChanged()
 		{
 			myDocumentHeaderReplacementFields = null;
+			UpdateVerbalization();
+		}
+		/// <summary>
+		/// Called when changes are made to window options (Negative/Positive etc)
+		/// </summary>
+		public void WindowSettingsChanged()
+		{
 			UpdateVerbalization();
 		}
 		#endregion // Selection monitor event handlers and helpers
@@ -268,7 +284,7 @@ namespace Neumont.Tools.ORM.Shell
 				ICollection selectedObjects = base.GetSelectedComponents();
 				IDictionary<Type, IVerbalizationSets> snippetsDictionary = null;
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = null;
-				bool showNegative = myShowNegativeVerbalizations;
+				bool showNegative = ORMDesignerPackage.VerbalizationWindowSettings.ShowNegativeVerbalizations;
 				bool firstCallPending = true;
 				Dictionary<IVerbalize, IVerbalize> verbalized = myAlreadyVerbalized;
 				if (verbalized == null)

@@ -367,6 +367,9 @@ namespace Neumont.Tools.ORM.Shell
 			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramCreateSubtypeFilterString, ToolboxItemFilterType.Allow);
 			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxSubtypeConnectorItemId, attribute);
 
+			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramModelNoteFilterString, ToolboxItemFilterType.Allow);
+			AddFilterAttribute(items, itemIndexDictionary, ResourceStrings.ToolboxModelNoteItemId, attribute);
+
 			attribute = new ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramExternalConstraintFilterString, ToolboxItemFilterType.Allow);
 			string[] itemIds = {
 				ResourceStrings.ToolboxEqualityConstraintItemId,
@@ -640,7 +643,19 @@ namespace Neumont.Tools.ORM.Shell
 				return mySingleton.EnsureFactEditorToolWindow();
 			}
 		}
-		private static bool myRetrievingVerbalizationWindow;
+		private ORMVerbalizationToolWindowSettings myVerbalizationWindowSettings = new ORMVerbalizationToolWindowSettings();
+		/// <summary>
+		/// Retrieve the settings for the verbalization toolbar. The settings cannot be
+		/// stored with the window because they are required during initialization, and
+		/// retrieving them forces recursive initialization calls.
+		/// </summary>
+		public static ORMVerbalizationToolWindowSettings VerbalizationWindowSettings
+		{
+			get
+			{
+				return mySingleton.myVerbalizationWindowSettings;
+			}
+		}
 		/// <summary>
 		/// Verbalization output tool window.
 		/// </summary>
@@ -648,36 +663,21 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				if (myRetrievingVerbalizationWindow)
-				{
-					// Handles error condition where the verbalization window retrieves
-					// itself during initialization. Occurs attempting to get the initial
-					// state of the positive/negative verbalization buttons.
-					return null;
-				}
-				try
-				{
-					myRetrievingVerbalizationWindow = true;
-					return (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), true);
-				}
-				finally
-				{
-					myRetrievingVerbalizationWindow = false;
-				}
+				return (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), true);
 			}
 		}
 		/// <summary>
 		/// Called if the verbalization window settings change in the options dialog.
 		/// Does nothing if the window has not been created.
 		/// </summary>
-		public static void VerbalizationWindowSettingsChanged()
+		public static void VerbalizationWindowGlobalSettingsChanged()
 		{
 			if (mySingleton != null)
 			{
 				ORMVerbalizationToolWindow window = (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), false);
 				if (window != null)
 				{
-					window.SettingsChanged();
+					window.GlobalSettingsChanged();
 				}
 			}
 		}
