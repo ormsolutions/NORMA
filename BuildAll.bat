@@ -1,7 +1,8 @@
-@setlocal
-@set BuildType=Debug
-@FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0" /v "InstallDir"`) DO call set LaunchDevenv=%%~dpsBdevenv
-%launchdevenv% "%~dp0ORMPackage.sln" /Rebuild %BuildType%
-%launchdevenv% "%~dp0ORMTestPackage.sln" /Rebuild %BuildType%
-%launchdevenv% "%~dp0Tools\ORMCustomTool\ORMCustomTool.sln" /Rebuild %BuildType%
-%launchdevenv% "%~dp0Setup\Setup.sln" /Rebuild Setup
+@ECHO OFF
+SETLOCAL
+IF NOT DEFINED FrameworkSDKDir (CALL "%VS80COMNTOOLS%\vsvars32.bat")
+SET RootDir=%~dp0.
+MSBuild.exe /nologo "%RootDir%\ORMPackage.sln"
+MSBuild.exe /nologo "%RootDir%\ORMTestPackage.sln"
+MSBuild.exe /nologo "%RootDir%\Tools\ORMCustomTool\ORMCustomTool.sln"
+MSBuild.exe /nologo "%RootDir%\Setup\Setup.sln"

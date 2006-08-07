@@ -1,13 +1,14 @@
 @ECHO OFF
 SETLOCAL
-IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1)
+IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1.)
 SET RootDir=%~dp0.
-SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMDir=%CommonProgramFiles%\Neumont\ORM
 SET DILDir=%CommonProgramFiles%\Neumont\DIL
 
-FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0" /v "InstallDir"`) DO SET VSIPDir=%%B
+FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "EnvironmentPath"`) DO SET VSEnvironmentPath=%%~fB
+FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
+FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0" /v "InstallDir"`) DO SET VSIPDir=%%~fB
 SET RegPkg="%VSIPDir%\VisualStudioIntegration\Tools\Bin\regpkg.exe"
 
 IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
@@ -88,13 +89,13 @@ REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
 REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
 REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /RootSuffix Exp /dde \"%%1\"" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix Exp /dde \"%%1\"" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.8.0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
 
 
-IF /I "%RunDevEnvSetup%"=="True" (ECHO Running "devenv.exe /RootSuffix Exp /Setup"... This may take a few minutes... && "%VSDir%\Common7\IDE\devenv.exe" /RootSuffix Exp /Setup)
+IF /I "%RunDevEnvSetup%"=="True" (ECHO Running "devenv.exe /RootSuffix Exp /Setup"... This may take a few minutes... && "%VSEnvironmentPath%" /RootSuffix Exp /Setup)
 
 GOTO:EOF
 

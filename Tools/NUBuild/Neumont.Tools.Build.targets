@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<UsingTask TaskName="Gacutil" AssemblyName="Neumont.Tools.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<UsingTask TaskName="Ngen" AssemblyName="Neumont.Tools.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="Neumont.Tools.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"/>
+
+
+	<!-- InstallInGac and GenerateNativeImage -->
+	<PropertyGroup>
+		<PostBuildDependsOn>
+			$(PostBuildDependsOn);
+			InstallInGac;
+			GenerateNativeImage
+		</PostBuildDependsOn>
+		<InstallInGacDependsOn>
+		</InstallInGacDependsOn>
+		<GenerateNativeImageDependsOn>
+			InstallInGac
+		</GenerateNativeImageDependsOn>
+
+		<!-- Default to false -->
+		<InstallInGac Condition="'$(InstallInGac)'==''">false</InstallInGac>
+		<!-- Default to true if $(InstallInGac) is true -->
+		<ForceInstallInGac Condition="'$(ForceInstallInGac)'==''">$(InstallInGac)</ForceInstallInGac>
+
+		<!-- Default to false -->
+		<GenerateNativeImage Condition="'$(GenerateNativeImage)'==''">false</GenerateNativeImage>
+		<!-- Default to true if $(GenerateNativeImage) is true -->
+		<NativeImageExcludeDependencies Condition="'$(NativeImageExcludeDependencies)'==''">$(GenerateNativeImage)</NativeImageExcludeDependencies>
+	</PropertyGroup>
+
+	<Target
+		Name="InstallInGac"
+		DependsOnTargets="$(InstallInGacDependsOn)"
+		Condition="'$(InstallInGac)'=='true'">
+
+		<Gacutil
+			Assembly="@(MainAssembly->'%(FullPath)')"
+			Force="$(ForceInstallInGac)"
+			Uninstall="false"
+		/>
+
+	</Target>
+
+	<Target
+		Name="GenerateNativeImage"
+		DependsOnTargets="$(GenerateNativeImagesDependsOn)"
+		Condition="'$(GenerateNativeImage)'=='true'">
+
+		<GetAssemblyIdentity AssemblyFiles="@(MainAssembly)">
+			<Output TaskParameter="Assemblies" ItemName="_MainAssemblyIdentity"/>
+		</GetAssemblyIdentity>
+
+		<Ngen
+			AssemblyName="@(_MainAssemblyIdentity)"
+			NoDependencies="$(NativeImageExcludeDependencies)"
+			Uninstall="false"
+		/>
+
+	</Target>
+
+
+
+	<PropertyGroup>
+		<DisableAllPreprocessing Condition="'$(DisableAllPreprocessing)'==''">false</DisableAllPreprocessing>
+		<XmlFileExtensionsToPreprocess>
+			.xml;
+			.xsd;
+			.xsl;
+			.xslt;
+			$(XmlFileExtensionsToPreprocess)
+		</XmlFileExtensionsToPreprocess>
+	</PropertyGroup>
+	<!-- Override _CopyNonResxEmbeddedResources to in order to preprocess XML files. -->
+	<Target
+		Name="_CopyNonResxEmbeddedResources"
+		Condition="'@(NonResxWithNoCulture)'!='' or '@(NonResxWithCulture)'!='' or '@(ManifestNonResxWithNoCulture)'!='' or '@(ManifestNonResxWithCulture)'!=''">
+
+		<CopyWithPreprocessing
+			DisableAllPreprocessing="$(DisableAllPreprocessing)"
+			XmlFileExtensionsToPreprocess="$(XmlFileExtensionsToPreprocess)"
+			SourceFiles="@(NonResxWithNoCulture)"
+			DestinationFiles="@(ManifestNonResxWithNoCulture->'$(IntermediateOutputPath)%(Identity)')"
+			SkipUnchangedFiles="true">
+			<Output TaskParameter="DestinationFiles" ItemName="ManifestNonResxWithNoCultureOnDisk"/>
+			<Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+		</CopyWithPreprocessing>
+
+		<MakeDir Directories="$(IntermediateOutputPath)%(ManifestNonResxWithCulture.Culture)"/>
+
+		<CopyWithPreprocessing
+			DisableAllPreprocessing="$(DisableAllPreprocessing)"
+			XmlFileExtensionsToPreprocess="$(XmlFileExtensionsToPreprocess)"
+			SourceFiles="@(NonResxWithCulture)"
+			DestinationFiles="@(ManifestNonResxWithCulture->'$(IntermediateOutputPath)%(Identity)')"
+			SkipUnchangedFiles="true">
+			<Output TaskParameter="DestinationFiles" ItemName="ManifestNonResxWithCultureOnDisk"/>
+			<Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+		</CopyWithPreprocessing>
+
+	</Target>
+	
+	
+	
+	
+	<!-- PreprocessManifestNonResxOnDisk -->
+	<!--<PropertyGroup>
+		<PrepareResourcesDependsOn>
+			$(PrepareResourcesDependsOn);
+			PreprocessManifestNonResxOnDisk
+		</PrepareResourcesDependsOn>
+		<PreprocessManifestNonResxOnDiskDependsOn>
+			PreprocessManifestNonResxOnDiskForXml
+		</PreprocessManifestNonResxOnDiskDependsOn>
+		<PreprocessManifestNonResxOnDiskForXmlDependsOn>
+		</PreprocessManifestNonResxOnDiskForXmlDependsOn>
+	</PropertyGroup>
+
+	<Target
+		Name="PreprocessManifestNonResxOnDisk"
+		DependsOnTargets="$(PreprocessManifestNonResxOnDiskDependsOn)"
+		Condition="'@(ManifestNonResxWithNoCulture)'!='' or '@(ManifetNonResxWithCulture)'!=''"
+	/>
+
+	<Target
+		Name="PreprocessManifestNonResxOnDiskForXml"
+		DependsOnTargets="$(PreprocessManifestNonResxOnDiskForXmlDependsOn)"
+		Condition="'@(ManifestNonResxWithNoCulture)'!='' or '@(ManifetNonResxWithCulture)'!=''">
+		
+		
+	</Target>-->
+		<!-- '%(Extension)'=='.resx' or '%(Extension)'=='.restext' -->
+
+	
+
+</Project>

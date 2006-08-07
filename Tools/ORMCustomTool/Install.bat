@@ -1,12 +1,15 @@
 @ECHO OFF
 SETLOCAL
 
+FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0\Setup\VS" /v "ProductDir"`) DO SET VSDir=%%~fB
 SET XMLDir=%~dp0\..\..\XML
-SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMTransformsDir=%CommonProgramFiles%\Neumont\ORM\Transforms
 SET DILTransformsDir=%CommonProgramFiles%\Neumont\DIL\Transforms
 SET PLiXDir=%CommonProgramFiles%\Neumont\PLiX
+
+:: Generate a native image for System.Data.SqlXml.dll (this greatly improves the XSLT compilation speed)
+ngen.exe install "System.Data.SqlXml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" /nologo /verbose
 
 :: Install Custom Tool DLL
 DEL /F /Q "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.ORMCustomTool.*" 1>NUL 2>&1
@@ -74,7 +77,6 @@ CALL:_AddXslORMGenerator "DCILtoTV" "DCIL to TableView" "Transforms DCIL to Tabl
 CALL:_AddXslORMGenerator "TVtoHTML" "TableView to HTML" "Transforms TableView to HTML." ".TableView.html" "TV" "TableViewHTML" "%DILTransformsDir%\TVtoHTML.xslt"
 
 :: Register PLiX Transforms
-
 CALL:_AddXslORMGenerator "PLiXtoCSharpSupport" "PLiX to C# Support" "Transforms PLiX to C#." ".Support.cs" "PLiX_Support" "CSharp_Support" "%PLiXDir%\Formatters\PLiXCS.xslt" "1"
 CALL:_AddXslORMGenerator "PLiXtoVisualBasicSupport" "PLiX to Visual Basic Support" "Transforms PLiX to Visual Basic." ".Support.vb" "PLiX_Support" "VisualBasic_Support" "%PLiXDir%\Formatters\PLiXVB.xslt" "1"
 CALL:_AddXslORMGenerator "PLiXtoCSharpAbstract" "PLiX to C# Abstract" "Transforms PLiX to C#." ".Abstract.cs" "PLiX_Abstract" "CSharp_Abstract" "%PLiXDir%\Formatters\PLiXCS.xslt" "1" "" "CSharp_Support\0"

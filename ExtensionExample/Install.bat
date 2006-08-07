@@ -1,6 +1,6 @@
 @ECHO OFF
 SETLOCAL
-IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1)
+IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1.)
 SET RootDir=%~dp0.
 SET ExtensionsDir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio\bin\Extensions
 
