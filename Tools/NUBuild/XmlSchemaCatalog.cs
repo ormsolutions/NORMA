@@ -1,4 +1,4 @@
-//#define XML_SCHEMA_CATALOG
+#define XML_SCHEMA_CATALOG
 #if XML_SCHEMA_CATALOG
 using System;
 using System.Collections.Generic;
@@ -17,98 +17,28 @@ using Microsoft.Win32;
 namespace Neumont.Tools.Xml
 {
 	// UNDONE: Until this is moved to a separate Neumont.Tools.Xml assembly, it is internal.
-#if TRACE
-	[Switch("XmlSchemaCacheSwitch", typeof(TraceSwitch))]
-#endif //TRACE
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 	internal static class XmlSchemaCatalog
 	{
-		#region Trace support
-#if TRACE
-		private static readonly TraceSwitch TraceSwitch = new TraceSwitch("XmlSchemaCacheSwitch", "Controls trace output for XmlSchemaCache", "Warning");
-#endif //TRACE
-		[Conditional("TRACE")]
-		private static void TraceInformation(string message)
+		internal static void WaitForLoadingToFinish(bool aboveNormalPriority)
 		{
-#if TRACE
-			if (TraceSwitch.TraceInfo)
-			{
-				Trace.TraceInformation(message);
-			}
-#endif //TRACE
+			Loader.WaitForLoadingToFinish(aboveNormalPriority);
 		}
-		[Conditional("TRACE")]
-		private static void TraceInformation(string format, params object[] args)
-		{
-#if TRACE
-			if (TraceSwitch.TraceInfo)
-			{
-				Trace.TraceInformation(format, args);
-			}
-#endif //TRACE
-		}
-		[Conditional("TRACE")]
-		private static void TraceWarning(string message)
-		{
-#if TRACE
-			if (TraceSwitch.TraceWarning)
-			{
-				Trace.TraceWarning(message);
-			}
-#endif //TRACE
-		}
-		[Conditional("TRACE")]
-		private static void TraceWarning(string format, params object[] args)
-		{
-#if TRACE
-			if (TraceSwitch.TraceWarning)
-			{
-				Trace.TraceWarning(format, args);
-			}
-#endif //TRACE
-		}
-		[Conditional("TRACE")]
-		private static void TraceError(string message)
-		{
-#if TRACE
-			if (TraceSwitch.TraceError)
-			{
-				Trace.TraceError(message);
-			}
-#endif //TRACE
-		}
-		[Conditional("TRACE")]
-		private static void TraceError(string format, params object[] args)
-		{
-#if TRACE
-			if (TraceSwitch.TraceError)
-			{
-				Trace.TraceError(format, args);
-			}
-#endif //TRACE
-		}
-		#endregion // Trace support
 
 		public static readonly XmlNameTable XmlNameTable = new NameTable();
 		public static readonly XmlResolver XmlResolver = new XmlUrlResolver();
-		private static readonly XmlReaderSettings XmlReaderSettings = InitializeXmlReaderSettings();
-		private static readonly XmlSchemaSet XmlSchemaSet = InitializeXmlSchemaSet();
-		private static XmlReaderSettings InitializeXmlReaderSettings()
+		private static readonly XmlReaderSettings SchemaReaderSettings = InitializeSchemaReaderSettings();
+		internal static readonly XmlSchemaSet XmlSchemaSet = InitializeXmlSchemaSet();
+		private static XmlReaderSettings InitializeSchemaReaderSettings()
 		{
-			XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-			xmlReaderSettings.CloseInput = true;
-			xmlReaderSettings.IgnoreComments = true;
-			xmlReaderSettings.IgnoreWhitespace = true;
-			xmlReaderSettings.NameTable = XmlSchemaCatalog.XmlNameTable;
-			xmlReaderSettings.ProhibitDtd = false;
-			xmlReaderSettings.ValidationFlags =
-				XmlSchemaValidationFlags.AllowXmlAttributes |
-				XmlSchemaValidationFlags.ProcessIdentityConstraints |
-				XmlSchemaValidationFlags.ProcessInlineSchema |
-				XmlSchemaValidationFlags.ProcessSchemaLocation;
-			xmlReaderSettings.ValidationType = ValidationType.Schema;
-			xmlReaderSettings.XmlResolver = XmlSchemaCatalog.XmlResolver;
-			return xmlReaderSettings;
+			XmlReaderSettings schemaReaderSettings = new XmlReaderSettings();
+			schemaReaderSettings.CloseInput = true;
+			schemaReaderSettings.IgnoreComments = true;
+			schemaReaderSettings.IgnoreWhitespace = true;
+			schemaReaderSettings.NameTable = XmlSchemaCatalog.XmlNameTable;
+			schemaReaderSettings.ProhibitDtd = false;
+			schemaReaderSettings.XmlResolver = XmlSchemaCatalog.XmlResolver;
+			return schemaReaderSettings;
 		}
 		private static XmlSchemaSet InitializeXmlSchemaSet()
 		{
@@ -117,7 +47,10 @@ namespace Neumont.Tools.Xml
 #if TRACE
 			xmlSchemaSet.ValidationEventHandler += XmlSchemaSetValidationEventHandler;
 #endif //TRACE
-			XmlSchemaCatalog.XmlReaderSettings.Schemas = xmlSchemaSet;
+			XmlSchemaCatalog.SchemaReaderSettings.Schemas = xmlSchemaSet;
+
+			Loader.Start();
+
 			return xmlSchemaSet;
 		}
 
@@ -125,11 +58,11 @@ namespace Neumont.Tools.Xml
 #if TRACE
 		private static void XmlSchemaSetValidationEventHandler(object sender, ValidationEventArgs e)
 		{
-			if (e.Severity == XmlSeverityType.Error && TraceSwitch.TraceError)
+			if (e.Severity == XmlSeverityType.Error)
 			{
 				Trace.TraceError(e.Message + Environment.NewLine + e.Exception);
 			}
-			else if (TraceSwitch.TraceWarning)
+			else
 			{
 				Trace.TraceWarning(e.Message + Environment.NewLine + e.Exception);
 			}
@@ -137,13 +70,34 @@ namespace Neumont.Tools.Xml
 #endif //TRACE
 		#endregion // XmlSchemaSetValidationEventHandler method
 
-
+		#region Loader class
 		private static class Loader
 		{
+			private static bool PriorityBoosted;
+			public static void WaitForLoadingToFinish(bool aboveNormalPriority)
+			{
+				ManualResetEvent loadingFinished = LoadingFinished;
+				Thread loaderThread = LoaderThread;
+				if (!loadingFinished.WaitOne(0, false))
+				{
+					try
+					{
+						PriorityBoosted = true;
+						loaderThread.Priority = aboveNormalPriority ? ThreadPriority.AboveNormal : ThreadPriority.Normal;
+						loadingFinished.WaitOne();
+					}
+					finally
+					{
+						PriorityBoosted = false;
+						loaderThread.Priority = ThreadPriority.BelowNormal;
+					}
+				}
+			}
+
 			private static readonly object LockObject = new object();
 
-			private static readonly ManualResetEvent LoadingFinished = new ManualResetEvent(true);
-			private static readonly ManualResetEvent LoadingPending = new ManualResetEvent(false);
+			private static readonly ManualResetEvent LoadingFinished = new ManualResetEvent(false);
+			private static readonly ManualResetEvent LoadingPending = new ManualResetEvent(true);
 
 			private static string WritableCacheDirectory;
 
@@ -156,7 +110,6 @@ namespace Neumont.Tools.Xml
 				Thread loaderThread = LoaderThread;
 				loaderThread.IsBackground = true;
 				loaderThread.Name = "XmlSchemaCatalog Loader Thread";
-				loaderThread.Priority = ThreadPriority.BelowNormal;
 				loaderThread.Start();
 			}
 
@@ -194,7 +147,7 @@ namespace Neumont.Tools.Xml
 					{
 						if (key != null)
 						{
-							SetEnvironmentVariable("VsInstallDir", key.GetValue("ProductDir", null));
+							SetEnvironmentVariable("VsInstallDir", key.GetValue("ProductDir", null) as string);
 						}
 					}
 				}
@@ -204,6 +157,8 @@ namespace Neumont.Tools.Xml
 			private static void StartLoaderThread()
 			{
 				const string CACHE_DIRECTORY_NAME = @"Xml\Schemas";
+
+				SetupEvironmentVariables();
 
 				DirectoryInfo commonSchemasDirectoryInfo = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles), CACHE_DIRECTORY_NAME));
 				if (!commonSchemasDirectoryInfo.Exists)
@@ -222,7 +177,7 @@ namespace Neumont.Tools.Xml
 				{
 					try
 					{
-						File.Create(Path.Combine(commonSchemasDirectoryInfo.FullName, "__TestFile.delete"), 0, FileOptions.DeleteOnClose).Close();
+						File.Create(Path.Combine(commonSchemasDirectoryInfo.FullName, "__TestFile.delete"), 1, FileOptions.DeleteOnClose).Close();
 						WritableCacheDirectory = commonSchemasDirectoryInfo.FullName;
 					}
 					catch (SecurityException)
@@ -242,7 +197,7 @@ namespace Neumont.Tools.Xml
 					EnqueueDirectory(userSchemasDirectoryInfo);
 				}
 
-				if ((object)WritableCacheDirectory = null)
+				if ((object)WritableCacheDirectory == null)
 				{
 					WritableCacheDirectory = userSchemasDirectoryInfo.FullName;
 				}
@@ -253,18 +208,20 @@ namespace Neumont.Tools.Xml
 					{
 						if (key != null)
 						{
-							vsSchemaCacheLocation = key.GetValue("SchemaCacheLocation", null);
+							vsSchemaCacheLocation = key.GetValue("SchemaCacheLocation", null) as string;
 						}
 					}
 					if (!string.IsNullOrEmpty(vsSchemaCacheLocation))
 					{
-						DirectoryInfo schemaCacheDirectoryInfo = new DirectoryInfo(vsSchemaCacheLocation);
+						DirectoryInfo schemaCacheDirectoryInfo = new DirectoryInfo(Environment.ExpandEnvironmentVariables(vsSchemaCacheLocation));
 						if (schemaCacheDirectoryInfo.Exists)
 						{
 							EnqueueDirectory(schemaCacheDirectoryInfo);
 						}
 					}
 				}
+
+				Main();
 			}
 
 			private static void EnqueueDirectory(string path)
@@ -277,19 +234,24 @@ namespace Neumont.Tools.Xml
 			}
 			private static void EnqueueDirectory(DirectoryInfo directoryInfo)
 			{
-
+				// UNDONE: Process other XML files, too (catalogs, schemas with other extensions, etc.)
+				foreach (FileInfo fileInfo in directoryInfo.GetFiles("*.xsd"))
+				{
+					EnqueueLocalFile(fileInfo.FullName);
+				}
 			}
 			private static void EnqueueFile(Uri uri)
 			{
-				if (!XmlSchemaSet.Contains(uri.ToString()))
+				if (!XmlSchemaCatalog.XmlSchemaSet.Contains(uri.ToString()))
 				{
 					string localPath;
-					if (uri.IsFile || uri.IsUnc || File.Exists(localPath = uri.LocalPath))
+					if ((uri.IsFile || uri.IsUnc) && File.Exists(localPath = uri.LocalPath))
 					{
 						EnqueueLocalFile(localPath);
 					}
 					else
 					{
+						throw new NotImplementedException();
 						// Start the download, and have the completion callback enqueue it.
 					}
 				}
@@ -298,23 +260,67 @@ namespace Neumont.Tools.Xml
 			{
 				lock (LockObject)
 				{
-					
+					Trace.TraceInformation("Enqueued local file \"{0}\"", localPath);
+					LoaderQueue.Enqueue(localPath);
+					LoadingFinished.Reset();
+					LoadingPending.Set();
 				}
 			}
 
 			private static void Main()
 			{
+				if (!PriorityBoosted)
+				{
+					LoaderThread.Priority = ThreadPriority.BelowNormal;
+				}
+				object lockObject = LockObject;
+				Queue<string> loaderQueue = LoaderQueue;
 				ManualResetEvent loadingFinished = LoadingFinished;
 				ManualResetEvent loadingPending = LoadingPending;
-				
+				XmlSchemaSet xmlSchemaSet = XmlSchemaCatalog.XmlSchemaSet;
+
 				while (true)
 				{
 					loadingPending.WaitOne();
 
-					// If Queue empty, reset loadingPending and singnal LoadingFinished (do both inside lock!)
+					while (loaderQueue.Count > 0)
+					{
+						string currentPath;
+						lock (lockObject)
+						{
+							currentPath = loaderQueue.Dequeue();
+						}
+						ProcessFile(currentPath);
+					}
+					lock (lockObject)
+					{
+						if (loaderQueue.Count > 0)
+						{
+							continue;
+						}
+						xmlSchemaSet.Compile();
+						loadingPending.Reset();
+						loadingFinished.Set();
+					}
+				}
+			}
+			private static void ProcessFile(string localPath)
+			{
+				using (FileStream fileStream = new FileStream(localPath, FileMode.Open, FileSystemRights.Read, FileShare.Read, 512 * 1024, FileOptions.SequentialScan))
+				{
+					using (XmlReader xmlReader = XmlReader.Create(fileStream, XmlSchemaCatalog.SchemaReaderSettings))
+					{
+						Trace.TraceInformation("Loading schema from \"{0}\"", localPath);
+						XmlSchema xmlSchema = XmlSchemaCatalog.XmlSchemaSet.Add(null, xmlReader);
+						if (xmlSchema != null)
+						{
+							Trace.TraceInformation("Loaded schema for namespace \"{0}\" from \"{1}\"", xmlSchema.TargetNamespace, localPath);
+						}
+					}
 				}
 			}
 		}
+		#endregion // Loader class
 	}
 }
 #endif //XML_SCHEMA_CATALOG

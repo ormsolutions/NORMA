@@ -5,7 +5,9 @@
 	xmlns:nsu="urn:schemas-neumont-edu:ORM:NamespacesUtility"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
-	extension-element-prefixes="exsl nsu">
+	xmlns:dummy="urn:dummy" 
+	extension-element-prefixes="exsl nsu"
+	exclude-result-prefixes="dummy">
 
 	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
 
@@ -54,7 +56,7 @@
 	<xsl:template name="GetNextSelectedNamespace">
 		<xsl:variable name="nextSelectedNamespace" select="nsu:getNextSelectedNamespace()"/>
 		<xsl:if test="$nextSelectedNamespace">
-			<whatever namespaceUri="{$nextSelectedNamespace}"/>
+			<dummy:whatever namespaceUri="{$nextSelectedNamespace}"/>
 			<xsl:call-template name="GetNextSelectedNamespace"/>
 		</xsl:if>
 	</xsl:template>
