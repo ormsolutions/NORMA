@@ -55,6 +55,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the INotifySurveyElmentChanged interface for this store
 		/// </summary>
 		INotifySurveyElementChanged NotifySurveyElementChanged { get;}
+		/// <summary>
+		/// Return true if a new transaction can be added at this time.
+		/// This will return false if the store is currently in UndoRedoOrRollback,
+		/// or if an external source sets this to false. For example, an UndoUnit implementation
+		/// may set this property to false to signal other events that they should not
+		/// begin a new transaction at this time.
+		/// </summary>
+		bool CanAddTransaction { get; set;}
 	}
 	#endregion // IORMToolServices interface
 	#region IRepresentedModelElements interface

@@ -423,24 +423,15 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
 				ModelingDocData docData = CurrentDocument;
-				if (docData != null)
+				Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager;
+				MSOLE.IOleCommandTarget forwardTo;
+				if ((docData != null &&
+					null != (undoManager = docData.UndoManager) &&
+					null != (forwardTo = undoManager.VSUndoManager as MSOLE.IOleCommandTarget)) ||
+					null != (forwardTo = GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget))
 				{
-					MSOLE.IOleCommandTarget forwardTo = null;
-					Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager = docData.UndoManager;
-					if (undoManager != null)
-					{
-						forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
-					}
-					if (forwardTo == null)
-					{
-						forwardTo = this.GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget;
-					}
-					Debug.Assert(forwardTo != null);
-					if (forwardTo != null)
-					{
-						// If the command wasn't handled already, forward it to the undo manager.
-						hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
-					}
+					// If the command wasn't handled already, forward it to the undo manager.
+					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 				}
 			}
 			return hr;
@@ -538,9 +529,13 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
 				ModelingDocData docData = CurrentDocument;
-				if (docData != null)
+				Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager;
+				MSOLE.IOleCommandTarget forwardTo;
+				if ((docData != null &&
+					null != (undoManager = docData.UndoManager) &&
+					null != (forwardTo = undoManager.VSUndoManager as MSOLE.IOleCommandTarget)) ||
+					null != (forwardTo = GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget))
 				{
-					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
 					// If the command wasn't handled already, give the undo manager a chance to handle the command.
 					hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 				}

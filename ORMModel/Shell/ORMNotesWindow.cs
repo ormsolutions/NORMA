@@ -80,11 +80,59 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Construction
 		#region Event handlers
 		/// <summary>
-		/// Handles note added, changed, or removed events.
+		/// Handles note change.
 		/// </summary>
-		private void NoteAlteredEventHandler(object sender, EventArgs e)
+		private void NoteAlteredEventHandler(object sender, ElementPropertyChangedEventArgs e)
 		{
-			DisplayNotes();
+			if (e.DomainProperty.Id == Note.TextDomainPropertyId)
+			{
+				Note note = e.ModelElement as Note;
+				INoteOwner noteOwner = note as INoteOwner;
+				if (noteOwner == null)
+				{
+					noteOwner = note.FactType as INoteOwner;
+					if (noteOwner == null)
+					{
+						noteOwner = note.ObjectType as INoteOwner;
+					}
+				}
+				NoteAlteredEventHandler(noteOwner);
+			}
+		}
+		/// <summary>
+		/// Handles note added and removed events for ObjectType
+		/// </summary>
+		private void ObjectTypeNoteAlteredEventHandler(object sender, ElementEventArgs e)
+		{
+			NoteAlteredEventHandler((e.ModelElement as ObjectTypeHasNote).ObjectType as INoteOwner);
+		}
+		/// <summary>
+		/// Handles note added and removed events for FactType
+		/// </summary>
+		private void FactTypeNoteAlteredEventHandler(object sender, ElementEventArgs e)
+		{
+			NoteAlteredEventHandler((e.ModelElement as FactTypeHasNote).FactType as INoteOwner);
+		}
+		/// <summary>
+		/// Handles note added and removed events for ModelNote
+		/// </summary>
+		private void ModelNoteAlteredEventHandler(object sender, ElementEventArgs e)
+		{
+			NoteAlteredEventHandler((e.ModelElement as ModelHasModelNote).Note as INoteOwner);
+		}
+		/// <summary>
+		/// Helper function to handler a note change event
+		/// </summary>
+		private void NoteAlteredEventHandler(INoteOwner noteOwner)
+		{
+			List<INoteOwner> currentOwners;
+			if (null != noteOwner &&
+				null != (currentOwners = mySelectedNoteOwners) &&
+				currentOwners.Count != 0 &&
+				currentOwners.Contains(noteOwner))
+			{
+				DisplayNotes();
+			}
 		}
 		/// <summary>
 		/// Event handler for the note textbox.  Forces the note to be saved
@@ -107,10 +155,18 @@ namespace Neumont.Tools.ORM.Shell
 		private void SetNote(INoteOwner owner, string text)
 		{
 			PropertyDescriptor descriptor;
-			if (null != owner && 
+			ORMDesignerDocData currentDoc;
+			IORMToolServices currentStore;
+			if (null != owner &&
+				null != (currentDoc = CurrentDocument) &&
+				null != (currentStore = currentDoc.Store as IORMToolServices) &&
+				currentStore.CanAddTransaction &&
 				null != (descriptor = owner.NoteTextPropertyDescriptor))	// Be really defensive.
 			{
-				descriptor.SetValue(owner, text);
+				if (0 != string.CompareOrdinal((string)descriptor.GetValue(owner), text))
+				{
+					descriptor.SetValue(owner, text);
+				}
 			}
 		}
 		/// <summary>
@@ -238,9 +294,13 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
 				ModelingDocData docData = CurrentDocument;
-				if (docData != null)
+				Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager;
+				MSOLE.IOleCommandTarget forwardTo;
+				if ((docData != null &&
+					null != (undoManager = docData.UndoManager) &&
+					null != (forwardTo = undoManager.VSUndoManager as MSOLE.IOleCommandTarget)) ||
+					null != (forwardTo = GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget))
 				{
-					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
 					// If the command wasn't handled already, forward it to the undo manager.
 					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 				}
@@ -306,9 +366,13 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
 				ModelingDocData docData = CurrentDocument;
-				if (docData != null)
+				Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager;
+				MSOLE.IOleCommandTarget forwardTo;
+				if ((docData != null &&
+					null != (undoManager = docData.UndoManager) &&
+					null != (forwardTo = undoManager.VSUndoManager as MSOLE.IOleCommandTarget)) ||
+					null != (forwardTo = GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget))
 				{
-					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
 					// If the command wasn't handled already, give the undo manager a chance to handle the command.
 					hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 				}
@@ -340,13 +404,16 @@ namespace Neumont.Tools.ORM.Shell
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			// Track Note changes
+			// Track Note additions and deletions changes
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(NoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(NoteAlteredEventHandler));
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler));
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(NoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(NoteAlteredEventHandler));
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler));
+			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelNote.DomainClassId);
+			eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler));
+			eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler));
 
 			// Track Note.Text changes
 			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(Note.TextDomainPropertyId);
@@ -365,13 +432,16 @@ namespace Neumont.Tools.ORM.Shell
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
-			// Track Note changes
+			// Track Note additions and deletions changes
 			DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ObjectTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(NoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(NoteAlteredEventHandler));
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeNoteAlteredEventHandler));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ObjectTypeNoteAlteredEventHandler));
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasNote.DomainClassId);
-			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(NoteAlteredEventHandler));
-			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(NoteAlteredEventHandler));
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeNoteAlteredEventHandler));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeNoteAlteredEventHandler));
+			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelNote.DomainClassId);
+			eventDirectory.ElementAdded.Remove(classInfo, new EventHandler<ElementAddedEventArgs>(ModelNoteAlteredEventHandler));
+			eventDirectory.ElementDeleted.Remove(classInfo, new EventHandler<ElementDeletedEventArgs>(ModelNoteAlteredEventHandler));
 
 			// Track Note.Text changes
 			DomainPropertyInfo attributeInfo = dataDirectory.FindDomainProperty(Note.TextDomainPropertyId);

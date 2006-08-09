@@ -30,6 +30,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.Modeling;
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -203,14 +204,245 @@ namespace Neumont.Tools.ORM.Shell
 					return NotifySurveyElementChanged;
 				}
 			}
-
+			/// <summary>
+			/// Defer to CanAddTransaction on the document. Implements
+			/// IORMToolServices.CanAddTransaction
+			/// </summary>
+			protected bool CanAddTransaction
+			{
+				get
+				{
+					return myServices.CanAddTransaction;
+				}
+				set
+				{
+					myServices.CanAddTransaction = value;
+				}
+			}
+			bool IORMToolServices.CanAddTransaction
+			{
+				get
+				{
+					return CanAddTransaction;
+				}
+				set
+				{
+					CanAddTransaction = value;
+				}
+			}
 			#endregion // IORMToolServices Implementation
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="store"></param>
+		/// <param name="storeKey"></param>
+		/// <returns></returns>
+		protected override ModelingDocStore CreateModelingDocStore(Store store, object storeKey)
+		{
+			return new ORMModelingDocStore(ServiceProvider, store, storeKey);
+		}
+		/// <summary>
+		/// Override ModelingDocStore to provide our own UndoUnit implementation
+		/// with better control over window reactivation during Undo
+		/// </summary>
+		protected class ORMModelingDocStore : ModelingDocStore
+		{
+			/// <summary>
+			/// Create a new ORMModelingDocStore. Pass through to constructor on base type
+			/// </summary>
+			public ORMModelingDocStore(IServiceProvider serviceProvider, Store store, object key)
+				: base(serviceProvider, store, key)
+			{
+			}
+			/// <summary>
+			/// Create a custom undo unit
+			/// </summary>
+			/// <param name="undoableTransaction">New TransactionItem to attach to the undo unit</param>
+			/// <returns>ORMUndoUnit</returns>
+			protected override UndoUnit CreateUndoUnit(TransactionItem undoableTransaction)
+			{
+				return new ORMUndoUnit(ServiceProvider, Context, undoableTransaction);
+			}
+		}
+		/// <summary>
+		/// Replacement for Microsoft.VisualStudio.Modeling.Shell.UndoUnit. Changes
+		/// window management and notifies the IORMToolServices implementation that
+		/// new transactions are blocked.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected class ORMUndoUnit : UndoUnit, MSOLE.IOleUndoUnit
+		{
+			#region Member Variables
+			private Context myContext;
+			private bool myInUndoState;
+			private IServiceProvider myServiceProvider;
+			private TransactionItem myTransactionItem;
+			//private ModelingWindowPane myWindow;
+			#endregion // Member Variables
+			#region Constructors
+			/// <summary>
+			/// Create a new ORMUndoUnit
+			/// </summary>
+			public ORMUndoUnit(IServiceProvider serviceProvider, Context context, TransactionItem transactionItem) :
+				base(serviceProvider, context, transactionItem)
+			{
+				myInUndoState = true;
+				myServiceProvider = serviceProvider;
+				myContext = context;
+				myTransactionItem = transactionItem;
+				//myWindow = ActiveModelingWindow;
+			}
+
+			// Note that there are other constructors defined on Microsoft.VisualStudio.Modeling.Shell.UndoUnit,
+			// but none that are actually called.
+			#endregion  // Constructors
+			#region Helper Properties
+			// UNDONE: Consider restoring current docview/diagram/selection/toolwindow focus when
+			// an undo/redo occurs.
+			///// <summary>
+			///// Get the active modeling window
+			///// </summary>
+			//protected virtual ModelingWindowPane ActiveModelingWindow
+			//{
+			//    [DebuggerStepThrough]
+			//    get
+			//    {
+			//        if (myServiceProvider != null)
+			//        {
+			//            IMonitorSelectionService monitorService = myServiceProvider.GetService(typeof(IMonitorSelectionService)) as IMonitorSelectionService;
+			//            if (monitorService != null)
+			//            {
+			//                // Note that this was CurrentWindow in the original implementation, not CurrentDocumentView
+			//                return (monitorService.CurrentDocumentView as ModelingWindowPane);
+			//            }
+			//        }
+			//        return null;
+			//    }
+			//}
+			#endregion // Helper Properties
+			#region IOleUndoUnit Implementation
+			/// <summary>
+			/// Implements IOleUndoUnit.Do
+			/// </summary>
+			protected new void Do(MSOLE.IOleUndoManager undoManager)
+			{
+				TransactionItem transactionItem = myTransactionItem;
+				if (transactionItem != null)
+				{
+					Store store = transactionItem.Store;
+					if (!store.Disposed)
+					{
+						IORMToolServices toolServices = store as IORMToolServices;
+						if (toolServices != null)
+						{
+							toolServices.CanAddTransaction = false;
+						}
+						try
+						{
+							//if (myWindow != null && ActiveModelingWindow != null)
+							//{
+							//    // UNDONE: Note that ShowNoActivate will not bring a docview to the foreground
+							//    // and Show will rip focus from the current window. Neither is optimal
+							//    // for docview window activation.
+							//    myWindow.Show();
+							//}
+							Context context = myContext;
+							store.PushContext(context);
+							Microsoft.VisualStudio.Modeling.UndoManager modelingUndoManager = context.UndoManager;
+							bool undoState = myInUndoState;
+							if (undoState)
+							{
+								modelingUndoManager.Undo(transactionItem.Id);
+							}
+							else
+							{
+								modelingUndoManager.Redo(transactionItem.Id);
+							}
+							store.PopContext();
+							try
+							{
+								if (undoManager != null)
+								{
+									undoManager.Add(this);
+								}
+								myInUndoState = !undoState;
+							}
+							catch (COMException)
+							{
+								store.PushContext(context);
+								if (undoState)
+								{
+									modelingUndoManager.Redo(transactionItem.Id);
+								}
+								else
+								{
+									modelingUndoManager.Undo(transactionItem.Id);
+								}
+								store.PopContext();
+							}
+						}
+						finally
+						{
+							if (toolServices != null)
+							{
+								toolServices.CanAddTransaction = true;
+							}
+						}
+					}
+				}
+			}
+			void MSOLE.IOleUndoUnit.Do(MSOLE.IOleUndoManager undoManager)
+			{
+				Do(undoManager);
+			}
+			/// <summary>
+			/// Implements IOleUndoUnit.GetDescription
+			/// </summary>
+			protected new void GetDescription(out string description)
+			{
+				string retVal = myTransactionItem.Name;
+				if (string.IsNullOrEmpty(retVal))
+				{
+					retVal = " ";
+				}
+				description = retVal;
+			}
+			void MSOLE.IOleUndoUnit.GetDescription(out string description)
+			{
+				GetDescription(out description);
+			}
+			/// <summary>
+			/// Implements IOleUndoUnit.GetUnitType
+			/// </summary>
+			protected new static void GetUnitType(out Guid unitGuid, out int unitId)
+			{
+				unitGuid = Guid.Empty;
+				unitId = 0;
+			}
+			void MSOLE.IOleUndoUnit.GetUnitType(out Guid unitGuid, out int unitId)
+			{
+				GetUnitType(out unitGuid, out unitId);
+			}
+			/// <summary>
+			/// Implements IOleUndoUnit.OnNextAdd
+			/// </summary>
+			protected new static void OnNextAdd()
+			{
+			}
+			void MSOLE.IOleUndoUnit.OnNextAdd()
+			{
+				OnNextAdd();
+			}
+			#endregion // IOleUndoUnit Implementation
+		}
+
 		#endregion // Store services passthrough
 		#region IORMToolServices Implementation
 		private IORMToolTaskProvider myTaskProvider;
 		private string myLastVerbalizationSnippetsOptions;
 		private IDictionary<Type, IVerbalizationSets> myVerbalizationSnippets;
+		private int myCustomBlockCanAddTransactionCount;
 		/// <summary>
 		/// Retrieve the task provider for this document. Created
 		/// on demand using the CreateTaskProvider method. Implements
@@ -312,6 +544,42 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return NotifySurveyElementChanged;
+			}
+		}
+		/// <summary>
+		/// Defer to CanAddTransaction on the document. Implements
+		/// IORMToolServices.CanAddTransaction
+		/// </summary>
+		protected bool CanAddTransaction
+		{
+			get
+			{
+				Store store = Store;
+				return !store.Disposed &&!store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
+			}
+			set
+			{
+				int refCount = myCustomBlockCanAddTransactionCount;
+				if (!value)
+				{
+					++refCount;
+				}
+				else if (refCount != 0)
+				{
+					--refCount;
+				}
+				myCustomBlockCanAddTransactionCount = refCount;
+			}
+		}
+		bool IORMToolServices.CanAddTransaction
+		{
+			get
+			{
+				return CanAddTransaction;
+			}
+			set
+			{
+				CanAddTransaction = value;
 			}
 		}
 		#endregion // IORMToolServices Implementation

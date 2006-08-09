@@ -737,6 +737,13 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (null != (role = element as Role))
 			{
+				FactType fact = role.FactType;
+				if (fact == null)
+				{
+					// This is happening during teardown scenarios
+					return;
+				}
+
 				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
@@ -744,8 +751,6 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
 				}
-				FactType fact = role.FactType;
-				Debug.Assert(fact != null);
 
 				// Disable role deletion if the role count == 1
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
