@@ -24,11 +24,11 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
-	#region OIALMetaModel model serialization
-	public partial class OIALMetaModel : IORMCustomSerializedDomainModel
+	#region OIALDomainModel model serialization
+	public partial class OIALDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
-		/// The default XmlNamespace associated with the 'OIALMetaModel' extension model
+		/// The default XmlNamespace associated with the 'OIALDomainModel' extension model
 		/// </summary>
 		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/OIALModel";
 		/// <summary>
@@ -81,7 +81,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
 			if (omissions == null)
 			{
-				omissions = OIALMetaModel.BuildCustomSerializationOmissions(store);
+				omissions = OIALDomainModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
 			return !(omissions.ContainsKey(classInfo));
@@ -122,13 +122,13 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
-			Collection<string> validNamespaces = OIALMetaModel.myValidNamespaces;
-			Dictionary<string, Guid> classNameMap = OIALMetaModel.myClassNameMap;
+			Collection<string> validNamespaces = OIALDomainModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = OIALDomainModel.myClassNameMap;
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
 				validNamespaces.Add("http://schemas.neumont.edu/ORM/2006-01/OIALModel");
-				OIALMetaModel.myValidNamespaces = validNamespaces;
+				OIALDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
@@ -140,7 +140,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				classNameMap.Add("ConceptType", ConceptType.DomainClassId);
 				classNameMap.Add("InformationType", InformationType.DomainClassId);
 				classNameMap.Add("ConceptTypeHasChild", ConceptTypeHasChild.DomainClassId);
-				OIALMetaModel.myClassNameMap = classNameMap;
+				OIALDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
 			{
@@ -153,7 +153,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			return MapClassName(xmlNamespace, elementName);
 		}
 	}
-	#endregion // OIALMetaModel model serialization
+	#endregion // OIALDomainModel model serialization
 	#region OIALModel serialization
 	public partial class OIALModel : IORMCustomSerializedElement
 	{

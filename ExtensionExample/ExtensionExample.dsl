@@ -17,7 +17,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	Id="9F620B5A-9A99-45A4-A022-C9ED95CE85D6"
 	Namespace="Neumont.Tools.ORM.ExtensionExample"
-	Name="ExtensionDomainModel"
+	Name="Extension"
 	DisplayName="My Custom Extension"
 	Description="The extension created for testing purposes"
 	CompanyName="Neumont University"
@@ -65,7 +65,6 @@
 	<Relationships/>
 
 	<Types>
-		<ExternalType Namespace="System" Name="String"/>
 		<DomainEnumeration Name="TestEnumeration" Namespace="Neumont.Tools.ORM.ExtensionExample" Description="Provides test values for our enum sample dropdown.">
 			<Literals>
 				<EnumerationLiteral Name="Zero" Value="0"/>

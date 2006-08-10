@@ -24,11 +24,11 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	#region ORMShapeModel model serialization
-	public partial class ORMShapeModel : IORMCustomSerializedDomainModel
+	#region ORMShapeDomainModel model serialization
+	public partial class ORMShapeDomainModel : IORMCustomSerializedDomainModel
 	{
 		/// <summary>
-		/// The default XmlNamespace associated with the 'ORMShapeModel' extension model
+		/// The default XmlNamespace associated with the 'ORMShapeDomainModel' extension model
 		/// </summary>
 		public static readonly string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-04/ORMDiagram";
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Dictionary<DomainClassInfo, object> omissions = this.myCustomSerializationOmissions;
 			if (omissions == null)
 			{
-				omissions = ORMShapeModel.BuildCustomSerializationOmissions(store);
+				omissions = ORMShapeDomainModel.BuildCustomSerializationOmissions(store);
 				this.myCustomSerializationOmissions = omissions;
 			}
 			return !(omissions.ContainsKey(classInfo));
@@ -128,13 +128,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected static Guid MapClassName(string xmlNamespace, string elementName)
 		{
-			Collection<string> validNamespaces = ORMShapeModel.myValidNamespaces;
-			Dictionary<string, Guid> classNameMap = ORMShapeModel.myClassNameMap;
+			Collection<string> validNamespaces = ORMShapeDomainModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = ORMShapeDomainModel.myClassNameMap;
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
 				validNamespaces.Add("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram");
-				ORMShapeModel.myValidNamespaces = validNamespaces;
+				ORMShapeDomainModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
 			{
@@ -147,7 +147,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				classNameMap.Add("ValueConstraintShape", ValueConstraintShape.DomainClassId);
 				classNameMap.Add("RoleNameShape", RoleNameShape.DomainClassId);
 				classNameMap.Add("FactTypeShape", FactTypeShape.DomainClassId);
-				ORMShapeModel.myClassNameMap = classNameMap;
+				ORMShapeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
 			{
@@ -160,7 +160,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return MapClassName(xmlNamespace, elementName);
 		}
 	}
-	#endregion // ORMShapeModel model serialization
+	#endregion // ORMShapeDomainModel model serialization
 	#region ORMDiagram serialization
 	public partial class ORMDiagram : IORMCustomSerializedElement
 	{

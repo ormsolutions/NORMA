@@ -88,7 +88,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Place a newly added role name shape
 		/// </summary>
 		/// <param name="parent">Parent FactTypeShape</param>
-		public override void PlaceAsChildOf(NodeShape parent)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 			FactTypeShape factShape = (FactTypeShape)parent;
 			double x = -0.2;

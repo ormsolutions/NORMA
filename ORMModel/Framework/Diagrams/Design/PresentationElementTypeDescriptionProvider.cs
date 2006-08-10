@@ -28,9 +28,17 @@ namespace Neumont.Tools.Modeling.Diagrams.Design
 	/// <see cref="PresentationElementTypeDescriptionProvider"/> for <typeparamref name="TPresentationElement"/>s.
 	/// </summary>
 	/// <remarks>
-	/// <typeparamref name="TTypeDescriptor"/> must have a constructor that takes two parameters of the
-	/// types specified by <typeparamref name="TPresentationElement"/> and <typeparamref name="TModelElement"/>,
-	/// in that order.
+	/// <typeparamref name="TTypeDescriptor"/> must have a constructor which accepts three parameters,
+	/// with the first parameter being of type <see cref="ICustomTypeDescriptor"/>, the second being of the type
+	/// specified by <typeparamref name="TPresentationElement"/>, and the third being of the type specified by
+	/// <typeparamref name="TModelElement"/>.
+	/// <code>
+	/// public MyPresentationElementTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+	///		: base(parent, presentationElement, selectedElement)
+	/// {
+	///		// ...
+	/// }
+	/// </code>
 	/// </remarks>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public sealed class PresentationElementTypeDescriptionProvider<TPresentationElement, TModelElement, TTypeDescriptor> : PresentationElementTypeDescriptionProvider
@@ -41,14 +49,14 @@ namespace Neumont.Tools.Modeling.Diagrams.Design
 		private static readonly RuntimeTypeHandle TypeDescriptorTypeHandle = typeof(TTypeDescriptor).TypeHandle;
 		private static readonly RuntimeMethodHandle TypeDescriptorConstructorHandle = Type.GetTypeFromHandle(TypeDescriptorTypeHandle).GetConstructor(
 			BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
-			null, new Type[] { typeof(TPresentationElement), typeof(TModelElement) }, null).MethodHandle;
+			null, new Type[] { typeof(ICustomTypeDescriptor), typeof(TPresentationElement), typeof(TModelElement) }, null).MethodHandle;
 
 		/// <summary>See <see cref="PresentationElementTypeDescriptionProvider.CreatePresentationElementTypeDescriptor"/>.</summary>
-		protected sealed override PresentationElementTypeDescriptor CreatePresentationElementTypeDescriptor(PresentationElement presentationElement, ModelElement selectedElement)
+		protected sealed override PresentationElementTypeDescriptor CreatePresentationElementTypeDescriptor(ICustomTypeDescriptor parent, PresentationElement presentationElement, ModelElement selectedElement)
 		{
 			return (PresentationElementTypeDescriptor)((ConstructorInfo)ConstructorInfo.GetMethodFromHandle(TypeDescriptorConstructorHandle, TypeDescriptorTypeHandle)).Invoke(
 				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
-				null, new object[] { presentationElement as TPresentationElement, selectedElement as TModelElement }, null);
+				null, new object[] { parent, presentationElement as TPresentationElement, selectedElement as TModelElement }, null);
 		}
 	}
 }

@@ -17,7 +17,7 @@
 		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
 		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:DomainModel Class="ORMShapeModel">
+	<se:DomainModel Class="ORMShapeDomainModel">
 		<se:Namespaces>
 			<se:Namespace Prefix="ormDiagram" URI="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>

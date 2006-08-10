@@ -108,7 +108,7 @@ namespace Neumont.Tools.ORM
 			{
 				if (myCoreModelResourceManager == null)
 				{
-					LoadResourceManagerForType(ref myCoreModelResourceManager, typeof(ORMCoreModel));
+					LoadResourceManagerForType(ref myCoreModelResourceManager, typeof(ORMCoreDomainModel));
 				}
 				return myCoreModelResourceManager;
 			}
@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM
 			{
 				if (myShapeModelResourceManager == null)
 				{
-					LoadResourceManagerForType(ref myShapeModelResourceManager, typeof(ORMShapeModel));
+					LoadResourceManagerForType(ref myShapeModelResourceManager, typeof(ORMShapeDomainModel));
 				}
 				return myShapeModelResourceManager;
 			}
@@ -137,10 +137,10 @@ namespace Neumont.Tools.ORM
 			switch (manager)
 			{
 				case ResourceManagers.ObjectModel:
-					//return ORMCoreModel.SingletonResourceManager;
+					//return ORMCoreDomainModel.SingletonResourceManager;
 					return CoreModelResourceManager;
 				case ResourceManagers.ShapeModel:
-					//return ORMShapeModel.SingletonResourceManager;
+					//return ORMShapeDomainModel.SingletonResourceManager;
 					return ShapeModelResourceManager;
 				case ResourceManagers.Diagram:
 					return DiagramResourceManager;

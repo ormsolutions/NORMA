@@ -67,7 +67,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The default implementation does nothing.
 		/// </summary>
 		/// <param name="parent">The parent shape. May be a diagram.</param>
-		public virtual void ConfiguringAsChildOf(NodeShape parent)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		public virtual void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 		}
 		/// <summary>
@@ -75,7 +76,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// on the diagram
 		/// </summary>
 		/// <param name="parent">The parent shape</param>
-		public virtual void PlaceAsChildOf(NodeShape parent)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		public virtual void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 		}
 		/// <summary>
@@ -209,9 +211,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Size the object appropriately
 		/// </summary>
-		public override void OnBoundsFixup(BoundsFixupState fixupState, int iteration)
+		public override void OnBoundsFixup(BoundsFixupState fixupState, int iteration, bool createdDuringViewFixup)
 		{
-			base.OnBoundsFixup(fixupState, iteration);
+			base.OnBoundsFixup(fixupState, iteration, createdDuringViewFixup);
 			if (fixupState == BoundsFixupState.ViewFixup)
 			{
 				AutoResize();
@@ -239,12 +241,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape children
 		/// </summary>
 		/// <param name="child">The child being configured</param>
-		protected override void OnChildConfiguring(ShapeElement child)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		protected override void OnChildConfiguring(ShapeElement child, bool createdDuringViewFixup)
 		{
 			ORMBaseShape baseShape;
 			if (null != (baseShape = child as ORMBaseShape))
 			{
-				baseShape.ConfiguringAsChildOf(this);
+				baseShape.ConfiguringAsChildOf(this, createdDuringViewFixup);
 			}
 		}
 		/// <summary>
@@ -253,9 +256,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// has not been called on the child prior to this call.
 		/// </summary>
 		/// <param name="child">A new child shape element</param>
-		/// <param name="childWasPlaced">false if the child element was
-		/// not previously placed.</param>
-		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced)
+		/// <param name="childWasPlaced">false if the child element was not previously placed.</param>
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced, bool createdDuringViewFixup)
 		{
 			// Don't check childWasPlaced here during drag-drop. In this case,
 			// childWasPlace will be true if the parent shape was placed, so is
@@ -263,7 +266,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// case the OnChildConfigured for the dropped shape is called on the
 			// diagram, not a base shape. Any derived shape that allows placed
 			// drag from the toolbox (etc) onto child shapes (which none of
-			// the shapes in ORMShapeModel allow), then childWasPlaced should
+			// the shapes in ORMShapeDomainModel allow), then childWasPlaced should
 			// be tested.
 			if (childWasPlaced)
 			{
@@ -280,7 +283,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMBaseShape baseShape;
 				if (null != (baseShape = child as ORMBaseShape))
 				{
-					baseShape.PlaceAsChildOf(this);
+					baseShape.PlaceAsChildOf(this, createdDuringViewFixup);
 				}
 			}
 		}

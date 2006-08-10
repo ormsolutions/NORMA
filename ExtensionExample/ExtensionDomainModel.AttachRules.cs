@@ -51,7 +51,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}

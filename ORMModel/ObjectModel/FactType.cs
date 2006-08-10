@@ -771,9 +771,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateFactTypeRequiresReadingError);
-			ORMCoreModel.DelayValidateElement(this, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-			ORMCoreModel.DelayValidateElement(this, DelayValidateImpliedInternalUniquenessConstraintError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateFactTypeRequiresReadingError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateImpliedInternalUniquenessConstraintError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -1205,8 +1205,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-				ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-				ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 			}
 		}
 		/// <summary>
@@ -1221,8 +1221,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 				if (!factType.IsDeleted)
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
@@ -1238,8 +1238,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 				{
 					FactType fact = link.FactType;
-					ORMCoreModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-					ORMCoreModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
@@ -1256,8 +1256,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (!fact.IsDeleted &&
 					link.SetConstraint.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 				{
-					ORMCoreModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-					ORMCoreModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
@@ -1276,8 +1276,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						1 == (facts = constraint.FactTypeCollection).Count)
 					{
 						FactType fact = facts[0];
-						ORMCoreModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-						ORMCoreModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+						ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
+						ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 					}
 				}
 			}
@@ -1294,7 +1294,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					constraint.IsInternal &&
 					1 == (facts = constraint.FactTypeCollection).Count)
 				{
-					ORMCoreModel.DelayValidateElement(facts[0], DelayValidateImpliedInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(facts[0], DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
@@ -1314,7 +1314,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					1 == (facts = constraint.FactTypeCollection).Count &&
 					!(fact = facts[0]).IsDeleted)
 				{
-					ORMCoreModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
+					ORMCoreDomainModel.DelayValidateElement(fact, DelayValidateImpliedInternalUniquenessConstraintError);
 				}
 			}
 		}
@@ -1349,8 +1349,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
-				ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-				ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 			}
 		}
 		/// <summary>
@@ -1364,8 +1364,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
 				if (!factType.IsDeleted)
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
@@ -1381,8 +1381,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (e.ModelElement as ReadingOrderHasReading).ReadingOrder.FactType;
 				if (factType != null)
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
@@ -1400,8 +1400,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (factType = ord.FactType) &&
 					!factType.IsDeleted)
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 		}
@@ -1422,7 +1422,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						null != (factType = order.FactType) &&
 						!factType.IsDeleted)
 					{
-						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 				}
 			}
@@ -1437,7 +1437,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType factType = (FactType)e.SourceElement;
 					if (!factType.IsDeleted)
 					{
-						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 				}
 			}
@@ -1455,7 +1455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						null != (factType = order.FactType) &&
 						!factType.IsDeleted)
 					{
-						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 				}
 			}
@@ -1472,13 +1472,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = playedRole.FactType;
 				if (factType != null)
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 				RoleProxy proxy;
 				if (null != (proxy = playedRole.Proxy) &&
 					null != (factType = proxy.FactType))
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 				}
 			}
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -1500,13 +1500,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if (null != (factType = playedRole.FactType))
 					{
-						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 					RoleProxy proxy;
 					if (null != (proxy = playedRole.Proxy) &&
 						null != (factType = proxy.FactType))
 					{
-						ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 					}
 				}
 			}
@@ -1550,13 +1550,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 							FactType factType = role.FactType;
 							if (factType != null)
 							{
-								ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+								ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 							}
 							RoleProxy proxy;
 							if (null != (proxy = role.Proxy) &&
 								null != (factType = proxy.FactType))
 							{
-								ORMCoreModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+								ORMCoreDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
 							}
 						}
 						FactType nestedFact = objectType.NestedFactType;

@@ -282,7 +282,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Place a newly added reading shape under the fact
 		/// </summary>
 		/// <param name="parent">FactTypeShape parent element</param>
-		public override void PlaceAsChildOf(NodeShape parent)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 			FactTypeShape factShape = (FactTypeShape)parent;
 			AutoResize();
@@ -494,7 +495,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // properties
 		#region Reading text display update rules
-		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrder))] is in the ORMShapeModel
+		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrder))] is in the ORMShapeDomainModel
 		// for easy sharing with the deserialization fixup process
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
 		private sealed class ReadingOrderDeleted : DeleteRule

@@ -88,8 +88,8 @@ namespace Neumont.Tools.ORM.Shell
 		private static Dictionary<string, Type> InitializeStandardSubStores()
 		{
 			Dictionary<string, Type> standardSubStores = new Dictionary<string, Type>();
-			standardSubStores.Add(ORMCoreModel.XmlNamespace, typeof(ORMCoreModel));
-			standardSubStores.Add(ORMShapeModel.XmlNamespace, typeof(ORMShapeModel));
+			standardSubStores.Add(ORMCoreDomainModel.XmlNamespace, typeof(ORMCoreDomainModel));
+			standardSubStores.Add(ORMShapeDomainModel.XmlNamespace, typeof(ORMShapeDomainModel));
 			return standardSubStores;
 		}
 		#endregion // Construction/destruction
@@ -97,29 +97,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Return array of types of the substores used by the designer
 		/// </summary>
-		protected override IList<Type> GetDomainModels(object storeKey)
+		protected override IList<Type> GetDomainModels()
 		{
-			if (storeKey == PrimaryStoreKey)
+			// UNDONE: 2006-08 DSL Tools port: Store keys don't seem to exist any more...
+			// Always have 1 for the CoreDesignSurface. Note that the framework automatically
+			// loads the core model (ModelElement, ElementLink, etc).
+			int knownCount = 1 + myStandardSubStores.Count;
+			int count = knownCount;
+			IDictionary<string, Type> extensionSubstores = myExtensionSubStores;
+			if (extensionSubstores != null)
 			{
-				// Always have 1 for the CoreDesignSurface. Note that the framework automatically
-				// loads the core model (ModelElement, ElementLink, etc).
-				int knownCount = 1 + myStandardSubStores.Count;
-				int count = knownCount;
-				IDictionary<string, Type> extensionSubstores = myExtensionSubStores;
-				if (extensionSubstores != null)
-				{
-					count += extensionSubstores.Count;
-				}
-				List<Type> retVal = new List<Type>(count);
-				retVal.Add(typeof(CoreDesignSurface));
-				retVal.AddRange(myStandardSubStores.Values);
-				if (extensionSubstores != null)
-				{
-					retVal.AddRange(extensionSubstores.Values);
-				}
-				return retVal;
+				count += extensionSubstores.Count;
 			}
-			return null;
+			List<Type> retVal = new List<Type>(count);
+			retVal.Add(typeof(CoreDesignSurfaceDomainModel));
+			retVal.AddRange(myStandardSubStores.Values);
+			if (extensionSubstores != null)
+			{
+				retVal.AddRange(extensionSubstores.Values);
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// Reload this document from a file stream instead of from disk
@@ -139,6 +136,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="isReload">Tells us if the file is being reloaded or not.</param>
 		private int LoadDocDataFromStream(string fileName, bool isReload, Stream inputStream)
 		{
+			if (isReload)
+			{
+				this.RemoveModelingEventHandlers();
+			}
 			// Convert early so we can accurately check extension elements
 			int retVal = 0;
 			bool dontSave = false;
@@ -165,8 +166,8 @@ namespace Neumont.Tools.ORM.Shell
 									if (reader.Prefix == "xmlns")
 									{
 										string URI = reader.Value;
-										if (!string.Equals(URI, ORMCoreModel.XmlNamespace, StringComparison.Ordinal) &&
-											!string.Equals(URI, ORMShapeModel.XmlNamespace, StringComparison.Ordinal) &&
+										if (!string.Equals(URI, ORMCoreDomainModel.XmlNamespace, StringComparison.Ordinal) &&
+											!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
 											!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
 										{
 											Type extensionType = ORMDesignerPackage.GetExtensionSubStore(URI);
@@ -216,6 +217,7 @@ namespace Neumont.Tools.ORM.Shell
 				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
 			}
+			this.AddPostLoadModelingEventHandlers();
 			return retVal;
 		}
 		/// <summary>
@@ -251,9 +253,14 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 
+			this.AddPreLoadModelingEventHandlers();
+
 			Debug.Assert(myFileStream != null);
 			Stream stream = myFileStream;
 			Store store = this.Store;
+			
+			Debug.Assert(base.InLoad);
+			store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[NamedElementDictionary.DefaultAllowDuplicateNamesKey] = null;
 
 			if (stream.Length > 1)
 			{
@@ -323,6 +330,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
+				// UNDONE: Localize this.
 				string formatList = "ORM Diagram (*.orm)|*.orm|";
 				return formatList.Replace("|", "\n");
 			}
@@ -330,9 +338,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Defer event handling to the loaded models
 		/// </summary>
-		protected override void AddPreLoadModelingEventHandlers()
+		protected virtual void AddPreLoadModelingEventHandlers()
 		{
-			base.AddPreLoadModelingEventHandlers();
 			foreach (DomainModel domainModel in Store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
@@ -347,9 +354,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// Attach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
-		protected override void AddPostLoadModelingEventHandlers()
+		protected virtual void AddPostLoadModelingEventHandlers()
 		{
-			base.AddPostLoadModelingEventHandlers();
 			foreach (DomainModel domainModel in Store.DomainModels)
 			{
 				IORMModelEventSubscriber subscriber = domainModel as IORMModelEventSubscriber;
@@ -366,9 +372,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// Detach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
-		protected override void RemoveModelingEventHandlers()
+		protected virtual void RemoveModelingEventHandlers()
 		{
-			base.RemoveModelingEventHandlers();
 			bool addedPreLoad = GetFlag(PrivateFlags.AddedPreLoadEvents);
 			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
 			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents, false);
@@ -399,6 +404,7 @@ namespace Neumont.Tools.ORM.Shell
 					myTaskProvider.RemoveAllTasks();
 					myTaskProvider = null;
 				}
+				this.RemoveModelingEventHandlers();
 			}
 			finally
 			{

@@ -18,7 +18,7 @@
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="CD96AA55-FCBC-47D0-93F8-30D3DACC5FF7"
 	Namespace="Neumont.Tools.ORM.OIALModel"
-	Name="OIALMetaModel"
+	Name="OIAL"
 	DisplayName="ORM Intermediate Abstraction Language"
 	Description="Extension rules and elements used to perform dynamic object absorption. Used by more compact views on the ORM model."
 	CompanyName="Neumont University"
@@ -599,7 +599,6 @@
 	</Relationships>
 
 	<Types>
-		<ExternalType Namespace="System" Name="Boolean"/>
 		<DomainEnumeration Namespace="Neumont.Tools.ORM.OIALModel" Name="MandatoryConstraintModality" Description="A list of constraint modalities for simple mandatory role constraints used in &lt;see cref=&quot;ConceptTypeHasChild&quot;/&gt; relationships.">
 			<Literals>
 				<EnumerationLiteral Name ="NotMandatory" Value="0" Description="See &lt;see langword=&quot;null&quot;/&gt;."/>
@@ -609,12 +608,11 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALMetaModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<ExternalType Namespace="System" Name="String"/>
 	</Types>
 
 	<XmlSerializationBehavior Name="OIALMetaModelSerializationBehavior" Namespace="Neumont.Tools.ORM.OIALModel"/>

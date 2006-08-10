@@ -15,7 +15,7 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="ORMCoreModel">
+	<arg:Model class="ORMCoreDomainModel">
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
@@ -106,7 +106,7 @@
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeDeleteRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeDeleteRule"/>
-		<arg:Rule class="ORMCoreModel.DelayValidateElements"/>
+		<arg:Rule class="ORMCoreDomainModel.DelayValidateElements"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateConstraintNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>
 		<arg:Rule class="Reading.ReadingOrderHasRoleDeleted"/>

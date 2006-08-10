@@ -84,8 +84,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// easier. For CenterToCenter routing, adjusting by the potential point gives the
 			// best value.
 			// UNDONE: Should any of this weirdness be considered a bug?
-			vectorEndPoint = new PointD(-vectorEndPoint.X + potentialPoint.X, -vectorEndPoint.Y + potentialPoint.Y);
+			//vectorEndPoint = new PointD(-vectorEndPoint.X + potentialPoint.X, -vectorEndPoint.Y + potentialPoint.Y);
 			NodeShape shape = geometryHost as NodeShape;
+			PointD shapeLocation = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location; // shape.Location;
+			vectorEndPoint = new PointD(shapeLocation.X + (2 * potentialPoint.X) - vectorEndPoint.X, shapeLocation.Y + (2 * potentialPoint.Y) - vectorEndPoint.Y);
 			if (shape != null)
 			{
 				ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(shape, LinkConnectsToNode.NodesDomainRoleId);

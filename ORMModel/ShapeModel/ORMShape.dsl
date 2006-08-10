@@ -18,8 +18,9 @@
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="C52FB9A5-6BF4-4267-8716-71D74C7AA89C"
 	Namespace="Neumont.Tools.ORM.ShapeModel"
-	Name="ORMShapeModel"
-	DisplayName="ORMShapeModel"
+	PackageNamespace="Neumont.Tools.ORM.Shell"
+	Name="ORMShape"
+	DisplayName="ORM Shape Domain Model"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
@@ -27,7 +28,7 @@
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreModel*/"/>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>
@@ -52,9 +53,6 @@
 	</Relationships>
 
 	<Types>
-		<ExternalType Namespace="System" Name="Boolean"/>
-		<ExternalType Namespace="System" Name="Int64"/>
-		<ExternalType Namespace="System" Name="Double"/>
 		<DomainEnumeration Namespace="Neumont.Tools.ORM.ShapeModel" Name="ConstraintDisplayPosition" Description="Determines where internal constraints are drawn on FactTypeShapes.">
 			<Literals>
 				<EnumerationLiteral Name="Top" Value="0" Description="Draw the constraints above the top of the role boxes."/>
@@ -63,7 +61,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -77,7 +75,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -101,10 +99,10 @@
 				</DomainProperty>
 			</Properties>
 		</GeometryShape>
-		<GeometryShape Name="ObjectTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00C1F246-D8F1-4EEA-AC88-39BA238143A8" FillGradientMode="None">
-			<BaseClass>
+		<GeometryShape Name="ObjectTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00C1F246-D8F1-4EEA-AC88-39BA238143A8" FillGradientMode="None" InitialWidth=".7" InitialHeight=".35">
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 			<Properties>
 				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false">
 					<Type>
@@ -113,7 +111,7 @@
 				</DomainProperty>
 			</Properties>
 		</GeometryShape>
-		<GeometryShape Name="FactTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8E440A3B-275E-42F7-868B-D5D473158ACD" FillGradientMode="None">
+		<GeometryShape Name="FactTypeShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8E440A3B-275E-42F7-868B-D5D473158ACD" FillGradientMode="None" InitialWidth=".7" InitialHeight=".35">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
@@ -121,9 +119,9 @@
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
-			<BaseClass>
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 			<Properties>
 				<DomainProperty Name="ConstraintDisplayPosition" DisplayName="ConstraintDisplayPosition" Id="802767FD-DE7D-4541-B42B-90B613DFE22D" DefaultValue="Top" Description="Determines where internal constraints are drawn on this FactTypeShape.">
 					<Type>
@@ -143,34 +141,34 @@
 			</Properties>
 		</GeometryShape>
 		<GeometryShape Name="SubtypeLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="87DDAEDA-1FD8-4433-BB1E-7482C7F471A7" FillGradientMode="None">
-			<BaseClass>
+			<!--<BaseGeometryShape>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
-			</BaseClass>
+			</BaseGeometryShape>-->
 		</GeometryShape>
-		<GeometryShape Name="ExternalConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00A08F56-73BA-4C8F-8FA1-AE61B8FC1CAE" FillGradientMode="None">
-			<BaseClass>
+		<GeometryShape Name="ExternalConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="00A08F56-73BA-4C8F-8FA1-AE61B8FC1CAE" FillGradientMode="None" InitialWidth=".16" InitialHeight=".16">
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
-		<GeometryShape Name="FrequencyConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="EC47CD7D-023B-4971-8B5B-1242DBC7356F" FillGradientMode="None">
-			<BaseClass>
+		<GeometryShape Name="FrequencyConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="EC47CD7D-023B-4971-8B5B-1242DBC7356F" FillGradientMode="None" InitialWidth=".16" InitialHeight=".16">
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
-		<GeometryShape Name="RingConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="61B334C5-D37F-4A74-90E9-AC793D35BDF1" FillGradientMode="None">
-			<BaseClass>
+		<GeometryShape Name="RingConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="61B334C5-D37F-4A74-90E9-AC793D35BDF1" FillGradientMode="None" InitialWidth=".16" InitialHeight=".16">
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
 		<GeometryShape Name="FloatingTextShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="0904999F-D9C5-4C4E-A08F-F8DD4B2F29A3" FillGradientMode="None">
-			<BaseClass>
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
 		<GeometryShape Name="ObjectifiedFactTypeNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="7FD5183A-8BC2-43BB-8474-A0A2D558D90A" FillGradientMode="None">
-			<BaseClass>
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 			<Properties>
 				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="5BDAFE8C-AFA7-4B78-ADC6-CAE876AB2140" DefaultValue="false">
 					<Type>
@@ -180,24 +178,24 @@
 			</Properties>
 		</GeometryShape>
 		<GeometryShape Name="ReadingShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="C567ED6D-D0A6-4FD8-A974-C567AA309D5E" FillGradientMode="None">
-			<BaseClass>
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
 		<GeometryShape Name="ValueConstraintShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="B65F916A-06A5-4EFE-BBF9-8D8E55B5C7EB" FillGradientMode="None">
-			<BaseClass>
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
 		<GeometryShape Name="RoleNameShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="2CB7393C-4502-4C59-979D-94D6C89B4080" FillGradientMode="None">
-			<BaseClass>
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
-		<GeometryShape Name="ModelNoteShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8252E1D1-3C59-4595-8C32-9FB79E84924E" FillGradientMode="None">
-			<BaseClass>
+		<GeometryShape Name="ModelNoteShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8252E1D1-3C59-4595-8C32-9FB79E84924E" FillGradientMode="None" InitialWidth=".312" InitialHeight=".132">
+			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
-			</BaseClass>
+			</BaseGeometryShape>
 		</GeometryShape>
 		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0"/>
 	</Shapes>
@@ -213,28 +211,28 @@
 			</Attributes>
 		</Connector>
 		<Connector Name="RolePlayerLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="2B3F0AAE-B1B1-4727-8862-5C34B494B499">
-			<BaseClass>
+			<BaseConnector>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
-			</BaseClass>
+			</BaseConnector>
 		</Connector>
 		<Connector Name="ExternalConstraintLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="8815E6D8-238B-422C-A4B3-29FDC8DE9EA5">
-			<BaseClass>
+			<BaseConnector>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
-			</BaseClass>
+			</BaseConnector>
 		</Connector>
 		<Connector Name="ValueRangeLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="374E43C3-C294-49C4-8A61-3C3CA5FC86E8">
-			<BaseClass>
+			<BaseConnector>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
-			</BaseClass>
+			</BaseConnector>
 		</Connector>
 		<Connector Name="ModelNoteLink" Namespace="Neumont.Tools.ORM.ShapeModel" Id="21E7C585-BC80-446F-8517-BC4FD465971F" DisplayName="ModelNoteReference">
-			<BaseClass>
+			<BaseConnector>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
-			</BaseClass>
+			</BaseConnector>
 		</Connector>
 	</Connectors>
 
-	<XmlSerializationBehavior Name="ORMShapeModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ShapeModel"/>
+	<XmlSerializationBehavior Name="ORMShapeDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ShapeModel"/>
 
 	<!-- Diagram is double-derived so that we can override ShouldAddShapeForElement and OnChildConfiguring. -->
 	<!-- Diagram has custom constructor so that we can turn off snap-to-grid and set the initial name. -->
@@ -256,11 +254,6 @@
 		<Class>
 			<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMModel"/>
 		</Class>
-		<UnmappedShapesUsed>
-			<GeometryShapeMoniker Name="ORMBaseShape"/>
-			<GeometryShapeMoniker Name="FloatingTextShape"/>
-			<GeometryShapeMoniker Name="LinkConnectorShape"/>
-		</UnmappedShapesUsed>
 		<ShapeMaps>
 			<ShapeMap>
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
@@ -383,59 +376,59 @@
 			<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMModel"/>
 		</RootClass>
 		<XmlSerializationDefinition>
-			<XmlSerializationBehaviorMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMCoreModelSerializationBehavior"/>
+			<XmlSerializationBehaviorMoniker Name="/Neumont.Tools.ORM.ObjectModel/ORMCoreDomainModelSerializationBehavior"/>
 		</XmlSerializationDefinition>
 		<ToolboxTab TabText="ORM Designer">
-			<ElementTool Name="EntityType" Order="0" ToolboxIcon="../Resources/Toolbox.EntityType.Bitmap.Id.bmp" Caption="Entity Type" Tooltip="New Entity Type">
+			<ElementTool Name="EntityType" ToolboxIcon="../Resources/Toolbox.EntityType.Bitmap.Id.bmp" Caption="Entity Type" Tooltip="New Entity Type">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
 			</ElementTool>
-			<ElementTool Name="ValueType" Order="5" ToolboxIcon="../Resources/Toolbox.ValueType.Bitmap.Id.bmp" Caption="Value Type" Tooltip="New Value Type">
+			<ElementTool Name="ValueType" ToolboxIcon="../Resources/Toolbox.ValueType.Bitmap.Id.bmp" Caption="Value Type" Tooltip="New Value Type">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
 			</ElementTool>
-			<ElementTool Name="ObjectifiedFactType" Order="7" ToolboxIcon="../Resources/Toolbox.ObjectifiedFactType.Bitmap.Id.bmp" Caption="Objectified Fact Type" Tooltip="New Objectified Fact Type">
+			<ElementTool Name="ObjectifiedFactType" ToolboxIcon="../Resources/Toolbox.ObjectifiedFactType.Bitmap.Id.bmp" Caption="Objectified Fact Type" Tooltip="New Objectified Fact Type">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ObjectType"/>
 			</ElementTool>
-			<ElementTool Name="UnaryFactType" Order="10" ToolboxIcon="../Resources/Toolbox.UnaryFactType.Bitmap.Id.bmp" Caption="Unary Fact Type" Tooltip="New Unary Fact Type">
+			<ElementTool Name="UnaryFactType" ToolboxIcon="../Resources/Toolbox.UnaryFactType.Bitmap.Id.bmp" Caption="Unary Fact Type" Tooltip="New Unary Fact Type">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
 			</ElementTool>
-			<ElementTool Name="BinaryFactType" Order="15" ToolboxIcon="../Resources/Toolbox.BinaryFactType.Bitmap.Id.bmp" Caption="Binary Fact Type" Tooltip="New Binary Fact Type">
+			<ElementTool Name="BinaryFactType" ToolboxIcon="../Resources/Toolbox.BinaryFactType.Bitmap.Id.bmp" Caption="Binary Fact Type" Tooltip="New Binary Fact Type">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
 			</ElementTool>
-			<ElementTool Name="TernaryFactType" Order="20" ToolboxIcon="../Resources/Toolbox.TernaryFactType.Bitmap.Id.bmp" Caption="Ternary Fact Type" Tooltip="New Ternary Fact Type">
+			<ElementTool Name="TernaryFactType" ToolboxIcon="../Resources/Toolbox.TernaryFactType.Bitmap.Id.bmp" Caption="Ternary Fact Type" Tooltip="New Ternary Fact Type">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/FactType"/>
 			</ElementTool>
-			<ConnectionTool Name="RoleConnector" Order="21" ToolboxIcon="../Resources/Toolbox.RoleConnector.Bitmap.Id.bmp" Caption="Role Connector" Tooltip="Role Connector Tool"/>
-			<ConnectionTool Name="SubtypeConnector" Order="22" ToolboxIcon="../Resources/Toolbox.SubtypeConnector.Bitmap.Id.bmp" Caption="Subtype Connector" Tooltip="Subtype Connector Tool"/>
-			<ElementTool Name="InternalUniquenessConstraint" Order="23" ToolboxIcon="../Resources/Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp" Caption="Internal Uniqueness Constraint" Tooltip="New Internal Uniqueness Constraint">
+			<ConnectionTool Name="RoleConnector" ToolboxIcon="../Resources/Toolbox.RoleConnector.Bitmap.Id.bmp" Caption="Role Connector" Tooltip="Role Connector Tool"/>
+			<ConnectionTool Name="SubtypeConnector" ToolboxIcon="../Resources/Toolbox.SubtypeConnector.Bitmap.Id.bmp" Caption="Subtype Connector" Tooltip="Subtype Connector Tool"/>
+			<ElementTool Name="InternalUniquenessConstraint" ToolboxIcon="../Resources/Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp" Caption="Internal Uniqueness Constraint" Tooltip="New Internal Uniqueness Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/UniquenessConstraint"/>
 			</ElementTool>
-			<ElementTool Name="ExternalUniquenessConstraint" Order="25" ToolboxIcon="../Resources/Toolbox.ExternalUniquenessConstraint.Bitmap.Id.bmp" Caption="External Uniqueness Constraint" Tooltip="New External Uniqueness Constraint">
+			<ElementTool Name="ExternalUniquenessConstraint" ToolboxIcon="../Resources/Toolbox.ExternalUniquenessConstraint.Bitmap.Id.bmp" Caption="External Uniqueness Constraint" Tooltip="New External Uniqueness Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/UniquenessConstraint"/>
 			</ElementTool>
-			<ElementTool Name="EqualityConstraint" Order="35" ToolboxIcon="../Resources/Toolbox.EqualityConstraint.Bitmap.Id.bmp" Caption="Equality Constraint" Tooltip="New Equality Constraint">
+			<ElementTool Name="EqualityConstraint" ToolboxIcon="../Resources/Toolbox.EqualityConstraint.Bitmap.Id.bmp" Caption="Equality Constraint" Tooltip="New Equality Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/EqualityConstraint"/>
 			</ElementTool>
-			<ElementTool Name="ExclusionConstraint" Order="40" ToolboxIcon="../Resources/Toolbox.ExclusionConstraint.Bitmap.Id.bmp" Caption="Exclusion Constraint" Tooltip="New Exclusion Constraint">
+			<ElementTool Name="ExclusionConstraint" ToolboxIcon="../Resources/Toolbox.ExclusionConstraint.Bitmap.Id.bmp" Caption="Exclusion Constraint" Tooltip="New Exclusion Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ExclusionConstraint"/>
 			</ElementTool>
-			<ElementTool Name="InclusiveOrConstraint" Order="45" ToolboxIcon="../Resources/Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp" Caption="Inclusive Or Constraint" Tooltip="New Inclusive Or Constraint">
+			<ElementTool Name="InclusiveOrConstraint" ToolboxIcon="../Resources/Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp" Caption="Inclusive Or Constraint" Tooltip="New Inclusive Or Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/MandatoryConstraint"/>
 			</ElementTool>
-			<!-- TODO: <ElementTool Name="ExclusiveOrConstraint" Order="50" ToolboxIcon="../Resources/Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp" Caption="Exclusive Or Constraint" Tooltip="New Exclusive Or Constraint"/>-->
-			<ElementTool Name="SubsetConstraint" Order="55" ToolboxIcon="../Resources/Toolbox.SubsetConstraint.Bitmap.Id.bmp" Caption="Subset Constraint" Tooltip="New Subset Constraint">
+			<!-- TODO: <ElementTool Name="ExclusiveOrConstraint" ToolboxIcon="../Resources/Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp" Caption="Exclusive Or Constraint" Tooltip="New Exclusive Or Constraint"/>-->
+			<ElementTool Name="SubsetConstraint" ToolboxIcon="../Resources/Toolbox.SubsetConstraint.Bitmap.Id.bmp" Caption="Subset Constraint" Tooltip="New Subset Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/SubsetConstraint"/>
 			</ElementTool>
-			<ElementTool Name="FrequencyConstraint" Order="57" ToolboxIcon="../Resources/Toolbox.FrequencyConstraint.Bitmap.Id.bmp" Caption="Frequency Constraint" Tooltip="New Frequency Constraint">
+			<ElementTool Name="FrequencyConstraint" ToolboxIcon="../Resources/Toolbox.FrequencyConstraint.Bitmap.Id.bmp" Caption="Frequency Constraint" Tooltip="New Frequency Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/FrequencyConstraint"/>
 			</ElementTool>
-			<ElementTool Name="RingConstraint" Order="58" ToolboxIcon="../Resources/Toolbox.RingConstraint.Bitmap.Id.bmp" Caption="Ring Constraint" Tooltip="New Ring Constraint">
+			<ElementTool Name="RingConstraint" ToolboxIcon="../Resources/Toolbox.RingConstraint.Bitmap.Id.bmp" Caption="Ring Constraint" Tooltip="New Ring Constraint">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/RingConstraint"/>
 			</ElementTool>
-			<ConnectionTool Name="ExternalConstraintConnector" Order="60" ToolboxIcon="../Resources/Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" Caption="Constraint Connector" Tooltip="Constraint Connector Tool"/>
-			<ElementTool Name="ModelNote" Order="70" ToolboxIcon="../Resources/Toolbox.ModelNote.Bitmap.Id.bmp" Caption="Model Note" Tooltip="New Model Note">
+			<ConnectionTool Name="ExternalConstraintConnector" ToolboxIcon="../Resources/Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" Caption="Constraint Connector" Tooltip="Constraint Connector Tool"/>
+			<ElementTool Name="ModelNote" ToolboxIcon="../Resources/Toolbox.ModelNote.Bitmap.Id.bmp" Caption="Model Note" Tooltip="New Model Note">
 				<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/ModelNote"/>
 			</ElementTool>
-			<ConnectionTool Name="ModelNoteConnector" Order="75" ToolboxIcon="../Resources/Toolbox.ModelNoteConnector.Bitmap.Id.bmp" Caption="Model Note Connector" Tooltip="Model Note Connector Tool"/>
+			<ConnectionTool Name="ModelNoteConnector" ToolboxIcon="../Resources/Toolbox.ModelNoteConnector.Bitmap.Id.bmp" Caption="Model Note Connector" Tooltip="Model Note Connector Tool"/>
 		</ToolboxTab>
 		<DiagramMoniker Name="/Neumont.Tools.ORM.ShapeModel/ORMDiagram"/>
 	</Designer>

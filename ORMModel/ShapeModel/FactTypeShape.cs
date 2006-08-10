@@ -2388,18 +2388,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Set the default size for this object. This value is basically
-		/// ignored because the size is ultimately based on the contained
-		/// text, but it needs to be set.
-		/// </summary>
-		public override SizeD DefaultSize
-		{
-			get
-			{
-				return new SizeD(.7, .35);
-			}
-		}
-		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.
 		/// </summary>
@@ -2846,7 +2834,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (null != (constraintField = field as ConstraintShapeField))
 			{
 				ConstraintDisplayPosition position = constraintField.DisplayPosition;
-				return ORMShapeModel.SingletonResourceManager.GetString("ConstraintDisplayPosition." + position.ToString());
+				return ORMShapeDomainModel.SingletonResourceManager.GetString("ConstraintDisplayPosition." + position.ToString());
 			}
 			return base.GetFieldAccessibleValue(field);
 		}
@@ -4563,7 +4551,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Move a new name label above the parent fact type shape
 		/// </summary>
-		public override void PlaceAsChildOf(NodeShape parent)
+		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 			AutoResize();
 			SizeD size = Size;

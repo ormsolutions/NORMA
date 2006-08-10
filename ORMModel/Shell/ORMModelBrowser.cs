@@ -93,7 +93,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get 
 			{
-				return this.ObjectModelBrowser.ObjectModelBrowser.SelectedNode;
+				return this.TreeContainer.ObjectModelBrowser.SelectedNode;
 			}
 		}
 		#endregion //MenuService, MonitorSelectionService, and SelectedNode properties
@@ -413,7 +413,7 @@ namespace Neumont.Tools.ORM.Shell
 			// reload (the new docdata has not changed, but the events are still attached to the
 			// old store), and delayed crashes if the model browser is touched when the document
 			// is closed.
-			ModelExplorerTreeContainer container = ObjectModelBrowser;
+			ModelExplorerTreeContainer container = this.TreeContainer;
 			if (container != null)
 			{
 				ModelingDocData oldDocData = container.ModelingDocData;
@@ -425,12 +425,12 @@ namespace Neumont.Tools.ORM.Shell
 				myFactCollectionNode = null;
 				if (newDocData != null)
 				{
-					container.ShowTree();
+					container.ObjectModelBrowser.Show();
 					AttachModelEvents(newDocData.Store);
 				}
 				else
 				{
-					container.HideTree();
+					container.ObjectModelBrowser.Hide();
 				}
 				container.ModelingDocData = newDocData;
 			}
@@ -470,7 +470,7 @@ namespace Neumont.Tools.ORM.Shell
 					TreeView treeControl;
 					TreeNodeCollection rootNodes;
 					ModelElementTreeNode modelNode;
-					if (null != (treeContainer = ObjectModelBrowser) &&
+					if (null != (treeContainer = this.TreeContainer) &&
 						null != (treeControl = treeContainer.ObjectModelBrowser) &&
 						0 != (rootNodes = treeControl.Nodes).Count &&
 						null != (modelNode = rootNodes[0] as ModelElementTreeNode))

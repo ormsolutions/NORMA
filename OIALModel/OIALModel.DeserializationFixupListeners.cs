@@ -22,7 +22,7 @@ using System.Collections;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
-	public partial class OIALMetaModel : IDeserializationFixupListenerProvider
+	public partial class OIALDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>

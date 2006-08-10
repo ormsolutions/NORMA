@@ -33,6 +33,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMBaseBinaryLinkShape
 	{
+		#region SubtypeLink Hack
+		/// <summary>
+		/// UNDONE: 2006-08 DSL Tools port: Hack for link-for-a-class
+		/// </summary>
+		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public virtual bool HasBackgroundGradient
+		{
+			get
+			{
+				return false;
+			}
+		}
+		#endregion // SubtypeLink Hack
 		#region ConnectionPoint Workaround Hacks
 		#region GetVGEdge method
 		private delegate VGEdge GetVGEdgeDelegate(LinkShape @this);
@@ -117,16 +131,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private void InitializeLineRouting()
 		{
-			VGEdge vgEdge = GetVGEdge();
-			if (vgEdge != null)
-			{
-				// ORM lines cross, they don't jump.
-				vgEdge.RouteJumpType = (int)VGObjectLineJumpCode.VGObjectJumpCodeNever;
-				vgEdge.RoutingStyle = VGRoutingStyle.VGRouteCenterToCenter;
+			//VGEdge vgEdge = GetVGEdge();
+			//if (vgEdge != null)
+			//{
+			//    // ORM lines cross, they don't jump.
+			//    vgEdge.RouteJumpType = (int)VGObjectLineJumpCode.VGObjectJumpCodeNever;
+			//    vgEdge.RoutingStyle = VGRoutingStyle.VGRouteCenterToCenter;
 
-				// This call will be ignored if we're not in a transaction, but that's OK...
-				base.RecalculateRoute();
-			}
+			//    // This call will be ignored if we're not in a transaction, but that's OK...
+			//    base.RecalculateRoute();
+			//}
 		}
 		[RuleOn(typeof(LinkConnectsToNode), Priority=100)] // RolePlayerChangeRule // Priority after the default rule
 		private class HackConnectionPointRolePlayerChangeRule : RolePlayerChangeRule
@@ -149,13 +163,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Specify CenterToCenter routing style so we can
 		/// locate our objects in DoFoldToShape
 		/// </summary>
-		protected override LineRoutingStyle DefaultRoutingStyle
+		[CLSCompliant(false)]
+		protected override VGRoutingStyle DefaultRoutingStyle
 		{
 			get
 			{
-				// UNDONE: MSBUG We really want VGRoutingStyle.VGRouteCenterToCenter, but can't do it properly without MS help
-				// Do straight for now, the default is RightAngle
-				return LineRoutingStyle.Straight;
+				return VGRoutingStyle.VGRouteCenterToCenter;
 			}
 		}
 		/// <summary>
@@ -185,8 +198,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Abstract method to configure this link after it has been added to
 		/// the diagram.
 		/// </summary>
-		/// <param name="diagram">The parent diagram</param>
-		public abstract void ConfiguringAsChildOf(ORMDiagram diagram);
+		public abstract void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup);
 		#endregion Customize appearance
 		#region DuplicateNameError Activation Helper
 		/// <summary>

@@ -37,8 +37,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Initializes a new instance of <see cref="ReadingTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public ReadingTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public ReadingTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 		}
 

@@ -460,10 +460,10 @@
       <SubType>Designer</SubType>
       <DesignTime>True</DesignTime>
     </EmbeddedResource>
-    <EmbeddedResource Include="ObjectModel\ORMCoreModel.resx">
+    <EmbeddedResource Include="ObjectModel\ORMCoreDomainModel.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ShapeModel\ORMShapeModel.resx">
+    <EmbeddedResource Include="ShapeModel\ORMShapeDomainModel.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GeneratedCode\CoreDomainModelResx.resx">

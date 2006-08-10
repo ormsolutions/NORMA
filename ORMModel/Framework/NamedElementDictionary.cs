@@ -413,13 +413,15 @@ namespace Neumont.Tools.Modeling
 		/// if duplicate names should not be allowed.
 		/// </summary>
 		public static readonly object BlockDuplicateNamesKey = new object();
+		// UNDONE: 2006-08 DSL Tools port: LoadingKey doesn't exist any more...
 		/// <summary>
 		/// The default key used by the named element dictionary to control whether
 		/// duplicate names should be allowed. A null return from
 		/// INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey will use
 		/// this key by default
 		/// </summary>
-		public static readonly object DefaultAllowDuplicateNamesKey = Microsoft.VisualStudio.Modeling.Shell.ModelingDocData.LoadingKey;
+		//public static readonly object DefaultAllowDuplicateNamesKey = Microsoft.VisualStudio.Modeling.Shell.ModelingDocData.LoadingKey;
+		public static readonly object DefaultAllowDuplicateNamesKey = new object();
 		#endregion // Public token values
 		#region Default duplicate collection manager
 		/// <summary>

@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMShapeModel</value>
-    <comment>Description for DslLibrary &apos;ORMShapeModel&apos;</comment>
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ShapeModel.ORMShape</value>
+    <comment>Description for DslLibrary &apos;ORMShape&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel.DisplayName" xml:space="preserve">
-    <value>ORMShapeModel</value>
-    <comment>DisplayName for DslLibrary &apos;ORMShapeModel&apos;</comment>
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.DisplayName" xml:space="preserve">
+    <value>ORM Shape Domain Model</value>
+    <comment>DisplayName for DslLibrary &apos;ORMShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder</value>
@@ -157,21 +157,41 @@
     <value>Fact Type Shape Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.DisplayName" xml:space="preserve">
+    <value>Top</value>
+    <comment>Display name for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.Description" xml:space="preserve">
     <value>Draw the constraints above the top of the role boxes.</value>
     <comment>Description for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.DisplayName" xml:space="preserve">
+    <value>Bottom</value>
+    <comment>Display name for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.Description" xml:space="preserve">
     <value>Draw the constraints below the bottom of the role boxes.</value>
     <comment>Description for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.DisplayName" xml:space="preserve">
+    <value>UserDefault</value>
+    <comment>Display name for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.Description" xml:space="preserve">
     <value>Use the global setting.</value>
     <comment>Description for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.DisplayName" xml:space="preserve">
+    <value>On</value>
+    <comment>Display name for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.Description" xml:space="preserve">
     <value>Always draw the RoleNameShapes.</value>
     <comment>Description for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.DisplayName" xml:space="preserve">
+    <value>Off</value>
+    <comment>Display name for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.Description" xml:space="preserve">
     <value>Never draw the RoleNameShapes.</value>
@@ -377,6 +397,10 @@
     <value>ModelNoteReference</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteLink&apos;</comment>
   </data>
+  <data name="ModelExplorerTitle" xml:space="preserve">
+    <value>ORM Shape Domain Model Explorer</value>
+    <comment>Model Explorer Toolwindow title</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ShapeModel.ORMDiagram</value>
     <comment>Description for DomainClass &apos;ORMDiagram&apos;</comment>
@@ -553,6 +577,14 @@
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
     <comment>Serialization Warning: AmbiguousSchema</comment>
   </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
   <data name="IgnoredPropertyValue" xml:space="preserve">
     <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
     <comment>Serialization Warning: IgnoredPropertyValue</comment>
@@ -560,6 +592,10 @@
   <data name="MissingId" xml:space="preserve">
     <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
     <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
   </data>
   <data name="NoSchema" xml:space="preserve">
     <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
@@ -571,7 +607,7 @@
   </data>
   <data name="AmbiguousMoniker" xml:space="preserve">
     <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
-    <comment>Serialization Warning: AmbiguousMoniker</comment>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
   </data>
   <data name="CannotMonikerizeElement" xml:space="preserve">
     <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
@@ -611,6 +647,22 @@ A DomainClass can be serialized as a moniker only if
   <data name="VersionMismatch" xml:space="preserve">
     <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
     <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="EntityTypeToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">

@@ -2031,7 +2031,7 @@ namespace Neumont.Tools.ORM.Shell
 			if (this.CurrentDiagram != null && this.CurrentDiagram.ActiveDiagramView != null)
 			{
 				// Get the links for which both endpoints are in our selection
-				ArrayList selectedElements = this.SelectedElements.Clone() as ArrayList;
+				ArrayList selectedElements = new ArrayList(this.SelectedElements);
 				ArrayList elementsToDraw = new ArrayList(selectedElements.Count * 2);
 				for (int i = 0; i < selectedElements.Count; i++)
 				{

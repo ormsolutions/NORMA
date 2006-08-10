@@ -35,7 +35,7 @@ namespace Neumont.Tools.Modeling.Diagrams.Design
 	/// The type of the <see cref="ModelElement"/> that <typeparamref name="TPresentationElement"/> is associated with.
 	/// </typeparam>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public abstract class PresentationElementTypeDescriptor<TPresentationElement, TModelElement> : PresentationElementTypeDescriptor
+	public class PresentationElementTypeDescriptor<TPresentationElement, TModelElement> : PresentationElementTypeDescriptor
 		where TPresentationElement : PresentationElement
 		where TModelElement : ModelElement
 	{
@@ -44,8 +44,8 @@ namespace Neumont.Tools.Modeling.Diagrams.Design
 		/// the instance of <typeparamref name="TPresentationElement"/> specified by <paramref name="presentationElement"/>
 		/// that is associated with the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
-		protected PresentationElementTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
-			: base(presentationElement, selectedElement)
+		public PresentationElementTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+			: base(parent, presentationElement, selectedElement)
 		{
 			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
 			myPresentationElement = presentationElement;

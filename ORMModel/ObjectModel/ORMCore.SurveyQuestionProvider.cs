@@ -2,7 +2,7 @@
 using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ORMCoreModel : ISurveyQuestionProvider
+	public partial class ORMCoreDomainModel : ISurveyQuestionProvider
 	{
 		private static readonly ISurveyQuestionTypeInfo[] SurveyQuestionTypeInfo = new ISurveyQuestionTypeInfo[]{
 			ProvideSurveyQuestionForElementType.Instance,
@@ -12,7 +12,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static ISurveyQuestionTypeInfo[] GetSurveyQuestionTypeInfo()
 		{
-			return (ISurveyQuestionTypeInfo[])ORMCoreModel.SurveyQuestionTypeInfo.Clone();
+			return (ISurveyQuestionTypeInfo[])ORMCoreDomainModel.SurveyQuestionTypeInfo.Clone();
 		}
 		ISurveyQuestionTypeInfo[] ISurveyQuestionProvider.GetSurveyQuestionTypeInfo()
 		{

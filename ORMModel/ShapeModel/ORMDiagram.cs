@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public ORMDiagram(Store store, params PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
-			// We don't need to do anything here, since our custom constructor in ORMDiagramBase already did what we need
+			// We don't need to do anything here, since the other constructor we called takes care of it.
 		}
 		/// <summary>
 		/// Constructor
@@ -89,7 +89,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public ORMDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
-			// We don't need to do anything here, since our custom constructor in ORMDiagramBase already did what we need
+			//turned snap to grid off because we are aligning the facttypes based
+			//on the center of the roles. Since the center of the roles is not necessarily
+			//going to be located in alignment on the grid we had to turn this off so facttypes
+			//would get properly aligned with other objects.
+			base.SnapToGrid = false;
+			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
 		#endregion
 		# region DragDrop overrides
@@ -311,7 +316,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used for simple actions
 		/// </summary>
-		public const string ORMDiagramDefaultFilterString = ORMShapeModelToolboxHelper.ToolboxFilterString;
+		public const string ORMDiagramDefaultFilterString = ORMShapeToolboxHelper.ToolboxFilterString;
 		//public const string ORMDiagramDefaultFilterString = "ORMDiagramDefaultFilterString";
 
 		/// <summary>
@@ -323,12 +328,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to connect role sequences to external constraints
 		/// </summary>
-		public const string ORMDiagramConnectExternalConstraintFilterString = ORMShapeModelToolboxHelper.ExternalConstraintConnectorFilterString;
+		public const string ORMDiagramConnectExternalConstraintFilterString = ORMShapeToolboxHelper.ExternalConstraintConnectorFilterString;
 		//public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		/// <summary>
 		/// The filter string used to create subtype relationships between object types
 		/// </summary>
-		public const string ORMDiagramCreateSubtypeFilterString = ORMShapeModelToolboxHelper.SubtypeConnectorFilterString;
+		public const string ORMDiagramCreateSubtypeFilterString = ORMShapeToolboxHelper.SubtypeConnectorFilterString;
 		//public const string ORMDiagramCreateSubtypeFilterString = "ORMDiagramCreateSubtypeFilterString";
 		/// <summary>
 		/// The filter string used to create an internal constraint. Very similar to a
@@ -343,7 +348,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to connect a role to its role player object type
 		/// </summary>
-		public const string ORMDiagramConnectRoleFilterString = ORMShapeModelToolboxHelper.RoleConnectorFilterString;
+		public const string ORMDiagramConnectRoleFilterString = ORMShapeToolboxHelper.RoleConnectorFilterString;
 		//public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
 		/// <summary>
 		/// The filter string used to create a model note. Very similar to a
@@ -354,7 +359,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The filter string used to associate a model note with other model element
 		/// </summary>
-		public const string ORMDiagramConnectModelNoteFilterString = ORMShapeModelToolboxHelper.ModelNoteConnectorFilterString;
+		public const string ORMDiagramConnectModelNoteFilterString = ORMShapeToolboxHelper.ModelNoteConnectorFilterString;
 		#endregion // Toolbox filter strings
 		#region StickyEditObject
 		/// <summary>
@@ -670,13 +675,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape and ORMBaseBinaryLinkShape children
 		/// </summary>
 		/// <param name="child">The child being configured</param>
-		protected override void OnChildConfiguring(ShapeElement child)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		protected override void OnChildConfiguring(ShapeElement child, bool createdDuringViewFixup)
 		{
 			ORMBaseShape baseShape;
 			ORMBaseBinaryLinkShape baseLinkShape;
 			if (null != (baseShape = child as ORMBaseShape))
 			{
-				baseShape.ConfiguringAsChildOf(this);
+				baseShape.ConfiguringAsChildOf(this, createdDuringViewFixup);
 			}
 			else if (null != (baseLinkShape = child as ORMBaseBinaryLinkShape))
 			{
@@ -684,7 +690,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// be set before the diagram is in place, so this property cannot be set
 				// from initialization code in the shape itself.
 				baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
-				baseLinkShape.ConfiguringAsChildOf(this);
+				baseLinkShape.ConfiguringAsChildOf(this, createdDuringViewFixup);
 			}
 		}
 		/// <summary>
@@ -1362,24 +1368,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region ORMDiagramBase class
 	public partial class ORMDiagramBase
 	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="partition"><see cref="Partition"/> where new <see cref="ORMDiagramBase"/> is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		protected ORMDiagramBase(Partition partition, PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
+		private NodeShape CreateShapeForObjectType(ObjectType newElement)
 		{
-			//turned snap to grid off because we are aligning the facttypes based
-			//on the center of the roles. Since the center of the roles is not necessarily
-			//going to be located in alignment on the grid we had to turn this off so facttypes
-			//would get properly aligned with other objects.
-			base.SnapToGrid = false;
-			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
-		}
-		private ShapeElement CreateShapeForObjectType(ObjectType newElement)
-		{
-			return FactTypeShape.ShouldDrawObjectification(newElement.NestedFactType) ? (ShapeElement)new ObjectifiedFactTypeNameShape(this.Partition) : new ObjectTypeShape(this.Partition);
+			return FactTypeShape.ShouldDrawObjectification(newElement.NestedFactType) ? (NodeShape)new ObjectifiedFactTypeNameShape(this.Partition) : new ObjectTypeShape(this.Partition);
 		}
 	}
 	#endregion // ORMDiagramBase class

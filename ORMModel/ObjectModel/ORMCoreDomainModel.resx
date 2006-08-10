@@ -309,8 +309,8 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.Scale" xml:space="preserve">
     <value>Scale</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ORMCoreModel" xml:space="preserve">
-    <value>ORMCoreModel</value>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel" xml:space="preserve">
+    <value>ORMCoreDomainModel</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel" xml:space="preserve">
     <value>ORMModel</value>

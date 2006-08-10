@@ -37,8 +37,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Initializes a new instance of <see cref="UniquenessConstraintTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public UniquenessConstraintTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public UniquenessConstraintTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 		}
 

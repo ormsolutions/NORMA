@@ -22,27 +22,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainModel OIALMetaModel
-	/// Extension rules and elements used to perform dynamic object absorption. Used by 
+	/// DomainModel OIALDomainModel
+	/// Extension rules and elements used to perform dynamic object absorption. Used by
 	/// more compact views on the ORM model.
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALMetaModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALMetaModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("cd96aa55-fcbc-47d0-93f8-30d3dacc5ff7")]
-	public partial class OIALMetaModel : DslModeling::DomainModel
+	public partial class OIALDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// OIALMetaModel domain model Id.
+		/// OIALDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0xcd96aa55, 0xfcbc, 0x47d0, 0x93, 0xf8, 0x30, 0xd3, 0xda, 0xcc, 0x5f, 0xf7);
 	
@@ -50,7 +49,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public OIALMetaModel(DslModeling::Store store)
+		public OIALDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -322,7 +321,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return OIALMetaModel.SingletonResourceManager;
+				return OIALDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -334,11 +333,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (OIALMetaModel.resourceManager == null)
+				if (OIALDomainModel.resourceManager == null)
 				{
-					OIALMetaModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(OIALMetaModel).Assembly);
+					OIALDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(OIALDomainModel).Assembly);
 				}
-				return OIALMetaModel.resourceManager;
+				return OIALDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -362,9 +361,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return OIALMetaModel.CopyClosure;
+					return OIALDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return OIALMetaModel.DeleteClosure;
+					return OIALDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -376,14 +375,14 @@ namespace Neumont.Tools.ORM.OIALModel
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (OIALMetaModel.copyClosure == null)
+				if (OIALDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new OIALMetaModelCopyClosure());
+					copyFilter.AddFilter(new OIALCopyClosure());
 					
-					OIALMetaModel.copyClosure = copyFilter;
+					OIALDomainModel.copyClosure = copyFilter;
 				}
-				return OIALMetaModel.copyClosure;
+				return OIALDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -394,14 +393,14 @@ namespace Neumont.Tools.ORM.OIALModel
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (OIALMetaModel.removeClosure == null)
+				if (OIALDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new OIALMetaModelDeleteClosure());
+					removeFilter.AddFilter(new OIALDeleteClosure());
 		
-					OIALMetaModel.removeClosure = removeFilter;
+					OIALDomainModel.removeClosure = removeFilter;
 				}
-				return OIALMetaModel.removeClosure;
+				return OIALDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -412,7 +411,20 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class OIALMetaModelDeleteClosure : DslModeling::IElementVisitorFilter
+	public partial class OIALDeleteClosure : OIALDeleteClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public OIALDeleteClosure() : base()
+		{
+		}
+	}
+	
+	/// <summary>
+	/// Base class for remove closure visitor filter
+	/// </summary>
+	public partial class OIALDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -421,7 +433,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OIALMetaModelDeleteClosure()
+		public OIALDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
 			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId, true);
@@ -483,7 +495,19 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class OIALMetaModelCopyClosure : DslModeling::IElementVisitorFilter
+	public partial class OIALCopyClosure : OIALCopyClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public OIALCopyClosure() : base()
+		{
+		}
+	}
+	/// <summary>
+	/// Base class for copy closure visitor filter
+	/// </summary>
+	public partial class OIALCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -492,7 +516,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OIALMetaModelCopyClosure()
+		public OIALCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -546,10 +570,10 @@ namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
 	/// DomainEnumeration: MandatoryConstraintModality
-	/// A list of constraint modalities for simple mandatory role constraints used in <s
-	/// ee cref="ConceptTypeHasChild"/> relationships.
+	/// A list of constraint modalities for simple mandatory role constraints used in
+	/// <see cref="ConceptTypeHasChild"/> relationships.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALMetaModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum MandatoryConstraintModality
 	{
@@ -557,19 +581,19 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// NotMandatory
 		/// See <see langword="null"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/NotMandatory.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/NotMandatory.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		NotMandatory = 0,
 		/// <summary>
 		/// Alethic
 		/// See <see cref="Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Alethic.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Alethic.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		Alethic = 1,
 		/// <summary>
 		/// Deontic
 		/// See <see cref="Neumont.Tools.ORM.ObjectModel.ConstraintModality.Deontic"/>.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		Deontic = 2,
 	}
 }

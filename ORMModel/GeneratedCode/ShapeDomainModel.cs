@@ -22,26 +22,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
+using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
-	/// DomainModel ORMShapeModel
-	/// Description for Neumont.Tools.ORM.ShapeModel.ORMShapeModel
+	/// DomainModel ORMShapeDomainModel
+	/// Description for Neumont.Tools.ORM.ShapeModel.ORMShape
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreModel*/)]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMShapeModel.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMShapeModel.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	public partial class ORMShapeModel : DslModeling::DomainModel
+	public partial class ORMShapeDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// ORMShapeModel domain model Id.
+		/// ORMShapeDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0xc52fb9a5, 0x6bf4, 0x4267, 0x87, 0x16, 0x71, 0xd7, 0x4c, 0x7a, 0xa8, 0x9c);
 	
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public ORMShapeModel(DslModeling::Store store)
+		public ORMShapeDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -236,7 +236,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return ORMShapeModel.SingletonResourceManager;
+				return ORMShapeDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -248,11 +248,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (ORMShapeModel.resourceManager == null)
+				if (ORMShapeDomainModel.resourceManager == null)
 				{
-					ORMShapeModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMShapeModel).Assembly);
+					ORMShapeDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMShapeDomainModel).Assembly);
 				}
-				return ORMShapeModel.resourceManager;
+				return ORMShapeDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -276,9 +276,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return ORMShapeModel.CopyClosure;
+					return ORMShapeDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return ORMShapeModel.DeleteClosure;
+					return ORMShapeDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -290,15 +290,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (ORMShapeModel.copyClosure == null)
+				if (ORMShapeDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new ORMShapeModelCopyClosure());
+					copyFilter.AddFilter(new ORMShapeCopyClosure());
 					copyFilter.AddFilter(new DslDiagrams::CoreDesignSurfaceCopyClosure());
 					
-					ORMShapeModel.copyClosure = copyFilter;
+					ORMShapeDomainModel.copyClosure = copyFilter;
 				}
-				return ORMShapeModel.copyClosure;
+				return ORMShapeDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -309,15 +309,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (ORMShapeModel.removeClosure == null)
+				if (ORMShapeDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new ORMShapeModelDeleteClosure());
+					removeFilter.AddFilter(new ORMShapeDeleteClosure());
 					removeFilter.AddFilter(new DslDiagrams::CoreDesignSurfaceDeleteClosure());
 		
-					ORMShapeModel.removeClosure = removeFilter;
+					ORMShapeDomainModel.removeClosure = removeFilter;
 				}
-				return ORMShapeModel.removeClosure;
+				return ORMShapeDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -355,7 +355,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class ORMShapeModelDeleteClosure : DslModeling::IElementVisitorFilter
+	public partial class ORMShapeDeleteClosure : ORMShapeDeleteClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMShapeDeleteClosure() : base()
+		{
+		}
+	}
+	
+	/// <summary>
+	/// Base class for remove closure visitor filter
+	/// </summary>
+	public partial class ORMShapeDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -364,7 +377,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMShapeModelDeleteClosure()
+		public ORMShapeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -415,7 +428,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class ORMShapeModelCopyClosure : DslModeling::IElementVisitorFilter
+	public partial class ORMShapeCopyClosure : ORMShapeCopyClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMShapeCopyClosure() : base()
+		{
+		}
+	}
+	/// <summary>
+	/// Base class for copy closure visitor filter
+	/// </summary>
+	public partial class ORMShapeCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -424,7 +449,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMShapeModelCopyClosure()
+		public ORMShapeCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -480,7 +505,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainEnumeration: ConstraintDisplayPosition
 	/// Determines where internal constraints are drawn on FactTypeShapes.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ConstraintDisplayPosition
 	{
@@ -488,13 +513,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Top
 		/// Draw the constraints above the top of the role boxes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Top.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		Top = 0,
 		/// <summary>
 		/// Bottom
 		/// Draw the constraints below the bottom of the role boxes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition/Bottom.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		Bottom = 1,
 	}
 }
@@ -502,11 +527,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// DomainEnumeration: DisplayRoleNames
-	/// Determines whether RoleNameShapes will be drawn for the Roles in the FactType re
-	/// presented by the FactTypeShape using this enumeration, overriding the global set
-	/// ting.
+	/// Determines whether RoleNameShapes will be drawn for the Roles in the FactType
+	/// represented by the FactTypeShape using this enumeration, overriding the global
+	/// setting.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum DisplayRoleNames
 	{
@@ -514,19 +539,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// UserDefault
 		/// Use the global setting.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/UserDefault.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		UserDefault = 0,
 		/// <summary>
 		/// On
 		/// Always draw the RoleNameShapes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/On.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		On = 1,
 		/// <summary>
 		/// Off
 		/// Never draw the RoleNameShapes.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		Off = 2,
 	}
 }

@@ -18,8 +18,9 @@
 	PackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"
 	Id="3EAE649F-E654-4D04-8289-C25D2C0322D8"
 	Namespace="Neumont.Tools.ORM.ObjectModel"
-	Name="ORMCoreModel"
-	DisplayName="ORMCoreModel"
+	PackageNamespace="Neumont.Tools.ORM.Shell"
+	Name="ORMCore"
+	DisplayName="ORM Core Domain Model"
 	CompanyName="Neumont University"
 	ProductName="Neumont ORM Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
@@ -1353,7 +1354,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Extension" PropertyName="ExtendedElement" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Extension" Id="0A7BBD8D-0D86-4FB4-991B-365302D1ED63">
+				<DomainRole Name="Extension" PropertyName="ExtendedElement" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Extension" Id="0A7BBD8D-0D86-4FB4-991B-365302D1ED63">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
 					</RolePlayer>
@@ -1373,7 +1374,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ExtensionModelError" PropertyName="ExtendedElement" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="ExtensionModelError" Id="1A7A14EF-01FC-4ED8-A1EA-3533511D1750">
+				<DomainRole Name="ExtensionModelError" PropertyName="ExtendedElement" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="ExtensionModelError" Id="1A7A14EF-01FC-4ED8-A1EA-3533511D1750">
 					<RolePlayer>
 						<DomainClassMoniker Name="ModelError"/>
 					</RolePlayer>
@@ -2740,7 +2741,6 @@
 			</Target>
 		</DomainRelationship>
 
-		<!-- RoleInstance is double-derived so that we can implement the Role and ObjectTypeInstance properties. -->
 		<DomainRelationship Name="RoleInstance" Namespace="Neumont.Tools.ORM.ObjectModel" AllowsDuplicates="true" InheritanceModifier="Abstract" Id="D3162C67-DE52-4B0D-802F-824E6ED5B74B">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -2937,8 +2937,16 @@
 		<ExternalType Namespace="System" Name="Object"/>
 		<ExternalType Namespace="System" Name="Boolean"/>
 		<ExternalType Namespace="System" Name="String"/>
+		<ExternalType Namespace="System" Name="Char"/>
+		<ExternalType Namespace="System" Name="Byte"/>
+		<ExternalType Namespace="System" Name="Int16"/>
 		<ExternalType Namespace="System" Name="Int32"/>
 		<ExternalType Namespace="System" Name="Int64"/>
+		<ExternalType Namespace="System" Name="SByte"/>
+		<ExternalType Namespace="System" Name="UInt16"/>
+		<ExternalType Namespace="System" Name="UInt32"/>
+		<ExternalType Namespace="System" Name="UInt64"/>
+		<ExternalType Namespace="System" Name="Single"/>
 		<ExternalType Namespace="System" Name="Double"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="FactType"/>
 		<ExternalType Namespace="Neumont.Tools.ORM.ObjectModel" Name="ReferenceMode"/>
@@ -2954,7 +2962,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -2967,7 +2975,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -3000,7 +3008,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -3030,7 +3038,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -3044,7 +3052,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -3066,13 +3074,13 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
 	</Types>
 
-	<XmlSerializationBehavior Name="ORMCoreModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ObjectModel"/>
+	<XmlSerializationBehavior Name="ORMCoreDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ObjectModel"/>
 	
 </Dsl>

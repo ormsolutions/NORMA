@@ -22,8 +22,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
@@ -74,17 +74,17 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Storage for TestProperty
 		/// </summary>
-		private global::System.String testPropertyPropertyStorage = @"Default value";
+		private global::System.String testPropertyPropertyStorage = "Default value";
 		
 		/// <summary>
 		/// Gets or sets the value of TestProperty domain property.
-		/// Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Test
-		/// Property
+		/// Description for
+		/// Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.TestProperty
 		/// </summary>
 		[global::System.ComponentModel.Editor(typeof(global::Neumont.Tools.ORM.ExtensionExample.Design.TestElementPicker), typeof(global::System.Drawing.Design.UITypeEditor))]
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/TestProperty.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(@"Default value")]
+		[global::System.ComponentModel.DefaultValue("Default value")]
 		[DslModeling::DomainObjectId("6825c613-7e2a-4d14-8277-0db3b86b1210")]
 		public global::System.String TestProperty
 		{
@@ -151,20 +151,6 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(MyCustomExtensionElement element, global::System.String oldValue, global::System.String newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -182,8 +168,8 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		
 		/// <summary>
 		/// Gets or sets the value of CustomEnum domain property.
-		/// Description for Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.Cust
-		/// omEnum
+		/// Description for
+		/// Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement.CustomEnum
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.MyCustomExtensionElement/CustomEnum.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
@@ -254,20 +240,6 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(MyCustomExtensionElement element, TestEnumeration oldValue, TestEnumeration newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -277,8 +249,8 @@ namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
 	/// DomainClass ObjectTypeRequiresMeaningfulNameError
-	/// Description for Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulN
-	/// ameError
+	/// Description for
+	/// Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.ObjectTypeRequiresMeaningfulNameError.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]

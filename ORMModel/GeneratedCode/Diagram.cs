@@ -22,9 +22,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
+using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -32,8 +32,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// Double-derived base class for DomainClass ORMDiagram
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMDiagram, global::Neumont.Tools.ORM.ObjectModel.ORMModel, global::Neumont.Tools.Modeling.Diagrams.Design.DiagramTypeDescriptor<ORMDiagram, global::Neumont.Tools.ORM.ObjectModel.ORMModel>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("948f992d-c9b8-46f9-be3c-b48347f8ab0b")]
 	public abstract partial class ORMDiagramBase : DslDiagrams::Diagram
@@ -73,7 +73,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 		#region Toolbox filters
 		private static global::System.ComponentModel.ToolboxItemFilterAttribute[] toolboxFilters = new global::System.ComponentModel.ToolboxItemFilterAttribute[] {
-					new global::System.ComponentModel.ToolboxItemFilterAttribute(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModelToolboxHelperBase.ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) };
+					new global::System.ComponentModel.ToolboxItemFilterAttribute(global::Neumont.Tools.ORM.ShapeModel.ORMShapeToolboxHelperBase.ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) };
 		
 		/// <summary>
 		/// Toolbox item filter attributes for this diagram.
@@ -116,16 +116,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <remarks>
 		/// Custom code for choosing the shapes attached to either end of a connector is called from here.
 		/// </remarks>
-		protected override void OnChildConfiguring(DslDiagrams::ShapeElement child)
+		protected override void OnChildConfiguring(DslDiagrams::ShapeElement child, bool createdDuringViewFixup)
 		{
-			DslDiagrams::NodeShape sourceShape = null;
-			DslDiagrams::NodeShape targetShape = null;
+			DslDiagrams::NodeShape sourceShape;
+			DslDiagrams::NodeShape targetShape;
 			DslDiagrams::BinaryLinkShape connector = child as DslDiagrams::BinaryLinkShape;
 			if(connector == null)
 			{
-				base.OnChildConfiguring(child);
+				base.OnChildConfiguring(child, createdDuringViewFixup);
 				return;
 			}
+			this.GetSourceAndTargetForConnector(connector, out sourceShape, out targetShape);
+			
+			global::System.Diagnostics.Debug.Assert(sourceShape != null && targetShape != null, "Unable to find source and target shapes for connector.");
+			connector.Connect(sourceShape, targetShape);
+		}
+		
+		/// <summary>
+		/// helper method to find the shapes for either end of a connector, including calling the user's custom code
+		/// </summary>
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+		internal void GetSourceAndTargetForConnector(DslDiagrams::BinaryLinkShape connector, out DslDiagrams::NodeShape sourceShape, out DslDiagrams::NodeShape targetShape)
+		{
+			sourceShape = null;
+			targetShape = null;
 			
 			if (sourceShape == null || targetShape == null)
 			{
@@ -139,9 +153,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					targetShape = endShapes[1];
 				}
 			}
-			
-			global::System.Diagnostics.Debug.Assert(sourceShape != null && targetShape != null, "Unable to find source and target shapes for connector.");
-			connector.Connect(sourceShape, targetShape);
 		}
 		
 		/// <summary>
@@ -186,57 +197,74 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		/// <summary>
+		/// Most connectors are mapped to element links, but there can be exceptions. This method tell if a connector should be
+		/// mapped to an element link.
+		/// </summary>
+		public override bool IsConnectorMappedToLink(DslDiagrams::BinaryLinkShape connector)
+		{
+			#region Check Parameters
+			global::System.Diagnostics.Debug.Assert(connector != null);
+			if (connector == null)
+				throw new global::System.ArgumentNullException("connector");
+			#endregion
+			if (connector is global::Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape)
+				return false;
+			return base.IsConnectorMappedToLink(connector);
+		}
+		
+		/// <summary>
 		/// Creates a new shape for the given model element as part of view fixup
 		/// </summary>
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Justification = "Generated code.")]
 		protected override DslDiagrams::ShapeElement CreateChildShape(DslModeling::ModelElement element)
 		{
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNote)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ModelNoteShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape newShape = new global::Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.RingConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.RolePlayerLink(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.RingConstraintShape newShape = new global::Neumont.Tools.ORM.ShapeModel.RingConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.SetConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ReadingShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape newShape = new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.Role)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.RoleNameShape(this.Partition);
-			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink(this.Partition);
-			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink(this.Partition);
-			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.FactConstraint)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink(this.Partition);
-			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint)
-			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ValueRangeLink(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape newShape = new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape newShape = new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.SubtypeLink(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.SubtypeLink newShape = new global::Neumont.Tools.ORM.ShapeModel.SubtypeLink(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.FactType)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.FactTypeShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape newShape = new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNote)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ModelNoteShape newShape = new global::Neumont.Tools.ORM.ShapeModel.ModelNoteShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
 			if(element is global::Neumont.Tools.ORM.ObjectModel.ObjectType)
 			{
@@ -244,28 +272,57 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// Either implement a method as described below, or remove the multiple mappings from the DSL definition.
 				//
 				// Method:
-				// private DslDiagrams::ShapeElement CreateShapeForObjectType(ObjectType newElement)
+				// private DslDiagrams::NodeShape CreateShapeForObjectType(ObjectType newElement)
 				// {
 				// }
 				// must be implemented in a partial class of ORMDiagramBase.  Given an instance of ObjectType,
 				// the method should return a new shape or connector instance that should be associated with this element.  If no shape or connector should be created, the method should return null.
-				return CreateShapeForObjectType((global::Neumont.Tools.ORM.ObjectModel.ObjectType)element);
+				DslDiagrams::NodeShape newShape = CreateShapeForObjectType((global::Neumont.Tools.ORM.ObjectModel.ObjectType)element);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.RingConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.Role)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.RingConstraintShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.RoleNameShape newShape = new global::Neumont.Tools.ORM.ShapeModel.RoleNameShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ValueConstraintShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ReadingShape newShape = new global::Neumont.Tools.ORM.ShapeModel.ReadingShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.SetConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.FactType)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.FactTypeShape newShape = new global::Neumont.Tools.ORM.ShapeModel.FactTypeShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
 			}
-			if(element is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType)
 			{
-				return new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape(this.Partition);
+				global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink newShape = new global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink(this.Partition);
+				return newShape;
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType)
+			{
+				global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink newShape = new global::Neumont.Tools.ORM.ShapeModel.ModelNoteLink(this.Partition);
+				return newShape;
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.FactConstraint)
+			{
+				global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink newShape = new global::Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink(this.Partition);
+				return newShape;
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)
+			{
+				global::Neumont.Tools.ORM.ShapeModel.RolePlayerLink newShape = new global::Neumont.Tools.ORM.ShapeModel.RolePlayerLink(this.Partition);
+				return newShape;
+			}
+			if(element is global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint)
+			{
+				global::Neumont.Tools.ORM.ShapeModel.ValueRangeLink newShape = new global::Neumont.Tools.ORM.ShapeModel.ValueRangeLink(this.Partition);
+				return newShape;
 			}
 			return base.CreateChildShape(element);
 		}
@@ -287,17 +344,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// ORMDiagram domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x948f992d, 0xc9b8, 0x46f9, 0xbe, 0x3c, 0xb4, 0x83, 0x47, 0xf8, 0xab, 0x0b);
-		// Constructors were not generated for this class because it had HasCustomConstructor
-		// set to true. Please provide the constructors below in a partial class.
-		///// <summary>
-		///// Constructor.
-		///// </summary>
-		///// <param name="partition">Partition where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//protected ORMDiagramBase(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: base(partition, propertyAssignments)
-		//{
-		//}
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ORMDiagramBase(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
 		#endregion
 		#region AutoPopulateShapes domain property code
 		
@@ -315,8 +370,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Gets or sets the value of AutoPopulateShapes domain property.
 		/// Description for Neumont.Tools.ORM.ShapeModel.ORMDiagram.Auto Populate Shapes
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMDiagram/AutoPopulateShapes.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainObjectId("d3f7a171-ce39-4944-be80-d55127423c83")]
 		public global::System.Boolean AutoPopulateShapes
@@ -384,20 +439,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(ORMDiagramBase element, global::System.Boolean oldValue, global::System.Boolean newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -435,334 +476,342 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	/// <summary>
-	/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
-	/// </summary>
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNote), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SubtypeFact), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RingConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeRulePriority, InitiallyDisabled=true)]
-	internal sealed partial class FixUpDiagram : DslModeling::AddRule
-	{
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-		public override void ElementAdded(DslModeling::ElementAddedEventArgs e)
+		/// <summary>
+		/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
+		/// </summary>
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RingConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNote), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SubtypeFact), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		internal sealed partial class FixUpDiagram : DslModeling::AddRule
 		{
-			if(e == null) throw new global::System.ArgumentNullException("e");
-		
-			DslModeling::ModelElement childElement = e.ModelElement;
-			DslModeling::ModelElement parentElement;
-			if(childElement is DslModeling::ElementLink)
+			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+			public override void ElementAdded(DslModeling::ElementAddedEventArgs e)
 			{
-				parentElement = GetParentForRelationship((DslModeling::ElementLink)childElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ModelNote)
-			{
-				parentElement = GetParentForModelNote((global::Neumont.Tools.ORM.ObjectModel.ModelNote)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)
-			{
-				parentElement = GetParentForReadingOrder((global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.Role)
-			{
-				parentElement = GetParentForRole((global::Neumont.Tools.ORM.ObjectModel.Role)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
-			{
-				parentElement = GetParentForValueTypeValueConstraint((global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)
-			{
-				parentElement = GetParentForSubtypeFact((global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.FactType)
-			{
-				parentElement = GetParentForFactType((global::Neumont.Tools.ORM.ObjectModel.FactType)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
-			{
-				parentElement = GetParentForFrequencyConstraint((global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.ObjectType)
-			{
-				parentElement = GetParentForObjectType((global::Neumont.Tools.ORM.ObjectModel.ObjectType)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.RingConstraint)
-			{
-				parentElement = GetParentForRingConstraint((global::Neumont.Tools.ORM.ObjectModel.RingConstraint)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
-			{
-				parentElement = GetParentForRoleValueConstraint((global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetConstraint)
-			{
-				parentElement = GetParentForSetConstraint((global::Neumont.Tools.ORM.ObjectModel.SetConstraint)e.ModelElement);
-			} else
-			if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
-			{
-				parentElement = GetParentForSetComparisonConstraint((global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)e.ModelElement);
-			} else
-			{
-				parentElement = null;
-			}
+				if(e == null) throw new global::System.ArgumentNullException("e");
 			
-			if(parentElement != null)
-			{
-				DslDiagrams::Diagram.FixUpDiagram(parentElement, childElement);
-			}
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForObjectType( global::Neumont.Tools.ORM.ObjectModel.ObjectType root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForFactType( global::Neumont.Tools.ORM.ObjectModel.FactType root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForSubtypeFact( global::Neumont.Tools.ORM.ObjectModel.FactType root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForSetComparisonConstraint( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForSetConstraint( global::Neumont.Tools.ORM.ObjectModel.SetConstraint root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForFrequencyConstraint( global::Neumont.Tools.ORM.ObjectModel.SetConstraint root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForRingConstraint( global::Neumont.Tools.ORM.ObjectModel.SetConstraint root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForRoleValueConstraint( global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.RoleBase root2 = root.Role as global::Neumont.Tools.ORM.ObjectModel.RoleBase;
-			if ( root2 == null ) return null;
-			// Segments 2 and 3
-			global::Neumont.Tools.ORM.ObjectModel.FactType root4 = root2.FactType;
-			if ( root4 == null ) return null;
-			// Segments 4 and 5
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root4.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForValueTypeValueConstraint( global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ObjectType root2 = root.ValueType;
-			if ( root2 == null ) return null;
-			// Segments 2 and 3
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root2.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForReadingOrder( global::Neumont.Tools.ORM.ObjectModel.ReadingOrder root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.FactType root2 = root.FactType;
-			if ( root2 == null ) return null;
-			// Segments 2 and 3
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root2.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForRole( global::Neumont.Tools.ORM.ObjectModel.RoleBase root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.FactType root2 = root.FactType;
-			if ( root2 == null ) return null;
-			// Segments 2 and 3
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root2.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForModelNote( global::Neumont.Tools.ORM.ObjectModel.ModelNote root )
-		{
-			// Segments 0 and 1
-			global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
-			if ( result == null ) return null;
-			return result;
-		}
-		private static DslModeling::ModelElement GetParentForRelationship(DslModeling::ElementLink elementLink)
-		{
-			global::System.Collections.ObjectModel.ReadOnlyCollection<DslModeling::ModelElement> linkedElements = elementLink.LinkedElements;
-
-			if (linkedElements.Count == 2)
-			{
-				DslModeling::ModelElement sourceParent = DslModeling::DomainClassInfo.FindEmbeddingElement(linkedElements[0]);
-				DslModeling::ModelElement targetParent = DslModeling::DomainClassInfo.FindEmbeddingElement(linkedElements[1]);
-
-				while (sourceParent != targetParent && sourceParent != null)
+				DslModeling::ModelElement childElement = e.ModelElement;
+				if (childElement.IsDeleted)
+					return;
+				DslModeling::ModelElement parentElement;
+				if(childElement is DslModeling::ElementLink)
 				{
-					DslModeling::ModelElement curParent = targetParent;
-					while (sourceParent != curParent && curParent != null)
-					{
-						curParent = DslModeling::DomainClassInfo.FindEmbeddingElement(curParent);
-					}
-
-					if(sourceParent == curParent)
-					{
-						break;
-					}
-					else
-					{
-						sourceParent = DslModeling::DomainClassInfo.FindEmbeddingElement(sourceParent);
-					}
+					parentElement = GetParentForRelationship((DslModeling::ElementLink)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.RingConstraint)
+				{
+					parentElement = GetParentForRingConstraint((global::Neumont.Tools.ORM.ObjectModel.RingConstraint)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)
+				{
+					parentElement = GetParentForFrequencyConstraint((global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)
+				{
+					parentElement = GetParentForValueTypeValueConstraint((global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)
+				{
+					parentElement = GetParentForRoleValueConstraint((global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetConstraint)
+				{
+					parentElement = GetParentForSetConstraint((global::Neumont.Tools.ORM.ObjectModel.SetConstraint)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.ObjectType)
+				{
+					parentElement = GetParentForObjectType((global::Neumont.Tools.ORM.ObjectModel.ObjectType)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.Role)
+				{
+					parentElement = GetParentForRole((global::Neumont.Tools.ORM.ObjectModel.Role)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.ModelNote)
+				{
+					parentElement = GetParentForModelNote((global::Neumont.Tools.ORM.ObjectModel.ModelNote)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)
+				{
+					parentElement = GetParentForSubtypeFact((global::Neumont.Tools.ORM.ObjectModel.SubtypeFact)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)
+				{
+					parentElement = GetParentForSetComparisonConstraint((global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)
+				{
+					parentElement = GetParentForReadingOrder((global::Neumont.Tools.ORM.ObjectModel.ReadingOrder)childElement);
+				} else
+				if(childElement is global::Neumont.Tools.ORM.ObjectModel.FactType)
+				{
+					parentElement = GetParentForFactType((global::Neumont.Tools.ORM.ObjectModel.FactType)childElement);
+				} else
+				{
+					parentElement = null;
 				}
-
-				bool foundParent = false;
-				while (sourceParent != null)
+				
+				if(parentElement != null)
 				{
-					// ensure that the parent is or has an associated pel that can parent connectors (i.e., the diagram or a swimlane).
-					if(sourceParent is DslDiagrams::Diagram || sourceParent is DslDiagrams::SwimlaneShape)
+					DslDiagrams::Diagram.FixUpDiagram(parentElement, childElement);
+				}
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForObjectType( global::Neumont.Tools.ORM.ObjectModel.ObjectType root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForFactType( global::Neumont.Tools.ORM.ObjectModel.FactType root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForSubtypeFact( global::Neumont.Tools.ORM.ObjectModel.FactType root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForSetComparisonConstraint( global::Neumont.Tools.ORM.ObjectModel.SetComparisonConstraint root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForSetConstraint( global::Neumont.Tools.ORM.ObjectModel.SetConstraint root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForFrequencyConstraint( global::Neumont.Tools.ORM.ObjectModel.SetConstraint root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForRingConstraint( global::Neumont.Tools.ORM.ObjectModel.SetConstraint root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForRoleValueConstraint( global::Neumont.Tools.ORM.ObjectModel.RoleValueConstraint root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.RoleBase root2 = root.Role as global::Neumont.Tools.ORM.ObjectModel.RoleBase;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::Neumont.Tools.ORM.ObjectModel.FactType root4 = root2.FactType;
+				if ( root4 == null ) return null;
+				// Segments 4 and 5
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root4.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForValueTypeValueConstraint( global::Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ObjectType root2 = root.ValueType;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root2.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForReadingOrder( global::Neumont.Tools.ORM.ObjectModel.ReadingOrder root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.FactType root2 = root.FactType;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root2.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForRole( global::Neumont.Tools.ORM.ObjectModel.RoleBase root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.FactType root2 = root.FactType;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root2.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::Neumont.Tools.ORM.ObjectModel.ORMModel GetParentForModelNote( global::Neumont.Tools.ORM.ObjectModel.ModelNote root )
+			{
+				// Segments 0 and 1
+				global::Neumont.Tools.ORM.ObjectModel.ORMModel result = root.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			private static DslModeling::ModelElement GetParentForRelationship(DslModeling::ElementLink elementLink)
+			{
+				global::System.Collections.ObjectModel.ReadOnlyCollection<DslModeling::ModelElement> linkedElements = elementLink.LinkedElements;
+	
+				if (linkedElements.Count == 2)
+				{
+					DslDiagrams::ShapeElement sourceShape = linkedElements[0] as DslDiagrams::ShapeElement;
+					DslDiagrams::ShapeElement targetShape = linkedElements[1] as DslDiagrams::ShapeElement;
+	
+					if(sourceShape == null)
 					{
-						foundParent = true;
-						break;
-					}
-					else
-					{
-						DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(sourceParent);
+						DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(linkedElements[0]);
 						foreach (DslDiagrams::PresentationElement presentationElement in presentationElements)
 						{
-							if (presentationElement is DslDiagrams::Diagram || presentationElement is DslDiagrams::SwimlaneShape)
+							DslDiagrams::ShapeElement shape = presentationElement as DslDiagrams::ShapeElement;
+							if (shape != null)
 							{
-								foundParent = true;
+								sourceShape = shape;
 								break;
 							}
 						}
 					}
-
-					if (foundParent)
+					
+					if(targetShape == null)
 					{
-						break;
-					}
-					else
-					{
-						sourceParent = DslModeling::DomainClassInfo.FindEmbeddingElement(sourceParent);
-					}
-				}
-
-				global::System.Diagnostics.Debug.Assert(sourceParent != null, "unable to find common parent for view fixup.");
-				return sourceParent;
-			}
-
-			return null;
-		}
-	}
-	
-
-	/// <summary>
-	/// Reroute a connector when the role players of its underlying relationship change
-	/// </summary>
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
-	[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
-	internal sealed class ConnectorRolePlayerChanged : DslModeling::RolePlayerChangeRule
-	{
-		/// <summary>
-		/// Reroute a connector when the role players of its underlying relationship change
-		/// </summary>
-		public override void RolePlayerChanged(DslModeling::RolePlayerChangedEventArgs e)
-		{
-			if (e == null) throw new global::System.ArgumentNullException("e");
-
-			bool fixupFirstRolePlayer = e.DomainRelationship.DomainRoles[0] == e.DomainRole;
-	
-			global::System.Collections.ObjectModel.ReadOnlyCollection<DslDiagrams::PresentationViewsSubject> connectorLinks = DslDiagrams::PresentationViewsSubject.GetLinksToPresentation(e.ElementLink);
-			foreach (DslDiagrams::PresentationViewsSubject connectorLink in connectorLinks)
-			{
-				// Fix up any binary link shapes attached to the element link.
-				DslDiagrams::BinaryLinkShape linkShape = connectorLink.Presentation as DslDiagrams::BinaryLinkShape;
-				if (linkShape != null)
-				{
-					if(e.NewRolePlayer != null)
-					{	
-						if (fixupFirstRolePlayer)
+						DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> presentationElements = DslDiagrams::PresentationViewsSubject.GetPresentation(linkedElements[1]);
+						foreach (DslDiagrams::PresentationElement presentationElement in presentationElements)
 						{
-							// Loop through shapes mapped to new role player, find the first one with a matching diagram to the link, and reroute.
-							DslDiagrams::NodeShape fromShape = null;
-							global::System.Collections.ObjectModel.ReadOnlyCollection<DslDiagrams::PresentationViewsSubject> shapeLinks = DslDiagrams::PresentationViewsSubject.GetLinksToPresentation(e.NewRolePlayer);
-							foreach (DslDiagrams::PresentationViewsSubject shapeLink in shapeLinks)
+							DslDiagrams::ShapeElement shape = presentationElement as DslDiagrams::ShapeElement;
+							if (shape != null)
 							{
-								DslDiagrams::NodeShape shape = shapeLink.Presentation as DslDiagrams::NodeShape;
-								if (shape.Diagram == linkShape.Diagram)
-								{
-									fromShape = shape;
-									break;
-								}
+								targetShape = shape;
+								break;
 							}
-							linkShape.FromShape = fromShape;
+						}
+					}
+					
+					if(sourceShape == null || targetShape == null)
+					{
+						global::System.Diagnostics.Debug.Fail("Unable to find source and/or target shape for view fixup.");
+						return null;
+					}
+	
+					DslDiagrams::ShapeElement sourceParent = sourceShape.ParentShape;
+					DslDiagrams::ShapeElement targetParent = targetShape.ParentShape;
+	
+					while (sourceParent != targetParent && sourceParent != null)
+					{
+						DslDiagrams::ShapeElement curParent = targetParent;
+						while (sourceParent != curParent && curParent != null)
+						{
+							curParent = curParent.ParentShape;
+						}
+	
+						if(sourceParent == curParent)
+						{
+							break;
 						}
 						else
 						{
-							// Loop through shapes mapped to new role player, find the first one with a matching diagram to the link, and reroute.
-							DslDiagrams::NodeShape toShape = null;
-							global::System.Collections.ObjectModel.ReadOnlyCollection<DslDiagrams::PresentationViewsSubject> links = DslDiagrams::PresentationViewsSubject.GetLinksToPresentation(e.NewRolePlayer);
-							foreach (DslDiagrams::PresentationViewsSubject shapeLink in links)
-							{
-								DslDiagrams::NodeShape shape = shapeLink.Presentation as DslDiagrams::NodeShape;
-								if (shape.Diagram == linkShape.Diagram)
-								{
-									toShape = shape;
-									break;
-								}
-							}
-							linkShape.ToShape = toShape;
+							sourceParent = sourceParent.ParentShape;
 						}
 					}
-					else
+	
+					while (sourceParent != null)
 					{
-						// delete the connector if the new role player is null.
-						linkShape.Delete();
+						// ensure that the parent can parent connectors (i.e., a diagram or a swimlane).
+						if(sourceParent is DslDiagrams::Diagram || sourceParent is DslDiagrams::SwimlaneShape)
+						{
+							break;
+						}
+						else
+						{
+							sourceParent = sourceParent.ParentShape;
+						}
+					}
+	
+					global::System.Diagnostics.Debug.Assert(sourceParent != null && sourceParent.ModelElement != null, "Unable to find common parent for view fixup.");
+					return sourceParent.ModelElement;
+				}
+	
+				return null;
+			}
+		}
+		
+	
+		/// <summary>
+		/// Reroute a connector when the role players of its underlying relationship change
+		/// </summary>
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::Neumont.Tools.ORM.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		internal sealed class ConnectorRolePlayerChanged : DslModeling::RolePlayerChangeRule
+		{
+			/// <summary>
+			/// Reroute a connector when the role players of its underlying relationship change
+			/// </summary>
+			public override void RolePlayerChanged(DslModeling::RolePlayerChangedEventArgs e)
+			{
+				if (e == null) throw new global::System.ArgumentNullException("e");
+	
+				global::System.Collections.ObjectModel.ReadOnlyCollection<DslDiagrams::PresentationViewsSubject> connectorLinks = DslDiagrams::PresentationViewsSubject.GetLinksToPresentation(e.ElementLink);
+				foreach (DslDiagrams::PresentationViewsSubject connectorLink in connectorLinks)
+				{
+					// Fix up any binary link shapes attached to the element link.
+					DslDiagrams::BinaryLinkShape linkShape = connectorLink.Presentation as DslDiagrams::BinaryLinkShape;
+					if (linkShape != null)
+					{
+						global::Neumont.Tools.ORM.ShapeModel.ORMDiagram diagram = linkShape.Diagram as global::Neumont.Tools.ORM.ShapeModel.ORMDiagram;
+						if (diagram != null)
+						{
+							if (e.NewRolePlayer != null)
+							{
+								DslDiagrams::NodeShape fromShape;
+								DslDiagrams::NodeShape toShape;
+								diagram.GetSourceAndTargetForConnector(linkShape, out fromShape, out toShape);
+								if (fromShape != null && toShape != null)
+								{
+									if (!object.Equals(fromShape, linkShape.FromShape))
+									{
+										linkShape.FromShape = fromShape;
+									}
+									if (!object.Equals(linkShape.ToShape, toShape))
+									{
+										linkShape.ToShape = toShape;
+									}
+								}
+								else
+								{
+									// delete the connector if we cannot find an appropriate target shape.
+									linkShape.Delete();
+								}
+							}
+							else
+							{
+								// delete the connector if the new role player is null.
+								linkShape.Delete();
+							}
+						}
 					}
 				}
 			}
 		}
 	}
-}

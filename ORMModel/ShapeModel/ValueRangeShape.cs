@@ -94,7 +94,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Move the name label above the parent shape
 		/// </summary>
-		public override void PlaceAsChildOf(NodeShape parent)
+		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 			AutoResize();
 			SizeD size = Size;

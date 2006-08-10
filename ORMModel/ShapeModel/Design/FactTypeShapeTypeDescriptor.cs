@@ -41,8 +41,8 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		/// Initializes a new instance of <see cref="FactTypeShapeTypeDescriptor{TPresentationElement,TModelElement}"/>
 		/// for <paramref name="presentationElement"/>.
 		/// </summary>
-		public FactTypeShapeTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
-			: base(presentationElement, selectedElement)
+		public FactTypeShapeTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+			: base(parent, presentationElement, selectedElement)
 		{
 		}
 

@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.ObjectModel.ORMCoreModel.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMCoreModel</value>
-    <comment>Description for DslLibrary &apos;ORMCoreModel&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ORMCore</value>
+    <comment>Description for DslLibrary &apos;ORMCore&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ORMCoreModel.DisplayName" xml:space="preserve">
-    <value>ORMCoreModel</value>
-    <comment>DisplayName for DslLibrary &apos;ORMCoreModel&apos;</comment>
+  <data name="Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DisplayName" xml:space="preserve">
+    <value>ORM Core Domain Model</value>
+    <comment>DisplayName for DslLibrary &apos;ORMCore&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModelElement.Description" xml:space="preserve">
     <value></value>
@@ -4037,113 +4037,225 @@
     <value>Value Type Instance</value>
     <comment>PropertyDisplayName for DomainRole &apos;CompatibleValueTypeInstanceValueError&apos; on DomainRelationship &apos;ValueTypeInstanceHasCompatibleValueTypeInstanceValueError&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.DisplayName" xml:space="preserve">
+    <value>Derived</value>
+    <comment>Display name for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.Description" xml:space="preserve">
     <value>Fact is derived but should not be stored.</value>
     <comment>Description for EnumerationLiteral &apos;Derived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/DerivedAndStored.DisplayName" xml:space="preserve">
+    <value>DerivedAndStored</value>
+    <comment>Display name for EnumerationLiteral &apos;DerivedAndStored&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/DerivedAndStored.Description" xml:space="preserve">
     <value>Fact is derived and should be stored.</value>
     <comment>Description for EnumerationLiteral &apos;DerivedAndStored&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/PartiallyDerived.DisplayName" xml:space="preserve">
+    <value>PartiallyDerived</value>
+    <comment>Display name for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.DerivationStorageType/PartiallyDerived.Description" xml:space="preserve">
     <value>Fact is partially derived and should be stored.</value>
     <comment>Description for EnumerationLiteral &apos;PartiallyDerived&apos; on DomainEnumeration &apos;DerivationStorageType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintModality/Alethic.DisplayName" xml:space="preserve">
+    <value>Alethic</value>
+    <comment>Display name for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;ConstraintModality&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintModality/Alethic.Description" xml:space="preserve">
     <value>The constraint must hold.</value>
     <comment>Description for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;ConstraintModality&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ConstraintModality/Deontic.DisplayName" xml:space="preserve">
+    <value>Deontic</value>
+    <comment>Display name for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;ConstraintModality&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ConstraintModality/Deontic.Description" xml:space="preserve">
     <value>The constraint should hold.</value>
     <comment>Description for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;ConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Unspecified.DisplayName" xml:space="preserve">
+    <value>Unspecified</value>
+    <comment>Display name for EnumerationLiteral &apos;Unspecified&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Unspecified.Description" xml:space="preserve">
     <value>Insufficient constraints are present to determine the user intention.</value>
     <comment>Description for EnumerationLiteral &apos;Unspecified&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Indeterminate.DisplayName" xml:space="preserve">
+    <value>Indeterminate</value>
+    <comment>Display name for EnumerationLiteral &apos;Indeterminate&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Indeterminate.Description" xml:space="preserve">
     <value>Too many constraints are present to determine the user intention.</value>
     <comment>Description for EnumerationLiteral &apos;Indeterminate&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToOne.DisplayName" xml:space="preserve">
+    <value>ZeroToOne</value>
+    <comment>Display name for EnumerationLiteral &apos;ZeroToOne&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToOne.Description" xml:space="preserve">
     <value>0..1</value>
     <comment>Description for EnumerationLiteral &apos;ZeroToOne&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToMany.DisplayName" xml:space="preserve">
+    <value>ZeroToMany</value>
+    <comment>Display name for EnumerationLiteral &apos;ZeroToMany&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToMany.Description" xml:space="preserve">
     <value>0..*</value>
     <comment>Description for EnumerationLiteral &apos;ZeroToMany&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ExactlyOne.DisplayName" xml:space="preserve">
+    <value>ExactlyOne</value>
+    <comment>Display name for EnumerationLiteral &apos;ExactlyOne&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ExactlyOne.Description" xml:space="preserve">
     <value>1</value>
     <comment>Description for EnumerationLiteral &apos;ExactlyOne&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/OneToMany.DisplayName" xml:space="preserve">
+    <value>OneToMany</value>
+    <comment>Display name for EnumerationLiteral &apos;OneToMany&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/OneToMany.Description" xml:space="preserve">
     <value>1..*</value>
     <comment>Description for EnumerationLiteral &apos;OneToMany&apos; on DomainEnumeration &apos;RoleMultiplicity&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Undefined.DisplayName" xml:space="preserve">
+    <value>Undefined</value>
+    <comment>Display name for EnumerationLiteral &apos;Undefined&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Undefined.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Undefined&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.DisplayName" xml:space="preserve">
+    <value>Irreflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;Irreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Irreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Symmetric.DisplayName" xml:space="preserve">
+    <value>Symmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;Symmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Symmetric.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Symmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Asymmetric.DisplayName" xml:space="preserve">
+    <value>Asymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;Asymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Asymmetric.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Asymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Antisymmetric.DisplayName" xml:space="preserve">
+    <value>Antisymmetric</value>
+    <comment>Display name for EnumerationLiteral &apos;Antisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Antisymmetric.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Antisymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Intransitive.DisplayName" xml:space="preserve">
+    <value>Intransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;Intransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Intransitive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Intransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Acyclic.DisplayName" xml:space="preserve">
+    <value>Acyclic</value>
+    <comment>Display name for EnumerationLiteral &apos;Acyclic&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/Acyclic.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;Acyclic&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/AcyclicIntransitive.DisplayName" xml:space="preserve">
+    <value>AcyclicIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;AcyclicIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/AcyclicIntransitive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;AcyclicIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/AsymmetricIntransitive.DisplayName" xml:space="preserve">
+    <value>AsymmetricIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;AsymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;AsymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIntransitive.DisplayName" xml:space="preserve">
+    <value>SymmetricIntransitive</value>
+    <comment>Display name for EnumerationLiteral &apos;SymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIntransitive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;SymmetricIntransitive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIrreflexive.DisplayName" xml:space="preserve">
+    <value>SymmetricIrreflexive</value>
+    <comment>Display name for EnumerationLiteral &apos;SymmetricIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;SymmetricIrreflexive&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeType/General.DisplayName" xml:space="preserve">
+    <value>General</value>
+    <comment>Display name for EnumerationLiteral &apos;General&apos; on DomainEnumeration &apos;ReferenceModeType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeType/General.Description" xml:space="preserve">
     <value>That other reference mode type.</value>
     <comment>Description for EnumerationLiteral &apos;General&apos; on DomainEnumeration &apos;ReferenceModeType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeType/Popular.DisplayName" xml:space="preserve">
+    <value>Popular</value>
+    <comment>Display name for EnumerationLiteral &apos;Popular&apos; on DomainEnumeration &apos;ReferenceModeType&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeType/Popular.Description" xml:space="preserve">
     <value>The &apos;in&apos; and &apos;fashionable&apos; reference mode type.</value>
     <comment>Description for EnumerationLiteral &apos;Popular&apos; on DomainEnumeration &apos;ReferenceModeType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeType/UnitBased.DisplayName" xml:space="preserve">
+    <value>UnitBased</value>
+    <comment>Display name for EnumerationLiteral &apos;UnitBased&apos; on DomainEnumeration &apos;ReferenceModeType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ReferenceModeType/UnitBased.Description" xml:space="preserve">
     <value>The reference mode type based on units.</value>
     <comment>Description for EnumerationLiteral &apos;UnitBased&apos; on DomainEnumeration &apos;ReferenceModeType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/NotSet.DisplayName" xml:space="preserve">
+    <value>NotSet</value>
+    <comment>Display name for EnumerationLiteral &apos;NotSet&apos; on DomainEnumeration &apos;RangeInclusion&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/NotSet.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet</value>
     <comment>Description for EnumerationLiteral &apos;NotSet&apos; on DomainEnumeration &apos;RangeInclusion&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/Open.DisplayName" xml:space="preserve">
+    <value>Open</value>
+    <comment>Display name for EnumerationLiteral &apos;Open&apos; on DomainEnumeration &apos;RangeInclusion&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/Open.Description" xml:space="preserve">
     <value>Indicates the specific value is not included in the range.</value>
     <comment>Description for EnumerationLiteral &apos;Open&apos; on DomainEnumeration &apos;RangeInclusion&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/Closed.DisplayName" xml:space="preserve">
+    <value>Closed</value>
+    <comment>Display name for EnumerationLiteral &apos;Closed&apos; on DomainEnumeration &apos;RangeInclusion&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RangeInclusion/Closed.Description" xml:space="preserve">
     <value>Indicates the specific value is included in the range.</value>
@@ -4153,6 +4265,14 @@
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
     <comment>Serialization Warning: AmbiguousSchema</comment>
   </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
   <data name="IgnoredPropertyValue" xml:space="preserve">
     <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
     <comment>Serialization Warning: IgnoredPropertyValue</comment>
@@ -4160,6 +4280,10 @@
   <data name="MissingId" xml:space="preserve">
     <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
     <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
   </data>
   <data name="NoSchema" xml:space="preserve">
     <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
@@ -4171,7 +4295,7 @@
   </data>
   <data name="AmbiguousMoniker" xml:space="preserve">
     <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
-    <comment>Serialization Warning: AmbiguousMoniker</comment>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
   </data>
   <data name="CannotMonikerizeElement" xml:space="preserve">
     <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
@@ -4211,6 +4335,22 @@ A DomainClass can be serialized as a moniker only if
   <data name="VersionMismatch" xml:space="preserve">
     <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
     <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
   </data>
 </root>
 

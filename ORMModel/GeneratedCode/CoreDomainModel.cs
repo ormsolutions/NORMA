@@ -22,25 +22,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// DomainModel ORMCoreModel
-	/// Description for Neumont.Tools.ORM.ObjectModel.ORMCoreModel
+	/// DomainModel ORMCoreDomainModel
+	/// Description for Neumont.Tools.ORM.ObjectModel.ORMCore
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMCoreModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMCoreModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("3eae649f-e654-4d04-8289-c25d2c0322d8")]
-	public partial class ORMCoreModel : DslModeling::DomainModel
+	public partial class ORMCoreDomainModel : DslModeling::DomainModel
 	{
 		#region Constructor, domain model Id
 	
 		/// <summary>
-		/// ORMCoreModel domain model Id.
+		/// ORMCoreDomainModel domain model Id.
 		/// </summary>
 		public static readonly global::System.Guid DomainModelId = new global::System.Guid(0x3eae649f, 0xe654, 0x4d04, 0x82, 0x89, 0xc2, 0x5d, 0x2c, 0x03, 0x22, 0xd8);
 	
@@ -48,7 +47,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Constructor.
 		/// </summary>
 		/// <param name="store">Store containing the domain model.</param>
-		public ORMCoreModel(DslModeling::Store store)
+		public ORMCoreDomainModel(DslModeling::Store store)
 			: base(store, DomainModelId)
 		{
 		}
@@ -895,7 +894,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return ORMCoreModel.SingletonResourceManager;
+				return ORMCoreDomainModel.SingletonResourceManager;
 			}
 		}
 	
@@ -907,11 +906,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				if (ORMCoreModel.resourceManager == null)
+				if (ORMCoreDomainModel.resourceManager == null)
 				{
-					ORMCoreModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMCoreModel).Assembly);
+					ORMCoreDomainModel.resourceManager = new global::System.Resources.ResourceManager(ResourceBaseName, typeof(ORMCoreDomainModel).Assembly);
 				}
-				return ORMCoreModel.resourceManager;
+				return ORMCoreDomainModel.resourceManager;
 			}
 		}
 		#endregion
@@ -935,9 +934,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			switch (type)
 			{
 				case DslModeling::ClosureType.CopyClosure:
-					return ORMCoreModel.CopyClosure;
+					return ORMCoreDomainModel.CopyClosure;
 				case DslModeling::ClosureType.DeleteClosure:
-					return ORMCoreModel.DeleteClosure;
+					return ORMCoreDomainModel.DeleteClosure;
 			}
 			return base.GetClosureFilter(type, rootElements);
 		}
@@ -949,14 +948,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (ORMCoreModel.copyClosure == null)
+				if (ORMCoreDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new ORMCoreModelCopyClosure());
+					copyFilter.AddFilter(new ORMCoreCopyClosure());
 					
-					ORMCoreModel.copyClosure = copyFilter;
+					ORMCoreDomainModel.copyClosure = copyFilter;
 				}
-				return ORMCoreModel.copyClosure;
+				return ORMCoreDomainModel.copyClosure;
 			}
 		}
 		/// <summary>
@@ -967,14 +966,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				// Incorporate all of the closures from the models we extend
-				if (ORMCoreModel.removeClosure == null)
+				if (ORMCoreDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new ORMCoreModelDeleteClosure());
+					removeFilter.AddFilter(new ORMCoreDeleteClosure());
 		
-					ORMCoreModel.removeClosure = removeFilter;
+					ORMCoreDomainModel.removeClosure = removeFilter;
 				}
-				return ORMCoreModel.removeClosure;
+				return ORMCoreDomainModel.removeClosure;
 			}
 		}
 		#endregion
@@ -985,7 +984,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class ORMCoreModelDeleteClosure : DslModeling::IElementVisitorFilter
+	public partial class ORMCoreDeleteClosure : ORMCoreDeleteClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMCoreDeleteClosure() : base()
+		{
+		}
+	}
+	
+	/// <summary>
+	/// Base class for remove closure visitor filter
+	/// </summary>
+	public partial class ORMCoreDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -994,7 +1006,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMCoreModelDeleteClosure()
+		public ORMCoreDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
 			DomainRoles.Add(global::Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionDomainRoleId, true);
@@ -1104,7 +1116,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class ORMCoreModelCopyClosure : DslModeling::IElementVisitorFilter
+	public partial class ORMCoreCopyClosure : ORMCoreCopyClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMCoreCopyClosure() : base()
+		{
+		}
+	}
+	/// <summary>
+	/// Base class for copy closure visitor filter
+	/// </summary>
+	public partial class ORMCoreCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -1113,7 +1137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMCoreModelCopyClosure()
+		public ORMCoreCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -1167,10 +1191,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: DerivationStorageType
-	/// Used to specify how/whether the contents of the fact should be stored by generat
-	/// ed systems.
+	/// Used to specify how/whether the contents of the fact should be stored by
+	/// generated systems.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum DerivationStorageType
 	{
@@ -1178,19 +1202,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Derived
 		/// Fact is derived but should not be stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/Derived.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Derived = 0,
 		/// <summary>
 		/// DerivedAndStored
 		/// Fact is derived and should be stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/DerivedAndStored.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/DerivedAndStored.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		DerivedAndStored = 1,
 		/// <summary>
 		/// PartiallyDerived
 		/// Fact is partially derived and should be stored.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/PartiallyDerived.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.DerivationStorageType/PartiallyDerived.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		PartiallyDerived = 2,
 	}
 }
@@ -1200,7 +1224,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: ConstraintModality
 	/// Description for Neumont.Tools.ORM.ObjectModel.ConstraintModality
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ConstraintModality
 	{
@@ -1208,13 +1232,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Alethic
 		/// The constraint must hold.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintModality/Alethic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintModality/Alethic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Alethic = 0,
 		/// <summary>
 		/// Deontic
 		/// The constraint should hold.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintModality/Deontic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ConstraintModality/Deontic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Deontic = 1,
 	}
 }
@@ -1222,12 +1246,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// DomainEnumeration: RoleMultiplicity
-	/// Defines the multiplicity for the roles. The role multiplicity is currently displ
-	/// ayed only on roles associated with binary fact types and is calculated based on 
-	/// the existing mandatory and internal uniqueness constraints associated with the f
-	/// act.
+	/// Defines the multiplicity for the roles. The role multiplicity is currently
+	/// displayed only on roles associated with binary fact types and is calculated
+	/// based on the existing mandatory and internal uniqueness constraints associated
+	/// with the fact.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RoleMultiplicity
 	{
@@ -1236,38 +1260,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Insufficient constraints are present to determine the user intention.
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Unspecified.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Unspecified.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Unspecified = 0,
 		/// <summary>
 		/// Indeterminate
 		/// Too many constraints are present to determine the user intention.
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Indeterminate.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/Indeterminate.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Indeterminate = 1,
 		/// <summary>
 		/// ZeroToOne
 		/// 0..1
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToOne.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToOne.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		ZeroToOne = 2,
 		/// <summary>
 		/// ZeroToMany
 		/// 0..*
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToMany.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ZeroToMany.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		ZeroToMany = 3,
 		/// <summary>
 		/// ExactlyOne
 		/// 1
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ExactlyOne.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/ExactlyOne.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		ExactlyOne = 4,
 		/// <summary>
 		/// OneToMany
 		/// 1..*
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/OneToMany.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleMultiplicity/OneToMany.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		OneToMany = 5,
 	}
 }
@@ -1277,7 +1301,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: RingConstraintType
 	/// Description for Neumont.Tools.ORM.ObjectModel.RingConstraintType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RingConstraintType
 	{
@@ -1285,57 +1309,57 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Undefined
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Undefined.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Undefined.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Undefined = 0,
 		/// <summary>
 		/// Irreflexive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Irreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Irreflexive = 1,
 		/// <summary>
 		/// Symmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Symmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Symmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Symmetric = 2,
 		/// <summary>
 		/// Asymmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Asymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Asymmetric = 3,
 		/// <summary>
 		/// Antisymmetric
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Antisymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Antisymmetric.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Antisymmetric = 4,
 		/// <summary>
 		/// Intransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Intransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Intransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Intransitive = 5,
 		/// <summary>
 		/// Acyclic
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Acyclic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/Acyclic.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Acyclic = 6,
 		/// <summary>
 		/// AcyclicIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AcyclicIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AcyclicIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		AcyclicIntransitive = 7,
 		/// <summary>
 		/// AsymmetricIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/AsymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		AsymmetricIntransitive = 8,
 		/// <summary>
 		/// SymmetricIntransitive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIntransitive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		SymmetricIntransitive = 9,
 		/// <summary>
 		/// SymmetricIrreflexive
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RingConstraintType/SymmetricIrreflexive.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		SymmetricIrreflexive = 10,
 	}
 }
@@ -1345,7 +1369,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: ReferenceModeType
 	/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ReferenceModeType
 	{
@@ -1353,19 +1377,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// General
 		/// That other reference mode type.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/General.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/General.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		General = 0,
 		/// <summary>
 		/// Popular
 		/// The 'in' and 'fashionable' reference mode type.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/Popular.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/Popular.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Popular = 1,
 		/// <summary>
 		/// UnitBased
 		/// The reference mode type based on units.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/UnitBased.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ReferenceModeType/UnitBased.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		UnitBased = 2,
 	}
 }
@@ -1375,7 +1399,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: RangeInclusion
 	/// Description for Neumont.Tools.ORM.ObjectModel.RangeInclusion
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RangeInclusion
 	{
@@ -1384,19 +1408,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Description for Neumont.Tools.ORM.ObjectModel.RangeInclusion.NotSet
 		/// </summary>
 		[global::System.ComponentModel.Browsable(false)]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/NotSet.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/NotSet.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		NotSet = 0,
 		/// <summary>
 		/// Open
 		/// Indicates the specific value is not included in the range.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/Open.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/Open.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Open = 1,
 		/// <summary>
 		/// Closed
 		/// Indicates the specific value is included in the range.
 		/// </summary>
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/Closed.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RangeInclusion/Closed.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 		Closed = 2,
 	}
 }

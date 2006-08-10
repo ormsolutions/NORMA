@@ -44,8 +44,8 @@ namespace Neumont.Tools.Modeling.Diagrams.Design
 		/// the instance of <typeparamref name="TPresentationElement"/> specified by <paramref name="presentationElement"/>
 		/// that is associated with the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
-		public DiagramTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
-			: base(presentationElement, selectedElement)
+		public DiagramTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+			: base(parent, presentationElement, selectedElement)
 		{
 			// The PresentationElementTypeDescriptor constructor already checked presentationElement for null.
 			myPresentationElement = presentationElement;

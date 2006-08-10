@@ -32,6 +32,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public partial class ModelNoteShape
 	{
 		private static AutoSizeTextField myTextField;
+		// Now combined in DSL InitialWidth and InitialHeight
 		private const double EdgeMargin = .012;
 		/// <summary>
 		/// Gets and sets the AutoSizeTextField shape for this object
@@ -92,7 +93,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Ensure initial size
 		/// </summary>
-		public override void ConfiguringAsChildOf(NodeShape parent)
+		public override void ConfiguringAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 			AutoResize();
 		}
@@ -115,17 +116,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return CustomFoldRectangleShapeGeometry.ShapeGeometry;
-			}
-		}
-		/// <summary>
-		/// Get an initial default size
-		/// </summary>
-		public override SizeD DefaultSize
-		{
-			get
-			{
-				// Include margin 
-				return new SizeD(.3 + EdgeMargin, .12 + EdgeMargin);
 			}
 		}
 		/// <summary>

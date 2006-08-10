@@ -40,8 +40,8 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		/// Initializes a new instance of <see cref="ORMBaseShapeTypeDescriptor{TPresentationElement,TModelElement}"/>
 		/// for <paramref name="presentationElement"/>.
 		/// </summary>
-		public ORMBaseShapeTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
-			: base(presentationElement, selectedElement)
+		public ORMBaseShapeTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+			: base(parent, presentationElement, selectedElement)
 		{
 		}
 

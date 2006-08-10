@@ -22,15 +22,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
 	/// DomainClass OIALNamedElement
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainObjectId("aa4c1802-dd46-43f6-a580-724cdd7ed5eb")]
@@ -62,14 +62,14 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// Storage for Name
 		/// </summary>
-		private global::System.String namePropertyStorage = @"";
+		private global::System.String namePropertyStorage = string.Empty;
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
 		/// Description for Neumont.Tools.ORM.OIALModel.OIALNamedElement.Name
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement/Name.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement/Name.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement/Name.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALNamedElement/Name.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
 		[DslModeling::DomainObjectId("ec43ba80-66b1-4f5b-8ae4-ba49b91051e3")]
 		public global::System.String Name
@@ -137,20 +137,6 @@ namespace Neumont.Tools.ORM.OIALModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(OIALNamedElement element, global::System.String oldValue, global::System.String newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -161,8 +147,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass OIALModel
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8bdc608e-901d-44f5-b6b6-18e5199e9768")]
 	public partial class OIALModel : OIALNamedElement
@@ -196,6 +182,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ChildSequenceConstraintCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ChildSequenceConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.OIALModel
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<ChildSequenceConstraint> ChildSequenceConstraintCollection
 		{
@@ -209,6 +197,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region InformationTypeFormatCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of InformationTypeFormatCollection.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.Model
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<InformationTypeFormat> InformationTypeFormatCollection
 		{
@@ -222,6 +211,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ConceptTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ConceptTypeCollection.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.Model
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<ConceptType> ConceptTypeCollection
 		{
@@ -235,6 +225,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ORMModel opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ORMModel.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModel
 		/// </summary>
 		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
 		{
@@ -275,12 +266,12 @@ namespace Neumont.Tools.ORM.OIALModel
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.ConceptType.DomainClassId)) 
 				{
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.ConceptType.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DomainClassId)) 
 				{
 					return true;
 				}
@@ -308,43 +299,92 @@ namespace Neumont.Tools.ORM.OIALModel
 			// need to support this case.
 			if ( sourceElement == null ) throw new global::System.ArgumentNullException("sourceElement");
 		
+				
+			global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint sourceChildSequenceConstraint1 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint;
+			if (sourceChildSequenceConstraint1 != null)
+			{
+				// Create link for path OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollection
+				this.ChildSequenceConstraintCollection.Add(sourceChildSequenceConstraint1);
+
+				return;
+			}
+				
+			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
+			if (sourceConceptType2 != null)
+			{
+				// Create link for path OIALModelHasConceptType.ConceptTypeCollection
+				this.ConceptTypeCollection.Add(sourceConceptType2);
+
+				return;
+			}
+				
+			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
+			if (sourceInformationTypeFormat3 != null)
+			{
+				// Create link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
+				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat3);
+
+				return;
+			}
+			// Fall through to base class if this class hasn't handled the merge.
 			base.MergeRelate(sourceElement, elementGroup);
+		}
+		
+		/// <summary>
+		/// Performs operation opposite to MergeRelate - i.e. disconnects a given
+		/// element from the current one (removes links created by MergeRelate).
+		/// </summary>
+		/// <param name="sourceElement">Element to be unmerged/disconnected.</param>
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
+		protected override void MergeDisconnect(DslModeling::ModelElement sourceElement)
+		{
+			if (sourceElement == null) throw new global::System.ArgumentNullException("sourceElement");
 				
+			global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint sourceChildSequenceConstraint1 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint;
+			if (sourceChildSequenceConstraint1 != null)
 			{
-				global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint sourceChildSequenceConstraint = sourceElement as global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint;
-				if (sourceChildSequenceConstraint != null)
+				// Delete link for path OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollection
+				
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceChildSequenceConstraint1))
 				{
-					// Create link for path OIALModelHasChildSequenceConstraint.ChildSequenceConstraintCollection
-					this.ChildSequenceConstraintCollection.Add(sourceChildSequenceConstraint);
-
-					return;
+					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.OIALModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
 				}
+
+				return;
 			}
 				
+			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
+			if (sourceConceptType2 != null)
 			{
-				global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
-				if (sourceInformationTypeFormat != null)
+				// Delete link for path OIALModelHasConceptType.ConceptTypeCollection
+				
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceConceptType2))
 				{
-					// Create link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
-					this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat);
-
-					return;
+					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId);
 				}
+
+				return;
 			}
 				
+			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
+			if (sourceInformationTypeFormat3 != null)
 			{
-				global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
-				if (sourceConceptType != null)
+				// Delete link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
+				
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceInformationTypeFormat3))
 				{
-					// Create link for path OIALModelHasConceptType.ConceptTypeCollection
-					this.ConceptTypeCollection.Add(sourceConceptType);
-
-					return;
+					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				}
+
+				return;
 			}
+			// Fall through to base class if this class hasn't handled the unmerge.
+			base.MergeDisconnect(sourceElement);
 		}
 		#endregion
-		
 	}
 }
 namespace Neumont.Tools.ORM.OIALModel
@@ -352,8 +392,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ParentableType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ParentableType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ParentableType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ParentableType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ParentableType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("5b25ef27-c3e0-4f71-8230-d155d8279926")]
 	public partial class ParentableType : OIALNamedElement
@@ -391,8 +431,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ConceptType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("ac397c05-9e1a-4bed-bfc8-82d3c1ded36d")]
 	public partial class ConceptType : ParentableType
@@ -426,6 +466,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ObjectType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ObjectType.
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptType
 		/// </summary>
 		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
 		{
@@ -444,6 +485,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ReferencedConceptTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ReferencedConceptTypeCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeRef.ReferencingConceptType
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<ConceptType> ReferencedConceptTypeCollection
 		{
@@ -457,6 +500,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region InformationTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of InformationTypeCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptType
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<InformationType> InformationTypeCollection
 		{
@@ -470,6 +515,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region AbsorbingConceptType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets AbsorbingConceptType.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbedConceptType
 		/// </summary>
 		public virtual ConceptType AbsorbingConceptType
 		{
@@ -488,6 +535,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region AbsorbedConceptTypeCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of AbsorbedConceptTypeCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbingConceptType
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<ConceptType> AbsorbedConceptTypeCollection
 		{
@@ -501,6 +550,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region Model opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Model.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptType
 		/// </summary>
 		public virtual OIALModel Model
 		{
@@ -523,8 +573,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass InformationType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("08be24c4-c237-4cac-b7f0-04c4f5e27758")]
 	public partial class InformationType : ParentableType
@@ -558,6 +608,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region InformationTypeFormat opposite domain role accessor
 		/// <summary>
 		/// Gets or sets InformationTypeFormat.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationType
 		/// </summary>
 		public virtual InformationTypeFormat InformationTypeFormat
 		{
@@ -576,6 +628,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ConceptType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ConceptType.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationType
 		/// </summary>
 		public virtual ConceptType ConceptType
 		{
@@ -598,8 +652,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass InformationTypeFormat
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8d5e029e-4a1a-4ab2-a222-5d727c32f3f5")]
 	public partial class InformationTypeFormat : OIALNamedElement
@@ -633,6 +687,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ValueType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ValueType.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormat
 		/// </summary>
 		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
 		{
@@ -651,6 +707,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region Model opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Model.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormat
 		/// </summary>
 		public virtual OIALModel Model
 		{
@@ -673,8 +731,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ChildSequence
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequence.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequence.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequence.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequence.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("aefb7b15-f7d4-4d82-a1e2-000526723265")]
 	public partial class ChildSequence : OIALNamedElement
@@ -708,6 +766,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ConceptTypeHasChildCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ConceptTypeHasChildCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequence
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<ConceptTypeHasChild> ConceptTypeHasChildCollection
 		{
@@ -725,8 +785,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass Constraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.Constraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.Constraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.Constraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.Constraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("aa42253e-5ff3-48c7-aa9c-866b6155d99a")]
 	public abstract partial class Constraint : OIALNamedElement
@@ -763,8 +823,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// Gets or sets the value of Modality domain property.
 		/// Description for Neumont.Tools.ORM.OIALModel.Constraint.Modality
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.Constraint/Modality.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.Constraint/Modality.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.Constraint/Modality.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.Constraint/Modality.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("5cce8e32-9fb1-487f-9249-357584f06f7c")]
 		public global::Neumont.Tools.ORM.ObjectModel.ConstraintModality Modality
 		{
@@ -831,20 +891,6 @@ namespace Neumont.Tools.ORM.OIALModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(Constraint element, global::Neumont.Tools.ORM.ObjectModel.ConstraintModality oldValue, global::Neumont.Tools.ORM.ObjectModel.ConstraintModality newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -855,8 +901,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass SingleChildConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("48459459-ba21-451d-b433-53c3ab892719")]
 	public abstract partial class SingleChildConstraint : Constraint
@@ -880,6 +926,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ConceptTypeHasChild opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ConceptTypeHasChild.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.SingleChildConstraint
 		/// </summary>
 		public virtual ConceptTypeHasChild ConceptTypeHasChild
 		{
@@ -902,8 +950,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ChildSequenceConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("35fb67c9-7f1c-475d-be7f-9d55071af0a8")]
 	public abstract partial class ChildSequenceConstraint : Constraint
@@ -927,6 +975,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region OIALModel opposite domain role accessor
 		/// <summary>
 		/// Gets or sets OIALModel.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.ChildSequenceConstraint
 		/// </summary>
 		public virtual OIALModel OIALModel
 		{
@@ -949,8 +999,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass SingleChildUniquenessConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("d52e7116-46b7-4f80-9071-36f30541cda5")]
 	public partial class SingleChildUniquenessConstraint : SingleChildConstraint
@@ -995,11 +1045,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsPreferred domain property.
-		/// Description for Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint.IsPr
-		/// eferred
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint.IsPreferred
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint/IsPreferred.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildUniquenessConstraint/IsPreferred.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("65b13d34-bdd7-4aab-bf8a-ef9c0af33687")]
 		public global::System.Boolean IsPreferred
 		{
@@ -1066,20 +1116,6 @@ namespace Neumont.Tools.ORM.OIALModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(SingleChildUniquenessConstraint element, global::System.Boolean oldValue, global::System.Boolean newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -1090,8 +1126,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass SingleChildSequenceConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("d6bb5ad8-13d9-4fbf-a62c-a8fcd26afd2b")]
 	public abstract partial class SingleChildSequenceConstraint : ChildSequenceConstraint
@@ -1115,6 +1151,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ChildSequence opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ChildSequence.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.SingleChildSequenceConstraint
 		/// </summary>
 		public virtual MinTwoChildrenChildSequence ChildSequence
 		{
@@ -1137,8 +1175,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass MultiChildSequenceConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.MultiChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MultiChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.MultiChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MultiChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("c110669a-73e3-457d-a99e-7c6a1322c482")]
 	public abstract partial class MultiChildSequenceConstraint : ChildSequenceConstraint
@@ -1166,8 +1204,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass SingleChildFrequencyConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildFrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildFrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SingleChildFrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SingleChildFrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("469ca5b0-3512-4413-819b-56c16a82bd05")]
 	public partial class SingleChildFrequencyConstraint : SingleChildConstraint
@@ -1205,8 +1243,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ValueConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ValueConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ValueConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ValueConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("7615a579-c490-43d8-b50f-3a5d5e5530c5")]
 	public partial class ValueConstraint : SingleChildConstraint
@@ -1244,8 +1282,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ChildSequenceFrequencyConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceFrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceFrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceFrequencyConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceFrequencyConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("7cf44eac-a8f9-4e67-98fd-537988b59ba0")]
 	public partial class ChildSequenceFrequencyConstraint : SingleChildSequenceConstraint
@@ -1283,8 +1321,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass RingConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.RingConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.RingConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.RingConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.RingConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("96301ec3-a829-4bb8-a5bb-705801778612")]
 	public partial class RingConstraint : SingleChildSequenceConstraint
@@ -1322,8 +1360,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass DisjunctiveMandatoryConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.DisjunctiveMandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.DisjunctiveMandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.DisjunctiveMandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.DisjunctiveMandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("37be6a6c-12c5-446b-a229-02155a4ca85b")]
 	public partial class DisjunctiveMandatoryConstraint : SingleChildSequenceConstraint
@@ -1361,8 +1399,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass ChildSequenceUniquenessConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2bf1bcf6-f1ac-48c5-b996-ef72d9de6b1e")]
 	public partial class ChildSequenceUniquenessConstraint : SingleChildSequenceConstraint
@@ -1407,11 +1445,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// Gets or sets the value of IsPreferred domain property.
-		/// Description for Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.Is
-		/// Preferred
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint.IsPreferred
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/IsPreferred.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/IsPreferred.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceUniquenessConstraint/IsPreferred.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("0eebf253-c79b-45d3-a975-f3f59b5603ca")]
 		public global::System.Boolean IsPreferred
 		{
@@ -1478,20 +1516,6 @@ namespace Neumont.Tools.ORM.OIALModel
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
-			private new void ValueChanged(ChildSequenceUniquenessConstraint element, global::System.Boolean oldValue, global::System.Boolean newValue)
-			{
-				// UNDONE: MSBUG The base crashes if a property is changed in the same transaction
-				// as the element being deleted. The internal setValueMode is Resurrect during
-				// an undo/redo
-				if (element.Store.TransactionManager.InTransaction)
-				{
-					base.ValueChanged(element, oldValue, newValue);
-				}
-				else
-				{
-					this.OnValueChanged(element, oldValue, newValue);
-				}
-			}
 		}
 		
 		#endregion
@@ -1502,8 +1526,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass MinTwoChildrenChildSequence
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.MinTwoChildrenChildSequence.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MinTwoChildrenChildSequence.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.MinTwoChildrenChildSequence.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.MinTwoChildrenChildSequence.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("03805483-888a-448e-82fd-0104034870f5")]
 	public partial class MinTwoChildrenChildSequence : ChildSequence
@@ -1541,8 +1565,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass SubsetConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SubsetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SubsetConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.SubsetConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.SubsetConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("be0d381d-8a53-402c-9d4a-dd2032460ec2")]
 	public partial class SubsetConstraint : MultiChildSequenceConstraint
@@ -1576,6 +1600,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region SuperChildSequence opposite domain role accessor
 		/// <summary>
 		/// Gets or sets SuperChildSequence.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraint
 		/// </summary>
 		public virtual ChildSequence SuperChildSequence
 		{
@@ -1594,6 +1620,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region SubChildSequence opposite domain role accessor
 		/// <summary>
 		/// Gets or sets SubChildSequence.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSubChildSequence.SubsetConstraint
 		/// </summary>
 		public virtual ChildSequence SubChildSequence
 		{
@@ -1616,8 +1644,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainClass TwoOrMoreChildSequenceConstraint
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.TwoOrMoreChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.TwoOrMoreChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.TwoOrMoreChildSequenceConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.TwoOrMoreChildSequenceConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("66dee528-c04e-46a8-8704-842377f5064a")]
 	public abstract partial class TwoOrMoreChildSequenceConstraint : MultiChildSequenceConstraint
@@ -1641,6 +1669,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ChildSequence opposite domain role accessor
 		/// <summary>
 		/// Gets a list of ChildSequence.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.TwoOrMoreChildSequenceConstraintHasChildSequence.TwoOrMoreChildSequenceConstraint
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<ChildSequence> ChildSequence
 		{
@@ -1659,8 +1689,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// DomainClass ExclusionConstraint
 	/// </summary>
 	[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance", Justification = "Generated code.")]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ExclusionConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ExclusionConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ExclusionConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ExclusionConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8a090d5d-d2c4-46a4-9dd4-4193cc17b57a")]
 	public partial class ExclusionConstraint : TwoOrMoreChildSequenceConstraint
@@ -1699,8 +1729,8 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// DomainClass EqualityConstraint
 	/// </summary>
 	[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance", Justification = "Generated code.")]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.EqualityConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.EqualityConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALMetaModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.EqualityConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.EqualityConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("4fcdfbbe-7021-4af1-a5d7-e34b778122f4")]
 	public partial class EqualityConstraint : TwoOrMoreChildSequenceConstraint

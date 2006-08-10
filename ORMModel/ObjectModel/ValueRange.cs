@@ -371,8 +371,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateValueRangeValues);
-			ORMCoreModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateValueRangeValues);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateValueRangeOverlapError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -485,8 +485,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (constraint != null && !constraint.IsDeleted)
 			{
-				ORMCoreModel.DelayValidateElement(constraint, DelayValidateValueRangeValues);
-				ORMCoreModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeValues);
+				ORMCoreDomainModel.DelayValidateElement(constraint, DelayValidateValueRangeOverlapError);
 			}
 		}
 		#region ValueTypeHasDataType rule

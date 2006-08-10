@@ -22,12 +22,12 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public sealed partial class ORMShapeModelToolboxHelper
+	public sealed partial class ORMShapeToolboxHelper
 	{
 		private int myObjectTypeCount;
 		private int myFactTypeCount;
 		private int myUniquenessConstraintCount;
-		/// <summary>See <see cref="ORMShapeModelToolboxHelperBase.CreateElementToolPrototype"/>.</summary>
+		/// <summary>See <see cref="ORMShapeToolboxHelperBase.CreateElementToolPrototype"/>.</summary>
 		protected sealed override ElementGroupPrototype CreateElementToolPrototype(Store store, Guid domainClassId)
 		{
 			// WARNING: This method is _extremely_ order-sensitive. If the order that the toolbox items are listed

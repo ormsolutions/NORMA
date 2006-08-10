@@ -22,9 +22,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
+using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -33,14 +33,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::Neumont.Tools.Modeling.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMBaseBinaryLinkShape, DslModeling::ModelElement, Design.ORMBaseBinaryLinkShapeTypeDescriptor<ORMBaseBinaryLinkShape, DslModeling::ModelElement>>))]
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("ceff4339-48d0-4ffe-b052-2f9da167b1db")]
 	public abstract partial class ORMBaseBinaryLinkShape : DslDiagrams::BinaryLinkShape
 	{
+		
 		#region Connector styles
 		#endregion
+		
 		#region Constructors, domain class Id
 	
 		/// <summary>
@@ -65,8 +67,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass RolePlayerLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.RolePlayerLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.RolePlayerLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2b3f0aae-b1b1-4727-8862-5c34b494b499")]
 	public partial class RolePlayerLink : ORMBaseBinaryLinkShape
@@ -114,7 +116,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
-		public override System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
+		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
 			get 
 			{
@@ -143,8 +145,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
+		
 		#region Connector styles
 		#endregion
+		
 		#region Constructors, domain class Id
 	
 		/// <summary>
@@ -179,8 +183,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ExternalConstraintLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8815e6d8-238b-422c-a4b3-29fdc8de9ea5")]
 	public partial class ExternalConstraintLink : ORMBaseBinaryLinkShape
@@ -228,7 +232,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
-		public override System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
+		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
 			get 
 			{
@@ -257,8 +261,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
+		
 		#region Connector styles
 		#endregion
+		
 		#region Constructors, domain class Id
 	
 		/// <summary>
@@ -293,8 +299,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ValueRangeLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.ValueRangeLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ValueRangeLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("374e43c3-c294-49c4-8a61-3c3ca5fc86e8")]
 	public partial class ValueRangeLink : ORMBaseBinaryLinkShape
@@ -342,7 +348,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
-		public override System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
+		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
 			get 
 			{
@@ -371,8 +377,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
+		
 		#region Connector styles
 		#endregion
+		
 		#region Constructors, domain class Id
 	
 		/// <summary>
@@ -407,8 +415,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// DomainClass ModelNoteLink
 	/// Description for Neumont.Tools.ORM.ShapeModel.ModelNoteLink
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ModelNoteLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ModelNoteLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.ModelNoteLink.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.ModelNoteLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("21e7c585-bc80-446f-8517-bc4fd465971f")]
 	public partial class ModelNoteLink : ORMBaseBinaryLinkShape
@@ -456,7 +464,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// List containing decorators used by this type.
 		/// </summary>
-		public override System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
+		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
 		{
 			get 
 			{
@@ -485,8 +493,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
+		
 		#region Connector styles
 		#endregion
+		
 		#region Constructors, domain class Id
 	
 		/// <summary>

@@ -83,11 +83,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Create a store that implements IORMToolServices by deferring
 		/// all methods to this document.
 		/// </summary>
-		/// <param name="storeKey">The store to create. Expect PrimaryStoreKey</param>
-		/// <returns></returns>
-		protected override Store CreateStore(object storeKey)
+		protected override Store CreateStore()
 		{
-			Debug.Assert(storeKey == ModelingDocData.PrimaryStoreKey);
+			// UNDONE: 2006-08 DSL Tools port: Store keys don't seem to exist any more...
+			//Debug.Assert(storeKey == ModelingDocData.PrimaryStoreKey);
 			// UNDONE: (MCurland) The base implementation of this method was supposed
 			// to do nothing but create the store, so that derived documents could
 			// extend it without breaking code. However, the current implementation
@@ -232,15 +231,11 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion // IORMToolServices Implementation
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="store"></param>
-		/// <param name="storeKey"></param>
-		/// <returns></returns>
-		protected override ModelingDocStore CreateModelingDocStore(Store store, object storeKey)
+		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
+		protected override ModelingDocStore CreateModelingDocStore(Store store)
 		{
-			return new ORMModelingDocStore(ServiceProvider, store, storeKey);
+			// UNDONE: 2006-08 DSL Tools port: Store keys don't seem to exist any more...
+			return new ORMModelingDocStore(ServiceProvider, store);
 		}
 		/// <summary>
 		/// Override ModelingDocStore to provide our own UndoUnit implementation
@@ -251,8 +246,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Create a new ORMModelingDocStore. Pass through to constructor on base type
 			/// </summary>
-			public ORMModelingDocStore(IServiceProvider serviceProvider, Store store, object key)
-				: base(serviceProvider, store, key)
+			public ORMModelingDocStore(IServiceProvider serviceProvider, Store store)
+				: base(serviceProvider, store)
 			{
 			}
 			/// <summary>

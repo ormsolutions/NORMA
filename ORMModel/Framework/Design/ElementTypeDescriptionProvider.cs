@@ -27,8 +27,16 @@ namespace Neumont.Tools.Modeling.Design
 	/// <see cref="ElementTypeDescriptionProvider"/> for <typeparamref name="TModelElement"/>s.
 	/// </summary>
 	/// <remarks>
-	/// <typeparamref name="TTypeDescriptor"/> must have a constructor that takes a single parameter
-	/// of type <typeparamref name="TModelElement"/>.
+	/// <typeparamref name="TTypeDescriptor"/> must have a constructor which accepts two
+	/// parameters, with the first parameter being of type <see cref="ICustomTypeDescriptor"/>
+	/// and the second being of the type specified by <typeparamref name="TModelElement"/>.
+	/// <code>
+	/// public MyElementTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+	///		: base(parent, selectedElement)
+	/// {
+	///		// ...
+	/// }
+	/// </code>
 	/// </remarks>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public sealed class ElementTypeDescriptionProvider<TModelElement, TTypeDescriptor> : ElementTypeDescriptionProvider
@@ -38,14 +46,14 @@ namespace Neumont.Tools.Modeling.Design
 		private static readonly RuntimeTypeHandle TypeDescriptorTypeHandle = typeof(TTypeDescriptor).TypeHandle;
 		private static readonly RuntimeMethodHandle TypeDescriptorConstructorHandle = Type.GetTypeFromHandle(TypeDescriptorTypeHandle).GetConstructor(
 			BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
-			null, new Type[] { typeof(TModelElement) }, null).MethodHandle;
+			null, new Type[] { typeof(ICustomTypeDescriptor), typeof(TModelElement) }, null).MethodHandle;
 
 		/// <summary>See <see cref="ElementTypeDescriptionProvider.CreateTypeDescriptor"/>.</summary>
-		protected sealed override ElementTypeDescriptor CreateTypeDescriptor(ModelElement element)
+		protected sealed override ElementTypeDescriptor CreateTypeDescriptor(ICustomTypeDescriptor parent, ModelElement element)
 		{
 			return (ElementTypeDescriptor)((ConstructorInfo)ConstructorInfo.GetMethodFromHandle(TypeDescriptorConstructorHandle, TypeDescriptorTypeHandle)).Invoke(
 				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding,
-				null, new object[] { element as TModelElement }, null);
+				null, new object[] { parent, element as TModelElement }, null);
 		}
 	}
 }

@@ -22,16 +22,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// DomainRelationship FactTypeShapeHasRoleDisplayOrder
 	/// Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("94b3aeef-4c8d-4d1a-a7cc-42f7ebdc68a2")]
@@ -107,11 +107,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		/// <summary>
 		/// DomainRole FactTypeShape
-		/// Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Fa
-		/// ctTypeShape
+		/// Description for
+		/// Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShape
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleDisplayOrderCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/FactTypeShape.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("30c6b725-2d74-47f7-852a-d02c644a447b")]
 		public virtual FactTypeShape FactTypeShape
@@ -149,11 +149,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		
 		/// <summary>
 		/// DomainRole RoleDisplayOrder
-		/// Description for Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Ro
-		/// leDisplayOrder
+		/// Description for
+		/// Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrder
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeShapeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder/RoleDisplayOrder.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("4ca45c6e-0400-4976-af8c-0cad7c7bc2ee")]
 		public virtual global::Neumont.Tools.ORM.ObjectModel.RoleBase RoleDisplayOrder
@@ -188,9 +188,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder> GetLinksToRoleDisplayOrderCollection ( global::Neumont.Tools.ORM.ShapeModel.FactTypeShape @factTypeShape )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder> GetLinksToRoleDisplayOrderCollection ( global::Neumont.Tools.ORM.ShapeModel.FactTypeShape factTypeShapeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder>(@factTypeShape, global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShapeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder>(factTypeShapeInstance, global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.FactTypeShapeDomainRoleId);
 		}
 		#endregion
 		#region RoleDisplayOrder link accessor
@@ -199,9 +199,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder> GetLinksToFactTypeShapeCollection ( global::Neumont.Tools.ORM.ObjectModel.RoleBase @roleDisplayOrder )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder> GetLinksToFactTypeShapeCollection ( global::Neumont.Tools.ORM.ObjectModel.RoleBase roleDisplayOrderInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder>(@roleDisplayOrder, global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder>(roleDisplayOrderInstance, global::Neumont.Tools.ORM.ShapeModel.FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId);
 		}
 		#endregion
 		#region FactTypeShapeHasRoleDisplayOrder instance accessors

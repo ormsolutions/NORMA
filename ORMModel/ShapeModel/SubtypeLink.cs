@@ -29,7 +29,7 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class SubtypeLink : IModelErrorActivation
+	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -376,7 +376,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Configuring this link after it has been added to the diagram
 		/// </summary>
 		/// <param name="diagram">The parent diagram</param>
-		public override void ConfiguringAsChildOf(ORMDiagram diagram)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
 			// If we're already connected then walk away
 			if (FromShape == null && ToShape == null)
@@ -398,15 +399,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region HACK: Size property
 		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
 		// since links must be related to DomainRelationship elements, not DomainClass elements.
+		// UNDONE: 2006-08 DSL Tools port: This is called from a different location now, so it is internal rather
+		// than private.
 		/// <summary>HACK: Pretend this property isn't here.</summary>
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		private SizeD Size
+		internal SizeD Size
 		{
-			get
-			{
-				return SizeD.Empty;
-			}
 			set
 			{
 			}
@@ -481,7 +480,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Accessibility Properties
 	}
-	public partial class ORMShapeModel
+	public partial class ORMShapeDomainModel
 	{
 		#region  DisplaySubtypeLinkFixupListener
 		/// <summary>

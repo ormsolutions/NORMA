@@ -1,6 +1,6 @@
 <#@ include file="Dsl\DslResxGenerator.tt" #>
 <#@ Dsl processor="DslImportDirectiveProcessor" requires="fileName='..\..\ORMModel\ObjectModel\ORMCore.dsl'" provides="dslLibrary='ORMCoreDslLibrary'" #>
-<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='..\OIALModel.dsl'" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='..\OIALModel.dsl';validation=''" #>
 <#@ Dsl processor="DslImportEndDirectiveProcessor" #>
 <!-- Common Public License Copyright Notice -->
 <!--

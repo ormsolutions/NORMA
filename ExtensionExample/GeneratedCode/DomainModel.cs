@@ -22,9 +22,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
 namespace Neumont.Tools.ORM.ExtensionExample
 {
 	/// <summary>
@@ -223,7 +222,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				if (ExtensionDomainModel.copyClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter copyFilter = new DslModeling::ChainingElementVisitorFilter();
-					copyFilter.AddFilter(new ExtensionDomainModelCopyClosure());
+					copyFilter.AddFilter(new ExtensionCopyClosure());
 					
 					ExtensionDomainModel.copyClosure = copyFilter;
 				}
@@ -241,7 +240,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				if (ExtensionDomainModel.removeClosure == null)
 				{
 					DslModeling::ChainingElementVisitorFilter removeFilter = new DslModeling::ChainingElementVisitorFilter();
-					removeFilter.AddFilter(new ExtensionDomainModelDeleteClosure());
+					removeFilter.AddFilter(new ExtensionDeleteClosure());
 		
 					ExtensionDomainModel.removeClosure = removeFilter;
 				}
@@ -256,7 +255,20 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	/// Remove closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class ExtensionDomainModelDeleteClosure : DslModeling::IElementVisitorFilter
+	public partial class ExtensionDeleteClosure : ExtensionDeleteClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ExtensionDeleteClosure() : base()
+		{
+		}
+	}
+	
+	/// <summary>
+	/// Base class for remove closure visitor filter
+	/// </summary>
+	public partial class ExtensionDeleteClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -265,7 +277,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExtensionDomainModelDeleteClosure()
+		public ExtensionDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion
@@ -316,7 +328,19 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	/// Copy closure visitor filter
 	/// </summary>
 	[global::System.CLSCompliant(true)]
-	public  class ExtensionDomainModelCopyClosure : DslModeling::IElementVisitorFilter
+	public partial class ExtensionCopyClosure : ExtensionCopyClosureBase, DslModeling::IElementVisitorFilter
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ExtensionCopyClosure() : base()
+		{
+		}
+	}
+	/// <summary>
+	/// Base class for copy closure visitor filter
+	/// </summary>
+	public partial class ExtensionCopyClosureBase : DslModeling::IElementVisitorFilter
 	{
 		/// <summary>
 		/// DomainRoles
@@ -325,7 +349,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExtensionDomainModelCopyClosure()
+		public ExtensionCopyClosureBase()
 		{
 			#region Initialize DomainData Table
 			#endregion

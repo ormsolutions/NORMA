@@ -20,7 +20,7 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ORMCoreModel : IDeserializationFixupListenerProvider
+	public partial class ORMCoreDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation
 		/// <summary>

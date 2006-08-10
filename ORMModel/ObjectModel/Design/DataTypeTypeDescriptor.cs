@@ -37,8 +37,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Initializes a new instance of <see cref="DataTypeTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public DataTypeTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public DataTypeTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 		}
 

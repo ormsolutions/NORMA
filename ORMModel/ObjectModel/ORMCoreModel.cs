@@ -26,13 +26,13 @@ using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
-	/// A delegate callback to use with the <see cref="ORMCoreModel.DelayValidateElement"/> method.
+	/// A delegate callback to use with the <see cref="ORMCoreDomainModel.DelayValidateElement"/> method.
 	/// The delegate will be called when the current transaction finishes committing.
 	/// </summary>
 	/// <param name="element">The element to validate</param>
 	public delegate void ElementValidator(ModelElement element);
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
-	public partial class ORMCoreModel : IORMModelEventSubscriber, ISurveyNodeProvider
+	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
 		#region InitializingToolboxItems property
 		private static bool myReflectRulesSuspended;
@@ -59,7 +59,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
-		[RuleOn(typeof(ORMCoreModel), FireTime = TimeToFire.LocalCommit)] // TransactionCommittingRule
+		[RuleOn(typeof(ORMCoreDomainModel), FireTime = TimeToFire.LocalCommit)] // TransactionCommittingRule
 		private sealed class DelayValidateElements : TransactionCommittingRule
 		{
 			public sealed override void TransactionCommitting(TransactionCommitEventArgs e)

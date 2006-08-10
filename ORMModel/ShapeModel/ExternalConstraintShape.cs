@@ -40,16 +40,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private static StyleSet myDeonticClassStyleSet;
 		/// <summary>
-		/// Set the default size for this object.
-		/// </summary>
-		public override SizeD DefaultSize
-		{
-			get
-			{
-				return new SizeD(.16, .16);
-			}
-		}
-		/// <summary>
 		/// Constraints are drawn as circles
 		/// </summary>
 		public override ShapeGeometry ShapeGeometry

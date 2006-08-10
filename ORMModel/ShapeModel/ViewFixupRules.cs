@@ -26,7 +26,7 @@ using Neumont.Tools.Modeling;
 using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ORMShapeModel
+	public partial class ORMShapeDomainModel
 	{
 		#region View Fixup Rules
 		#region ModelHasObjectType fixup

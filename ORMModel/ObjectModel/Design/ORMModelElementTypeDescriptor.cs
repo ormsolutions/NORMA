@@ -40,8 +40,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Initializes a new instance of <see cref="ORMModelElementTypeDescriptor{TModelElement}"/> for
 		/// the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
-		public ORMModelElementTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public ORMModelElementTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 		}
 

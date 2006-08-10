@@ -142,13 +142,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion // ErrorCollection
 		#region MergeContext functions
-		private void MergeRelateObjectType(ObjectType objectType, ElementGroup elementGroup)
+		private void MergeRelateObjectType(ModelElement sourceElement, ElementGroup elementGroup)
 		{
+			ObjectType objectType = sourceElement as ObjectType;
 			if (elementGroup.UserData == ORMModel.ValueTypeUserDataKey)
 			{
 				objectType.DataType = DefaultDataType;
 			}
 			this.ObjectTypeCollection.Add(objectType);
+		}
+		private void MergeDisconnectObjectType(ModelElement sourceElement)
+		{
+			ObjectType objectType = sourceElement as ObjectType;
+			// Delete link for path ModelHasObjectType.ObjectTypeCollection
+			foreach (ElementLink link in ModelHasObjectType.GetLinks(this, objectType))
+			{
+				// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
+				link.Delete(ModelHasObjectType.ModelDomainRoleId, ModelHasObjectType.ObjectTypeDomainRoleId);
+			}
 		}
 		private bool CanMergeSetConstraint(ProtoElementBase rootElement, ElementGroupPrototype elementGroupPrototype)
 		{

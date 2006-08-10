@@ -39,8 +39,8 @@ namespace Neumont.Tools.Modeling.Design
 		/// Initializes a new instance of <see cref="ElementTypeDescriptor{TModelElement}"/> for
 		/// the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
-		public ElementTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public ElementTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 			// The ElementTypeDescriptor constructor already checked selectedElement for null.   
 			myModelElement = selectedElement;

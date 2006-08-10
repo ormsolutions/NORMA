@@ -77,18 +77,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classStyleSet.AddPen(DashedShapeOutlinePen, DiagramPens.ShapeOutline, settings);
 		}
 		/// <summary>
-		/// Set the default size for this object. This value is basically
-		/// ignored because the size is ultimately based on the contained
-		/// text, but it needs to be set.
-		/// </summary>
-		public override SizeD DefaultSize
-		{
-			get
-			{
-				return new SizeD(.7, .35);
-			}
-		}
-		/// <summary>
 		/// Get the shape of an object type. Controllable via the ORM Designer
 		/// tab on the options page.
 		/// </summary>

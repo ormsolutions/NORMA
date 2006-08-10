@@ -22,9 +22,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDesign = Microsoft.VisualStudio.Modeling.Design;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
+using DslModeling = global::Microsoft.VisualStudio.Modeling;
+using DslDesign = global::Microsoft.VisualStudio.Modeling.Design;
+using DslDiagrams = global::Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
@@ -34,28 +34,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <remarks>
 	/// Double-derived class to allow easier code customization.
 	/// </remarks>
-	public partial class ORMShapeModelToolboxHelper : ORMShapeModelToolboxHelperBase 
+	public partial class ORMShapeToolboxHelper : ORMShapeToolboxHelperBase 
 	{
 		/// <summary>
-		/// Constructs a new ORMShapeModelToolboxHelper.
+		/// Constructs a new ORMShapeToolboxHelper.
 		/// </summary>
-		public ORMShapeModelToolboxHelper(global::System.IServiceProvider serviceProvider)
+		public ORMShapeToolboxHelper(global::System.IServiceProvider serviceProvider)
 			: base(serviceProvider) { }
 	}
 	
 	/// <summary>
 	/// Helper class used to create and initialize toolbox items for this DSL.
 	/// </summary>
-	public abstract class ORMShapeModelToolboxHelperBase
+	public abstract class ORMShapeToolboxHelperBase
 	{
 		/// <summary>
-		/// Toolbox item filter string used to identify ORMShapeModel toolbox items.  
+		/// Toolbox item filter string used to identify ORMShape toolbox items.  
 		/// </summary>
 		/// <remarks>
 		/// See the MSDN documentation for the ToolboxItemFilterAttribute class for more information on toolbox
 		/// item filters.
 		/// </remarks>
-		public const string ToolboxFilterString = "ORMShapeModel.1.0";
+		public const string ToolboxFilterString = "ORMShape.1.0";
 		/// <summary>
 		/// Toolbox item filter string used to identify RoleConnector connector tool.
 		/// </summary>
@@ -76,9 +76,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private global::System.IServiceProvider sp;
 		
 		/// <summary>
-		/// Constructs a new ORMShapeModelToolboxHelperBase.
+		/// Constructs a new ORMShapeToolboxHelperBase.
 		/// </summary>
-		protected ORMShapeModelToolboxHelperBase(global::System.IServiceProvider serviceProvider)
+		protected ORMShapeToolboxHelperBase(global::System.IServiceProvider serviceProvider)
 		{
 			if(serviceProvider == null) throw new global::System.ArgumentNullException("serviceProvider");
 			
@@ -97,6 +97,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		/// <summary>
+		/// Returns the display name of the tab that should be opened by default when the editor is opened.
+		/// </summary>
+		public static string DefaultToolboxTabName
+		{
+			get
+			{
+				return global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SingletonResourceManager.GetString("ORM DesignerToolboxTab", global::System.Globalization.CultureInfo.CurrentUICulture);
+			}
+		}
+		
+		
+		/// <summary>
+		/// Returns the toolbox items count in the default tool box tab.
+		/// </summary>
+		public static int DefaultToolboxTabToolboxItemsCount
+		{
+			get
+			{
+				return 19;
+			}
+		}
+		
+
+		/// <summary>
 		/// Returns a list of toolbox items for use with this DSL.
 		/// </summary>
 		public virtual global::System.Collections.Generic.IList<DslDesign::ModelingToolboxItem> CreateToolboxItems()
@@ -106,10 +130,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// Create store and load domain models.
 			using(DslModeling::Store store = new DslModeling::Store(this.ServiceProvider))
 			{
-				store.LoadDomainModels(typeof(DslDiagrams::CoreDesignSurface),
-					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreModel),
-					typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel));
-				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ShapeModel.ORMShapeModel.SingletonResourceManager;
+				store.LoadDomainModels(typeof(DslDiagrams::CoreDesignSurfaceDomainModel),
+					typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel),
+					typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel));
+				global::System.Resources.ResourceManager resourceManager = global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel.SingletonResourceManager;
 				global::System.Globalization.CultureInfo resourceCulture = global::System.Globalization.CultureInfo.CurrentUICulture;
 			
 				// Open transaction so we can create model elements corresponding to toolbox items.
@@ -119,7 +143,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// Add EntityType shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"EntityTypeToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						0, // Position relative to other items in the same toolbox tab.
+						1, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("EntityTypeToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("EntityTypeToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -128,13 +152,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("EntityTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add ValueType shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ValueTypeToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						5, // Position relative to other items in the same toolbox tab.
+						2, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ValueTypeToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ValueTypeToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -143,13 +167,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ValueTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add ObjectifiedFactType shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ObjectifiedFactTypeToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						7, // Position relative to other items in the same toolbox tab.
+						3, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ObjectifiedFactTypeToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ObjectifiedFactTypeToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -158,13 +182,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ObjectifiedFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ObjectType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add UnaryFactType shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"UnaryFactTypeToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						10, // Position relative to other items in the same toolbox tab.
+						4, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("UnaryFactTypeToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("UnaryFactTypeToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -173,13 +197,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("UnaryFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add BinaryFactType shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"BinaryFactTypeToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						15, // Position relative to other items in the same toolbox tab.
+						5, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("BinaryFactTypeToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("BinaryFactTypeToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -188,13 +212,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("BinaryFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add TernaryFactType shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"TernaryFactTypeToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						20, // Position relative to other items in the same toolbox tab.
+						6, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("TernaryFactTypeToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("TernaryFactTypeToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -203,13 +227,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("TernaryFactTypeToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FactType.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add RoleConnector connector tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"RoleConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						21, // Position relative to other items in the same toolbox tab.
+						7, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("RoleConnectorToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("RoleConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -218,14 +242,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("RoleConnectorToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						null, // Connector toolbox items do not have an underlying data object.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString), 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require), 
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(RoleConnectorFilterString)
 						}));
 
 					// Add SubtypeConnector connector tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"SubtypeConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						22, // Position relative to other items in the same toolbox tab.
+						8, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("SubtypeConnectorToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("SubtypeConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -234,14 +258,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("SubtypeConnectorToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						null, // Connector toolbox items do not have an underlying data object.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString), 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require), 
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(SubtypeConnectorFilterString)
 						}));
 
 					// Add InternalUniquenessConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"InternalUniquenessConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						23, // Position relative to other items in the same toolbox tab.
+						9, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("InternalUniquenessConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("InternalUniquenessConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -250,13 +274,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("InternalUniquenessConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add ExternalUniquenessConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ExternalUniquenessConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						25, // Position relative to other items in the same toolbox tab.
+						10, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ExternalUniquenessConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ExternalUniquenessConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -265,13 +289,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ExternalUniquenessConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.UniquenessConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add EqualityConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"EqualityConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						35, // Position relative to other items in the same toolbox tab.
+						11, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("EqualityConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("EqualityConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -280,13 +304,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("EqualityConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.EqualityConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add ExclusionConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ExclusionConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						40, // Position relative to other items in the same toolbox tab.
+						12, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ExclusionConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ExclusionConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -295,13 +319,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ExclusionConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ExclusionConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add InclusiveOrConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"InclusiveOrConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						45, // Position relative to other items in the same toolbox tab.
+						13, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("InclusiveOrConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("InclusiveOrConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -310,13 +334,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("InclusiveOrConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add SubsetConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"SubsetConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						55, // Position relative to other items in the same toolbox tab.
+						14, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("SubsetConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("SubsetConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -325,13 +349,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("SubsetConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.SubsetConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add FrequencyConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"FrequencyConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						57, // Position relative to other items in the same toolbox tab.
+						15, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("FrequencyConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("FrequencyConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -340,13 +364,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("FrequencyConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add RingConstraint shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"RingConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						58, // Position relative to other items in the same toolbox tab.
+						16, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("RingConstraintToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("RingConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -355,13 +379,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("RingConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.RingConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add ExternalConstraintConnector connector tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ExternalConstraintConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						60, // Position relative to other items in the same toolbox tab.
+						17, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ExternalConstraintConnectorToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ExternalConstraintConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -370,14 +394,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ExternalConstraintConnectorToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						null, // Connector toolbox items do not have an underlying data object.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString), 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require), 
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ExternalConstraintConnectorFilterString)
 						}));
 
 					// Add ModelNote shape tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ModelNoteToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						70, // Position relative to other items in the same toolbox tab.
+						18, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ModelNoteToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ModelNoteToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -386,13 +410,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ModelNoteToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						CreateElementToolPrototype(store, global::Neumont.Tools.ORM.ObjectModel.ModelNote.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString) 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						}));
 
 					// Add ModelNoteConnector connector tool.
 					toolboxItems.Add(new DslDesign::ModelingToolboxItem(
 						"ModelNoteConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						75, // Position relative to other items in the same toolbox tab.
+						19, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ModelNoteConnectorToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ModelNoteConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -401,7 +425,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						resourceManager.GetString("ModelNoteConnectorToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
 						null, // Connector toolbox items do not have an underlying data object.
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
-							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString), 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require), 
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ModelNoteConnectorFilterString)
 						}));
 

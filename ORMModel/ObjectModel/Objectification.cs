@@ -40,11 +40,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType factType = (e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType;
 				if (factType != null)
 				{
-					ORMCoreModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+					ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 					ObjectType nestingType = factType.NestingType;
 					if (nestingType != null && null == nestingType.PreferredIdentifier)
 					{
-						ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 					}
 				}
 			}
@@ -59,7 +59,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMCoreModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as ConstraintRoleSequenceHasRole).Role.FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule class
@@ -74,7 +74,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole factTypeHasRole = e.ModelElement as FactTypeHasRole;
-				ORMCoreModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreDomainModel.DelayValidateElement(factTypeHasRole.FactType, DelayProcessFactTypeForImpliedObjectification);
 				ProcessNewPlayedRoleForImpliedObjectification(factTypeHasRole.Role as Role);
 			}
 		}
@@ -88,7 +88,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ORMCoreModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreDomainModel.DelayValidateElement((e.ModelElement as FactTypeHasRole).FactType, DelayProcessFactTypeForImpliedObjectification);
 			}
 		}
 		#endregion // ImpliedObjectificationFactTypeHasRoleDeletingRule class
@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								ObjectType nestingType = facts[0].NestingType;
 								if (nestingType != null)
 								{
-									ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+									ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 								}
 							}
 						}
@@ -160,7 +160,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						ObjectType nestingType = facts[0].NestingType;
 						if (nestingType != null)
 						{
-							ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+							ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 						}
 					}
 				}
@@ -188,7 +188,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						null != (objectification = testFact.Objectification) &&
 						!objectification.IsDeleting)
 					{
-						ORMCoreModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+						ORMCoreDomainModel.DelayValidateElement(objectification.NestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 					}
 				}
 			}
@@ -211,7 +211,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					null != (objectification = objectType.Objectification) &&
 					!objectification.IsDeleting)
 				{
-					ORMCoreModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+					ORMCoreDomainModel.DelayValidateElement(objectType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				}
 			}
 		}
@@ -309,7 +309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					nestingType = objectification.NestingType;
 				}
-				ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+				ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 				Store store = nestedFactType.Store;
 				ORMModel model = nestedFactType.Model;
 
@@ -413,7 +413,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (!nestedFactType.IsDeleted)
 					{
-						ORMCoreModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
+						ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 			}
@@ -766,13 +766,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			for (int i = 0; i < factsCount; ++i)
 			{
 				FactType factType = facts[i];
-				ORMCoreModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
+				ORMCoreDomainModel.DelayValidateElement(factType, DelayProcessFactTypeForImpliedObjectification);
 				if (changingIsInternal)
 				{
 					ObjectType nestingType = facts[0].NestingType;
 					if (nestingType != null)
 					{
-						ORMCoreModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
+						ORMCoreDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
 					}
 				}
 			}

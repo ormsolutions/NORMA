@@ -15,7 +15,7 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="OIALMetaModel">
+	<arg:Model class="OIALDomainModel">
 		<arg:Rule class="OIALModel.ModelHasObjectTypeAddRule"/>
 		<arg:Rule class="OIALModel.ModelHasObjectTypeDeletingRule"/>
 		<arg:Rule class="OIALModel.ObjectTypeChangeRule"/>

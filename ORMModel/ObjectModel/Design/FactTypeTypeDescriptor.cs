@@ -37,8 +37,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Initializes a new instance of <see cref="FactTypeTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public FactTypeTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public FactTypeTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 		}
 

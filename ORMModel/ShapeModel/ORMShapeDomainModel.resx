@@ -147,8 +147,8 @@
   <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode" xml:space="preserve">
     <value>ExpandRefMode</value>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" xml:space="preserve">
-    <value>ORMShapeModel</value>
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel" xml:space="preserve">
+    <value>ORMShapeDomainModel</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Toolbox.BinaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

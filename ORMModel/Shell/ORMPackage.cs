@@ -331,14 +331,14 @@ namespace Neumont.Tools.ORM.Shell
 		protected sealed override IList<ModelingToolboxItem> CreateToolboxItems()
 		{
 			IList<ModelingToolboxItem> items;
-			ORMCoreModel.InitializingToolboxItems = false;
+			ORMCoreDomainModel.InitializingToolboxItems = false;
 			try
 			{
-				items = new ORMShapeModelToolboxHelper(this).CreateToolboxItems();
+				items = new ORMShapeToolboxHelper(this).CreateToolboxItems();
 			}
 			finally
 			{
-				ORMCoreModel.InitializingToolboxItems = true;
+				ORMCoreDomainModel.InitializingToolboxItems = true;
 			}
 
 			// Build up a dictionary of items so we can add filter strings. This is
@@ -783,8 +783,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>IEnumerable&lt;Type&gt;</returns>
 		public static IEnumerable<Type> GetAvailableDomainModels()
 		{
-			yield return typeof(Neumont.Tools.ORM.ObjectModel.ORMCoreModel);
-			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeModel);
+			yield return typeof(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel);
+			yield return typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel);
 			foreach (ORMExtensionType extension in GetAvailableCustomExtensions())
 			{
 				Type type = extension.Type;

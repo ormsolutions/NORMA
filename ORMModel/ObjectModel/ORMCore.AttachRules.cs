@@ -18,15 +18,15 @@ using System.Reflection;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	#region Attach rules to ORMCoreModel model
-	public partial class ORMCoreModel
+	#region Attach rules to ORMCoreDomainModel model
+	public partial class ORMCoreDomainModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = ORMCoreModel.myCustomDomainModelTypes;
+				Type[] retVal = ORMCoreDomainModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -200,7 +200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasDataTypeRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeInstanceValueChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueTypeInstance).GetNestedType("ValueTypeHasValueTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic)};
-					ORMCoreModel.myCustomDomainModelTypes = retVal;
+					ORMCoreDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -214,13 +214,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = ORMCoreModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = ORMCoreDomainModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -233,5 +233,5 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
-	#endregion // Attach rules to ORMCoreModel model
+	#endregion // Attach rules to ORMCoreDomainModel model
 }

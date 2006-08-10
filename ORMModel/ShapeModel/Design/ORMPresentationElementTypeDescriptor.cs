@@ -47,8 +47,8 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		/// the instance of <typeparamref name="TPresentationElement"/> specified by <paramref name="presentationElement"/>
 		/// that is associated with the instance of <typeparamref name="TModelElement"/> specified by <paramref name="selectedElement"/>.
 		/// </summary>
-		public ORMPresentationElementTypeDescriptor(TPresentationElement presentationElement, TModelElement selectedElement)
-			: base(presentationElement, selectedElement)
+		public ORMPresentationElementTypeDescriptor(ICustomTypeDescriptor parent, TPresentationElement presentationElement, TModelElement selectedElement)
+			: base(parent, presentationElement, selectedElement)
 		{
 		}
 

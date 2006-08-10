@@ -17,7 +17,7 @@
 		<se:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</se:CopyrightLine>
 		<se:CopyrightLine>\**************************************************************************/</se:CopyrightLine>
 	</se:Copyright>
-	<se:DomainModel Class="OIALMetaModel">
+	<se:DomainModel Class="OIALDomainModel">
 		<se:Namespaces>
 			<se:Namespace Prefix="oial" URI="http://schemas.neumont.edu/ORM/2006-01/OIALModel" SchemaFile="OIALModel.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>

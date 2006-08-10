@@ -18,15 +18,15 @@ using System.Reflection;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
-	#region Attach rules to OIALMetaModel model
-	public partial class OIALMetaModel
+	#region Attach rules to OIALDomainModel model
+	public partial class OIALDomainModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = OIALMetaModel.myCustomDomainModelTypes;
+				Type[] retVal = OIALDomainModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.OIALModel
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("OIALModelHasConceptTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConceptTypeAbsorbedConceptTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConceptTypeAbsorbedConceptTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic)};
-					OIALMetaModel.myCustomDomainModelTypes = retVal;
+					OIALDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -68,13 +68,13 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = OIALMetaModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = OIALDomainModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -87,5 +87,5 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 	}
-	#endregion // Attach rules to OIALMetaModel model
+	#endregion // Attach rules to OIALDomainModel model
 }

@@ -20,7 +20,7 @@ using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ORMShapeModel : IORMModelEventSubscriber
+	public partial class ORMShapeDomainModel : IORMModelEventSubscriber
 	{
 		#region IORMModelEventSubscriber Implementation
 		/// <summary>

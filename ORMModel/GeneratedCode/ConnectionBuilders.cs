@@ -21,9 +21,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-using DslModeling = Microsoft.VisualStudio.Modeling;
-using DslDiagrams = Microsoft.VisualStudio.Modeling.Diagrams;
-
+//
 // This file is empty because the DSL definition does not define any ConnectionBuilders.
+//
 

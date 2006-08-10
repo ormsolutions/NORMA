@@ -37,8 +37,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		/// Initializes a new instance of <see cref="MandatoryConstraintTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public MandatoryConstraintTypeDescriptor(TModelElement selectedElement)
-			: base(selectedElement)
+		public MandatoryConstraintTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+			: base(parent, selectedElement)
 		{
 		}
 

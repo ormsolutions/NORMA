@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Neumont.Tools.ORM.OIALModel.OIALMetaModel.Description" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.OIALModel.OIALDomainModel.Description" xml:space="preserve">
     <value>Extension rules and elements used to perform dynamic object absorption. Used by more compact views on the ORM model.</value>
-    <comment>Description for DslLibrary &apos;OIALMetaModel&apos;</comment>
+    <comment>Description for DslLibrary &apos;OIAL&apos;</comment>
   </data>
-  <data name="Neumont.Tools.ORM.OIALModel.OIALMetaModel.DisplayName" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.OIALModel.OIALDomainModel.DisplayName" xml:space="preserve">
     <value>ORM Intermediate Abstraction Language</value>
-    <comment>DisplayName for DslLibrary &apos;OIALMetaModel&apos;</comment>
+    <comment>DisplayName for DslLibrary &apos;OIAL&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.OIALModel.OIALNamedElement.Description" xml:space="preserve">
     <value></value>
@@ -973,13 +973,25 @@
     <value>Child Sequence Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConceptTypeHasChild&apos; on DomainRelationship &apos;ChildSequenceHasConceptTypeHasChild&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/NotMandatory.DisplayName" xml:space="preserve">
+    <value>NotMandatory</value>
+    <comment>Display name for EnumerationLiteral &apos;NotMandatory&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/NotMandatory.Description" xml:space="preserve">
     <value>See &lt;see langword=&quot;null&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;NotMandatory&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Alethic.DisplayName" xml:space="preserve">
+    <value>Alethic</value>
+    <comment>Display name for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Alethic.Description" xml:space="preserve">
     <value>See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic&quot;/&gt;.</value>
     <comment>Description for EnumerationLiteral &apos;Alethic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.DisplayName" xml:space="preserve">
+    <value>Deontic</value>
+    <comment>Display name for EnumerationLiteral &apos;Deontic&apos; on DomainEnumeration &apos;MandatoryConstraintModality&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality/Deontic.Description" xml:space="preserve">
     <value>See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Deontic&quot;/&gt;.</value>
@@ -989,6 +1001,14 @@
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
     <comment>Serialization Warning: AmbiguousSchema</comment>
   </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
   <data name="IgnoredPropertyValue" xml:space="preserve">
     <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
     <comment>Serialization Warning: IgnoredPropertyValue</comment>
@@ -996,6 +1016,10 @@
   <data name="MissingId" xml:space="preserve">
     <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
     <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
   </data>
   <data name="NoSchema" xml:space="preserve">
     <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
@@ -1007,7 +1031,7 @@
   </data>
   <data name="AmbiguousMoniker" xml:space="preserve">
     <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
-    <comment>Serialization Warning: AmbiguousMoniker</comment>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
   </data>
   <data name="CannotMonikerizeElement" xml:space="preserve">
     <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
@@ -1047,6 +1071,22 @@ A DomainClass can be serialized as a moniker only if
   <data name="VersionMismatch" xml:space="preserve">
     <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
     <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
   </data>
 </root>
 

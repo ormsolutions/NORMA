@@ -157,7 +157,7 @@
 					<plx:branch>
 						<plx:condition>
 							<plx:unaryOperator type="booleanNot">
-								<plx:callStatic dataTypeName="ORMCoreModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="InitializingToolboxItems" type="property"/>
+								<plx:callStatic dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="InitializingToolboxItems" type="property"/>
 							</plx:unaryOperator>
 						</plx:condition>
 						<plx:return>

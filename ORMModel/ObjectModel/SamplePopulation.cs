@@ -197,7 +197,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateTooFewFactTypeRoleInstancesError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateTooFewFactTypeRoleInstancesError);
 		}
 
 		void IModelErrorOwner.DelayValidateErrors()
@@ -219,7 +219,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private void ValidateTooFewFactTypeRoleInstances()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateTooFewFactTypeRoleInstancesError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateTooFewFactTypeRoleInstancesError);
 		}
 
 		/// <summary>
@@ -347,7 +347,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType parent = link.FactType;
 				foreach (FactTypeInstance factTypeInstance in parent.FactTypeInstanceCollection)
 				{
-					ORMCoreModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+					ORMCoreDomainModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 				}
 			}
 		}
@@ -374,7 +374,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						FactTypeInstance factTypeInstance = factTypeInstances[i];
 						if (!factTypeInstance.IsDeleted)
 						{
-							ORMCoreModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+							ORMCoreDomainModel.DelayValidateElement(factTypeInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 						}
 					}
 				}
@@ -402,7 +402,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// Check each role being related to the FactType
 					newInstance.EnsureConsistentRoleOwner(existingFactType, roleInstances[i].Role);
 				}
-				ORMCoreModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+				ORMCoreDomainModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 			}
 		}
 
@@ -425,7 +425,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = roleInstance.Role;
 				newInstance.EnsureConsistentRoleOwner(existingFactType, role);
 				newInstance.EnsureNonDuplicateRoleInstance(link);
-				ORMCoreModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
+				ORMCoreDomainModel.DelayValidateElement(newInstance, DelayValidateTooFewFactTypeRoleInstancesError);
 			}
 		}
 
@@ -449,7 +449,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						ORMCoreModel.DelayValidateElement(instance, DelayValidateTooFewFactTypeRoleInstancesError);
+						ORMCoreDomainModel.DelayValidateElement(instance, DelayValidateTooFewFactTypeRoleInstancesError);
 					}
 				}
 			}
@@ -529,7 +529,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
 		}
 
 		void IModelErrorOwner.DelayValidateErrors()
@@ -551,7 +551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private void ValidateTooFewEntityTypeRoleInstances()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
 		}
 
 		/// <summary>
@@ -724,7 +724,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (!entityTypeInstance.IsDeleted)
 						{
-							ORMCoreModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+							ORMCoreDomainModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 						}
 					}
 				}
@@ -785,7 +785,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								ORMCoreModel.DelayValidateElement(currentInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+								ORMCoreDomainModel.DelayValidateElement(currentInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 								++i;
 							}
 						}
@@ -836,7 +836,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = roleInstance.Role;
 				entityTypeInstance.EnsureConsistentRoleCollections(entityTypeInstance.EntityType, role);
 				entityTypeInstance.EnsureNonDuplicateRoleInstance(link);
-				ORMCoreModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
+				ORMCoreDomainModel.DelayValidateElement(entityTypeInstance, DelayValidateTooFewEntityTypeRoleInstancesError);
 			}
 		}
 
@@ -860,7 +860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						ORMCoreModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
+						ORMCoreDomainModel.DelayValidateElement(instance, DelayValidateTooFewEntityTypeRoleInstancesError);
 					}
 				}
 			}
@@ -928,7 +928,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new void DelayValidateErrors()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateCompatibleValueTypeInstanceValueError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleValueTypeInstanceValueError);
 		}
 
 		void IModelErrorOwner.DelayValidateErrors()
@@ -949,7 +949,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		private void ValidateCompatibleValueTypeInstanceValue()
 		{
-			ORMCoreModel.DelayValidateElement(this, DelayValidateCompatibleValueTypeInstanceValueError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateCompatibleValueTypeInstanceValueError);
 		}
 
 		/// <summary>
@@ -1022,7 +1022,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						ORMCoreModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
+						ORMCoreDomainModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
 					}
 				}
 			}
@@ -1057,7 +1057,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ValueTypeInstance valueTypeInstance = e.ModelElement as ValueTypeInstance;
 				if (!valueTypeInstance.IsDeleted)
 				{
-					ORMCoreModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
+					ORMCoreDomainModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
 				}
 			}
 		}
@@ -1080,7 +1080,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionValueTypeInstanceInvalidValueTypeParent);
 				}
 				ValueTypeInstance valueTypeInstance = link.ValueTypeInstance;
-				ORMCoreModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
+				ORMCoreDomainModel.DelayValidateElement(valueTypeInstance, DelayValidateCompatibleValueTypeInstanceValueError);
 			}
 		}
 		#endregion

@@ -416,7 +416,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Configuring this link after it has been added to the diagram
 		/// </summary>
 		/// <param name="diagram">The parent diagram</param>
-		public override void ConfiguringAsChildOf(ORMDiagram diagram)
+		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
+		public override void ConfiguringAsChildOf(ORMDiagram diagram, bool createdDuringViewFixup)
 		{
 			// If we're already connected then walk away
 			if (FromShape == null && ToShape == null)

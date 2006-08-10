@@ -18,15 +18,15 @@ using System.Reflection;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	#region Attach rules to ORMShapeModel model
-	public partial class ORMShapeModel
+	#region Attach rules to ORMShapeDomainModel model
+	public partial class ORMShapeDomainModel
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
 		{
 			get
 			{
-				Type[] retVal = ORMShapeModel.myCustomDomainModelTypes;
+				Type[] retVal = ORMShapeDomainModel.myCustomDomainModelTypes;
 				if (retVal == null)
 				{
 					// No synchronization is needed here.
@@ -98,7 +98,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic)};
-					ORMShapeModel.myCustomDomainModelTypes = retVal;
+					ORMShapeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
 				return retVal;
@@ -112,13 +112,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </seealso>
 		protected override Type[] GetCustomDomainModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreModel.InitializingToolboxItems))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}
 			Type[] retVal = base.GetCustomDomainModelTypes();
 			int baseLength = retVal.Length;
-			Type[] customDomainModelTypes = ORMShapeModel.CustomDomainModelTypes;
+			Type[] customDomainModelTypes = ORMShapeDomainModel.CustomDomainModelTypes;
 			if (baseLength <= 0)
 			{
 				return customDomainModelTypes;
@@ -131,5 +131,5 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 	}
-	#endregion // Attach rules to ORMShapeModel model
+	#endregion // Attach rules to ORMShapeDomainModel model
 }
