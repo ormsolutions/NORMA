@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -28,7 +28,7 @@
 	<Attributes>
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
-				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreModel*/"/>
+				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>

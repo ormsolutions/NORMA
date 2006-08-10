@@ -1,8 +1,8 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Neumont University. All rights reserved.                     *
+* Copyright � Neumont University. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -30,7 +30,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	/// DomainModel ExtensionDomainModel
 	/// The extension created for testing purposes
 	/// </summary>
-	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8")]
+	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel*/)]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel.Description", typeof(global::Neumont.Tools.ORM.ExtensionExample.ExtensionDomainModel), "Neumont.Tools.ORM.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
