@@ -829,7 +829,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.SubtypeLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("87ddaeda-1fd8-4433-bb1e-7482c7f471a7")]
-	public partial class SubtypeLink //: DslDiagrams::NodeShape
+	public partial class SubtypeLink : global::Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;

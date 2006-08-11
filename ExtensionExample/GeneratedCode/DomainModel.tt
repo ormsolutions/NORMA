@@ -14,6 +14,5 @@
 \**************************************************************************/
 #endregion
 <#@ include file="Dsl\DomainModelCodeGenerator.tt" #>
-<#@ Dsl processor="DslImportDirectiveProcessor" requires="fileName='..\..\ORMModel\ObjectModel\ORMCore.dsl'" provides="dslLibrary='ORMCoreDslLibrary'" #>
-<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='..\ExtensionExample.dsl';validation=''" #>
-<#@ Dsl processor="DslImportEndDirectiveProcessor" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../ExtensionExample.dsl';validation=''" #>
+<#@ Dsl processor="DslDirectiveProcessor" requires="fileName='../../ORMModel/ObjectModel/ORMCore.dsl';validation=''" provides="dslLibrary='ORMCoreDslLibrary'" #>

@@ -1,8 +1,8 @@
-#region Common Public License Copyright Notice
+﻿#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright � Neumont University. All rights reserved.                     *
+* Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -705,21 +705,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
-		#region PathRoleCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of PathRoleCollection.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChild
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> PathRoleCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId);
-			}
-		}
-		#endregion
 		#region SingleChildConstraintCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of SingleChildConstraintCollection.
@@ -732,6 +717,21 @@ namespace Neumont.Tools.ORM.OIALModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<SingleChildConstraint>(this, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId);
+			}
+		}
+		#endregion
+		#region PathRoleCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of PathRoleCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChild
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> PathRoleCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId);
 			}
 		}
 		#endregion

@@ -1,8 +1,8 @@
-#region Common Public License Copyright Notice
+﻿#region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright � Neumont University. All rights reserved.                     *
+* Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -179,32 +179,22 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region ChildSequenceConstraintCollection opposite domain role accessor
+		#region ORMModel opposite domain role accessor
 		/// <summary>
-		/// Gets a list of ChildSequenceConstraintCollection.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.OIALModel
+		/// Gets or sets ORMModel.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModel
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ChildSequenceConstraint> ChildSequenceConstraintCollection
+		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ChildSequenceConstraint>(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.OIALModelDomainRoleId);
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
 			}
-		}
-		#endregion
-		#region InformationTypeFormatCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of InformationTypeFormatCollection.
-		/// Description for Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.Model
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<InformationTypeFormat> InformationTypeFormatCollection
-		{
 			[global::System.Diagnostics.DebuggerStepThrough]
-			get
+			set
 			{
-				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -222,22 +212,32 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		#endregion
-		#region ORMModel opposite domain role accessor
+		#region InformationTypeFormatCollection opposite domain role accessor
 		/// <summary>
-		/// Gets or sets ORMModel.
-		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModel
+		/// Gets a list of InformationTypeFormatCollection.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.Model
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ORMModel ORMModel
+		public virtual DslModeling::LinkedElementCollection<InformationTypeFormat> InformationTypeFormatCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ORMModel;
+				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId);
 			}
+		}
+		#endregion
+		#region ChildSequenceConstraintCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ChildSequenceConstraintCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.OIALModel
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ChildSequenceConstraint> ChildSequenceConstraintCollection
+		{
 			[global::System.Diagnostics.DebuggerStepThrough]
-			set
+			get
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasORMModel.OIALModelDomainRoleId, value);
+				return new DslModeling::LinkedElementCollection<ChildSequenceConstraint>(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasChildSequenceConstraint.OIALModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -463,52 +463,37 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region ObjectType opposite domain role accessor
+		#region Model opposite domain role accessor
 		/// <summary>
-		/// Gets or sets ObjectType.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptType
+		/// Gets or sets Model.
+		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptType
 		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		public virtual OIALModel Model
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId) as OIALModel;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId, value);
 			}
 		}
 		#endregion
-		#region ReferencedConceptTypeCollection opposite domain role accessor
+		#region AbsorbedConceptTypeCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of ReferencedConceptTypeCollection.
+		/// Gets a list of AbsorbedConceptTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeRef.ReferencingConceptType
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbingConceptType
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ConceptType> ReferencedConceptTypeCollection
+		public virtual DslModeling::LinkedElementCollection<ConceptType> AbsorbedConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef.ReferencingConceptTypeDomainRoleId);
-			}
-		}
-		#endregion
-		#region InformationTypeCollection opposite domain role accessor
-		/// <summary>
-		/// Gets a list of InformationTypeCollection.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptType
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<InformationType> InformationTypeCollection
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return new DslModeling::LinkedElementCollection<InformationType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -532,37 +517,52 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		#endregion
-		#region AbsorbedConceptTypeCollection opposite domain role accessor
+		#region InformationTypeCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of AbsorbedConceptTypeCollection.
+		/// Gets a list of InformationTypeCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbingConceptType
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptType
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ConceptType> AbsorbedConceptTypeCollection
+		public virtual DslModeling::LinkedElementCollection<InformationType> InformationTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<InformationType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
-		#region Model opposite domain role accessor
+		#region ReferencedConceptTypeCollection opposite domain role accessor
 		/// <summary>
-		/// Gets or sets Model.
-		/// Description for Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptType
+		/// Gets a list of ReferencedConceptTypeCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeRef.ReferencingConceptType
 		/// </summary>
-		public virtual OIALModel Model
+		public virtual DslModeling::LinkedElementCollection<ConceptType> ReferencedConceptTypeCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId) as OIALModel;
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeRef.ReferencingConceptTypeDomainRoleId);
+			}
+		}
+		#endregion
+		#region ObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectType.
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptType
+		/// </summary>
+		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasObjectType.ConceptTypeDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -605,26 +605,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region InformationTypeFormat opposite domain role accessor
-		/// <summary>
-		/// Gets or sets InformationTypeFormat.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationType
-		/// </summary>
-		public virtual InformationTypeFormat InformationTypeFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId) as InformationTypeFormat;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId, value);
-			}
-		}
-		#endregion
 		#region ConceptType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ConceptType.
@@ -642,6 +622,26 @@ namespace Neumont.Tools.ORM.OIALModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationTypeDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region InformationTypeFormat opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InformationTypeFormat.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationType
+		/// </summary>
+		public virtual InformationTypeFormat InformationTypeFormat
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId) as InformationTypeFormat;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -684,26 +684,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region ValueType opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ValueType.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormat
-		/// </summary>
-		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId, value);
-			}
-		}
-		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Model.
@@ -721,6 +701,26 @@ namespace Neumont.Tools.ORM.OIALModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ValueType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueType.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormat
+		/// </summary>
+		public virtual global::Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId) as global::Neumont.Tools.ORM.ObjectModel.ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -1597,26 +1597,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region SuperChildSequence opposite domain role accessor
-		/// <summary>
-		/// Gets or sets SuperChildSequence.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraint
-		/// </summary>
-		public virtual ChildSequence SuperChildSequence
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraintDomainRoleId) as ChildSequence;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraintDomainRoleId, value);
-			}
-		}
-		#endregion
 		#region SubChildSequence opposite domain role accessor
 		/// <summary>
 		/// Gets or sets SubChildSequence.
@@ -1634,6 +1614,26 @@ namespace Neumont.Tools.ORM.OIALModel
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSubChildSequence.SubsetConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region SuperChildSequence opposite domain role accessor
+		/// <summary>
+		/// Gets or sets SuperChildSequence.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraint
+		/// </summary>
+		public virtual ChildSequence SuperChildSequence
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraintDomainRoleId) as ChildSequence;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.SubsetConstraintHasSuperChildSequence.SubsetConstraintDomainRoleId, value);
 			}
 		}
 		#endregion
