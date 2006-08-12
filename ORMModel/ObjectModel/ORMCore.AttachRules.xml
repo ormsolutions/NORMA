@@ -149,7 +149,6 @@
 		<arg:Rule class="SetConstraint.FactAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintAdded"/>
 		<arg:Rule class="SetConstraint.FactSetConstraintDeleted"/>
-		<arg:Rule class="SubtypeFact.BlockCircularSubtypesAddRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesAddRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentDataTypesDeleteRule"/>
 		<arg:Rule class="SubtypeFact.EnsureConsistentRolePlayerTypesAddRule"/>

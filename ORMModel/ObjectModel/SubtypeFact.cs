@@ -508,36 +508,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Mixed role player types rules
-		#region Circular reference check rule
-		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class BlockCircularSubtypesAddRule : AddRule
-		{
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				SubtypeFact newSubtypeFact = link.FactType as SubtypeFact;
-				if (newSubtypeFact != null)
-				{
-					ObjectType superType = newSubtypeFact.Supertype;
-					if (superType != null)
-					{
-						ThrowOnCycle(superType, superType);
-					}
-				}
-			}
-			private static void ThrowOnCycle(ObjectType iterateOn, ObjectType startingSuper)
-			{
-				foreach (ObjectType nestedSuper in iterateOn.SupertypeCollection)
-				{
-					if (nestedSuper == startingSuper)
-					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
-					}
-					ThrowOnCycle(nestedSuper, startingSuper);
-				}
-			}
-		}
-		#endregion // Circular reference check rule
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener

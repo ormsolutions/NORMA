@@ -777,7 +777,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				for (int i = 0; i < count; ++i)
 				{
 					SetConstraint sequence = roleSequences[i] as SetConstraint;
-					if (sequence != null)
+					if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
 					{
 						ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 					}
@@ -807,7 +807,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 
 					SetConstraint sequence = roleSequences[i] as SetConstraint;
-					if (sequence != null)
+					if (sequence != null && 0 != (((IConstraint)sequence).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
 					{
 						ORMCoreDomainModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 					}

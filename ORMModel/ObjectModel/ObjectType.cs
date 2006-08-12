@@ -626,11 +626,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSupertypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			return (startingType != null) ? WalkSupertypes(startingType, 0, visitor) : false;
+			return (startingType != null) ? WalkSupertypes(startingType, startingType, 0, visitor) : false;
 		}
-		private static bool WalkSupertypes(ObjectType startingType, int depth, ObjectTypeVisitor visitor)
+		private static bool WalkSupertypes(ObjectType startingType, ObjectType currentType, int depth, ObjectTypeVisitor visitor)
 		{
-			ObjectTypeVisitorResult result = visitor(startingType, depth);
+			if (depth != 0 && startingType == currentType)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
+			}
+			ObjectTypeVisitorResult result = visitor(currentType, depth);
 			switch (result)
 			{
 				//case ObjectTypeVisitorResult.Continue:
@@ -641,9 +645,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 			}
 			++depth;
-			foreach (ObjectType superType in startingType.SupertypeCollection)
+			foreach (ObjectType superType in currentType.SupertypeCollection)
 			{
-				if (!WalkSupertypes(superType, depth, visitor))
+				if (!WalkSupertypes(startingType, superType, depth, visitor))
 				{
 					return false;
 				}
@@ -658,11 +662,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSubtypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			return (startingType != null) ? WalkSubtypes(startingType, 0, visitor) : false;
+			return (startingType != null) ? WalkSubtypes(startingType, startingType, 0, visitor) : false;
 		}
-		private static bool WalkSubtypes(ObjectType startingType, int depth, ObjectTypeVisitor visitor)
+		private static bool WalkSubtypes(ObjectType startingType, ObjectType currentType, int depth, ObjectTypeVisitor visitor)
 		{
-			ObjectTypeVisitorResult result = visitor(startingType, depth);
+			if (depth != 0 && startingType == currentType)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
+			}
+			ObjectTypeVisitorResult result = visitor(currentType, depth);
 			switch (result)
 			{
 				//case ObjectTypeVisitorResult.Continue:
@@ -673,9 +681,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 			}
 			++depth;
-			foreach (ObjectType subType in startingType.SubtypeCollection)
+			foreach (ObjectType subType in currentType.SubtypeCollection)
 			{
-				if (!WalkSubtypes(subType, depth, visitor))
+				if (!WalkSubtypes(startingType, subType, depth, visitor))
 				{
 					return false;
 				}
