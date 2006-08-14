@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.Modeling;
@@ -867,6 +868,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
+	
 	public partial class ValueTypeInstance : IModelErrorOwner
 	{
 		#region Base overrides
@@ -1084,5 +1086,199 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+
+	}
+
+	public partial class ObjectTypeInstance
+	{
+		/// <summary>
+		/// Display the value for ToString
+		/// </summary>
+		public override string ToString()
+		{
+			EntityTypeInstance entityTypeInstance;
+			ValueTypeInstance valueTypeInstance;
+			ObjectType parent = null;
+			if (null != (entityTypeInstance = this as EntityTypeInstance))
+			{
+				parent = entityTypeInstance.EntityType;
+			}
+			else if (null != (valueTypeInstance = this as ValueTypeInstance))
+			{
+				parent = valueTypeInstance.ValueType;
+			}
+			return ObjectTypeInstance.GetDisplayString(this, parent);
+		}
+
+		/// <summary>
+		/// Returns the display string for the given instance
+		/// </summary>
+		/// <param name="objectTypeInstance">Instance to format into a display string. Can be null.</param>
+		/// <param name="parentType">Parent Type of the instance.</param>
+		/// <returns>String representation of the instance.</returns>
+		public static string GetDisplayString(ObjectTypeInstance objectTypeInstance, ObjectType parentType)
+		{
+			return GetDisplayString(objectTypeInstance, parentType, null, null, null);
+		}
+
+		/// <summary>
+		/// Returns the display string for the given instance
+		/// </summary>
+		/// <param name="objectTypeInstance">Instance to format into a display string. Can be null.</param>
+		/// <param name="parentType">Parent Type of the instance.</param>
+		/// <param name="formatProvider">Format provider for desired culture.</param>
+		/// <param name="valueNonTextFormat">Format string for non text value type instances.</param>
+		/// <param name="valueTextFormat">Format string for text value type instances.</param>
+		/// <returns>String representation of the instance.</returns>
+		public static string GetDisplayString(ObjectTypeInstance objectTypeInstance, ObjectType parentType, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat)
+		{
+			StringBuilder outputText = null;
+			if (valueTextFormat == "{0}")
+			{
+				valueTextFormat = null;
+			}
+			if (valueNonTextFormat == "{0}")
+			{
+				valueNonTextFormat = null;
+			}
+			string retVal = (parentType == null) ? "" : RecurseObjectTypeInstanceValue(objectTypeInstance, parentType, null, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
+			return (outputText != null) ? outputText.ToString() : retVal;
+		}
+
+		private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string listSeparator, ref StringBuilder outputText, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat)
+		{
+			ValueTypeInstance valueInstance;
+			EntityTypeInstance entityTypeInstance;
+			if (parentType == null)
+			{
+				if (outputText != null)
+				{
+					outputText.Append(" ");
+				}
+				return " ";
+			}
+			else if (parentType.IsValueType)
+			{
+				valueInstance = objectTypeInstance as ValueTypeInstance;
+				string valueText = " ";
+				if (valueInstance != null)
+				{
+					if (valueTextFormat != null && parentType.DataType is TextDataType)
+					{
+						if (formatProvider == null)
+						{
+							formatProvider = CultureInfo.CurrentCulture;
+						}
+						valueText = String.Format(formatProvider, valueTextFormat, valueInstance.Value);
+					}
+					else if (valueNonTextFormat != null)
+					{
+						if (formatProvider == null)
+						{
+							formatProvider = CultureInfo.CurrentCulture;
+						}
+						valueText = String.Format(formatProvider, valueNonTextFormat, valueInstance.Value);
+					}
+					else
+					{
+						valueText = valueInstance.Value;
+					}
+				}
+				if (outputText != null)
+				{
+					outputText.Append(valueText);
+					return null;
+				}
+				return valueText;
+			}
+			else
+			{
+				entityTypeInstance = objectTypeInstance as EntityTypeInstance;
+				UniquenessConstraint identifier = parentType.PreferredIdentifier;
+				if (identifier == null)
+				{
+					string valueText = " ";
+					if (outputText != null)
+					{
+						outputText.Append(valueText);
+						return null;
+					}
+					return valueText;
+				}
+				LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+				int identifierCount = identifierRoles.Count;
+				if (identifierCount == 1)
+				{
+					ObjectTypeInstance nestedInstance = null;
+					if (entityTypeInstance != null)
+					{
+						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = entityTypeInstance.RoleInstanceCollection;
+						if (roleInstances.Count > 0)
+						{
+							nestedInstance = roleInstances[0].ObjectTypeInstance;
+						}
+					}
+					return RecurseObjectTypeInstanceValue(nestedInstance, identifierRoles[0].RolePlayer, listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
+				}
+				else
+				{
+					LinkedElementCollection<EntityTypeRoleInstance> roleInstances = null;
+					int roleInstanceCount = 0;
+					if (entityTypeInstance != null)
+					{
+						roleInstances = entityTypeInstance.RoleInstanceCollection;
+						roleInstanceCount = roleInstances.Count;
+					}
+					if (outputText == null)
+					{
+						outputText = new StringBuilder();
+					}
+					outputText.Append("(");
+					if (listSeparator == null)
+					{
+						if (formatProvider == null)
+						{
+							listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
+						}
+						else
+						{
+							listSeparator = (formatProvider as CultureInfo).TextInfo.ListSeparator;
+						}
+					}
+					for (int i = 0; i < identifierCount; ++i)
+					{
+						Role identifierRole = identifierRoles[i];
+						bool match = false;
+						if (i != 0)
+						{
+							outputText.Append(listSeparator);
+						}
+						if (roleInstanceCount != 0)
+						{
+							for (int j = 0; j < roleInstanceCount; ++j)
+							{
+								EntityTypeRoleInstance instance = roleInstances[j];
+								if (instance.Role == identifierRole)
+								{
+									RecurseObjectTypeInstanceValue(instance.ObjectTypeInstance, identifierRole.RolePlayer, listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
+									match = true;
+									break;
+								}
+							}
+						}
+						else if (i == 0)
+						{
+							outputText.Append(" ");
+						}
+						if (!match)
+						{
+							RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer, listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat);
+						}
+					}
+					outputText.Append(")");
+				}
+				return null;
+			}
+		}
 	}
 }

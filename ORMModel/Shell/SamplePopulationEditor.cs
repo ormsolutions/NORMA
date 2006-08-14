@@ -657,7 +657,7 @@ namespace Neumont.Tools.ORM.Shell
 								string[] strings = new string[instanceCount];
 								for (int i = 0; i < instanceCount; ++i)
 								{
-									strings[i] = RecurseObjectTypeInstanceValue((ObjectTypeInstance)instances[i], rolePlayer);
+									strings[i] = ObjectTypeInstance.GetDisplayString((ObjectTypeInstance)instances[i], rolePlayer);
 								}
 								myInstances = instances;
 								return strings;
@@ -682,7 +682,7 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									CellEditContext editContext = (CellEditContext)context.Instance;
 									ObjectTypeInstance currentInstance = editContext.myColumnInstance;
-									if (currentInstance != null && stringValue == RecurseObjectTypeInstanceValue(currentInstance, editContext.myRole.RolePlayer))
+									if (currentInstance != null && stringValue == ObjectTypeInstance.GetDisplayString(currentInstance, editContext.myRole.RolePlayer))
 									{
 										return currentInstance;
 									}
@@ -713,7 +713,7 @@ namespace Neumont.Tools.ORM.Shell
 							ObjectTypeInstance typedValue = (ObjectTypeInstance)value;
 							if (typedValue != null)
 							{
-								return RecurseObjectTypeInstanceValue(typedValue, ((CellEditContext)context.Instance).myRole.RolePlayer);
+								return ObjectTypeInstance.GetDisplayString(typedValue, ((CellEditContext)context.Instance).myRole.RolePlayer);
 							}
 							return string.Empty;
 						}
@@ -1418,125 +1418,6 @@ namespace Neumont.Tools.ORM.Shell
 					return editEntityTypeInstance;
 				}
 			}
-
-			protected static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, ObjectType parentType)
-			{
-				StringBuilder outputText = null;
-				string retVal = (parentType == null) ? "" : RecurseObjectTypeInstanceValue(objectTypeInstance, parentType, null, ref outputText);
-				return (outputText != null) ? outputText.ToString() : retVal;
-			}
-
-			private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectTypeInstance, ObjectType parentType, string listSeparator, ref StringBuilder outputText)
-			{
-				ValueTypeInstance valueInstance;
-				EntityTypeInstance entityTypeInstance;
-				if (parentType == null)
-				{
-					if (outputText != null)
-					{
-						outputText.Append(" ");
-					}
-					return " ";
-				}
-				else if (parentType.IsValueType)
-				{
-					valueInstance = objectTypeInstance as ValueTypeInstance;
-					string valueText = " ";
-					if (valueInstance != null)
-					{
-						valueText = valueInstance.Value;
-					}
-					if (outputText != null)
-					{
-						outputText.Append(valueText);
-						return null;
-					}
-					return valueText;
-				}
-				else
-				{
-					entityTypeInstance = objectTypeInstance as EntityTypeInstance;
-					UniquenessConstraint identifier = parentType.PreferredIdentifier;
-					if (identifier == null)
-					{
-						string valueText = " ";
-						if (outputText != null)
-						{
-							outputText.Append(valueText);
-							return null;
-						}
-						return valueText;
-					}
-					LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
-					int identifierCount = identifierRoles.Count;
-					if (identifierCount == 1)
-					{
-						ObjectTypeInstance nestedInstance = null;
-						if (entityTypeInstance != null)
-						{
-							LinkedElementCollection<EntityTypeRoleInstance> roleInstances = entityTypeInstance.RoleInstanceCollection;
-							if (roleInstances.Count > 0)
-							{
-								nestedInstance = roleInstances[0].ObjectTypeInstance;
-							}
-						}
-						return RecurseObjectTypeInstanceValue(nestedInstance, identifierRoles[0].RolePlayer, listSeparator, ref outputText);
-					}
-					else
-					{
-						LinkedElementCollection<EntityTypeRoleInstance> roleInstances = null;
-						int roleInstanceCount = 0;
-						if (entityTypeInstance != null)
-						{
-							roleInstances = entityTypeInstance.RoleInstanceCollection;
-							roleInstanceCount = roleInstances.Count;
-						}
-						if (outputText == null)
-						{
-							outputText = new StringBuilder();
-						}
-						outputText.Append("(");
-						if (listSeparator == null)
-						{
-							listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ";
-						}
-						for (int i = 0; i < identifierCount; ++i)
-						{
-							Role identifierRole = identifierRoles[i];
-							if (i != 0)
-							{
-								outputText.Append(listSeparator);
-							}
-							if (roleInstanceCount != 0)
-							{
-								for (int j = 0; j < roleInstanceCount; ++j)
-								{
-									EntityTypeRoleInstance instance = roleInstances[j];
-									if (instance.Role == identifierRole)
-									{
-										RecurseObjectTypeInstanceValue(instance.ObjectTypeInstance, identifierRole.RolePlayer, listSeparator, ref outputText);
-										break;
-									}
-									else if (j == roleInstanceCount - 1)
-									{
-										RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer, listSeparator, ref outputText);
-									}
-								}
-							}
-							else
-							{
-								if (i == 0)
-								{
-									outputText.Append(" ");
-								}
-								RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer, listSeparator, ref outputText);
-							}
-						}
-						outputText.Append(")");
-					}
-					return null;
-				}
-			}
 			#endregion
 			#region Branch Update Methods
 			protected void AddInstanceDisplay(int location)
@@ -1946,7 +1827,7 @@ namespace Neumont.Tools.ORM.Shell
 				string text = base.GetText(row, column);
 				if (text == null)
 				{
-					text = RecurseObjectTypeInstanceValue(null, myEntityType.PreferredIdentifier.RoleCollection[column - 1].RolePlayer);
+					text = ObjectTypeInstance.GetDisplayString(null, myEntityType.PreferredIdentifier.RoleCollection[column - 1].RolePlayer);
 				}
 				else if (text.Length == 0)
 				{
@@ -1960,11 +1841,11 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						if (identifierRole == (roleInstance = entityTypeRoleInstances[i]).Role)
 						{
-							text = RecurseObjectTypeInstanceValue(roleInstance.ObjectTypeInstance, identifierRole.RolePlayer);
+							text = ObjectTypeInstance.GetDisplayString(roleInstance.ObjectTypeInstance, identifierRole.RolePlayer);
 							return text;
 						}
 					}
-					text = RecurseObjectTypeInstanceValue(null, identifierRole.RolePlayer);
+					text = ObjectTypeInstance.GetDisplayString(null, identifierRole.RolePlayer);
 				}
 				return text;
 			}
@@ -2505,7 +2386,7 @@ namespace Neumont.Tools.ORM.Shell
 				string text = base.GetText(row, column);
 				if (text == null)
 				{
-					text = RecurseObjectTypeInstanceValue(null, myFactType.RoleCollection[column - 1].Role.RolePlayer);
+					text = ObjectTypeInstance.GetDisplayString(null, myFactType.RoleCollection[column - 1].Role.RolePlayer);
 				}
 				else if (text.Length == 0)
 				{
@@ -2518,10 +2399,10 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						if (factTypeRole == (instance = factTypeRoleInstances[i]).Role)
 						{
-							return RecurseObjectTypeInstanceValue(instance.ObjectTypeInstance, factTypeRole.RolePlayer);
+							return ObjectTypeInstance.GetDisplayString(instance.ObjectTypeInstance, factTypeRole.RolePlayer);
 						}
 					}
-					text = RecurseObjectTypeInstanceValue(null, factTypeRole.RolePlayer);
+					text = ObjectTypeInstance.GetDisplayString(null, factTypeRole.RolePlayer);
 				}
 				return text;
 			}
@@ -3123,10 +3004,10 @@ namespace Neumont.Tools.ORM.Shell
 					EntityTypeRoleInstance selectedRoleInstance = editInstance.FindRoleInstance(instanceRole);
 					if (selectedRoleInstance != null)
 					{
-						return RecurseObjectTypeInstanceValue(selectedRoleInstance.ObjectTypeInstance, identifierType);
+						return ObjectTypeInstance.GetDisplayString(selectedRoleInstance.ObjectTypeInstance, identifierType);
 					}
 				}
-				return RecurseObjectTypeInstanceValue(null, identifierType);
+				return ObjectTypeInstance.GetDisplayString(null, identifierType);
 			}
 
 			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
