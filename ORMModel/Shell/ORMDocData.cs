@@ -118,6 +118,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return retVal;
 		}
+		/// <summary>See <see cref="ModelingDocData.Initialize"/>.</summary>
+		public override void Initialize(Store sharedStore)
+		{
+			base.Initialize(sharedStore);
+			this.Store.RuleManager.DisableRule(typeof(ShapeElementAddRule));
+		}
 		/// <summary>
 		/// Reload this document from a file stream instead of from disk
 		/// </summary>

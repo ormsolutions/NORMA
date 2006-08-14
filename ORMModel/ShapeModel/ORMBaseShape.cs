@@ -39,28 +39,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static readonly object PlaceAllChildShapes = new object();
 		#endregion // Public token values
-		#region Constructor
-		/// <summary>
-		/// Constructor.
-		/// </summary>
+		#region Constructors
+		/// <summary>Constructor.</summary>
+		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMBaseShape(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+			// This constructor calls our other constructor which takes a Partition.
+			// All work should be done there rather than here.
+		}
+
+		/// <summary>Constructor.</summary>
 		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		protected ORMBaseShape(Partition partition, PropertyAssignment[] propertyAssignments)
+		public ORMBaseShape(Partition partition, params PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
-			// UNDONE: 2006-06 DSL Tools port: ShapeElementAddRule seems to do this (and more) for us now...
-			// From the old OnCreated method:
-			// Make sure the shape fields are available very early so auto sizing
-			// based on content always works. This is needed during deserialization
-			// as well as initial creation, so in pre-2006-06 DSL Tools versions it
-			// was placed in OnCreated instead of OnInitialized.
-			GC.KeepAlive(ShapeFields);
-
-			// The rest is from the old OnInitialized method:
-			// Do early initialization so sizing mechanisms work correctly
-			AbsoluteBounds = new RectangleD(PointD.Empty, DefaultSize);
+			ORMDiagram.InitializeShapeElement(this);
 		}
-		#endregion // Constructor
+		#endregion // Constructors
 		#region Virtual extensions
 		/// <summary>
 		/// Called during the OnChildConfiguring from the parent shape.

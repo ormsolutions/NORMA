@@ -181,6 +181,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				case 13: return new ValueConstraintShape(partition, propertyAssignments);
 				case 14: return new RoleNameShape(partition, propertyAssignments);
 				case 15: return new ModelNoteShape(partition, propertyAssignments);
+				// A constructor was not generated for LinkConnectorShape because it had HasCustomConstructor
+				// set to true. Please provide the constructor below.
 				case 16: return new LinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}

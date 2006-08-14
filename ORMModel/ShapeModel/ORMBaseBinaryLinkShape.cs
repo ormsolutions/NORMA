@@ -33,6 +33,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMBaseBinaryLinkShape
 	{
+		#region Constructors
+		/// <summary>Constructor.</summary>
+		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMBaseBinaryLinkShape(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+			// This constructor calls our other constructor which takes a Partition.
+			// All work should be done there rather than here.
+		}
+
+		/// <summary>Constructor.</summary>
+		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMBaseBinaryLinkShape(Partition partition, params PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			ORMDiagram.InitializeShapeElement(this);
+		}
+		#endregion // Constructors
 		#region SubtypeLink Hack
 		/// <summary>
 		/// UNDONE: 2006-08 DSL Tools port: Hack for link-for-a-class
@@ -354,6 +374,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape
 	{
+		#region Constructors
+		/// <summary>Constructor.</summary>
+		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public LinkConnectorShape(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+			// This constructor calls our other constructor which takes a Partition.
+			// All work should be done there rather than here.
+		}
+
+		/// <summary>Constructor.</summary>
+		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public LinkConnectorShape(Partition partition, params PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			ORMDiagram.InitializeShapeElement(this);
+		}
+		#endregion // Constructors
 		/// <summary>
 		/// Link connector shapes are not selectable
 		/// </summary>

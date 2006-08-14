@@ -162,16 +162,6 @@ namespace Neumont.Tools.Modeling
 		/// <param name="element">The newly added element</param>
 		protected void ElementAdded(ModelElement element)
 		{
-			// UNDONE: 2006-06 DSL Tools port: For ShapeElements (or at least Diagrams), OnInitialize needs to be called.
-			// In the case of Diagram, if we don't call OnInitialize, we get a NullReferenceException when we try to do
-			// certain things (like zooming).
-			// There might be a better place for this to go, though...
-			ShapeElement shapeElement = element as ShapeElement;
-			if (shapeElement != null)
-			{
-				shapeElement.OnInitialize();
-			}
-
 			List<IDeserializationFixupListener> listeners = myListeners;
 			int listenerCount = listeners.Count;
 			for (int i = 0; i < listenerCount; ++i)
@@ -266,15 +256,6 @@ namespace Neumont.Tools.Modeling
 				}
 			}
 #endif // DEBUG
-
-			// UNDONE: 2006-06 DSL Tools port: For ShapeElements (or at least Diagrams), OnInitialize needs to be called.
-			// There might be a better place for this to go, though...
-			// For LinkShapes, we never get callbacks through INotifyElementAdded, so we call OnInitialize from here instead.
-			// This is MUCH later than it is normally called, but it is better than not calling it at all...
-			foreach (LinkShape linkShape in store.ElementDirectory.FindElements<LinkShape>(true))
-			{
-				linkShape.OnInitialize();
-			}
 		}
 		#endregion // DeserializationFixupManager specific
 	}

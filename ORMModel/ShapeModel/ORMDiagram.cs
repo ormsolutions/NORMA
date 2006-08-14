@@ -71,24 +71,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public partial class ORMDiagram : IProxyDisplayProvider
 	{
 		#region Constructors
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store"><see cref="Store"/> where new <see cref="ORMDiagram"/> is to be created.</param>
+		/// <summary>Constructor.</summary>
+		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
 		public ORMDiagram(Store store, params PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
-			// We don't need to do anything here, since the other constructor we called takes care of it.
+			// This constructor calls our other constructor which takes a Partition.
+			// All work should be done there rather than here.
 		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition"><see cref="Partition"/> where new <see cref="ORMDiagram"/> is to be created.</param>
+		/// <summary>Constructor.</summary>
+		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
 		public ORMDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
+			ORMDiagram.InitializeShapeElement(this);
+
 			//turned snap to grid off because we are aligning the facttypes based
 			//on the center of the roles. Since the center of the roles is not necessarily
 			//going to be located in alignment on the grid we had to turn this off so facttypes
@@ -1282,6 +1281,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Accessibility Properties
 		#region Utility Methods
+		/// <summary>
+		/// Calls <see cref="ShapeElement.OnInitialize"/> on the <see cref="ShapeElement"/>
+		/// specified by <paramref name="shapeElement"/> and retrieves the values of the
+		/// <see cref="ShapeElement.ShapeFields"/> and <see cref="ShapeElement.Decorators"/>
+		/// properties (in order to cause them to be initialized).
+		/// </summary>
+		/// <remarks>
+		/// Replaces the functionality of <see cref="ShapeElementAddRule"/>.
+		/// </remarks>
+		public static void InitializeShapeElement(ShapeElement shapeElement)
+		{
+			if (shapeElement != null)
+			{
+				shapeElement.OnInitialize();
+
+				// Make sure the shape fields are available very early so auto sizing
+				// based on content always works. This is needed during deserialization
+				// as well as initial creation, so in pre-2006-06 DSL Tools versions it
+				// was placed in OnCreated instead of OnInitialized.
+				IList<ShapeField> shapeFields = shapeElement.ShapeFields;
+				IList<Decorator> decorators = shapeElement.Decorators;
+			}
+		}
 		/// <summary>
 		/// Modify the luminosity for a given color. This
 		/// duplicates the algorithm in ShapeElement.GetShapeLuminosity,

@@ -83,6 +83,7 @@
 	</Types>
 
 	<Shapes>
+		<!-- ORMBaseShape has custom constructor so that we can call ORMDiagram.InitializeShapeElement. -->
 		<GeometryShape Name="ORMBaseShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="55131F4B-0F9A-408D-BED0-79451BA7F4F0" HasCustomConstructor="true" FillGradientMode="None">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
@@ -197,11 +198,13 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>
 		</GeometryShape>
-		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0"/>
+		<!-- LinkConnectorShape has custom constructor so that we can call ORMDiagram.InitializeShapeElement. -->
+		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" HasCustomConstructor="true" FillGradientMode="None" InitialHeight="0" InitialWidth="0"/>
 	</Shapes>
 
 	<Connectors>
-		<Connector Name="ORMBaseBinaryLinkShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="CEFF4339-48D0-4FFE-B052-2F9DA167B1DB">
+		<!-- ORMBaseBinaryLinkShape has custom constructor so that we can call ORMDiagram.InitializeShapeElement. -->
+		<Connector Name="ORMBaseBinaryLinkShape" Namespace="Neumont.Tools.ORM.ShapeModel" InheritanceModifier="Abstract" Id="CEFF4339-48D0-4FFE-B052-2F9DA167B1DB" HasCustomConstructor="true">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
@@ -235,7 +238,7 @@
 	<XmlSerializationBehavior Name="ORMShapeDomainModelSerializationBehavior" Namespace="Neumont.Tools.ORM.ShapeModel"/>
 
 	<!-- Diagram is double-derived so that we can override ShouldAddShapeForElement and OnChildConfiguring. -->
-	<!-- Diagram has custom constructor so that we can turn off snap-to-grid and set the initial name. -->
+	<!-- Diagram has custom constructor so that we can turn off snap-to-grid, set the initial name, and call ORMDiagram.InitializeShapeElement. -->
 	<Diagram Name="ORMDiagram" DisplayName="ORMDiagram" Namespace="Neumont.Tools.ORM.ShapeModel" Id="948F992D-C9B8-46F9-BE3C-B48347F8AB0B" GeneratesDoubleDerived="true" HasCustomConstructor="true">
 		<Attributes>
 			<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
