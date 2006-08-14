@@ -67,9 +67,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				typeof(OIALNamedElement),
 				typeof(OIALModel),
-				typeof(ParentableType),
 				typeof(ConceptType),
-				typeof(InformationType),
 				typeof(InformationTypeFormat),
 				typeof(ChildSequence),
 				typeof(Constraint),
@@ -91,12 +89,11 @@ namespace Neumont.Tools.ORM.OIALModel
 				typeof(EqualityConstraint),
 				typeof(OIALModelHasORMModel),
 				typeof(OIALModelHasConceptType),
-				typeof(ConceptTypeHasChild),
+				typeof(ConceptTypeChild),
 				typeof(ConceptTypeAbsorbedConceptType),
-				typeof(ConceptTypeHasInformationType),
+				typeof(InformationType),
 				typeof(OIALHasInformationTypeFormat),
 				typeof(ConceptTypeRef),
-				typeof(InformationTypeHasInformationTypeFormat),
 				typeof(InformationTypeFormatHasObjectType),
 				typeof(ConceptTypeHasObjectType),
 				typeof(ChildSequenceConstraintHasChildSequence),
@@ -106,8 +103,8 @@ namespace Neumont.Tools.ORM.OIALModel
 				typeof(TwoOrMoreChildSequenceConstraintHasChildSequence),
 				typeof(ChildHasSingleChildConstraint),
 				typeof(OIALModelHasChildSequenceConstraint),
-				typeof(ConceptTypeHasChildHasPathRole),
-				typeof(ChildSequenceHasConceptTypeHasChild),
+				typeof(ConceptTypeChildHasPathRole),
+				typeof(ChildSequenceHasConceptTypeChild),
 			};
 		}
 		/// <summary>
@@ -122,7 +119,8 @@ namespace Neumont.Tools.ORM.OIALModel
 				new DomainMemberInfo(typeof(Constraint), "Modality", Constraint.ModalityDomainPropertyId, typeof(Constraint.ModalityPropertyHandler)),
 				new DomainMemberInfo(typeof(SingleChildUniquenessConstraint), "IsPreferred", SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, typeof(SingleChildUniquenessConstraint.IsPreferredPropertyHandler)),
 				new DomainMemberInfo(typeof(ChildSequenceUniquenessConstraint), "IsPreferred", ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, typeof(ChildSequenceUniquenessConstraint.IsPreferredPropertyHandler)),
-				new DomainMemberInfo(typeof(ConceptTypeHasChild), "Mandatory", ConceptTypeHasChild.MandatoryDomainPropertyId, typeof(ConceptTypeHasChild.MandatoryPropertyHandler)),
+				new DomainMemberInfo(typeof(ConceptTypeChild), "Mandatory", ConceptTypeChild.MandatoryDomainPropertyId, typeof(ConceptTypeChild.MandatoryPropertyHandler)),
+				new DomainMemberInfo(typeof(ConceptTypeChild), "Name", ConceptTypeChild.NameDomainPropertyId, typeof(ConceptTypeChild.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(ConceptTypeRef), "OppositeName", ConceptTypeRef.OppositeNameDomainPropertyId, typeof(ConceptTypeRef.OppositeNamePropertyHandler)),
 			};
 		}
@@ -138,18 +136,16 @@ namespace Neumont.Tools.ORM.OIALModel
 				new DomainRolePlayerInfo(typeof(OIALModelHasORMModel), "ORMModel", OIALModelHasORMModel.ORMModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(OIALModelHasConceptType), "Model", OIALModelHasConceptType.ModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(OIALModelHasConceptType), "ConceptType", OIALModelHasConceptType.ConceptTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConceptTypeHasChild), "Parent", ConceptTypeHasChild.ParentDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConceptTypeHasChild), "Child", ConceptTypeHasChild.ChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ConceptTypeChild), "Parent", ConceptTypeChild.ParentDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ConceptTypeChild), "Target", ConceptTypeChild.TargetDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeAbsorbedConceptType), "AbsorbingConceptType", ConceptTypeAbsorbedConceptType.AbsorbingConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeAbsorbedConceptType), "AbsorbedConceptType", ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConceptTypeHasInformationType), "ConceptType", ConceptTypeHasInformationType.ConceptTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConceptTypeHasInformationType), "InformationType", ConceptTypeHasInformationType.InformationTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(InformationType), "ConceptType", InformationType.ConceptTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(InformationType), "InformationTypeFormat", InformationType.InformationTypeFormatDomainRoleId),
 				new DomainRolePlayerInfo(typeof(OIALHasInformationTypeFormat), "Model", OIALHasInformationTypeFormat.ModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(OIALHasInformationTypeFormat), "InformationTypeFormat", OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeRef), "ReferencingConceptType", ConceptTypeRef.ReferencingConceptTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeRef), "ReferencedConceptType", ConceptTypeRef.ReferencedConceptTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(InformationTypeHasInformationTypeFormat), "InformationType", InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId),
-				new DomainRolePlayerInfo(typeof(InformationTypeHasInformationTypeFormat), "InformationTypeFormat", InformationTypeHasInformationTypeFormat.InformationTypeFormatDomainRoleId),
 				new DomainRolePlayerInfo(typeof(InformationTypeFormatHasObjectType), "InformationTypeFormat", InformationTypeFormatHasObjectType.InformationTypeFormatDomainRoleId),
 				new DomainRolePlayerInfo(typeof(InformationTypeFormatHasObjectType), "ValueType", InformationTypeFormatHasObjectType.ValueTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConceptTypeHasObjectType), "ConceptType", ConceptTypeHasObjectType.ConceptTypeDomainRoleId),
@@ -164,14 +160,14 @@ namespace Neumont.Tools.ORM.OIALModel
 				new DomainRolePlayerInfo(typeof(SubsetConstraintHasSuperChildSequence), "SuperChildSequence", SubsetConstraintHasSuperChildSequence.SuperChildSequenceDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TwoOrMoreChildSequenceConstraintHasChildSequence), "TwoOrMoreChildSequenceConstraint", TwoOrMoreChildSequenceConstraintHasChildSequence.TwoOrMoreChildSequenceConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(TwoOrMoreChildSequenceConstraintHasChildSequence), "ChildSequence", TwoOrMoreChildSequenceConstraintHasChildSequence.ChildSequenceDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ChildHasSingleChildConstraint), "ConceptTypeHasChild", ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ChildHasSingleChildConstraint), "ConceptTypeChild", ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ChildHasSingleChildConstraint), "SingleChildConstraint", ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(OIALModelHasChildSequenceConstraint), "OIALModel", OIALModelHasChildSequenceConstraint.OIALModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(OIALModelHasChildSequenceConstraint), "ChildSequenceConstraint", OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConceptTypeHasChildHasPathRole), "ConceptTypeHasChild", ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConceptTypeHasChildHasPathRole), "PathRole", ConceptTypeHasChildHasPathRole.PathRoleDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ChildSequenceHasConceptTypeHasChild), "ChildSequence", ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ChildSequenceHasConceptTypeHasChild), "ConceptTypeHasChild", ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ConceptTypeChildHasPathRole), "ConceptTypeChild", ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ConceptTypeChildHasPathRole), "PathRole", ConceptTypeChildHasPathRole.PathRoleDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ChildSequenceHasConceptTypeChild), "ChildSequence", ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ChildSequenceHasConceptTypeChild), "ConceptTypeChild", ChildSequenceHasConceptTypeChild.ConceptTypeChildDomainRoleId),
 			};
 		}
 		#endregion
@@ -192,24 +188,22 @@ namespace Neumont.Tools.ORM.OIALModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(24);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(22);
 				createElementMap.Add(typeof(OIALModel), 0);
-				createElementMap.Add(typeof(ParentableType), 1);
-				createElementMap.Add(typeof(ConceptType), 2);
-				createElementMap.Add(typeof(InformationType), 3);
-				createElementMap.Add(typeof(InformationTypeFormat), 4);
-				createElementMap.Add(typeof(ChildSequence), 5);
-				createElementMap.Add(typeof(SingleChildUniquenessConstraint), 6);
-				createElementMap.Add(typeof(SingleChildFrequencyConstraint), 7);
-				createElementMap.Add(typeof(ValueConstraint), 8);
-				createElementMap.Add(typeof(ChildSequenceFrequencyConstraint), 9);
-				createElementMap.Add(typeof(RingConstraint), 10);
-				createElementMap.Add(typeof(DisjunctiveMandatoryConstraint), 11);
-				createElementMap.Add(typeof(ChildSequenceUniquenessConstraint), 12);
-				createElementMap.Add(typeof(MinTwoChildrenChildSequence), 13);
-				createElementMap.Add(typeof(SubsetConstraint), 14);
-				createElementMap.Add(typeof(ExclusionConstraint), 15);
-				createElementMap.Add(typeof(EqualityConstraint), 16);
+				createElementMap.Add(typeof(ConceptType), 1);
+				createElementMap.Add(typeof(InformationTypeFormat), 2);
+				createElementMap.Add(typeof(ChildSequence), 3);
+				createElementMap.Add(typeof(SingleChildUniquenessConstraint), 4);
+				createElementMap.Add(typeof(SingleChildFrequencyConstraint), 5);
+				createElementMap.Add(typeof(ValueConstraint), 6);
+				createElementMap.Add(typeof(ChildSequenceFrequencyConstraint), 7);
+				createElementMap.Add(typeof(RingConstraint), 8);
+				createElementMap.Add(typeof(DisjunctiveMandatoryConstraint), 9);
+				createElementMap.Add(typeof(ChildSequenceUniquenessConstraint), 10);
+				createElementMap.Add(typeof(MinTwoChildrenChildSequence), 11);
+				createElementMap.Add(typeof(SubsetConstraint), 12);
+				createElementMap.Add(typeof(ExclusionConstraint), 13);
+				createElementMap.Add(typeof(EqualityConstraint), 14);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -219,22 +213,20 @@ namespace Neumont.Tools.ORM.OIALModel
 			switch (index)
 			{
 				case 0: return new OIALModel(partition, propertyAssignments);
-				case 1: return new ParentableType(partition, propertyAssignments);
-				case 2: return new ConceptType(partition, propertyAssignments);
-				case 3: return new InformationType(partition, propertyAssignments);
-				case 4: return new InformationTypeFormat(partition, propertyAssignments);
-				case 5: return new ChildSequence(partition, propertyAssignments);
-				case 6: return new SingleChildUniquenessConstraint(partition, propertyAssignments);
-				case 7: return new SingleChildFrequencyConstraint(partition, propertyAssignments);
-				case 8: return new ValueConstraint(partition, propertyAssignments);
-				case 9: return new ChildSequenceFrequencyConstraint(partition, propertyAssignments);
-				case 10: return new RingConstraint(partition, propertyAssignments);
-				case 11: return new DisjunctiveMandatoryConstraint(partition, propertyAssignments);
-				case 12: return new ChildSequenceUniquenessConstraint(partition, propertyAssignments);
-				case 13: return new MinTwoChildrenChildSequence(partition, propertyAssignments);
-				case 14: return new SubsetConstraint(partition, propertyAssignments);
-				case 15: return new ExclusionConstraint(partition, propertyAssignments);
-				case 16: return new EqualityConstraint(partition, propertyAssignments);
+				case 1: return new ConceptType(partition, propertyAssignments);
+				case 2: return new InformationTypeFormat(partition, propertyAssignments);
+				case 3: return new ChildSequence(partition, propertyAssignments);
+				case 4: return new SingleChildUniquenessConstraint(partition, propertyAssignments);
+				case 5: return new SingleChildFrequencyConstraint(partition, propertyAssignments);
+				case 6: return new ValueConstraint(partition, propertyAssignments);
+				case 7: return new ChildSequenceFrequencyConstraint(partition, propertyAssignments);
+				case 8: return new RingConstraint(partition, propertyAssignments);
+				case 9: return new DisjunctiveMandatoryConstraint(partition, propertyAssignments);
+				case 10: return new ChildSequenceUniquenessConstraint(partition, propertyAssignments);
+				case 11: return new MinTwoChildrenChildSequence(partition, propertyAssignments);
+				case 12: return new SubsetConstraint(partition, propertyAssignments);
+				case 13: return new ExclusionConstraint(partition, propertyAssignments);
+				case 14: return new EqualityConstraint(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -257,24 +249,23 @@ namespace Neumont.Tools.ORM.OIALModel
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(19);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(18);
 				createElementLinkMap.Add(typeof(OIALModelHasORMModel), 0);
 				createElementLinkMap.Add(typeof(OIALModelHasConceptType), 1);
 				createElementLinkMap.Add(typeof(ConceptTypeAbsorbedConceptType), 2);
-				createElementLinkMap.Add(typeof(ConceptTypeHasInformationType), 3);
+				createElementLinkMap.Add(typeof(InformationType), 3);
 				createElementLinkMap.Add(typeof(OIALHasInformationTypeFormat), 4);
 				createElementLinkMap.Add(typeof(ConceptTypeRef), 5);
-				createElementLinkMap.Add(typeof(InformationTypeHasInformationTypeFormat), 6);
-				createElementLinkMap.Add(typeof(InformationTypeFormatHasObjectType), 7);
-				createElementLinkMap.Add(typeof(ConceptTypeHasObjectType), 8);
-				createElementLinkMap.Add(typeof(SingleChildSequenceConstraintHasMinTwoChildrenChildSequence), 9);
-				createElementLinkMap.Add(typeof(SubsetConstraintHasSubChildSequence), 10);
-				createElementLinkMap.Add(typeof(SubsetConstraintHasSuperChildSequence), 11);
-				createElementLinkMap.Add(typeof(TwoOrMoreChildSequenceConstraintHasChildSequence), 12);
-				createElementLinkMap.Add(typeof(ChildHasSingleChildConstraint), 13);
-				createElementLinkMap.Add(typeof(OIALModelHasChildSequenceConstraint), 14);
-				createElementLinkMap.Add(typeof(ConceptTypeHasChildHasPathRole), 15);
-				createElementLinkMap.Add(typeof(ChildSequenceHasConceptTypeHasChild), 16);
+				createElementLinkMap.Add(typeof(InformationTypeFormatHasObjectType), 6);
+				createElementLinkMap.Add(typeof(ConceptTypeHasObjectType), 7);
+				createElementLinkMap.Add(typeof(SingleChildSequenceConstraintHasMinTwoChildrenChildSequence), 8);
+				createElementLinkMap.Add(typeof(SubsetConstraintHasSubChildSequence), 9);
+				createElementLinkMap.Add(typeof(SubsetConstraintHasSuperChildSequence), 10);
+				createElementLinkMap.Add(typeof(TwoOrMoreChildSequenceConstraintHasChildSequence), 11);
+				createElementLinkMap.Add(typeof(ChildHasSingleChildConstraint), 12);
+				createElementLinkMap.Add(typeof(OIALModelHasChildSequenceConstraint), 13);
+				createElementLinkMap.Add(typeof(ConceptTypeChildHasPathRole), 14);
+				createElementLinkMap.Add(typeof(ChildSequenceHasConceptTypeChild), 15);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -286,20 +277,19 @@ namespace Neumont.Tools.ORM.OIALModel
 				case 0: return new OIALModelHasORMModel(partition, roleAssignments, propertyAssignments);
 				case 1: return new OIALModelHasConceptType(partition, roleAssignments, propertyAssignments);
 				case 2: return new ConceptTypeAbsorbedConceptType(partition, roleAssignments, propertyAssignments);
-				case 3: return new ConceptTypeHasInformationType(partition, roleAssignments, propertyAssignments);
+				case 3: return new InformationType(partition, roleAssignments, propertyAssignments);
 				case 4: return new OIALHasInformationTypeFormat(partition, roleAssignments, propertyAssignments);
 				case 5: return new ConceptTypeRef(partition, roleAssignments, propertyAssignments);
-				case 6: return new InformationTypeHasInformationTypeFormat(partition, roleAssignments, propertyAssignments);
-				case 7: return new InformationTypeFormatHasObjectType(partition, roleAssignments, propertyAssignments);
-				case 8: return new ConceptTypeHasObjectType(partition, roleAssignments, propertyAssignments);
-				case 9: return new SingleChildSequenceConstraintHasMinTwoChildrenChildSequence(partition, roleAssignments, propertyAssignments);
-				case 10: return new SubsetConstraintHasSubChildSequence(partition, roleAssignments, propertyAssignments);
-				case 11: return new SubsetConstraintHasSuperChildSequence(partition, roleAssignments, propertyAssignments);
-				case 12: return new TwoOrMoreChildSequenceConstraintHasChildSequence(partition, roleAssignments, propertyAssignments);
-				case 13: return new ChildHasSingleChildConstraint(partition, roleAssignments, propertyAssignments);
-				case 14: return new OIALModelHasChildSequenceConstraint(partition, roleAssignments, propertyAssignments);
-				case 15: return new ConceptTypeHasChildHasPathRole(partition, roleAssignments, propertyAssignments);
-				case 16: return new ChildSequenceHasConceptTypeHasChild(partition, roleAssignments, propertyAssignments);
+				case 6: return new InformationTypeFormatHasObjectType(partition, roleAssignments, propertyAssignments);
+				case 7: return new ConceptTypeHasObjectType(partition, roleAssignments, propertyAssignments);
+				case 8: return new SingleChildSequenceConstraintHasMinTwoChildrenChildSequence(partition, roleAssignments, propertyAssignments);
+				case 9: return new SubsetConstraintHasSubChildSequence(partition, roleAssignments, propertyAssignments);
+				case 10: return new SubsetConstraintHasSuperChildSequence(partition, roleAssignments, propertyAssignments);
+				case 11: return new TwoOrMoreChildSequenceConstraintHasChildSequence(partition, roleAssignments, propertyAssignments);
+				case 12: return new ChildHasSingleChildConstraint(partition, roleAssignments, propertyAssignments);
+				case 13: return new OIALModelHasChildSequenceConstraint(partition, roleAssignments, propertyAssignments);
+				case 14: return new ConceptTypeChildHasPathRole(partition, roleAssignments, propertyAssignments);
+				case 15: return new ChildSequenceHasConceptTypeChild(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -438,7 +428,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			#region Initialize DomainData Table
 			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.ConceptTypeAbsorbedConceptType.AbsorbedConceptTypeDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationTypeDomainRoleId, true);
+			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.InformationType.InformationTypeFormatDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.ChildSequenceConstraintHasChildSequence.ChildSequenceDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.OIALModel.SingleChildSequenceConstraintHasMinTwoChildrenChildSequence.ChildSequenceDomainRoleId, true);
@@ -571,7 +561,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// <summary>
 	/// DomainEnumeration: MandatoryConstraintModality
 	/// A list of constraint modalities for simple mandatory role constraints used in
-	/// <see cref="ConceptTypeHasChild"/> relationships.
+	/// <see cref="ConceptTypeChild"/> relationships.
 	/// </summary>
 	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<MandatoryConstraintModality, global::Neumont.Tools.ORM.OIALModel.OIALDomainModel>))]
 	[global::System.CLSCompliant(true)]

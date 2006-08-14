@@ -43,41 +43,62 @@
 	</se:Element>
 	<!-- ChildSequenceConstraints and ChildSequences -->
 	<se:Element Class="ChildSequenceConstraint">
-		<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="ConceptTypeHasChild" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="ConceptTypeChild" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="ChildSequence">
 			<se:Link RelationshipName="SingleChildSequenceConstraintHasMinTwoChildrenChildSequence" RoleName="ChildSequence"/>
 		</se:ChildElement>
 	</se:Element>
 	<se:Element Class="ChildSequence">
-		<se:Link Name="ConceptTypeHasChild" RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ConceptTypeHasChild"/>
+		<se:Link Name="ConceptTypeChild" RelationshipName="ChildSequenceHasConceptTypeChild" RoleName="ConceptTypeChild"/>
+	</se:Element>
+	<se:Element Class="ExclusionConstraint">
+		<se:ChildElement Name="ChildSequence">
+			<se:Link RelationshipName="TwoOrMoreChildSequenceConstraintHasChildSequence" RoleName="ChildSequence"/>
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="SubsetConstraint">
+		<se:ChildElement Name="SubChildSequence">
+			<se:Link RelationshipName="SubsetConstraintHasSubChildSequence" RoleName="SubChildSequence"/>
+		</se:ChildElement>
+		<se:ChildElement Name="SuperChildSequence">
+			<se:Link RelationshipName="SubsetConstraintHasSuperChildSequence" RoleName="SuperChildSequence"/>
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="EqualityConstraint">
+		<se:ChildElement Name="ChildSequence">
+			<se:Link RelationshipName="TwoOrMoreChildSequenceConstraintHasChildSequence" RoleName="ChildSequence"/>
+		</se:ChildElement>
 	</se:Element>
 	<!-- InformationTypeFormats -->
 	<se:Element Class="InformationTypeFormat">
-		<se:Link RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationType" WriteStyle="NotWritten"/>
+		<!--<se:Link RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationType" WriteStyle="NotWritten"/>-->
 		<se:Link Name="ValueType" RelationshipName="InformationTypeFormatHasObjectType" RoleName="ValueType"/>
+		<se:Link Name="ConceptType" RelationshipName="InformationType" RoleName="ConceptType" WriteStyle="NotWritten"/>
+		<se:Link Name="ConceptTypeChild" RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- Concept Types -->
 	<se:Element Class="ConceptType" SortChildElements="true">
 		<se:Link Name="ObjectType" RelationshipName="ConceptTypeHasObjectType" RoleName="ObjectType"/>
 		<se:ChildElement Name="ContainedTypes" SortChildElements="false">
-			<se:Link RelationshipName="ConceptTypeHasInformationType" RoleName="InformationType"/>
+			<se:Link RelationshipName="InformationType" RoleName="InformationTypeFormat"/>
 			<se:Link RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbedConceptType"/>
 			<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptType"/>
 		</se:ChildElement>
 		<se:Link Name="ConceptTypeLink" RelationshipName="ConceptTypeAbsorbedConceptType" RoleName="AbsorbingConceptType" WriteStyle="EmbeddingLinkElement"/>
 		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencedConceptType" Name="ReferencedConceptType" WriteStyle="PrimaryLinkElement" />
+		<se:Link RelationshipName="InformationType" RoleName="InformationTypeFormat" Name="InformationType" WriteStyle="PrimaryLinkElement" />
 		<se:Link RelationshipName="ConceptTypeRef" RoleName="ReferencingConceptType" WriteStyle="NotWritten"/>
-		<se:Link Name="Parent" RelationshipName="ConceptTypeHasChild" RoleName="Parent" WriteStyle="NotWritten"/>
-		<se:Link Name="Child" RelationshipName="ConceptTypeHasChild" RoleName="Child" WriteStyle="NotWritten"/>
+		<se:Link Name="Parent" RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
+		<se:Link Name="Target" RelationshipName="ConceptTypeChild" RoleName="Target" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!-- InformationTypes -->
-	<se:Element Class="InformationType">
-		<se:Link Name="InformationTypeFormat" RelationshipName="InformationTypeHasInformationTypeFormat" RoleName="InformationTypeFormat"/>
-		<se:Link Name="InformationTypeLink" RelationshipName="ConceptTypeHasInformationType" RoleName="ConceptType" WriteStyle="EmbeddingLinkElement"/>
-		<se:Link Name="Parent" RelationshipName="ConceptTypeHasChild" RoleName="Parent" WriteStyle="NotWritten"/>
-	</se:Element>
-	<!-- ConceptTypeHasChild -->
-	<se:Element Class="ConceptTypeHasChild">
+	<!--<se:Element Class="InformationType">
+		<se:Link Name="InformationTypeFormat" RelationshipName="InformationType" RoleName="InformationTypeFormat"/>
+		<se:Link Name="InformationTypeLink" RelationshipName="InformationType" RoleName="ConceptType" WriteStyle="EmbeddingLinkElement"/>
+		<se:Link Name="Parent" RelationshipName="ConceptTypeChild" RoleName="Parent" WriteStyle="NotWritten"/>
+	</se:Element>-->
+	<!-- ConceptTypeChild -->
+	<se:Element Class="ConceptTypeChild">
 		<!-- We write the value of the Mandatory property if and only if it is not "NotMandatory" -->
 		<se:Attribute ID="Mandatory" Name="Mandatory">
 			<se:Condition WriteStyle="NotWritten">
@@ -95,9 +116,9 @@
 			<se:Link RelationshipName="ChildHasSingleChildConstraint" RoleName="SingleChildConstraint"/>
 		</se:ChildElement>
 		<se:ChildElement Name="PathRoles">
-			<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRole"/>
+			<se:Link RelationshipName="ConceptTypeChildHasPathRole" RoleName="PathRole"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="ChildSequenceHasConceptTypeHasChild" RoleName="ChildSequence" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ConceptTypeHasChildHasPathRole" RoleName="PathRole" Name="Role" Prefix="orm"/>
+		<se:Link RelationshipName="ChildSequenceHasConceptTypeChild" RoleName="ChildSequence" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ConceptTypeChildHasPathRole" RoleName="PathRole" Name="Role" Prefix="orm"/>
 	</se:Element>
 </se:CustomSerializedElements>

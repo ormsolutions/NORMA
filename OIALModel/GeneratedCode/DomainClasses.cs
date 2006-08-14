@@ -266,12 +266,12 @@ namespace Neumont.Tools.ORM.OIALModel
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.ConceptType.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DomainClassId)) 
 				{
 					return true;
 				}
 				
-				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DomainClassId)) 
+				if (rootElementDomainInfo.IsDerivedFrom(global::Neumont.Tools.ORM.OIALModel.ConceptType.DomainClassId)) 
 				{
 					return true;
 				}
@@ -309,20 +309,20 @@ namespace Neumont.Tools.ORM.OIALModel
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
-			if (sourceConceptType2 != null)
+			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
+			if (sourceInformationTypeFormat2 != null)
 			{
-				// Create link for path OIALModelHasConceptType.ConceptTypeCollection
-				this.ConceptTypeCollection.Add(sourceConceptType2);
+				// Create link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
+				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat2);
 
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
-			if (sourceInformationTypeFormat3 != null)
+			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
+			if (sourceConceptType3 != null)
 			{
-				// Create link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
-				this.InformationTypeFormatCollection.Add(sourceInformationTypeFormat3);
+				// Create link for path OIALModelHasConceptType.ConceptTypeCollection
+				this.ConceptTypeCollection.Add(sourceConceptType3);
 
 				return;
 			}
@@ -354,29 +354,29 @@ namespace Neumont.Tools.ORM.OIALModel
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
-			if (sourceConceptType2 != null)
+			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat2 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
+			if (sourceInformationTypeFormat2 != null)
 			{
-				// Delete link for path OIALModelHasConceptType.ConceptTypeCollection
+				// Delete link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
 				
-				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceConceptType2))
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceInformationTypeFormat2))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId);
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
 				}
 
 				return;
 			}
 				
-			global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat sourceInformationTypeFormat3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat;
-			if (sourceInformationTypeFormat3 != null)
+			global::Neumont.Tools.ORM.OIALModel.ConceptType sourceConceptType3 = sourceElement as global::Neumont.Tools.ORM.OIALModel.ConceptType;
+			if (sourceConceptType3 != null)
 			{
-				// Delete link for path OIALHasInformationTypeFormat.InformationTypeFormatCollection
+				// Delete link for path OIALModelHasConceptType.ConceptTypeCollection
 				
-				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceInformationTypeFormat3))
+				foreach (DslModeling::ElementLink link in global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.GetLinks((global::Neumont.Tools.ORM.OIALModel.OIALModel)this, sourceConceptType3))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+					link.Delete(global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ModelDomainRoleId, global::Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType.ConceptTypeDomainRoleId);
 				}
 
 				return;
@@ -390,52 +390,13 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainClass ParentableType
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ParentableType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ParentableType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("5b25ef27-c3e0-4f71-8230-d155d8279926")]
-	public partial class ParentableType : OIALNamedElement
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// ParentableType domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5b25ef27, 0xc3e0, 0x4f71, 0x82, 0x30, 0xd1, 0x55, 0xd8, 0x27, 0x99, 0x26);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ParentableType(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ParentableType(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.OIALModel
-{
-	/// <summary>
 	/// DomainClass ConceptType
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("ac397c05-9e1a-4bed-bfc8-82d3c1ded36d")]
-	public partial class ConceptType : ParentableType
+	public partial class ConceptType : OIALNamedElement
 	{
 		#region Constructors, domain class Id
 	
@@ -517,18 +478,17 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		#endregion
-		#region InformationTypeCollection opposite domain role accessor
+		#region InformationTypeFormatCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of InformationTypeCollection.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptType
+		/// Gets a list of InformationTypeFormatCollection.
+		/// Description for Neumont.Tools.ORM.OIALModel.InformationType.ConceptType
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<InformationType> InformationTypeCollection
+		public virtual DslModeling::LinkedElementCollection<InformationTypeFormat> InformationTypeFormatCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<InformationType>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
+				return new DslModeling::LinkedElementCollection<InformationTypeFormat>(this, global::Neumont.Tools.ORM.OIALModel.InformationType.ConceptTypeDomainRoleId);
 			}
 		}
 		#endregion
@@ -571,85 +531,6 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainClass InformationType
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("08be24c4-c237-4cac-b7f0-04c4f5e27758")]
-	public partial class InformationType : ParentableType
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// InformationType domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x08be24c4, 0xc237, 0x4cac, 0xb7, 0xf0, 0x04, 0xc4, 0xf5, 0xe2, 0x77, 0x58);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public InformationType(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public InformationType(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region ConceptType opposite domain role accessor
-		/// <summary>
-		/// Gets or sets ConceptType.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationType
-		/// </summary>
-		public virtual ConceptType ConceptType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationTypeDomainRoleId) as ConceptType;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationTypeDomainRoleId, value);
-			}
-		}
-		#endregion
-		#region InformationTypeFormat opposite domain role accessor
-		/// <summary>
-		/// Gets or sets InformationTypeFormat.
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationType
-		/// </summary>
-		public virtual InformationTypeFormat InformationTypeFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId) as InformationTypeFormat;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId, value);
-			}
-		}
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.OIALModel
-{
-	/// <summary>
 	/// DomainClass InformationTypeFormat
 	/// </summary>
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
@@ -682,6 +563,21 @@ namespace Neumont.Tools.ORM.OIALModel
 		public InformationTypeFormat(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
+		}
+		#endregion
+		#region ConceptTypeCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of ConceptTypeCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.OIALModel.InformationType.InformationTypeFormat
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ConceptType> ConceptTypeCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<ConceptType>(this, global::Neumont.Tools.ORM.OIALModel.InformationType.InformationTypeFormatDomainRoleId);
+			}
 		}
 		#endregion
 		#region Model opposite domain role accessor
@@ -763,18 +659,18 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region ConceptTypeHasChildCollection opposite domain role accessor
+		#region ConceptTypeChildCollection opposite domain role accessor
 		/// <summary>
-		/// Gets a list of ConceptTypeHasChildCollection.
+		/// Gets a list of ConceptTypeChildCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequence
+		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ChildSequence
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ConceptTypeHasChild> ConceptTypeHasChildCollection
+		public virtual DslModeling::LinkedElementCollection<ConceptTypeChild> ConceptTypeChildCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ConceptTypeHasChild>(this, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId);
+				return new DslModeling::LinkedElementCollection<ConceptTypeChild>(this, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId);
 			}
 		}
 		#endregion
@@ -923,18 +819,18 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region ConceptTypeHasChild opposite domain role accessor
+		#region ConceptTypeChild opposite domain role accessor
 		/// <summary>
-		/// Gets or sets ConceptTypeHasChild.
+		/// Gets or sets ConceptTypeChild.
 		/// Description for
 		/// Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.SingleChildConstraint
 		/// </summary>
-		public virtual ConceptTypeHasChild ConceptTypeHasChild
+		public virtual ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId) as ConceptTypeHasChild;
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId) as ConceptTypeChild;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set

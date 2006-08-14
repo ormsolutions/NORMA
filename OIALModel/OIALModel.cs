@@ -1,3 +1,5 @@
+// Uncomment the following line for the OIALModel to get unaries from the ORMModel
+#define USE_UNBINARIZED_UNARIES
 #region Common Public License Copyright Notice
 /**************************************************************************\
 * Neumont Object-Role Modeling Architect for Visual Studio                 *
@@ -23,6 +25,7 @@ using Neumont.Tools.Modeling;
 using System.Globalization;
 using System.Collections;
 using System.Diagnostics;
+using ObjModel = Neumont.Tools.ORM.ObjectModel;
 #endregion // Using Directives
 
 namespace Neumont.Tools.ORM.OIALModel
@@ -704,7 +707,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	public partial class OIALModel
 	{
 		#region Core OIAL Implementation
-		#region Initializers and Debugging
+		#region Initializers
 		/// <summary>
 		/// A <see cref="SortedDictionary"/> which keeps track of the Guids of <see cref="FactType"/> objects which
 		/// are absorbed into <see cref="ObjectType"/> objects and their corresponding details, encapsulated
@@ -723,6 +726,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// this <see cref="OIALModel"/> objects.
 		/// </summary>
 		private List<Guid> myTopLevelTypes = null;
+#if USE_UNBINARIZED_UNARIES
+		private bool myUnariesExist = false;
+#endif
 		/// <summary>
 		/// Processes the current ORM Model by determining which facts and objects
 		/// should be noted by this <see cref="PrimaryElementTracker"/>
@@ -730,6 +736,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="model">The current <see cref="ORMModel"/> represented by the diagram</param>
 		private void ProcessModelForTopLevelTypes()
 		{
+			Store store = this.Store;
 			// Clears the OIALModel previous to re-processing.
 			LinkedElementCollection<ConceptType> thisConceptTypeCollection = ConceptTypeCollection;
 			thisConceptTypeCollection.Clear();
@@ -738,7 +745,6 @@ namespace Neumont.Tools.ORM.OIALModel
 			ORMModel model = this.ORMModel;
 			LinkedElementCollection<FactType> modelFactTypes = model.FactTypeCollection;
 			LinkedElementCollection<ObjectType> modelObjectTypes = model.ObjectTypeCollection;
-			Store store = model.Store;
 
 			// TODO: Monitor this area for bugs in fact set constraint collection.
 			FactTypeAbsorption(modelFactTypes);
@@ -757,11 +763,11 @@ namespace Neumont.Tools.ORM.OIALModel
 			int conceptTypeCount = thisConceptTypeCollection.Count;
 			for (int i = 0; i < conceptTypeCount; ++i)
 			{
-				InformationTypesAndConceptTypeRefs(store, thisConceptTypeCollection[i]);
+				InformationTypesAndConceptTypeRefs(store, thisConceptTypeCollection[i], true);
 			}
-			GetExternalConstraints(store, model);
+			GenerateExternalConstraints(store, model);
 		}
-		#endregion // Initializers and Debugging
+		#endregion // Initializers
 		#region ORMToOIAL Algorithms
 		/// <summary>
 		/// Determines to which object types all fact types in the diagram (after being
@@ -803,12 +809,23 @@ namespace Neumont.Tools.ORM.OIALModel
 				// When you add a reference mode for an object, a new object and fact type are created. Although
 				// we can see this fact type in the model's fact type collection, it does not have any roles
 				// associated with it. Therefore we must do this check that the count of the rolecollection is equal to 2.
-				if (factType.RoleCollection.Count == 2)
+				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+				int roleCount = roles.Count;
+#if USE_UNBINARIZED_UNARIES
+				if (roleCount == 1)
+				{
+					//Guid absorberId = roles[0].Role.RolePlayer.Id;
+					//myAbsorbedFactTypes.Add(factType.Id, new AbsorbedFactType(absorberId, FactAbsorptionType.FactOnly));
+					myUnariesExist = true;
+				}
+#endif
+				if (roleCount == 2)
 				{
 					bool hasSpanningUniqueness = false;
 					foreach (SetConstraint scc in factType.SetConstraintCollection)
 					{
-						if (scc.RoleCollection.Count == 2)
+						UniquenessConstraint uConstraint = scc as UniquenessConstraint;
+						if (uConstraint != null && uConstraint.RoleCollection.Count > 2)
 						{
 							hasSpanningUniqueness = true;
 							break;
@@ -818,9 +835,9 @@ namespace Neumont.Tools.ORM.OIALModel
 					{
 						continue;
 					}
-					LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
-					firstRole = factTypeRoles[0].Role;	// CHANGE: From Role to RoleBase
-					secondRole = factTypeRoles[1].Role;	// CHANGE: From Role to RoleBase
+
+					firstRole = roles[0].Role;	// CHANGE: From Role to RoleBase
+					secondRole = roles[1].Role;	// CHANGE: From Role to RoleBase
 					RoleMultiplicity firstMultiplicity = firstRole.Multiplicity;
 					RoleMultiplicity secondMultiplicity = secondRole.Multiplicity;
 
@@ -1063,15 +1080,23 @@ namespace Neumont.Tools.ORM.OIALModel
 				if (currentObject.IsValueType)
 				{
 					// No data type can be held for an UnspecifiedDataType
-					if (!(currentObject.DataType is UnspecifiedDataType))
-					{
+					//if (!(currentObject.DataType is UnspecifiedDataType))
+					//{
 						InformationTypeFormat itf = new InformationTypeFormat(store,
 							new PropertyAssignment(InformationTypeFormat.NameDomainPropertyId, currentObject.Name));
 						itf.ValueType = currentObject;
 						thisInformationTypeFormats.Add(itf);
-					}
+					//}
 				}
 			}
+#if USE_UNBINARIZED_UNARIES
+			if (myUnariesExist)
+			{
+				InformationTypeFormat booleanInformationTypeFormat = new InformationTypeFormat(store,
+					new PropertyAssignment(InformationTypeFormat.NameDomainPropertyId, "Boolean"));
+				thisInformationTypeFormats.Add(booleanInformationTypeFormat);
+			}
+#endif
 		}
 		/// <summary>
 		/// Finds the Concept Types in the model and adds them to its collection of <see cref="ConceptType"/> objects
@@ -1103,6 +1128,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (parentConcept == null)
 			{
 				ConceptTypeCollection.Add(conceptType);
+				conceptType.Model = this;
 			}
 			else
 			{
@@ -1110,6 +1136,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				ReadOnlyCollection<ConceptTypeAbsorbedConceptType> conceptTypeAbsorbedConceptTypeCollection = ConceptTypeAbsorbedConceptType.GetLinksToAbsorbedConceptTypeCollection(parentConcept);
 				int count = conceptTypeAbsorbedConceptTypeCollection.Count;
 				ConceptTypeAbsorbedConceptType conceptTypeAbsorbedConceptType = conceptTypeAbsorbedConceptTypeCollection[count - 1];
+				conceptTypeAbsorbedConceptType.Name = objectType.Name;
 				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 				ObjectType parentObject = parentConcept.ObjectType;
 				foreach (Role role in playedRoles)
@@ -1131,7 +1158,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// for each <see cref="ConceptType"/>.
 		/// </summary>
 		/// <param name="store">The current store of the <see cref="OIALDomainModel"/></param>
-		private void InformationTypesAndConceptTypeRefs(Store store, ConceptType conceptType)
+		private void InformationTypesAndConceptTypeRefs(Store store, ConceptType conceptType, bool isTopLevel)
 		{
 			ObjectType conceptObjectType = conceptType.ObjectType;
 			Guid objectId = conceptObjectType.Id;
@@ -1141,19 +1168,24 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				// Create the Information Type that represents this value type.
 				InformationTypeFormat informationTypeFormat = GetInformationTypeFormat(conceptObjectType);
-				InformationType newInformationType = new InformationType(store, new PropertyAssignment(InformationType.NameDomainPropertyId, informationTypeFormat.Name + "Value"));
-				newInformationType.InformationTypeFormat = informationTypeFormat;
-				conceptType.InformationTypeCollection.Add(newInformationType);
+				if (informationTypeFormat == null)
+				{
+					return;
+				}
+				//InformationType newInformationType = new InformationType(store, new PropertyAssignment(InformationType.NameDomainPropertyId, informationTypeFormat.Name + "Value"));
+				//newInformationType.InformationTypeFormat = informationTypeFormat;
+				conceptType.InformationTypeFormatCollection.Add(informationTypeFormat);
 
 				// Create the Mandatory constraint and Single Child Constraint for this link.
-				ReadOnlyCollection<ConceptTypeHasInformationType> absorbedInformationTypes = ConceptTypeHasInformationType.GetLinksToInformationTypeCollection(conceptType);
+				ReadOnlyCollection<InformationType> absorbedInformationTypes = InformationType.GetLinksToInformationTypeFormatCollection(conceptType);
 				int index = absorbedInformationTypes.Count - 1;
-				ConceptTypeHasInformationType absorbedInfoType = absorbedInformationTypes[index];
+				InformationType absorbedInfoType = absorbedInformationTypes[index];
 				absorbedInfoType.Mandatory = MandatoryConstraintModality.Alethic;
 				SingleChildUniquenessConstraint uConstraint = new SingleChildUniquenessConstraint(store,
 					new PropertyAssignment(SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, true),
 					new PropertyAssignment(SingleChildUniquenessConstraint.ModalityDomainPropertyId, ConstraintModality.Alethic));
 				absorbedInfoType.SingleChildConstraintCollection.Add(uConstraint);
+				absorbedInfoType.Name = conceptObjectType.Name + "Value";
 			}
 			// Get the facts that this object type plays which are functionally determined by this object type
 			// which are not absorbed away from this object type
@@ -1172,31 +1204,55 @@ namespace Neumont.Tools.ORM.OIALModel
 				}
 				FactType factType = role.FactType;
 				// We have already accounted for nested concept types
-				if (factType.RoleCollection.Count != 2)
+				int roleCount = factType.RoleCollection.Count;
+				if (roleCount > 2 || !string.IsNullOrEmpty(factType.DerivationRuleDisplay))
 				{
 					continue;
 				}
-				LinkedElementCollection<ConstraintRoleSequence> constraints = role.ConstraintRoleSequenceCollection;
-				int count = constraints.Count;
-				// Check the constraints collection to make sure that this is a functional direct fact
-				for (int k = 0; k < count; ++k)
+#if USE_UNBINARIZED_UNARIES
+				if (roleCount == 1)
 				{
-					UniquenessConstraint uniquenessConstraint = constraints[k] as UniquenessConstraint;
-					if (uniquenessConstraint != null && uniquenessConstraint.IsInternal && uniquenessConstraint.RoleCollection.Count == 1)
+					LinkedElementCollection<InformationTypeFormat> informationTypeFormats = InformationTypeFormatCollection;
+					int count = informationTypeFormats.Count;
+					InformationTypeFormat booleanInformationTypeFormat = informationTypeFormats[count - 1];
+					Debug.Assert(booleanInformationTypeFormat.Name == "Boolean");
+					conceptType.InformationTypeFormatCollection.Add(booleanInformationTypeFormat);
+					ReadOnlyCollection<InformationType> absorbedInformationTypes = InformationType.GetLinksToInformationTypeFormatCollection(conceptType);
+					int index = absorbedInformationTypes.Count - 1;
+					InformationType absorbedInfoType = absorbedInformationTypes[index];
+					string roleName = role.Name;
+					absorbedInfoType.Name = string.IsNullOrEmpty(roleName) ? GetUnaryReading(factType) : roleName;
+				}
+#else
+				if (roleCount == 1)
+				{
+					continue;
+				}
+#endif
+				if (roleCount == 2)
+				{
+					LinkedElementCollection<ConstraintRoleSequence> constraints = role.ConstraintRoleSequenceCollection;
+					int count = constraints.Count;
+					// Check the constraints collection to make sure that this is a functional direct fact
+					for (int k = 0; k < count; ++k)
 					{
-						AbsorbedFactType absorbedFactType;
-						myAbsorbedFactTypes.TryGetValue(factType.Id, out absorbedFactType);
-						Guid id = absorbedFactType.AbsorberId;
-						// UNDONE: We need to check that the factList collection does not already contain the fact type. However,
-						// this condition will only be true in very rare cases, i.e. when a concept type plays a role with itself
-						// and we need to generate only one ConceptTypeRef instead of two. Is there a better way to do this without
-						// the check
-						int factListCount = factList.Count;
-						if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null &&
-							(factListCount == 0 || factList[factListCount - 1] != factType))
+						UniquenessConstraint uniquenessConstraint = constraints[k] as UniquenessConstraint;
+						if (uniquenessConstraint != null && uniquenessConstraint.IsInternal && uniquenessConstraint.RoleCollection.Count == 1)
 						{
-							factList.Add(factType);
-							break;
+							AbsorbedFactType absorbedFactType;
+							myAbsorbedFactTypes.TryGetValue(factType.Id, out absorbedFactType);
+							Guid id = absorbedFactType.AbsorberId;
+							// UNDONE: We need to check that the factList collection does not already contain the fact type. However,
+							// this condition will only be true in very rare cases, i.e. when a concept type plays a role with itself
+							// and we need to generate only one ConceptTypeRef instead of two. Is there a better way to do this without
+							// the check
+							int factListCount = factList.Count;
+							if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null &&
+								(factListCount == 0 || factList[factListCount - 1] != factType))
+							{
+								factList.Add(factType);
+								break;
+							}
 						}
 					}
 				}
@@ -1223,13 +1279,15 @@ namespace Neumont.Tools.ORM.OIALModel
 				ObjectType oppositeRolePlayer = oppositeRole.RolePlayer;
 				Guid oppositeRolePlayerId = oppositeRolePlayer.Id;
 				Guid oppositeRolePlayerDesiredParentOrTopLevelTypeId = GetTopLevelId(oppositeRolePlayerId, objectId);
-				IEnumerable<SingleChildConstraint> constraints = GetSingleChildConstraints(oppositeRole, store);
+				IEnumerable<SingleChildConstraint> constraints = GetSingleChildConstraints(oppositeRole, store, isTopLevel);
 				if (oppositeRolePlayerDesiredParentOrTopLevelTypeId.Equals(Guid.Empty))
 				{
 					// Account for role names (if they exist) instead of object type names.
 					string baseName = oppositeRole.Name;
+					bool useRoleName = true;
 					if (string.IsNullOrEmpty(baseName))
 					{
+						useRoleName = false;
 						baseName = oppositeRolePlayer.Name;
 					}
 					MandatoryConstraintModality constraintModality = MandatoryConstraintModality.NotMandatory;
@@ -1245,7 +1303,7 @@ namespace Neumont.Tools.ORM.OIALModel
 								break;
 						}
 					}
-					GetInformationTypes(store, conceptType, oppositeRole, baseName, constraintModality, constraints);
+					GetInformationTypes(store, conceptType, oppositeRole, baseName, constraintModality, constraints, useRoleName);
 				}
 				else if (oppositeRolePlayerDesiredParentOrTopLevelTypeId.Equals(objectId) && oppositeRolePlayer != conceptObjectType)
 				{
@@ -1266,7 +1324,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					}
 					Debug.Assert(absorbedConceptType != null, "AbsorbedConceptType cannot be null.");
 					
-					InformationTypesAndConceptTypeRefs(store, absorbedConceptType);
+					InformationTypesAndConceptTypeRefs(store, absorbedConceptType, false);
 				}
 				else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
 				{
@@ -1277,12 +1335,19 @@ namespace Neumont.Tools.ORM.OIALModel
 					Debug.Assert(conceptTypeRefCollection.Count != 0, "ConceptTypeRefCollection should not be empty.");
 					ConceptTypeRef conceptTypeRef = conceptTypeRefCollection[conceptTypeRefCollection.Count - 1];
 					conceptTypeRef.PathRoleCollection.Add(oppositeRole);
-					string oppName = oppositeRole.Name;
-					if (string.Empty == oppName)
+					string name = oppositeRole.Name;
+					string oppositeName = thisRole.Name;
+					if (string.IsNullOrEmpty(name))
 					{
-						oppName = oppositeRolePlayer.Name;
+						name = oppositeRolePlayer.Name;
 					}
-					conceptTypeRef.OppositeName = oppName;
+					if (string.IsNullOrEmpty(oppositeName))
+					{
+						oppositeName = conceptObjectType.Name;
+					}
+					conceptTypeRef.Name = name;
+					conceptTypeRef.OppositeName = oppositeName;
+
 					if (thisRole.IsMandatory)
 					{
 						switch (thisRole.MandatoryConstraintModality)
@@ -1309,13 +1374,13 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// the <see cref="ConceptType"/> being passed.</param>
 		/// <param name="baseName">The initial name for this <see cref="InformationType"/>. This will be the name of <see cref="Role"/> object
 		/// passed to this method, or if that is an empty string, the name of that <see cref="Role"/>'s role player.</param>
-		private void GetInformationTypes(Store store, ConceptType conceptType, Role oppositeRole, string baseName, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
+		private void GetInformationTypes(Store store, ConceptType conceptType, Role oppositeRole, string baseName, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints, bool useRoleName)
 		{
-			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<RoleBase>(), mandatory, constraints);
+			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<RoleBase>(), mandatory, constraints, useRoleName);
 			// Later on there will be more processing here to handle nullable equality constraints, etc.
 		}
 		/// <summary>
-		/// Gets an <see cref="InformationType"/> for the particular <see cref="ConceptType"/> passed to it, based on the <see cref="Role"/>
+		/// Gets an <see cref="InformationType"/> for the particular <see cref="ConceptType"/> passed to it, based on the <see cref="Role"/>	
 		/// object passed to it whose role player is an <see cref="ObjectType"/> which will be absorbed into this <see cref="ConceptType"/>
 		/// </summary>
 		/// <param name="store">The store that this <see cref="OIALModel"/> uses to store its elements.</param>
@@ -1326,7 +1391,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// passed to this method, or if that is an empty string, the name of that <see cref="Role"/>'s role player. AS more calls to this
 		/// method are made recursively, baseName will be added onto.</param>
 		/// <param name="isFirst">If this is the first time through this method, true. Otherwise, false.</param>
-		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<RoleBase> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints)
+		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<RoleBase> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints, bool useRoleName)
 		{
 			// We will most likely add on to the baseName parameter passed to this method.
 			string newBaseName = baseName;
@@ -1336,29 +1401,27 @@ namespace Neumont.Tools.ORM.OIALModel
 			// and add our Roles (Path Roles) to the ElementLink created (ConceptTypeHasInformationType).
 			if (oppositeRolePlayer.IsValueType)
 			{
-				if (!isFirst)
+				if (!isFirst && !useRoleName)
 				{
 					string concatName = oppositeRole.Name;
 					if (string.IsNullOrEmpty(concatName))
 					{
 						concatName = oppositeRolePlayer.Name;
 					}
-					newBaseName = string.Concat(baseName, "_", concatName);
 				}
-				InformationType informationType = new InformationType(store, new PropertyAssignment(InformationType.NameDomainPropertyId, newBaseName));
-				InformationTypeFormat itf = GetInformationTypeFormat(oppositeRolePlayer);
-				informationType.InformationTypeFormat = itf;
-				conceptType.InformationTypeCollection.Add(informationType);
+				InformationTypeFormat informationTypeFormat = GetInformationTypeFormat(oppositeRolePlayer);
+				conceptType.InformationTypeFormatCollection.Add(informationTypeFormat);
 
 				// Get the link we just created
-				ReadOnlyCollection<ConceptTypeHasInformationType> conceptTypeInformationTypeCollection = ConceptTypeHasInformationType.GetLinksToInformationTypeCollection(conceptType);
-				int count = conceptTypeInformationTypeCollection.Count;
-				ConceptTypeHasInformationType conceptTypeInformationType = conceptTypeInformationTypeCollection[count - 1];
+				ReadOnlyCollection<InformationType> conceptTypeInformationTypeFormatCollection = InformationType.GetLinksToInformationTypeFormatCollection(conceptType);
+				int count = conceptTypeInformationTypeFormatCollection.Count;
+				InformationType informationType = conceptTypeInformationTypeFormatCollection[count - 1];
 
-				conceptTypeInformationType.PathRoleCollection.AddRange(pathNodes);
-				conceptTypeInformationType.PathRoleCollection.Add(oppositeRole);
-				conceptTypeInformationType.Mandatory = mandatory;
-				conceptTypeInformationType.SingleChildConstraintCollection.AddRange(constraints);
+				informationType.PathRoleCollection.AddRange(pathNodes);
+				informationType.PathRoleCollection.Add(oppositeRole);
+				informationType.Mandatory = mandatory;
+				informationType.Name = newBaseName;
+				informationType.SingleChildConstraintCollection.AddRange(constraints);
 			}
 			// TODO: Figure out a way to account for ConceptTypeRefs across multiple path role links.
 			//else if (myTopLevelTypes.Contains(oppositeRolePlayerId) || myAbsorbedObjectTypes.ContainsKey(oppositeRolePlayerId))
@@ -1408,16 +1471,26 @@ namespace Neumont.Tools.ORM.OIALModel
 						// so we must check for this.
 						if (uConstraint != null && uConstraint.IsPreferred && ((uConstraint.RoleCollection.Count == 1 && uConstraint.IsInternal) || !uConstraint.IsInternal))
 						{
-							if (!isFirst)
+							string concatName = oppRole.Name;
+							if (!isFirst && !useRoleName)
 							{
-								string concatName = oppRole.Name;
+								useRoleName = true;
 								if (string.IsNullOrEmpty(concatName))
 								{
+									useRoleName = false;
 									concatName = oppositeRolePlayer.Name;
 								}
 								newBaseName = string.Concat(baseName, "_", concatName);
 							}
-							GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints);
+							else
+							{
+								if (!string.IsNullOrEmpty(concatName))
+								{
+									newBaseName = concatName;
+									useRoleName = true;
+								}
+							}
+							GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, useRoleName);
 						}
 					}
 				}
@@ -1425,69 +1498,220 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Gets the internal child constraints based off the opposite role in a <see cref="ConceptTypeHasChild"/> relationship,
+		/// Gets the internal child constraints based off the opposite role in a <see cref="ConceptTypeChild"/> relationship,
 		/// the opposite role being the role on the same side as the child.
 		/// </summary>
-		/// <param name="role">The opposite role in the <see cref="ConceptTypeHasChild"/> relationship.</param>
+		/// <param name="role">The opposite role in the <see cref="ConceptTypeChild"/> relationship.</param>
 		/// <param name="store">The store the current <see cref="OIALModel"/> is attached to.</param>
-		/// <returns>An <see cref="IEnumerable&lt;SingleChildConstraint&gt;"/> to add to the <see cref="ConceptTypeHasChild"/>.</returns>
-		private IEnumerable<SingleChildConstraint> GetSingleChildConstraints(Role role, Store store)
+		/// <returns>An <see cref="IEnumerable&lt;SingleChildConstraint&gt;"/> to add to the <see cref="ConceptTypeChild"/>.</returns>
+		private IEnumerable<SingleChildConstraint> GetSingleChildConstraints(Role role, Store store, bool isTopLevel)
 		{
 			LinkedElementCollection<ConstraintRoleSequence> constraintCollection = role.ConstraintRoleSequenceCollection;
 			int constraintCount = constraintCollection.Count;
 			for (int i = 0; i < constraintCount; ++i)
 			{
-				UniquenessConstraint uConstraint = constraintCollection[i] as UniquenessConstraint;
+				ConstraintRoleSequence constraintRoleSequence = constraintCollection[i];
+
+				UniquenessConstraint uConstraint = constraintRoleSequence as UniquenessConstraint;
 				if (uConstraint != null && uConstraint.RoleCollection.Count == 1)
 				{
 					Debug.Assert(uConstraint.IsInternal, "Uniqueness Constraint with role collection count of 1 must be internal.");
 					yield return new SingleChildUniquenessConstraint(store,
 						new PropertyAssignment(SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
 						new PropertyAssignment(SingleChildUniquenessConstraint.ModalityDomainPropertyId, uConstraint.Modality));
+					continue;
+				}
+
+				FrequencyConstraint fConstraint = constraintRoleSequence as FrequencyConstraint;
+				if (fConstraint != null && fConstraint.RoleCollection.Count == 1)
+				{
+					yield return new SingleChildFrequencyConstraint(store,
+						new PropertyAssignment(SingleChildFrequencyConstraint.NameDomainPropertyId, fConstraint.Name),
+						new PropertyAssignment(SingleChildFrequencyConstraint.ModalityDomainPropertyId, fConstraint.Modality));
+					continue;
 				}
 			}
+
+			//RoleValueConstraint vConstraint = role.ValueConstraint;
+			//if (vConstraint != null)
+			//{
+			//    yield return new ValueConstraint(store,
+			//        new PropertyAssignment(ValueConstraint.NameDomainPropertyId, vConstraint.Name));
+			//}
+
+			//ObjectType rolePlayer = role.RolePlayer;
+			//ObjModel.ValueConstraint valueConstraint = rolePlayer.ValueConstraint;
+			//if (valueConstraint != null)
+			//{
+			//    yield return new ValueConstraint(store,
+			//        new PropertyAssignment(ValueConstraint.NameDomainPropertyId, valueConstraint.Name));
+			//}
 		}
 		/// <summary>
 		/// Gets the external constraints associated with the attached <see cref="ORMModel"/>.
 		/// </summary>
 		/// <param name="store">The store the <paramref name="model"/> (ORMModel) is attached to.</param>
 		/// <param name="model">The <see cref="ORMModel"/> currently attached to this <see cref="OIALModel"/>.</param>
-		private void GetExternalConstraints(Store store, ORMModel model)
+		private void GenerateExternalConstraints(Store store, ORMModel model)
 		{
-			ReadOnlyCollection<UniquenessConstraint> uniquenessConstraints = store.ElementDirectory.FindElements<UniquenessConstraint>();
-			foreach (UniquenessConstraint uConstraint in uniquenessConstraints)
+			foreach (SetConstraint constraint in model.SetConstraintCollection)
 			{
-				LinkedElementCollection<Role> roleCollection = uConstraint.RoleCollection;
-				// Checking the role collection count is not equal to zero ensures that we have only ExternalUniquenessConstraints
-				if (roleCollection.Count != 1)
+				if (constraint.RoleCollection.Count == 1)
+				{
+					continue;
+				}
+				string constraintName = constraint.Name;
+				ConstraintModality constraintModality = constraint.Modality;
+				bool isDisjunctiveMandatoryConstraint = constraint is MandatoryConstraint;
+				List<ConceptTypeChild> conceptTypeHasChildCollection = GetConceptTypeChildRelationshipsForSetConstraints(constraint.RoleCollection, isDisjunctiveMandatoryConstraint);
+				if (conceptTypeHasChildCollection == null)
+				{
+					return;
+				}
+				if (conceptTypeHasChildCollection.Count != 0)
 				{
 					MinTwoChildrenChildSequence minTwoChildrenChildSequence = new MinTwoChildrenChildSequence(store);
-					foreach (Role role in roleCollection)
+					minTwoChildrenChildSequence.ConceptTypeChildCollection.AddRange(conceptTypeHasChildCollection);
+					SingleChildSequenceConstraint childSequenceConstraint = null;
+
+					UniquenessConstraint uConstraint = constraint as UniquenessConstraint;
+					if (uConstraint != null)
 					{
-						ReadOnlyCollection<ConceptTypeHasChildHasPathRole> roleConceptTypeHasChildren = ConceptTypeHasChildHasPathRole.GetLinksToConceptTypeHasChild(role);
-						foreach (ConceptTypeHasChildHasPathRole conceptTypeHasChildHasPathRole in roleConceptTypeHasChildren)
-						{
-							minTwoChildrenChildSequence.ConceptTypeHasChildCollection.Add(conceptTypeHasChildHasPathRole.ConceptTypeHasChild);
-						}
-					}
-					if (minTwoChildrenChildSequence.ConceptTypeHasChildCollection.Count != 0)
-					{
-						ChildSequenceUniquenessConstraint childSequenceUniquenessConstraint = new ChildSequenceUniquenessConstraint(store,
-							new PropertyAssignment(ChildSequenceUniquenessConstraint.NameDomainPropertyId, uConstraint.Name),
+						childSequenceConstraint = new ChildSequenceUniquenessConstraint(store,
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.NameDomainPropertyId, constraintName),
 							new PropertyAssignment(ChildSequenceUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
-							new PropertyAssignment(ChildSequenceUniquenessConstraint.ModalityDomainPropertyId, uConstraint.Modality));
-						childSequenceUniquenessConstraint.ChildSequence = minTwoChildrenChildSequence;
-						childSequenceUniquenessConstraint.OIALModel = this;
+							new PropertyAssignment(ChildSequenceUniquenessConstraint.ModalityDomainPropertyId, constraintModality));
 					}
-					else
+					else if (isDisjunctiveMandatoryConstraint)
 					{
-						minTwoChildrenChildSequence.Delete();
+					    childSequenceConstraint = new DisjunctiveMandatoryConstraint(store,
+					        new PropertyAssignment(DisjunctiveMandatoryConstraint.NameDomainPropertyId, constraintName),
+					        new PropertyAssignment(DisjunctiveMandatoryConstraint.ModalityDomainPropertyId, constraintModality));
 					}
+					else if (constraint is FrequencyConstraint)
+					{
+					    childSequenceConstraint = new ChildSequenceFrequencyConstraint(store,
+					        new PropertyAssignment(ChildSequenceFrequencyConstraint.NameDomainPropertyId, constraintName),
+					        new PropertyAssignment(ChildSequenceFrequencyConstraint.ModalityDomainPropertyId, constraintModality));
+					}
+					else if (constraint is ObjModel.RingConstraint)
+					{
+					    childSequenceConstraint = new RingConstraint(store,
+					        new PropertyAssignment(RingConstraint.NameDomainPropertyId, constraintName),
+					        new PropertyAssignment(RingConstraint.ModalityDomainPropertyId, constraintModality));
+					}
+					Debug.Assert(childSequenceConstraint != null);
+					childSequenceConstraint.ChildSequence = minTwoChildrenChildSequence;
+					childSequenceConstraint.OIALModel = this;
 				}
 			}
+
+			//foreach (SetComparisonConstraint setComparisonConstraint in model.SetComparisonConstraintCollection)
+			//{
+			//    string constraintName = setComparisonConstraint.Name;
+			//    ConstraintModality constraintModality = setComparisonConstraint.Modality;
+			//    LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = setComparisonConstraint.RoleSequenceCollection;
+			//    int roleSequenceCount = roleSequences.Count;
+
+			//    if (roleSequenceCount > 1)
+			//    {
+			//        if (setComparisonConstraint is ObjModel.SubsetConstraint)
+			//        {
+			//            SubsetConstraint subsetConstraint = new SubsetConstraint(store,
+			//                new PropertyAssignment(SubsetConstraint.NameDomainPropertyId, constraintName),
+			//                new PropertyAssignment(SubsetConstraint.ModalityDomainPropertyId, constraintModality));
+			//            List<ConceptTypeChild> list = GetConceptTypeChildRelationshipsForSetComparisonConstraints(roleSequences[0], true);
+			//            List<ConceptTypeChild> list2 = GetConceptTypeChildRelationshipsForSetComparisonConstraints(roleSequences[1], true);
+			//            if (list == null || list2 == null)
+			//            {
+			//                continue;
+			//            }
+			//            ChildSequence subChildSequence = new ChildSequence(store);
+			//            subChildSequence.ConceptTypeChildCollection.AddRange(list);
+
+			//            ChildSequence superChildSequence = new ChildSequence(store);
+			//            superChildSequence.ConceptTypeChildCollection.AddRange(list2);
+
+			//            subsetConstraint.SubChildSequence = subChildSequence;
+			//            subsetConstraint.SuperChildSequence = superChildSequence;
+			//            subsetConstraint.OIALModel = this;
+			//        }
+			//        else if (setComparisonConstraint is ObjModel.EqualityConstraint)
+			//        {
+			//            EqualityConstraint equalityConstraint = new EqualityConstraint(store,
+			//                new PropertyAssignment(EqualityConstraint.NameDomainPropertyId, constraintName),
+			//                new PropertyAssignment(EqualityConstraint.ModalityDomainPropertyId, constraintModality));
+
+			//            for (int i = 0; i < roleSequenceCount; ++i)
+			//            {
+			//                List<ConceptTypeChild> list = GetConceptTypeChildRelationshipsForSetComparisonConstraints(roleSequences[i], true);
+			//                if (list == null)
+			//                {
+			//                    continue;
+			//                }
+			//                ChildSequence childSequence = new ChildSequence(store);
+			//                childSequence.ConceptTypeChildCollection.AddRange(list);
+			//                equalityConstraint.ChildSequence.Add(childSequence);
+			//            }
+			//            equalityConstraint.OIALModel = this;
+			//        }
+			//        else if (setComparisonConstraint is ObjModel.ExclusionConstraint)
+			//        {
+			//            ExclusionConstraint exclusionConstraint = new ExclusionConstraint(store,
+			//                new PropertyAssignment(ExclusionConstraint.NameDomainPropertyId, constraintName),
+			//                new PropertyAssignment(ExclusionConstraint.ModalityDomainPropertyId, constraintModality));
+
+			//            for (int i = 0; i < roleSequenceCount; ++i)
+			//            {
+			//                List<ConceptTypeChild> list = GetConceptTypeChildRelationshipsForSetComparisonConstraints(roleSequences[i], true);
+			//                if (list == null)
+			//                {
+			//                    continue;
+			//                }
+			//                ChildSequence childSequence = new ChildSequence(store);
+			//                childSequence.ConceptTypeChildCollection.AddRange(list);
+			//                exclusionConstraint.ChildSequence.Add(childSequence);
+			//            }
+			//            exclusionConstraint.OIALModel = this;
+			//        }
+			//    }
+			//}
 		}
 		#endregion // ORMToOIAL Algorithms
 		#region Helper Methods
+#if USE_UNBINARIZED_UNARIES
+		private string GetUnaryReading(FactType unaryFactType)
+		{
+			if (unaryFactType.RoleCollection.Count != 1)
+			{
+				// UNDONE: Localize this.
+				throw new ArgumentException("Passed fact type does not have one role.");
+			}
+			LinkedElementCollection<ReadingOrder> readingOrderCollection = unaryFactType.ReadingOrderCollection;
+			int readingCount = readingOrderCollection.Count;
+			if (readingCount > 0)
+			{
+				ReadingOrder unaryReadingOrder = readingOrderCollection[0];
+				string reading = unaryReadingOrder.ReadingText;
+				string[] splitReading = reading.Split(' ');
+				int splitReadingCount = splitReading.Length;
+				int index = 0;
+				for (int i = 0; i < splitReadingCount; ++i)
+				{
+					string currentReadingWord = splitReading[i];
+					if (currentReadingWord.StartsWith("{"))
+					{
+						index = i;
+					}
+					string firstChar = currentReadingWord[0].ToString().ToUpper();
+					splitReading[i] = string.Concat(firstChar, currentReadingWord.Remove(0, 1));
+				}
+				splitReading[index] = string.Empty;
+				return string.Concat(splitReading);
+			}
+			return "thisUnaryFactTypeNeedsAName";
+		}
+#endif
 		/// <summary>
 		/// Gets a collection which can iterated over of <see cref="FactType"/> objects for
 		/// a specific <see cref="ObjectType"/>.
@@ -1504,7 +1728,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				// never reach the continue statement. Also we do not want to interpret any fact types that are
 				// not binarized.
 				FactType roleFactType = role.FactType;
-				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2)
+				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || !string.IsNullOrEmpty(roleFactType.DerivationRuleDisplay))
 				{
 					continue;
 				}
@@ -1693,6 +1917,79 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			return null;
 		}
+		/// <summary>
+		/// Gets a <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/> that contains all the
+		/// <see cref="Neumont.Tools.ORM.OIALModel.ConceptTypeChild"/> relationships that have <see cref="Neumont.Tools.ORM.ObjectModel.Role"/>
+		/// objects in their path role collection that are in the passed role collection.
+		/// </summary>
+		/// <param name="constraintRoleCollection">The <see cref="Microsoft.VisualStudio.Modeling.LinkedElementCollection&lt;Role&gt;"/> to generate a
+		/// <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/> for.</param>
+		/// <param name="checkOppositeRole">True if the opposite roles of <paramref name="constraint"/>'s role collection should be checked
+		/// instead of the normal roles. Otherwise, false. An example would be a <example>DisjunctiveMandatoryConstraint</example>.</param>
+		/// <returns>A <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/>.</returns>
+		private List<ConceptTypeChild> GetConceptTypeChildRelationshipsForSetConstraints(LinkedElementCollection<Role> constraintRoleCollection, bool checkOppositeRole)
+		{
+			List<ConceptTypeChild> conceptTypeHasChildCollection = new List<ConceptTypeChild>();
+			// Checking the role collection count is not equal to zero ensures that we have only external constraints (or constraint that
+			// will map to external constraint in the co-referenced version of the model). We have checked for this in the calling method.
+			foreach (Role role in constraintRoleCollection)
+			{
+				Role newRole = role;
+				if (checkOppositeRole)
+				{
+					RoleBase oppositeRoleBase = role.OppositeRole;
+					if (oppositeRoleBase == null)
+					{
+						return null;
+					}
+					//Debug.Assert(oppositeRoleBase != null, "Opposite Role Base was null when generating an Child Sequence Constraint.");
+					newRole = oppositeRoleBase.Role;
+				}
+				ReadOnlyCollection<ConceptTypeChildHasPathRole> roleConceptTypeChildren = ConceptTypeChildHasPathRole.GetLinksToConceptTypeChild(newRole);
+				foreach (ConceptTypeChildHasPathRole conceptTypeHasChildHasPathRole in roleConceptTypeChildren)
+				{
+					conceptTypeHasChildCollection.Add(conceptTypeHasChildHasPathRole.ConceptTypeChild);
+				}
+			}
+			return conceptTypeHasChildCollection;
+		}
+		/// <summary>
+		/// Gets a <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/> that contains all the
+		/// <see cref="Neumont.Tools.ORM.OIALModel.ConceptTypeChild"/> relationships that have <see cref="Neumont.Tools.ORM.ObjectModel.Role"/>
+		/// objects in their path role collection that are in the passed constraint's role collection.
+		/// </summary>
+		/// <param name="constraintRoleSequence">A <see cref="Neumont.Tools.ORM.ObjectModel.SetComparisonConstraintRoleSequence"/> to generate a 
+		/// <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/> for.</param>
+		/// <param name="checkOppositeRole">True if the opposite roles of <paramref name="constraint"/>'s role collection should be checked
+		/// instead of the normal roles. Otherwise, false. An example would be a <example>DisjunctiveMandatoryConstraint</example>.</param>
+		/// <returns>A <see cref="System.Collections.Generic.List&lt;ConceptTypeChild&gt;"/>.</returns>
+		private List<ConceptTypeChild> GetConceptTypeChildRelationshipsForSetComparisonConstraints(SetComparisonConstraintRoleSequence constraintRoleSequence, bool checkOppositeRole)
+		{
+			return GetConceptTypeChildRelationshipsForSetConstraints(constraintRoleSequence.RoleCollection, checkOppositeRole);
+			//List<ConceptTypeChild> conceptTypeHasChildCollection = new List<ConceptTypeChild>();
+			//LinkedElementCollection<Role> roleSequenceCollection = constraint.RoleSequenceCollection;
+			//// Checking the role collection count is not equal to zero ensures that we have only external constraints (or constraint that
+			//// will map to external constraint in the co-referenced version of the model). We have checked for this in the calling method.
+			//foreach (SetComparisonConstraintRoleSequence roleSequence in roleSequenceCollection)
+			//{
+				
+			//    Role newRole = role;
+			//    if (checkOppositeRole)
+			//    {
+			//        Neumont.Tools.ORM.OIALModel.SubsetConstraint n = new SubsetConstraint();
+			//        Neumont.Tools.ORM.ObjectModel.SubsetConstraint s = new Neumont.Tools.ORM.ObjectModel.SubsetConstraint();
+			//        RoleBase oppositeRoleBase = role.OppositeRole;
+			//        Debug.Assert(oppositeRoleBase != null, "Opposite Role Base was null when generating an Child Sequence Constraint.");
+			//        newRole = oppositeRoleBase.Role;
+			//    }
+			//    ReadOnlyCollection<ConceptTypeChildHasPathRole> roleConceptTypeChildren = ConceptTypeChildHasPathRole.GetLinksToConceptTypeChild(newRole);
+			//    foreach (ConceptTypeChildHasPathRole conceptTypeHasChildHasPathRole in roleConceptTypeChildren)
+			//    {
+			//        conceptTypeHasChildCollection.Add(conceptTypeHasChildHasPathRole.ConceptTypeChild);
+			//    }
+			//}
+			//return conceptTypeHasChildCollection;
+		}
 		#endregion // Helper Methods
 		#region Corresponding Structures For OIAL Implementation
 		/// <summary>
@@ -1795,7 +2092,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 			if (uConstraintCount == 1)
 			{
-				// Get ConceptTypeHasChild and change the Mandatory property.
+				// Get ConceptTypeChild and change the Mandatory property.
 				return;
 			}
 			// We are left with one-to-one fact types.

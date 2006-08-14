@@ -77,23 +77,23 @@
 			</ElementMergeDirectives>
 		</DomainClass>
 
-		<DomainClass Name="ParentableType" Namespace="Neumont.Tools.ORM.OIALModel" Id="5B25EF27-C3E0-4F71-8230-D155D8279926" DisplayName="ParentableType" Description="">
+		<!--<DomainClass Name="ParentableType" Namespace="Neumont.Tools.ORM.OIALModel" Id="5B25EF27-C3E0-4F71-8230-D155D8279926" DisplayName="ParentableType" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="OIALNamedElement"/>
+			</BaseClass>
+		</DomainClass>-->
+		
+		<DomainClass Name="ConceptType" Namespace="Neumont.Tools.ORM.OIALModel" Id="AC397C05-9E1A-4BED-BFC8-82D3C1DED36D" DisplayName="ConceptType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="OIALNamedElement"/>
 			</BaseClass>
 		</DomainClass>
-		
-		<DomainClass Name="ConceptType" Namespace="Neumont.Tools.ORM.OIALModel" Id="AC397C05-9E1A-4BED-BFC8-82D3C1DED36D" DisplayName="ConceptType" Description="">
-			<BaseClass>
-				<DomainClassMoniker Name="ParentableType"/>
-			</BaseClass>
-		</DomainClass>
 
-		<DomainClass Name="InformationType" Namespace="Neumont.Tools.ORM.OIALModel" Id="08BE24C4-C237-4CAC-B7F0-04C4F5E27758" DisplayName="InformationType" Description="">
+		<!--<DomainClass Name="InformationType" Namespace="Neumont.Tools.ORM.OIALModel" Id="08BE24C4-C237-4CAC-B7F0-04C4F5E27758" DisplayName="InformationType" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ParentableType"/>
 			</BaseClass>
-		</DomainClass>
+		</DomainClass>-->
 
 		<DomainClass Name="InformationTypeFormat" Namespace="Neumont.Tools.ORM.OIALModel" Id="8D5E029E-4A1A-4AB2-A222-5D727C32F3F5" DisplayName="InformationTypeFormat" Description="">
 			<BaseClass>
@@ -264,7 +264,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ConceptType" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ConceptType" Id="D2B0DFD2-EA25-4CBB-9884-8AE4C6FC7410">
+				<DomainRole Name="ConceptType" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ConceptType" Id="D2B0DFD2-EA25-4CBB-9884-8AE4C6FC7410">
 					<RolePlayer>
 						<DomainClassMoniker Name="ConceptType"/>
 					</RolePlayer>
@@ -272,25 +272,30 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeHasChild" AllowsDuplicates="true" Namespace="Neumont.Tools.ORM.OIALModel" InheritanceModifier="Abstract" Id="7ACC3B69-DC50-4E97-897F-A25C4DD39E48">
+		<DomainRelationship Name="ConceptTypeChild" AllowsDuplicates="true" Namespace="Neumont.Tools.ORM.OIALModel" InheritanceModifier="Abstract" Id="7ACC3B69-DC50-4E97-897F-A25C4DD39E48">
 			<Properties>
 				<DomainProperty Name="Mandatory" DefaultValue="NotMandatory" DisplayName="Mandatory" Id="15E5A8F5-BDB7-44DB-80E0-F5D45872B8F6">
 					<Type>
 						<DomainEnumerationMoniker Name="MandatoryConstraintModality"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="Name" DisplayName="Name" Id="15DDCD8D-6DC9-463B-A281-20ABDF08184C" IsElementName="true">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 			<Source>
-				<DomainRole Name="Parent" PropertyName="ChildCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Parent" Id="186C90D1-9393-4093-AB9F-4A8B979D32ED">
+				<DomainRole Name="Parent" PropertyName="TargetCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Parent" Id="186C90D1-9393-4093-AB9F-4A8B979D32ED">
 					<RolePlayer>
 						<DomainClassMoniker Name="ConceptType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Child" PropertyName="Parent" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Child" Id="7BE85312-15F4-447B-A53C-BFBBA2ED03BA">
+				<DomainRole Name="Target" PropertyName="Parent" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Child" Id="7BE85312-15F4-447B-A53C-BFBBA2ED03BA">
 					<RolePlayer>
-						<DomainClassMoniker Name="ParentableType"/>
+						<DomainClassMoniker Name="OIALNamedElement"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -298,7 +303,7 @@
 
 		<DomainRelationship Name="ConceptTypeAbsorbedConceptType" Namespace="Neumont.Tools.ORM.OIALModel" IsEmbedding="true" Id="91A27060-1738-419B-9B52-AFD3D924E1CA">
 			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ConceptTypeHasChild" />
+				<DomainRelationshipMoniker Name="ConceptTypeChild" />
 			</BaseRelationship>
 			<Source>
 				<DomainRole Name="AbsorbingConceptType" PropertyName="AbsorbedConceptTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="AbsorbingConceptType" Id="192EF6B2-48A9-4222-9D7E-321B2F446C06">
@@ -316,21 +321,21 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeHasInformationType" Namespace="Neumont.Tools.ORM.OIALModel" IsEmbedding="true" Id="AFD486DA-57A4-4A81-865A-CC563F86F733">
+		<DomainRelationship Name="InformationType" AllowsDuplicates="true" Namespace="Neumont.Tools.ORM.OIALModel" Id="AFD486DA-57A4-4A81-865A-CC563F86F733">
 			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ConceptTypeHasChild" />
+				<DomainRelationshipMoniker Name="ConceptTypeChild" />
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="ConceptType" PropertyName="InformationTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptType" Id="FE66EF7B-D877-4633-AE3C-501B682FABDB">
+				<DomainRole Name="ConceptType" PropertyName="InformationTypeFormatCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptType" Id="FE66EF7B-D877-4633-AE3C-501B682FABDB">
 					<RolePlayer>
 						<DomainClassMoniker Name="ConceptType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="InformationType" PropertyName="ConceptType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="InformationType" Id="53308CB9-6672-4C19-A5E9-6F07BC449C2F">
+				<DomainRole Name="InformationTypeFormat" PropertyName="ConceptTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="InformationTypeFormat" Id="53308CB9-6672-4C19-A5E9-6F07BC449C2F">
 					<RolePlayer>
-						<DomainClassMoniker Name="InformationType"/>
+						<DomainClassMoniker Name="InformationTypeFormat"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -355,7 +360,7 @@
 
 		<DomainRelationship Name="ConceptTypeRef" Namespace="Neumont.Tools.ORM.OIALModel" Id="8EE4CA1C-F47E-49E8-B732-C33DA9E56FC7" AllowsDuplicates="true">
 			<BaseRelationship>
-				<DomainRelationshipMoniker Name="ConceptTypeHasChild" />
+				<DomainRelationshipMoniker Name="ConceptTypeChild" />
 			</BaseRelationship>
 			<Properties>
 				<DomainProperty Name="OppositeName" DefaultValue="" DisplayName="OppositeName" Id="ED2A412D-8D2B-4819-94EB-8F8AA6745674">
@@ -380,7 +385,7 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="InformationTypeHasInformationTypeFormat" Namespace="Neumont.Tools.ORM.OIALModel" Id="D70B7396-F7CC-40A2-A062-DE8A6C864B83">
+		<!--<DomainRelationship Name="InformationTypeHasInformationTypeFormat" Namespace="Neumont.Tools.ORM.OIALModel" Id="D70B7396-F7CC-40A2-A062-DE8A6C864B83">
 			<Source>
 				<DomainRole Name="InformationType" PropertyName="InformationTypeFormat" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InformationType" Id="07FBDC19-A33C-4377-BD14-7105A671FD7E">
 					<RolePlayer>
@@ -395,11 +400,11 @@
 					</RolePlayer>
 				</DomainRole>
 			</Target>
-		</DomainRelationship>
+		</DomainRelationship>-->
 
 		<DomainRelationship Name="InformationTypeFormatHasObjectType" Namespace="Neumont.Tools.ORM.OIALModel" Id="837FB0B5-12B6-4432-9785-DDA720D469D6">
 			<Source>
-				<DomainRole Name="InformationTypeFormat" PropertyName="ValueType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InformationTypeFormat" Id="5ED10E60-BBD1-407A-B845-CC25217C8DC4">
+				<DomainRole Name="InformationTypeFormat" PropertyName="ValueType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InformationTypeFormat" Id="5ED10E60-BBD1-407A-B845-CC25217C8DC4">
 					<RolePlayer>
 						<DomainClassMoniker Name="InformationTypeFormat"/>
 					</RolePlayer>
@@ -530,14 +535,14 @@
 
 		<DomainRelationship Name="ChildHasSingleChildConstraint" Namespace="Neumont.Tools.ORM.OIALModel" IsEmbedding="true" Id="BBEE96D9-9348-4C65-A668-939844A87E95">
 			<Source>
-				<DomainRole Name="ConceptTypeHasChild" PropertyName="SingleChildConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptTypeHasChild" Id="7C128BE8-6C19-427E-95C6-0517E7A3F439">
+				<DomainRole Name="ConceptTypeChild" PropertyName="SingleChildConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptTypeChild" Id="7C128BE8-6C19-427E-95C6-0517E7A3F439">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="ConceptTypeHasChild"/>
+						<DomainRelationshipMoniker Name="ConceptTypeChild"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SingleChildConstraint" PropertyName="ConceptTypeHasChild" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SingleChildConstraint" Id="708FDFD0-1921-464C-ABB0-D3A95F3D0BD7">
+				<DomainRole Name="SingleChildConstraint" PropertyName="ConceptTypeChild" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SingleChildConstraint" Id="708FDFD0-1921-464C-ABB0-D3A95F3D0BD7">
 					<RolePlayer>
 						<DomainClassMoniker Name="SingleChildConstraint"/>
 					</RolePlayer>
@@ -562,16 +567,16 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ConceptTypeHasChildHasPathRole" Namespace="Neumont.Tools.ORM.OIALModel" Id="A32D0A06-1A64-4D53-8DA7-B42BC9CF1E11">
+		<DomainRelationship Name="ConceptTypeChildHasPathRole" Namespace="Neumont.Tools.ORM.OIALModel" Id="A32D0A06-1A64-4D53-8DA7-B42BC9CF1E11">
 			<Source>
-				<DomainRole Name="ConceptTypeHasChild" PropertyName="PathRoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptTypeHasChild" Id="888D5C3C-4A27-4FD9-87D4-85EB33CCE90C">
+				<DomainRole Name="ConceptTypeChild" PropertyName="PathRoleCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptTypeChild" Id="888D5C3C-4A27-4FD9-87D4-85EB33CCE90C">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="ConceptTypeHasChild"/>
+						<DomainRelationshipMoniker Name="ConceptTypeChild"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="PathRole" PropertyName="ConceptTypeHasChild" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PathRole" Id="8E2CFDB8-F6D4-44E2-AE9C-BB72E5052809">
+				<DomainRole Name="PathRole" PropertyName="ConceptTypeChild" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PathRole" Id="8E2CFDB8-F6D4-44E2-AE9C-BB72E5052809">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.ORM.ObjectModel/RoleBase"/>
 					</RolePlayer>
@@ -579,18 +584,18 @@
 			</Target>
 		</DomainRelationship>
 
-		<DomainRelationship Name="ChildSequenceHasConceptTypeHasChild" Namespace="Neumont.Tools.ORM.OIALModel" Id="37B530D4-8951-4DC7-B77A-CB6045EEF9D3">
+		<DomainRelationship Name="ChildSequenceHasConceptTypeChild" Namespace="Neumont.Tools.ORM.OIALModel" Id="37B530D4-8951-4DC7-B77A-CB6045EEF9D3">
 			<Source>
-				<DomainRole Name="ChildSequence" PropertyName="ConceptTypeHasChildCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ChildSequence" Id="5B867D80-06C5-4B15-8107-0AA297254A1B">
+				<DomainRole Name="ChildSequence" PropertyName="ConceptTypeChildCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ChildSequence" Id="5B867D80-06C5-4B15-8107-0AA297254A1B">
 					<RolePlayer>
 						<DomainClassMoniker Name="ChildSequence"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ConceptTypeHasChild" PropertyName="ChildSequenceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ConceptTypeHasChild" Id="8B792457-1A77-4965-A7B7-496007C1C343">
+				<DomainRole Name="ConceptTypeChild" PropertyName="ChildSequenceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ConceptTypeChild" Id="8B792457-1A77-4965-A7B7-496007C1C343">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="ConceptTypeHasChild"/>
+						<DomainRelationshipMoniker Name="ConceptTypeChild"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -599,7 +604,7 @@
 	</Relationships>
 
 	<Types>
-		<DomainEnumeration Namespace="Neumont.Tools.ORM.OIALModel" Name="MandatoryConstraintModality" Description="A list of constraint modalities for simple mandatory role constraints used in &lt;see cref=&quot;ConceptTypeHasChild&quot;/&gt; relationships.">
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.OIALModel" Name="MandatoryConstraintModality" Description="A list of constraint modalities for simple mandatory role constraints used in &lt;see cref=&quot;ConceptTypeChild&quot;/&gt; relationships.">
 			<Literals>
 				<EnumerationLiteral Name ="NotMandatory" Value="0" Description="See &lt;see langword=&quot;null&quot;/&gt;."/>
 				<EnumerationLiteral Name ="Alethic" Value="1" Description="See &lt;see cref=&quot;Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic&quot;/&gt;."/>

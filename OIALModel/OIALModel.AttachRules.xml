@@ -36,7 +36,7 @@
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeDeleteRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeAddRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeDeleteRule"/>
-		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleAddRule"/>-->
-		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeHasChildHasPathRoleDeleteRule"/>-->
+		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeChildHasPathRoleAddRule"/>-->
+		<!--<arg:Rule class="OIALModel.CheckPathNodeParentExclusiveMandatory.ConceptTypeChildHasPathRoleDeleteRule"/>-->
 	</arg:Model>
 </arg:Rules>

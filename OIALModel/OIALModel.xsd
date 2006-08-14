@@ -38,17 +38,69 @@
 
 	<xs:complexType name="ChildSequenceConstraintsType">
 		<!-- TODO: Add more constraint types here once we have accounted for them in the Live OIAL model. -->
-		<xs:sequence maxOccurs="unbounded">
+		<xs:choice maxOccurs="unbounded">
 			<xs:element name="ChildSequenceUniquenessConstraint" type="ChildSequenceUniquenessConstraintType" />
-		</xs:sequence>
+			<xs:element name="RingConstraint" type="MinTwoChildrenChildSequenceConstraintType" />
+			<xs:element name="ChildSequenceFrequencyConstraint" type="MinTwoChildrenChildSequenceConstraintType" />
+			<xs:element name="DisjunctiveMandatoryConstraint" type="MinTwoChildrenChildSequenceConstraintType" />
+			<xs:element name="SubsetConstraint" type="SubsetConstraintType" />
+			<xs:element name="ExclusionConstraint" type="ExclusionConstraintType" />
+			<xs:element name="EqualityConstraint" type="EqualityConstraintType" />
+		</xs:choice>
 	</xs:complexType>
 
-	<xs:complexType name="ChildSequenceUniquenessConstraintType">
+	<xs:complexType name="MinTwoChildrenChildSequenceConstraintType">
 		<xs:sequence>
 			<xs:element name="ChildSequence" type="ChildSequenceType" />
 		</xs:sequence>
-		<xs:attributeGroup ref="Id_Name_IsPreferred_Group" />
+		<xs:attributeGroup ref="Id_Name_Group" />
 		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+	</xs:complexType>
+	
+	<xs:complexType name="ChildSequenceUniquenessConstraintType">
+		<xs:complexContent>
+			<xs:extension base="MinTwoChildrenChildSequenceConstraintType">
+				<xs:attribute name="IsPreferred" type="xs:boolean" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SubsetConstraintType">
+		<xs:sequence>
+			<xs:element name="SubChildSequence" type="TwoOrMoreChildSequenceType" />
+			<xs:element name="SuperChildSequence" type="TwoOrMoreChildSequenceType" />
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_Group" />
+		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+	</xs:complexType>
+
+	<xs:complexType name="ExclusionConstraintType">
+		<xs:sequence>
+			<xs:element name ="ChildSequence" type="TwoOrMoreChildSequenceType" />
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_Group" />
+		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+	</xs:complexType>
+
+	<xs:complexType name="EqualityConstraintType">
+		<xs:sequence>
+			<xs:element name ="ChildSequence" type="TwoOrMoreChildSequenceType" />
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_Group" />
+		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+	</xs:complexType>
+
+	<xs:complexType name="TwoOrMoreChildSequenceType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="ChildSequence" type="ChildSequenceHasChildSequenceType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ChildSequenceHasChildSequenceType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="ConceptTypeChild" type="RefType" />
+		</xs:sequence>
+		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
 
 	<xs:complexType name="ChildSequenceType">
@@ -60,7 +112,7 @@
 	<xs:complexType name="MinTwoChildrenChildSequenceType">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<!-- TODO: Change this back to RefType once serialization is more solid -->
-			<xs:element name="ConceptTypeHasChild" type="RefType" />
+			<xs:element name="ConceptTypeChild" type="RefType" />
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
@@ -74,7 +126,7 @@
 	<xs:complexType name="InformationTypeFormatType">
 		<xs:sequence>
 			<xs:sequence>
-				<xs:element name="ValueType" type="RefType" />
+				<xs:element minOccurs="0" name="ValueType" type="RefType" />
 			</xs:sequence>
 		</xs:sequence>
 		<xs:attributeGroup ref="Id_Name_Group" />
@@ -97,14 +149,14 @@
 
 	<xs:complexType name="ContainedTypesType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="InformationType" type="InformationTypeType" />
+			<xs:element name="InformationType" type="ConceptTypeChildType" />
 			<xs:element name="ReferencedConceptType" type="ReferencedConceptTypeType" />
 			<xs:element name="ConceptType" type="ConceptTypeType" />
 		</xs:choice>
 		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
 
-	<xs:complexType name="ReferencedConceptTypeType">
+	<xs:complexType name="ConceptTypeChildType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="SingleChildConstraints" type="SingleChildConstraintsType" />
 			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
@@ -112,23 +164,31 @@
 		<xs:attribute name="id" type="xs:ID" />
 		<xs:attribute name="ref" type="xs:IDREF" />
 		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
-		<xs:attribute name="OppositeName" type="xs:string" />
+		<xs:attribute name="Name" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="ReferencedConceptTypeType">
+		<xs:complexContent>
+			<xs:extension base="ConceptTypeChildType">
+				<xs:attribute name="OppositeName" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 
 	<xs:complexType name="ConceptTypeLinkType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
 		</xs:choice>
-		<xs:attribute name="id" type="xs:ID" />
+		<xs:attributeGroup ref="Id_Name_Group" />
 	</xs:complexType>
 
-	<xs:complexType name="InformationTypeType">
+	<!--<xs:complexType name="InformationTypeType">
 		<xs:all>
 			<xs:element name="InformationTypeFormat" type="RefType" />
 			<xs:element name="InformationTypeLink" type="InformationTypeLinkType" />
 		</xs:all>
 		<xs:attributeGroup ref="Id_Name_Group" />
-	</xs:complexType>
+	</xs:complexType>-->
 
 	<xs:complexType name="InformationTypeLinkType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -136,18 +196,29 @@
 			<xs:element name="PathRoles" type="ORM2:PlayedRoles" />
 		</xs:choice>
 		<xs:attribute name="id" type="xs:ID" />
+		<xs:attribute name="ref" type="xs:IDREF" />
 		<xs:attribute name="Mandatory" type="ORM2:ConstraintModality" />
 	</xs:complexType>
 
 	<xs:complexType name="SingleChildConstraintsType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="SingleChildUniquenessConstraint" type="SingleChildUniquenessConstraintType" />
+			<xs:element name="SingleChildFrequencyConstraint" type="SingleChildConstraintType" />
+			<xs:element name="ValueConstraint" type="SingleChildConstraintType"/>
 		</xs:choice>
 	</xs:complexType>
 
-	<xs:complexType name="SingleChildUniquenessConstraintType">
-		<xs:attributeGroup ref="Id_Name_IsPreferred_Group" />
+	<xs:complexType name="SingleChildConstraintType">
+		<xs:attributeGroup ref="Id_Name_Group" />
 		<xs:attribute name="Modality" type="ORM2:ConstraintModality" />
+	</xs:complexType>
+	
+	<xs:complexType name="SingleChildUniquenessConstraintType">
+		<xs:complexContent>
+			<xs:extension base="SingleChildConstraintType">
+				<xs:attribute name="IsPreferred" type="xs:boolean" />
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 
 	<xs:complexType name="RefType">
@@ -157,11 +228,6 @@
 	<xs:attributeGroup name="Id_Name_Group">
 		<xs:attribute name="id" type="xs:ID" />
 		<xs:attribute name="Name" type="xs:string" />
-	</xs:attributeGroup>
-
-	<xs:attributeGroup name="Id_Name_IsPreferred_Group">
-		<xs:attributeGroup ref="Id_Name_Group" />
-		<xs:attribute name="IsPreferred" type="xs:boolean" />
 	</xs:attributeGroup>
 
 </xs:schema>

@@ -419,7 +419,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType/ConceptType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType/ConceptType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.OIALModelHasConceptType/ConceptType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("d2b0dfd2-ea25-4cbb-9884-8ae4c6fc7410")]
 		public virtual ConceptType ConceptType
 		{
@@ -522,20 +522,21 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainRelationship ConceptTypeHasChild
-	/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild
+	/// DomainRelationship ConceptTypeChild
+	/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
+	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("7acc3b69-dc50-4e97-897f-a25c4dd39e48")]
-	public abstract partial class ConceptTypeHasChild : DslModeling::ElementLink
+	public abstract partial class ConceptTypeChild : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ConceptTypeHasChild domain class Id.
+		/// ConceptTypeChild domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7acc3b69, 0xdc50, 0x4e97, 0x89, 0x7f, 0xa2, 0x5c, 0x4d, 0xd3, 0x9e, 0x48);
 	
@@ -545,7 +546,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="partition">The Partition instance containing this ElementLink</param>
 		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
 		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
-		protected ConceptTypeHasChild(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		protected ConceptTypeChild(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -559,11 +560,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// DomainRole Parent
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Parent
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Parent
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Parent.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Parent.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ChildCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Parent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Parent.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Parent.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "TargetCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Parent.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("186c90d1-9393-4093-ab9f-4a8b979d32ed")]
 		public abstract ConceptType Parent
 		{
@@ -572,48 +573,48 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 				
 		#endregion
-		#region Static methods to access Parent of a ParentableType
+		#region Static methods to access Parent of a OIALNamedElement
 		/// <summary>
 		/// Gets a list of Parent.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::ReadOnlyLinkedElementCollection<ConceptType> GetParent(ParentableType element)
+		public static DslModeling::ReadOnlyLinkedElementCollection<ConceptType> GetParent(OIALNamedElement element)
 		{
-			return new DslModeling::ReadOnlyLinkedElementCollection<ConceptType>(element, ChildDomainRoleId);
+			return new DslModeling::ReadOnlyLinkedElementCollection<ConceptType>(element, TargetDomainRoleId);
 		}
 		#endregion
-		#region Child domain role code
+		#region Target domain role code
 		
 		/// <summary>
-		/// Child domain role Id.
+		/// Target domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ChildDomainRoleId = new global::System.Guid(0x7be85312, 0x15f4, 0x447b, 0xa5, 0x3c, 0xbf, 0xbb, 0xa2, 0xed, 0x03, 0xba);
+		public static readonly global::System.Guid TargetDomainRoleId = new global::System.Guid(0x7be85312, 0x15f4, 0x447b, 0xa5, 0x3c, 0xbf, 0xbb, 0xa2, 0xed, 0x03, 0xba);
 		
 		/// <summary>
-		/// DomainRole Child
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Child
+		/// DomainRole Target
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Target
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Child.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Child.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Parent", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Child.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Target.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Target.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Parent", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Target.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7be85312-15f4-447b-a53c-bfbba2ed03ba")]
-		public abstract ParentableType Child
+		public abstract OIALNamedElement Target
 		{
 			get;
 			set;
 		}
 				
 		#endregion
-		#region Static methods to access ChildCollection of a ConceptType
+		#region Static methods to access TargetCollection of a ConceptType
 		/// <summary>
-		/// Gets a list of ChildCollection.
+		/// Gets a list of TargetCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::ReadOnlyLinkedElementCollection<ParentableType> GetChildCollection(ConceptType element)
+		public static DslModeling::ReadOnlyLinkedElementCollection<OIALNamedElement> GetTargetCollection(ConceptType element)
 		{
-			return new DslModeling::ReadOnlyLinkedElementCollection<ParentableType>(element, ParentDomainRoleId);
+			return new DslModeling::ReadOnlyLinkedElementCollection<OIALNamedElement>(element, ParentDomainRoleId);
 		}
 		#endregion
 		#region Mandatory domain property code
@@ -630,10 +631,10 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// Gets or sets the value of Mandatory domain property.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Mandatory
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Mandatory
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Mandatory.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild/Mandatory.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Mandatory.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Mandatory.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.OIALModel.MandatoryConstraintModality.NotMandatory)]
 		[DslModeling::DomainObjectId("15e5a8f5-bdb7-44db-80e0-f5d45872b8f6")]
 		public MandatoryConstraintModality Mandatory
@@ -650,19 +651,19 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Value handler for the ConceptTypeHasChild.Mandatory domain property.
+		/// Value handler for the ConceptTypeChild.Mandatory domain property.
 		/// </summary>
-		internal sealed partial class MandatoryPropertyHandler : DslModeling::DomainPropertyValueHandler<ConceptTypeHasChild, MandatoryConstraintModality>
+		internal sealed partial class MandatoryPropertyHandler : DslModeling::DomainPropertyValueHandler<ConceptTypeChild, MandatoryConstraintModality>
 		{
 			private MandatoryPropertyHandler() { }
 		
 			/// <summary>
-			/// Gets the singleton instance of the ConceptTypeHasChild.Mandatory domain property value handler.
+			/// Gets the singleton instance of the ConceptTypeChild.Mandatory domain property value handler.
 			/// </summary>
 			public static readonly MandatoryPropertyHandler Instance = new MandatoryPropertyHandler();
 		
 			/// <summary>
-			/// Gets the Id of the ConceptTypeHasChild.Mandatory domain property.
+			/// Gets the Id of the ConceptTypeChild.Mandatory domain property.
 			/// </summary>
 			public sealed override global::System.Guid DomainPropertyId
 			{
@@ -678,7 +679,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed MandatoryConstraintModality GetValue(ConceptTypeHasChild element)
+			public override sealed MandatoryConstraintModality GetValue(ConceptTypeChild element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				return element.mandatoryPropertyStorage;
@@ -689,7 +690,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ConceptTypeHasChild element, MandatoryConstraintModality newValue)
+			public override sealed void SetValue(ConceptTypeChild element, MandatoryConstraintModality newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
@@ -704,19 +705,107 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 		
 		#endregion
+		#region Name domain property code
+		
+		/// <summary>
+		/// Name domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0x15ddcd8d, 0x6dc9, 0x463b, 0xa2, 0x81, 0x20, 0xab, 0xdf, 0x08, 0x18, 0x4c);
+		
+		/// <summary>
+		/// Storage for Name
+		/// </summary>
+		private global::System.String namePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Name domain property.
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Name
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Name.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChild/Name.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::ElementName]
+		[DslModeling::DomainObjectId("15ddcd8d-6dc9-463b-a281-20abdf08184c")]
+		public global::System.String Name
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return namePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ConceptTypeChild.Name domain property.
+		/// </summary>
+		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<ConceptTypeChild, global::System.String>
+		{
+			private NamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ConceptTypeChild.Name domain property value handler.
+			/// </summary>
+			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ConceptTypeChild.Name domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ConceptTypeChild element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.namePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ConceptTypeChild element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.namePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region SingleChildConstraintCollection opposite domain role accessor
 		/// <summary>
 		/// Gets a list of SingleChildConstraintCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChild
+		/// Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeChild
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<SingleChildConstraint> SingleChildConstraintCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<SingleChildConstraint>(this, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId);
+				return new DslModeling::LinkedElementCollection<SingleChildConstraint>(this, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId);
 			}
 		}
 		#endregion
@@ -724,54 +813,54 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// Gets a list of PathRoleCollection.
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChild
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChild
 		/// </summary>
 		public virtual DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> PathRoleCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId);
+				return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(this, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
 			}
 		}
 		#endregion
 		#endregion
 		#region Parent link accessor
 		/// <summary>
-		/// Get the list of ConceptTypeHasChild links to a ConceptType.
+		/// Get the list of ConceptTypeChild links to a ConceptType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild> GetLinksToChildCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptType parentInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild> GetLinksToTargetCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptType parentInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild>(parentInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.ParentDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild>(parentInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild.ParentDomainRoleId);
 		}
 		#endregion
-		#region Child link accessor
+		#region Target link accessor
 		/// <summary>
-		/// Get the list of ConceptTypeHasChild links to a ParentableType.
+		/// Get the list of ConceptTypeChild links to a OIALNamedElement.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild> GetLinksToParent ( global::Neumont.Tools.ORM.OIALModel.ParentableType childInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild> GetLinksToParent ( global::Neumont.Tools.ORM.OIALModel.OIALNamedElement targetInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild>(childInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.ChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild>(targetInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild.TargetDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasChild instance accessors
+		#region ConceptTypeChild instance accessors
 		
 		/// <summary>
-		/// Get any ConceptTypeHasChild links between a given ConceptType and a ParentableType.
+		/// Get any ConceptTypeChild links between a given ConceptType and a OIALNamedElement.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.ParentableType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.OIALNamedElement target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.ParentDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild.ParentDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild link in links )
 			{
-				if ( target.Equals(link.Child) )
+				if ( target.Equals(link.Target) )
 				{
 					outLinks.Add(link);
 				}
@@ -792,7 +881,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(IsEmbedding=true)]
 	[DslModeling::DomainObjectId("91a27060-1738-419b-9b52-afd3d924e1ca")]
-	public partial class ConceptTypeAbsorbedConceptType : ConceptTypeHasChild
+	public partial class ConceptTypeAbsorbedConceptType : ConceptTypeChild
 	{
 		#region Constructors, domain class Id
 		
@@ -911,7 +1000,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// Gets the element playing AbsorbingConceptType domain role.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Parent
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Parent
 		/// </summary>
 		public override ConceptType Parent
 		{
@@ -970,13 +1059,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			return new DslModeling::LinkedElementCollection<ConceptType>(element, AbsorbingConceptTypeDomainRoleId);
 		}
 		#endregion
-		#region Child domain role override
+		#region Target domain role override
 		
 		/// <summary>
 		/// Gets the element playing AbsorbedConceptType domain role.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Child
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Target
 		/// </summary>
-		public override ParentableType Child
+		public override OIALNamedElement Target
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -1066,32 +1155,32 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainRelationship ConceptTypeHasInformationType
-	/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType
+	/// DomainRelationship InformationType
+	/// Description for Neumont.Tools.ORM.OIALModel.InformationType
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("afd486da-57a4-4a81-865a-cc563f86f733")]
-	public partial class ConceptTypeHasInformationType : ConceptTypeHasChild
+	public partial class InformationType : ConceptTypeChild
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ConceptTypeHasInformationType domain class Id.
+		/// InformationType domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xafd486da, 0x57a4, 0x4a81, 0x86, 0x5a, 0xcc, 0x56, 0x3f, 0x86, 0xf7, 0x33);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ConceptTypeHasInformationType link in the same Partition as the given ConceptType
+		/// Creates a InformationType link in the same Partition as the given ConceptType
 		/// </summary>
 		/// <param name="source">ConceptType to use as the source of the relationship.</param>
-		/// <param name="target">InformationType to use as the target of the relationship.</param>
-		public ConceptTypeHasInformationType(ConceptType source, InformationType target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeHasInformationType.ConceptTypeDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeHasInformationType.InformationTypeDomainRoleId, target)}, null)
+		/// <param name="target">InformationTypeFormat to use as the target of the relationship.</param>
+		public InformationType(ConceptType source, InformationTypeFormat target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(InformationType.ConceptTypeDomainRoleId, source), new DslModeling::RoleAssignment(InformationType.InformationTypeFormatDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -1100,7 +1189,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ConceptTypeHasInformationType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public InformationType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -1111,7 +1200,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ConceptTypeHasInformationType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public InformationType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -1121,7 +1210,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ConceptTypeHasInformationType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public InformationType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -1132,7 +1221,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ConceptTypeHasInformationType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public InformationType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -1146,12 +1235,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// DomainRole ConceptType
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptType
+		/// Description for Neumont.Tools.ORM.OIALModel.InformationType.ConceptType
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType/ConceptType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InformationTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationType/ConceptType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationType/ConceptType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InformationTypeFormatCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationType/ConceptType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("fe66ef7b-d877-4633-ae3c-501b682fabdb")]
 		public virtual ConceptType ConceptType
 		{
@@ -1168,32 +1256,22 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 				
 		#endregion
-		#region Static methods to access ConceptType of a InformationType
+		#region Static methods to access ConceptTypeCollection of a InformationTypeFormat
 		/// <summary>
-		/// Gets ConceptType.
+		/// Gets a list of ConceptTypeCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ConceptType GetConceptType(InformationType element)
+		public static DslModeling::LinkedElementCollection<ConceptType> GetConceptTypeCollection(InformationTypeFormat element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeDomainRoleId) as ConceptType;
-		}
-		
-		/// <summary>
-		/// Sets ConceptType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetConceptType(InformationType element, ConceptType newConceptType)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, InformationTypeDomainRoleId, newConceptType);
+			return new DslModeling::LinkedElementCollection<ConceptType>(element, InformationTypeFormatDomainRoleId);
 		}
 		#endregion
 		#region Parent domain role override
 		
 		/// <summary>
 		/// Gets the element playing ConceptType domain role.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Parent
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Parent
 		/// </summary>
 		public override ConceptType Parent
 		{
@@ -1210,138 +1288,111 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 		
 		#endregion
-		#region InformationType domain role code
+		#region InformationTypeFormat domain role code
 		
 		/// <summary>
-		/// InformationType domain role Id.
+		/// InformationTypeFormat domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid InformationTypeDomainRoleId = new global::System.Guid(0x53308cb9, 0x6672, 0x4c19, 0xa5, 0xe9, 0x6f, 0x07, 0xbc, 0x44, 0x9c, 0x2f);
+		public static readonly global::System.Guid InformationTypeFormatDomainRoleId = new global::System.Guid(0x53308cb9, 0x6672, 0x4c19, 0xa5, 0xe9, 0x6f, 0x07, 0xbc, 0x44, 0x9c, 0x2f);
 		
 		/// <summary>
-		/// DomainRole InformationType
+		/// DomainRole InformationTypeFormat
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationType
+		/// Neumont.Tools.ORM.OIALModel.InformationType.InformationTypeFormat
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType/InformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType/InformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType/InformationType.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationType/InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationType/InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationType/InformationTypeFormat.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("53308cb9-6672-4c19-a5e9-6f07bc449c2f")]
-		public virtual InformationType InformationType
+		public virtual InformationTypeFormat InformationTypeFormat
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (InformationType)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeDomainRoleId);
+				return (InformationTypeFormat)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeFormatDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, InformationTypeDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, InformationTypeFormatDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access InformationTypeCollection of a ConceptType
+		#region Static methods to access InformationTypeFormatCollection of a ConceptType
 		/// <summary>
-		/// Gets a list of InformationTypeCollection.
+		/// Gets a list of InformationTypeFormatCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<InformationType> GetInformationTypeCollection(ConceptType element)
+		public static DslModeling::LinkedElementCollection<InformationTypeFormat> GetInformationTypeFormatCollection(ConceptType element)
 		{
-			return new DslModeling::LinkedElementCollection<InformationType>(element, ConceptTypeDomainRoleId);
+			return new DslModeling::LinkedElementCollection<InformationTypeFormat>(element, ConceptTypeDomainRoleId);
 		}
 		#endregion
-		#region Child domain role override
+		#region Target domain role override
 		
 		/// <summary>
-		/// Gets the element playing InformationType domain role.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Child
+		/// Gets the element playing InformationTypeFormat domain role.
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Target
 		/// </summary>
-		public override ParentableType Child
+		public override OIALNamedElement Target
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return this.InformationType;
+				return this.InformationTypeFormat;
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				this.InformationType = (InformationType)value;
+				this.InformationTypeFormat = (InformationTypeFormat)value;
 			}
 		}
 		
 		#endregion
 		#region ConceptType link accessor
 		/// <summary>
-		/// Get the list of ConceptTypeHasInformationType links to a ConceptType.
+		/// Get the list of InformationType links to a ConceptType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType> GetLinksToInformationTypeCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptType conceptTypeInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationType> GetLinksToInformationTypeFormatCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptType conceptTypeInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType>(conceptTypeInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationType>(conceptTypeInstance, global::Neumont.Tools.ORM.OIALModel.InformationType.ConceptTypeDomainRoleId);
 		}
 		#endregion
-		#region InformationType link accessor
+		#region InformationTypeFormat link accessor
 		/// <summary>
-		/// Get the ConceptTypeHasInformationType link to a InformationType.
+		/// Get the list of InformationType links to a InformationTypeFormat.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType GetLinkToConceptType (global::Neumont.Tools.ORM.OIALModel.InformationType informationTypeInstance)
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationType> GetLinksToConceptTypeCollection ( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat informationTypeFormatInstance )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType>(informationTypeInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.InformationTypeDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of InformationType not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationType>(informationTypeFormatInstance, global::Neumont.Tools.ORM.OIALModel.InformationType.InformationTypeFormatDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasInformationType instance accessors
+		#region InformationType instance accessors
 		
 		/// <summary>
-		/// Get any ConceptTypeHasInformationType links between a given ConceptType and a InformationType.
+		/// Get any InformationType links between a given ConceptType and a InformationTypeFormat.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.InformationType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationType> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.InformationType> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.InformationType>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationType>(source, global::Neumont.Tools.ORM.OIALModel.InformationType.ConceptTypeDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.OIALModel.InformationType link in links )
 			{
-				if ( target.Equals(link.InformationType) )
+				if ( target.Equals(link.InformationTypeFormat) )
 				{
 					outLinks.Add(link);
 				}
 			}
 			return outLinks.AsReadOnly();
 		}
-		/// <summary>
-		/// Get the one ConceptTypeHasInformationType link between a given ConceptTypeand a InformationType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptType source, global::Neumont.Tools.ORM.OIALModel.InformationType target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType.ConceptTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasInformationType link in links )
-			{
-				if ( target.Equals(link.InformationType) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
 		#endregion
 	}
 }
@@ -1595,7 +1646,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship(AllowsDuplicates = true)]
 	[DslModeling::DomainObjectId("8ee4ca1c-f47e-49e8-b732-c33da9e56fc7")]
-	public partial class ConceptTypeRef : ConceptTypeHasChild
+	public partial class ConceptTypeRef : ConceptTypeChild
 	{
 		#region Constructors, domain class Id
 		
@@ -1704,7 +1755,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// Gets the element playing ReferencingConceptType domain role.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Parent
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Parent
 		/// </summary>
 		public override ConceptType Parent
 		{
@@ -1762,13 +1813,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			return new DslModeling::LinkedElementCollection<ConceptType>(element, ReferencingConceptTypeDomainRoleId);
 		}
 		#endregion
-		#region Child domain role override
+		#region Target domain role override
 		
 		/// <summary>
 		/// Gets the element playing ReferencedConceptType domain role.
-		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild.Child
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChild.Target
 		/// </summary>
-		public override ParentableType Child
+		public override OIALNamedElement Target
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -1918,247 +1969,6 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainRelationship InformationTypeHasInformationTypeFormat
-	/// Description for
-	/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat
-	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship()]
-	[DslModeling::DomainObjectId("d70b7396-f7cc-40a2-a062-de8a6c864b83")]
-	public partial class InformationTypeHasInformationTypeFormat : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// InformationTypeHasInformationTypeFormat domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd70b7396, 0xf7cc, 0x40a2, 0xa0, 0x62, 0xde, 0x8a, 0x6c, 0x86, 0x4b, 0x83);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a InformationTypeHasInformationTypeFormat link in the same Partition as the given InformationType
-		/// </summary>
-		/// <param name="source">InformationType to use as the source of the relationship.</param>
-		/// <param name="target">InformationTypeFormat to use as the target of the relationship.</param>
-		public InformationTypeHasInformationTypeFormat(InformationType source, InformationTypeFormat target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId, source), new DslModeling::RoleAssignment(InformationTypeHasInformationTypeFormat.InformationTypeFormatDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public InformationTypeHasInformationTypeFormat(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public InformationTypeHasInformationTypeFormat(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public InformationTypeHasInformationTypeFormat(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public InformationTypeHasInformationTypeFormat(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region InformationType domain role code
-		
-		/// <summary>
-		/// InformationType domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid InformationTypeDomainRoleId = new global::System.Guid(0x07fbdc19, 0xa33c, 0x4377, 0xbd, 0x14, 0x71, 0x05, 0xa6, 0x71, 0xfd, 0x7e);
-		
-		/// <summary>
-		/// DomainRole InformationType
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationType
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat/InformationType.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat/InformationType.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InformationTypeFormat", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat/InformationType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("07fbdc19-a33c-4377-bd14-7105a671fd7e")]
-		public virtual InformationType InformationType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (InformationType)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, InformationTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access InformationType of a InformationTypeFormat
-		/// <summary>
-		/// Gets a list of InformationType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<InformationType> GetInformationType(InformationTypeFormat element)
-		{
-			return new DslModeling::LinkedElementCollection<InformationType>(element, InformationTypeFormatDomainRoleId);
-		}
-		#endregion
-		#region InformationTypeFormat domain role code
-		
-		/// <summary>
-		/// InformationTypeFormat domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid InformationTypeFormatDomainRoleId = new global::System.Guid(0xea0795a4, 0x6811, 0x421d, 0x95, 0x9f, 0xd0, 0x9f, 0xf0, 0x82, 0xb0, 0x1a);
-		
-		/// <summary>
-		/// DomainRole InformationTypeFormat
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeFormat
-		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat/InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat/InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "InformationType", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("ea0795a4-6811-421d-959f-d09ff082b01a")]
-		public virtual InformationTypeFormat InformationTypeFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (InformationTypeFormat)DslModeling::DomainRoleInfo.GetRolePlayer(this, InformationTypeFormatDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, InformationTypeFormatDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access InformationTypeFormat of a InformationType
-		/// <summary>
-		/// Gets InformationTypeFormat.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static InformationTypeFormat GetInformationTypeFormat(InformationType element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, InformationTypeDomainRoleId) as InformationTypeFormat;
-		}
-		
-		/// <summary>
-		/// Sets InformationTypeFormat.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetInformationTypeFormat(InformationType element, InformationTypeFormat newInformationTypeFormat)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, InformationTypeDomainRoleId, newInformationTypeFormat);
-		}
-		#endregion
-		#region InformationType link accessor
-		/// <summary>
-		/// Get the InformationTypeHasInformationTypeFormat link to a InformationType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat GetLinkToInformationTypeFormat (global::Neumont.Tools.ORM.OIALModel.InformationType informationTypeInstance)
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat>(informationTypeInstance, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of InformationType not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region InformationTypeFormat link accessor
-		/// <summary>
-		/// Get the list of InformationTypeHasInformationTypeFormat links to a InformationTypeFormat.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat> GetLinksToInformationType ( global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat informationTypeFormatInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat>(informationTypeFormatInstance, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
-		}
-		#endregion
-		#region InformationTypeHasInformationTypeFormat instance accessors
-		
-		/// <summary>
-		/// Get any InformationTypeHasInformationTypeFormat links between a given InformationType and a InformationTypeFormat.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat> GetLinks( global::Neumont.Tools.ORM.OIALModel.InformationType source, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat target )
-		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat>(source, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat link in links )
-			{
-				if ( target.Equals(link.InformationTypeFormat) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one InformationTypeHasInformationTypeFormat link between a given InformationTypeand a InformationTypeFormat.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat GetLink( global::Neumont.Tools.ORM.OIALModel.InformationType source, global::Neumont.Tools.ORM.OIALModel.InformationTypeFormat target )
-		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat>(source, global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat.InformationTypeDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.InformationTypeHasInformationTypeFormat link in links )
-			{
-				if ( target.Equals(link.InformationTypeFormat) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace Neumont.Tools.ORM.OIALModel
-{
-	/// <summary>
 	/// DomainRelationship InformationTypeFormatHasObjectType
 	/// Description for Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType
 	/// </summary>
@@ -2244,7 +2054,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueType", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ValueType", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.InformationTypeFormatHasObjectType/InformationTypeFormat.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("5ed10e60-bbd1-407a-b845-cc25217c8dc4")]
 		public virtual InformationTypeFormat InformationTypeFormat
 		{
@@ -4029,12 +3839,12 @@ namespace Neumont.Tools.ORM.OIALModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ChildHasSingleChildConstraint link in the same Partition as the given ConceptTypeHasChild
+		/// Creates a ChildHasSingleChildConstraint link in the same Partition as the given ConceptTypeChild
 		/// </summary>
-		/// <param name="source">ConceptTypeHasChild to use as the source of the relationship.</param>
+		/// <param name="source">ConceptTypeChild to use as the source of the relationship.</param>
 		/// <param name="target">SingleChildConstraint to use as the target of the relationship.</param>
-		public ChildHasSingleChildConstraint(ConceptTypeHasChild source, SingleChildConstraint target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId, source), new DslModeling::RoleAssignment(ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId, target)}, null)
+		public ChildHasSingleChildConstraint(ConceptTypeChild source, SingleChildConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId, source), new DslModeling::RoleAssignment(ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -4080,56 +3890,56 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 		}
 		#endregion
-		#region ConceptTypeHasChild domain role code
+		#region ConceptTypeChild domain role code
 		
 		/// <summary>
-		/// ConceptTypeHasChild domain role Id.
+		/// ConceptTypeChild domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ConceptTypeHasChildDomainRoleId = new global::System.Guid(0x7c128be8, 0x6c19, 0x427e, 0x95, 0xc6, 0x05, 0x17, 0xe7, 0xa3, 0xf4, 0x39);
+		public static readonly global::System.Guid ConceptTypeChildDomainRoleId = new global::System.Guid(0x7c128be8, 0x6c19, 0x427e, 0x95, 0xc6, 0x05, 0x17, 0xe7, 0xa3, 0xf4, 0x39);
 		
 		/// <summary>
-		/// DomainRole ConceptTypeHasChild
+		/// DomainRole ConceptTypeChild
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChild
+		/// Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/ConceptTypeHasChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/ConceptTypeHasChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SingleChildConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/ConceptTypeHasChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SingleChildConstraintCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7c128be8-6c19-427e-95c6-0517e7a3f439")]
-		public virtual ConceptTypeHasChild ConceptTypeHasChild
+		public virtual ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ConceptTypeHasChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeHasChildDomainRoleId);
+				return (ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeHasChildDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeChildDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ConceptTypeHasChild of a SingleChildConstraint
+		#region Static methods to access ConceptTypeChild of a SingleChildConstraint
 		/// <summary>
-		/// Gets ConceptTypeHasChild.
+		/// Gets ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ConceptTypeHasChild GetConceptTypeHasChild(SingleChildConstraint element)
+		public static ConceptTypeChild GetConceptTypeChild(SingleChildConstraint element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SingleChildConstraintDomainRoleId) as ConceptTypeHasChild;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SingleChildConstraintDomainRoleId) as ConceptTypeChild;
 		}
 		
 		/// <summary>
-		/// Sets ConceptTypeHasChild.
+		/// Sets ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetConceptTypeHasChild(SingleChildConstraint element, ConceptTypeHasChild newConceptTypeHasChild)
+		public static void SetConceptTypeChild(SingleChildConstraint element, ConceptTypeChild newConceptTypeChild)
 		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, SingleChildConstraintDomainRoleId, newConceptTypeHasChild);
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SingleChildConstraintDomainRoleId, newConceptTypeChild);
 		}
 		#endregion
 		#region SingleChildConstraint domain role code
@@ -4146,7 +3956,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeHasChild", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeChild", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint/SingleChildConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("708fdfd0-1921-464c-abb0-d3a95f3d0bd7")]
 		public virtual SingleChildConstraint SingleChildConstraint
 		{
@@ -4163,26 +3973,26 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 				
 		#endregion
-		#region Static methods to access SingleChildConstraintCollection of a ConceptTypeHasChild
+		#region Static methods to access SingleChildConstraintCollection of a ConceptTypeChild
 		/// <summary>
 		/// Gets a list of SingleChildConstraintCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<SingleChildConstraint> GetSingleChildConstraintCollection(ConceptTypeHasChild element)
+		public static DslModeling::LinkedElementCollection<SingleChildConstraint> GetSingleChildConstraintCollection(ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<SingleChildConstraint>(element, ConceptTypeHasChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<SingleChildConstraint>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasChild link accessor
+		#region ConceptTypeChild link accessor
 		/// <summary>
-		/// Get the list of ChildHasSingleChildConstraint links to a ConceptTypeHasChild.
+		/// Get the list of ChildHasSingleChildConstraint links to a ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> GetLinksToSingleChildConstraintCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild conceptTypeHasChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> GetLinksToSingleChildConstraintCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(conceptTypeHasChildInstance, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(conceptTypeChildInstance, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region SingleChildConstraint link accessor
@@ -4191,7 +4001,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint GetLinkToConceptTypeHasChild (global::Neumont.Tools.ORM.OIALModel.SingleChildConstraint singleChildConstraintInstance)
+		public static global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint GetLinkToConceptTypeChild (global::Neumont.Tools.ORM.OIALModel.SingleChildConstraint singleChildConstraintInstance)
 		{
 			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(singleChildConstraintInstance, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.SingleChildConstraintDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SingleChildConstraint not obeyed.");
@@ -4208,14 +4018,14 @@ namespace Neumont.Tools.ORM.OIALModel
 		#region ChildHasSingleChildConstraint instance accessors
 		
 		/// <summary>
-		/// Get any ChildHasSingleChildConstraint links between a given ConceptTypeHasChild and a SingleChildConstraint.
+		/// Get any ChildHasSingleChildConstraint links between a given ConceptTypeChild and a SingleChildConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild source, global::Neumont.Tools.ORM.OIALModel.SingleChildConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::Neumont.Tools.ORM.OIALModel.SingleChildConstraint target )
 		{
 			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(source, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(source, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint link in links )
 			{
 				if ( target.Equals(link.SingleChildConstraint) )
@@ -4226,13 +4036,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ChildHasSingleChildConstraint link between a given ConceptTypeHasChildand a SingleChildConstraint.
+		/// Get the one ChildHasSingleChildConstraint link between a given ConceptTypeChildand a SingleChildConstraint.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild source, global::Neumont.Tools.ORM.OIALModel.SingleChildConstraint target )
+		public static global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::Neumont.Tools.ORM.OIALModel.SingleChildConstraint target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(source, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeHasChildDomainRoleId);
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint>(source, global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId);
 			foreach ( global::Neumont.Tools.ORM.OIALModel.ChildHasSingleChildConstraint link in links )
 			{
 				if ( target.Equals(link.SingleChildConstraint) )
@@ -4489,32 +4299,32 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainRelationship ConceptTypeHasChildHasPathRole
-	/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole
+	/// DomainRelationship ConceptTypeChildHasPathRole
+	/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("a32d0a06-1a64-4d53-8da7-b42bc9cf1e11")]
-	public partial class ConceptTypeHasChildHasPathRole : DslModeling::ElementLink
+	public partial class ConceptTypeChildHasPathRole : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ConceptTypeHasChildHasPathRole domain class Id.
+		/// ConceptTypeChildHasPathRole domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa32d0a06, 0x1a64, 0x4d53, 0x8d, 0xa7, 0xb4, 0x2b, 0xc9, 0xcf, 0x1e, 0x11);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ConceptTypeHasChildHasPathRole link in the same Partition as the given ConceptTypeHasChild
+		/// Creates a ConceptTypeChildHasPathRole link in the same Partition as the given ConceptTypeChild
 		/// </summary>
-		/// <param name="source">ConceptTypeHasChild to use as the source of the relationship.</param>
+		/// <param name="source">ConceptTypeChild to use as the source of the relationship.</param>
 		/// <param name="target">RoleBase to use as the target of the relationship.</param>
-		public ConceptTypeHasChildHasPathRole(ConceptTypeHasChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeHasChildHasPathRole.PathRoleDomainRoleId, target)}, null)
+		public ConceptTypeChildHasPathRole(ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId, source), new DslModeling::RoleAssignment(ConceptTypeChildHasPathRole.PathRoleDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -4523,7 +4333,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ConceptTypeHasChildHasPathRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ConceptTypeChildHasPathRole(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -4534,7 +4344,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ConceptTypeHasChildHasPathRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ConceptTypeChildHasPathRole(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -4544,7 +4354,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ConceptTypeHasChildHasPathRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ConceptTypeChildHasPathRole(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -4555,51 +4365,51 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ConceptTypeHasChildHasPathRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ConceptTypeChildHasPathRole(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
 		#endregion
-		#region ConceptTypeHasChild domain role code
+		#region ConceptTypeChild domain role code
 		
 		/// <summary>
-		/// ConceptTypeHasChild domain role Id.
+		/// ConceptTypeChild domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ConceptTypeHasChildDomainRoleId = new global::System.Guid(0x888d5c3c, 0x4a27, 0x4fd9, 0x87, 0xd4, 0x85, 0xeb, 0x33, 0xcc, 0xe9, 0x0c);
+		public static readonly global::System.Guid ConceptTypeChildDomainRoleId = new global::System.Guid(0x888d5c3c, 0x4a27, 0x4fd9, 0x87, 0xd4, 0x85, 0xeb, 0x33, 0xcc, 0xe9, 0x0c);
 		
 		/// <summary>
-		/// DomainRole ConceptTypeHasChild
+		/// DomainRole ConceptTypeChild
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChild
+		/// Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole/ConceptTypeHasChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole/ConceptTypeHasChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathRoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole/ConceptTypeHasChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PathRoleCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("888d5c3c-4a27-4fd9-87d4-85eb33cce90c")]
-		public virtual ConceptTypeHasChild ConceptTypeHasChild
+		public virtual ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ConceptTypeHasChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeHasChildDomainRoleId);
+				return (ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeHasChildDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeChildDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ConceptTypeHasChild of a RoleBase
+		#region Static methods to access ConceptTypeChild of a RoleBase
 		/// <summary>
-		/// Gets a list of ConceptTypeHasChild.
+		/// Gets a list of ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ConceptTypeHasChild> GetConceptTypeHasChild(global::Neumont.Tools.ORM.ObjectModel.RoleBase element)
+		public static DslModeling::LinkedElementCollection<ConceptTypeChild> GetConceptTypeChild(global::Neumont.Tools.ORM.ObjectModel.RoleBase element)
 		{
-			return new DslModeling::LinkedElementCollection<ConceptTypeHasChild>(element, PathRoleDomainRoleId);
+			return new DslModeling::LinkedElementCollection<ConceptTypeChild>(element, PathRoleDomainRoleId);
 		}
 		#endregion
 		#region PathRole domain role code
@@ -4611,12 +4421,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		
 		/// <summary>
 		/// DomainRole PathRole
-		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.PathRole
+		/// Description for Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.PathRole
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole/PathRole.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole/PathRole.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeHasChild", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole/PathRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/PathRole.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/PathRole.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConceptTypeChild", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole/PathRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8e2cfdb8-f6d4-44e2-ae9c-bb72e5052809")]
 		public virtual global::Neumont.Tools.ORM.ObjectModel.RoleBase PathRole
 		{
@@ -4633,51 +4442,51 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 				
 		#endregion
-		#region Static methods to access PathRoleCollection of a ConceptTypeHasChild
+		#region Static methods to access PathRoleCollection of a ConceptTypeChild
 		/// <summary>
 		/// Gets a list of PathRoleCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> GetPathRoleCollection(ConceptTypeHasChild element)
+		public static DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase> GetPathRoleCollection(ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(element, ConceptTypeHasChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<global::Neumont.Tools.ORM.ObjectModel.RoleBase>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasChild link accessor
+		#region ConceptTypeChild link accessor
 		/// <summary>
-		/// Get the list of ConceptTypeHasChildHasPathRole links to a ConceptTypeHasChild.
+		/// Get the list of ConceptTypeChildHasPathRole links to a ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole> GetLinksToPathRoleCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild conceptTypeHasChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinksToPathRoleCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole>(conceptTypeHasChildInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(conceptTypeChildInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
 		#region PathRole link accessor
 		/// <summary>
-		/// Get the list of ConceptTypeHasChildHasPathRole links to a RoleBase.
+		/// Get the list of ConceptTypeChildHasPathRole links to a RoleBase.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole> GetLinksToConceptTypeHasChild ( global::Neumont.Tools.ORM.ObjectModel.RoleBase pathRoleInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinksToConceptTypeChild ( global::Neumont.Tools.ORM.ObjectModel.RoleBase pathRoleInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole>(pathRoleInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.PathRoleDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(pathRoleInstance, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.PathRoleDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasChildHasPathRole instance accessors
+		#region ConceptTypeChildHasPathRole instance accessors
 		
 		/// <summary>
-		/// Get any ConceptTypeHasChildHasPathRole links between a given ConceptTypeHasChild and a RoleBase.
+		/// Get any ConceptTypeChildHasPathRole links between a given ConceptTypeChild and a RoleBase.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> GetLinks( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole link in links )
 			{
 				if ( target.Equals(link.PathRole) )
 				{
@@ -4687,14 +4496,14 @@ namespace Neumont.Tools.ORM.OIALModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ConceptTypeHasChildHasPathRole link between a given ConceptTypeHasChildand a RoleBase.
+		/// Get the one ConceptTypeChildHasPathRole link between a given ConceptTypeChildand a RoleBase.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
+		public static global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole GetLink( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild source, global::Neumont.Tools.ORM.ObjectModel.RoleBase target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole.ConceptTypeHasChildDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChildHasPathRole link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole>(source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole.ConceptTypeChildDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChildHasPathRole link in links )
 			{
 				if ( target.Equals(link.PathRole) )
 				{
@@ -4710,32 +4519,32 @@ namespace Neumont.Tools.ORM.OIALModel
 namespace Neumont.Tools.ORM.OIALModel
 {
 	/// <summary>
-	/// DomainRelationship ChildSequenceHasConceptTypeHasChild
-	/// Description for Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild
+	/// DomainRelationship ChildSequenceHasConceptTypeChild
+	/// Description for Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild
 	/// </summary>
-	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainRelationship()]
 	[DslModeling::DomainObjectId("37b530d4-8951-4dc7-b77a-cb6045eef9d3")]
-	public partial class ChildSequenceHasConceptTypeHasChild : DslModeling::ElementLink
+	public partial class ChildSequenceHasConceptTypeChild : DslModeling::ElementLink
 	{
 		#region Constructors, domain class Id
 		
 		/// <summary>
-		/// ChildSequenceHasConceptTypeHasChild domain class Id.
+		/// ChildSequenceHasConceptTypeChild domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x37b530d4, 0x8951, 0x4dc7, 0xb7, 0x7a, 0xcb, 0x60, 0x45, 0xee, 0xf9, 0xd3);
 	
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ChildSequenceHasConceptTypeHasChild link in the same Partition as the given ChildSequence
+		/// Creates a ChildSequenceHasConceptTypeChild link in the same Partition as the given ChildSequence
 		/// </summary>
 		/// <param name="source">ChildSequence to use as the source of the relationship.</param>
-		/// <param name="target">ConceptTypeHasChild to use as the target of the relationship.</param>
-		public ChildSequenceHasConceptTypeHasChild(ChildSequence source, ConceptTypeHasChild target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId, source), new DslModeling::RoleAssignment(ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildDomainRoleId, target)}, null)
+		/// <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+		public ChildSequenceHasConceptTypeChild(ChildSequence source, ConceptTypeChild target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId, source), new DslModeling::RoleAssignment(ChildSequenceHasConceptTypeChild.ConceptTypeChildDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -4744,7 +4553,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ChildSequenceHasConceptTypeHasChild(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+		public ChildSequenceHasConceptTypeChild(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
 		{
 		}
@@ -4755,7 +4564,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="store">Store where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ChildSequenceHasConceptTypeHasChild(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ChildSequenceHasConceptTypeChild(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
 		{
 		}
@@ -4765,7 +4574,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public ChildSequenceHasConceptTypeHasChild(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+		public ChildSequenceHasConceptTypeChild(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
 			: base(partition, roleAssignments, null)
 		{
 		}
@@ -4776,7 +4585,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <param name="partition">Partition where new link is to be created.</param>
 		/// <param name="roleAssignments">List of relationship role assignments.</param>
 		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public ChildSequenceHasConceptTypeHasChild(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+		public ChildSequenceHasConceptTypeChild(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, roleAssignments, propertyAssignments)
 		{
 		}
@@ -4791,11 +4600,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// DomainRole ChildSequence
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequence
+		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ChildSequence
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild/ChildSequence.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild/ChildSequence.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeHasChildCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild/ChildSequence.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild/ChildSequence.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild/ChildSequence.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptTypeChildCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild/ChildSequence.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
 		[DslModeling::DomainObjectId("5b867d80-06c5-4b15-8107-0aa297254a1b")]
 		public virtual ChildSequence ChildSequence
 		{
@@ -4812,95 +4621,95 @@ namespace Neumont.Tools.ORM.OIALModel
 		}
 				
 		#endregion
-		#region Static methods to access ChildSequenceCollection of a ConceptTypeHasChild
+		#region Static methods to access ChildSequenceCollection of a ConceptTypeChild
 		/// <summary>
 		/// Gets a list of ChildSequenceCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ChildSequence> GetChildSequenceCollection(ConceptTypeHasChild element)
+		public static DslModeling::LinkedElementCollection<ChildSequence> GetChildSequenceCollection(ConceptTypeChild element)
 		{
-			return new DslModeling::LinkedElementCollection<ChildSequence>(element, ConceptTypeHasChildDomainRoleId);
+			return new DslModeling::LinkedElementCollection<ChildSequence>(element, ConceptTypeChildDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasChild domain role code
+		#region ConceptTypeChild domain role code
 		
 		/// <summary>
-		/// ConceptTypeHasChild domain role Id.
+		/// ConceptTypeChild domain role Id.
 		/// </summary>
-		public static readonly global::System.Guid ConceptTypeHasChildDomainRoleId = new global::System.Guid(0x8b792457, 0x1a77, 0x4965, 0xa7, 0xb7, 0x49, 0x60, 0x07, 0xc1, 0xc3, 0x43);
+		public static readonly global::System.Guid ConceptTypeChildDomainRoleId = new global::System.Guid(0x8b792457, 0x1a77, 0x4965, 0xa7, 0xb7, 0x49, 0x60, 0x07, 0xc1, 0xc3, 0x43);
 		
 		/// <summary>
-		/// DomainRole ConceptTypeHasChild
+		/// DomainRole ConceptTypeChild
 		/// Description for
-		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChild
+		/// Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ConceptTypeChild
 		/// </summary>
-		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild/ConceptTypeHasChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild/ConceptTypeHasChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ChildSequenceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild/ConceptTypeHasChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild/ConceptTypeChild.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild/ConceptTypeChild.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ChildSequenceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild/ConceptTypeChild.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8b792457-1a77-4965-a7b7-496007c1c343")]
-		public virtual ConceptTypeHasChild ConceptTypeHasChild
+		public virtual ConceptTypeChild ConceptTypeChild
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ConceptTypeHasChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeHasChildDomainRoleId);
+				return (ConceptTypeChild)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConceptTypeChildDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
 			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeHasChildDomainRoleId, value);
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConceptTypeChildDomainRoleId, value);
 			}
 		}
 				
 		#endregion
-		#region Static methods to access ConceptTypeHasChildCollection of a ChildSequence
+		#region Static methods to access ConceptTypeChildCollection of a ChildSequence
 		/// <summary>
-		/// Gets a list of ConceptTypeHasChildCollection.
+		/// Gets a list of ConceptTypeChildCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ConceptTypeHasChild> GetConceptTypeHasChildCollection(ChildSequence element)
+		public static DslModeling::LinkedElementCollection<ConceptTypeChild> GetConceptTypeChildCollection(ChildSequence element)
 		{
-			return new DslModeling::LinkedElementCollection<ConceptTypeHasChild>(element, ChildSequenceDomainRoleId);
+			return new DslModeling::LinkedElementCollection<ConceptTypeChild>(element, ChildSequenceDomainRoleId);
 		}
 		#endregion
 		#region ChildSequence link accessor
 		/// <summary>
-		/// Get the list of ChildSequenceHasConceptTypeHasChild links to a ChildSequence.
+		/// Get the list of ChildSequenceHasConceptTypeChild links to a ChildSequence.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild> GetLinksToConceptTypeHasChildCollection ( global::Neumont.Tools.ORM.OIALModel.ChildSequence childSequenceInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild> GetLinksToConceptTypeChildCollection ( global::Neumont.Tools.ORM.OIALModel.ChildSequence childSequenceInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild>(childSequenceInstance, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild>(childSequenceInstance, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId);
 		}
 		#endregion
-		#region ConceptTypeHasChild link accessor
+		#region ConceptTypeChild link accessor
 		/// <summary>
-		/// Get the list of ChildSequenceHasConceptTypeHasChild links to a ConceptTypeHasChild.
+		/// Get the list of ChildSequenceHasConceptTypeChild links to a ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild> GetLinksToChildSequenceCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild conceptTypeHasChildInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild> GetLinksToChildSequenceCollection ( global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild conceptTypeChildInstance )
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild>(conceptTypeHasChildInstance, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ConceptTypeHasChildDomainRoleId);
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild>(conceptTypeChildInstance, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ConceptTypeChildDomainRoleId);
 		}
 		#endregion
-		#region ChildSequenceHasConceptTypeHasChild instance accessors
+		#region ChildSequenceHasConceptTypeChild instance accessors
 		
 		/// <summary>
-		/// Get any ChildSequenceHasConceptTypeHasChild links between a given ChildSequence and a ConceptTypeHasChild.
+		/// Get any ChildSequenceHasConceptTypeChild links between a given ChildSequence and a ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild> GetLinks( global::Neumont.Tools.ORM.OIALModel.ChildSequence source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild> GetLinks( global::Neumont.Tools.ORM.OIALModel.ChildSequence source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild>();
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild>(source, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild link in links )
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild>(source, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild link in links )
 			{
-				if ( target.Equals(link.ConceptTypeHasChild) )
+				if ( target.Equals(link.ConceptTypeChild) )
 				{
 					outLinks.Add(link);
 				}
@@ -4908,16 +4717,16 @@ namespace Neumont.Tools.ORM.OIALModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ChildSequenceHasConceptTypeHasChild link between a given ChildSequenceand a ConceptTypeHasChild.
+		/// Get the one ChildSequenceHasConceptTypeChild link between a given ChildSequenceand a ConceptTypeChild.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild GetLink( global::Neumont.Tools.ORM.OIALModel.ChildSequence source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeHasChild target )
+		public static global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild GetLink( global::Neumont.Tools.ORM.OIALModel.ChildSequence source, global::Neumont.Tools.ORM.OIALModel.ConceptTypeChild target )
 		{
-			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild>(source, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild.ChildSequenceDomainRoleId);
-			foreach ( global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeHasChild link in links )
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild>(source, global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.OIALModel.ChildSequenceHasConceptTypeChild link in links )
 			{
-				if ( target.Equals(link.ConceptTypeHasChild) )
+				if ( target.Equals(link.ConceptTypeChild) )
 				{
 					return link;
 				}
