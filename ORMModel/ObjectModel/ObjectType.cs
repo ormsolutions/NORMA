@@ -1654,9 +1654,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 							break;
 					}
 					ObjectTypeVisitorResult retVal = ObjectTypeVisitorResult.Continue;
+					int existingDepth;
 					if (firstSupertypeComplete)
 					{
-						int existingDepth;
 						if (visitedNodes.TryGetValue(type, out existingDepth))
 						{
 							// If our current depth is 1 of the existing depth
@@ -1676,6 +1676,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							visitedNodes.Add(type, depth);
 						}
+					}
+					else if (visitedNodes.TryGetValue(type, out existingDepth))
+					{
+						if (depth == 1 && existingDepth > 1)
+						{
+							// We only care about the special depth 1 to check the intransitive condition.
+							// Recursive values will be further than 1, so there is no point in recursing again.
+							visitedNodes[type] = 1;
+						}
+						retVal = ObjectTypeVisitorResult.SkipChildren;
 					}
 					else
 					{
