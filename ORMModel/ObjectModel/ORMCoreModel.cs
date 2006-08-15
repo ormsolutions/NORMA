@@ -35,7 +35,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ORMCoreDomainModel : IORMModelEventSubscriber, ISurveyNodeProvider
 	{
 		#region InitializingToolboxItems property
-		private static bool myReflectRulesSuspended;
+		private static bool myInitializingToolboxItems;
 		/// <summary>
 		/// Static property to disable rule reflection for fast
 		/// model load. This needs to be on a meta model, not the
@@ -45,12 +45,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return !myReflectRulesSuspended;
+				return myInitializingToolboxItems;
 			}
 			set
 			{
-				Debug.Assert(value || !myReflectRulesSuspended, "InitializingToolboxItems already turned off");
-				myReflectRulesSuspended = !value;
+				Debug.Assert(value || myInitializingToolboxItems, "InitializingToolboxItems already turned off");
+				myInitializingToolboxItems = value;
 			}
 		}
 		#endregion // InitializingToolboxItems property

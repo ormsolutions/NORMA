@@ -331,14 +331,14 @@ namespace Neumont.Tools.ORM.Shell
 		protected sealed override IList<ModelingToolboxItem> CreateToolboxItems()
 		{
 			IList<ModelingToolboxItem> items;
-			ORMCoreDomainModel.InitializingToolboxItems = false;
+			ORMCoreDomainModel.InitializingToolboxItems = true;
 			try
 			{
 				items = new ORMShapeToolboxHelper(this).CreateToolboxItems();
 			}
 			finally
 			{
-				ORMCoreDomainModel.InitializingToolboxItems = true;
+				ORMCoreDomainModel.InitializingToolboxItems = false;
 			}
 
 			// Build up a dictionary of items so we can add filter strings. This is

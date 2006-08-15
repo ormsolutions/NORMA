@@ -51,12 +51,12 @@
 	<se:Element Class="ChildSequence">
 		<se:Link Name="ConceptTypeChild" RelationshipName="ChildSequenceHasConceptTypeChild" RoleName="ConceptTypeChild"/>
 	</se:Element>
-	<se:Element Class="ExclusionConstraint">
+	<se:Element Class="ExclusionConstraint" Override="true">
 		<se:ChildElement Name="ChildSequence">
 			<se:Link RelationshipName="TwoOrMoreChildSequenceConstraintHasChildSequence" RoleName="ChildSequence"/>
 		</se:ChildElement>
 	</se:Element>
-	<se:Element Class="SubsetConstraint">
+	<se:Element Class="SubsetConstraint" Override="true">
 		<se:ChildElement Name="SubChildSequence">
 			<se:Link RelationshipName="SubsetConstraintHasSubChildSequence" RoleName="SubChildSequence"/>
 		</se:ChildElement>
@@ -64,7 +64,7 @@
 			<se:Link RelationshipName="SubsetConstraintHasSuperChildSequence" RoleName="SuperChildSequence"/>
 		</se:ChildElement>
 	</se:Element>
-	<se:Element Class="EqualityConstraint">
+	<se:Element Class="EqualityConstraint" Override="true">
 		<se:ChildElement Name="ChildSequence">
 			<se:Link RelationshipName="TwoOrMoreChildSequenceConstraintHasChildSequence" RoleName="ChildSequence"/>
 		</se:ChildElement>

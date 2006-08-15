@@ -156,9 +156,7 @@
 					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
 					<plx:branch>
 						<plx:condition>
-							<plx:unaryOperator type="booleanNot">
-								<plx:callStatic dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="InitializingToolboxItems" type="property"/>
-							</plx:unaryOperator>
+							<plx:callStatic dataTypeName="ORMCoreDomainModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="InitializingToolboxItems" type="property"/>
 						</plx:condition>
 						<plx:return>
 							<plx:callStatic dataTypeName="Type" name="EmptyTypes" type="property"/>
