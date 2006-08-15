@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region Attach rules to ORMCoreDomainModel model
-	public partial class ORMCoreDomainModel
+	public partial class ORMCoreDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// No synchronization is needed here.
 					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
 					// This would have a slightly negative impact on performance, but the result would still be correct.
-					// Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.
+					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -206,7 +206,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Generated code to attach s to the .
+		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
 		/// </summary>
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
 		/// 
@@ -231,6 +231,1679 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization
+		/// </summary>
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
+			int count = disabledRuleTypes.Length;
+			for (int i = 0; i < count; ++i)
+			{
+				ruleManager.EnableRule(disabledRuleTypes[i]);
+			}
+		}
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			this.EnableRulesAfterDeserialization(ruleManager);
+		}
 	}
 	#endregion // Attach rules to ORMCoreDomainModel model
+	#region Initially disable rules
+	public partial class ConstraintUtility
+	{
+		private partial class ConstraintRoleSequenceHasRoleDeleted
+		{
+			public ConstraintRoleSequenceHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class CustomReferenceMode
+	{
+		private partial class CustomReferenceModeChangeRule
+		{
+			public CustomReferenceModeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class PreferredIdentifierAddedRule
+		{
+			public PreferredIdentifierAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class TestRemovePreferredIdentifierConstraintRoleAddRule
+		{
+			public TestRemovePreferredIdentifierConstraintRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class TestRemovePreferredIdentifierObjectificationAddRule
+		{
+			public TestRemovePreferredIdentifierObjectificationAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule
+		{
+			public TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class TestRemovePreferredIdentifierRoleAddRule
+		{
+			public TestRemovePreferredIdentifierRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class TestRemovePreferredIdentifierDeletingRule
+		{
+			public TestRemovePreferredIdentifierDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class TestRemovePreferredIdentifierRolePlayerChangeRule
+		{
+			public TestRemovePreferredIdentifierRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class ConstraintRoleSequenceHasRoleAdded
+		{
+			public ConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class ConstraintRoleSequenceHasRoleDeleted
+		{
+			public ConstraintRoleSequenceHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeHasEntityTypeInstanceAdded
+		{
+			public EntityTypeHasEntityTypeInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeInstanceHasRoleInstanceAdded
+		{
+			public EntityTypeInstanceHasRoleInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeInstanceHasRoleInstanceDeleted
+		{
+			public EntityTypeInstanceHasRoleInstanceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EqualityConstraint
+	{
+		private partial class ConstraintRoleSequenceHasRoleAdded
+		{
+			public ConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EqualityConstraint
+	{
+		private partial class ConstraintRoleSequenceHasRoleDeleting
+		{
+			public ConstraintRoleSequenceHasRoleDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class FactTypeChangeRule
+		{
+			public FactTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class FactTypeHasReadingOrderAddRuleModelValidation
+		{
+			public FactTypeHasReadingOrderAddRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class FactTypeHasReadingOrderDeleteRuleModelValidation
+		{
+			public FactTypeHasReadingOrderDeleteRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class FactTypeHasRoleAddRule
+		{
+			public FactTypeHasRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class FactTypeHasRoleDeleteRule
+		{
+			public FactTypeHasRoleDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class InternalConstraintCollectionHasConstraintAddedRule
+		{
+			public InternalConstraintCollectionHasConstraintAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class InternalConstraintCollectionHasConstraintDeleteRule
+		{
+			public InternalConstraintCollectionHasConstraintDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class InternalUniquenessConstraintChangeRule
+		{
+			public InternalUniquenessConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ModelHasFactTypeAddRuleModelValidation
+		{
+			public ModelHasFactTypeAddRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ModelHasInternalConstraintAddRuleModelValidation
+		{
+			public ModelHasInternalConstraintAddRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ModelHasInternalConstraintDeleteRuleModelValidation
+		{
+			public ModelHasInternalConstraintDeleteRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ReadingOrderHasReadingAddRuleModelValidation
+		{
+			public ReadingOrderHasReadingAddRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ReadingOrderHasReadingDeleteRuleModelValidation
+		{
+			public ReadingOrderHasReadingDeleteRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForObjectTypeNameChange
+		{
+			public ValidateFactNameForObjectTypeNameChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForReadingChange
+		{
+			public ValidateFactNameForReadingChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForReadingOrderReorder
+		{
+			public ValidateFactNameForReadingOrderReorder()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForReadingReorder
+		{
+			public ValidateFactNameForReadingReorder()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForRolePlayerAdded
+		{
+			public ValidateFactNameForRolePlayerAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForRolePlayerDelete
+		{
+			public ValidateFactNameForRolePlayerDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactType
+	{
+		private partial class ValidateFactNameForRolePlayerRolePlayerChange
+		{
+			public ValidateFactNameForRolePlayerRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeDerivationExpression
+	{
+		private partial class FactTypeDerivationExpressionChangeRule
+		{
+			public FactTypeDerivationExpressionChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeInstance
+	{
+		private partial class FactTypeHasRoleAdded
+		{
+			public FactTypeHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeInstance
+	{
+		private partial class FactTypeHasRoleDeleted
+		{
+			public FactTypeHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeInstance
+	{
+		private partial class FactTypeHasFactTypeInstanceAdded
+		{
+			public FactTypeHasFactTypeInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeInstance
+	{
+		private partial class FactTypeInstanceHasRoleInstanceAdded
+		{
+			public FactTypeInstanceHasRoleInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeInstance
+	{
+		private partial class FactTypeInstanceHasRoleInstanceDeleted
+		{
+			public FactTypeInstanceHasRoleInstanceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FrequencyConstraint
+	{
+		private partial class FrequencyConstraintMinMaxRule
+		{
+			public FrequencyConstraintMinMaxRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FrequencyConstraint
+	{
+		private partial class RemoveContradictionErrorsWithFactTypeRule
+		{
+			public RemoveContradictionErrorsWithFactTypeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class MandatoryConstraint
+	{
+		private partial class MandatoryConstraintChangeRule
+		{
+			public MandatoryConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class MandatoryConstraint
+	{
+		private partial class VerifyImpliedMandatoryRoleAdd
+		{
+			public VerifyImpliedMandatoryRoleAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class MandatoryConstraint
+	{
+		private partial class VerifyImpliedMandatoryRoleDeleting
+		{
+			public VerifyImpliedMandatoryRoleDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ModelError
+	{
+		private partial class SynchronizeErrorForOwnerRule
+		{
+			public SynchronizeErrorForOwnerRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ModelError
+	{
+		private partial class SynchronizeErrorTextForModelRule
+		{
+			public SynchronizeErrorTextForModelRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Note
+	{
+		private partial class NoteChangeRule
+		{
+			public NoteChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedFactTypeAddRule
+		{
+			public ImpliedFactTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule
+		{
+			public ImpliedObjectificationConstraintRoleSequenceHasRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule
+		{
+			public ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationFactTypeHasRoleAddRule
+		{
+			public ImpliedObjectificationFactTypeHasRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationFactTypeHasRoleDeletingRule
+		{
+			public ImpliedObjectificationFactTypeHasRoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationIsImpliedChangeRule
+		{
+			public ImpliedObjectificationIsImpliedChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule
+		{
+			public ImpliedObjectificationObjectifyingTypeIsIndependentChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationObjectifyingTypePlaysRoleAddRule
+		{
+			public ImpliedObjectificationObjectifyingTypePlaysRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ImpliedObjectificationUniquenessConstraintChangeRule
+		{
+			public ImpliedObjectificationUniquenessConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class InternalConstraintChangeRule
+		{
+			public InternalConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ObjectificationAddRule
+		{
+			public ObjectificationAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ObjectificationDeleteRule
+		{
+			public ObjectificationDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class ObjectificationRolePlayerChangeRule
+		{
+			public ObjectificationRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class PreferredIdentifierDeletingRule
+		{
+			public PreferredIdentifierDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class RoleAddRule
+		{
+			public RoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class RolePlayerAddRule
+		{
+			public RolePlayerAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class RoleDeletingRule
+		{
+			public RoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class RolePlayerDeletingRule
+		{
+			public RolePlayerDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class UniquenessConstraintAddRule
+		{
+			public UniquenessConstraintAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Objectification
+	{
+		private partial class UniquenessConstraintDeletingRule
+		{
+			public UniquenessConstraintDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class CheckForIncompatibleRelationshipRule
+		{
+			public CheckForIncompatibleRelationshipRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class CheckForIncompatibleRelationshipRolePlayerChangeRule
+		{
+			public CheckForIncompatibleRelationshipRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class MandatoryRoleAddedRule
+		{
+			public MandatoryRoleAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class MandatoryRoleDeletingRule
+		{
+			public MandatoryRoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class ModelHasObjectTypeAddRuleModelValidation
+		{
+			public ModelHasObjectTypeAddRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class ObjectTypeChangeRule
+		{
+			public ObjectTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class ObjectTypeDeleteRule
+		{
+			public ObjectTypeDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class SubtypeFactChangeRule
+		{
+			public SubtypeFactChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class SupertypeAddedRule
+		{
+			public SupertypeAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class SupertypeDeleteRule
+		{
+			public SupertypeDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class SupertypeDeletingRule
+		{
+			public SupertypeDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class UnspecifiedDataTypeAddRule
+		{
+			public UnspecifiedDataTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class UnspecifiedDataRoleRolePlayerChangeRule
+		{
+			public UnspecifiedDataRoleRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class VerifyReferenceSchemeAddRule
+		{
+			public VerifyReferenceSchemeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class VerifyReferenceSchemeDeleteRule
+		{
+			public VerifyReferenceSchemeDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class VerifyValueTypeHasDataTypeAddRule
+		{
+			public VerifyValueTypeHasDataTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectType
+	{
+		private partial class VerifyValueTypeHasDataTypeDeleteRule
+		{
+			public VerifyValueTypeHasDataTypeDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMCoreDomainModel
+	{
+		private partial class DelayValidateElements
+		{
+			public DelayValidateElements()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMModel
+	{
+		private partial class RemoveDuplicateConstraintNameErrorRule
+		{
+			public RemoveDuplicateConstraintNameErrorRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMModel
+	{
+		private partial class RemoveDuplicateObjectTypeNameErrorRule
+		{
+			public RemoveDuplicateObjectTypeNameErrorRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Reading
+	{
+		private partial class ReadingOrderHasRoleDeleted
+		{
+			public ReadingOrderHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Reading
+	{
+		private partial class ReadingPropertiesChanged
+		{
+			public ReadingPropertiesChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingOrder
+	{
+		private partial class EnforceNoEmptyReadingOrder
+		{
+			public EnforceNoEmptyReadingOrder()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingOrder
+	{
+		private partial class FactTypeHasRoleAddedRule
+		{
+			public FactTypeHasRoleAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingOrder
+	{
+		private partial class ReadingOrderHasRoleDeleting
+		{
+			public ReadingOrderHasRoleDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReferenceMode
+	{
+		private partial class ReferenceModeAddedRule
+		{
+			public ReferenceModeAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReferenceMode
+	{
+		private partial class ReferenceModeChangeRule
+		{
+			public ReferenceModeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReferenceModeHasReferenceModeKind
+	{
+		private partial class ReferenceModeHasReferenceModeKindChangeRule
+		{
+			public ReferenceModeHasReferenceModeKindChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReferenceModeHasReferenceModeKind
+	{
+		private partial class ReferenceModeHasReferenceModeKindDeletingRule
+		{
+			public ReferenceModeHasReferenceModeKindDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReferenceModeKind
+	{
+		private partial class ReferenceModeKindChangeRule
+		{
+			public ReferenceModeKindChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class RingConstraint
+	{
+		private partial class RingConstraintTypeChangeRule
+		{
+			public RingConstraintTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RoleChangeRule
+		{
+			public RoleChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RolePlayerRequiredAddRule
+		{
+			public RolePlayerRequiredAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RolePlayerRequiredForNewRoleAddRule
+		{
+			public RolePlayerRequiredForNewRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RolePlayerRequiredDeleteRule
+		{
+			public RolePlayerRequiredDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class UpdatedRolePlayerRequiredErrorsDeleteRule
+		{
+			public UpdatedRolePlayerRequiredErrorsDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class ConstraintHasRoleSequenceAdded
+		{
+			public ConstraintHasRoleSequenceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class ConstraintRoleSequenceHasRoleAdded
+		{
+			public ConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceCardinalityForAdd
+		{
+			public EnforceRoleSequenceCardinalityForAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceCardinalityForConstraintAdd
+		{
+			public EnforceRoleSequenceCardinalityForConstraintAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceCardinalityForDelete
+		{
+			public EnforceRoleSequenceCardinalityForDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForAdd
+		{
+			public EnforceRoleSequenceValidityForAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForDelete
+		{
+			public EnforceRoleSequenceValidityForDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForReorder
+		{
+			public EnforceRoleSequenceValidityForReorder()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForRolePlayerAdd
+		{
+			public EnforceRoleSequenceValidityForRolePlayerAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForRolePlayerDelete
+		{
+			public EnforceRoleSequenceValidityForRolePlayerDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange
+		{
+			public EnforceRoleSequenceValidityForRolePlayerRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class ExternalRoleConstraintDeleted
+		{
+			public ExternalRoleConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class FactAdded
+		{
+			public FactAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class FactSetComparisonConstraintAdded
+		{
+			public FactSetComparisonConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class ConstraintAdded
+		{
+			public ConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class ConstraintRoleSequenceHasRoleAdded
+		{
+			public ConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForAdd
+		{
+			public EnforceRoleSequenceValidityForAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForDelete
+		{
+			public EnforceRoleSequenceValidityForDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForRolePlayerAdd
+		{
+			public EnforceRoleSequenceValidityForRolePlayerAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForRolePlayerDelete
+		{
+			public EnforceRoleSequenceValidityForRolePlayerDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class EnforceRoleSequenceValidityForRolePlayerRolePlayerChange
+		{
+			public EnforceRoleSequenceValidityForRolePlayerRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class FactAdded
+		{
+			public FactAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class FactSetConstraintAdded
+		{
+			public FactSetConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetConstraint
+	{
+		private partial class FactSetConstraintDeleted
+		{
+			public FactSetConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class EnsureConsistentDataTypesAddRule
+		{
+			public EnsureConsistentDataTypesAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class EnsureConsistentDataTypesDeleteRule
+		{
+			public EnsureConsistentDataTypesDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class EnsureConsistentRolePlayerTypesAddRule
+		{
+			public EnsureConsistentRolePlayerTypesAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class InitializeSubtypeAddRule
+		{
+			public InitializeSubtypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeConstraintChangeRule
+		{
+			public LimitSubtypeConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeConstraintRolesAddRule
+		{
+			public LimitSubtypeConstraintRolesAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeConstraintRolesDeleteRule
+		{
+			public LimitSubtypeConstraintRolesDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeConstraintsAddRule
+		{
+			public LimitSubtypeConstraintsAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeConstraintsDeleteRule
+		{
+			public LimitSubtypeConstraintsDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeRolesAddRule
+		{
+			public LimitSubtypeRolesAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class LimitSubtypeRolesDeleteRule
+		{
+			public LimitSubtypeRolesDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SubtypeFact
+	{
+		private partial class DeleteSubtypeWhenRolePlayerDeleted
+		{
+			public DeleteSubtypeWhenRolePlayerDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class UniquenessConstraint
+	{
+		private partial class NMinusOneAddRuleModelConstraintAddValidation
+		{
+			public NMinusOneAddRuleModelConstraintAddValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class UniquenessConstraint
+	{
+		private partial class NMinusOneAddRuleModelFactAddValidation
+		{
+			public NMinusOneAddRuleModelFactAddValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class UniquenessConstraint
+	{
+		private partial class NMinusOneAddRuleModelValidation
+		{
+			public NMinusOneAddRuleModelValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class UniquenessConstraint
+	{
+		private partial class NMinusOneDeleteRuleModelConstraintDeleteValidation
+		{
+			public NMinusOneDeleteRuleModelConstraintDeleteValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class UniquenessConstraint
+	{
+		private partial class NMinusOneDeleteRuleModelFactDeleteValidation
+		{
+			public NMinusOneDeleteRuleModelFactDeleteValidation()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class UniquenessConstraint
+	{
+		private partial class UniquenessConstraintChangeRule
+		{
+			public UniquenessConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class DataTypeAddRule
+		{
+			public DataTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class DataTypeChangeRule
+		{
+			public DataTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class DataTypeRolePlayerChangeRule
+		{
+			public DataTypeRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class ObjectTypeRoleAdded
+		{
+			public ObjectTypeRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class RoleValueConstraintAdded
+		{
+			public RoleValueConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class ValueConstraintAddRule
+		{
+			public ValueConstraintAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class ValueConstraintChangeRule
+		{
+			public ValueConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class ValueRangeAdded
+		{
+			public ValueRangeAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class ValueRangeChangeRule
+		{
+			public ValueRangeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueRange
+	{
+		private partial class ValueRangeChangeRule
+		{
+			public ValueRangeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueTypeInstance
+	{
+		private partial class ValueTypeHasDataTypeAdded
+		{
+			public ValueTypeHasDataTypeAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueTypeInstance
+	{
+		private partial class ValueTypeHasDataTypeRolePlayerChange
+		{
+			public ValueTypeHasDataTypeRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueTypeInstance
+	{
+		private partial class ValueTypeInstanceValueChanged
+		{
+			public ValueTypeInstanceValueChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueTypeInstance
+	{
+		private partial class ValueTypeHasValueTypeInstanceAdded
+		{
+			public ValueTypeHasValueTypeInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	#endregion // Initially disable rules
+}
+namespace Neumont.Tools.Modeling
+{
+	#region Initially disable rules
+	public partial class NamedElementDictionary
+	{
+		private partial class ElementLinkAddedRule
+		{
+			public ElementLinkAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class NamedElementDictionary
+	{
+		private partial class ElementLinkDeleteRule
+		{
+			public ElementLinkDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class NamedElementDictionary
+	{
+		private partial class NamedElementChangedRule
+		{
+			public NamedElementChangedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	#endregion // Initially disable rules
 }

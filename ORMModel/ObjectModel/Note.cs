@@ -50,7 +50,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Enforces Change Rules
 		/// </summary>
 		[RuleOn(typeof(Note))] // ChangeRule
-		private sealed class NoteChangeRule : ChangeRule
+		private sealed partial class NoteChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Handle custom storage properties on Note

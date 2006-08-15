@@ -218,7 +218,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// <summary>
 		/// This class checks for ConceptTypeParents are not parents of themselves.
 		/// </summary>
-		private static class CheckConceptTypeParentExclusiveMandatory
+		private static partial class CheckConceptTypeParentExclusiveMandatory
 		{
 			/// <summary>
 			/// Checks if a ConcepType is its own parent.
@@ -241,7 +241,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// This rule fires when the OIALModel has a conceptType added to it.
 			/// </summary>
 			[RuleOn(typeof(OIALModelHasConceptType))] // AddRule
-			private sealed class OIALModelHasConceptTypeAddRule : AddRule
+			private sealed partial class OIALModelHasConceptTypeAddRule : AddRule
 			{
 				/// <summary>
 				/// When the ConceptType is added we need to process it.
@@ -255,7 +255,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// This rule fires when the OIALModel Has a ConceptType Removed.
 			/// </summary>
 			[RuleOn(typeof(OIALModelHasConceptType))] // DeleteRule
-			private sealed class OIALModelHasConceptTypeDeleteRule : DeleteRule
+			private sealed partial class OIALModelHasConceptTypeDeleteRule : DeleteRule
 			{
 				/// <summary>
 				/// When the ConcepType is removed we process it.
@@ -269,7 +269,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// This rule fires wen the OIALModel absorbs a ConceptType.
 			/// </summary>
 			[RuleOn(typeof(ConceptTypeAbsorbedConceptType))] // AddRule
-			private sealed class ConceptTypeAbsorbedConceptTypeAddRule : AddRule
+			private sealed partial class ConceptTypeAbsorbedConceptTypeAddRule : AddRule
 			{
 				/// <summary>
 				/// When a ConceptType absorbed another ConceptType we process it.
@@ -283,7 +283,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// This rule fires when a ConceptType that has been absorded is removed from its parent.
 			/// </summary>
 			[RuleOn(typeof(ConceptTypeAbsorbedConceptType))] // DeleteRule
-			private sealed class ConceptTypeAbsorbedConceptTypeDeleteRule : DeleteRule
+			private sealed partial class ConceptTypeAbsorbedConceptTypeDeleteRule : DeleteRule
 			{
 				/// <summary>
 				/// When an concepttype is removed we need to process it.
@@ -298,7 +298,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when an ObjectType is added to the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasObjectType))] // AddRule
-		private sealed class ModelHasObjectTypeAddRule : AddRule
+		private sealed partial class ModelHasObjectTypeAddRule : AddRule
 		{
 			/// <summary>
 			/// When an ObjectType is added we DelayValidate the Model.
@@ -312,7 +312,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when an ObjectType is removed from the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasObjectType))] // DeletingRule
-		private sealed class ModelHasObjectTypeDeletingRule : DeletingRule
+		private sealed partial class ModelHasObjectTypeDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// When an ObjectType is removed from a model we DelayValidate the Model.
@@ -328,7 +328,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for any changes being made to an ObjectType.
 		/// </summary>
 		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed class ObjectTypeChangeRule : ChangeRule
+		private sealed partial class ObjectTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When an ObjectType is changes we DelayValidate the Model.
@@ -346,7 +346,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when a FactType is added to the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))] // AddRule
-		private sealed class ModelHasFactTypeAddRule : AddRule
+		private sealed partial class ModelHasFactTypeAddRule : AddRule
 		{
 			/// <summary>
 			/// When a FactType is added to the Model we DelayValidate the Model.
@@ -360,7 +360,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when a FactType is removed from the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))] // DeletingRule
-		private sealed class ModelHasFactTypeDeletingRule : DeletingRule
+		private sealed partial class ModelHasFactTypeDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// When a FactType is removed we DelayValidate the Model.
@@ -376,7 +376,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when a FactType is changed.
 		/// </summary>
 		[RuleOn(typeof(FactType))] // ChangeRule
-		private sealed class FactTypeChangeRule : ChangeRule
+		private sealed partial class FactTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When a FactType is changed we DelayValidate the Model.
@@ -394,7 +394,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This model listens for when A SetConstraint is added to the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasSetConstraint))] // AddRule
-		private sealed class ModelHasSetConstraintAddRule : AddRule
+		private sealed partial class ModelHasSetConstraintAddRule : AddRule
 		{
 			/// <summary>
 			/// When a SetConstraint is added we DelayValidate the Model.
@@ -409,7 +409,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when A SetConstraint is changed.
 		/// </summary>
 		[RuleOn(typeof(ModelHasSetConstraint))] // ChangeRule
-		private sealed class ModelHasSetConstraintChangeRule : ChangeRule
+		private sealed partial class ModelHasSetConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When a SetConstraint is changed we DelayValidate the Model.
@@ -428,7 +428,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when a SetConstraint is removed from the Model.
 		/// </summary>
 		[RuleOn(typeof(ModelHasSetConstraint))] // DeletingRule
-		private sealed class ModelHasSetConstraintDeletingRule : DeletingRule
+		private sealed partial class ModelHasSetConstraintDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// When a SetConstraint is removed we DelayValidate the Model.
@@ -444,7 +444,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule listens for when an ObjectType plays a role.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed class ObjectTypePlaysRoleAddRule : AddRule
+		private sealed partial class ObjectTypePlaysRoleAddRule : AddRule
 		{
 			/// <summary>
 			/// When an ObjectType plays a role we DelayValidate the Model.
@@ -465,7 +465,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule fires when An ObjectType no longer plays a role.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
-		private sealed class ObjectTypePlaysRoleDeletingRule : DeletingRule
+		private sealed partial class ObjectTypePlaysRoleDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// When an ObjectType plays role is removed we DelayValidate the Model.
@@ -481,7 +481,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule fires when a ConstraintRoleSequence is added to a Role.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed class ConstraintRoleSequenceHasRoleAddRule : AddRule
+		private sealed partial class ConstraintRoleSequenceHasRoleAddRule : AddRule
 		{
 			/// <summary>
 			/// When a ConstraintRoleSequence is added to a Role we DelayValidate the Model.
@@ -504,7 +504,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule fires when a ConstraintRoleSequence is removed from a Role.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeletingRule
-		private sealed class ConstraintRoleSequenceHasRoleDeletingRule : DeletingRule
+		private sealed partial class ConstraintRoleSequenceHasRoleDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// When a ConstraintRoleSeqeunce is removed from a Role we DelayValidate the Model.
@@ -521,7 +521,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule fires when a UniquenessContraint is changed.
 		/// </summary>
 		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
-		private sealed class UniquenessConstraintChangeRule : ChangeRule
+		private sealed partial class UniquenessConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When a UniquenessConstraint is changed we DelayValidate the Model.
@@ -547,7 +547,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule fires when a MandatoryConstraint is changed.
 		/// </summary>
 		[RuleOn(typeof(MandatoryConstraint))] // ChangeRule
-		private sealed class MandatoryConstraintChangeRule : ChangeRule
+		private sealed partial class MandatoryConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When a MandatoryConstraint is changed we DelayValidate the Model.
@@ -573,7 +573,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// This rule fires when a RoleBase is changed.
 		/// </summary>
 		[RuleOn(typeof(RoleBase))] // ChangeRule
-		private sealed class RoleBaseChangeRule : ChangeRule
+		private sealed partial class RoleBaseChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When a RoleBase is changed we DelayValidate the Model.

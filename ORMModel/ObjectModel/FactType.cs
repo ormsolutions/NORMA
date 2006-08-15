@@ -537,7 +537,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // INamedElementDictionaryRemoteParent implementation
 		#region RoleChangeRule class
 		[RuleOn(typeof(FactType))] // ChangeRule
-		private sealed class FactTypeChangeRule : ChangeRule
+		private sealed partial class FactTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Forward through the property grid property to the underlying
@@ -1200,7 +1200,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// validation when roles are added and removed.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed class FactTypeHasRoleAddRule : AddRule
+		private sealed partial class FactTypeHasRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1214,7 +1214,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// validation when roles are added and removed.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))] // DeleteRule
-		private sealed class FactTypeHasRoleDeleteRule : DeleteRule
+		private sealed partial class FactTypeHasRoleDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -1230,7 +1230,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed class ModelHasInternalConstraintAddRuleModelValidation : AddRule
+		private sealed partial class ModelHasInternalConstraintAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1247,7 +1247,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validate the InternalUniquenessConstraintRequired and ImpliedInternalUniquenessConstraintError
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))] // DeleteRule
-		private sealed class ModelHasInternalConstraintDeleteRuleModelValidation : DeleteRule
+		private sealed partial class ModelHasInternalConstraintDeleteRuleModelValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -1262,7 +1262,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(UniquenessConstraint))] // ChangeRule
-		private sealed class InternalUniquenessConstraintChangeRule : ChangeRule
+		private sealed partial class InternalUniquenessConstraintChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -1283,7 +1283,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed class InternalConstraintCollectionHasConstraintAddedRule : AddRule
+		private sealed partial class InternalConstraintCollectionHasConstraintAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1300,7 +1300,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
-		private sealed class InternalConstraintCollectionHasConstraintDeleteRule : DeleteRule
+		private sealed partial class InternalConstraintCollectionHasConstraintDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -1324,7 +1324,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Calls the validation of all FactType related errors
 		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))] // AddRule
-		private sealed class ModelHasFactTypeAddRuleModelValidation : AddRule
+		private sealed partial class ModelHasFactTypeAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1344,7 +1344,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasReadingOrder))] // AddRule
-		private sealed class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
+		private sealed partial class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1357,7 +1357,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasReadingOrder))] // DeleteRule
-		private sealed class FactTypeHasReadingOrderDeleteRuleModelValidation : DeleteRule
+		private sealed partial class FactTypeHasReadingOrderDeleteRuleModelValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -1374,7 +1374,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading))]
-		private sealed class ReadingOrderHasReadingAddRuleModelValidation : AddRule
+		private sealed partial class ReadingOrderHasReadingAddRuleModelValidation : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1390,7 +1390,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates ReadingRequiredError
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading))] // DeleteRule
-		private sealed class ReadingOrderHasReadingDeleteRuleModelValidation : DeleteRule
+		private sealed partial class ReadingOrderHasReadingDeleteRuleModelValidation : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -1406,7 +1406,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(Reading))] // ChangeRule
-		private sealed class ValidateFactNameForReadingChange : ChangeRule
+		private sealed partial class ValidateFactNameForReadingChange : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -1428,7 +1428,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(FactTypeHasReadingOrder))] // RolePlayerPositionChangeRule
-		private sealed class ValidateFactNameForReadingOrderReorder : RolePlayerPositionChangeRule
+		private sealed partial class ValidateFactNameForReadingOrderReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -1443,7 +1443,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ReadingOrderHasReading))] // RolePlayerPositionChangeRule
-		private sealed class ValidateFactNameForReadingReorder : RolePlayerPositionChangeRule
+		private sealed partial class ValidateFactNameForReadingReorder : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -1461,7 +1461,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed class ValidateFactNameForRolePlayerAdded : AddRule
+		private sealed partial class ValidateFactNameForRolePlayerAdded : AddRule
 		{
 			public static void Process(ObjectTypePlaysRole link, Role playedRole)
 			{
@@ -1487,7 +1487,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))] // DeleteRule
-		private sealed class ValidateFactNameForRolePlayerDelete : DeleteRule
+		private sealed partial class ValidateFactNameForRolePlayerDelete : DeleteRule
 		{
 			public static void Process(ObjectTypePlaysRole link, Role playedRole)
 			{
@@ -1516,7 +1516,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectTypePlaysRole))] // RolePlayerChangeRule
-		private sealed class ValidateFactNameForRolePlayerRolePlayerChange : RolePlayerChangeRule
+		private sealed partial class ValidateFactNameForRolePlayerRolePlayerChange : RolePlayerChangeRule
 		{
 			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
 			{
@@ -1532,7 +1532,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		[RuleOn(typeof(ObjectType))] // ChangeRule
-		private sealed class ValidateFactNameForObjectTypeNameChange : ChangeRule
+		private sealed partial class ValidateFactNameForObjectTypeNameChange : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -2309,7 +2309,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactTypeDerivationExpression
 	{
 		[RuleOn(typeof(FactTypeDerivationExpression))] // ChangeRule
-		private sealed class FactTypeDerivationExpressionChangeRule : ChangeRule
+		private sealed partial class FactTypeDerivationExpressionChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// check the Body property of the FactTypeDerivationExpression and delete the FactTypeDerivationExpression 

@@ -592,7 +592,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Microsoft passes link information into DoFoldToShape
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
-		private sealed class RolePlayerDeleting : DeletingRule
+		private sealed partial class RolePlayerDeleting : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{

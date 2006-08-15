@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasObjectType fixup
 		#region ObjectTypedAdded class
 		[RuleOn(typeof(ModelHasObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class ObjectTypedAdded : AddRule
+		private sealed partial class ObjectTypedAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -53,7 +53,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ObjectTypeChangeRule class
 		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
 		[RuleOn(typeof(ObjectifiedFactTypeNameShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed class ObjectTypeShapeChangeRule : ChangeRule
+		private sealed partial class ObjectTypeShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ObjectTypeShapeChangeRule class
 		#region FactTypeAdded class
 		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class FactTypedAdded : AddRule
+		private sealed partial class FactTypedAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -229,7 +229,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactTypeAdded class
 		#region FactTypeChanged
 		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed class FactTypeShapeChanged : ChangeRule
+		private sealed partial class FactTypeShapeChanged : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -252,7 +252,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelHasConstraint fixup
 		#region SetComparisonConstraintAdded class
 		[RuleOn(typeof(ModelHasSetComparisonConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class SetComparisonConstraintAdded : AddRule
+		private sealed partial class SetComparisonConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -266,7 +266,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SetComparisonConstraintAdded class
 		#region SetConstraintAdded class
 		[RuleOn(typeof(ModelHasSetConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class SetConstraintAdded : AddRule
+		private sealed partial class SetConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -284,7 +284,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed class ConstraintRoleSequenceRoleAdded : AddRule
+		private sealed partial class ConstraintRoleSequenceRoleAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -304,7 +304,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed class ConstraintRoleSequenceRoleDeleted : DeleteRule
+		private sealed partial class ConstraintRoleSequenceRoleDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -330,7 +330,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// that does not also delete the fact constraint.
 		/// </summary>
 		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed class ExternalRoleConstraintDeleted : DeleteRule
+		private sealed partial class ExternalRoleConstraintDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -352,7 +352,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region FactTypeHasRole fixup
 		#region RoleAdded class
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed class RoleAdded : AddRule
+		private sealed partial class RoleAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -403,7 +403,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleAdded class
 		#region RoleRemoved class
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed class RoleDeleted : DeleteRule
+		private sealed partial class RoleDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -427,7 +427,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ObjectTypePlaysRole fixup
 		#region ObjectTypePlaysRoleAdded class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed class ObjectTypePlaysRoleAdded : AddRule
+		private sealed partial class ObjectTypePlaysRoleAdded : AddRule
 		{
 			public static void Process(ObjectTypePlaysRole link)
 			{
@@ -465,7 +465,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayRolePlayersFixupListener class
 		#region ObjectTypePlaysRoleDeleted class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // DeleteRule
-		private sealed class ObjectTypePlaysRoleDeleted : DeleteRule
+		private sealed partial class ObjectTypePlaysRoleDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated RolePlayer link is removed
@@ -486,7 +486,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ObjectTypePlaysRoleDeleted class
 		#region ObjectTypePlaysRoleRolePlayerChange class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // RolePlayerChangeRule
-		private sealed class ObjectTypePlaysRoleRolePlayerChange : RolePlayerChangeRule
+		private sealed partial class ObjectTypePlaysRoleRolePlayerChange : RolePlayerChangeRule
 		{
 			/// <summary>
 			/// Add and remove links when a role player changes
@@ -537,7 +537,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region RoleHasValueConstraint fixup
 		#region RoleValueConstraintAdded class
 		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed class RoleValueConstraintAdded : AddRule
+		private sealed partial class RoleValueConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -588,7 +588,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayValueConstraintFixupListener class
 		#region RoleValueConstraintRemoved class
 		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // DeleteRule
-		private sealed class RoleValueConstraintDeleted : DeleteRule
+		private sealed partial class RoleValueConstraintDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
@@ -631,7 +631,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ValueTypeHasValueConstraint fixup
 		#region ValueConstraintAdded class
 		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed class ValueTypeValueConstraintAdded : AddRule
+		private sealed partial class ValueTypeValueConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -670,7 +670,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DisplayValueTypeValueConstraintFixupListener class
 		#region ValueTypeValueConstraintRemoved class
 		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // DeleteRule
-		private sealed class ValueTypeValueConstraintDeleted : DeleteRule
+		private sealed partial class ValueTypeValueConstraintDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
@@ -743,7 +743,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region FactConstraint fixup
 		#region FactConstraintAdded class
 		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed class FactConstraintAdded : AddRule
+		private sealed partial class FactConstraintAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -757,7 +757,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactConstraintAdded class
 		#region FactConstraintRemoved class
 		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed class FactConstraintDeleted : DeleteRule
+		private sealed partial class FactConstraintDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -827,7 +827,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region PresentationViewsSubject fixup
 		#region PresentationLinkRemoved class
 		[RuleOn(typeof(PresentationViewsSubject))] // DeleteRule
-		private sealed class PresentationLinkDeleted : DeleteRule
+		private sealed partial class PresentationLinkDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Clearing the PresentationRolePlayers collection does not automatically
@@ -878,7 +878,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ParentShapeRemoved class
 		[RuleOn(typeof(ParentShapeHasRelativeChildShapes))] // DeleteRule
 		[RuleOn(typeof(ParentShapeContainsNestedChildShapes))] // DeleteRule
-		private sealed class ParentShapeDeleted : DeleteRule
+		private sealed partial class ParentShapeDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Deletion of a parent shape should delete the child shape.
@@ -905,7 +905,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(ParentShapeHasRelativeChildShapes), FireTime=TimeToFire.LocalCommit, Priority=int.MaxValue)] // DeleteRule
-		private sealed class RelativeParentShapeDeleted : DeleteRule
+		private sealed partial class RelativeParentShapeDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Backup deletion of an ObjectifiedFactTypeNameShape, skipped during inline rule
@@ -957,7 +957,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// to no model element.
 		/// </summary>
 		[RuleOn(typeof(LinkConnectsToNode), FireTime=TimeToFire.LocalCommit)] // DeleteRule
-		private sealed class LinkConnectsToNodeDeleted : DeleteRule
+		private sealed partial class LinkConnectsToNodeDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -993,7 +993,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class ReadingOrderAdded : AddRule
+		private sealed partial class ReadingOrderAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1032,7 +1032,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// and rules.
 		/// </summary>
 		[RuleOn(typeof(Role), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed class RoleChange : ChangeRule
+		private sealed partial class RoleChange : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -1096,7 +1096,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ModelNote fixup
 		#region ModelNoteAdded class
 		[RuleOn(typeof(ModelHasModelNote), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class ModelNoteAdded : AddRule
+		private sealed partial class ModelNoteAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -1110,7 +1110,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ModelNoteAdded class
 		#region ModelNoteReferencedAdded class
 		[RuleOn(typeof(ModelNoteReferencesModelElement), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // AddRule
-		private sealed class ModelNoteReferenceAdded : AddRule
+		private sealed partial class ModelNoteReferenceAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{

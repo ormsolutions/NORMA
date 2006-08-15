@@ -45,7 +45,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		LinkedElementCollection<ModelError> ExtensionModelErrorCollection { get;}
 	}
 	#endregion
-
 	#region IORMPropertyExtension
 	/// <summary>
 	/// An extension <see cref="ModelElement"/> that provides custom properties for the
@@ -93,7 +92,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		MergeAsTopLevelProperty = 2,
 	}
 	#endregion
-
 	#region IORMModelEventSubscriber
 	/// <summary>
 	/// This interface provides needed methods that are required to add Events to the Object Model.
@@ -121,4 +119,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void SurveyQuestionLoad();
 	}
 	#endregion // IORMModelEventSubscriber
+	#region IDomainModelEnablesRulesAfterDeserialization interface
+	/// <summary>
+	/// Interface implemented on a DomainModel to enable
+	/// initially disabled rules after deserialization.
+	/// </summary>
+	public interface IDomainModelEnablesRulesAfterDeserialization
+	{
+		/// <summary>
+		/// Called after successful deserialization to enable
+		/// rules that were initially disabled.
+		/// </summary>
+		/// <param name="ruleManager">Rule manager from the owning store.</param>
+		void EnableRulesAfterDeserialization(RuleManager ruleManager);
+	}
+	#endregion // IDomainModelEnablesRulesAfterDeserialization interface
 }

@@ -298,23 +298,24 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// UNDONE: MSBUG This rule should not be doing anything if the parent is deleted.
 					// Causes diagram deletion to crash VS
-					bool turnedOffResizeRule = false;
-					Type ruleType = typeof(Diagram).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ResizeParentRule");
+					bool turnedOffLineRoutingRule = false;
+					Type ruleType = typeof(Diagram).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.LineRoutingRule");
+					RuleManager ruleManager = store.RuleManager;
 					try
 					{
 						if (ruleType != null)
 						{
-							store.RuleManager.DisableRule(ruleType);
-							turnedOffResizeRule = true;
+							ruleManager.DisableRule(ruleType);
+							turnedOffLineRoutingRule = true;
 						}
 						diagram.Delete();
 						t.Commit();
 					}
 					finally
 					{
-						if (turnedOffResizeRule)
+						if (turnedOffLineRoutingRule)
 						{
-							store.RuleManager.EnableRule(ruleType);
+							ruleManager.EnableRule(ruleType);
 						}
 					}
 				}

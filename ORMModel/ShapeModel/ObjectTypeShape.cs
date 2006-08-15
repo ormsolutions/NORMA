@@ -327,7 +327,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // IModelErrorActivation Implementation
 		#region Shape display update rules
 		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed class ShapeChangeRule : ChangeRule
+		private sealed partial class ShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -400,7 +400,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when the shape changes.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed class ObjectTypeShapeChangeRule : ChangeRule
+		private sealed partial class ObjectTypeShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -409,7 +409,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // ObjectTypeShapeChangeRule class
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed class PreferredIdentifierDeleteRule : DeleteRule
+		private sealed partial class PreferredIdentifierDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -462,7 +462,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
-		private sealed class PreferredIdentifierAddedRule : AddRule
+		private sealed partial class PreferredIdentifierAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -490,7 +490,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
-		private sealed class DataTypeAddedRule : AddRule
+		private sealed partial class DataTypeAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -527,7 +527,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// to ensure that the ExpandRefMode property is correct.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed class RolePlayerAddedRule : AddRule
+		private sealed partial class RolePlayerAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -557,7 +557,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime=TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
-		private sealed class RolePlayerDeleteRule : DeleteRule
+		private sealed partial class RolePlayerDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{

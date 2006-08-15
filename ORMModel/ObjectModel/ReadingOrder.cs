@@ -87,7 +87,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region EnforceNoEmptyReadingOrder rule class
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)] // DeleteRule
-		private sealed class EnforceNoEmptyReadingOrder : DeleteRule
+		private sealed partial class EnforceNoEmptyReadingOrder : DeleteRule
 		{
 			/// <summary>
 			/// If the ReadingOrder.ReadingCollection is empty then remove the ReadingOrder
@@ -113,7 +113,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the place holder with the text {{deleted}}
 		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasRole))] // DeletingRule
-		private sealed class ReadingOrderHasRoleDeleting : DeletingRule
+		private sealed partial class ReadingOrderHasRoleDeleting : DeletingRule
 		{
 			//UNDONE:a role being removed creates the possibility of there being two ReadingOrders with the same Role sequences, they should be merged
 			
@@ -208,7 +208,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// can also be added to the ReadingOrders and their Readings.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed class FactTypeHasRoleAddedRule : AddRule
+		private sealed partial class FactTypeHasRoleAddedRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{

@@ -39,16 +39,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static readonly object PlaceAllChildShapes = new object();
 		#endregion // Public token values
-		#region Constructors
-		/// <summary>Constructor.</summary>
-		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		protected ORMBaseShape(Partition partition, params PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-			ORMDiagram.InitializeShapeElement(this);
-		}
-		#endregion // Constructors
 		#region Virtual extensions
 		/// <summary>
 		/// Called during the OnChildConfiguring from the parent shape.
@@ -455,7 +445,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // DuplicateNameError Activation Helper
 		#region Update shapes on ModelError added/removed
 		[RuleOn(typeof(ModelHasError))] // AddRule
-		private sealed class ModelErrorAdded : AddRule
+		private sealed partial class ModelErrorAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -463,7 +453,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(ModelHasError))] // DeletingRule
-		private sealed class ModelErrorDeleting : DeletingRule
+		private sealed partial class ModelErrorDeleting : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{

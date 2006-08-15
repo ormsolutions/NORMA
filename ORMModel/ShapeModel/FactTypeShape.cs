@@ -583,7 +583,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#region RoleDisplayOrderChanged class
 		[RuleOn(typeof(FactTypeShapeHasRoleDisplayOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerPositionChangeRule
-		private sealed class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
+		private sealed partial class RoleDisplayOrderChanged : RolePlayerPositionChangeRule
 		{
 			public override void RolePlayerPositionChanged(RolePlayerOrderChangedEventArgs e)
 			{
@@ -3784,7 +3784,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // AddRule
-		private sealed class SwitchToNestedFact : AddRule
+		private sealed partial class SwitchToNestedFact : AddRule
 		{
 			/// <summary>
 			/// Switch to displaying a nested fact
@@ -3935,7 +3935,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // DeleteRule
-		private sealed class SwitchFromNestedFact : DeleteRule
+		private sealed partial class SwitchFromNestedFact : DeleteRule
 		{
 			/// <summary>
 			/// Switch to displaying a nested fact
@@ -4111,7 +4111,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // ChangeRule
-		private sealed class ObjectificationIsImpliedChangeRule : ChangeRule
+		private sealed partial class ObjectificationIsImpliedChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -4139,7 +4139,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)] // RolePlayerChangeRule
-		private sealed class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
+		private sealed partial class ObjectificationRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
 			{
@@ -4165,7 +4165,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#region ConstraintDisplayPositionChangeRule class
 		[RuleOn(typeof(FactTypeShape))] // ChangeRule
-		private sealed class ConstraintDisplayPositionChangeRule : ChangeRule
+		private sealed partial class ConstraintDisplayPositionChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -4196,7 +4196,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when an external constraint shape is moved.
 		/// </summary>
 		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.LocalCommit)] // ChangeRule
-		private sealed class ExternalConstraintShapeChangeRule : ChangeRule
+		private sealed partial class ExternalConstraintShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -4304,7 +4304,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when the shape changes.
 		/// </summary>
 		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed class FactTypeShapeChangeRule : ChangeRule
+		private sealed partial class FactTypeShapeChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -4463,7 +4463,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // CustomFactTypeShapeGeometry
 		#region Derivation Rules
 		[RuleOn(typeof(FactTypeDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
-		private sealed class DerivationRuleChanged : ChangeRule
+		private sealed partial class DerivationRuleChanged : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -4483,7 +4483,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // AddRule
-		private sealed class DerivationRuleAdd : AddRule
+		private sealed partial class DerivationRuleAdd : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -4496,7 +4496,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 
 		[RuleOn(typeof(FactTypeHasDerivationExpression), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // DeleteRule
-		private sealed class DerivationRuleDelete : DeleteRule
+		private sealed partial class DerivationRuleDelete : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{

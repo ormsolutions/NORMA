@@ -60,7 +60,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Class to delay validate rules when a transaction is committing.
 		/// </summary>
 		[RuleOn(typeof(ORMCoreDomainModel), FireTime = TimeToFire.LocalCommit)] // TransactionCommittingRule
-		private sealed class DelayValidateElements : TransactionCommittingRule
+		private sealed partial class DelayValidateElements : TransactionCommittingRule
 		{
 			public sealed override void TransactionCommitting(TransactionCommitEventArgs e)
 			{

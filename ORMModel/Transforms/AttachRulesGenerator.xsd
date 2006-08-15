@@ -62,7 +62,7 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:element name="ReflectedType" type="ReflectedTypeType" abstract="true"/>
-	<xs:element name="Rule" substitutionGroup="ReflectedType"/>
+	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>
 	<xs:complexType name="ReflectedTypeType">
 		<xs:attribute name="class" type="xs:string" use="required">
 			<xs:annotation>
@@ -74,6 +74,17 @@
 				<xs:documentation>(optional) The namespace of the rule class. The default namespace is based on the location of the xml file in the project and can be modified with the 'Custom Tool Namespace' value in the property grid.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RuleType">
+		<xs:complexContent>
+			<xs:extension base="ReflectedTypeType">
+				<xs:attribute name="alwaysOn" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>If alwaysOn is set to true, then this rule will be on during load. Otherwise, the rule is turned on after document load is completed.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 </xs:schema>
 

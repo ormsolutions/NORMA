@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region Attach rules to ORMShapeDomainModel model
-	public partial class ORMShapeDomainModel
+	public partial class ORMShapeDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// No synchronization is needed here.
 					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
 					// This would have a slightly negative impact on performance, but the result would still be correct.
-					// Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.
+					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -55,7 +55,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("RolePlayerDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ORMBaseBinaryLinkShape).GetNestedType("HackConnectionPointRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorDeleting", BindingFlags.Public | BindingFlags.NonPublic),
@@ -105,7 +104,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Generated code to attach s to the .
+		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
 		/// </summary>
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
 		/// 
@@ -130,6 +129,654 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization
+		/// </summary>
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
+			int count = disabledRuleTypes.Length;
+			for (int i = 0; i < count; ++i)
+			{
+				ruleManager.EnableRule(disabledRuleTypes[i]);
+			}
+		}
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			this.EnableRulesAfterDeserialization(ruleManager);
+		}
 	}
 	#endregion // Attach rules to ORMShapeDomainModel model
+	#region Initially disable rules
+	public partial class ExternalConstraintLink
+	{
+		private partial class DeleteDanglingConstraintShapeRule
+		{
+			public DeleteDanglingConstraintShapeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class ConstraintDisplayPositionChangeRule
+		{
+			public ConstraintDisplayPositionChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class DerivationRuleChanged
+		{
+			public DerivationRuleChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class DerivationRuleAdd
+		{
+			public DerivationRuleAdd()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class DerivationRuleDelete
+		{
+			public DerivationRuleDelete()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class ExternalConstraintShapeChangeRule
+		{
+			public ExternalConstraintShapeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class FactTypeShapeChangeRule
+		{
+			public FactTypeShapeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class ObjectificationIsImpliedChangeRule
+		{
+			public ObjectificationIsImpliedChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class ObjectificationRolePlayerChangeRule
+		{
+			public ObjectificationRolePlayerChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class RoleDisplayOrderChanged
+		{
+			public RoleDisplayOrderChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class SwitchFromNestedFact
+		{
+			public SwitchFromNestedFact()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FactTypeShape
+	{
+		private partial class SwitchToNestedFact
+		{
+			public SwitchToNestedFact()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class FrequencyConstraintShape
+	{
+		private partial class FrequencyConstraintPropertyChangeRule
+		{
+			public FrequencyConstraintPropertyChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ModelNoteShape
+	{
+		private partial class NoteChangeRule
+		{
+			public NoteChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class DataTypeAddedRule
+		{
+			public DataTypeAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class ObjectTypeShapeChangeRule
+		{
+			public ObjectTypeShapeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class PreferredIdentifierDeleteRule
+		{
+			public PreferredIdentifierDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class PreferredIdentifierAddedRule
+		{
+			public PreferredIdentifierAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class RolePlayerAddedRule
+		{
+			public RolePlayerAddedRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class RolePlayerDeleteRule
+		{
+			public RolePlayerDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeShape
+	{
+		private partial class ShapeChangeRule
+		{
+			public ShapeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMBaseBinaryLinkShape
+	{
+		private partial class LinkChangeRule
+		{
+			public LinkChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMBaseShape
+	{
+		private partial class ModelErrorAdded
+		{
+			public ModelErrorAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMBaseShape
+	{
+		private partial class ModelErrorDeleting
+		{
+			public ModelErrorDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ConstraintRoleSequenceRoleAdded
+		{
+			public ConstraintRoleSequenceRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ConstraintRoleSequenceRoleDeleted
+		{
+			public ConstraintRoleSequenceRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class FactConstraintAdded
+		{
+			public FactConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class FactConstraintDeleted
+		{
+			public FactConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ExternalRoleConstraintDeleted
+		{
+			public ExternalRoleConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class FactTypedAdded
+		{
+			public FactTypedAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class FactTypeShapeChanged
+		{
+			public FactTypeShapeChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class LinkConnectsToNodeDeleted
+		{
+			public LinkConnectsToNodeDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ModelNoteAdded
+		{
+			public ModelNoteAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ModelNoteReferenceAdded
+		{
+			public ModelNoteReferenceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ObjectTypedAdded
+		{
+			public ObjectTypedAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ObjectTypePlaysRoleAdded
+		{
+			public ObjectTypePlaysRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ObjectTypePlaysRoleDeleted
+		{
+			public ObjectTypePlaysRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ObjectTypePlaysRoleRolePlayerChange
+		{
+			public ObjectTypePlaysRoleRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ObjectTypeShapeChangeRule
+		{
+			public ObjectTypeShapeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ParentShapeDeleted
+		{
+			public ParentShapeDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class PresentationLinkDeleted
+		{
+			public PresentationLinkDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ReadingOrderAdded
+		{
+			public ReadingOrderAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class RelativeParentShapeDeleted
+		{
+			public RelativeParentShapeDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class RoleAdded
+		{
+			public RoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class RoleChange
+		{
+			public RoleChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class RoleDeleted
+		{
+			public RoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class RoleValueConstraintAdded
+		{
+			public RoleValueConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class RoleValueConstraintDeleted
+		{
+			public RoleValueConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class SetComparisonConstraintAdded
+		{
+			public SetComparisonConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class SetConstraintAdded
+		{
+			public SetConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ValueTypeValueConstraintAdded
+		{
+			public ValueTypeValueConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ORMShapeDomainModel
+	{
+		private partial class ValueTypeValueConstraintDeleted
+		{
+			public ValueTypeValueConstraintDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingShape
+	{
+		private partial class ReadingOrderDeleted
+		{
+			public ReadingOrderDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingShape
+	{
+		private partial class ReadingPositionChanged
+		{
+			public ReadingPositionChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingShape
+	{
+		private partial class ReadingTextChanged
+		{
+			public ReadingTextChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingShape
+	{
+		private partial class RoleDisplayOrderAdded
+		{
+			public RoleDisplayOrderAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ReadingShape
+	{
+		private partial class RoleDisplayOrderPositionChanged
+		{
+			public RoleDisplayOrderPositionChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class RingConstraintShape
+	{
+		private partial class RingConstraintPropertyChangeRule
+		{
+			public RingConstraintPropertyChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class RolePlayerLink
+	{
+		private partial class RolePlayerDeleting
+		{
+			public RolePlayerDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraintShape
+	{
+		private partial class ValueRangeChanged
+		{
+			public ValueRangeChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraintShape
+	{
+		private partial class ValueConstraintAdded
+		{
+			public ValueConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraintShape
+	{
+		private partial class ValueTypeHasDataTypeAdded
+		{
+			public ValueTypeHasDataTypeAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraintShape
+	{
+		private partial class ValueTypeHasDataTypeRolePlayerChange
+		{
+			public ValueTypeHasDataTypeRolePlayerChange()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	#endregion // Initially disable rules
 }

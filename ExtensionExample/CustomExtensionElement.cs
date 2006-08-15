@@ -171,7 +171,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 	/// a FactType via the FactTypeHasRole relationship.
 	/// </summary>
 	[RuleOn(typeof(FactTypeHasRole))] // AddRule
-	public sealed class ExtensionAddRule : AddRule
+	public sealed partial class ExtensionAddRule : AddRule
 	{
 		/// <summary>
 		/// Add our custom extension properties to a role when it is added to a fact type

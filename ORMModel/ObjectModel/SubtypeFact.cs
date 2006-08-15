@@ -129,7 +129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// of the required roles and constraints.
 		/// </summary>
 		[RuleOn(typeof(SubtypeFact))] // AddRule
-		private sealed class InitializeSubtypeAddRule : AddRule
+		private sealed partial class InitializeSubtypeAddRule : AddRule
 		{
 			/// <summary>
 			/// Make sure a Subtype is a 1-1 fact with a mandatory role
@@ -184,7 +184,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint))] // AddRule
-		private sealed class LimitSubtypeConstraintsAddRule : AddRule
+		private sealed partial class LimitSubtypeConstraintsAddRule : AddRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
@@ -211,7 +211,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactSetConstraint), FireTime = TimeToFire.LocalCommit)] // DeleteRule
-		private sealed class LimitSubtypeConstraintsDeleteRule : DeleteRule
+		private sealed partial class LimitSubtypeConstraintsDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
@@ -238,7 +238,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole))] // AddRule
-		private sealed class LimitSubtypeRolesAddRule : AddRule
+		private sealed partial class LimitSubtypeRolesAddRule : AddRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
@@ -270,7 +270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
-		private sealed class LimitSubtypeRolesDeleteRule : DeleteRule
+		private sealed partial class LimitSubtypeRolesDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Block internal role modification on subtypes
@@ -293,7 +293,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Block internal constraints from being modified on a subtype.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
-		private sealed class LimitSubtypeConstraintRolesAddRule : AddRule
+		private sealed partial class LimitSubtypeConstraintRolesAddRule : AddRule
 		{
 			/// <summary>
 			/// Block internal constraint modification on subtypes
@@ -324,7 +324,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// after it is included in a model.
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
-		private sealed class LimitSubtypeConstraintRolesDeleteRule : DeleteRule
+		private sealed partial class LimitSubtypeConstraintRolesDeleteRule : DeleteRule
 		{
 			/// <summary>
 			/// Block internal role modification on subtypes
@@ -356,7 +356,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// on subtype facts
 		/// </summary>
 		[RuleOn(typeof(SetConstraint))] // ChangeRule
-		private sealed class LimitSubtypeConstraintChangeRule : ChangeRule
+		private sealed partial class LimitSubtypeConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Block internal property modification on implicit subtype constraints
@@ -401,7 +401,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// of the subtype itself.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // DeleteRule
-		private sealed class DeleteSubtypeWhenRolePlayerDeleted : DeleteRule
+		private sealed partial class DeleteSubtypeWhenRolePlayerDeleted : DeleteRule
 		{
 			/// <summary>
 			/// Remove the full SubtypeFact when a role player is removed
@@ -431,7 +431,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// players in a subtyping relationship
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)] // AddRule
-		private sealed class EnsureConsistentRolePlayerTypesAddRule : AddRule
+		private sealed partial class EnsureConsistentRolePlayerTypesAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -455,7 +455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// added if an ObjectType participates in a subtyping relationship
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
-		private sealed class EnsureConsistentDataTypesAddRule : AddRule
+		private sealed partial class EnsureConsistentDataTypesAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -482,7 +482,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// removed if an ObjectType participates in a subtyping relationship
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))] // DeleteRule
-		private sealed class EnsureConsistentDataTypesDeleteRule : DeleteRule
+		private sealed partial class EnsureConsistentDataTypesDeleteRule : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{

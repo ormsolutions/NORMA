@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.OIALModel
 {
 	#region Attach rules to OIALDomainModel model
-	public partial class OIALDomainModel
+	public partial class OIALDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					// No synchronization is needed here.
 					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
 					// This would have a slightly negative impact on performance, but the result would still be correct.
-					// Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.
+					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(OIALModel).GetNestedType("ModelHasObjectTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasObjectTypeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -61,7 +61,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			}
 		}
 		/// <summary>
-		/// Generated code to attach s to the .
+		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
 		/// </summary>
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
 		/// 
@@ -86,6 +86,236 @@ namespace Neumont.Tools.ORM.OIALModel
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization
+		/// </summary>
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			Type[] disabledRuleTypes = OIALDomainModel.CustomDomainModelTypes;
+			int count = disabledRuleTypes.Length;
+			for (int i = 0; i < count; ++i)
+			{
+				ruleManager.EnableRule(disabledRuleTypes[i]);
+			}
+		}
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			this.EnableRulesAfterDeserialization(ruleManager);
+		}
 	}
 	#endregion // Attach rules to OIALDomainModel model
+	#region Initially disable rules
+	public partial class OIALModel
+	{
+		private partial class ModelHasObjectTypeAddRule
+		{
+			public ModelHasObjectTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ModelHasObjectTypeDeletingRule
+		{
+			public ModelHasObjectTypeDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ObjectTypeChangeRule
+		{
+			public ObjectTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ObjectTypePlaysRoleAddRule
+		{
+			public ObjectTypePlaysRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ObjectTypePlaysRoleDeletingRule
+		{
+			public ObjectTypePlaysRoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ModelHasFactTypeAddRule
+		{
+			public ModelHasFactTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ModelHasFactTypeDeletingRule
+		{
+			public ModelHasFactTypeDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class FactTypeChangeRule
+		{
+			public FactTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ModelHasSetConstraintAddRule
+		{
+			public ModelHasSetConstraintAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ModelHasSetConstraintChangeRule
+		{
+			public ModelHasSetConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ModelHasSetConstraintDeletingRule
+		{
+			public ModelHasSetConstraintDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ConstraintRoleSequenceHasRoleAddRule
+		{
+			public ConstraintRoleSequenceHasRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class ConstraintRoleSequenceHasRoleDeletingRule
+		{
+			public ConstraintRoleSequenceHasRoleDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class UniquenessConstraintChangeRule
+		{
+			public UniquenessConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class MandatoryConstraintChangeRule
+		{
+			public MandatoryConstraintChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class RoleBaseChangeRule
+		{
+			public RoleBaseChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class CheckConceptTypeParentExclusiveMandatory
+		{
+			private partial class OIALModelHasConceptTypeAddRule
+			{
+				public OIALModelHasConceptTypeAddRule()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class CheckConceptTypeParentExclusiveMandatory
+		{
+			private partial class OIALModelHasConceptTypeDeleteRule
+			{
+				public OIALModelHasConceptTypeDeleteRule()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class CheckConceptTypeParentExclusiveMandatory
+		{
+			private partial class ConceptTypeAbsorbedConceptTypeAddRule
+			{
+				public ConceptTypeAbsorbedConceptTypeAddRule()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	public partial class OIALModel
+	{
+		private partial class CheckConceptTypeParentExclusiveMandatory
+		{
+			private partial class ConceptTypeAbsorbedConceptTypeDeleteRule
+			{
+				public ConceptTypeAbsorbedConceptTypeDeleteRule()
+				{
+					base.IsEnabled = false;
+				}
+			}
+		}
+	}
+	#endregion // Initially disable rules
 }

@@ -118,17 +118,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return retVal;
 		}
-		/// <summary>See <see cref="ModelingDocData.Initialize(Store)"/>.</summary>
-		public override void Initialize(Store sharedStore)
-		{
-			base.Initialize(sharedStore);
-			// Turn off the default ShapeElementAddRule functionality. Shapes
-			// not derived from ORMBaseShape or ORMBaseBinaryLinkShape should
-			// call ORMDiagram.InitializeShapeElement from a custom constructor.
-			// This was done because we turn off rules during load, and there
-			// was no good place to make the call to OnInitialize.
-			this.Store.RuleManager.DisableRule(typeof(ShapeElementAddRule));
-		}
 		/// <summary>
 		/// Reload this document from a file stream instead of from disk
 		/// </summary>

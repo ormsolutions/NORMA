@@ -70,17 +70,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// ORMBaseShape domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x55131f4b, 0x0f9a, 0x408d, 0xbe, 0xd0, 0x79, 0x45, 0x1b, 0xa7, 0xf4, 0xf0);
-		// Constructors were not generated for this class because it had HasCustomConstructor
-		// set to true. Please provide the constructors below in a partial class.
-		///// <summary>
-		///// Constructor.
-		///// </summary>
-		///// <param name="partition">Partition where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//protected ORMBaseShape(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: base(partition, propertyAssignments)
-		//{
-		//}
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ORMBaseShape(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
 		#endregion
 		#region UpdateCounter domain property code
 		
@@ -829,7 +827,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.SubtypeLink.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("87ddaeda-1fd8-4433-bb1e-7482c7f471a7")]
-	public partial class SubtypeLink : global::Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	public partial class SubtypeLink //: DslDiagrams::NodeShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;
@@ -2310,27 +2308,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// LinkConnectorShape domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x51770447, 0x28e0, 0x4bff, 0x97, 0x7f, 0x2d, 0x26, 0x25, 0xf7, 0x97, 0x8d);
-		// Constructors were not generated for this class because it had HasCustomConstructor
-		// set to true. Please provide the constructors below in a partial class.
-		///// <summary>
-		///// Constructor
-		///// </summary>
-		///// <param name="store">Store where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//public LinkConnectorShape(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		//{
-		//}
-		//
-		///// <summary>
-		///// Constructor
-		///// </summary>
-		///// <param name="partition">Partition where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//public LinkConnectorShape(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: base(partition, propertyAssignments)
-		//{
-		//}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public LinkConnectorShape(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public LinkConnectorShape(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
 		#endregion
 	}
 }

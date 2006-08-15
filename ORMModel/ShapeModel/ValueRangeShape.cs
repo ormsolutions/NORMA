@@ -177,7 +177,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to update an associated ValueConstraintShape when a DataType is added.
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed class ValueTypeHasDataTypeAdded : AddRule
+		private sealed partial class ValueTypeHasDataTypeAdded : AddRule
 		{
 			public static void Process(ValueTypeHasDataType link)
 			{
@@ -204,7 +204,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Rule to update an associated ValueConstraintShape when a DataType is changed.
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerChangeRule
-		private sealed class ValueTypeHasDataTypeRolePlayerChange : RolePlayerChangeRule
+		private sealed partial class ValueTypeHasDataTypeRolePlayerChange : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
 			{
@@ -219,7 +219,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
 		[RuleOn(typeof(ValueRange), FireTime = TimeToFire.TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed class ValueRangeChanged : ChangeRule
+		private sealed partial class ValueRangeChanged : ChangeRule
 		{
 			/// <summary>
 			/// Notice when the Min or Max properties are changed and invalidate
@@ -244,7 +244,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
 		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed class ValueConstraintAdded : AddRule
+		private sealed partial class ValueConstraintAdded : AddRule
 		{
 			/// <summary>
 			/// Notice when the ValueConstraintHasValueRange link is added

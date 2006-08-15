@@ -163,7 +163,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region Shape display update rules
 		#region FrequencyConstraintPropertyChangeRule class
 		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)] // ChangeRule
-		private sealed class FrequencyConstraintPropertyChangeRule : ChangeRule
+		private sealed partial class FrequencyConstraintPropertyChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{

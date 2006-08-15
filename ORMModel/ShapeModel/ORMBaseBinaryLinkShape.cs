@@ -33,16 +33,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMBaseBinaryLinkShape
 	{
-		#region Constructors
-		/// <summary>Constructor.</summary>
-		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		protected ORMBaseBinaryLinkShape(Partition partition, params PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-			ORMDiagram.InitializeShapeElement(this);
-		}
-		#endregion // Constructors
 		#region SubtypeLink Hack
 		/// <summary>
 		/// UNDONE: 2006-08 DSL Tools port: Hack for link-for-a-class
@@ -57,117 +47,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // SubtypeLink Hack
-		#region ConnectionPoint Workaround Hacks
-		#region GetVGEdge method
-		private delegate VGEdge GetVGEdgeDelegate(LinkShape @this);
-		private static readonly GetVGEdgeDelegate GetVGEdgeInternal = InitializeGetVGEdgeInternal();
-		private static GetVGEdgeDelegate InitializeGetVGEdgeInternal()
-		{
-			Type linkShapeType = typeof(LinkShape);
-			MethodInfo graphEdgeMethodInfo = linkShapeType.GetMethod("GraphEdge", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding);
-			if (graphEdgeMethodInfo == null)
-			{
-				return null;
-			}
-			Type graphEdgeType = linkShapeType.Assembly.GetType(linkShapeType.Namespace + Type.Delimiter + "GraphEdge", false, false);
-			if (graphEdgeType == null)
-			{
-				return null;
-			}
-			PropertyInfo edgePropertyInfo = graphEdgeType.GetProperty("Edge", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding);
-			if (edgePropertyInfo == null)
-			{
-				return null;
-			}
-			MethodInfo edgePropertyGetMethod = edgePropertyInfo.GetGetMethod(true);
-			if (edgePropertyGetMethod == null)
-			{
-				return null;
-			}
-
-			DynamicMethod dynamicMethod = new DynamicMethod("GetVGEdge", typeof(VGEdge), new Type[] { linkShapeType }, linkShapeType, true);
-			// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for a bit more than we really need
-			// (which is 18 bytes) in order to avoid it resizing its buffer towards the end when it looks like we're running low
-			ILGenerator ilGenerator = dynamicMethod.GetILGenerator(24);
-			Label returnNullLabel = ilGenerator.DefineLabel();
-			ilGenerator.Emit(OpCodes.Ldarg_0);
-			ilGenerator.EmitCall(OpCodes.Call, graphEdgeMethodInfo, null);
-			ilGenerator.Emit(OpCodes.Dup);
-			ilGenerator.Emit(OpCodes.Brfalse_S, returnNullLabel);
-			ilGenerator.EmitCall(OpCodes.Call, edgePropertyGetMethod, null);
-			ilGenerator.Emit(OpCodes.Ret);
-			ilGenerator.MarkLabel(returnNullLabel);
-			ilGenerator.Emit(OpCodes.Pop);
-			ilGenerator.Emit(OpCodes.Ldnull);
-			ilGenerator.Emit(OpCodes.Ret);
-
-			return (GetVGEdgeDelegate)dynamicMethod.CreateDelegate(typeof(GetVGEdgeDelegate));
-		}
-		private VGEdge GetVGEdge()
-		{
-			GetVGEdgeDelegate getVGEdgeInternal = GetVGEdgeInternal;
-			// If GetVGEdgeInternal is null, the internals of one of the DSL Tools assemblies may have changed.
-			// If that is the case, GetVGEdgeInternal needs to be updated...
-			Debug.Assert(getVGEdgeInternal != null);
-			return (getVGEdgeInternal != null) ? getVGEdgeInternal(this) : null;
-		}
-		#endregion // GetVGEdge method
-		/// <summary>
-		/// Calls <see cref="InitializeLineRouting()"/>.
-		/// </summary>
-		public override void OnInitialize()
-		{
-			base.OnInitialize();
-			this.InitializeLineRouting();
-		}
-		/// <summary>
-		/// Calls <see cref="InitializeLineRouting()"/>.
-		/// </summary>
-		public override void Connect(NodeShape fromShape, NodeShape toShape)
-		{
-			base.Connect(fromShape, toShape);
-			InitializeLineRouting();
-		}
-		/// <summary>
-		/// Calls <see cref="InitializeLineRouting()"/>.
-		/// </summary>
-		public override void OnShapeInserted()
-		{
-			base.OnShapeInserted();
-			this.InitializeLineRouting();
-		}
-		/// <summary>
-		/// Initializes line routing with correct settings.
-		/// </summary>
-		private void InitializeLineRouting()
-		{
-			//VGEdge vgEdge = GetVGEdge();
-			//if (vgEdge != null)
-			//{
-			//    // ORM lines cross, they don't jump.
-			//    vgEdge.RouteJumpType = (int)VGObjectLineJumpCode.VGObjectJumpCodeNever;
-			//    vgEdge.RoutingStyle = VGRoutingStyle.VGRouteCenterToCenter;
-
-			//    // This call will be ignored if we're not in a transaction, but that's OK...
-			//    base.RecalculateRoute();
-			//}
-		}
-		[RuleOn(typeof(LinkConnectsToNode), Priority=100)] // RolePlayerChangeRule // Priority after the default rule
-		private class HackConnectionPointRolePlayerChangeRule : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				if (e.DomainRole.Id == LinkConnectsToNode.NodesDomainRoleId)
-				{
-					ORMBaseBinaryLinkShape shape = (e.ElementLink as LinkConnectsToNode).Link as ORMBaseBinaryLinkShape;
-					if (shape != null)
-					{
-						shape.InitializeLineRouting();
-					}
-				}
-			}
-		}
-		#endregion // ConnectionPoint Workaround Hacks
 		#region Customize appearance
 		/// <summary>
 		/// Specify CenterToCenter routing style so we can
@@ -276,7 +155,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// when the shape changes.
 		/// </summary>
 		[RuleOn(typeof(ORMBaseBinaryLinkShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.AutoLayoutShapesRulePriority)] // ChangeRule
-		private sealed class LinkChangeRule : ChangeRule
+		private sealed partial class LinkChangeRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -364,26 +243,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape
 	{
-		#region Constructors
-		/// <summary>Constructor.</summary>
-		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public LinkConnectorShape(Store store, params PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		{
-			// This constructor calls our other constructor which takes a Partition.
-			// All work should be done there rather than here.
-		}
-
-		/// <summary>Constructor.</summary>
-		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public LinkConnectorShape(Partition partition, params PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-			ORMDiagram.InitializeShapeElement(this);
-		}
-		#endregion // Constructors
 		/// <summary>
 		/// Link connector shapes are not selectable
 		/// </summary>

@@ -130,7 +130,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region ValueRangeChangeRule rule
 		[RuleOn(typeof(ValueRange))] // ChangeRule
-		private sealed class ValueRangeChangeRule : ChangeRule
+		private sealed partial class ValueRangeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property
@@ -491,7 +491,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#region ValueTypeHasDataType rule
 		[RuleOn(typeof(ValueTypeHasDataType))] // AddRule
-		private sealed class DataTypeAddRule : AddRule
+		private sealed partial class DataTypeAddRule : AddRule
 		{
 			/// <summary>
 			/// Test if the changed value does not match the specified data type.
@@ -507,7 +507,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// When the DataType is changed, recheck the instance values
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType))] // RolePlayerChangeRule
-		private sealed class DataTypeRolePlayerChangeRule : RolePlayerChangeRule
+		private sealed partial class DataTypeRolePlayerChangeRule : RolePlayerChangeRule
 		{
 			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
 			{
@@ -520,7 +520,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // DataTypeRolePlayerChangeRule rule
 		#region DataTypeChangeRule rule
 		[RuleOn(typeof(ValueTypeHasDataType))] // ChangeRule
-		private sealed class DataTypeChangeRule : ChangeRule
+		private sealed partial class DataTypeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// checks first if the data type has been changed and then test if the 
@@ -539,7 +539,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // DataTypeChangeRule rule
 		#region ValueConstraintAddRule rule
 		[RuleOn(typeof(ValueTypeHasValueConstraint))] // AddRule
-		private sealed class ValueConstraintAddRule : AddRule
+		private sealed partial class ValueConstraintAddRule : AddRule
 		{
 			/// <summary>
 			/// checks if the new value range definition matches the data type
@@ -552,7 +552,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueConstraintAddRule rule
 		#region RoleValueConstraintAdded rule
 		[RuleOn(typeof(RoleHasValueConstraint))] // AddRule
-		private sealed class RoleValueConstraintAdded : AddRule
+		private sealed partial class RoleValueConstraintAdded : AddRule
 		{
 			/// <summary>
 			/// checks if the the value range matches the specified date type
@@ -565,7 +565,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // RoleValueConstraintAdded rule
 		#region ObjectTypeRoleAdded rule
 		[RuleOn(typeof(ObjectTypePlaysRole))] // AddRule
-		private sealed class ObjectTypeRoleAdded : AddRule
+		private sealed partial class ObjectTypeRoleAdded : AddRule
 		{
 			/// <summary>
 			/// checks to see if the value on the role added matches the specified data type
@@ -582,7 +582,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ObjectTypeRoleAdded rule
 		#region ValueRangeAdded rule
 		[RuleOn(typeof(ValueConstraintHasValueRange))] // AddRule
-		private sealed class ValueRangeAdded : AddRule
+		private sealed partial class ValueRangeAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -592,7 +592,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueRangeAdded rule
 		#region ValueRangeChangeRule rule
 		[RuleOn(typeof(ValueRange))] // ChangeRule
-		private sealed class ValueRangeChangeRule : ChangeRule
+		private sealed partial class ValueRangeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Validate values when any non-calculated properties change
@@ -609,7 +609,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // ValueRangeChangeRule rule
 		#region ValueConstraintChangeRule class
 		[RuleOn(typeof(ValueConstraint))] // ChangeRule
-		private sealed class ValueConstraintChangeRule : ChangeRule
+		private sealed partial class ValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property

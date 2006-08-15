@@ -324,7 +324,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// links, so automatically remove them if a connecting shape is removed.
 		/// </summary>
 		[RuleOn(typeof(ExternalConstraintLink))] // DeletingRule
-		private sealed class DeleteDanglingConstraintShapeRule : DeletingRule
+		private sealed partial class DeleteDanglingConstraintShapeRule : DeletingRule
 		{
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{

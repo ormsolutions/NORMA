@@ -515,7 +515,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Kind property
 		/// </summary>
 		[RuleOn(typeof(ReferenceMode))] // ChangeRule
-		protected class ReferenceModeChangeRule : ChangeRule
+		private sealed partial class ReferenceModeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Forward KindDisplay change value to Kind
@@ -537,7 +537,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// reference mode kind. Default to general.
 		/// </summary>
 		[RuleOn(typeof(ModelHasReferenceMode), FireTime = TimeToFire.LocalCommit)] // AddRule
-		protected class ReferenceModeAddedRule : AddRule
+		private sealed partial class ReferenceModeAddedRule : AddRule
 		{
 			/// <summary>
 			/// Verify the Kind relationship is set on a newly
@@ -618,7 +618,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Kind property
 		/// </summary>
 		[RuleOn(typeof(CustomReferenceMode))] // ChangeRule
-		protected class CustomReferenceModeChangeRule : ChangeRule
+		private sealed partial class CustomReferenceModeChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Update value types when format string changes
@@ -723,7 +723,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Kind property
 		/// </summary>
 		[RuleOn(typeof(ReferenceModeKind))] // ChangeRule
-		protected class ReferenceModeKindChangeRule : ChangeRule
+		private sealed partial class ReferenceModeKindChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Update value types when format string changes
@@ -788,7 +788,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Kind property
 		/// </summary>
 		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))] // RolePlayerChangeRule
-		protected class ReferenceModeHasReferenceModeKindChangeRule : RolePlayerChangeRule
+		private sealed partial class ReferenceModeHasReferenceModeKindChangeRule : RolePlayerChangeRule
 		{
 			/// <summary>
 			/// Update value types when reference mode kind changes
@@ -840,7 +840,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Kind property
 		/// </summary>
 		[RuleOn(typeof(ReferenceModeHasReferenceModeKind))] // DeletingRule
-		protected class ReferenceModeHasReferenceModeKindDeletingRule : DeletingRule
+		private sealed partial class ReferenceModeHasReferenceModeKindDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// Disallow removal of kind

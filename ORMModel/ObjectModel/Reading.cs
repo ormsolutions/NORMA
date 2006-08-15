@@ -245,7 +245,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Validates that the reading text has the necessary number of placeholders.
 		/// </summary>
 		[RuleOn(typeof(Reading))] // ChangeRule
-		private sealed class ReadingPropertiesChanged : ChangeRule
+		private sealed partial class ReadingPropertiesChanged : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -313,7 +313,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#region ReadingOrderHasRoleRemoved rule class
 		[RuleOn(typeof(ReadingOrderHasRole))] // DeleteRule
-		private sealed class ReadingOrderHasRoleDeleted : DeleteRule
+		private sealed partial class ReadingOrderHasRoleDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{

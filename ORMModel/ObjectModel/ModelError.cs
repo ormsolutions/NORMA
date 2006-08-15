@@ -411,7 +411,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion Deserialization Fixup
 		#region Rule to update error text on model name change
 		[RuleOn(typeof(ORMModel))] // ChangeRule
-		private sealed class SynchronizeErrorTextForModelRule : ChangeRule
+		private sealed partial class SynchronizeErrorTextForModelRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
@@ -430,7 +430,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // Rule to update error text on model name change
 		#region Rule to update error text on owner name change
 		[RuleOn(typeof(ORMNamedElement))] // ChangeRule
-		private sealed class SynchronizeErrorForOwnerRule : ChangeRule
+		private sealed partial class SynchronizeErrorForOwnerRule : ChangeRule
 		{
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{

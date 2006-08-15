@@ -19,7 +19,7 @@ using System.Reflection;
 namespace Neumont.Tools.ORM.ExtensionExample
 {
 	#region Attach rules to ExtensionDomainModel model
-	public partial class ExtensionDomainModel
+	public partial class ExtensionDomainModel : Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization
 	{
 		private static Type[] myCustomDomainModelTypes;
 		private static Type[] CustomDomainModelTypes
@@ -32,7 +32,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 					// No synchronization is needed here.
 					// If accessed concurrently, the worst that will happen is the array of Types being created multiple times.
 					// This would have a slightly negative impact on performance, but the result would still be correct.
-					// Given the low likelihood of this even happening, the extra overhead of synchronization would outweigh any possible gain from it.
+					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
 						typeof(ExtensionAddRule),
 						typeof(ObjectTypeRequiresMeaningfulNameError).GetNestedType("ExtensionObjectTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -44,7 +44,7 @@ namespace Neumont.Tools.ORM.ExtensionExample
 			}
 		}
 		/// <summary>
-		/// Generated code to attach s to the .
+		/// Generated code to attach <see cref="Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="Microsoft.VisualStudio.Modeling.Store"/>.
 		/// </summary>
 		/// <seealso cref="Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes">
 		/// 
@@ -69,6 +69,51 @@ namespace Neumont.Tools.ORM.ExtensionExample
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization
+		/// </summary>
+		protected void EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			Type[] disabledRuleTypes = ExtensionDomainModel.CustomDomainModelTypes;
+			int count = disabledRuleTypes.Length;
+			for (int i = 0; i < count; ++i)
+			{
+				ruleManager.EnableRule(disabledRuleTypes[i]);
+			}
+		}
+		void Neumont.Tools.ORM.ObjectModel.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.RuleManager ruleManager)
+		{
+			this.EnableRulesAfterDeserialization(ruleManager);
+		}
 	}
 	#endregion // Attach rules to ExtensionDomainModel model
+	#region Initially disable rules
+	public partial class ExtensionAddRule
+	{
+		public ExtensionAddRule()
+		{
+			base.IsEnabled = false;
+		}
+	}
+	public partial class ObjectTypeRequiresMeaningfulNameError
+	{
+		private partial class ExtensionObjectTypeAddRule
+		{
+			public ExtensionObjectTypeAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeRequiresMeaningfulNameError
+	{
+		private partial class ExtensionObjectTypeChangeRule
+		{
+			public ExtensionObjectTypeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	#endregion // Initially disable rules
 }

@@ -49,6 +49,7 @@ using Neumont.Tools.ORM.ShapeModel;
 namespace Neumont.Tools.ORM.Shell
 {
 	#region Public Enumerations
+	#region ORMCustomSerializedElementSupportedOperations enum
 	/// <summary>
 	/// Supported operations for element custom serialization.
 	/// </summary>
@@ -89,6 +90,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		EmbeddingLinkInfo = 0x40,
 	}
+	#endregion // ORMCustomSerializedElementSupportedOperations enum
+	#region ORMCustomSerializedElementWriteStyle enum
 	/// <summary>
 	/// Write style for element custom serialization.
 	/// </summary>
@@ -118,6 +121,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		EmbeddingLinkElement = 0x03,
 	}
+	#endregion // ORMCustomSerializedElementWriteStyle enum
+	#region ORMCustomSerializedAttributeWriteStyle enum
 	/// <summary>
 	/// Write style for property custom serialization.
 	/// </summary>
@@ -140,6 +145,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DoubleTaggedElement = 0x02
 	}
+	#endregion // ORMCustomSerializedAttributeWriteStyle enum
+	#region ORMCustomSerializedElementMatchStyle enum
 	/// <summary>
 	/// An enum used for deserialization to determine if
 	/// an element name and namespace is recognized by a
@@ -186,8 +193,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		MultipleOppositeMetaRolesExplicitRelationshipType,
 	}
-	#endregion Public Enumerations
+	#endregion // ORMCustomSerializedElementMatchStyle enum
+	#endregion // Public Enumerations
 	#region Public Classes
+	#region ORMCustomSerializedInfo class
 	/// <summary>
 	/// Custom serialization information.
 	/// </summary>
@@ -267,6 +276,8 @@ namespace Neumont.Tools.ORM.Shell
 			set { myDoubleTagName = value; }
 		}
 	}
+	#endregion // ORMCustomSerializedInfo class
+	#region ORMCustomSerializedElementInfo class
 	/// <summary>
 	/// Custom serialization information for elements.
 	/// </summary>
@@ -328,6 +339,8 @@ namespace Neumont.Tools.ORM.Shell
 			set { myWriteStyle = value; }
 		}
 	}
+	#endregion // ORMCustomSerializedElementInfo class
+	#region ORMCustomSerializedPropertyInfo class
 	/// <summary>
 	/// Custom serialization information for properties.
 	/// </summary>
@@ -390,6 +403,8 @@ namespace Neumont.Tools.ORM.Shell
 			set { myWriteStyle = value; }
 		}
 	}
+	#endregion // ORMCustomSerializedPropertyInfo class
+	#region ORMCustomSerializedChildElementInfo class
 	/// <summary>
 	/// Custom serialization information for child elements.
 	/// </summary>
@@ -441,6 +456,8 @@ namespace Neumont.Tools.ORM.Shell
 			return myGuidList != null && myGuidList.Contains(guid);
 		}
 	}
+	#endregion // ORMCustomSerializedChildElementInfo class
+	#region ORMCustomSerializedElementMatch struct
 	/// <summary>
 	/// Data returned by IORMCustomSerializedElement.MapElementName.
 	/// </summary>
@@ -693,8 +710,10 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 	}
-	#endregion Public Classes
+	#endregion // ORMCustomSerializedElementMatch struct
+	#endregion // Public Classes
 	#region Public Interfaces
+	#region IORMCustomSerializedDomainModel interface
 	/// <summary>
 	/// The interface for getting custom element namespaces.
 	/// </summary>
@@ -747,6 +766,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>A meta class guid, or Guid.Empty if the name is not recognized</returns>
 		Guid MapClassName(string xmlNamespace, string elementName);
 	}
+	#endregion // IORMCustomSerializedDomainModel interface
+	#region IORMCustomSerializedElement interface
 	/// <summary>
 	/// The interface for getting element custom serialization information.
 	/// </summary>
@@ -813,10 +834,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>false to block serialization</returns>
 		bool ShouldSerialize();
 	}
+	#endregion // IORMCustomSerializedElement interface
 	#endregion Public Interfaces
-	#region New Serialization
+	#region Serialization Routines
 	/// <summary>
-	///New Serialization
+	/// Serialization routines
 	/// </summary>
 	public partial class ORMSerializer
 	{
@@ -1752,8 +1774,8 @@ namespace Neumont.Tools.ORM.Shell
 			return;
 		}
 	}
-	#endregion New Serialization
-	#region New Deserialization
+	#endregion // Serialization Routines
+	#region Deserialization Routines
 	public partial class ORMSerializer
 	{
 		/// <summary>
@@ -2022,62 +2044,22 @@ namespace Neumont.Tools.ORM.Shell
 		private Dictionary<Guid, PlaceholderElement> myPlaceholderElementMap;
 		private Dictionary<string, IORMCustomSerializedDomainModel> myXmlNamespaceToModelMap;
 
-        #region Member Variables
-        /// <summary>
-        /// Ref Counter for suspending/resuming Modeling Rule Engine
-        /// </summary>
-        private int myRuleSuspendCount;
-
-        /// <summary>
-        /// Current store object. Set in constructor
-        /// </summary>
-        private readonly Store myStore;
-        #endregion // Member Variables
-        #region Constructor
-        /// <summary>
-        /// Create a serializer on the given store
-        /// </summary>
-        /// <param name="store">Store instance</param>
-        public ORMSerializer(Store store)
-        {
-            myStore = store;
-        }
-        #endregion // Constructor
-        #region Rule Suspension
-        /// <summary>
-        /// Block rules on store during serialization/deserialization
-        /// </summary>
-        public bool RulesSuspended
-        {
-            get
-            {
-                return myRuleSuspendCount > 0;
-            }
-            set
-            {
-                if (value)
-                {
-                    // Turn on for first set
-                    if (1 == ++myRuleSuspendCount)
-                    {
-                        myStore.RuleManager.SuspendRuleNotification();
-                    }
-                }
-                else
-                {
-                    // Turn off for balanced call
-                    Debug.Assert(myRuleSuspendCount > 0);
-                    if (0 == --myRuleSuspendCount)
-                    {
-                        myStore.RuleManager.ResumeRuleNotification();
-                    }
-                }
-            }
-        }
-        #endregion // Rule Suspension
-
-
-
+		#region Member Variables
+		/// <summary>
+		/// Current store object. Set in constructor
+		/// </summary>
+		private readonly Store myStore;
+		#endregion // Member Variables
+		#region Constructor
+		/// <summary>
+		/// Create a serializer on the given store
+		/// </summary>
+		/// <param name="store">Store instance</param>
+		public ORMSerializer(Store store)
+		{
+			myStore = store;
+		}
+		#endregion // Constructor
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
@@ -2086,111 +2068,111 @@ namespace Neumont.Tools.ORM.Shell
 		/// after the load is complete.</param>
 		public void Load(Stream stream, DeserializationFixupManager fixupManager)
 		{
-			// Leave rules on so all of the links reconnect. Links are not saved.
-			RulesSuspended = true;
-			try
-			{
-				myNotifyAdded = fixupManager as INotifyElementAdded;
-				XmlReaderSettings settings = new XmlReaderSettings();
-				XmlSchemaSet schemas = settings.Schemas;
-				Type schemaResourcePathType = GetType();
-				schemas.Add(RootXmlNamespace, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, "ORM2Root.xsd")));
+			myNotifyAdded = fixupManager as INotifyElementAdded;
+			XmlReaderSettings settings = new XmlReaderSettings();
+			XmlSchemaSet schemas = settings.Schemas;
+			Type schemaResourcePathType = GetType();
+			schemas.Add(RootXmlNamespace, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, "ORM2Root.xsd")));
 
-				// Extract namespace and schema information from the different meta models
-				ICollection<DomainModel> domainModels = myStore.DomainModels;
-				Dictionary<string, IORMCustomSerializedDomainModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedDomainModel>();
-				foreach (DomainModel domainModel in domainModels)
+			// Extract namespace and schema information from the different meta models
+			ICollection<DomainModel> domainModels = myStore.DomainModels;
+			Dictionary<string, IORMCustomSerializedDomainModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedDomainModel>();
+			foreach (DomainModel domainModel in domainModels)
+			{
+				IORMCustomSerializedDomainModel customSerializedDomainModel = domainModel as IORMCustomSerializedDomainModel;
+				if (customSerializedDomainModel != null)
 				{
-					IORMCustomSerializedDomainModel customSerializedDomainModel = domainModel as IORMCustomSerializedDomainModel;
-					if (customSerializedDomainModel != null)
+					string[,] namespaces = customSerializedDomainModel.GetCustomElementNamespaces();
+					int namespaceCount = namespaces.GetLength(0);
+					for (int i = 0; i < namespaceCount; ++i)
 					{
-						string[,] namespaces = customSerializedDomainModel.GetCustomElementNamespaces();
-						int namespaceCount = namespaces.GetLength(0);
-						for (int i = 0; i < namespaceCount; ++i)
+						string namespaceURI = namespaces[i, 1];
+						namespaceToModelMap.Add(namespaceURI, customSerializedDomainModel);
+						string schemaFile = namespaces[i, 2];
+						if (schemaFile != null && schemaFile.Length != 0)
 						{
-							string namespaceURI = namespaces[i, 1];
-							namespaceToModelMap.Add(namespaceURI, customSerializedDomainModel);
-							string schemaFile = namespaces[i, 2];
-							if (schemaFile != null && schemaFile.Length != 0)
-							{
-								schemaResourcePathType = domainModel.GetType();
-								schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
-							}
+							schemaResourcePathType = domainModel.GetType();
+							schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
 						}
 					}
 				}
-				myXmlNamespaceToModelMap = namespaceToModelMap;
-				NameTable nameTable = new NameTable();
-				settings.NameTable = nameTable;
+			}
+			myXmlNamespaceToModelMap = namespaceToModelMap;
+			NameTable nameTable = new NameTable();
+			settings.NameTable = nameTable;
 
 
 #if DEBUG
-				// Skip validation when the shift key is down in debug mode
-				if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) == 0)
-				{
+			// Skip validation when the shift key is down in debug mode
+			if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) == 0)
+			{
 #endif // DEBUG
-					settings.ValidationType = ValidationType.Schema;
+				settings.ValidationType = ValidationType.Schema;
 #if DEBUG
-				}
+			}
 #endif // DEBUG
-				// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection
-				// for each of the lines on the diagram is not initialized during Diagram.HandleLineRouting and none of the lines
-				// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
-				// an extra transaction. However, the interactions between deserialization and diagram initialization are extremely
-				// complex, so I'm not sure exactly what is happening here.
-				using (Transaction t = myStore.TransactionManager.BeginTransaction())
+			// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection
+			// for each of the lines on the diagram is not initialized during Diagram.HandleLineRouting and none of the lines
+			// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
+			// an extra transaction. However, the interactions between deserialization and diagram initialization are extremely
+			// complex, so I'm not sure exactly what is happening here.
+			using (Transaction t = myStore.TransactionManager.BeginTransaction())
+			{
+				using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
 				{
-					using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
+					using (XmlReader reader = XmlReader.Create(xmlReader, settings))
 					{
-						using (XmlReader reader = XmlReader.Create(xmlReader, settings))
+						while (reader.Read())
 						{
-							while (reader.Read())
+							if (reader.NodeType == XmlNodeType.Element)
 							{
-								if (reader.NodeType == XmlNodeType.Element)
+								if (!reader.IsEmptyElement && reader.NamespaceURI == RootXmlNamespace && reader.LocalName == RootXmlElementName)
 								{
-									if (!reader.IsEmptyElement && reader.NamespaceURI == RootXmlNamespace && reader.LocalName == RootXmlElementName)
+									while (reader.Read())
 									{
-										while (reader.Read())
+										XmlNodeType nodeType = reader.NodeType;
+										if (nodeType == XmlNodeType.Element)
 										{
-											XmlNodeType nodeType = reader.NodeType;
-											if (nodeType == XmlNodeType.Element)
+											bool processedRootElement = false;
+											IORMCustomSerializedDomainModel metaModel;
+											if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
 											{
-												bool processedRootElement = false;
-												IORMCustomSerializedDomainModel metaModel;
-												if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
+												Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
+												if (!classGuid.Equals(Guid.Empty))
 												{
-													Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
-													if (!classGuid.Equals(Guid.Empty))
-													{
-														processedRootElement = true;
-														ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid), null);
-													}
-												}
-												if (!processedRootElement)
-												{
-													PassEndElement(reader);
+													processedRootElement = true;
+													ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid), null);
 												}
 											}
-											else if (nodeType == XmlNodeType.EndElement)
+											if (!processedRootElement)
 											{
-												break;
+												PassEndElement(reader);
 											}
+										}
+										else if (nodeType == XmlNodeType.EndElement)
+										{
+											break;
 										}
 									}
 								}
 							}
 						}
 					}
-					if (fixupManager != null)
-					{
-						fixupManager.DeserializationComplete();
-					}
-					t.Commit();
 				}
+				if (fixupManager != null)
+				{
+					fixupManager.DeserializationComplete();
+				}
+				t.Commit();
 			}
-			finally
+			RuleManager ruleManager = myStore.RuleManager;
+			foreach (DomainModel loadedModel in domainModels)
 			{
-				RulesSuspended = false;
+				IDomainModelEnablesRulesAfterDeserialization enableRules = loadedModel as IDomainModelEnablesRulesAfterDeserialization;
+				if (enableRules != null)
+				{
+					enableRules.EnableRulesAfterDeserialization(ruleManager);
+				}
 			}
 		}
 		private delegate ElementLink CreateAggregatingLink(string idValue);
@@ -2930,5 +2912,5 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 	}
-	#endregion // New Deserialization
+	#endregion // Deserialization Routines
 }

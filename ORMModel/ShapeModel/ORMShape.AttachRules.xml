@@ -37,7 +37,6 @@
 		<arg:Rule class="ObjectTypeShape.RolePlayerAddedRule"/>
 		<arg:Rule class="ObjectTypeShape.RolePlayerDeleteRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
-		<arg:Rule class="ORMBaseBinaryLinkShape.HackConnectionPointRolePlayerChangeRule"/>
 		<arg:Rule class="ORMBaseBinaryLinkShape.LinkChangeRule"/>
 		<arg:Rule class="ORMBaseShape.ModelErrorAdded"/>
 		<arg:Rule class="ORMBaseShape.ModelErrorDeleting"/>

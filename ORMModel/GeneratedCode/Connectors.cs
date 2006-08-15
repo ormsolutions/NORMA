@@ -49,17 +49,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// ORMBaseBinaryLinkShape domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xceff4339, 0x48d0, 0x4ffe, 0xb0, 0x52, 0x2f, 0x9d, 0xa1, 0x67, 0xb1, 0xdb);
-		// Constructors were not generated for this class because it had HasCustomConstructor
-		// set to true. Please provide the constructors below in a partial class.
-		///// <summary>
-		///// Constructor.
-		///// </summary>
-		///// <param name="partition">Partition where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//protected ORMBaseBinaryLinkShape(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: base(partition, propertyAssignments)
-		//{
-		//}
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ORMBaseBinaryLinkShape(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
 		#endregion
 	}
 }
