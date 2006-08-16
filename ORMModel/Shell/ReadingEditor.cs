@@ -604,7 +604,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Call the Drop Down list of Reading Orders to Select a new reading entry
 		/// </summary>
-		public void OnMenuAddReading() //UNDONE: Need to check for valid itemInfo return???
+		public void OnMenuAddReading()
 		{
 			VirtualTreeItemInfo itemInfo;
 			if (this.GetItemInfo(out itemInfo, ColumnIndex.ReadingOrder))
@@ -1364,6 +1364,10 @@ namespace Neumont.Tools.ORM.Shell
 						ReadingOrderInformation roi;
 						int arity = myRoleDisplayOrder.Count;
 						// UNDONE: This should all change to using RoleBase[] when BuildPermutations is brought to O(sanity)
+						//		public decimal Factorial(decimal number) //total num [] elements
+						//    {   if (number >= 2)
+						//        {   number *= Factorial(number - 1);  }
+						//        return number; }
 						List<RoleBase> tempRoleList = new List<RoleBase>(arity);
 						myReadingOrderPermutations = new ReadingOrderKeyedCollection();
 						for (int i = 0; i < arity; ++i)
@@ -1378,8 +1382,7 @@ namespace Neumont.Tools.ORM.Shell
 							myReadingOrderPermutations.Add(roi);
 						}
 					}
-					// UNDONE: Localize "New Reading... " text
-					TypeEditorHost host = TypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this, "New Reading..."), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
+					TypeEditorHost host = TypeEditorHost.Create(new ReadingOrderDescriptor(myFact, this,  ResourceStrings.ModelReadingEditorNewItemText), myReadingOrderPermutations, TypeEditorHostEditControlStyle.TransparentEditRegion);
 					host.Flags = VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents | VirtualTreeInPlaceControlFlags.SizeToText;
 
 					return new VirtualTreeLabelEditData(host, delegate(VirtualTreeItemInfo itemInfo, Control editControl)
@@ -1498,7 +1501,7 @@ namespace Neumont.Tools.ORM.Shell
 					switch (myReadingOrderKeyedCollection.GetRowType(row))
 					{
 						case RowType.TypeEditorHost:
-							return "New Reading..."; //UNDONE: Localize
+							return ResourceStrings.ModelReadingEditorNewItemText;
 						case RowType.UnCommitted:
 							return myReadingOrderKeyedCollection[row].Text;
 					}
@@ -1515,8 +1518,9 @@ namespace Neumont.Tools.ORM.Shell
 							return myReadingOrderKeyedCollection[row].ToString();
 						case RowType.UnCommitted:
 							return myReadingOrderKeyedCollection[row].Text;
-						case RowType.TypeEditorHost:
-							return "Choose a New Reading Order from the Drop Down List"; //UNDONE: Localize 
+						//does not get displayed as no icon or text is displayed on this column/row
+						//case RowType.TypeEditorHost: 
+						//    return "Choose a New Reading Order from the Drop Down List"; 
 					}
 				}
 				return null;
@@ -1962,7 +1966,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 							if (useSubscript)
 							{
-								retVal[i] = string.Format(CultureInfo.InvariantCulture, "{0}({1})", (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText, subscript + 1); //UNDONE: localize
+								retVal[i] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelReferenceModePickerFormatString, (rolePlayer != null) ? rolePlayer.Name : ResourceStrings.ModelReadingEditorMissingRolePlayerText, subscript + 1);
 							}
 							else
 							{
@@ -2020,10 +2024,10 @@ namespace Neumont.Tools.ORM.Shell
 			private void MoveItem(bool promote, int orderRow)
 			{
 				int currentLocation = -1, newLocation = 0;
-				Debug.Assert(orderRow >= 0, "Why is this not in the KeyedCollection?");
+				Debug.Assert(orderRow >= 0, "Attempt to move item which does not exist in the collection");
 				currentLocation = orderRow; // orderItemInfo.Row;
 				newLocation = currentLocation + (promote ? -1 : 1);
-				using (Transaction t = myFact.Store.TransactionManager.BeginTransaction("Moving Reading Order"))  //UNDONE: Localize
+				using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReadingOrder))
 				{
 					myFact.ReadingOrderCollection.Move(currentLocation, newLocation);
 					t.Commit();
@@ -2276,7 +2280,7 @@ namespace Neumont.Tools.ORM.Shell
 						string retVal = myText;
 						if ((object)retVal == null)
 						{
-							return myText = string.Join(", ", OrderedReplacementFields); //UNDONE: Localize separator
+							return myText = string.Join(CultureInfo.CurrentCulture.TextInfo.ListSeparator, OrderedReplacementFields); 
 						}
 						return retVal;
 					}
@@ -2820,7 +2824,7 @@ namespace Neumont.Tools.ORM.Shell
 				/// <param name="newLocation">New Location in the collection</param>
 				private void MoveItem(int currentRow, int newLocation)
 				{
-					using (Transaction t = myFact.Store.TransactionManager.BeginTransaction("Demote Reading"))  //UNDONE: Localize
+					using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReading))
 					{
 						myReadingMC.Move(currentRow, newLocation);
 						t.Commit();
@@ -3119,7 +3123,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 					set
 					{
-						// UNDONE: SelectionStart
+						//UNDONE: SelectionStart
 					}
 				}
 			#endregion

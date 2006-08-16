@@ -447,6 +447,12 @@
 	<ResourceString name="ModelReadingEditorChangeReadingText" model="Model" resourceName="ModelReadingEditor.ChangeReadingText">
 		<comment type="summary">Text used to label the transaction created when changing reading text through the editor</comment>
 	</ResourceString>
+	<ResourceString name="ModelReadingEditorMoveReadingOrder" model="Model" resourceName="ModelReadingEditor.MoveReadingOrder">
+		<comment type="summary">Text used to label the transaction created when a reading order is moved through the reading editor</comment>
+	</ResourceString>
+	<ResourceString name="ModelReadingEditorMoveReading" model="Model" resourceName="ModelReadingEditor.MoveReading">
+		<comment type="summary">Text used to label the transaction created when a reading is moved through the reading editor</comment>
+	</ResourceString>
 	<ResourceString name="ModelReadingEditorIsPrimaryToolTip" model="Model" resourceName="ModelReadingEditor.IsPrimaryToolTip">
 		<comment type="summary">ToolTip text that appears on the reading list for the IsPrimary status column.</comment>
 	</ResourceString>

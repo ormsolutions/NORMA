@@ -1273,6 +1273,26 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Text used to label the transaction created when a reading order is moved through the reading editor
+		/// </summary>
+		public static string ModelReadingEditorMoveReadingOrder
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MoveReadingOrder");
+			}
+		}
+		/// <summary>
+		/// Text used to label the transaction created when a reading is moved through the reading editor
+		/// </summary>
+		public static string ModelReadingEditorMoveReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MoveReading");
+			}
+		}
+		/// <summary>
 		/// ToolTip text that appears on the reading list for the IsPrimary status column.
 		/// </summary>
 		public static string ModelReadingEditorIsPrimaryToolTip

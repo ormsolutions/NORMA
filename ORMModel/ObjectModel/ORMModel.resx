@@ -356,6 +356,14 @@
     <value>All</value>
     <comment>Text to use for the display All readings node in the readings editor tool window.</comment>
   </data>
+  <data name="ModelReadingEditor.MoveReadingOrder" xml:space="preserve">
+    <value>Moving Reading Order</value>
+    <comment>Text used to label the transaction created when a reading order is moved through the reading editor.</comment>
+  </data>
+  <data name="ModelReadingEditor.MoveReading" xml:space="preserve">
+    <value>Moving Reading</value>
+    <comment>Text used to label the transaction created when a reading is moved through the reading editor.</comment>
+  </data>
   <data name="ModelReadingEditor.ChangePrimaryReadingText" xml:space="preserve">
     <value>Change Primary Reading</value>
     <comment>Text used to label the transaction created when the primary reading is changed through the reading editor.</comment>
