@@ -333,6 +333,43 @@
 						<xs:documentation>The text to insert to indicate a normal font weight.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="CombinedObjectAndInstance">
+					<xs:annotation>
+						<xs:documentation>{0} {1}.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CombinedObjectAndInstanceTypeMissing">
+					<xs:annotation>
+						<xs:documentation>Missing {0}.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="TextInstanceValue">
+					<xs:annotation>
+						<xs:documentation>'{0}'</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NonTextInstanceValue">
+					<xs:annotation>
+						<xs:documentation>{0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="InstanceBlockStart">
+					<xs:annotation>
+						<xs:documentation>Examples:</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="InstanceBlockEnd">
+					<xs:annotation>
+						<xs:documentation></xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="Conditional">
+					<xs:annotation>
+						<xs:documentation>if {0} then {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				
+				
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

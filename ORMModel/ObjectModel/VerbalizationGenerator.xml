@@ -732,13 +732,38 @@
 								<SnippetReplacements>
 									<MinValue/>
 									<MaxValue/>
-								</SnippetReplacements>
+								</SnippetReplacements>	
 							</ConditionalSnippet>
 						</IterateValueRanges>
 					</SnippetReplacements>
 				</ConditionalSnippet>
 			</Constraint>
-			<!-- End Value Type Value Constraint-->
+			<Constraint type="RingConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts minFactArity="3"/>
+				<ConstrainedRoles constraintArity="2" factCount="1" ringType="Irreflexive">
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<IterateRoles match="included" listStyle="null" pass="first">
+							<Fact readingChoice="PreferLeadReading">
+								<PredicateReplacement match="primary">
+									<Snippet ref="ExistentialQuantifier" reverseSign="true"/>
+								</PredicateReplacement>
+								<PredicateReplacement match="secondary">
+									<Snippet ref="IdentityReferenceQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
 		</Constraints>
+		<SampleInstances>
+			<InstanceBlockStart type="FactTypeInstanceBlockStart" childHelperFor="FactType" />
+			<SampleInstance type="FactTypeInstanceVerbalizer" childHelperFor="FactType">
+				<Fact>
+					<InstanceRoleReplacement/>
+				</Fact>
+			</SampleInstance>
+			<InstanceBlockEnd type="FactTypeInstanceBlockEnd" childHelperFor="FactType" />
+		</SampleInstances>
 	</Constructs>
 </VerbalizationRoot>

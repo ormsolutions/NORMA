@@ -189,12 +189,20 @@ You must not remove this notice, or any other, from this software.
 		.logicalOperator {{ color: {6}; {7}}}
 		.note {{ color: {8}; font-style: italic; {9} }}
 		.notAvailable {{ font-style: italic; }}
+		.instance {{ color: {10}; {11} }}
 	</style>
 </head>
 <body>]]></Snippet>
 			<Snippet type="VerbalizerDocumentFooter"><![CDATA[</body></html>]]></Snippet>
 			<Snippet type="VerbalizerFontWeightBold"><![CDATA[font-weight: bold;]]></Snippet>
 			<Snippet type="VerbalizerFontWeightNormal"><![CDATA[font-weight: normal;]]></Snippet>
+			<Snippet type="CombinedObjectAndInstance"><![CDATA[{0} <span class="instance">{1}</span>]]></Snippet>
+			<Snippet type="CombinedObjectAndInstanceTypeMissing"><![CDATA[Missing {0}]]></Snippet>
+			<Snippet type="TextInstanceValue"><![CDATA['{0}']]></Snippet>
+			<Snippet type="NonTextInstanceValue"><![CDATA[{0}]]></Snippet>
+			<Snippet type="InstanceBlockStart"><![CDATA[<span class="quantifier">Examples:</span><span class="smallIndent">]]></Snippet>
+			<Snippet type="InstanceBlockEnd"><![CDATA[</span>]]></Snippet>
+			<Snippet type="Conditional"><![CDATA[<span class="quantifier">if</span> {0} <span class="quantifier">then</span> {1}]]></Snippet>
 		</Snippets>
 	</Language>
 </Languages>
