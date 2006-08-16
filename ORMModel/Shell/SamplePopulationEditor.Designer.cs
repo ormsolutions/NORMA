@@ -38,6 +38,7 @@ namespace Neumont.Tools.ORM.Shell
 			// vtrSamplePopulation
 			// 
 			this.vtrSamplePopulation.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.vtrSamplePopulation.Font = new System.Drawing.Font("Arial Unicode MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.vtrSamplePopulation.HasGridLines = true;
 			this.vtrSamplePopulation.HasHorizontalGridLines = true;
 			this.vtrSamplePopulation.HasVerticalGridLines = true;
