@@ -70,6 +70,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[ToolboxItemFilterAttribute(ORMDiagram.ORMDiagramDefaultFilterString, ToolboxItemFilterType.Require)]
 	public partial class ORMDiagram : IProxyDisplayProvider
 	{
+		#region Constructors
+		/// <summary>Constructor.</summary>
+		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMDiagram(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+			// This constructor calls our other constructor which takes a Partition.
+			// All work should be done there rather than here.
+		}
+		/// <summary>Constructor.</summary>
+		/// <param name="partition"><see cref="Partition"/> where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ORMDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			//turned snap to grid off because we are aligning the facttypes based
+			//on the center of the roles. Since the center of the roles is not necessarily
+			//going to be located in alignment on the grid we had to turn this off so facttypes
+			//would get properly aligned with other objects.
+			base.SnapToGrid = false;
+			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
+		}
+		#endregion
 		#region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,

@@ -163,6 +163,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			switch (index)
 			{
+				// A constructor was not generated for ORMDiagram because it had HasCustomConstructor
+				// set to true. Please provide the constructor below.
 				case 0: return new ORMDiagram(partition, propertyAssignments);
 				case 1: return new RolePlayerLink(partition, propertyAssignments);
 				case 2: return new ExternalConstraintLink(partition, propertyAssignments);
