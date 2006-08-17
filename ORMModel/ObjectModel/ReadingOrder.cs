@@ -59,10 +59,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void SetReadingTextValue(string newValue)
 		{
-			LinkedElementCollection<Reading> readings = ReadingCollection;
-			if (readings.Count > 0)
+			if (!Store.InUndoRedoOrRollback)
 			{
-				readings[0].Text = newValue;
+				LinkedElementCollection<Reading> readings = ReadingCollection;
+				if (readings.Count > 0)
+				{
+					readings[0].Text = newValue;
+				}
 			}
 		}
 		#endregion
