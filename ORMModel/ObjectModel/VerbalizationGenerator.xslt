@@ -825,7 +825,9 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<xsl:if test="not($isValueTypeValueConstraint)">
+				<!-- UNDONE: Forcing the issue for RingConstraint, the requirements for this are too hard
+					 to test and we will probably need this as the data for RingConstraint is filled in -->
+				<xsl:if test="not($isValueTypeValueConstraint or ($isSingleColumn and @type='RingConstraint'))">
 					<plx:local name="parentFact" dataTypeName="FactType">
 						<xsl:choose>
 							<xsl:when test="$isInternal and not($isRoleValue)">

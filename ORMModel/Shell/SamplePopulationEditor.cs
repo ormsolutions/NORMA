@@ -1368,7 +1368,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 					}
-					else
+					else if (!create)
 					{
 						return objectTypeInstance;
 					}

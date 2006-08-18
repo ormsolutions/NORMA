@@ -5798,7 +5798,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
-			FactType parentFact;
 			LinkedElementCollection<RoleBase> factRoles = null;
 			int factArity = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;

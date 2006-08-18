@@ -2150,18 +2150,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			LinkedElementCollection<FactTypeInstance> instances = FactTypeInstanceCollection;
-			int instanceCount = instances.Count;
-			if (instanceCount != 0)
+			if (ReadingRequiredError == null)
 			{
-				yield return new CustomChildVerbalizer(new FactTypeInstanceBlockStart());
-				for (int i = 0; i < instanceCount; ++i)
+				LinkedElementCollection<FactTypeInstance> instances = FactTypeInstanceCollection;
+				int instanceCount = instances.Count;
+				if (instanceCount != 0)
 				{
-					FactTypeInstanceVerbalizer verbalizer = new FactTypeInstanceVerbalizer();
-					verbalizer.Initialize(this, instances[i]);
-					yield return new CustomChildVerbalizer(verbalizer, true);
+					yield return new CustomChildVerbalizer(new FactTypeInstanceBlockStart());
+					for (int i = 0; i < instanceCount; ++i)
+					{
+						FactTypeInstanceVerbalizer verbalizer = new FactTypeInstanceVerbalizer();
+						verbalizer.Initialize(this, instances[i]);
+						yield return new CustomChildVerbalizer(verbalizer, true);
+					}
+					yield return new CustomChildVerbalizer(new FactTypeInstanceBlockEnd());
 				}
-				yield return new CustomChildVerbalizer(new FactTypeInstanceBlockEnd());
 			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
