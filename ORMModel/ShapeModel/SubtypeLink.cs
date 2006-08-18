@@ -387,11 +387,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectType superType = subtypeFact.Supertype;
 				FactType nestedSubFact = subType.NestedFactType;
 				FactType nestedSuperFact = superType.NestedFactType;
+				FactTypeShape nestedSubFactShape = null;
+				FactTypeShape nestedSuperFactShape = null;
 				NodeShape fromShape;
 				NodeShape toShape;
-				if (null != (toShape = diagram.FindShapeForElement((nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact) as NodeShape) &&
-					null != (fromShape = diagram.FindShapeForElement((nestedSubFact == null) ? subType as ModelElement : nestedSubFact) as NodeShape))
+				if (null != (toShape = (nestedSuperFact == null) ? diagram.FindShapeForElement(superType) as NodeShape : (nestedSuperFactShape = diagram.FindShapeForElement<FactTypeShape>(nestedSuperFact))) &&
+					null != (fromShape = (nestedSubFact == null) ? diagram.FindShapeForElement(subType) as NodeShape : (nestedSubFactShape = diagram.FindShapeForElement<FactTypeShape>(nestedSubFact))))
 				{
+					if (nestedSuperFactShape != null)
+					{
+						toShape = nestedSuperFactShape.GetUniqueConnectorShape(fromShape);
+					}
+					else if (nestedSubFactShape != null)
+					{
+						fromShape = nestedSubFactShape.GetUniqueConnectorShape(toShape);
+					}
 					Connect(fromShape, toShape);
 				}
 			}

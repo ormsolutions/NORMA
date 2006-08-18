@@ -197,7 +197,12 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>
 		</GeometryShape>
-		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0"/>
+		<GeometryShape Name="LinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0" Description="Zero-size relative shape used as a proxy connection point for other shapes and links."/>
+		<GeometryShape Name="FactTypeLinkConnectorShape" Namespace="Neumont.Tools.ORM.ShapeModel" Id="6A50CBAF-5EA0-4963-9FE6-A288B180A5B8" FillGradientMode="None" InitialWidth="0" InitialHeight="0" Description="Zero-size relative shape used to disambiguate multiple duplicate links between FactTypeShape and other shape types.">
+			<BaseGeometryShape>
+				<GeometryShapeMoniker Name="LinkConnectorShape"/>
+			</BaseGeometryShape>
+		</GeometryShape>
 	</Shapes>
 
 	<Connectors>

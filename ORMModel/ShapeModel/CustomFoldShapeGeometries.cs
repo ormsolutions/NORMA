@@ -41,6 +41,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 		PointD CalculateConnectionPoint(NodeShape oppositeShape);
 	}
 	#endregion // ICustomShapeFolding interface
+	#region IProxyConnectorShape interface
+	/// <summary>
+	/// Support the creation of place holder shape objects
+	/// that are used to connect the same two shapes multiple
+	/// times without link display ambiguity.
+	/// </summary>
+	public interface IProxyConnectorShape
+	{
+		/// <summary>
+		/// Return another shape that for which this shape is
+		/// acting as a proxy connector.
+		/// </summary>
+		NodeShape ProxyConnectorShapeFor { get;}
+	}
+	#endregion // IProxyConnectorShape interface
 	#region GeometryUtility class
 	/// <summary>
 	/// Helper functions for custom shape folding
@@ -55,13 +70,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// CenterToCenter routing is assumed.
 		/// </summary>
 		/// <param name="geometryHost">IGeometryHost (passed from DoFoldToShape)</param>
-		/// <param name="potentialPoint">PointD (passed from DoFoldToShape)</param>
 		/// <param name="vectorEndPoint">PointD (passed from DoFoldToShape)</param>
 		/// <returns>Absolute location of end point</returns>
-		public static PointD AdjustVectorEndPoint(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
+		public static PointD AdjustVectorEndPoint(IGeometryHost geometryHost, PointD vectorEndPoint)
 		{
 			NodeShape oppositeShape;
-			return AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint, out oppositeShape);
+			return AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
 		}
 		/// <summary>
 		/// Locate the opposite shape based on the given points and
@@ -71,23 +85,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// CenterToCenter routing is assumed.
 		/// </summary>
 		/// <param name="geometryHost">IGeometryHost (passed from DoFoldToShape)</param>
-		/// <param name="potentialPoint">PointD (passed from DoFoldToShape)</param>
 		/// <param name="vectorEndPoint">PointD (passed from DoFoldToShape)</param>
 		/// <param name="oppositeShape">The located opposite shape at this location</param>
 		/// <returns>Absolute location of end point</returns>
-		public static PointD AdjustVectorEndPoint(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint, out NodeShape oppositeShape)
+		public static PointD AdjustVectorEndPoint(IGeometryHost geometryHost, PointD vectorEndPoint, out NodeShape oppositeShape)
 		{
 			oppositeShape = null;
 			// The vectorEndPoint value is coming in (negative, negative) for the lower
 			// right quadrant instead of (positive, positive). All other values are
 			// (positive, positive), so we switch the end point to make the rest of the work
-			// easier. For CenterToCenter routing, adjusting by the potential point gives the
-			// best value.
-			// UNDONE: Should any of this weirdness be considered a bug?
-			//vectorEndPoint = new PointD(-vectorEndPoint.X + potentialPoint.X, -vectorEndPoint.Y + potentialPoint.Y);
+			// easier. For CenterToCenter routing, subtracting the vectorEndPoint from the
+			// lower right corner gives the correct value.
+			RectangleD absoluteBoundingBox = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+			vectorEndPoint = new PointD(absoluteBoundingBox.Right - vectorEndPoint.X, absoluteBoundingBox.Bottom - vectorEndPoint.Y);
+
 			NodeShape shape = geometryHost as NodeShape;
-			PointD shapeLocation = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location; // shape.Location;
-			vectorEndPoint = new PointD(shapeLocation.X + (2 * potentialPoint.X) - vectorEndPoint.X, shapeLocation.Y + (2 * potentialPoint.Y) - vectorEndPoint.Y);
 			if (shape != null)
 			{
 				ReadOnlyCollection<LinkConnectsToNode> links = DomainRoleInfo.GetElementLinks<LinkConnectsToNode>(shape, LinkConnectsToNode.NodesDomainRoleId);
@@ -134,12 +146,156 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Adjust a vector end point retrieved from AdjustVectorEndPoint into
 		/// the value in its original (very strange) coordinate system.
 		/// </summary>
-		/// <param name="potentialPoint">The potential end point passed to FoldToShape</param>
+		/// <param name="geometryHost">The geometryHost passed to FoldToShape</param>
 		/// <param name="vectorEndPoint">An adjusted vector end point</param>
 		/// <returns>An unadjusted value</returns>
-		public static PointD VectorEndPointForBase(PointD potentialPoint, PointD vectorEndPoint)
+		public static PointD VectorEndPointForBase(IGeometryHost geometryHost, PointD vectorEndPoint)
 		{
-			return new PointD(-(vectorEndPoint.X - potentialPoint.X), -(vectorEndPoint.Y - potentialPoint.Y));
+			RectangleD absoluteBoundingBox = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+			return new PointD(absoluteBoundingBox.Right - vectorEndPoint.X, absoluteBoundingBox.Bottom - vectorEndPoint.Y);
+		}
+		#region GeometryHostWrapper class
+		/// <summary>
+		/// A passthrough implementation of IGeometryHost. Allows IGeometryHost
+		/// instances to be forwarded without support for ICustomShapeFolding or
+		/// IProxyConnectorShape.
+		/// </summary>
+		private class GeometryHostWrapper : IGeometryHost
+		{
+			private IGeometryHost myInner;
+			public GeometryHostWrapper(IGeometryHost inner)
+			{
+				myInner = inner;
+			}
+			#region IGeometryHost Implementation
+			void IGeometryHost.ExcludeGeometryFromClipRegion(System.Drawing.Graphics graphics, System.Drawing.Drawing2D.Matrix matrix, System.Drawing.Drawing2D.GraphicsPath perimeter)
+			{
+				myInner.ExcludeGeometryFromClipRegion(graphics, matrix, perimeter);
+			}
+			StyleSetResourceId IGeometryHost.GeometryBackgroundBrushId
+			{
+				get
+				{
+					return myInner.GeometryBackgroundBrushId;
+				}
+			}
+			RectangleD IGeometryHost.GeometryBoundingBox
+			{
+				get
+				{
+					return myInner.GeometryBoundingBox;
+				}
+			}
+			bool IGeometryHost.GeometryHasFilledBackground
+			{
+				get
+				{
+					return myInner.GeometryHasFilledBackground;
+				}
+			}
+			bool IGeometryHost.GeometryHasOutline
+			{
+				get
+				{
+					return myInner.GeometryHasOutline;
+				}
+			}
+			bool IGeometryHost.GeometryHasShadow
+			{
+				get
+				{
+					return myInner.GeometryHasShadow;
+				}
+			}
+			StyleSetResourceId IGeometryHost.GeometryOutlinePenId
+			{
+				get
+				{
+					return myInner.GeometryOutlinePenId;
+				}
+			}
+			StyleSet IGeometryHost.GeometryStyleSet
+			{
+				get
+				{
+					return myInner.GeometryStyleSet;
+				}
+			}
+			RectangleD IGeometryHost.TranslateGeometryToAbsoluteBounds(RectangleD relativeBounds)
+			{
+				return myInner.TranslateGeometryToAbsoluteBounds(relativeBounds);
+			}
+			RectangleD IGeometryHost.TranslateGeometryToRelativeBounds(RectangleD absoluteBounds)
+			{
+				return myInner.TranslateGeometryToRelativeBounds(absoluteBounds);
+			}
+			System.Drawing.Color IGeometryHost.UpdateGeometryLuminosity(DiagramClientView view, System.Drawing.Brush brush)
+			{
+				return myInner.UpdateGeometryLuminosity(view, brush);
+			}
+			System.Drawing.Color IGeometryHost.UpdateGeometryLuminosity(DiagramClientView view, System.Drawing.Pen pen)
+			{
+				return myInner.UpdateGeometryLuminosity(view, pen);
+			}
+			#endregion // IGeometryHost Implementation
+		}
+		#endregion // GeometryHostWrapper class
+		/// <summary>
+		/// A utility function to attempt to perfom custom shape folding.
+		/// Custom shape folding uses shape-specific information beyond that
+		/// available to the ShapeGeometry to determine connection points.
+		/// This function should be call after AdjustVectorEndPoint.
+		/// </summary>
+		/// <param name="geometryHost">The geometryHost value passed to DoFoldToShape</param>
+		/// <param name="vectorEndPoint">The vectorEndPoint passed to DoFoldToShape and adjusted by <see cref="AdjustVectorEndPoint(IGeometryHost,PointD,out NodeShape)"/></param>
+		/// <param name="oppositeShape">The opposite shape returned by <see cref="AdjustVectorEndPoint(IGeometryHost,PointD,out NodeShape)"/></param>
+		/// <returns>Nullable&lt;PointD&gt; with a value on success, without a value if custom folding is not available</returns>
+		public static PointD? DoCustomFoldShape(IGeometryHost geometryHost, PointD vectorEndPoint, NodeShape oppositeShape)
+		{
+			ICustomShapeFolding customFolding;
+			IProxyConnectorShape proxyConnector;
+			PointD customPoint;
+			NodeShape realHost;
+			if (oppositeShape != null &&
+				null != (customFolding = geometryHost as ICustomShapeFolding) &&
+				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
+			{
+				// Translate back to local coordinates
+				PointD location = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location;
+				customPoint.Offset(-location.X, -location.Y);
+				return customPoint;
+			}
+			else if (null != (proxyConnector = geometryHost as IProxyConnectorShape) &&
+				null != (realHost = proxyConnector.ProxyConnectorShapeFor))
+			{
+				SizeD size = realHost.Size;
+				customPoint = realHost.ShapeGeometry.DoFoldToShape(new GeometryHostWrapper(realHost), new PointD(size.Width / 2, size.Height / 2), GeometryUtility.VectorEndPointForBase(realHost, vectorEndPoint));
+				PointD location = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location;
+				PointD realLocation = realHost.AbsoluteBounds.Location;
+				customPoint.Offset(realLocation.X - location.X, realLocation.Y - location.Y);
+				return customPoint;
+			}
+			return null;
+		}
+		/// <summary>
+		/// Determine if the opposite shape is a proxy connector shape
+		/// and adjust the vectorEndPoint appropriately.
+		/// </summary>
+		/// <param name="vectorEndPoint">The vectorEndPoint passed to DoFoldToShape and adjusted by <see cref="AdjustVectorEndPoint(IGeometryHost,PointD,out NodeShape)"/></param>
+		/// <param name="oppositeShape">The opposite shape returned by <see cref="AdjustVectorEndPoint(IGeometryHost,PointD,out NodeShape)"/></param>
+		/// <returns>The original or adjusted points.</returns>
+		public static PointD ResolveProxyConnectorVectorEndPoint(PointD vectorEndPoint, NodeShape oppositeShape)
+		{
+			IProxyConnectorShape proxyConnector = oppositeShape as IProxyConnectorShape;
+			if (proxyConnector != null)
+			{
+				NodeShape proxyFor = proxyConnector.ProxyConnectorShapeFor;
+				if (proxyFor != null)
+				{
+					return proxyFor.AbsoluteCenter;
+				}
+			}
+			return vectorEndPoint;
 		}
 
 		/// <summary>
@@ -198,9 +354,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
 			// Get an endpoint we can work with
-			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint);
+			NodeShape oppositeShape;
+			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
+			PointD? customPoint = GeometryUtility.DoCustomFoldShape(geometryHost, vectorEndPoint, oppositeShape);
+			if (customPoint.HasValue)
+			{
+				return customPoint.Value;
+			}
+			vectorEndPoint = GeometryUtility.ResolveProxyConnectorVectorEndPoint(vectorEndPoint, oppositeShape);
 
-			// The point returns needs to be relative to the upper left corner of the bounding
+			// The point returned needs to be relative to the upper left corner of the bounding
 			// box. The goal is to get a point on the ellipse that points to the center of the
 			// line. To do this, we translate the coordinate system to the center of the ellipse,
 			// get a slope from the vectorEndPoint/ellipse center, then solve the ellipse equation
@@ -288,9 +451,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
 			// Get an endpoint we can work with
-			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint);
+			NodeShape oppositeShape;
+			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
+			PointD? customPoint = GeometryUtility.DoCustomFoldShape(geometryHost, vectorEndPoint, oppositeShape);
+			if (customPoint.HasValue)
+			{
+				return customPoint.Value;
+			}
+			vectorEndPoint = GeometryUtility.ResolveProxyConnectorVectorEndPoint(vectorEndPoint, oppositeShape);
 
-			// The point returns needs to be relative to the upper left corner of the bounding
+			// The point returned needs to be relative to the upper left corner of the bounding
 			// box. The goal is to get a point on the circle that points to the center of the
 			// line. To do this, we translate the coordinate system to the center of the circle,
 			// get a slope from the vectorEndPoint/circle center, then solve the circle equation
@@ -377,71 +547,65 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
 			NodeShape oppositeShape;
-			ICustomShapeFolding customFolding;
-			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint, out oppositeShape);
-			PointD customPoint;
-			if (oppositeShape != null &&
-				null != (customFolding = geometryHost as ICustomShapeFolding) &&
-				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
+			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
+			PointD? customPoint = GeometryUtility.DoCustomFoldShape(geometryHost, vectorEndPoint, oppositeShape);
+			if (customPoint.HasValue)
 			{
-				// Translate back to local coordinates
-				PointD location = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location;
-				customPoint.Offset(-location.X, -location.Y);
-				return customPoint;
+				return customPoint.Value;
+			}
+			vectorEndPoint = GeometryUtility.ResolveProxyConnectorVectorEndPoint(vectorEndPoint, oppositeShape);
+
+			// Fold to the shape
+			// This is used for center to center routing, so the potential point is the
+			// center of the shape. We need to see where a line through the center intersects
+			// the rectangle border and return relative coordinates.
+			RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+			PointD center = bounds.Center;
+			vectorEndPoint.Offset(-center.X, -center.Y);
+			bool negativeX = vectorEndPoint.X < 0;
+			bool negativeY = vectorEndPoint.Y < 0;
+			if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
+			{
+				// Vertical line, skip slope calculations
+				return new PointD(bounds.Width / 2, negativeY ? 0 : bounds.Height);
+			}
+			else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
+			{
+				// Horizontal line, skip slope calculations
+				return new PointD(negativeX ? 0 : bounds.Width, bounds.Height / 2);
 			}
 			else
 			{
-				// This is used for center to center routing, so the potential point is the
-				// center of the shape. We need to see where a line through the center intersects
-				// the rectangle border and return relative coordinates.
-				RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
-				PointD center = bounds.Center;
-				vectorEndPoint.Offset(-center.X, -center.Y);
-				bool negativeX = vectorEndPoint.X < 0;
-				bool negativeY = vectorEndPoint.Y < 0;
-				if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
+				double slope = vectorEndPoint.Y / vectorEndPoint.X;
+				// The intersecting line equation is y = mx. We can tell
+				// whether to use the vertical or horizontal lines by
+				// comparing the relative sizes of the rectangle sides
+				// with the slope
+				double x;
+				double y;
+				if (Math.Abs(slope) < (bounds.Height / bounds.Width))
 				{
-					// Vertical line, skip slope calculations
-					return new PointD(bounds.Width / 2, negativeY ? 0 : bounds.Height);
-				}
-				else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
-				{
-					// Horizontal line, skip slope calculations
-					return new PointD(negativeX ? 0 : bounds.Width, bounds.Height / 2);
+					// Attach to left/right edges
+					// Intersect with line x = +/- bounds.Width / 2
+					x = bounds.Width / 2;
+					if (negativeX)
+					{
+						x = -x;
+					}
+					y = x * slope;
 				}
 				else
 				{
-					double slope = vectorEndPoint.Y / vectorEndPoint.X;
-					// The intersecting line equation is y = mx. We can tell
-					// whether to use the vertical or horizontal lines by
-					// comparing the relative sizes of the rectangle sides
-					// with the slope
-					double x;
-					double y;
-					if (Math.Abs(slope) < (bounds.Height / bounds.Width))
+					// Attach to top/bottom edges
+					// Intersect with line y = +/- bounds.Height / 2
+					y = bounds.Height / 2;
+					if (negativeY)
 					{
-						// Attach to left/right edges
-						// Intersect with line x = +/- bounds.Width / 2
-						x = bounds.Width / 2;
-						if (negativeX)
-						{
-							x = -x;
-						}
-						y = x * slope;
+						y = -y;
 					}
-					else
-					{
-						// Attach to top/bottom edges
-						// Intersect with line y = +/- bounds.Height / 2
-						y = bounds.Height / 2;
-						if (negativeY)
-						{
-							y = -y;
-						}
-						x = y / slope;
-					}
-					return new PointD(x + bounds.Width / 2, y + bounds.Height / 2);
+					x = y / slope;
 				}
+				return new PointD(x + bounds.Width / 2, y + bounds.Height / 2);
 			}
 		}
 	}
@@ -474,123 +638,117 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>A point on the rounded rectangle border</returns>
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
+			// Get an endpoint we can work with
 			NodeShape oppositeShape;
-			ICustomShapeFolding customFolding;
-			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint, out oppositeShape);
-			PointD customPoint;
-			if (oppositeShape != null &&
-				null != (customFolding = geometryHost as ICustomShapeFolding) &&
-				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
+			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, vectorEndPoint, out oppositeShape);
+			PointD? customPoint = GeometryUtility.DoCustomFoldShape(geometryHost, vectorEndPoint, oppositeShape);
+			if (customPoint.HasValue)
 			{
-				// Translate back to local coordinates
-				PointD location = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox).Location;
-				customPoint.Offset(-location.X, -location.Y);
-				return customPoint;
+				return customPoint.Value;
+			}
+			vectorEndPoint = GeometryUtility.ResolveProxyConnectorVectorEndPoint(vectorEndPoint, oppositeShape);
+
+			// This is used for center to center routing, so the potential point is the
+			// center of the shape. We need to see where a line through the center intersects
+			// the rectangle border and return relative coordinates.
+			RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
+			PointD center = bounds.Center;
+			vectorEndPoint.Offset(-center.X, -center.Y);
+			bool negativeX = vectorEndPoint.X < 0;
+			bool negativeY = vectorEndPoint.Y < 0;
+			if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
+			{
+				// Vertical line, skip slope calculations
+				return new PointD(bounds.Width / 2, negativeY ? 0 : bounds.Height);
+			}
+			else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
+			{
+				// Horizontal line, skip slope calculations
+				return new PointD(negativeX ? 0 : bounds.Width, bounds.Height / 2);
 			}
 			else
 			{
-				// This is used for center to center routing, so the potential point is the
-				// center of the shape. We need to see where a line through the center intersects
-				// the rectangle border and return relative coordinates.
-				RectangleD bounds = geometryHost.TranslateGeometryToAbsoluteBounds(geometryHost.GeometryBoundingBox);
-				PointD center = bounds.Center;
-				vectorEndPoint.Offset(-center.X, -center.Y);
-				bool negativeX = vectorEndPoint.X < 0;
-				bool negativeY = vectorEndPoint.Y < 0;
-				if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
+				double slope = vectorEndPoint.Y / vectorEndPoint.X;
+				// The intersecting line equation is y = mx. We can tell
+				// whether to use the vertical or horizontal lines by
+				// comparing the relative sizes of the rectangle sides
+				// with the slope
+				double x;
+				double y;
+				double r = Radius;
+				double halfHeight = bounds.Height / 2;
+				double halfWidth = bounds.Width / 2;
+				bool cornerHit;
+				if (Math.Abs(slope) < (bounds.Height / bounds.Width))
 				{
-					// Vertical line, skip slope calculations
-					return new PointD(bounds.Width / 2, negativeY ? 0 : bounds.Height);
-				}
-				else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
-				{
-					// Horizontal line, skip slope calculations
-					return new PointD(negativeX ? 0 : bounds.Width, bounds.Height / 2);
+					// Attach to left/right edges
+					// Intersect with line x = +/- bounds.Width / 2
+					x = halfWidth;
+					if (negativeX)
+					{
+						x = -x;
+					}
+					y = x * slope;
+					cornerHit = Math.Abs(y) > (halfHeight - r);
 				}
 				else
 				{
-					double slope = vectorEndPoint.Y / vectorEndPoint.X;
-					// The intersecting line equation is y = mx. We can tell
-					// whether to use the vertical or horizontal lines by
-					// comparing the relative sizes of the rectangle sides
-					// with the slope
-					double x;
-					double y;
-					double r = Radius;
-					double halfHeight = bounds.Height / 2;
-					double halfWidth = bounds.Width / 2;
-					bool cornerHit;
-					if (Math.Abs(slope) < (bounds.Height / bounds.Width))
+					// Attach to top/bottom edges
+					// Intersect with line y = +/- bounds.Height / 2
+					y = halfHeight;
+					if (negativeY)
 					{
-						// Attach to left/right edges
-						// Intersect with line x = +/- bounds.Width / 2
-						x = halfWidth;
-						if (negativeX)
-						{
-							x = -x;
-						}
-						y = x * slope;
-						cornerHit = Math.Abs(y) > (halfHeight - r);
+						y = -y;
 					}
-					else
+					x = y / slope;
+					cornerHit = Math.Abs(x) > (halfWidth - r);
+				}
+				if (cornerHit)
+				{
+					// The equation here is significantly more complicated than
+					// other shapes because of the off center circle, which is
+					// centered at (ccx, ccy) in these equations. The raw equations are:
+					// (x - ccx)^2 + (y - ccy)^2 = r^2
+					// y = m*x where m is the slope
+					// Solving for x gives (algebra is non-trivial and ommitted):
+					// v1 = 1 + m*m
+					// v2 = m*ccx + ccy
+					// v3 = sqrt(r^2*v1 - v2^2)
+					// x = (+/-v3 + ccx-m*ccy)/v1
+					// Note that picking the correct center is absolutely necessary.
+					// Unlike the other shapes, where all lines will pass the ellipse/circle
+					// at some point, the off-center circle means that choosing the wrong
+					// center will result in an unsolvable equation (taking the square
+					// root will throw).
+					double ccx = halfWidth - r; // Corner center x value
+					double ccy = halfHeight - r; // Corner center y value
+					bool useNegativeSquareRoot = false;
+					if (negativeX) // Left quadrants
 					{
-						// Attach to top/bottom edges
-						// Intersect with line y = +/- bounds.Height / 2
-						y = halfHeight;
-						if (negativeY)
+						ccx = -ccx;
+						useNegativeSquareRoot = true;
+						if (!negativeY)
 						{
-							y = -y;
-						}
-						x = y / slope;
-						cornerHit = Math.Abs(x) > (halfWidth - r);
-					}
-					if (cornerHit)
-					{
-						// The equation here is significantly more complicated than
-						// other shapes because of the off center circle, which is
-						// centered at (ccx, ccy) in these equations. The raw equations are:
-						// (x - ccx)^2 + (y - ccy)^2 = r^2
-						// y = m*x where m is the slope
-						// Solving for x gives (algebra is non-trivial and ommitted):
-						// v1 = 1 + m*m
-						// v2 = m*ccx + ccy
-						// v3 = sqrt(r^2*v1 - v2^2)
-						// x = (+/-v3 + ccx-m*ccy)/v1
-						// Note that picking the correct center is absolutely necessary.
-						// Unlike the other shapes, where all lines will pass the ellipse/circle
-						// at some point, the off-center circle means that choosing the wrong
-						// center will result in an unsolvable equation (taking the square
-						// root will throw).
-						double ccx = halfWidth - r; // Corner center x value
-						double ccy = halfHeight - r; // Corner center y value
-						bool useNegativeSquareRoot = false;
-						if (negativeX) // Left quadrants
-						{
-							ccx = -ccx;
-							useNegativeSquareRoot = true;
-							if (!negativeY)
-							{
-								// Lower left quadrant
-								ccy = -ccy;
-							}
-						}
-						else if (!negativeY) // Right quadrants
-						{
-							// Lower right quadrant
+							// Lower left quadrant
 							ccy = -ccy;
 						}
-						double v1 = 1 + slope * slope;
-						double v2 = slope * ccx + ccy;
-						double v3 = Math.Sqrt(r * r * v1 - v2 * v2);
-						if (useNegativeSquareRoot)
-						{
-							v3 = -v3;
-						}
-						x = (v3 + ccx - slope * ccy) / v1;
-						y = slope * x;
 					}
-					return new PointD(x + halfWidth, y + halfHeight);
+					else if (!negativeY) // Right quadrants
+					{
+						// Lower right quadrant
+						ccy = -ccy;
+					}
+					double v1 = 1 + slope * slope;
+					double v2 = slope * ccx + ccy;
+					double v3 = Math.Sqrt(r * r * v1 - v2 * v2);
+					if (useNegativeSquareRoot)
+					{
+						v3 = -v3;
+					}
+					x = (v3 + ccx - slope * ccy) / v1;
+					y = slope * x;
 				}
+				return new PointD(x + halfWidth, y + halfHeight);
 			}
 		}
 	}

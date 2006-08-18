@@ -74,7 +74,6 @@
 		<arg:Rule class="ReadingShape.RoleDisplayOrderAdded"/>
 		<arg:Rule class="ReadingShape.RoleDisplayOrderPositionChanged"/>
 		<arg:Rule class="RingConstraintShape.RingConstraintPropertyChangeRule"/>
-		<arg:Rule class="RolePlayerLink.RolePlayerDeleting"/>
 		<arg:Rule class="ValueConstraintShape.ValueRangeChanged"/>
 		<arg:Rule class="ValueConstraintShape.ValueConstraintAdded"/>
 		<arg:Rule class="ValueConstraintShape.ValueTypeHasDataTypeAdded"/>

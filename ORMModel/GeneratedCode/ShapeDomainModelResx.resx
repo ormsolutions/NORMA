@@ -350,12 +350,20 @@
     <comment>DisplayName for DomainClass &apos;ModelNoteShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.Description" xml:space="preserve">
-    <value>Description for Neumont.Tools.ORM.ShapeModel.LinkConnectorShape</value>
+    <value>Zero-size relative shape used as a proxy connection point for other shapes and links.</value>
     <comment>Description for DomainClass &apos;LinkConnectorShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.DisplayName" xml:space="preserve">
     <value>Link Connector Shape</value>
     <comment>DisplayName for DomainClass &apos;LinkConnectorShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeLinkConnectorShape.Description" xml:space="preserve">
+    <value>Zero-size relative shape used to disambiguate multiple duplicate links between FactTypeShape and other shape types.</value>
+    <comment>Description for DomainClass &apos;FactTypeLinkConnectorShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeLinkConnectorShape.DisplayName" xml:space="preserve">
+    <value>Fact Type Link Connector Shape</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeLinkConnectorShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape</value>

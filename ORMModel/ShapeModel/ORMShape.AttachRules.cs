@@ -92,7 +92,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ReadingShape).GetNestedType("RoleDisplayOrderAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("RoleDisplayOrderPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RingConstraintShape).GetNestedType("RingConstraintPropertyChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePlayerLink).GetNestedType("RolePlayerDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueRangeChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic),
@@ -723,16 +722,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class RingConstraintPropertyChangeRule
 		{
 			public RingConstraintPropertyChangeRule()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class RolePlayerLink
-	{
-		private partial class RolePlayerDeleting
-		{
-			public RolePlayerDeleting()
 			{
 				base.IsEnabled = false;
 			}

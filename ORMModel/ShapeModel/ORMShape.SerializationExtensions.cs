@@ -74,6 +74,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			retVal[dataDir.FindDomainClass(SubtypeLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(ModelNoteLink.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(LinkConnectorShape.DomainClassId)] = null;
+			retVal[dataDir.FindDomainClass(FactTypeLinkConnectorShape.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode.DomainClassId)] = null;
 			return retVal;
 		}

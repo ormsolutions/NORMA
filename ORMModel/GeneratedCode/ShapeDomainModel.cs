@@ -86,6 +86,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(RoleNameShape),
 				typeof(ModelNoteShape),
 				typeof(LinkConnectorShape),
+				typeof(FactTypeLinkConnectorShape),
 				typeof(global::Neumont.Tools.ORM.ShapeModel.FixUpDiagram),
 				typeof(global::Neumont.Tools.ORM.ShapeModel.ConnectorRolePlayerChanged),
 			};
@@ -137,7 +138,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(20);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(21);
 				createElementMap.Add(typeof(ORMDiagram), 0);
 				createElementMap.Add(typeof(RolePlayerLink), 1);
 				createElementMap.Add(typeof(ExternalConstraintLink), 2);
@@ -155,6 +156,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				createElementMap.Add(typeof(RoleNameShape), 14);
 				createElementMap.Add(typeof(ModelNoteShape), 15);
 				createElementMap.Add(typeof(LinkConnectorShape), 16);
+				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 17);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -182,6 +184,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				case 14: return new RoleNameShape(partition, propertyAssignments);
 				case 15: return new ModelNoteShape(partition, propertyAssignments);
 				case 16: return new LinkConnectorShape(partition, propertyAssignments);
+				case 17: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}

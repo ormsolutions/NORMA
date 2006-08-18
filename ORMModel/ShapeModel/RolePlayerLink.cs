@@ -425,11 +425,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectTypePlaysRole modelLink = ModelElement as ObjectTypePlaysRole;
 				ObjectType rolePlayer = modelLink.RolePlayer;
 				FactType nestedFact = rolePlayer.NestedFactType;
+				FactTypeShape fromFactTypeShape;
 				NodeShape fromShape;
 				NodeShape toShape;
-				if (null != (fromShape = diagram.FindShapeForElement(modelLink.PlayedRole.FactType) as NodeShape) &&
-					null != (toShape = diagram.FindShapeForElement((nestedFact == null) ? rolePlayer as ModelElement : nestedFact) as NodeShape))
+				if (null != (fromFactTypeShape = diagram.FindShapeForElement<FactTypeShape>(modelLink.PlayedRole.FactType)) &&
+					null != (toShape = diagram.FindShapeForElement<NodeShape>((nestedFact == null) ? rolePlayer as ModelElement : nestedFact)))
 				{
+					fromShape = fromFactTypeShape.GetUniqueConnectorShape(toShape);
 					Connect(fromShape, toShape);
 				}
 			}
@@ -567,70 +569,5 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Store Event Handlers
-		#region Hack code to enable multiple links between the same fact/object pair
-		private bool myHasBeenConnected;
-		/// <summary>
-		/// True if the link has ever been connected
-		/// </summary>
-		public bool HasBeenConnected
-		{
-			get
-			{
-				return myHasBeenConnected;
-			}
-			set
-			{
-				Debug.Assert(value, "HasBeenConnected should never be set to false");
-				myHasBeenConnected = value;
-			}
-		}
-		/// <summary>
-		/// Due to the hackish nature of the way we're connecting
-		/// players for rings, we need to reconnect when any link of
-		/// the same type is deleted.
-		/// UNDONE: MSBUG This is a huge hack that will go away if
-		/// Microsoft passes link information into DoFoldToShape
-		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole))] // DeletingRule
-		private sealed partial class RolePlayerDeleting : DeletingRule
-		{
-			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
-			{
-				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-
-				Role role = link.PlayedRole;
-				FactType fact = role.FactType;
-				if (fact != null && !fact.IsDeleting)
-				{
-					IList roles = fact.RoleCollection;
-					int rolesCount = roles.Count;
-					ObjectType rolePlayer = link.RolePlayer;
-					for (int i = 0; i < rolesCount; ++i)
-					{
-						Role currentRole = roles[i] as Role;
-						if (currentRole != null && !currentRole.IsDeleting)
-						{
-							ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(currentRole, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
-							if (rolePlayerLinks.Count != 0)
-							{
-								ObjectTypePlaysRole playerLink = rolePlayerLinks[0];
-								if (!playerLink.IsDeleting && playerLink.RolePlayer == rolePlayer)
-								{
-									foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(playerLink))
-									{
-										RolePlayerLink displayLink = pel as RolePlayerLink;
-										if (displayLink != null)
-										{
-											displayLink.RecalculateRoute();
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion // Hack code to enable multiple links between the same fact/object pair
 	}
 }

@@ -2847,28 +2847,64 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>The point to connect to. May be internal to the object, or on the boundary.</returns>
 		protected PointD CalculateConnectionPoint(NodeShape oppositeShape)
 		{
-			ObjectTypeShape objectShape;
-			FactTypeShape factShape;
+			return CalculateConnectionPoint(oppositeShape, null);
+		}
+		/// <summary>
+		/// Calculate the connection point for the oppositeShape attached to this
+		/// shape. If the oppositeShape is semantially attached more than once, then
+		/// a connectorShape will be passed in, and the link will be connected to the
+		/// connector shape instead of the primary shape. If custom shape folding is
+		/// required for a link, then secondary links between the same two shapes need
+		/// to use an alternate connector shape.
+		/// </summary>
+		/// <param name="oppositeShape">The opposite shape we're connecting to</param>
+		/// <param name="connectorShape">A connector shape used to disambiguate multiply connected lines</param>
+		/// <returns>The point to connect to. May be internal to the object, or on the boundary.</returns>
+		public PointD CalculateConnectionPoint(NodeShape oppositeShape, FactTypeLinkConnectorShape connectorShape)
+		{
+			Debug.Assert(connectorShape == null || connectorShape.ParentShape == this);
+			
+			// First figure out the link we're attempting to connect
+			ModelElement linkElement = null;
+			LinkedElementCollection<LinkShape> linkedToThisShape = LinkConnectsToNode.GetLink((connectorShape != null) ? connectorShape as NodeShape : this);
+			LinkedElementCollection<LinkShape> linkedToOppositeShape = LinkConnectsToNode.GetLink(oppositeShape);
+			int linkedToThisShapeCount = linkedToThisShape.Count;
+			for (int i = 0; i < linkedToThisShapeCount; ++i)
+			{
+				LinkShape testLinkShape = linkedToThisShape[i];
+				if (linkedToOppositeShape.Contains(testLinkShape))
+				{
+					linkElement = testLinkShape.ModelElement;
+					break;
+				}
+			}
+
 			ExternalConstraintShape constraintShape;
 			ValueConstraintShape rangeShape;
 			FactType factType = null;
-			ObjectType objectType = null;
+			SubtypeFact subtypeFact = null;
+			ObjectTypePlaysRole rolePlayerLink = null;
+			FactTypeLinkConnectorShape proxyConnector = oppositeShape as FactTypeLinkConnectorShape;
+			if (proxyConnector != null)
+			{
+				oppositeShape = oppositeShape.ParentShape as NodeShape;
+			}
+			GC.KeepAlive(linkElement);
 			int factRoleCount = 0;
 			int roleIndex = -1;
 			bool attachBeforeRole = false; // If true, attach before roleIndex, not in the middle of it
-			if (null != (factShape = oppositeShape as FactTypeShape))
+			if (null != (subtypeFact = linkElement as SubtypeFact))
 			{
-				FactType oppositeFactType = factShape.AssociatedFactType;
-				if (oppositeFactType != null)
-				{
-					factType = AssociatedFactType;
-					objectType = oppositeFactType.NestingType;
-				}
+				// Return empty to ignore the calculated connection point and defer to the geometry
+				return PointD.Empty;
 			}
-			else if (null != (objectShape = oppositeShape as ObjectTypeShape))
+			else if (null != (rolePlayerLink = linkElement as ObjectTypePlaysRole))
 			{
-				factType = AssociatedFactType;
-				objectType = objectShape.AssociatedObjectType;
+				Role role = rolePlayerLink.PlayedRole;
+				factType = role.FactType;
+				LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
+				factRoleCount = factRoles.Count;
+				roleIndex = factRoles.IndexOf(role);
 			}
 			else if (null != (rangeShape = oppositeShape as ValueConstraintShape))
 			{
@@ -3002,129 +3038,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			if (factType != null && objectType != null)
-			{
-				LinkedElementCollection<RoleBase> roles = DisplayedRoleOrder;
-				factRoleCount = roles.Count;
-				RoleBase role = null;
-				ORMDiagram parentDiagram = (ORMDiagram)Diagram;
-				int firstIndex = -1;
-				int bestIndex = -1;
-				RolePlayerLink firstLinkShape = null;
-				RolePlayerLink linkShape = null;
-				bool recordMatch = false;
-				Dictionary<FactTypeShape, List<RolePlayerLink>> linksDictionary = ConnectedLinksContextDictionary;
-				List<RolePlayerLink> processedLinks = null;
-				for (int i = 0; i < factRoleCount; ++i)
-				{
-					// UNDONE: MSBUG Note that this where the data passed to DoFoldToShape
-					// is insufficient. Unless we're given the specific link object
-					// we're dealing with, there is no way to tell which role we're
-					// on when the role player is shared by multiple roles. The hack
-					// solution is to simply guess, but this is also not completely accurate
-					// because we can end up position the lines in the wrong place. This is
-					// OK for display, but does not work if we ever attach anything to the lines
-					// or make them selectable. The code here includes the RolePlayerLink.RolePlayerRemoving
-					// and the RolePlayeLink.HasBeenConnected properties.
-					role = roles[i];
-					ReadOnlyCollection<ObjectTypePlaysRole> rolePlayerLinks = DomainRoleInfo.GetElementLinks<ObjectTypePlaysRole>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId);
-					if (rolePlayerLinks.Count != 0)
-					{
-						ObjectTypePlaysRole rolePlayerLink = rolePlayerLinks[0];
-						if (rolePlayerLink.RolePlayer == objectType)
-						{
-							if (firstIndex == -1)
-							{
-								firstIndex = i;
-								firstLinkShape = linkShape = parentDiagram.FindShapeForElement<RolePlayerLink>(rolePlayerLink);
-							}
-							else
-							{
-								// Now we need to decide which link to take. First priority is any link that
-								// has not yet been connected. Second priority is the ones that have not been connected
-								// in this transaction. If there are multiple links, then store them in the
-								// transaction context for this shape.
-								recordMatch = true;
-								if (linkShape.HasBeenConnected)
-								{
-									RolePlayerLink testLinkShape = parentDiagram.FindShapeForElement<RolePlayerLink>(rolePlayerLink);
-									if (!testLinkShape.HasBeenConnected)
-									{
-										bestIndex = i;
-										linkShape = testLinkShape;
-										break;
-									}
-									if (bestIndex == -1)
-									{
-										EnsureLinksDictionary(ref linksDictionary, ref processedLinks);
-										if (processedLinks.Contains(linkShape))
-										{
-											bestIndex = i;
-											linkShape = testLinkShape;
-										}
-										else
-										{
-											bestIndex = firstIndex;
-										}
-									}
-									else if (processedLinks.Contains(linkShape))
-									{
-										bestIndex = i;
-										linkShape = testLinkShape;
-									}
-								}
-								else
-								{
-									if (bestIndex == -1)
-									{
-										bestIndex = firstIndex;
-									}
-									break;
-								}
-							}
-						}
-					}
-				}
-				if (bestIndex == -1)
-				{
-					if (linkShape == null)
-					{
-						// UNDONE: This is here to stop a subtypelink from an objectified fact
-						// from crashing. However, if there is also a role-player link to the
-						// supertype then the subtype link will overdraw the other line. This
-						// all comes back to the same problem: the framework needs to provide
-						// the link instance we're trying to connect.
-						return PointD.Empty; // Signals a standard attach to the edge of the shape
-					}
-					// There was only one match, we don't have to record anything
-					bestIndex = firstIndex;
-					linkShape.HasBeenConnected = true;
-				}
-				else if (!linkShape.HasBeenConnected)
-				{
-					linkShape.HasBeenConnected = true;
-					if (recordMatch)
-					{
-						EnsureLinksDictionary(ref linksDictionary, ref processedLinks);
-						processedLinks.Add(linkShape);
-					}
-				}
-				else if (processedLinks != null)
-				{
-					if (processedLinks.Contains(linkShape))
-					{
-						// They've all been recorded, empty the collection and revert to the first
-						processedLinks.Clear();
-						bestIndex = firstIndex;
-						processedLinks.Add(firstLinkShape);
-					}
-					else if (recordMatch)
-					{
-						processedLinks.Add(linkShape);
-					}
-				}
-				roleIndex = bestIndex;
-			}
 			if (roleIndex != -1)
 			{
 				PointD objCenter = oppositeShape.AbsoluteCenter;
@@ -3200,46 +3113,66 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return CalculateConnectionPoint(oppositeShape);
 		}
-		// Code to track which links have already been returned during this walk
-		private static object ConnectedLinksContextDictionaryKey = new object();
-		private Dictionary<FactTypeShape, List<RolePlayerLink>> ConnectedLinksContextDictionary
+		/// <summary>
+		/// Helper function to get a shape that is not currently
+		/// attached to the oppositeShape via any other LinkShape
+		/// objects. This allows multiple links between the same two
+		/// objects to be calculated without ambiguity.
+		/// </summary>
+		/// <param name="oppositeShape">The opposite shape to get a unique connector for</param>
+		/// <returns>NodeShape</returns>
+		public NodeShape GetUniqueConnectorShape(NodeShape oppositeShape)
 		{
-			get
+			NodeShape fromShape = this;
+			LinkedElementCollection<LinkShape> linkedToFromShape = LinkConnectsToNode.GetLink(fromShape);
+			int linkedToFromShapeCount = linkedToFromShape.Count;
+			if (linkedToFromShapeCount != 0)
 			{
-				Store store = Store;
-				if (store.TransactionActive)
+				LinkedElementCollection<LinkShape> linkedToToShape = LinkConnectsToNode.GetLink(oppositeShape);
+				for (int i = 0; i < linkedToFromShapeCount; ++i)
 				{
-					object connectedLinksContextDictionary;
-					store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(ConnectedLinksContextDictionaryKey, out connectedLinksContextDictionary);
-					return (Dictionary<FactTypeShape, List<RolePlayerLink>>)connectedLinksContextDictionary;
-				}
-				return null;
-			}
-			set
-			{
-				Debug.Assert(Store.TransactionActive, "Link connections require context dictionary");
-				Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ConnectedLinksContextDictionaryKey] = value;
-			}
-		}
-		private void EnsureLinksDictionary(ref Dictionary<FactTypeShape, List<RolePlayerLink>> linksDictionary, ref List<RolePlayerLink> processedLinks)
-		{
-			if (processedLinks == null)
-			{
-				if (linksDictionary == null)
-				{
-					Debug.Assert(ConnectedLinksContextDictionary == null, "Attempt to retrieve the dictionary before creating it");
-					linksDictionary = new Dictionary<FactTypeShape, List<RolePlayerLink>>();
-					linksDictionary[this] = processedLinks = new List<RolePlayerLink>();
-					ConnectedLinksContextDictionary = linksDictionary;
-				}
-				else
-				{
-					if (!linksDictionary.TryGetValue(this, out processedLinks))
+					if (linkedToToShape.Contains(linkedToFromShape[i]))
 					{
-						linksDictionary[this] = processedLinks = new List<RolePlayerLink>();
+						FactTypeLinkConnectorShape alternateFromShape = null;
+						LinkedElementCollection<ShapeElement> childShapes = fromShape.RelativeChildShapes;
+						int nextConnectShapePosition = 0;
+						foreach (ShapeElement shape in childShapes)
+						{
+							alternateFromShape = shape as FactTypeLinkConnectorShape;
+							if (alternateFromShape != null)
+							{
+								// Note that a single FactTypeLinkConnectorShape can be attached to multiple
+								// opposite shapes. We just can't have two opposite shapes attached to the
+								// same shape.
+								LinkedElementCollection<LinkShape> linkedToAlternateCandidateShape = LinkConnectsToNode.GetLink(alternateFromShape);
+								int linkedToAlternateCandidateShapeCount = linkedToAlternateCandidateShape.Count;
+								for (int j = 0; j < linkedToAlternateCandidateShapeCount; ++j)
+								{
+									if (linkedToToShape.Contains(linkedToAlternateCandidateShape[j]))
+									{
+										alternateFromShape = null;
+										++nextConnectShapePosition;
+									}
+								}
+								if (alternateFromShape != null)
+								{
+									// This one will work just fine
+									break;
+								}
+							}
+						}
+						if (alternateFromShape == null)
+						{
+							alternateFromShape = new FactTypeLinkConnectorShape(Partition);
+							childShapes.Add(alternateFromShape);
+							alternateFromShape.Location = new PointD(.001 * nextConnectShapePosition, 0);
+						}
+						fromShape = alternateFromShape;
+						break;
 					}
 				}
 			}
+			return fromShape;
 		}
 		#endregion // ICustomShapeFolding implementation
 		#region IModelErrorActivation Implementation
@@ -4676,4 +4609,62 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // ObjectNameTextField class
 	}
 	#endregion // ObjectifiedFactTypeNameShape class
+	#region FactTypeLinkConnectorShape class
+	public partial class FactTypeLinkConnectorShape : ICustomShapeFolding, IProxyConnectorShape
+	{
+		#region ICustomShapeFolding Implementation
+		/// <summary>
+		/// Implements ICustomShapeFolding.CalculateConnectionPoint
+		/// </summary>
+		protected PointD CalculateConnectionPoint(NodeShape oppositeShape)
+		{
+			PointD retVal = PointD.Empty;
+			FactTypeShape parentShape = ParentShape as FactTypeShape;
+			if (parentShape != null)
+			{
+				retVal = parentShape.CalculateConnectionPoint(oppositeShape, this);
+			}
+			return retVal;
+		}
+		PointD ICustomShapeFolding.CalculateConnectionPoint(NodeShape oppositeShape)
+		{
+			return CalculateConnectionPoint(oppositeShape);
+		}
+		#endregion // ICustomShapeFolding Implementation
+		#region IProxyConnectorShape implementation
+		/// <summary>
+		/// Implements IProxyConnectorShape.ProxyConnectorShapeFor
+		/// </summary>
+		protected NodeShape ProxyConnectorShapeFor
+		{
+			get
+			{
+				return ParentShape as NodeShape;
+			}
+		}
+		NodeShape IProxyConnectorShape.ProxyConnectorShapeFor
+		{
+			get
+			{
+				return ProxyConnectorShapeFor;
+			}
+		}
+		#endregion // IProxyConnectorShape implementation
+		#region Modified shape geometry
+		/// <summary>
+		/// Return a shape geometry that supports shape folding
+		/// </summary>
+		public override ShapeGeometry ShapeGeometry
+		{
+			get
+			{
+				// Note that it doesn't much matter which shape we return
+				// because connector shapes have zero size. We just need
+				// one that will call into our CalculateConnectionPoint routine.
+				return CustomFoldRectangleShapeGeometry.ShapeGeometry;
+			}
+		}
+		#endregion // Modified shape geometry
+	}
+	#endregion // FactTypeLinkConnectorShape class
 }
