@@ -517,7 +517,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			ConstraintRoleSequence sequence = e.SourceElement as ConstraintRoleSequence;
 			ObjectType entityType = mySelectedEntityType;
-			if ((entityType != null && entityType.PreferredIdentifier == sequence) || RecurseIdentifierUpdate(entityType, sequence))
+			if (entityType != null && (entityType.PreferredIdentifier == sequence || RecurseIdentifierUpdate(entityType, sequence)))
 			{
 				PopulateControlForEntityType();
 			}
@@ -942,7 +942,7 @@ namespace Neumont.Tools.ORM.Shell
 						blockEdits ? TypeEditorHostEditControlStyle.ReadOnlyEdit : TypeEditorHostEditControlStyle.Editable);
 					if (host != null)
 					{
-						(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText;
+						(host as IVirtualTreeInPlaceControl).Flags = VirtualTreeInPlaceControlFlags.DisposeControl;
 					}
 					return host;
 				}
@@ -1735,20 +1735,11 @@ namespace Neumont.Tools.ORM.Shell
 					// If editing an existing EntityTypeRoleInstance
 					if (editRoleInstance != null)
 					{
-						ValueTypeInstance instance = null;
 						if (delete)
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, "")))
 							{
-								if (instance != null)
-								{
-									RemoveValueTypeInstance(instance);
-								}
-								else
-								{
-									ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, false);
-									result.Delete();
-								}
+								editRoleInstance.Delete();
 								t.Commit();
 							}
 						}
@@ -1756,6 +1747,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, "")))
 							{
+								ValueTypeInstance instance = null;
 								ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, true);
 								ConnectInstance(myEntityType, ref editInstance, result, factRole);
 								editRoleInstance.Delete();
@@ -2309,7 +2301,7 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							using (Transaction t = store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorEditInstanceTransactionText, "")))
 							{
-								myCachedInstances[row].FindRoleInstance(myFactType.RoleCollection[column].Role).Delete();
+								myCachedInstances[row].FindRoleInstance(myFactType.RoleCollection[column-1].Role).Delete();
 								ObjectTypeInstance result = RecurseValueTypeInstance(editRoleInstance.ObjectTypeInstance, editRoleInstance.Role.RolePlayer, newText, ref instance, true);
 								ConnectInstance(ref editInstance, result, factRole);
 								t.Commit();
