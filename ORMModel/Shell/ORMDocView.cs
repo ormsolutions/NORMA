@@ -277,7 +277,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private void ContextMenuNewPageORMClick(object sender, EventArgs e)
 		{
-			Store store = ((ModelingDocData)base.DocData).Store;
+			Store store = base.DocData.Store;
 			using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandNewPage.Replace("&", "")))
 			{
 				ReadOnlyCollection<ORMModel> models = store.ElementDirectory.FindElements<ORMModel>();
@@ -326,6 +326,46 @@ namespace Neumont.Tools.ORM.Shell
 			base.RenameDiagramAtPoint(((ToolStripItem)sender).Owner.Location);
 		}
 		#endregion // Context Menu
+		
+		#region HACK: Temporary RelationalView Context Menu stuff
+#if !DISABLE_RELATIONAL_VIEW_HACK
+		private void ContextMenuNewPageRelationalView(object sender, EventArgs e)
+		{
+			Store store = base.DocData.Store;
+			using (Transaction t = store.TransactionManager.BeginTransaction("Relational View"))
+			{
+				ReadOnlyCollection<ModelElement> models = store.ElementDirectory.FindElements(new Guid("7FAEDEEC-0A27-4417-B74B-422A67A67F50"));
+				System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				Type relationalDiagramType = null;
+				Type relationalShapeModelType = null;
+				Type relationalFixUpDiagram = null;
+				Type relationalCompartmentItemAddRule = null;
+				Type relationalCompartmentItemChangeRule = null;
+				foreach (System.Reflection.Assembly assembly in assemblies)
+				{
+					if (assembly.FullName.StartsWith("Neumont.Tools.ORM.Views.RelationalView"))
+					{
+						relationalDiagramType = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram");
+						relationalShapeModelType = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel");
+						relationalFixUpDiagram = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.FixUpDiagram");
+						relationalCompartmentItemAddRule = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.CompartmentItemAddRule");
+						relationalCompartmentItemChangeRule = assembly.GetType("Neumont.Tools.ORM.Views.RelationalView.CompartmentItemChangeRule");
+						break;
+					}
+				}
+				Debug.Assert(relationalDiagramType != null && relationalShapeModelType != null && relationalFixUpDiagram != null && relationalCompartmentItemAddRule != null);
+				Diagram diagram = (Diagram)Activator.CreateInstance(relationalDiagramType, store);
+				diagram.Associate((ModelElement)models[0]);
+				relationalShapeModelType.GetMethod("EnableDiagramRules", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public).Invoke(null, new object[] { store });
+				store.RuleManager.DisableRule(relationalFixUpDiagram);
+				store.RuleManager.DisableRule(relationalCompartmentItemAddRule);
+				store.RuleManager.DisableRule(relationalCompartmentItemChangeRule);
+				t.Commit();
+			}
+			((IDisposable)sender).Dispose();
+		}
+#endif // !DISABLE_RELATIONAL_VIEW_HACK
+		#endregion // HACK: Temporary RelationalView Context Menu stuff
 
 		/// <summary>
 		/// See <see cref="ModelingDocView.LoadView"/>.
@@ -357,6 +397,29 @@ namespace Neumont.Tools.ORM.Shell
 				renamePageMenuItem.Tag = ContextMenuItemNeedsSelectedTab;
 				contextMenu.Items.AddRange(new ToolStripItem[] { newPageMenuItem, new ToolStripSeparator(), deletePageMenuItem, renamePageMenuItem });
 				#endregion // Setup context menu
+
+				#region HACK: Temporary RelationalView Context Menu stuff
+#if !DISABLE_RELATIONAL_VIEW_HACK
+				foreach (DomainModel model in document.Store.DomainModels)
+				{
+					if (model.GetType().FullName == "Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel")
+					{
+						ToolStripMenuItem relationalViewMenuItem = new ToolStripMenuItem("&Relational View");
+						relationalViewMenuItem.Click += ContextMenuNewPageRelationalView;
+						newPageMenuItem.DropDownItems.Add(relationalViewMenuItem);
+						contextMenu.Opening += delegate(object sender, CancelEventArgs e)
+						{
+							DiagramView designer = base.GetDesignerAtPoint(((ContextMenuStrip)sender).Location);
+							if (designer != null)
+							{
+								deletePageMenuItem.Enabled = designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram";
+							}
+						};
+						break;
+					}
+				}
+#endif // !DISABLE_RELATIONAL_VIEW_HACK
+				#endregion // HACK: Temporary RelationalView Context Menu stuff
 
 				Store store = document.Store;
 				// Add our existing diagrams, or make a new one if we don't already have one
@@ -870,6 +933,14 @@ namespace Neumont.Tools.ORM.Shell
 			// Turn on the verbalization window command for all selections
 			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
 			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
+
+#if !DISABLE_RELATIONAL_VIEW_HACK
+			if (!(CurrentDiagram is ORMDiagram))
+			{
+				visibleCommands |= ORMDesignerCommands.CopyImage;
+				enabledCommands |= ORMDesignerCommands.CopyImage;
+			}
+#endif //!DISABLE_RELATIONAL_VIEW_HACK
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{

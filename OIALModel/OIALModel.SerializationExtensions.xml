@@ -22,7 +22,7 @@
 			<se:Namespace Prefix="oial" URI="http://schemas.neumont.edu/ORM/2006-01/OIALModel" SchemaFile="OIALModel.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
-			<se:RootElement Class="OIALModel" Name="Model"/>
+			<!--<se:RootElement Class="OIALModel" Name="Model"/>-->
 		</se:RootElements>
 		<se:OmittedDomainElements>
 			<se:OmitRelationship Class="ChildSequenceConstraintHasChildSequence"/>

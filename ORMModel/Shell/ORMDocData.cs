@@ -177,7 +177,7 @@ namespace Neumont.Tools.ORM.Shell
 												{
 													documentExtensions = new Dictionary<string, Type>();
 												}
-												documentExtensions.Add(URI, extensionType);
+												documentExtensions[URI] = extensionType;
 											}
 										}
 									}

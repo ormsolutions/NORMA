@@ -95,8 +95,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected static Guid[] GetRootElementClasses()
 		{
-			return new Guid[]{
-				OIALModel.DomainClassId};
+			return new Guid[0];
 		}
 		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
@@ -107,10 +106,6 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "Model") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-01/OIALModel"))
-			{
-				return OIALModel.DomainClassId;
-			}
 			return default(Guid);
 		}
 		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)

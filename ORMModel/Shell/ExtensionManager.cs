@@ -36,6 +36,7 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		private readonly Store _store;
 		private readonly List<Type> _loadedDomainModelTypes;
+		private readonly IList<ORMExtensionType> _allExtensionTypes;
 		/// <summary>
 		/// Initialize the ExtensionManager form
 		/// </summary>
@@ -43,6 +44,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			InitializeComponent();
 			this._store = store;
+			this._allExtensionTypes = ORMDesignerPackage.GetAvailableCustomExtensions();
 			ICollection<DomainModel> domainModels = store.DomainModels;
 			this._loadedDomainModelTypes = new List<Type>(domainModels.Count);
 			foreach (DomainModel domainModel in domainModels)
@@ -68,6 +70,47 @@ namespace Neumont.Tools.ORM.Shell
 				foreach (ListViewItem listViewItem in checkedItems)
 				{
 					checkedTypes.Add((ORMExtensionType)listViewItem.Tag);
+				}
+
+				IList<ORMExtensionType> allExtensionTypes = extensionManager._allExtensionTypes;
+
+				List<Guid> loadedDomainModelIds = new List<Guid>(4 + checkedTypes.Count);
+				loadedDomainModelIds.Add(CoreDomainModel.DomainModelId);
+				loadedDomainModelIds.Add(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel.DomainModelId);
+				loadedDomainModelIds.Add(ObjectModel.ORMCoreDomainModel.DomainModelId);
+				loadedDomainModelIds.Add(ShapeModel.ORMShapeDomainModel.DomainModelId);
+				foreach (ORMExtensionType extensionType in checkedTypes)
+				{
+					loadedDomainModelIds.Add(extensionType.Type.GUID);
+				}
+
+				for (int i = 0; i < checkedTypes.Count; i++)
+				{
+					foreach (ExtendsDomainModelAttribute extendsDomainModelAttribute in checkedTypes[i].Type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false))
+					{
+						Guid extendedModelId = extendsDomainModelAttribute.ExtendedModelId;
+						if (!loadedDomainModelIds.Contains(extendedModelId))
+						{
+							// Find the missing domain model
+							foreach (ORMExtensionType candidateExtensionType in allExtensionTypes)
+							{
+								object[] domainObjectIdAttributes = candidateExtensionType.Type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+								if (domainObjectIdAttributes.Length <= 0)
+								{
+									continue;
+								}
+								Guid candidateModelId = ((DomainObjectIdAttribute)domainObjectIdAttributes[0]).Id;
+								if (extendedModelId.Equals(candidateModelId))
+								{
+									loadedDomainModelIds.Add(candidateModelId);
+									checkedTypes.Add(candidateExtensionType);
+									break;
+								}
+							}
+							// If we didn't find the requested domain model, we don't need to worry about doing anything here,
+							// since the Store will throw later when they try to load the requesting domain model.
+						}
+					}
 				}
 
 				Stream stream = null;
@@ -207,12 +250,10 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			base.OnLoad(e);
 			lvExtensions.Items.Clear();
-			IList<ORMExtensionType> extensions = Shell.ORMDesignerPackage.GetAvailableCustomExtensions();
-			foreach (ORMExtensionType type in extensions)
+			foreach (ORMExtensionType type in this._allExtensionTypes)
 			{
 				AddItemToListView(type);
 			}
-
 		}
 		/// <summary>
 		/// This method adds the passed in ORMExtensionType to the ListView on the ExtensionManager dialogue.

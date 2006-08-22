@@ -1222,6 +1222,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					InformationType absorbedInfoType = absorbedInformationTypes[index];
 					string roleName = role.Name;
 					absorbedInfoType.Name = string.IsNullOrEmpty(roleName) ? GetUnaryReading(factType) : roleName;
+					absorbedInfoType.Mandatory = MandatoryConstraintModality.Alethic;
 				}
 #else
 				if (roleCount == 1)

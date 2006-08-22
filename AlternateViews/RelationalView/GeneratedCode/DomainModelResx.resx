@@ -1,0 +1,623 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.Description" xml:space="preserve">
+    <value>Relational View of ORM Model</value>
+    <comment>Description for DslLibrary &apos;RelationalShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel.DisplayName" xml:space="preserve">
+    <value>Relational View</value>
+    <comment>DisplayName for DslLibrary &apos;RelationalShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RelationalNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement.DisplayName" xml:space="preserve">
+    <value>RelationalNamedElement</value>
+    <comment>DisplayName for DomainClass &apos;RelationalNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement/Name.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement.Name</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;RelationalNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalNamedElement/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;RelationalNamedElement&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModel.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;RelationalModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModel.DisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>DisplayName for DomainClass &apos;RelationalModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModel/DisplayDataTypes.Description" xml:space="preserve">
+    <value>Specifies whether data types should be shown or not.</value>
+    <comment>Description for DomainProperty &apos;DisplayDataTypes&apos; on DomainClass &apos;RelationalModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModel/DisplayDataTypes.DisplayName" xml:space="preserve">
+    <value>DisplayDataTypes</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayDataTypes&apos; on DomainClass &apos;RelationalModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Table.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Table.DisplayName" xml:space="preserve">
+    <value>RelationalTable</value>
+    <comment>DisplayName for DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Column.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Column.DisplayName" xml:space="preserve">
+    <value>RelationalColumn</value>
+    <comment>DisplayName for DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Column/IsMandatory.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.Column.IsMandatory</value>
+    <comment>Description for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Column/IsMandatory.DisplayName" xml:space="preserve">
+    <value>IsMandatory</value>
+    <comment>DisplayName for DomainProperty &apos;IsMandatory&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Column/DataType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.Column.DataType</value>
+    <comment>Description for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Column/DataType.DisplayName" xml:space="preserve">
+    <value>DataType</value>
+    <comment>DisplayName for DomainProperty &apos;DataType&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Constraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.Constraint.DisplayName" xml:space="preserve">
+    <value>RelationalConstraint</value>
+    <comment>DisplayName for DomainClass &apos;Constraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ForeignKey.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ForeignKey.DisplayName" xml:space="preserve">
+    <value>RelationalConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>RelationalConstraint</value>
+    <comment>DisplayName for DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint/IsPreferred.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint.IsPreferred</value>
+    <comment>Description for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint/IsPreferred.DisplayName" xml:space="preserve">
+    <value>IsPreferred</value>
+    <comment>DisplayName for DomainProperty &apos;IsPreferred&apos; on DomainClass &apos;UniquenessConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable</value>
+    <comment>Description for DomainClass &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable.DisplayName" xml:space="preserve">
+    <value>Relational Model Has Table</value>
+    <comment>DisplayName for DomainClass &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable/RelationalModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable.RelationalModel</value>
+    <comment>Description for DomainRole &apos;RelationalModel&apos; on DomainRelationship &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable/RelationalModel.DisplayName" xml:space="preserve">
+    <value>RelationalModel</value>
+    <comment>DisplayName for DomainRole &apos;RelationalModel&apos; on DomainRelationship &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable/RelationalModel.PropertyDisplayName" xml:space="preserve">
+    <value>Table Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RelationalModel&apos; on DomainRelationship &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasTable/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Relational Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;RelationalModelHasTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableHasColumn</value>
+    <comment>Description for DomainClass &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn.DisplayName" xml:space="preserve">
+    <value>Table Has Column</value>
+    <comment>DisplayName for DomainClass &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableHasColumn.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Column Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn/Column.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableHasColumn.Column</value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasColumn/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;TableHasColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint</value>
+    <comment>Description for DomainClass &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.DisplayName" xml:space="preserve">
+    <value>Table Has Constraint</value>
+    <comment>DisplayName for DomainClass &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint/Constraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.Constraint</value>
+    <comment>Description for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint/Constraint.DisplayName" xml:space="preserve">
+    <value>Constraint</value>
+    <comment>DisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint/Constraint.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;TableHasConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn</value>
+    <comment>Description for DomainClass &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn.DisplayName" xml:space="preserve">
+    <value>Constraint References Column</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn/Constraint.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn.Constraint</value>
+    <comment>Description for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn/Constraint.DisplayName" xml:space="preserve">
+    <value>Constraint</value>
+    <comment>DisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn/Constraint.PropertyDisplayName" xml:space="preserve">
+    <value>Column Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn/Column.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn.Column</value>
+    <comment>Description for DomainRole &apos;Column&apos; on DomainRelationship &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn/Column.DisplayName" xml:space="preserve">
+    <value>Column</value>
+    <comment>DisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ConstraintReferencesColumn/Column.PropertyDisplayName" xml:space="preserve">
+    <value>Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Column&apos; on DomainRelationship &apos;ConstraintReferencesColumn&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable</value>
+    <comment>Description for DomainClass &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.DisplayName" xml:space="preserve">
+    <value>Table References Table</value>
+    <comment>DisplayName for DomainClass &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable/Table.DisplayName" xml:space="preserve">
+    <value>Constraint</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Referenced Table Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable/ReferencedTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.ReferencedTable</value>
+    <comment>Description for DomainRole &apos;ReferencedTable&apos; on DomainRelationship &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable/ReferencedTable.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;ReferencedTable&apos; on DomainRelationship &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable/ReferencedTable.PropertyDisplayName" xml:space="preserve">
+    <value>Referencing Table Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ReferencedTable&apos; on DomainRelationship &apos;TableReferencesTable&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey</value>
+    <comment>Description for DomainClass &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.DisplayName" xml:space="preserve">
+    <value>Table Reference Has Foreign Key</value>
+    <comment>DisplayName for DomainClass &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey/TableReferencesTable.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.TableReferencesTable</value>
+    <comment>Description for DomainRole &apos;TableReferencesTable&apos; on DomainRelationship &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey/TableReferencesTable.DisplayName" xml:space="preserve">
+    <value>TableReferencesTable</value>
+    <comment>DisplayName for DomainRole &apos;TableReferencesTable&apos; on DomainRelationship &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey/TableReferencesTable.PropertyDisplayName" xml:space="preserve">
+    <value>Foreign Key</value>
+    <comment>PropertyDisplayName for DomainRole &apos;TableReferencesTable&apos; on DomainRelationship &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey/ForeignKey.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.ForeignKey</value>
+    <comment>Description for DomainRole &apos;ForeignKey&apos; on DomainRelationship &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey/ForeignKey.DisplayName" xml:space="preserve">
+    <value>ForeignKey</value>
+    <comment>DisplayName for DomainRole &apos;ForeignKey&apos; on DomainRelationship &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey/ForeignKey.PropertyDisplayName" xml:space="preserve">
+    <value>Table Reference</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ForeignKey&apos; on DomainRelationship &apos;TableReferenceHasForeignKey&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType</value>
+    <comment>Description for DomainClass &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.DisplayName" xml:space="preserve">
+    <value>Table References Concept Type</value>
+    <comment>DisplayName for DomainClass &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.Table</value>
+    <comment>Description for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.DisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>DisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.PropertyDisplayName" xml:space="preserve">
+    <value>Concept Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Table&apos; on DomainRelationship &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/ConceptType.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.ConceptType</value>
+    <comment>Description for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/ConceptType.DisplayName" xml:space="preserve">
+    <value>ConceptType</value>
+    <comment>DisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/ConceptType.PropertyDisplayName" xml:space="preserve">
+    <value>Table</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ConceptType&apos; on DomainRelationship &apos;TableReferencesConceptType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel</value>
+    <comment>Description for DomainClass &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.DisplayName" xml:space="preserve">
+    <value>Relational Model Has OIALModel</value>
+    <comment>DisplayName for DomainClass &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.RelationalModel</value>
+    <comment>Description for DomainRole &apos;RelationalModel&apos; on DomainRelationship &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.DisplayName" xml:space="preserve">
+    <value>RelationalModel</value>
+    <comment>DisplayName for DomainRole &apos;RelationalModel&apos; on DomainRelationship &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.PropertyDisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RelationalModel&apos; on DomainRelationship &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/OIALModel.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.OIALModel</value>
+    <comment>Description for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/OIALModel.DisplayName" xml:space="preserve">
+    <value>OIALModel</value>
+    <comment>DisplayName for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/OIALModel.PropertyDisplayName" xml:space="preserve">
+    <value>Relational Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;OIALModel&apos; on DomainRelationship &apos;RelationalModelHasOIALModel&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.TableShape</value>
+    <comment>Description for DomainClass &apos;TableShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.TableShape.DisplayName" xml:space="preserve">
+    <value>Table Shape</value>
+    <comment>DisplayName for DomainClass &apos;TableShape&apos;</comment>
+  </data>
+  <data name="TableShapeColumnsCompartmentTitle" xml:space="preserve">
+    <value>Columns</value>
+    <comment>Compartment title</comment>
+  </data>
+  <data name="TableShapeTableNameDecoratorDefaultText" xml:space="preserve">
+    <value>TableNameDecorator</value>
+    <comment>Text decorator default text</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector</value>
+    <comment>Description for DomainClass &apos;ForeignKeyConnector&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.ForeignKeyConnector.DisplayName" xml:space="preserve">
+    <value>ForeignKeyConnector</value>
+    <comment>DisplayName for DomainClass &apos;ForeignKeyConnector&apos;</comment>
+  </data>
+  <data name="ModelExplorerTitle" xml:space="preserve">
+    <value>Relational View Explorer</value>
+    <comment>Model Explorer Toolwindow title</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram</value>
+    <comment>Description for DomainClass &apos;RelationalDiagram&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram.DisplayName" xml:space="preserve">
+    <value>Relational Diagram</value>
+    <comment>DisplayName for DomainClass &apos;RelationalDiagram&apos;</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->

@@ -61,7 +61,7 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:element name="ReflectedType" type="ReflectedTypeType" abstract="true"/>
+	<xs:element name="ReflectedType" type="ReflectedTypeType"/>
 	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>
 	<xs:complexType name="ReflectedTypeType">
 		<xs:attribute name="class" type="xs:string" use="required">
