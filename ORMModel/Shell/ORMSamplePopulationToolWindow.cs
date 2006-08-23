@@ -244,6 +244,24 @@ namespace Neumont.Tools.ORM.Shell
 			myEditor.NullSelection();
 		}
 		#endregion // Properties
+		#region PopulationMandatoryError Fixup
+		/// <summary>
+		/// Attempts to fix a PopulationMandatoryError
+		/// </summary>
+		/// <param name="error">Error to be corrected</param>
+		public void AutoCorrectMandatoryError(PopulationMandatoryError error)
+		{
+			ObjectTypeInstance objectInstance = error.ObjectTypeInstance;
+			LinkedElementCollection<Role> constraintRoles = error.MandatoryConstraint.RoleCollection;
+			// Only supports simple mandatory constraints
+			if (constraintRoles.Count == 1)
+			{
+				this.SelectedFactType = constraintRoles[0].FactType;
+				myEditor.AutoCorrectMandatoryError(error);
+				this.Show();
+			}
+		}
+		#endregion
 		#region ORMToolWindow Implementation
 		/// <summary>
 		/// Gets the title that will be displayed on the tool window.

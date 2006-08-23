@@ -624,6 +624,18 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="PopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="BA0A8F9E-91E1-4D56-8A44-9F49432C63C5" DisplayName="PopulationUniquenessError" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="PopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5B76CB18-90B2-4656-BB0D-0788460FDB70" DisplayName="PopulationMandatoryError" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>		
+
 		<DomainClass Name="ConstraintDuplicateNameError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="AA63E81B-6978-49A2-A4AC-86022A172EDD" DisplayName="ConstraintDuplicateNameError" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="DuplicateNameError"/>
@@ -1210,13 +1222,31 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
-
 		</DomainClass>
 
 		<DomainClass Name="ObjectTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="870F5EE8-0859-4710-A526-66635F4EFD14" DisplayName="ObjectTypeInstance" InheritanceModifier="Abstract" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
 			</BaseClass>
+			<Properties>
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" IsElementName="true" Id="553DEB12-8FE0-4FE4-B94E-52F1CD5DCF0A" Kind="Calculated">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NameChanged" DefaultValue="" DisplayName="NameChanged" Id="F1E0BB68-F047-464B-B17B-6BA865144BB4" IsBrowsable="false" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 		</DomainClass>
 
 		<DomainClass Name="EntityTypeInstance" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5F8B6A1C-3020-41C9-97B4-E54A3E98B368" DisplayName="EntityTypeInstance" Description="">
@@ -1741,6 +1771,57 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="RoleInstanceHasPopulationUniquenessError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="5DBE50CD-A939-484D-9B96-700CB6CC7813">
+			<Source>
+				<DomainRole Name="RoleInstance" PropertyName="PopulationUniquenessError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RoleInstance" Id="527FFAEB-8F4A-4DFF-B02F-49822FCE2F3D">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="RoleInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PopulationUniquenessError" PropertyName="RoleInstanceCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="PopulationUniquenessError" Id="3AE1D857-C7E7-4053-A461-3EB965666F2C">
+					<RolePlayer>
+						<DomainClassMoniker Name="PopulationUniquenessError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="MandatoryConstraintHasPopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="9A93DD53-8683-47F4-9EE7-4F1F244A218E">
+			<Source>
+				<DomainRole Name="MandatoryConstraint" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="MandatoryConstraint" Id="AF065878-27B3-456A-9CD4-E1B81DFFAD2D">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleSequence"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PopulationMandatoryError" PropertyName="MandatoryConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PopulationMandatoryError" Id="35EC4E97-2248-4AA0-85AF-0891EDB7803B">
+					<RolePlayer>
+						<DomainClassMoniker Name="PopulationMandatoryError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ObjectTypeInstanceHasPopulationMandatoryError" Namespace="Neumont.Tools.ORM.ObjectModel" Id="E0F0750E-47CB-44C6-B348-A9A1101475A7">
+			<Source>
+				<DomainRole Name="ObjectTypeInstance" PropertyName="PopulationMandatoryErrorCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectTypeInstance" Id="4A0B3B52-B579-4E07-972C-59F4F98BEAC3">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeInstance"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PopulationMandatoryError" PropertyName="ObjectTypeInstance" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PopulationMandatoryError" Id="078CF514-9F4C-44C2-9173-3A5F3EDFAFCB">
+					<RolePlayer>
+						<DomainClassMoniker Name="PopulationMandatoryError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		
 		<DomainRelationship Name="ReadingOrderHasReading" Namespace="Neumont.Tools.ORM.ObjectModel" IsEmbedding="true" Id="F945750F-2F77-43F4-8314-E5B351913902">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>

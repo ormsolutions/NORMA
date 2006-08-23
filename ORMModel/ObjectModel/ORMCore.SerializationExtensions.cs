@@ -193,6 +193,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("CompatibleValueTypeInstanceValueError", CompatibleValueTypeInstanceValueError.DomainClassId);
 				classNameMap.Add("TooFewEntityTypeRoleInstancesError", TooFewEntityTypeRoleInstancesError.DomainClassId);
 				classNameMap.Add("TooFewFactTypeRoleInstancesError", TooFewFactTypeRoleInstancesError.DomainClassId);
+				classNameMap.Add("PopulationMandatoryError", PopulationMandatoryError.DomainClassId);
+				classNameMap.Add("PopulationUniquenessError", PopulationUniquenessError.DomainClassId);
 				classNameMap.Add("TooFewReadingRolesError", TooFewReadingRolesError.DomainClassId);
 				classNameMap.Add("TooFewRoleSequencesError", TooFewRoleSequencesError.DomainClassId);
 				classNameMap.Add("TooManyReadingRolesError", TooManyReadingRolesError.DomainClassId);
@@ -1192,6 +1194,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -1319,6 +1325,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
 			if (roleId == EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError.TooFewEntityTypeRoleInstancesErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -4408,6 +4418,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (roleId == MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
@@ -5983,6 +5997,161 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // TooFewFactTypeRoleInstancesError serialization
+	#region PopulationMandatoryError serialization
+	public partial class PopulationMandatoryError : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "ObjectTypeInstance", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "MandatoryConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = PopulationMandatoryError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ObjectTypeInstance", match);
+				match.InitializeRoles(MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMCore|MandatoryConstraint", match);
+				PopulationMandatoryError.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			}
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+	}
+	#endregion // PopulationMandatoryError serialization
+	#region PopulationUniquenessError serialization
+	public partial class PopulationUniquenessError : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.ChildElementInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		private static ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
+		/// </summary>
+		protected new ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			ORMCustomSerializedChildElementInfo[] ret = PopulationUniquenessError.myCustomSerializedChildElementInfo;
+			if (ret == null)
+			{
+				ORMCustomSerializedChildElementInfo[] baseInfo = null;
+				int baseInfoCount = 0;
+				if (0 != (ORMCustomSerializedElementSupportedOperations.ChildElementInfo & base.SupportedCustomSerializedOperations))
+				{
+					baseInfo = base.GetCustomSerializedChildElementInfo();
+					if (baseInfo != null)
+					{
+						baseInfoCount = baseInfo.Length;
+					}
+				}
+				ret = new ORMCustomSerializedChildElementInfo[baseInfoCount + 1];
+				if (baseInfoCount != 0)
+				{
+					baseInfo.CopyTo(ret, 1);
+				}
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "RoleInstances", null, ORMCustomSerializedElementWriteStyle.Element, null, RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+				PopulationUniquenessError.myCustomSerializedChildElementInfo = ret;
+			}
+			return ret;
+		}
+		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = PopulationUniquenessError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-04/ORMCore|RoleInstances||", match);
+				PopulationUniquenessError.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			}
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+	}
+	#endregion // PopulationUniquenessError serialization
 	#region TooFewReadingRolesError serialization
 	public partial class TooFewReadingRolesError : IORMCustomSerializedElement
 	{

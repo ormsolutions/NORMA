@@ -248,6 +248,18 @@
     <value>Value '{0}' in the sample population for value type '{1}' in model '{2}' is not of the specified data type '{3}'.</value>
     <comment>Text displayed when the data type of the sample data doesn't match it's set data type. Replace value, valuetype, model.</comment>
   </data>
+  <data name="ModelError.Model.PopulationUniquenessError.Role.Text" xml:space="preserve">
+    <value>Instance '{0}' in model '{1}' violates its uniqueness constraint for Role '{2}'.</value>
+    <comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the string representation of the instance, field 1 is the model name, field 2 is the role name.</comment>
+  </data>
+  <data name="ModelError.Model.PopulationUniquenessError.FactType.Text" xml:space="preserve">
+    <value>Instance '{0}' in model '{1}' violates its uniqueness constraint on FactType '{2}'.</value>
+    <comment>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
+  </data>
+  <data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
+    <value>Instance '{0}' in model '{1}' does not participate in required fact type '{2}'.</value>
+    <comment>Model validation error shown when a population violates a mandatory constraint.  Field 0 is the derived name of the instance, field 1 is the model name, field 2 is the facttype name.</comment>
+  </data>
   <data name="ModelException.Constraint.EnforceSingleFactForInternalConstraint" xml:space="preserve">
     <value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact to the constraint.</value>
     <comment>Exception message when an attempt is made to attached more than one fact to an internal constraint.</comment>

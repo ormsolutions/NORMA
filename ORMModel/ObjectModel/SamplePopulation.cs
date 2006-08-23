@@ -124,6 +124,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Base overrides
 	}
+	public partial class PopulationUniquenessError
+	{
+		/// <summary>
+		/// Return the duplicated ObjectTypeInstance
+		/// </summary>
+		public ObjectTypeInstance DuplicateObjectTypeInstance
+		{
+			get
+			{
+				return this.RoleInstanceCollection[0].ObjectTypeInstance;
+			}
+		}
+
+		/// <summary>
+		/// Return the common role
+		/// </summary>
+		public Role CommonRole
+		{
+			get
+			{
+				return this.RoleInstanceCollection[0].Role;
+			}
+		}
+
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ObjectTypeInstance duplicateInstance = DuplicateObjectTypeInstance;
+			Role commonRole = CommonRole;
+			string instanceDisplayString = duplicateInstance.Name;
+			string formatString, typeName;
+			if(commonRole.Name.Length != 0)
+			{
+				formatString = ResourceStrings.ModelErrorModelHasPopulationUniquenessErrorWithNamedRole;
+				typeName = commonRole.Name;
+			}
+			else
+			{
+				formatString = ResourceStrings.ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole;
+				typeName = commonRole.FactType.Name;
+			}
+			string modelName = Model.Name;
+			string currentText = Name;
+			string newText = String.Format(formatString, instanceDisplayString, modelName, typeName);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+
+	public partial class PopulationMandatoryError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ObjectTypeInstance objectInstance = ObjectTypeInstance;
+			//UNDONE: Should handle mandatory constraints which constraint multiple roles
+			Role role = MandatoryConstraint.RoleCollection[0];
+			string instanceDisplayString = objectInstance.Name;
+			string modelName = Model.Name;
+			string currentText = Name;
+			string newText = String.Format(ResourceStrings.ModelErrorModelHasPopulationMandatoryError, instanceDisplayString, modelName, role.FactType.Name);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Members
+		private ModelElement[] GetRepresentedElements()
+		{
+			List<ModelElement> modelElements = new List<ModelElement>();
+			LinkedElementCollection<Role> roles = this.MandatoryConstraint.RoleCollection;
+			int roleCount = roles.Count;
+			for (int i = 0; i < roleCount; ++i)
+			{
+				FactType factType = roles[i].FactType;
+				int index = modelElements.BinarySearch(factType, HashCodeComparer<ModelElement>.Instance);
+				if (index < 0)
+				{
+					modelElements.Insert(0, factType);
+					modelElements.Sort(HashCodeComparer<ModelElement>.Instance);
+				}
+			}
+			return modelElements.ToArray();
+		}
+
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion
+	}
 	#endregion
 
 	public partial class FactTypeInstance : IModelErrorOwner
@@ -457,6 +578,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
+
 	public partial class EntityTypeInstance : IModelErrorOwner
 	{
 		/// <summary>
@@ -545,14 +667,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void DelayValidateTooFewEntityTypeRoleInstancesError(ModelElement element)
 		{
 			(element as EntityTypeInstance).ValidateTooFewEntityTypeRoleInstancesError(null);
-		}
-		
-		/// <summary>
-		/// Called inside a transaction to force entity role instance validation
-		/// </summary>
-		private void ValidateTooFewEntityTypeRoleInstances()
-		{
-			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateTooFewEntityTypeRoleInstancesError);
 		}
 
 		/// <summary>
@@ -868,7 +982,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
-	
+
 	public partial class ValueTypeInstance : IModelErrorOwner
 	{
 		#region Base overrides
@@ -1086,30 +1200,590 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-
 	}
 
-	public partial class ObjectTypeInstance
+	public partial class Role : IModelErrorOwner
 	{
+		private ICollection<RoleInstance> myPopulation;
+
+		#region PopulationUniquenessError Validation
+		/// <summary>
+		/// Validator callback for PopulationUniquenessError
+		/// </summary>
+		private static void DelayValidatePopulationUniquenessError(ModelElement element)
+		{
+			(element as Role).ValidatePopulationUniquenessError(null);
+		}
+
+		/// <summary>
+		/// Rule helper for managing the creation and tear down of the cached population verification, as well as validating
+		/// whether the population is currently valid.
+		/// </summary>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private void ValidatePopulationUniquenessError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsDeleted)
+			{
+				bool hasError = false;
+				ICollection<RoleInstance> population = myPopulation;
+				ConstraintRoleSequence singleRoleConstraint = this.SingleRoleUniquenessConstraint;
+				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
+				if (singleRoleConstraint != null)
+				{
+					if (population == null)
+					{
+						myPopulation = population = new List<RoleInstance>(roleInstances);
+					}
+					// UNDONE: Collection class is currently unimplemented so there can never be an error
+					//hasError = !population.IsSet;
+				}
+				else
+				{
+					if (population != null)
+					{
+						myPopulation = null;
+					}
+				}
+				int roleInstanceCount = roleInstances.Count;
+				for (int i = 0; i < roleInstanceCount; ++i)
+				{
+					PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
+					if (hasError)
+					{
+						if (error == null)
+						{
+							error = new PopulationUniquenessError(this.Store);
+							//error.RoleInstanceCollection = population.GetDuplicates(roleInstances[i].ObjectTypeInstance);
+							error.Model = this.FactType.Model;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error);
+							}
+						}
+					}
+					else if (error != null)
+					{
+						error.Delete();
+					}
+				}
+			}
+		}
+		#endregion
+		#region PopulationMandatoryError Validation
+		/// <summary>
+		/// Validator callback for PopulationMandatoryError
+		/// </summary>
+		private static void DelayValidatePopulationMandatoryError(ModelElement element)
+		{
+			(element as Role).ValidatePopulationMandatoryError(null);
+		}
+
+		/// <summary>
+		/// Rule helper for verifying mandatory constraints on constraint changes
+		/// </summary>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private void ValidatePopulationMandatoryError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsDeleted)
+			{
+				ObjectType parentType = this.RolePlayer;
+				MandatoryConstraint constraint = this.SimpleMandatoryConstraint;
+				if (constraint != null)
+				{
+					List<ObjectTypeInstance> instances = new List<ObjectTypeInstance>(RoleInstance.GetObjectTypeInstanceCollection(this));
+					instances.Sort(HashCodeComparer<ObjectTypeInstance>.Instance);
+					List<ObjectTypeInstance> invalidInstances = new List<ObjectTypeInstance>();
+					if (parentType.IsValueType)
+					{
+						if (parentType.PlayedRoleCollection.Count != 1)
+						{
+							LinkedElementCollection<ValueTypeInstance> valueInstances = parentType.ValueTypeInstanceCollection;
+							int valueInstanceCount = valueInstances.Count;
+							for (int i = 0; i < valueInstanceCount; ++i)
+							{
+								ValueTypeInstance valueInstance = valueInstances[i];
+								int index = instances.BinarySearch(valueInstance, HashCodeComparer<ObjectTypeInstance>.Instance);
+								if (index < 0)
+								{
+									invalidInstances.Add(valueInstance);
+								}
+							}
+						}
+					}
+					else
+					{
+						ConstraintRoleSequence identifier = parentType.PreferredIdentifier;
+						RoleBase oppositeRole = this.OppositeRole;
+						if (identifier != null && oppositeRole != null && !identifier.RoleCollection.Contains(oppositeRole.Role))
+						{
+							LinkedElementCollection<EntityTypeInstance> entityInstances = parentType.EntityTypeInstanceCollection;
+							int entityInstanceCount = entityInstances.Count;
+							for (int i = 0; i < entityInstanceCount; ++i)
+							{
+								EntityTypeInstance entityInstance = entityInstances[i];
+								int index = instances.BinarySearch(entityInstance, HashCodeComparer<ObjectTypeInstance>.Instance);
+								if (index < 0)
+								{
+									invalidInstances.Add(entityInstance);
+								}
+							}
+						}
+					}
+					LinkedElementCollection<PopulationMandatoryError> errors = constraint.PopulationMandatoryErrorCollection;
+					int errorCount = errors.Count;
+					int invalidInstanceCount = invalidInstances.Count;
+					if (invalidInstanceCount > 0)
+					{
+						int instanceIndex;
+						for (int i = 0; i < errorCount; ++i)
+						{
+							PopulationMandatoryError error = errors[i];
+							if (-1 != (instanceIndex = invalidInstances.IndexOf(error.ObjectTypeInstance)))
+							{
+								invalidInstances.RemoveAt(instanceIndex);
+							}
+							else
+							{
+								error.Delete();
+							}
+						}
+						invalidInstanceCount = invalidInstances.Count;
+						for (int i = 0; i < invalidInstanceCount; ++i)
+						{
+							PopulationMandatoryError error = new PopulationMandatoryError(this.Store);
+							error.ObjectTypeInstance = invalidInstances[i];
+							error.MandatoryConstraint = constraint;
+							error.Model = constraint.Model;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error);
+							}
+						}
+					}
+					else
+					{
+						for (int i = 0; i < errorCount; ++i)
+						{
+							errors[i].Delete();
+						}
+					}
+				}
+			}
+		}
+		#endregion
+		#region Role Rules
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
+		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
+				UniquenessConstraint uniConstraint;
+				MandatoryConstraint mandConstraint;
+				if(null != (uniConstraint = constraint as UniquenessConstraint))
+				{
+					Role selectedRole = link.Role;
+					if (!selectedRole.IsDeleted)
+					{
+						ORMCoreDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationUniquenessError);
+					}
+				}
+				else if (null != (mandConstraint = constraint as MandatoryConstraint))
+				{
+					Role selectedRole = link.Role;
+					if (!selectedRole.IsDeleted)
+					{
+						ORMCoreDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationMandatoryError);
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
+		private sealed partial class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
+				UniquenessConstraint uniConstraint;
+				MandatoryConstraint mandConstraint;
+				if (null != (uniConstraint = constraint as UniquenessConstraint))
+				{
+					Role selectedRole = link.Role;
+					if (!selectedRole.IsDeleted)
+					{
+						ORMCoreDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationUniquenessError);
+					}
+				}
+				else if (null != (mandConstraint = constraint as MandatoryConstraint))
+				{
+					Role selectedRole = link.Role;
+					if (!selectedRole.IsDeleted)
+					{
+						ORMCoreDomainModel.DelayValidateElement(selectedRole, DelayValidatePopulationMandatoryError);
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangedRule
+		private sealed partial class ConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ElementLink as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
+				UniquenessConstraint uniConstraint;
+				MandatoryConstraint mandConstraint;
+				if(null != (uniConstraint = constraint as UniquenessConstraint))
+				{
+					Guid changedRole = e.DomainRole.Id;
+					if (changedRole == ConstraintRoleSequence.DomainClassId)
+					{
+						ORMCoreDomainModel.DelayValidateElement(e.NewRolePlayer as Role, DelayValidatePopulationUniquenessError);
+					}
+					else if (changedRole == Role.DomainClassId)
+					{
+						ORMCoreDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationUniquenessError);
+					}
+				}
+				else if (null != (mandConstraint = constraint as MandatoryConstraint))
+				{
+					Guid changedRole = e.DomainRole.Id;
+					if (changedRole == ConstraintRoleSequence.DomainClassId)
+					{
+						ORMCoreDomainModel.DelayValidateElement(e.NewRolePlayer as Role, DelayValidatePopulationMandatoryError);
+					}
+					else if (changedRole == Role.DomainClassId)
+					{
+						ORMCoreDomainModel.DelayValidateElement(link.Role, DelayValidatePopulationMandatoryError);
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(RoleInstance))] // AddRule
+		private sealed partial class RoleInstanceAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				RoleInstance roleInstance = e.ModelElement as RoleInstance;
+				Role role = roleInstance.Role;
+				if (roleInstance.IsDeleted)
+				{
+					ICollection<RoleInstance> population = role.myPopulation;
+					if (population != null)
+					{
+						population.Add(roleInstance);
+					}
+					ORMCoreDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
+				}
+			}
+		}
+
+		[RuleOn(typeof(RoleInstance))] // DeleteRule
+		private sealed partial class RoleInstanceDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				RoleInstance roleInstance = e.ModelElement as RoleInstance;
+				Role role = roleInstance.Role;
+				if (roleInstance.IsDeleted)
+				{
+					ICollection<RoleInstance> population = role.myPopulation;
+					if (population != null)
+					{
+						population.Remove(roleInstance);
+					}
+					ORMCoreDomainModel.DelayValidateElement(role, DelayValidatePopulationUniquenessError);
+				}
+			}
+		}
+
+		[RuleOn(typeof(RoleInstance))] // RolePlayerChangedRule
+		private sealed partial class RoleInstanceRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRole = e.DomainRole.Id;
+				RoleInstance roleInstance = e.ElementLink as RoleInstance;
+				Role newRole = null;
+				if (changedRole == Role.DomainClassId)
+				{
+					newRole = e.NewRolePlayer as Role;
+					Role oldRole = e.OldRolePlayer as Role;
+					ICollection<RoleInstance> oldPopulation = oldRole.myPopulation;
+					if (oldPopulation != null)
+					{
+						oldPopulation.Remove(roleInstance);
+					}
+					ORMCoreDomainModel.DelayValidateElement(oldRole, DelayValidatePopulationUniquenessError);
+				}
+				else if (changedRole == ObjectTypeInstance.DomainClassId)
+				{
+					newRole = roleInstance.Role;
+				}
+				if (!roleInstance.IsDeleted && newRole != null)
+				{
+					ICollection<RoleInstance> newPopulation = newRole.myPopulation;
+					if (newPopulation != null)
+					{
+						newPopulation.Add(roleInstance);
+					}
+					ORMCoreDomainModel.DelayValidateElement(newRole, DelayValidatePopulationUniquenessError);
+				}
+			}
+		}
+		#endregion
+	}
+
+	public partial class ObjectTypeInstance : IModelErrorOwner
+	{
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements IModelErrorOwner.GetErrorCollection
+		/// </summary>
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
+		{
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			{
+				LinkedElementCollection<PopulationMandatoryError> mandatoryErrorCollection;
+				if (null != (mandatoryErrorCollection = PopulationMandatoryErrorCollection))
+				{
+					int errorCount = mandatoryErrorCollection.Count;
+					for (int i = 0; i < errorCount; ++i)
+					{
+						yield return mandatoryErrorCollection[i];
+					}
+				}
+			}
+			// Get errors off the base
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// Validate all errors on the external constraint. This
+		/// is called during deserialization fixup when rules are
+		/// suspended.
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
+			ValidatePopulationMandatoryError(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidatePopulationMandatoryError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner Implementation
+		#region Custom Storage Handlers
+		private string GetNameValue()
+		{
+			Store store = Store;
+			if (store.InUndo || store.InRedo)
+			{
+				return myGeneratedName;
+			}
+			else if (!store.TransactionManager.InTransaction)
+			{
+				string generatedName = myGeneratedName;
+				return String.IsNullOrEmpty(generatedName) ? myGeneratedName = GenerateName() : generatedName;
+			}
+			else
+			{
+				string generatedName = myGeneratedName;
+				if ((object)generatedName != null && generatedName.Length == 0)
+				{
+					// The == null here is a hack. Use myGeneratedName = null before calling to skip setting this during a transaction
+					return myGeneratedName = GenerateName();
+				}
+				return generatedName ?? String.Empty;
+			}
+		}
+		private void OnObjectTypeInstanceNameChanged()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				NameChanged = tmgr.CurrentTransaction.SequenceNumber;
+			}
+		}
+		private long GetNameChangedValue()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				// Subtract 1 so that we get a difference in the transaction log
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 1);
+			}
+			else
+			{
+				return 0L;
+			}
+		}
+		private void SetNameChangedValue(long newValue)
+		{
+			if (Store.InUndoRedoOrRollback)
+			{
+				myGeneratedName = null;
+			}
+		}
+		#endregion
+		#region Automatic Name Generation
+		private static void DelayValidateObjectTypeInstanceNamePartChanged(ModelElement element)
+		{
+			ObjectTypeInstance objectTypeInstance = element as ObjectTypeInstance;
+			if (!objectTypeInstance.IsDeleted)
+			{
+				Store store = element.Store;
+				string oldGeneratedName = objectTypeInstance.myGeneratedName;
+				string newGeneratedName = null;
+				bool haveNewName = false;
+				//if (string.IsNullOrEmpty(oldGeneratedName))
+				//{
+				//    objectTypeInstance.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
+				//}
+				//objectTypeInstance.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
+				// Now move on to any model errors
+				foreach (ModelError error in (objectTypeInstance as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
+				{
+					if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
+					{
+						if (newGeneratedName == null)
+						{
+							newGeneratedName = objectTypeInstance.GenerateName();
+							haveNewName = true;
+							if (newGeneratedName == oldGeneratedName)
+							{
+								newGeneratedName = null;
+								break; // Look no further, name did not change
+							}
+							else
+							{
+								if (string.IsNullOrEmpty(oldGeneratedName))
+								{
+									objectTypeInstance.myGeneratedName = null; // Set explicitly to null, see notes in GetValueForCustomStoredAttribute
+								}
+								objectTypeInstance.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
+							}
+						}
+						error.GenerateErrorText();
+					}
+				}
+				if (!haveNewName && newGeneratedName == null)
+				{
+					if (!String.IsNullOrEmpty(oldGeneratedName))
+					{
+						objectTypeInstance.myGeneratedName = null;
+					}
+				}
+				// Since the name changed, tell any RoleInstances which use it to revalidate since their name probaly changed
+				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToRoleCollection(objectTypeInstance);
+				int roleInstanceCount = roleInstances.Count;
+				EntityTypeRoleInstance entityRoleInstance;
+				for (int i = 0; i < roleInstanceCount; ++i)
+				{
+					if (null != (entityRoleInstance = roleInstances[i] as EntityTypeRoleInstance))
+					{
+						DelayValidateObjectTypeInstanceNamePartChanged(entityRoleInstance.EntityTypeInstance);
+					}
+				}
+				objectTypeInstance.OnObjectTypeInstanceNameChanged();
+			}
+		}
+		/// <summary>
+		/// Helper function to get the current setting for the generated Name property
+		/// </summary>
+		private string GenerateName()
+		{
+			string retVal = "";
+			EntityTypeInstance entityInstance;
+			ValueTypeInstance valueInstance;
+			if(null != (entityInstance = this as EntityTypeInstance))
+			{
+				retVal = ObjectTypeInstance.GetDisplayString(entityInstance, entityInstance.EntityType);
+			}
+			else if(null != (valueInstance = this as ValueTypeInstance))
+			{
+				retVal = ObjectTypeInstance.GetDisplayString(valueInstance, valueInstance.ValueType);
+			}
+			return retVal;
+		}
+		private string myGeneratedName = String.Empty;
+		/// <summary>
+		/// The auto-generated name for this object type instance.
+		/// </summary>
+		public string GeneratedName
+		{
+			get
+			{
+				string retVal = myGeneratedName;
+				if (string.IsNullOrEmpty(retVal))
+				{
+					retVal = GenerateName();
+					if (retVal.Length != 0)
+					{
+						if (Store.TransactionManager.InTransaction)
+						{
+							myGeneratedName = null; // Set explicitly to null, see notes in GetNameValue
+							myGeneratedName = retVal;
+						}
+						else
+						{
+							myGeneratedName = retVal;
+						}
+					}
+				}
+				return retVal ?? String.Empty;
+			}
+		}
+		/// <summary>
+		/// Override to use our own name handling
+		/// </summary>
+		protected override void MergeConfigure(ElementGroup elementGroup)
+		{
+			// Do nothing here. The base calls SetUniqueName, but we don't enforce
+			// unique names on the generated ObjectTypeInstance name.
+		}
+		#endregion // Automatic Name Generation
+		#region Base overrides
 		/// <summary>
 		/// Display the value for ToString
 		/// </summary>
 		public override string ToString()
 		{
-			EntityTypeInstance entityTypeInstance;
-			ValueTypeInstance valueTypeInstance;
-			ObjectType parent = null;
-			if (null != (entityTypeInstance = this as EntityTypeInstance))
-			{
-				parent = entityTypeInstance.EntityType;
-			}
-			else if (null != (valueTypeInstance = this as ValueTypeInstance))
-			{
-				parent = valueTypeInstance.ValueType;
-			}
-			return ObjectTypeInstance.GetDisplayString(this, parent);
+			return this.Name;
 		}
-
+		#endregion // Base overrides
+		#region Helper Methods
 		/// <summary>
 		/// Returns the display string for the given instance
 		/// </summary>
@@ -1280,5 +1954,335 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return null;
 			}
 		}
+		#endregion
+		#region PopulationMandatoryError Validation
+		/// <summary>
+		/// Validator callback for PopulationMandatoryError
+		/// </summary>
+		private static void DelayValidatePopulationMandatoryError(ModelElement element)
+		{
+			(element as ObjectTypeInstance).ValidatePopulationMandatoryError(null);
+		}
+
+		/// <summary>
+		/// Rule helper for validating the given instance
+		/// </summary>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private void ValidatePopulationMandatoryError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsDeleted)
+			{
+				EntityTypeInstance entityTypeInstance;
+				ValueTypeInstance valueTypeInstance;
+				ObjectType parent = null;
+				List<Role> playedRoles = null;
+				if (null != (entityTypeInstance = this as EntityTypeInstance))
+				{
+					parent = entityTypeInstance.EntityType;
+					if (parent != null)
+					{
+						playedRoles = new List<Role>(parent.PlayedRoleCollection);
+						ConstraintRoleSequence identifier = parent.PreferredIdentifier;
+						if (identifier != null)
+						{
+							LinkedElementCollection<Role> identifierRoles = identifier.RoleCollection;
+							int identifierRoleCount = identifierRoles.Count;
+							for (int i = 0; i < identifierRoleCount; ++i)
+							{
+								FactType parentFactType = identifierRoles[i].FactType;
+								LinkedElementCollection<RoleBase> factTypeRoles = parentFactType.RoleCollection;
+								Role playerRole = null;
+								int roleCount = factTypeRoles.Count;
+								for (int j = 0; j < roleCount; ++j)
+								{
+									if (factTypeRoles[j].Role.RolePlayer == parent)
+									{
+										playerRole = factTypeRoles[j].Role;
+										break;
+									}
+								}
+								// If this FactType is connect by a uniqueness constraint, it should contain a role played by
+								// the parent ObjectType
+								Debug.Assert(playerRole != null);
+								playedRoles.Remove(playerRole);
+							}
+						}
+					}
+				}
+				else if (null != (valueTypeInstance = this as ValueTypeInstance))
+				{
+					parent = valueTypeInstance.ValueType;
+					playedRoles = new List<Role>(parent.PlayedRoleCollection);
+				}
+				LinkedElementCollection<PopulationMandatoryError> errors = this.PopulationMandatoryErrorCollection;
+				List<MandatoryConstraint> violatedConstraints = new List<MandatoryConstraint>();
+				if (playedRoles != null)
+				{
+					List<Role> instanceRoles = new List<Role>(RoleInstance.GetRoleCollection(this));
+					instanceRoles.Sort(HashCodeComparer<Role>.Instance);
+					int playedRoleCount = playedRoles.Count;
+					for (int i = 0; i < playedRoleCount; ++i)
+					{
+						Role selectedRole = playedRoles[i];
+						MandatoryConstraint simpleMandatory = selectedRole.SimpleMandatoryConstraint;
+						if (simpleMandatory != null)
+						{
+							int index = instanceRoles.BinarySearch(playedRoles[i], HashCodeComparer<Role>.Instance);
+							if (index < 0)
+							{
+								violatedConstraints.Add(simpleMandatory);
+							}
+						}
+					}
+				}
+				int violatedConstraintCount = violatedConstraints.Count;
+				int errorCount = errors.Count;
+				if (violatedConstraintCount > 0)
+				{
+					int constraintIndex;
+					for (int i = 0; i < errorCount; ++i)
+					{
+						PopulationMandatoryError error = errors[i];
+						if (-1 != (constraintIndex = violatedConstraints.IndexOf(error.MandatoryConstraint as MandatoryConstraint)))
+						{
+							violatedConstraints.RemoveAt(constraintIndex);
+						}
+						else
+						{
+							error.Delete();
+						}
+					}
+					violatedConstraintCount = violatedConstraints.Count;
+					for (int i = 0; i < violatedConstraintCount; ++i)
+					{
+						PopulationMandatoryError error = new PopulationMandatoryError(this.Store);
+						error.ObjectTypeInstance = this;
+						MandatoryConstraint constraint = violatedConstraints[i];
+						error.MandatoryConstraint = constraint;
+						error.Model = constraint.Model;
+						error.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(error);
+						}
+					}
+				}
+				else
+				{
+					for (int i = 0; i < errorCount; ++i)
+					{
+						errors[i].Delete();
+					}
+				}
+			}
+		}
+		#endregion
+		#region ObjectTypeInstance Rules
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
+		private sealed partial class ConstraintRoleSequenceHasRoleAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
+				UniquenessConstraint uniConstraint;
+				if (null != (uniConstraint = constraint as UniquenessConstraint))
+				{
+					Role oppositeRole = link.Role.OppositeRole.Role;
+					if (oppositeRole != null)
+					{
+						ObjectType rolePlayer = oppositeRole.RolePlayer;
+						if (rolePlayer.IsValueType)
+						{
+							LinkedElementCollection<ValueTypeInstance> instances = rolePlayer.ValueTypeInstanceCollection;
+							int instanceCount = instances.Count;
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							}
+						}
+						else
+						{
+							LinkedElementCollection<EntityTypeInstance> instances = rolePlayer.EntityTypeInstanceCollection;
+							int instanceCount = instances.Count;
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // DeleteRule
+		private sealed partial class ConstraintRoleSequenceHasRoleDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence constraint = link.ConstraintRoleSequence;
+				UniquenessConstraint uniConstraint;
+				if (null != (uniConstraint = constraint as UniquenessConstraint))
+				{
+					Role oppositeRole = link.Role.OppositeRole.Role;
+					if(oppositeRole != null)
+					{
+						ObjectType rolePlayer = oppositeRole.RolePlayer;
+						if (rolePlayer.IsValueType)
+						{
+							LinkedElementCollection<ValueTypeInstance> instances = rolePlayer.ValueTypeInstanceCollection;
+							int instanceCount = instances.Count;
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							}
+						}
+						else
+						{
+							LinkedElementCollection<EntityTypeInstance> instances = rolePlayer.EntityTypeInstanceCollection;
+							int instanceCount = instances.Count;
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // RolePlayerChangedRule
+		private sealed partial class ConstraintRoleSequenceHasRoleRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRole = e.DomainRole.Id;
+				ConstraintRoleSequenceHasRole link = e.ElementLink as ConstraintRoleSequenceHasRole;
+				ObjectType newRolePlayer = null;
+				if (changedRole == Role.DomainClassId)
+				{
+					Role oppositeRole = (e.NewRolePlayer as Role).OppositeRole.Role;
+					if (oppositeRole != null)
+					{
+						newRolePlayer = oppositeRole.RolePlayer;
+					}
+					oppositeRole = (e.OldRolePlayer as Role).OppositeRole.Role;
+					if (oppositeRole != null)
+					{
+						ObjectType oldRolePlayer = oppositeRole.RolePlayer;
+						if (oldRolePlayer.IsValueType)
+						{
+							LinkedElementCollection<ValueTypeInstance> instances = oldRolePlayer.ValueTypeInstanceCollection;
+							int instanceCount = instances.Count;
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							}
+						}
+						else
+						{
+							LinkedElementCollection<EntityTypeInstance> instances = oldRolePlayer.EntityTypeInstanceCollection;
+							int instanceCount = instances.Count;
+							for (int i = 0; i < instanceCount; ++i)
+							{
+								ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+							}
+						}
+					}
+				}
+				else if (changedRole == ConstraintRoleSequence.DomainClassId)
+				{
+					Role oppositeRole = link.Role.OppositeRole.Role;
+					if(oppositeRole != null)
+					{
+						newRolePlayer = oppositeRole.RolePlayer;
+					}
+				}
+				if (newRolePlayer != null)
+				{
+					if (newRolePlayer.IsValueType)
+					{
+						LinkedElementCollection<ValueTypeInstance> instances = newRolePlayer.ValueTypeInstanceCollection;
+						int instanceCount = instances.Count;
+						for (int i = 0; i < instanceCount; ++i)
+						{
+							ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+						}
+					}
+					else
+					{
+						LinkedElementCollection<EntityTypeInstance> instances = newRolePlayer.EntityTypeInstanceCollection;
+						int instanceCount = instances.Count;
+						for (int i = 0; i < instanceCount; ++i)
+						{
+							ORMCoreDomainModel.DelayValidateElement(instances[i], DelayValidateObjectTypeInstanceNamePartChanged);
+						}
+					}
+				}
+			}
+		}
+
+		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // AddRule
+		private sealed partial class EntityTypeInstanceHasRoleInstanceAdded : AddRule
+		{
+			public sealed override void ElementAdded(ElementAddedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance instance = link.EntityTypeInstance;
+				ORMCoreDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+			}
+		}
+
+		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // DeleteRule
+		private sealed partial class EntityTypeInstanceHasRoleInstanceDeleted : DeleteRule
+		{
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				EntityTypeInstanceHasRoleInstance link = e.ModelElement as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance instance = link.EntityTypeInstance;
+				ORMCoreDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+			}
+		}
+
+		[RuleOn(typeof(EntityTypeInstanceHasRoleInstance))] // RolePlayerChangedRule
+		private sealed partial class EntityTypeInstanceHasRoleInstanceRolePlayerChanged : RolePlayerChangeRule
+		{
+			public sealed override void  RolePlayerChanged(RolePlayerChangedEventArgs e)
+			{
+				Guid changedRole = e.DomainRole.Id;
+				EntityTypeInstanceHasRoleInstance link = e.ElementLink as EntityTypeInstanceHasRoleInstance;
+				EntityTypeInstance newInstance = null;
+				if (changedRole == EntityTypeInstance.DomainClassId)
+				{
+					newInstance = e.NewRolePlayer as EntityTypeInstance;
+					EntityTypeInstance oldInstance = e.OldRolePlayer as EntityTypeInstance;
+					ORMCoreDomainModel.DelayValidateElement(oldInstance, DelayValidateObjectTypeInstanceNamePartChanged);
+				}
+				else if (changedRole == RoleInstance.DomainClassId)
+				{
+					newInstance = link.EntityTypeInstance;
+				}
+				if (newInstance != null)
+				{
+					ORMCoreDomainModel.DelayValidateElement(newInstance, DelayValidateObjectTypeInstanceNamePartChanged);
+				}
+			}
+		}
+
+		[RuleOn(typeof(ValueTypeInstance))] // ChangeRule
+		private sealed partial class ValueTypeInstanceValueChanged : ChangeRule
+		{
+			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				Guid attributeGuid = e.DomainProperty.Id;
+				if (attributeGuid == ValueTypeInstance.ValueDomainPropertyId)
+				{
+					ValueTypeInstance instance = e.ModelElement as ValueTypeInstance;
+					ORMCoreDomainModel.DelayValidateElement(instance, DelayValidateObjectTypeInstanceNamePartChanged);
+				}
+			}
+		}
+		#endregion
 	}
 }

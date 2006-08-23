@@ -318,6 +318,15 @@
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text">
 		<comment type="summary">Model validation error shown when multiple object types have the same name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text">
+		<comment type="summary">Model validation error shown when a population violates a uniqueness constraint and the role is named.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text">
+		<comment type="summary">Model validation error shown when a population violates a uniqueness constraint and the role is unnamed.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text">
+		<comment type="summary">Model validation error shown when a population violates a mandatory constraint.</comment>
+	</ResourceString>
 	<ResourceString name="ModelErrorRoleValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Role.Message">
 		<comment type="summary">Role data type does not match max inclusion</comment>
 	</ResourceString>

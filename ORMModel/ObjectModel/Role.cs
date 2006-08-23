@@ -176,6 +176,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 
+		/// <summary>
+		/// Gets the single role <see cref="ConstraintRoleSequence"/> associated with this <see cref="Role"/>, if any.
+		/// </summary>
+		public ConstraintRoleSequence SingleRoleUniquenessConstraint
+		{
+			get
+			{
+				LinkedElementCollection<ConstraintRoleSequence> constraintRoleSequences = ConstraintRoleSequenceCollection;
+				int roleSequenceCount = constraintRoleSequences.Count;
+				for (int i = 0; i < roleSequenceCount; ++i)
+				{
+					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
+					if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness && roleSequence.RoleCollection.Count == 1)
+					{
+						return roleSequence;
+					}
+				}
+				return null;
+			}
+		}
+
 		private ObjectType GetRolePlayerDisplayValue()
 		{
 			return RolePlayer;
@@ -568,7 +589,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return requiredError;
 				}
-
 			}
 			// Get errors off the base
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
@@ -592,6 +612,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRolePlayerRequiredForRule(notifyAdded);
+			ValidatePopulationMandatoryError(notifyAdded);
+			ValidatePopulationUniquenessError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -603,6 +625,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void DelayValidateErrors()
 		{
 			ORMCoreDomainModel.DelayValidateElement(this, DelayValidateRolePlayerRequiredError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidatePopulationMandatoryError);
+			ORMCoreDomainModel.DelayValidateElement(this, DelayValidatePopulationUniquenessError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{

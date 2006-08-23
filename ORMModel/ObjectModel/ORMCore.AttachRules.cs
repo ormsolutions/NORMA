@@ -124,6 +124,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectTypeInstance).GetNestedType("ValueTypeInstanceValueChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(DelayValidateElements),
 						typeof(ORMModel).GetNestedType("RemoveDuplicateConstraintNameErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMModel).GetNestedType("RemoveDuplicateObjectTypeNameErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -143,6 +147,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Role).GetNestedType("RolePlayerRequiredForNewRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("RolePlayerRequiredDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Role).GetNestedType("UpdatedRolePlayerRequiredErrorsDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("ConstraintRoleSequenceHasRoleRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("RoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("RoleInstanceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Role).GetNestedType("RoleInstanceRolePlayerChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintHasRoleSequenceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("EnforceRoleSequenceCardinalityForAdd", BindingFlags.Public | BindingFlags.NonPublic),
@@ -1120,6 +1130,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 	}
+	public partial class ObjectTypeInstance
+	{
+		private partial class EntityTypeInstanceHasRoleInstanceAdded
+		{
+			public EntityTypeInstanceHasRoleInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeInstance
+	{
+		private partial class EntityTypeInstanceHasRoleInstanceDeleted
+		{
+			public EntityTypeInstanceHasRoleInstanceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeInstance
+	{
+		private partial class EntityTypeInstanceHasRoleInstanceRolePlayerChanged
+		{
+			public EntityTypeInstanceHasRoleInstanceRolePlayerChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ObjectTypeInstance
+	{
+		private partial class ValueTypeInstanceValueChanged
+		{
+			public ValueTypeInstanceValueChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
 	public partial class ORMCoreDomainModel
 	{
 		private partial class DelayValidateElements
@@ -1305,6 +1355,66 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class UpdatedRolePlayerRequiredErrorsDeleteRule
 		{
 			public UpdatedRolePlayerRequiredErrorsDeleteRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class ConstraintRoleSequenceHasRoleAdded
+		{
+			public ConstraintRoleSequenceHasRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class ConstraintRoleSequenceHasRoleDeleted
+		{
+			public ConstraintRoleSequenceHasRoleDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class ConstraintRoleSequenceHasRoleRolePlayerChanged
+		{
+			public ConstraintRoleSequenceHasRoleRolePlayerChanged()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RoleInstanceAdded
+		{
+			public RoleInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RoleInstanceDeleted
+		{
+			public RoleInstanceDeleted()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class Role
+	{
+		private partial class RoleInstanceRolePlayerChanged
+		{
+			public RoleInstanceRolePlayerChanged()
 			{
 				base.IsEnabled = false;
 			}

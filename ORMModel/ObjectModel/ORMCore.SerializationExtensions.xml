@@ -187,6 +187,7 @@
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
 		<se:ChildElement Name="RoleInstances">
@@ -196,6 +197,7 @@
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeInstanceHasTooFewEntityTypeRoleInstancesError" RoleName="TooFewEntityTypeRoleInstancesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRoleInstance">
 		<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="EntityTypeInstance" WriteStyle="NotWritten" />
@@ -480,6 +482,7 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Link RelationshipName="MandatoryConstraintHasMandatoryImpliedByMandatoryError" RoleName="ImpliedByMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
@@ -558,6 +561,15 @@
 	</se:Element>
 	<se:Element Class="TooFewFactTypeRoleInstancesError" Override="true">
 		<se:Link RelationshipName="FactTypeInstanceHasTooFewFactTypeRoleInstancesError" RoleName="FactTypeInstance" Name="FactTypeInstance"/>
+	</se:Element>
+	<se:Element Class="PopulationMandatoryError" Override="true">
+		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="ObjectTypeInstance" Name="ObjectTypeInstance"/>
+		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="MandatoryConstraint" Name="MandatoryConstraint"/>
+	</se:Element>
+	<se:Element Class="PopulationUniquenessError" Override="true">
+		<se:ChildElement Name="RoleInstances">
+			<se:Link RelationshipName="RoleInstanceHasPopulationUniquenessError" RoleName="RoleInstance"/>
+		</se:ChildElement>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

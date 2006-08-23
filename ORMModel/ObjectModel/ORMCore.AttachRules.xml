@@ -106,6 +106,10 @@
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeDeleteRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeDeleteRule"/>
+		<arg:Rule class="ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
+		<arg:Rule class="ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceDeleted"/>
+		<arg:Rule class="ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChanged"/>
+		<arg:Rule class="ObjectTypeInstance.ValueTypeInstanceValueChanged"/>
 		<arg:Rule class="ORMCoreDomainModel.DelayValidateElements"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateConstraintNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>
@@ -125,6 +129,12 @@
 		<arg:Rule class="Role.RolePlayerRequiredForNewRoleAddRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredDeleteRule"/>
 		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsDeleteRule"/>
+		<arg:Rule class="Role.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="Role.ConstraintRoleSequenceHasRoleDeleted"/>
+		<arg:Rule class="Role.ConstraintRoleSequenceHasRoleRolePlayerChanged"/>
+		<arg:Rule class="Role.RoleInstanceAdded"/>
+		<arg:Rule class="Role.RoleInstanceDeleted"/>
+		<arg:Rule class="Role.RoleInstanceRolePlayerChanged"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintHasRoleSequenceAdded"/>
 		<arg:Rule class="SetComparisonConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="SetComparisonConstraint.EnforceRoleSequenceCardinalityForAdd"/>

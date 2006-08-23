@@ -5569,6 +5569,729 @@ namespace Neumont.Tools.ORM.ObjectModel
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship RoleInstanceHasPopulationUniquenessError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("5dbe50cd-a939-484d-9b96-700cb6cc7813")]
+	public partial class RoleInstanceHasPopulationUniquenessError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// RoleInstanceHasPopulationUniquenessError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5dbe50cd, 0xa939, 0x484d, 0x9b, 0x96, 0x70, 0x0c, 0xb6, 0xcc, 0x78, 0x13);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a RoleInstanceHasPopulationUniquenessError link in the same Partition as the given RoleInstance
+		/// </summary>
+		/// <param name="source">RoleInstance to use as the source of the relationship.</param>
+		/// <param name="target">PopulationUniquenessError to use as the target of the relationship.</param>
+		public RoleInstanceHasPopulationUniquenessError(RoleInstance source, PopulationUniquenessError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, source), new DslModeling::RoleAssignment(RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public RoleInstanceHasPopulationUniquenessError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RoleInstance domain role code
+		
+		/// <summary>
+		/// RoleInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RoleInstanceDomainRoleId = new global::System.Guid(0x527ffaeb, 0x8f4a, 0x4dff, 0xb0, 0x2f, 0x49, 0x82, 0x2f, 0xce, 0x2f, 0x3d);
+		
+		/// <summary>
+		/// DomainRole RoleInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationUniquenessError", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/RoleInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("527ffaeb-8f4a-4dff-b02f-49822fce2f3d")]
+		public virtual RoleInstance RoleInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RoleInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RoleInstanceCollection of a PopulationUniquenessError
+		/// <summary>
+		/// Gets a list of RoleInstanceCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<RoleInstance> GetRoleInstanceCollection(PopulationUniquenessError element)
+		{
+			return new DslModeling::LinkedElementCollection<RoleInstance>(element, PopulationUniquenessErrorDomainRoleId);
+		}
+		#endregion
+		#region PopulationUniquenessError domain role code
+		
+		/// <summary>
+		/// PopulationUniquenessError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PopulationUniquenessErrorDomainRoleId = new global::System.Guid(0x3ae1d857, 0xc7e7, 0x4053, 0xa4, 0x61, 0x3e, 0xb9, 0x65, 0x66, 0x6f, 0x2c);
+		
+		/// <summary>
+		/// DomainRole PopulationUniquenessError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleInstanceCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError/PopulationUniquenessError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("3ae1d857-c7e7-4053-a461-3eb965666f2c")]
+		public virtual PopulationUniquenessError PopulationUniquenessError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PopulationUniquenessError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationUniquenessErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationUniquenessErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PopulationUniquenessError of a RoleInstance
+		/// <summary>
+		/// Gets PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static PopulationUniquenessError GetPopulationUniquenessError(RoleInstance element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RoleInstanceDomainRoleId) as PopulationUniquenessError;
+		}
+		
+		/// <summary>
+		/// Sets PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetPopulationUniquenessError(RoleInstance element, PopulationUniquenessError newPopulationUniquenessError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RoleInstanceDomainRoleId, newPopulationUniquenessError);
+		}
+		#endregion
+		#region RoleInstance link accessor
+		/// <summary>
+		/// Get the RoleInstanceHasPopulationUniquenessError link to a RoleInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError GetLinkToPopulationUniquenessError (global::Neumont.Tools.ORM.ObjectModel.RoleInstance roleInstanceInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError>(roleInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RoleInstance not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region PopulationUniquenessError link accessor
+		/// <summary>
+		/// Get the list of RoleInstanceHasPopulationUniquenessError links to a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> GetLinksToRoleInstanceCollection ( global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError populationUniquenessErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError>(populationUniquenessErrorInstance, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+		}
+		#endregion
+		#region RoleInstanceHasPopulationUniquenessError instance accessors
+		
+		/// <summary>
+		/// Get any RoleInstanceHasPopulationUniquenessError links between a given RoleInstance and a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.RoleInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError link in links )
+			{
+				if ( target.Equals(link.PopulationUniquenessError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one RoleInstanceHasPopulationUniquenessError link between a given RoleInstanceand a PopulationUniquenessError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError GetLink( global::Neumont.Tools.ORM.ObjectModel.RoleInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError>(source, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError link in links )
+			{
+				if ( target.Equals(link.PopulationUniquenessError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship MandatoryConstraintHasPopulationMandatoryError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("9a93dd53-8683-47f4-9ee7-4f1f244a218e")]
+	public partial class MandatoryConstraintHasPopulationMandatoryError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// MandatoryConstraintHasPopulationMandatoryError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x9a93dd53, 0x8683, 0x47f4, 0x9e, 0xe7, 0x4f, 0x1f, 0x24, 0x4a, 0x21, 0x8e);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a MandatoryConstraintHasPopulationMandatoryError link in the same Partition as the given ConstraintRoleSequence
+		/// </summary>
+		/// <param name="source">ConstraintRoleSequence to use as the source of the relationship.</param>
+		/// <param name="target">PopulationMandatoryError to use as the target of the relationship.</param>
+		public MandatoryConstraintHasPopulationMandatoryError(ConstraintRoleSequence source, PopulationMandatoryError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId, source), new DslModeling::RoleAssignment(MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MandatoryConstraintHasPopulationMandatoryError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MandatoryConstraintHasPopulationMandatoryError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MandatoryConstraintHasPopulationMandatoryError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MandatoryConstraintHasPopulationMandatoryError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region MandatoryConstraint domain role code
+		
+		/// <summary>
+		/// MandatoryConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MandatoryConstraintDomainRoleId = new global::System.Guid(0xaf065878, 0x27b3, 0x456a, 0x9c, 0xd4, 0xe1, 0xb8, 0x1d, 0xff, 0xad, 0x2d);
+		
+		/// <summary>
+		/// DomainRole MandatoryConstraint
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError/MandatoryConstraint.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError/MandatoryConstraint.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationMandatoryErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError/MandatoryConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("af065878-27b3-456a-9cd4-e1b81dffad2d")]
+		public virtual ConstraintRoleSequence MandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConstraintRoleSequence)DslModeling::DomainRoleInfo.GetRolePlayer(this, MandatoryConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MandatoryConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access MandatoryConstraint of a PopulationMandatoryError
+		/// <summary>
+		/// Gets MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ConstraintRoleSequence GetMandatoryConstraint(PopulationMandatoryError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PopulationMandatoryErrorDomainRoleId) as ConstraintRoleSequence;
+		}
+		
+		/// <summary>
+		/// Sets MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetMandatoryConstraint(PopulationMandatoryError element, ConstraintRoleSequence newMandatoryConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PopulationMandatoryErrorDomainRoleId, newMandatoryConstraint);
+		}
+		#endregion
+		#region PopulationMandatoryError domain role code
+		
+		/// <summary>
+		/// PopulationMandatoryError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PopulationMandatoryErrorDomainRoleId = new global::System.Guid(0x35ec4e97, 0x2248, 0x4aa0, 0x85, 0xaf, 0x08, 0x91, 0xed, 0xb7, 0x80, 0x3b);
+		
+		/// <summary>
+		/// DomainRole PopulationMandatoryError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError/PopulationMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError/PopulationMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "MandatoryConstraint", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError/PopulationMandatoryError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("35ec4e97-2248-4aa0-85af-0891edb7803b")]
+		public virtual PopulationMandatoryError PopulationMandatoryError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PopulationMandatoryError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationMandatoryErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationMandatoryErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PopulationMandatoryErrorCollection of a ConstraintRoleSequence
+		/// <summary>
+		/// Gets a list of PopulationMandatoryErrorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<PopulationMandatoryError> GetPopulationMandatoryErrorCollection(ConstraintRoleSequence element)
+		{
+			return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(element, MandatoryConstraintDomainRoleId);
+		}
+		#endregion
+		#region MandatoryConstraint link accessor
+		/// <summary>
+		/// Get the list of MandatoryConstraintHasPopulationMandatoryError links to a ConstraintRoleSequence.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError> GetLinksToPopulationMandatoryErrorCollection ( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence mandatoryConstraintInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError>(mandatoryConstraintInstance, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+		}
+		#endregion
+		#region PopulationMandatoryError link accessor
+		/// <summary>
+		/// Get the MandatoryConstraintHasPopulationMandatoryError link to a PopulationMandatoryError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError GetLinkToMandatoryConstraint (global::Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError populationMandatoryErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError>(populationMandatoryErrorInstance, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PopulationMandatoryError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MandatoryConstraintHasPopulationMandatoryError instance accessors
+		
+		/// <summary>
+		/// Get any MandatoryConstraintHasPopulationMandatoryError links between a given ConstraintRoleSequence and a PopulationMandatoryError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence source, global::Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError>(source, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError link in links )
+			{
+				if ( target.Equals(link.PopulationMandatoryError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one MandatoryConstraintHasPopulationMandatoryError link between a given ConstraintRoleSequenceand a PopulationMandatoryError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError GetLink( global::Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence source, global::Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError>(source, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError link in links )
+			{
+				if ( target.Equals(link.PopulationMandatoryError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ObjectTypeInstanceHasPopulationMandatoryError
+	/// Description for
+	/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("e0f0750e-47cb-44c6-b348-a9a1101475a7")]
+	public partial class ObjectTypeInstanceHasPopulationMandatoryError : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectTypeInstanceHasPopulationMandatoryError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe0f0750e, 0x47cb, 0x44c6, 0xb3, 0x48, 0xa9, 0xa1, 0x10, 0x14, 0x75, 0xa7);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectTypeInstanceHasPopulationMandatoryError link in the same Partition as the given ObjectTypeInstance
+		/// </summary>
+		/// <param name="source">ObjectTypeInstance to use as the source of the relationship.</param>
+		/// <param name="target">PopulationMandatoryError to use as the target of the relationship.</param>
+		public ObjectTypeInstanceHasPopulationMandatoryError(ObjectTypeInstance source, PopulationMandatoryError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeInstanceHasPopulationMandatoryError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectTypeInstance domain role code
+		
+		/// <summary>
+		/// ObjectTypeInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeInstanceDomainRoleId = new global::System.Guid(0x4a0b3b52, 0xb579, 0x4e07, 0x97, 0x2c, 0x59, 0xf4, 0xf9, 0x8b, 0xea, 0xc3);
+		
+		/// <summary>
+		/// DomainRole ObjectTypeInstance
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "PopulationMandatoryErrorCollection", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/ObjectTypeInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("4a0b3b52-b579-4e07-972c-59f4f98beac3")]
+		public virtual ObjectTypeInstance ObjectTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeInstance)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectTypeInstance of a PopulationMandatoryError
+		/// <summary>
+		/// Gets ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectTypeInstance GetObjectTypeInstance(PopulationMandatoryError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, PopulationMandatoryErrorDomainRoleId) as ObjectTypeInstance;
+		}
+		
+		/// <summary>
+		/// Sets ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectTypeInstance(PopulationMandatoryError element, ObjectTypeInstance newObjectTypeInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, PopulationMandatoryErrorDomainRoleId, newObjectTypeInstance);
+		}
+		#endregion
+		#region PopulationMandatoryError domain role code
+		
+		/// <summary>
+		/// PopulationMandatoryError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid PopulationMandatoryErrorDomainRoleId = new global::System.Guid(0x078cf514, 0x9f4c, 0x44c2, 0x91, 0x73, 0x3a, 0x5f, 0x3e, 0xdf, 0xaf, 0xcb);
+		
+		/// <summary>
+		/// DomainRole PopulationMandatoryError
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryError
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectTypeInstance", PropertyDisplayNameKey="Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError/PopulationMandatoryError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("078cf514-9f4c-44c2-9173-3a5f3edfafcb")]
+		public virtual PopulationMandatoryError PopulationMandatoryError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (PopulationMandatoryError)DslModeling::DomainRoleInfo.GetRolePlayer(this, PopulationMandatoryErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, PopulationMandatoryErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access PopulationMandatoryErrorCollection of a ObjectTypeInstance
+		/// <summary>
+		/// Gets a list of PopulationMandatoryErrorCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<PopulationMandatoryError> GetPopulationMandatoryErrorCollection(ObjectTypeInstance element)
+		{
+			return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(element, ObjectTypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region ObjectTypeInstance link accessor
+		/// <summary>
+		/// Get the list of ObjectTypeInstanceHasPopulationMandatoryError links to a ObjectTypeInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> GetLinksToPopulationMandatoryErrorCollection ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance objectTypeInstanceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(objectTypeInstanceInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+		}
+		#endregion
+		#region PopulationMandatoryError link accessor
+		/// <summary>
+		/// Get the ObjectTypeInstanceHasPopulationMandatoryError link to a PopulationMandatoryError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError GetLinkToObjectTypeInstance (global::Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError populationMandatoryErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(populationMandatoryErrorInstance, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of PopulationMandatoryError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectTypeInstanceHasPopulationMandatoryError instance accessors
+		
+		/// <summary>
+		/// Get any ObjectTypeInstanceHasPopulationMandatoryError links between a given ObjectTypeInstance and a PopulationMandatoryError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> GetLinks( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError target )
+		{
+			global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> outLinks = new global::System.Collections.Generic.List<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>();
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError link in links )
+			{
+				if ( target.Equals(link.PopulationMandatoryError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectTypeInstanceHasPopulationMandatoryError link between a given ObjectTypeInstanceand a PopulationMandatoryError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError GetLink( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance source, global::Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError target )
+		{
+			global::System.Collections.Generic.IList<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError>(source, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+			foreach ( global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError link in links )
+			{
+				if ( target.Equals(link.PopulationMandatoryError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ReadingOrderHasReading
 	/// Description for Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading
 	/// </summary>
@@ -18122,6 +18845,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return new DslModeling::ReadOnlyLinkedElementCollection<ObjectTypeInstance>(element, RoleDomainRoleId);
 		}
+		#endregion
+		#region Accessors for roles that this REL plays in other RELs
+		#region PopulationUniquenessError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets PopulationUniquenessError.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstance
+		/// </summary>
+		public virtual PopulationUniquenessError PopulationUniquenessError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId) as PopulationUniquenessError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.RoleInstanceDomainRoleId, value);
+			}
+		}
+		#endregion
 		#endregion
 		#region Role link accessor
 		/// <summary>

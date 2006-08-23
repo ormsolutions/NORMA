@@ -3181,6 +3181,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected bool ActivateModelError(ModelError error)
 		{
+			PopulationMandatoryError mandatory;
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
 			FactTypeRequiresReadingError noReading;
@@ -3200,7 +3201,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			bool activateNamePropertyAfterSelect = false;
 			bool addActiveRoles = false;
 			bool retVal = true;
-			if (null != (tooFew = error as TooFewReadingRolesError))
+			if (null != (mandatory = error as PopulationMandatoryError))
+			{
+				ORMSamplePopulationToolWindow window = ORMDesignerPackage.SamplePopulationEditorWindow;
+				window.AutoCorrectMandatoryError(mandatory);
+			}
+			else if (null != (tooFew = error as TooFewReadingRolesError))
 			{
 				reading = tooFew.Reading;
 			}

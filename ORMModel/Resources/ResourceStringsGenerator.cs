@@ -843,6 +843,36 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Model validation error shown when a population violates a uniqueness constraint and the role is named.
+		/// </summary>
+		public static string ModelErrorModelHasPopulationUniquenessErrorWithNamedRole
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.Role.Text");
+			}
+		}
+		/// <summary>
+		/// Model validation error shown when a population violates a uniqueness constraint and the role is unnamed.
+		/// </summary>
+		public static string ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.FactType.Text");
+			}
+		}
+		/// <summary>
+		/// Model validation error shown when a population violates a mandatory constraint.
+		/// </summary>
+		public static string ModelErrorModelHasPopulationMandatoryError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.Text");
+			}
+		}
+		/// <summary>
 		/// Role data type does not match max inclusion
 		/// </summary>
 		public static string ModelErrorRoleValueRangeMaxValueMismatchError

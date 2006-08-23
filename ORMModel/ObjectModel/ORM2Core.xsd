@@ -133,6 +133,9 @@
 	</xs:complexType>
 	<!--End Objects and Object Types-->
 	<!--ObjectTypeInstances-->
+	<xs:complexType name="ObjectTypeInstanceRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
 	<xs:complexType name="EntityTypeInstances">
 		<xs:sequence>
 			<xs:element name="EntityTypeInstance" type="EntityTypeInstance" minOccurs="0" maxOccurs="unbounded"/>
@@ -786,6 +789,8 @@
 			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
 			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesError"/>
 			<xs:element name="CompatibleValueTypeInstanceValueError" type="CompatibleValueTypeInstanceValueError"/>
+			<xs:element name="PopulationMandatoryError" type="PopulationMandatoryError"/>
+			<xs:element name="PopulationUniquenessError" type="PopulationUniquenessError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -1076,6 +1081,31 @@
 					<xs:element name="ValueTypeInstance" type="ValueTypeInstanceRef"/>
 				</xs:sequence>
 			</xs:extension >
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PopulationMandatoryError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:all>
+					<xs:element name="ObjectTypeInstance" type="ObjectTypeInstanceRef"/>
+					<xs:element name="MandatoryConstraint" type="MandatoryConstraintRef"/>
+				</xs:all>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PopulationUniquenessError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="RoleInstances">
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="RoleInstance" type="ObjectTypeRoleInstanceRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--End ModelErrors-->

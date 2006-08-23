@@ -5793,6 +5793,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region PopulationMandatoryErrorCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of PopulationMandatoryErrorCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraint
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<PopulationMandatoryError> PopulationMandatoryErrorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.MandatoryConstraintDomainRoleId);
+			}
+		}
+		#endregion
 	}
 }
 namespace Neumont.Tools.ORM.ObjectModel
@@ -6002,6 +6017,139 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new DslModeling::LinkedElementCollection<ObjectType>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass PopulationUniquenessError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.PopulationUniquenessError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("ba0a8f9e-91e1-4d56-8a44-9f49432c63c5")]
+	public partial class PopulationUniquenessError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PopulationUniquenessError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xba0a8f9e, 0x91e1, 0x4d56, 0x8a, 0x44, 0x9f, 0x49, 0x43, 0x2c, 0x63, 0xc5);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PopulationUniquenessError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PopulationUniquenessError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region RoleInstanceCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of RoleInstanceCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<RoleInstance> RoleInstanceCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<RoleInstance>(this, global::Neumont.Tools.ORM.ObjectModel.RoleInstanceHasPopulationUniquenessError.PopulationUniquenessErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// DomainClass PopulationMandatoryError
+	/// </summary>
+	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.PopulationMandatoryError.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("5b76cb18-90b2-4656-bb0d-0788460fdb70")]
+	public partial class PopulationMandatoryError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// PopulationMandatoryError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x5b76cb18, 0x90b2, 0x4656, 0xbb, 0x0d, 0x07, 0x88, 0x46, 0x0f, 0xdb, 0x70);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PopulationMandatoryError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public PopulationMandatoryError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region MandatoryConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets MandatoryConstraint.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryError
+		/// </summary>
+		public virtual ConstraintRoleSequence MandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId) as ConstraintRoleSequence;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ObjectTypeInstance opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectTypeInstance.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryError
+		/// </summary>
+		public virtual ObjectTypeInstance ObjectTypeInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId) as ObjectTypeInstance;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -11337,6 +11485,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
+	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {Name})")]
 	[DslModeling::DomainObjectId("870f5ee8-0859-4710-a526-66635f4efd14")]
 	public abstract partial class ObjectTypeInstance : ORMModelElement
 	{
@@ -11354,6 +11503,179 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected ObjectTypeInstance(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
+		}
+		#endregion
+		#region Name domain property code
+		
+		/// <summary>
+		/// Name domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0x553deb12, 0x8fe0, 0x4fe4, 0xb9, 0x4e, 0x52, 0xf1, 0xcd, 0x5d, 0xcf, 0x0a);
+		
+		/// <summary>
+		/// Gets or sets the value of Name domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.Name
+		/// </summary>
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/Name.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/Name.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::ElementName]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.Calculated)]
+		[DslModeling::DomainObjectId("553deb12-8fe0-4fe4-b94e-52f1cd5dcf0a")]
+		public global::System.String Name
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NamePropertyHandler.Instance.GetValue(this);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectTypeInstance.Name domain property.
+		/// </summary>
+		internal sealed partial class NamePropertyHandler : DslModeling::CalculatedPropertyValueHandler<ObjectTypeInstance, global::System.String>
+		{
+			private NamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectTypeInstance.Name domain property value handler.
+			/// </summary>
+			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectTypeInstance.Name domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectTypeInstance element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for Name because its Kind is
+				// set to Calculated. Please provide the GetNameValue()
+				// method on the domain class.
+				return element.GetNameValue();
+			}
+		
+		}
+		
+		#endregion
+		#region NameChanged domain property code
+		
+		/// <summary>
+		/// NameChanged domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NameChangedDomainPropertyId = new global::System.Guid(0xf1e0bb68, 0xf047, 0x464b, 0xb1, 0x7b, 0x6b, 0xa8, 0x65, 0x14, 0x4b, 0xb4);
+		
+		/// <summary>
+		/// Gets or sets the value of NameChanged domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance.NameChanged
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/NameChanged.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectTypeInstance/NameChanged.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("f1e0bb68-f047-464b-b17b-6ba865144bb4")]
+		public global::System.Int64 NameChanged
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NameChangedPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NameChangedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectTypeInstance.NameChanged domain property.
+		/// </summary>
+		internal sealed partial class NameChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeInstance, global::System.Int64>
+		{
+			private NameChangedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectTypeInstance.NameChanged domain property value handler.
+			/// </summary>
+			public static readonly NameChangedPropertyHandler Instance = new NameChangedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectTypeInstance.NameChanged domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NameChangedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(ObjectTypeInstance element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NameChanged because its Kind is
+				// set to CustomStorage. Please provide the GetNameChangedValue()
+				// method on the domain class.
+				return element.GetNameChangedValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectTypeInstance element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NameChanged because its Kind is
+					// set to CustomStorage. Please provide the SetNameChangedValue()
+					// method on the domain class.
+					element.SetNameChangedValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PopulationMandatoryErrorCollection opposite domain role accessor
+		/// <summary>
+		/// Gets a list of PopulationMandatoryErrorCollection.
+		/// Description for
+		/// Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstance
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<PopulationMandatoryError> PopulationMandatoryErrorCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<PopulationMandatoryError>(this, global::Neumont.Tools.ORM.ObjectModel.ObjectTypeInstanceHasPopulationMandatoryError.ObjectTypeInstanceDomainRoleId);
+			}
 		}
 		#endregion
 		#region RoleCollection opposite domain role accessor
