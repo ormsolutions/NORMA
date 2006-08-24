@@ -74,7 +74,7 @@
 					<xs:element name="RelativeShapes" minOccurs="0"  maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
-								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectifiedFactTypeNameShape"/>
+								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectTypeShape"/>
 								<xs:element name="ReadingShape" type="ReadingShape"/>
 								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
 								<xs:element name="RoleNameShape" type="RoleNameShape"/>
@@ -111,16 +111,6 @@
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="ObjectifiedFactTypeNameShape">
-		<xs:complexContent>
-			<xs:extension base="Shape">
-				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
-				</xs:sequence>
-				<xs:attribute name="ExpandRefMode" type="xs:boolean" default="false" />
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

@@ -4503,6 +4503,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return base.ShouldAddShapeForElement(element);
 		}
+		/// <summary>
+		/// Makes a shape a relative child element.
+		/// </summary>
+		/// <param name="childShape">The ShapeElement to get the ReleationshipType for.</param>
+		/// <returns>RelationshipType.Relative</returns>
+		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
+		{
+			Debug.Assert(childShape is ValueConstraintShape);
+			return RelationshipType.Relative;
+		}
 		#endregion // Shape initialize overrides
 		#region Customize appearance
 		/// <summary>

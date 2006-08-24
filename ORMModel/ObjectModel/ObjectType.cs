@@ -435,7 +435,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 
 		/// <summary>
-		/// Retrieves the role player on the preferred internal uniquiness constraint.
+		/// Retrieves the role player on the preferred internal uniqueness constraint.
 		/// </summary>
 		/// <returns>The role player as an ObjectType if it exists; otherwise, null.</returns>
 		private ObjectType GetObjectTypeForPreferredConstraint()
