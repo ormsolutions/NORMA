@@ -65,27 +65,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ExternalRoleConstraintDeleted),
 						typeof(FactTypedAdded),
 						typeof(FactTypeShapeChanged),
-						typeof(LinkConnectsToNodeDeleted),
 						typeof(ModelNoteAdded),
 						typeof(ModelNoteReferenceAdded),
 						typeof(ObjectTypedAdded),
 						typeof(ObjectTypePlaysRoleAdded),
-						typeof(ObjectTypePlaysRoleDeleted),
 						typeof(ObjectTypePlaysRoleRolePlayerChange),
 						typeof(ObjectTypeShapeChangeRule),
-						typeof(ParentShapeDeleted),
-						typeof(PresentationLinkDeleted),
 						typeof(ReadingOrderAdded),
-						typeof(RelativeParentShapeDeleted),
 						typeof(RoleAdded),
 						typeof(RoleChange),
 						typeof(RoleDeleted),
 						typeof(RoleValueConstraintAdded),
-						typeof(RoleValueConstraintDeleted),
 						typeof(SetComparisonConstraintAdded),
 						typeof(SetConstraintAdded),
 						typeof(ValueTypeValueConstraintAdded),
-						typeof(ValueTypeValueConstraintDeleted),
 						typeof(ReadingShape).GetNestedType("ReadingOrderDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("ReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
@@ -459,16 +452,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	public partial class ORMShapeDomainModel
 	{
-		private partial class LinkConnectsToNodeDeleted
-		{
-			public LinkConnectsToNodeDeleted()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
 		private partial class ModelNoteAdded
 		{
 			public ModelNoteAdded()
@@ -509,16 +492,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	public partial class ORMShapeDomainModel
 	{
-		private partial class ObjectTypePlaysRoleDeleted
-		{
-			public ObjectTypePlaysRoleDeleted()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
 		private partial class ObjectTypePlaysRoleRolePlayerChange
 		{
 			public ObjectTypePlaysRoleRolePlayerChange()
@@ -539,39 +512,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	public partial class ORMShapeDomainModel
 	{
-		private partial class ParentShapeDeleted
-		{
-			public ParentShapeDeleted()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
-		private partial class PresentationLinkDeleted
-		{
-			public PresentationLinkDeleted()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
 		private partial class ReadingOrderAdded
 		{
 			public ReadingOrderAdded()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
-		private partial class RelativeParentShapeDeleted
-		{
-			public RelativeParentShapeDeleted()
 			{
 				base.IsEnabled = false;
 			}
@@ -619,16 +562,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	public partial class ORMShapeDomainModel
 	{
-		private partial class RoleValueConstraintDeleted
-		{
-			public RoleValueConstraintDeleted()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
 		private partial class SetComparisonConstraintAdded
 		{
 			public SetComparisonConstraintAdded()
@@ -652,16 +585,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private partial class ValueTypeValueConstraintAdded
 		{
 			public ValueTypeValueConstraintAdded()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ORMShapeDomainModel
-	{
-		private partial class ValueTypeValueConstraintDeleted
-		{
-			public ValueTypeValueConstraintDeleted()
 			{
 				base.IsEnabled = false;
 			}

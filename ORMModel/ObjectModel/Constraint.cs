@@ -141,7 +141,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return retVal;
 		}
 		#endregion // ConstraintUtility specific
-		#region ConstraintRoleSequenceHasRoleRemoved class
+		#region ConstraintRoleSequenceHasRoleDeleted class
 		/// <summary>
 		/// Rule that fires when a constraint has a RoleSequence Removed
 		/// </summary>
@@ -166,7 +166,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion //ConstraintRoleSequenceHasRoleRemoved class
+		#endregion //ConstraintRoleSequenceHasRoleDeleted class
 	}
 	#endregion // Constraint class
 	#region SetConstraint class
@@ -1149,6 +1149,33 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		#region SetComparisonConstraintRoleSequenceDeleted class
+		/// <summary>
+		/// Rule that fires when a set comparison constraint has a role seqeuence removed.
+		/// The constraint itself is removed when the last sequence is removed.
+		/// </summary>
+		[RuleOn(typeof(SetComparisonConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit)] // DeleteRule
+		private sealed partial class SetComparisonConstraintRoleSequenceDeleted : DeleteRule
+		{
+			/// <summary>
+			/// Runs when ConstraintRoleSequenceHasRole element is removed. 
+			/// If there are no more roles in the role collection then the
+			/// entire ConstraintRoleSequence is removed
+			/// </summary>
+			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			{
+				SetComparisonConstraintHasRoleSequence link = e.ModelElement as SetComparisonConstraintHasRoleSequence;
+				SetComparisonConstraint constraint = link.ExternalConstraint;
+				if (!constraint.IsDeleted)
+				{
+					if (constraint.RoleSequenceCollection.Count == 0)
+					{
+						constraint.Delete();
+					}
+				}
+			}
+		}
+		#endregion //SetComparisonConstraintRoleSequenceDeleted class
 		#endregion // SetComparisonConstraint synchronization rules
 		#region Deserialization Fixup
 		/// <summary>

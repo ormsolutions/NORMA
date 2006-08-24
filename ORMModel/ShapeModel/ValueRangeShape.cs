@@ -99,7 +99,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			AutoResize();
 			SizeD size = Size;
 			RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
-			Location = new PointD(parentBounds.Width, -1 * size.Height);
+			// Place slightly to the right. This will cause the label to
+			// track in this position due to a horizontal resize of the
+			// shape because of rename, etc
+			Location = new PointD(parentBounds.Width + .06, -1 * size.Height);
 		}
 		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.

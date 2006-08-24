@@ -93,6 +93,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
+							// Stop the reading shape from ending up in the wrong place during refmode expansion
+							e.ModelElement.Store.TransactionManager.CurrentTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
 							bool fixUpReadings = false;
 							ShapeElement shapeOnDiagram;
 							if (null == (shapeOnDiagram = parentDiagram.FindShapeForElement(factType)))
@@ -188,25 +190,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ShapeElement shape = pels[i] as ShapeElement;
 					if (shape != null && shape.Diagram == diagram)
 					{
-						ClearChildShapes(shape.NestedChildShapes);
-						ClearChildShapes(shape.RelativeChildShapes);
-						shape.Delete();
-					}
-				}
-			}
-			/// <summary>
-			/// Helper function to recursively delete child shapes. Used by RemoveShapesFromDiagram.
-			/// </summary>
-			private void ClearChildShapes(LinkedElementCollection<ShapeElement> shapes)
-			{
-				int count = shapes.Count;
-				if (count > 0)
-				{
-					for (int i = count - 1; i >= 0; --i) // Walk backwards so we can safely remove the shape
-					{
-						ShapeElement shape = shapes[i];
-						ClearChildShapes(shape.NestedChildShapes);
-						ClearChildShapes(shape.RelativeChildShapes);
+						// Delete propagation in the CoreDesignSurface domain model will clear
+						// any nested and relative shapes
 						shape.Delete();
 					}
 				}
@@ -299,7 +284,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ConstraintRoleSequenceRoleAdded class
-		#region ConstraintRoleSequenceRoleRemoved class
+		#region ConstraintRoleSequenceRoleDeleted class
 		/// <summary>
 		/// Update the fact type when constraint roles are removed
 		/// </summary>
@@ -322,8 +307,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ConstraintRoleSequenceRoleRemoved class
-		#region ExternalRoleConstraintRemoved class
+		#endregion // ConstraintRoleSequenceRoleDeleted class
+		#region ExternalRoleConstraintDeleted class
 		/// <summary>
 		/// Update the fact type when constraint roles are removed. Used when
 		/// an entire role sequence is deleted from a multi-column external fact constraint
@@ -346,7 +331,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ExternalRoleConstraintRemoved class
+		#endregion // ExternalRoleConstraintDeleted class
 		#endregion // ConstraintSetChanged fixup
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup
@@ -401,7 +386,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // RoleAdded class
-		#region RoleRemoved class
+		#region RoleDeleted class
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed partial class RoleDeleted : DeleteRule
 		{
@@ -422,7 +407,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // RoleRemoved class
+		#endregion // RoleDeleted class
 		#endregion // FactTypeHasRole fixup
 		#region ObjectTypePlaysRole fixup
 		#region ObjectTypePlaysRoleAdded class
@@ -463,27 +448,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
-		#region ObjectTypePlaysRoleDeleted class
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // DeleteRule
-		private sealed partial class ObjectTypePlaysRoleDeleted : DeleteRule
-		{
-			/// <summary>
-			/// Remove presentation elements when the associated RolePlayer link is removed
-			/// </summary>
-			public static void Process(ObjectTypePlaysRole link)
-			{
-				// This will fire the PresentationLinkRemoved rule
-				PresentationViewsSubject.GetPresentation(link).Clear();
-			}
-			/// <summary>
-			/// Remove presentation elements when the associated RolePlayer link is removed
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				Process(e.ModelElement as ObjectTypePlaysRole);
-			}
-		}
-		#endregion // ObjectTypePlaysRoleDeleted class
 		#region ObjectTypePlaysRoleRolePlayerChange class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // RolePlayerChangeRule
 		private sealed partial class ObjectTypePlaysRoleRolePlayerChange : RolePlayerChangeRule
@@ -498,7 +462,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return;
 				}
-				ObjectTypePlaysRoleDeleted.Process(link);
+				PresentationViewsSubject.GetPresentation(link).Clear();
 				ObjectTypePlaysRoleAdded.Process(link);
 			}
 		}
@@ -586,24 +550,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayValueConstraintFixupListener class
-		#region RoleValueConstraintRemoved class
-		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // DeleteRule
-		private sealed partial class RoleValueConstraintDeleted : DeleteRule
-		{
-			/// <summary>
-			/// Remove presentation elements when the associated ValueRange link is removed
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
-				if (link != null)
-				{
-					// This will fire the PresentationLinkRemoved rule
-					PresentationViewsSubject.GetPresentation(link).Clear();
-				}
-			}
-		}
-		#endregion // RoleValueConstraintRemoved class
 		/// <summary>
 		/// Helper function to display role player links.
 		/// </summary>
@@ -668,24 +614,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayValueTypeValueConstraintFixupListener class
-		#region ValueTypeValueConstraintRemoved class
-		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)] // DeleteRule
-		private sealed partial class ValueTypeValueConstraintDeleted : DeleteRule
-		{
-			/// <summary>
-			/// Remove presentation elements when the associated ValueRange link is removed
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
-				if (link != null)
-				{
-					// This will fire the PresentationLinkRemoved rule
-					PresentationViewsSubject.GetPresentation(link).Clear();
-				}
-			}
-		}
-		#endregion // ValueTypeValueConstraintRemoved class
 		/// <summary>
 		/// Helper function to display value type value ranges.
 		/// </summary>
@@ -733,7 +661,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMModel model = objectType.Model;
 				if (model != null)
 				{
-					Diagram.FixUpDiagram(model, objectType);
+					if (null == objectType.NestedFactType)
+					{
+						Diagram.FixUpDiagram(model, objectType);
+					}
 					Diagram.FixUpDiagram(objectType, roleValueConstraint);
 					Diagram.FixUpDiagram(model, link);
 				}
@@ -755,7 +686,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FactConstraintAdded class
-		#region FactConstraintRemoved class
+		#region FactConstraintDeleted class
 		[RuleOn(typeof(FactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // DeleteRule
 		private sealed partial class FactConstraintDeleted : DeleteRule
 		{
@@ -774,7 +705,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // FactConstraintRemoved class
+		#endregion // FactConstraintDeleted class
 		#region DisplayExternalConstraintLinksFixupListener class
 		/// <summary>
 		/// A fixup class to display external constraint links for
@@ -824,157 +755,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FactConstraint fixup
-		#region PresentationViewsSubject fixup
-		#region PresentationLinkRemoved class
-		[RuleOn(typeof(PresentationViewsSubject))] // DeleteRule
-		private sealed partial class PresentationLinkDeleted : DeleteRule
-		{
-			/// <summary>
-			/// Clearing the PresentationRolePlayers collection does not automatically
-			/// remove the PELs (propagatedelete is false). Add this rule in code here.
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				PresentationViewsSubject link = e.ModelElement as PresentationViewsSubject;
-				if (link != null)
-				{
-					ShapeElement presenter = link.Presentation as ShapeElement;
-					if (presenter != null) // Option role, may not be there
-					{
-						// If the presenter is a ReadingShape, then see if we
-						// can attach it to another ReadingOrder instead of
-						// removing it altogether
-						ReadingShape readingPel = presenter as ReadingShape;
-						if (readingPel != null)
-						{
-							ReadingOrder order = (ReadingOrder)link.Subject;
-							FactType fact = order.FactType;
-							if (fact != null && !fact.IsDeleted)
-							{
-								LinkedElementCollection<ReadingOrder> remainingOrders = fact.ReadingOrderCollection;
-								if (remainingOrders.Count != 0)
-								{
-									LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
-									Reading newReading = FactType.GetMatchingReading(remainingOrders, order, roles[0], null, false, false, roles, true);
-									if (newReading != null)
-									{
-										ReadingOrder newOrder = newReading.ReadingOrder;
-										if (newOrder != null)
-										{
-											readingPel.Associate(newOrder);
-											return;
-										}
-									}
-								}
-							}
-						}
-						presenter.Invalidate();
-						presenter.Delete();
-					}
-				}
-			}
-		}
-		#endregion // PresentationLinkRemoved class
-		#region ParentShapeRemoved class
-		[RuleOn(typeof(ParentShapeHasRelativeChildShapes))] // DeleteRule
-		[RuleOn(typeof(ParentShapeContainsNestedChildShapes))] // DeleteRule
-		private sealed partial class ParentShapeDeleted : DeleteRule
-		{
-			/// <summary>
-			/// Deletion of a parent shape should delete the child shape.
-			/// </summary>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ParentShapeHasRelativeChildShapes linkRelative = e.ModelElement as ParentShapeHasRelativeChildShapes;
-				ParentShapeContainsNestedChildShapes linkNested;
-				if (linkRelative != null)
-				{
-					ShapeElement relativeShape = linkRelative.RelativeChildShapes;
-					// Don't remove an ObjectifiedFactTypeNameShape in line. We need
-					// it to reposition an ObjectTypeShape if the objectedified fact is
-					// deleted.
-					if (!(relativeShape is ObjectifiedFactTypeNameShape))
-					{
-						relativeShape.Delete();
-					}
-                }
-				else if ((linkNested = e.ModelElement as ParentShapeContainsNestedChildShapes) != null)
-				{
-					linkNested.NestedChildShapes.Delete();
-				}
-			}
-		}
-		[RuleOn(typeof(ParentShapeHasRelativeChildShapes), FireTime=TimeToFire.LocalCommit, Priority=int.MaxValue)] // DeleteRule
-		private sealed partial class RelativeParentShapeDeleted : DeleteRule
-		{
-			/// <summary>
-			/// Backup deletion of an ObjectifiedFactTypeNameShape, skipped during inline rule
-			/// </summary>
-			/// <param name="e"></param>
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				ParentShapeHasRelativeChildShapes link = e.ModelElement as ParentShapeHasRelativeChildShapes;
-				ShapeElement childShape = link.RelativeChildShapes;
-				if (!childShape.IsDeleted)
-				{
-					childShape.Delete();
-				}
-			}
-		}
-		#endregion // ParentShapeRemoved class
-		#region EliminateOrphanedShapesFixupListener class
-		/// <summary>
-		/// A fixup class to remove orphaned pels
-		/// </summary>
-		private sealed class EliminateOrphanedShapesFixupListener : DeserializationFixupListener<PresentationElement>
-		{
-			/// <summary>
-			/// Create a new EliminateOrphanedShapesFixupListener
-			/// </summary>
-			public EliminateOrphanedShapesFixupListener() : base((int)ORMDeserializationFixupPhase.RemoveOrphanedPresentationElements)
-			{
-			}
-			/// <summary>
-			/// Remove all orphaned pels
-			/// </summary>
-			/// <param name="element">A PresentationElement instance</param>
-			/// <param name="store">The context store</param>
-			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected sealed override void ProcessElement(PresentationElement element, Store store, INotifyElementAdded notifyAdded)
-			{
-				ModelElement backingElement = element.ModelElement;
-				if (backingElement == null || backingElement.IsDeleted)
-				{
-					element.Delete();
-				}
-			}
-		}
-		#endregion // EliminateOrphanedShapesFixupListener class
-		#endregion // PresentationViewsSubject fixup
-		#region LinkConnectsToNodeRemoved class
-		/// <summary>
-		/// Don't leave links dangling. Remove any link shape that points
-		/// to no model element.
-		/// </summary>
-		[RuleOn(typeof(LinkConnectsToNode), FireTime=TimeToFire.LocalCommit)] // DeleteRule
-		private sealed partial class LinkConnectsToNodeDeleted : DeleteRule
-		{
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
-			{
-				LinkConnectsToNode link = e.ModelElement as LinkConnectsToNode;
-				LinkShape linkShape = link.Link;
-				NodeShape nodeShape = link.Nodes;
-				ModelElement backingElement;
-				if (nodeShape.IsDeleted &&
-					!linkShape.IsDeleted &&
-					null != (backingElement = linkShape.ModelElement) &&
-					!backingElement.IsDeleted)
-				{
-					linkShape.Delete();
-				}
-			}
-		}
-		#endregion // LinkConnectsToNodeRemoved class
 		#region ReadingOrder fixup
 		/// <summary>
 		/// Add shape elements for reading orders. Used during deserialization fixup

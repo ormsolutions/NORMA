@@ -1377,6 +1377,12 @@ namespace Neumont.Tools.ORM.Shell
 						bool deleteReferenceModeValueTypeInContext = false;
 						if (null != (pel = selectedObject as ShapeElement))
 						{
+							// Note that if the ORMDiagram.SelectionRules property is overridden
+							// or any shape overrides the AllowChildrenInSelection property, then
+							// the delete propagation on child shapes can force the pel to be deleted
+							// without deleting the underlying mel. This would require resolving all
+							// model elements before any pels are deleting because the pel could
+							// now be deleted without the underlying mel having been touched.
 							if (pel.IsDeleted)
 							{
 								continue;
@@ -1416,11 +1422,8 @@ namespace Neumont.Tools.ORM.Shell
 									contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
 								}
 
-								// get rid of all visual shapes corresponding to this
-								// model element. pel removal is done in the PresentationLinkRemoved rule
-								PresentationViewsSubject.GetPresentation(mel).Clear();
-
-								// Get rid of the model element
+								// Get rid of the model element. Delete propagation on the PresentationViewsSubject
+								// relationship will automatically delete the pel.
 								mel.Delete();
 							}
 						}
@@ -1638,8 +1641,8 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Use deferred selection modification here so that
 					// we don't fire a selection change for each add.
-					// Getting into n(n-1) change events is very
-					// expensive, especially for verbalization
+					// Firing n(n+1)/2 selection change events is very
+					// expensive, especially for verbalization.
 					ShapeElement currentShape = nestedShapes[i];
 					if (currentShape.CanSelect)
 					{
@@ -1647,25 +1650,19 @@ namespace Neumont.Tools.ORM.Shell
 						if (firstItem)
 						{
 							firstItem = false;
-							//spahes.Clear();
 							shapes.DeferredClearBeforeAdditions();
-							//shapes.Set(newItem);
 							shapes.DeferredAdd(newItem);
 							shapes.DeferredPrimaryItem(newItem);
 						}
 						else
 						{
-							//shapes.Add(newItem);
 							shapes.DeferredAdd(newItem);
 						}
 					}
 				}
 				if (!firstItem)
 				{
-					// UNDONE: MSBUG shapes.SetDeferredSelection should not
-					// be internal. This is a hack workaround to call something
-					// public that calls it.
-					designer.DiagramClientView.OnElementEventsEnded(null);
+					shapes.SetDeferredSelection();
 				}
 			}
 		}
@@ -1723,7 +1720,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				FactTypeShape factShape;
 				double alignTo;
-				RectangleD matchBounds = matchShape.AbsoluteBoundingBox;
+				RectangleD matchBounds = matchShape.AbsoluteBounds;
 				switch (commandId)
 				{
 					case 1: // AlignBottom
@@ -1762,7 +1759,7 @@ namespace Neumont.Tools.ORM.Shell
 							shape != matchShape &&
 							shape.ParentShape is Diagram)
 						{
-							RectangleD bounds = shape.AbsoluteBoundingBox;
+							RectangleD bounds = shape.AbsoluteBounds;
 							PointD newLocation = bounds.Location;
 							switch (commandId)
 							{
@@ -2527,6 +2524,8 @@ namespace Neumont.Tools.ORM.Shell
 							if (t.HasPendingChanges)
 							{
 								t.Commit();
+								myEnabledCommands &= ~ORMDesignerCommands.ObjectifyFactType;
+								myVisibleCommands &= ~ORMDesignerCommands.ObjectifyFactType;
 							}
 						}
 						// Once we've objectified a fact type, we're done

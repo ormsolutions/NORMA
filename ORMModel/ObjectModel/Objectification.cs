@@ -382,8 +382,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Remove the implied objectifying ObjectType when Objectification is removed.
 		/// </summary>
-		[RuleOn(typeof(Objectification))] // DeleteRule
-		private sealed partial class ObjectificationDeleteRule : DeleteRule
+		[RuleOn(typeof(Objectification))] // DeletingRule
+		private sealed partial class ObjectificationDeletingRule : DeletingRule
 		{
 			/// <summary>
 			/// Remove the implied objectifying ObjectType when Objectification is removed
@@ -392,15 +392,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="objectification">The objectification relationship to process</param>
 			/// <param name="nestedFactType">The nested fact to process. Pulled from objectification.NestedFactType if null.</param>
 			/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
-			public static void ProcessObjectificationDeleted(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
+			public static void ProcessObjectificationDeleting(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 			{
+				if (nestingType == null)
+				{
+					nestingType = objectification.NestingType;
+				}
 				if (objectification.IsImplied)
 				{
-					if (nestingType == null)
-					{
-						nestingType = objectification.NestingType;
-					}
-					if (!nestingType.IsDeleted)
+					if (!(nestingType.IsDeleting || nestingType.IsDeleted))
 					{
 						nestingType.Delete();
 					}
@@ -411,18 +411,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						nestedFactType = objectification.NestedFactType;
 					}
-					if (!nestedFactType.IsDeleted)
+					// Treat an objectification relationship as a two way
+					// delete propagation relationship if either end is deleted. This
+					// allows us to treat the two objects as one except when they are
+					// explicitly disconnected.
+					if (nestedFactType.IsDeleting || nestedFactType.IsDeleted)
+					{
+						if (!(nestingType.IsDeleting || nestingType.IsDeleted))
+						{
+							nestingType.Delete();
+						}
+					}
+					else if (nestingType.IsDeleting || nestingType.IsDeleted)
+					{
+						if (!(nestedFactType.IsDeleting || nestedFactType.IsDeleted))
+						{
+							nestedFactType.Delete();
+						}
+					}
+					else
 					{
 						ORMCoreDomainModel.DelayValidateElement(nestedFactType, DelayProcessFactTypeForImpliedObjectification);
 					}
 				}
 			}
-			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ProcessObjectificationDeleted(e.ModelElement as Objectification, null, null);
+				ProcessObjectificationDeleting(e.ModelElement as Objectification, null, null);
 			}
 		}
-		#endregion // ObjectificationDeleteRule class
+		#endregion // ObjectificationDeletingRule class
 		#region ObjectificationRolePlayerChangeRule class
 		/// <summary>
 		/// Process Objectification role player changes
@@ -448,7 +466,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					oldFactType = (FactType)e.OldRolePlayer;
 				}
-				ObjectificationDeleteRule.ProcessObjectificationDeleted(link, oldFactType, oldObjectType);
+				ObjectificationDeletingRule.ProcessObjectificationDeleting(link, oldFactType, oldObjectType);
 				ObjectificationAddRule.ProcessObjectificationAdded(link, null, null);
 			}
 		}

@@ -2894,7 +2894,7 @@ namespace Neumont.Tools.ORM.Shell
 				for (int i = 0; i < roleCount; ++i)
 				{
 					ObjectType rolePlayer = roles[i].Role.RolePlayer;
-					if (!rolePlayer.IsValueType)
+					if (rolePlayer != null && !rolePlayer.IsValueType)
 					{
 						UniquenessConstraint identifier = rolePlayer.PreferredIdentifier;
 						if (identifier != null)

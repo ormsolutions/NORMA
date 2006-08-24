@@ -98,7 +98,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(Objectification).GetNestedType("ImpliedObjectificationUniquenessConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("InternalConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("ObjectificationAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Objectification).GetNestedType("ObjectificationDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Objectification).GetNestedType("ObjectificationDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("ObjectificationRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("PreferredIdentifierDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("RoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -167,6 +167,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(SetComparisonConstraint).GetNestedType("ExternalRoleConstraintDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("FactAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetComparisonConstraint).GetNestedType("FactSetComparisonConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SetComparisonConstraint).GetNestedType("SetComparisonConstraintRoleSequenceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("ConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SetConstraint).GetNestedType("EnforceRoleSequenceValidityForAdd", BindingFlags.Public | BindingFlags.NonPublic),
@@ -872,9 +873,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class Objectification
 	{
-		private partial class ObjectificationDeleteRule
+		private partial class ObjectificationDeletingRule
 		{
-			public ObjectificationDeleteRule()
+			public ObjectificationDeletingRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -1555,6 +1556,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class FactSetComparisonConstraintAdded
 		{
 			public FactSetComparisonConstraintAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class SetComparisonConstraint
+	{
+		private partial class SetComparisonConstraintRoleSequenceDeleted
+		{
+			public SetComparisonConstraintRoleSequenceDeleted()
 			{
 				base.IsEnabled = false;
 			}

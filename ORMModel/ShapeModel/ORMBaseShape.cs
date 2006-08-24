@@ -611,7 +611,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							NodeShape childShape = childShapes[i] as NodeShape;
 							if (childShape != null)
 							{
-								RectangleD childBounds = childShape.AbsoluteBoundingBox;
+								RectangleD childBounds = childShape.AbsoluteBounds;
 								if (checkX && (childBounds.Left > (newBounds.Right - xChange)))
 								{
 									change.X = xChange;

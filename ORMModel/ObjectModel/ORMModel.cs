@@ -66,12 +66,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// serialized with the model.
 		/// </summary>
 		AddImplicitPresentationElements = 600,
-		/// <summary>
-		/// Remove any orphaned presentation elements, meaning any
-		/// PresentationElement where the ModelElement role property is null.
-		/// Orphaned pels are currently not supported.
-		/// </summary>
-		RemoveOrphanedPresentationElements = 700,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel

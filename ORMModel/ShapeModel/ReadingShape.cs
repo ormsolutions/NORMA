@@ -254,7 +254,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Role Events
 		#endregion // Model Event Hookup and Handlers
-		#region overrides
+		#region Base Overrides
 		/// <summary>
 		/// Associate to the reading's text property
 		/// </summary>
@@ -306,7 +306,44 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return new ReadingAutoSizeTextField();
 		}
-		#endregion
+		/// <summary>
+		/// Create a new reading shape for a remaining reading order if this reading order
+		/// is deleted.
+		/// </summary>
+		protected override void OnDeleting()
+		{
+			Store store = Store;
+			if (!store.InUndoRedoOrRollback)
+			{
+				FactTypeShape parentShape;
+				FactType factType;
+				ReadingOrder oldOrder;
+				if (null != (oldOrder = ModelElement as ReadingOrder) &&
+					oldOrder.IsDeleting &&
+					null != (parentShape = ParentShape as FactTypeShape) &&
+					!parentShape.IsDeleting &&
+					null != (factType = parentShape.ModelElement as FactType))
+				{
+					LinkedElementCollection<ReadingOrder> remainingOrders = factType.ReadingOrderCollection;
+					if (remainingOrders.Count != 0)
+					{
+						LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
+						Reading newReading = FactType.GetMatchingReading(remainingOrders, oldOrder, roles[0], null, false, false, roles, true);
+						if (newReading != null)
+						{
+							ReadingOrder newOrder = newReading.ReadingOrder;
+							if (newOrder != null)
+							{
+								ReadingShape newShape = new ReadingShape(Partition, new PropertyAssignment[] { new PropertyAssignment(NodeShape.AbsoluteBoundsDomainPropertyId, AbsoluteBounds) });
+								newShape.Associate(newOrder);
+								parentShape.RelativeChildShapes.Add(newShape);
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Base Overrides
 		#region Helper methods
 		/// <summary>
 		/// Notifies the shape that the currently cached display text may no longer

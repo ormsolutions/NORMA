@@ -3042,7 +3042,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				PointD objCenter = oppositeShape.AbsoluteCenter;
 				RectangleD factBox = myRolesShapeField.GetBounds(this); // This finds the role box for both objectified and simple fact types
-				factBox.Offset(AbsoluteBoundingBox.Location);
+				factBox.Offset(AbsoluteBounds.Location);
 
 				// Decide whether top or bottom works best
 				double finalY = (Math.Abs(objCenter.Y - factBox.Top) <= Math.Abs(objCenter.Y - factBox.Bottom)) ? factBox.Top : factBox.Bottom;
@@ -3922,7 +3922,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								ObjectTypeShape newShape = new ObjectTypeShape(store);
 								shapeDiagram.NestedChildShapes.Add(newShape);
-								newShape.AbsoluteBounds = oldShape.AbsoluteBoundingBox;
+								newShape.AbsoluteBounds = oldShape.AbsoluteBounds;
 								oldShape.Delete();
 								newShape.Associate(nestingType);
 								newShape.AutoResize();
@@ -3955,6 +3955,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									Diagram.FixUpDiagram(nestingTypeModel, nestingType);
 									objectShape = currentDiagram.FindShapeForElement<NodeShape>(nestingType);
+									// We're placing the shape explicitly, don't allow an automatic placement
+									IDictionary unplacedShapes;
+									if (objectShape != null &&
+										null != (unplacedShapes = UnplacedShapesContext.GetUnplacedShapesMap(link.Store.TransactionManager.CurrentTransaction, currentDiagram.Id)) &&
+										unplacedShapes.Contains(objectShape))
+									{
+										unplacedShapes.Remove(objectShape);
+									}
 								}
 								if (objectShape != null)
 								{
@@ -4461,22 +4469,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// </summary>
 	public partial class ObjectifiedFactTypeNameShape : IModelErrorActivation, ISelectionContainerFilter
 	{
-		private static AutoSizeTextField myTextShapeField;
-		/// <summary>
-		/// Store per-type value for the base class
-		/// </summary>
-		protected override AutoSizeTextField TextShapeField
-		{
-			get
-			{
-				return myTextShapeField;
-			}
-			set
-			{
-				Debug.Assert(myTextShapeField == null); // This should only be called once per type
-				myTextShapeField = value;
-			}
-		}
+		#region ObjectifiedFactTypeNameShape specific
 		/// <summary>
 		/// Get the ObjectType associated with this shape
 		/// </summary>s
@@ -4487,6 +4480,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return ModelElement as ObjectType;
 			}
 		}
+		#endregion // ObjectifiedFactTypeNameShape specific
+		#region Shape initialize overrides
 		/// <summary>
 		/// Move a new name label above the parent fact type shape
 		/// </summary>
@@ -4497,6 +4492,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Location = new PointD(0, -1.5 * size.Height);
 		}
 		/// <summary>
+		/// Allow a role value constraint to attach to this object shape.
+		/// Caters for reference modes on objectified facts.
+		/// </summary>
+		protected override bool ShouldAddShapeForElement(ModelElement element)
+		{
+			if (element is RoleValueConstraint)
+			{
+				return true;
+			}
+			return base.ShouldAddShapeForElement(element);
+		}
+		#endregion // Shape initialize overrides
+		#region Customize appearance
+		/// <summary>
 		/// Connect lines to the edge of the rectangular shape
 		/// </summary>
 		public override ShapeGeometry ShapeGeometry
@@ -4506,6 +4515,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return CustomFoldRectangleShapeGeometry.ShapeGeometry;
 			}
 		}
+		#endregion // Customize appearance
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
@@ -4568,10 +4578,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Mouse handling
 		#region ObjectNameTextField class
+		private static AutoSizeTextField myTextShapeField;
+		/// <summary>
+		/// Store per-type value for the base class
+		/// </summary>
+		protected override AutoSizeTextField TextShapeField
+		{
+			get
+			{
+				return myTextShapeField;
+			}
+			set
+			{
+				Debug.Assert(myTextShapeField == null); // This should only be called once per type
+				myTextShapeField = value;
+			}
+		}
 		/// <summary>
 		/// Create a text field that will correctly display objectified type names
 		/// </summary>
-		/// <returns></returns>
 		protected override AutoSizeTextField CreateAutoSizeTextField()
 		{
 			return new ObjectNameTextField();
