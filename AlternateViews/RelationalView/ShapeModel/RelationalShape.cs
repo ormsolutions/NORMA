@@ -191,9 +191,21 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		#endregion // Validation Rules
 		#region Initializers
 		/// <summary>
-		/// A counter for foreign key constraints used when generating <see cref="ForeignKey"/> names.
+		/// The string that denotes a primary key.
 		/// </summary>
-		private static int myForeignKeyCount = 0;
+		private const string PRIMARY_KEY = "PK";
+		/// <summary>
+		/// The string that prepends an alternate key.
+		/// </summary>
+		private const string ALTERNATE_KEY = "U";
+		/// <summary>
+		/// The string that prepends a foreign key.
+		/// </summary>
+		private const string FOREIGN_KEY = "FK";
+		///// <summary>
+		///// A counter for foreign key constraints used when generating <see cref="ForeignKey"/> names.
+		///// </summary>
+		//private static int myForeignKeyCount = 0;
 		/// <summary>
 		/// A counter for <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/>s that call the
 		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel.DelayedConceptTypeAddedRule"/>. Ensures
@@ -211,7 +223,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			{
 				myConceptTypeCount = 0;
 				// Reset the tables and foreign key count.
-				myForeignKeyCount = 0;
 				TableCollection.Clear();
 
 				// Generate the tables for each ConceptType
@@ -227,11 +238,12 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				// Generate the columns for each ConceptType
 				LinkedElementCollection<Table> tables = this.TableCollection;
 
-				int uniquenessCount = 0;
+				int uniquenessCount = 0, foreignKeyCount = 0;
 				foreach (Table table in tables)
 				{
-					GenerateColumnsForConceptType(table, model, table.ConceptType, true, ref uniquenessCount);
+					GenerateColumnsForConceptType(table, model, table.ConceptType, true, ref uniquenessCount, ref foreignKeyCount);
 					uniquenessCount = 0;
+					foreignKeyCount = 0;
 				}
 				if (t.HasPendingChanges)
 				{
@@ -254,7 +266,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// <param name="uniquenessConstraintCount">The current number of <see cref="T:Neumont.Tools.ORM.Views.RelationalView.UniquenessConstraint"/>
 		/// objects on the current table.</param>
 		/// <returns><see cref="T:System.Collections.IEnumerable&lt;Column&gt;"/></returns>
-		private IEnumerable<Column> GenerateColumnsForConceptType(Table table, OIALModel.OIALModel oialModel, ConceptType conceptType, bool isTopLevel, ref int uniquenessConstraintCount)
+		private IEnumerable<Column> GenerateColumnsForConceptType(Table table, OIALModel.OIALModel oialModel, ConceptType conceptType, bool isTopLevel, ref int uniquenessConstraintCount, ref int foreignKeyCount)
 		{
 			Store theStore = Store;
 
@@ -279,7 +291,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					foreach (SingleChildUniquenessConstraint uConstraint in informationType.SingleChildConstraintCollection)
 					{
 						bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
-						string constraintName = isPrimary ? "PK" : string.Concat("U", ++uniquenessConstraintCount);
+						string constraintName = isPrimary ? PRIMARY_KEY : string.Concat(ALTERNATE_KEY, ++uniquenessConstraintCount);
 
 						// Uniqueness constraints cannot be preferred if the ConceptType of interest is not top-level.
 						UniquenessConstraint relationalUniquenessConstraint = new UniquenessConstraint(theStore,
@@ -296,7 +308,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					IEnumerable<Column> foreignKeyColumns = GetPreferredIdentifierColumnsForConceptTypeRef(oialModel, conceptTypeRef, isNullable, newPrefix);
 					tableColumns.AddRange(foreignKeyColumns);
 					ForeignKey foreignKey = new ForeignKey(theStore,
-						new PropertyAssignment(ForeignKey.NameDomainPropertyId, string.Concat("FK", ++myForeignKeyCount)));
+						new PropertyAssignment(ForeignKey.NameDomainPropertyId, string.Concat(FOREIGN_KEY, ++foreignKeyCount)));
 					foreignKey.Table = table;
 					foreignKey.ColumnCollection.AddRange(foreignKeyColumns);
 					table.ReferencedTableCollection.Add(FindTable(conceptTypeRef.ReferencedConceptType));
@@ -310,7 +322,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					// Generate columns that this absorbed concept type would create, if any.
 					tableColumns.AddRange(
-						GenerateColumnsForConceptType(table, oialModel, absorbedConceptType.AbsorbedConceptType, false, ref uniquenessConstraintCount)
+						GenerateColumnsForConceptType(table, oialModel, absorbedConceptType.AbsorbedConceptType, false, ref uniquenessConstraintCount, ref foreignKeyCount)
 						);
 				}
 			}
@@ -336,10 +348,11 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 							break;
 						}
 					}
-					if (shouldContinue)
-					{
-						continue;
-					}
+					
+					//if (shouldContinue)
+					//{
+					//    continue;
+					//}
 					// Ensures that the parents of all ConceptTypeChild objects in this UniquenessConstraint belong to this ConceptType
 					if (addConstraint)
 					{

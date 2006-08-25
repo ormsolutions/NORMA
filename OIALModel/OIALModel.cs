@@ -1377,7 +1377,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// passed to this method, or if that is an empty string, the name of that <see cref="Role"/>'s role player.</param>
 		private void GetInformationTypes(Store store, ConceptType conceptType, Role oppositeRole, string baseName, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints, bool useRoleName)
 		{
-			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<RoleBase>(), mandatory, constraints, useRoleName);
+			GetInformationTypesInternal(store, conceptType, oppositeRole, baseName, true, new LinkedList<RoleBase>(), mandatory, constraints, useRoleName, !useRoleName);
 			// Later on there will be more processing here to handle nullable equality constraints, etc.
 		}
 		/// <summary>
@@ -1392,7 +1392,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// passed to this method, or if that is an empty string, the name of that <see cref="Role"/>'s role player. AS more calls to this
 		/// method are made recursively, baseName will be added onto.</param>
 		/// <param name="isFirst">If this is the first time through this method, true. Otherwise, false.</param>
-		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<RoleBase> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints, bool useRoleName)
+		private void GetInformationTypesInternal(Store store, ConceptType conceptType, Role oppositeRole, string baseName, bool isFirst, LinkedList<RoleBase> pathNodes, MandatoryConstraintModality mandatory, IEnumerable<SingleChildConstraint> constraints, bool isPartOfCompositeIdentifier, bool forceRoleNames)
 		{
 			// We will most likely add on to the baseName parameter passed to this method.
 			string newBaseName = baseName;
@@ -1402,12 +1402,24 @@ namespace Neumont.Tools.ORM.OIALModel
 			// and add our Roles (Path Roles) to the ElementLink created (ConceptTypeHasInformationType).
 			if (oppositeRolePlayer.IsValueType)
 			{
-				if (!isFirst && !useRoleName)
+				// If it is first, we don't do anything to change the name. Also, if it isn't part of a preferred identifier,
+				// then we are not interested in changing the name either.
+				if (!isFirst && isPartOfCompositeIdentifier)
 				{
 					string concatName = oppositeRole.Name;
-					if (string.IsNullOrEmpty(concatName))
+
+					// If the opposite role has a name, then we use it as the name of the information type.
+					// Otherwise, we concatenate the previous name with the role player name.
+					if (!string.IsNullOrEmpty(concatName))
 					{
-						concatName = oppositeRolePlayer.Name;
+						if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
+						{
+							newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
+						}
+					}
+					else
+					{
+						newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
 					}
 				}
 				InformationTypeFormat informationTypeFormat = GetInformationTypeFormat(oppositeRolePlayer);
@@ -1421,7 +1433,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				informationType.PathRoleCollection.AddRange(pathNodes);
 				informationType.PathRoleCollection.Add(oppositeRole);
 				informationType.Mandatory = mandatory;
-				informationType.Name = newBaseName;
+				informationType.Name = newBaseName.TrimEnd(' ');
 				informationType.SingleChildConstraintCollection.AddRange(constraints);
 			}
 			// TODO: Figure out a way to account for ConceptTypeRefs across multiple path role links.
@@ -1466,32 +1478,33 @@ namespace Neumont.Tools.ORM.OIALModel
 					int constraintsCount = roleSequenceConstraints.Count;
 					for (int j = 0; j < constraintsCount; ++j)
 					{
-						UniquenessConstraint uConstraint = roleSequenceConstraints[j] as UniquenessConstraint;
+						ConstraintRoleSequence constraintRoleSequence = roleSequenceConstraints[j];
+						UniquenessConstraint uConstraint = constraintRoleSequence as UniquenessConstraint;
 
 						// We cannot be sure that constraints that we receive span only one role,
 						// so we must check for this.
-						if (uConstraint != null && uConstraint.IsPreferred && ((uConstraint.RoleCollection.Count == 1 && uConstraint.IsInternal) || !uConstraint.IsInternal))
+						bool hasCompositeIdentifier = constraintRoleSequence.RoleCollection.Count != 1;
+						if (uConstraint != null && uConstraint.IsPreferred && ((!hasCompositeIdentifier && uConstraint.IsInternal) || !uConstraint.IsInternal))
 						{
-							string concatName = oppRole.Name;
-							if (!isFirst && !useRoleName)
+							// If it is part of a composite identifier, then we try to use the role name. If there is no role name,
+							// then we concatenate the previous name with the current object type name.
+							if (!isFirst && isPartOfCompositeIdentifier)
 							{
-								useRoleName = true;
-								if (string.IsNullOrEmpty(concatName))
-								{
-									useRoleName = false;
-									concatName = oppositeRolePlayer.Name;
-								}
-								newBaseName = string.Concat(baseName, "_", concatName);
-							}
-							else
-							{
+								string concatName = oppositeRole.Name;
 								if (!string.IsNullOrEmpty(concatName))
 								{
-									newBaseName = concatName;
-									useRoleName = true;
+									if (!string.IsNullOrEmpty(concatName.TrimEnd(' ')))
+									{
+										newBaseName = forceRoleNames ? concatName : string.Concat(newBaseName, "_", concatName);
+										forceRoleNames = true;
+									}
+								}
+								else
+								{
+									newBaseName = string.Concat(newBaseName, "_", oppositeRolePlayer.Name);
 								}
 							}
-							GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, useRoleName);
+							GetInformationTypesInternal(store, conceptType, oppRole, newBaseName, false, pathNodes, mandatory, constraints, hasCompositeIdentifier, forceRoleNames);
 						}
 					}
 				}
@@ -1514,9 +1527,9 @@ namespace Neumont.Tools.ORM.OIALModel
 				ConstraintRoleSequence constraintRoleSequence = constraintCollection[i];
 
 				UniquenessConstraint uConstraint = constraintRoleSequence as UniquenessConstraint;
-				if (uConstraint != null && uConstraint.RoleCollection.Count == 1)
+				if (uConstraint != null && uConstraint.RoleCollection.Count == 1 && uConstraint.IsInternal)
 				{
-					Debug.Assert(uConstraint.IsInternal, "Uniqueness Constraint with role collection count of 1 must be internal.");
+					//Debug.Assert(uConstraint.IsInternal, "Uniqueness Constraint with role collection count of 1 must be internal.");
 					yield return new SingleChildUniquenessConstraint(store,
 						new PropertyAssignment(SingleChildUniquenessConstraint.IsPreferredDomainPropertyId, uConstraint.IsPreferred),
 						new PropertyAssignment(SingleChildUniquenessConstraint.ModalityDomainPropertyId, uConstraint.Modality));
@@ -1681,6 +1694,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		#endregion // ORMToOIAL Algorithms
 		#region Helper Methods
 #if USE_UNBINARIZED_UNARIES
+		/// <summary>
+		/// Gets the reading for a unary fact type, which can interpreted to be its name at a logical level (e.g. Relational)
+		/// </summary>
+		/// <param name="unaryFactType">The <see cref="T:Neumont.Tools.ORM.ObjectModel.FactType"/> whose reading order is of interest.</param>
+		/// <returns>Column name</returns>
 		private string GetUnaryReading(FactType unaryFactType)
 		{
 			if (unaryFactType.RoleCollection.Count != 1)

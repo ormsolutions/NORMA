@@ -400,10 +400,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (linkCount > 3) // Easy initial check
 					{
 						int count = 0;
+						DomainModelInfo nativeModel = preferredConstraint.GetDomainClass().DomainModel;
 						for (int i = 0; i < linkCount; ++i)
 						{
 							ElementLink link = links[i];
-							if (!link.IsDeleting && !(link is PresentationViewsSubject) && !(link is ORMModelElementHasExtensionElement))
+							if (!link.IsDeleting && link.GetDomainClass().DomainModel == nativeModel && !(link is ORMModelElementHasExtensionElement))
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,

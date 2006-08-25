@@ -335,6 +335,10 @@ namespace Neumont.Tools.ORM.Shell
 			using (Transaction t = store.TransactionManager.BeginTransaction("Relational View"))
 			{
 				ReadOnlyCollection<ModelElement> models = store.ElementDirectory.FindElements(new Guid("7FAEDEEC-0A27-4417-B74B-422A67A67F50"));
+				if (models.Count == 0)
+				{
+					return;
+				}
 				System.Reflection.Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 				Type relationalDiagramType = null;
 				Type relationalShapeModelType = null;
