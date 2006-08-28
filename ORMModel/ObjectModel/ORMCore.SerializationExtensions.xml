@@ -183,13 +183,15 @@
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueTypeInstance" Name="ValueTypeInstance" Override="true">
-		<se:Attribute ID="Value" WriteStyle="Element"/>
+		<se:Attribute ID="Value" WriteStyle="Element"/> 
+		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="EntityTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeRoleInstance" RoleName="Role" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueTypeInstanceHasCompatibleValueTypeInstanceValueError" RoleName="CompatibleValueTypeInstanceValueError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeInstanceHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EntityTypeInstance" Name="EntityTypeInstance" Override="true">
+		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="RoleInstances">
 			<se:Link RelationshipName="EntityTypeInstanceHasRoleInstance" RoleName="RoleInstance"/>
 		</se:ChildElement>

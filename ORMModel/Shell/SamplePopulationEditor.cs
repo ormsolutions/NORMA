@@ -2518,12 +2518,16 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					if (IsReadOnly)
 					{
-						return myProxyObjectType.EntityTypeInstanceCollection.Count;
+						if (myProxyObjectType != null)
+						{
+							return myProxyObjectType.EntityTypeInstanceCollection.Count;
+						}
 					}
 					else
 					{
 						return myCachedInstances.Count + base.VisibleItemCount;
 					}
+					return 0;
 				}
 			}
 			#endregion
