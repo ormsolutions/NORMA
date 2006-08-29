@@ -45,7 +45,6 @@ namespace Neumont.Tools.ORM.Shell
 		public ORMReferenceModeEditorToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
-			LoadWindow();
 		}
 		#endregion
 		#region TreeControl Property
@@ -95,6 +94,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					myForm = form = new ReferenceModeViewForm();
 				}
+				LoadWindow();
 				return form;
 			}
 		}
