@@ -18,7 +18,7 @@
 			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, Clé Diggins</xs:appinfo>
 		<xs:documentation>Database Intermediate Language Expressions &amp; Predicates</xs:documentation>
 		<xs:documentation>Encompasses SQL Standard Foundation "6 - Scalar Expressions", "8 - Predicates", "10 - Additional common elements", and "15 - Control statements"</xs:documentation>
 	</xs:annotation>
@@ -73,8 +73,7 @@
 	</xs:complexType>
 	<xs:group name="rowValueConstructor">
 		<xs:choice>
-			<xs:group ref="dep:commonValueExpression"/>
-			<xs:group ref="dep:booleanValueExpression"/>
+			<xs:group ref="dep:valueExpression" minOccurs="1" maxOccurs="unbounded" />
 		</xs:choice>
 	</xs:group>
 
@@ -353,6 +352,7 @@
 	<xs:complexType name="booleanValueExpression">
 		<xs:group ref="dep:booleanValueExpression"/>
 	</xs:complexType>
+	
 	<xs:group name="booleanValueExpression">
 		<xs:choice>
 			<xs:group ref="dep:predicate"/>

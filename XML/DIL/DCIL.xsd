@@ -6,6 +6,7 @@
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL" 
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
 	version="0.9">
@@ -448,7 +449,7 @@
 				<xs:element name="parameter" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="dataType" type="dcl:predefinedDataType"/>
+							<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
 						</xs:sequence>
 						<xs:attribute name="mode" use="required">
 							<xs:simpleType>

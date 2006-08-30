@@ -8,7 +8,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<!-- Contributors: Kevin M. Owen, Corey Kaylor -->
+<!-- Contributors: Kevin M. Owen, Corey Kaylor, Clé Diggins -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
@@ -38,16 +38,17 @@
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableReferences"/>
 			<xsl:apply-templates select="dcl:trigger"/>
+			<xsl:apply-templates select="dcl:procedure" />
 			<dms:commitStatement/>
 		</dil:root>
 	</xsl:template>
 
 	<xsl:template name="GenerateSchemaAttribute">
 		<xsl:if test="ancestor::dcl:schema">
-				<xsl:attribute name="schema">
-					<xsl:value-of select="ancestor::dcl:schema[1]/@name"/>
-				</xsl:attribute>
-			</xsl:if>
+			<xsl:attribute name="schema">
+				<xsl:value-of select="ancestor::dcl:schema[1]/@name"/>
+			</xsl:attribute>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="dcl:domainDataType">
@@ -148,6 +149,49 @@
 				</ddl:columnConstraintDefinition>
 			</xsl:if>
 		</ddl:columnDefinition>
+	</xsl:template>
+
+	<xsl:template match="dcl:procedure">
+		<ddl:sqlInvokedProcedure name="{@name}">
+			<xsl:apply-templates select="child::*" />
+		</ddl:sqlInvokedProcedure>
+	</xsl:template>
+
+	<xsl:template match="dcl:parameter">
+		<ddl:sqlParameterDeclaration name="{@name}" mode="{@mode}">
+					<xsl:apply-templates select="dcl:predefinedDataType"/>
+		</ddl:sqlParameterDeclaration>
+	</xsl:template>
+
+	<xsl:template match="dml:insertStatement">
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<dml:insertStatement schema="{dsf:makeValidIdentifier(@schema)}" name="{dsf:makeValidIdentifier(@name)}">
+				<dml:fromConstructor>
+					<xsl:for-each select="dml:fromConstructor/ddl:column">
+						<ddl:column name="{@name}"/>
+					</xsl:for-each>
+					<xsl:for-each select="dml:fromConstructor/ddl:column">
+						<dep:sqlParameterReference name="{@name}"/>
+					</xsl:for-each>
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</ddl:sqlRoutineSpec>
+	</xsl:template>
+
+	<xsl:template match="dml:updateStatement">
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+			<xsl:copy-of select="." />
+		</ddl:sqlRoutineSpec>
+	</xsl:template>
+
+	<xsl:template match="dml:deleteStatement">
+		<ddl:sqlRoutineSpec rightsClause="INVOKER">
+		<dml:deleteStatement schema="{dsf:makeValidIdentifier(@schema)}" name="{dsf:makeValidIdentifier(@name)}">
+			<xsl:for-each select="dml:whereClause">
+				<xsl:copy-of select="." />
+			</xsl:for-each>
+		</dml:deleteStatement>
+		</ddl:sqlRoutineSpec>
 	</xsl:template>
 
 	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateConstraint">

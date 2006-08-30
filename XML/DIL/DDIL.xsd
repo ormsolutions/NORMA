@@ -20,7 +20,7 @@
 			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, Clé Diggins</xs:appinfo>
 		<xs:documentation>Data Definition Intermediate Language</xs:documentation>
 		<xs:documentation>Encompasses SQL Standard Foundation "11 - Schema definition and manipulation" and "12 - Access control"</xs:documentation>
 	</xs:annotation>
@@ -138,11 +138,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="column" minOccurs="0" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:attribute name="name" type="ddt:identifier"/>
-					</xs:complexType>
-				</xs:element>
+				<xs:element ref="ddl:column" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element ref="dml:subquery"/>
 			</xs:sequence>
 			<xs:attribute name="data" use="required">
@@ -205,6 +201,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
 	<xs:element name="dropColumnDefinition">
 		<xs:annotation>
 			<xs:documentation>DROP COLUMN &lt;column name&gt; &lt;drop behavior&gt;</xs:documentation>
@@ -252,11 +249,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="column" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:attribute name="name" use="required" type="ddt:identifier"/>
-					</xs:complexType>
-				</xs:element>
+				<xs:element ref="ddl:column" maxOccurs="unbounded" />
 			</xs:sequence>
 			<xs:attribute name="type" use="required">
 				<xs:simpleType>
@@ -275,11 +268,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="column" maxOccurs="unbounded">
-					<xs:complexType>
-						<xs:attribute name="name" use="required" type="ddt:identifier"/>
-					</xs:complexType>
-				</xs:element>
+				<xs:element ref="ddl:column" maxOccurs="unbounded" />
 				<xs:element ref="ddl:referencesSpecification"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -548,6 +537,13 @@
 		</xs:annotation>
 	</xs:element>
 
+	<!-- Typed by Cle' -->
+	<xs:element name="column">
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="triggerDefinition">
 		<xs:annotation>
 			<xs:documentation>CREATE TRIGGER &lt;trigger name&gt; &lt;trigger action time&gt; &lt;trigger event&gt;</xs:documentation>
@@ -565,11 +561,7 @@
 							</xs:annotation>
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="column" minOccurs="0" maxOccurs="unbounded">
-										<xs:complexType>
-											<xs:attribute name="name" use="required" type="ddt:identifier"/>
-										</xs:complexType>
-									</xs:element>
+									<xs:element ref="ddl:column" minOccurs="0" maxOccurs="unbounded" />
 								</xs:sequence>
 								<xs:attribute name="type" use="required">
 									<xs:simpleType>
@@ -1039,11 +1031,7 @@
 						</xs:annotation>
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="column" minOccurs="0" maxOccurs="unbounded">
-									<xs:complexType>
-										<xs:attribute name="name" use="required" type="ddt:identifier"/>
-									</xs:complexType>
-								</xs:element>
+								<xs:element ref="ddl:column" minOccurs="0" maxOccurs="unbounded" />
 							</xs:sequence>
 							<xs:attribute name="privilegeType" use="required">
 								<xs:simpleType>

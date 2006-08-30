@@ -8,7 +8,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
-<!-- Contributors: Kevin M. Owen, Corey Kaylor -->
+<!-- Contributors: Kevin M. Owen, Corey Kaylor, Cle' Diggins -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
@@ -19,6 +19,8 @@
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL" 
+	xmlns:ddl="http://schemas.orm.net/DIL/DDIL" 
 	extension-element-prefixes="exsl dsf"
 	exclude-result-prefixes="odt oil">
 
@@ -39,19 +41,41 @@
 			</xsl:variable>
 			<xsl:variable name="dataTypes" select="exsl:node-set($dataTypesFragment)/child::*"/>
 
-			<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainDataTypeRef]/@name]">
-				<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}">
-					<xsl:apply-templates select="." mode="GenerateDomain"/>
-				</dcl:domainDataType>
-			</xsl:for-each>
+			<xsl:variable name="domainDataTypesFragment">
+				<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainDataTypeRef]/@name]">
+					<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}">
+						<xsl:apply-templates select="." mode="GenerateDomain"/>
+					</dcl:domainDataType>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="domainDataTypes" select="exsl:node-set($domainDataTypesFragment)/child::*"/>
+			<xsl:copy-of select="$domainDataTypes"/>
 
 			<xsl:for-each select="oil:conceptType">
-				<dcl:table name="{dsf:makeValidIdentifier(@name)}">
-					<xsl:apply-templates select="." mode="GenerateTableContent">
-						<xsl:with-param name="OilModel" select="$oilModel"/>
-						<xsl:with-param name="DataTypes" select="$dataTypes"/>
-					</xsl:apply-templates>
-				</dcl:table>
+
+				<xsl:variable name="tableFragment">
+					<dcl:table name="{dsf:makeValidIdentifier(@name)}">
+						<xsl:apply-templates select="." mode="GenerateTableContent">
+							<xsl:with-param name="OilModel" select="$oilModel"/>
+							<xsl:with-param name="DataTypes" select="$dataTypes"/>
+						</xsl:apply-templates>
+					</dcl:table>
+				</xsl:variable>
+				<xsl:variable name="table" select="exsl:node-set($tableFragment)/child::*"/>
+				<xsl:copy-of select="$table"/>
+
+				<!--Insert Procedure-->
+				<xsl:apply-templates select="." mode="GenerateInsertProcedure">
+					<xsl:with-param name="Table" select="$table"/>
+					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+				</xsl:apply-templates>
+				<!-- Delete Procedure-->
+				<xsl:apply-templates select="." mode="GenerateDeleteProcedure">
+					<xsl:with-param name="Table" select="$table"/>
+					<xsl:with-param name="DomainDataTypes" select="$domainDataTypes"/>
+					<xsl:with-param name="OilModel" select="$oilModel"/>
+					<xsl:with-param name="DataTypes" select="$dataTypes"/>
+				</xsl:apply-templates>
 			</xsl:for-each>
 
 		</dcl:schema>
@@ -198,13 +222,13 @@
 		</dcl:checkConstraint>
 	</xsl:template>
 	<xsl:template match="odt:floatingPointNumber" mode="GenerateDomain">
-			<dcl:predefinedDataType name="FLOAT">
-				<xsl:attribute name="precision">
-					<xsl:call-template name="GetFloatPrecisionAsNumber">
-						<xsl:with-param name="Precision" select="@precision"/>
-					</xsl:call-template>
-				</xsl:attribute>
-			</dcl:predefinedDataType>
+		<dcl:predefinedDataType name="FLOAT">
+			<xsl:attribute name="precision">
+				<xsl:call-template name="GetFloatPrecisionAsNumber">
+					<xsl:with-param name="Precision" select="@precision"/>
+				</xsl:call-template>
+			</xsl:attribute>
+		</dcl:predefinedDataType>
 		<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat(@name,'_Chk'))}">
 			<xsl:variable name="enumerations">
 				<xsl:if test="odt:enumeration">
@@ -417,6 +441,70 @@
 			</dcl:uniquenessConstraint>
 		</xsl:for-each>
 
+	</xsl:template>
+
+	<!--Generate the insert procedure-->
+	<xsl:template match="oil:conceptType" mode="GenerateInsertProcedure">
+		<xsl:param name="Table"/>
+		<xsl:param name="DomainDataTypes"/>
+		<dcl:procedure name="{dsf:makeValidIdentifier(concat('Insert',@name))}" sqlDataAccessIndication="MODIFIES SQL DATA">
+			<xsl:for-each select="$Table/dcl:column">
+				<dcl:parameter mode="IN" name="{@name}">
+					<xsl:copy-of select="dcl:predefinedDataType"/>
+					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+				</dcl:parameter>
+			</xsl:for-each>
+			<dml:insertStatement schema="{dsf:makeValidIdentifier(../@name)}" name="{dsf:makeValidIdentifier(@name)}">
+				<dml:fromConstructor>
+					<xsl:for-each select="$Table/dcl:column">
+						<ddl:column name="{@name}"/>
+					</xsl:for-each>
+					<xsl:for-each select="$Table/dcl:column">
+						<dep:sqlParameterReference name="{@name}"/>
+					</xsl:for-each>
+				</dml:fromConstructor>
+			</dml:insertStatement>
+		</dcl:procedure>
+	</xsl:template>
+
+	<!-- Generate the delete statement -->
+	<xsl:template match="oil:conceptType" mode="GenerateDeleteProcedure">
+		<xsl:param name="Table" />
+		<xsl:param name="OilModel" />
+		<xsl:param name="DomainDataTypes" />
+		<xsl:param name="DataTypes" />
+		<dcl:procedure name="{dsf:makeValidIdentifier(concat('Delete',@name))}" sqlDataAccessIndication="MODIFIES SQL DATA">
+
+			<xsl:variable name="preferredIdentifierColumnsFragment">
+				<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
+					<xsl:with-param name="OilModel" select="$OilModel"/>
+					<xsl:with-param name="DataTypes" select="$DataTypes"/>
+					<xsl:with-param name="TargetConceptType" select="."/>
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:for-each select="exsl:node-set($preferredIdentifierColumnsFragment)/child::*">
+				<dcl:parameter mode="IN" name="{@name}">
+					<xsl:copy-of select="dcl:predefinedDataType"/>
+					<xsl:copy-of select="$DomainDataTypes[@name=current()/dcl:domainDataTypeRef/@name]/dcl:predefinedDataType"/>
+				</dcl:parameter>
+			</xsl:for-each>
+
+			<dml:deleteStatement schema="{dsf:makeValidIdentifier(../@name)}" name="{dsf:makeValidIdentifier(@name)}">
+				<dml:whereClause>
+					<dml:searchCondition>
+							<dep:and>
+								<xsl:for-each select="oil:roleSequenceUniquenessConstraint[@isPreferred='true']/oil:roleSequence/oil:typeRef">
+									<dep:comparisonPredicate operator="equals">
+										<dep:columnReference name="{@targetChild}"/>
+										<dep:sqlParameterReference name="{@targetChild}"/>
+									</dep:comparisonPredicate>
+								</xsl:for-each>
+							</dep:and>
+					</dml:searchCondition>
+				</dml:whereClause>
+			</dml:deleteStatement>
+		</dcl:procedure>
 	</xsl:template>
 
 

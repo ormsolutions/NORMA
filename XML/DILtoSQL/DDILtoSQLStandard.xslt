@@ -33,6 +33,7 @@
 	<xsl:param name="RightParen" select="')'"/>
 	<xsl:param name="ConcatenationOperator" select="'||'"/>
 	<xsl:param name="StatementDelimeter" select="';'"/>
+	<xsl:param name="setClauseEqualsOperator" select="'='" />
 
 	<!-- Schema Definition pg.519 -->
 
@@ -570,6 +571,9 @@
 
 	<xsl:template match="dep:sqlParameterReference | dep:columnReference">
 		<xsl:value-of select="@name"/>
+		<xsl:if test="not(position()=last())">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="dep:dynamicParameterSpecification">
@@ -691,6 +695,7 @@
 			<xsl:apply-templates select="."/>
 			<xsl:if test="not(position()=last())">
 				<xsl:text> AND </xsl:text>
+				<xsl:value-of select="$NewLine"/>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
@@ -719,6 +724,100 @@
 	</xsl:template>
 
 	<!-- End of Value Expression -->
+
+	<!-- Stored Procedure Definitions -->
+
+	<xsl:template match="ddl:sqlInvokedProcedure">
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>CREATE PROCEDURE </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="ddl:sqlParameterDeclaration" />
+		<xsl:apply-templates select="ddl:sqlRoutineSpec" />
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="ddl:sqlParameterDeclaration">
+		<xsl:value-of select="@name"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates select="child::*" />
+		<xsl:if test="not(position()=last())">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="ddl:sqlRoutineSpec">
+		<xsl:text>AS</xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+
+	<xsl:template match="dml:insertStatement">
+		<xsl:text>INSERT INTO </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+	
+
+	<xsl:template match="dml:updateStatement">
+		<xsl:text>UPDATE </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+
+	<xsl:template match="dml:setClause">
+		<xsl:value-of select="$NewLine" />
+		<xsl:choose>
+			<xsl:when test="not(position()> 1)">
+			<xsl:text>SET </xsl:text>
+		</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>, </xsl:text>
+		</xsl:otherwise>
+		</xsl:choose>
+		
+		<xsl:value-of  select="@name"/>
+		<xsl:value-of select="$setClauseEqualsOperator" />
+		<xsl:apply-templates select="child::*" />
+		<xsl:value-of select="$NewLine" />
+	</xsl:template>
+
+	<xsl:template match="dml:fromConstructor">
+		<xsl:value-of select="$LeftParen" />
+		<xsl:apply-templates select="ddl:column"/>
+		<xsl:value-of select="$RightParen" />
+		<xsl:value-of select="$NewLine"/>
+		<xsl:text>VALUES </xsl:text>
+		<xsl:apply-templates select="dep:sqlParameterReference"/>
+	</xsl:template>
+
+	<xsl:template match="dml:deleteStatement">
+		<xsl:text>DELETE FROM </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="child::*"/>
+	</xsl:template>
+
+	<xsl:template match="dml:whereClause">
+		<xsl:text>WHERE </xsl:text>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+
+	<xsl:template match="dml:searchCondition">
+		<xsl:apply-templates select="child::*" />
+	</xsl:template>
+
+
+	<!--<xsl:template name="comparisonPredicateFormatter">
+		<xsl:param name="predicate" />
+		<xsl:apply-templates select="$predicate/child::*[1]"/>
+		<xsl:apply-templates select="@operator"/>
+		<xsl:apply-templates select="$predicate/child::*[2]"/>
+	</xsl:template>-->
+
+	<!-- End of Stored Procedure Definitions -->
 
 	<!-- Domain Definition -->
 
