@@ -637,7 +637,9 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<xsl:if test="not($isValueTypeValueConstraint)">
+				<!-- UNDONE: Forcing the issue for RingConstraint, the requirements for this are too hard
+					 to test and we will probably need this as the data for RingConstraint is filled in -->
+				<xsl:if test="not($isValueTypeValueConstraint or ($isSingleColumn and @type='RingConstraint'))">
 					<plx:local name="parentFact" dataTypeName="FactType">
 						<xsl:choose>
 							<xsl:when test="$isInternal and not($isRoleValue)">
@@ -729,12 +731,12 @@
 				</xsl:if>
 				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint)">
 					<xsl:if test="not($isSetComparisonConstraint)">
-					<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
-						<plx:passTypeParam dataTypeName="Role"/>
-						<plx:initialize>
-							<plx:callThis name="RoleCollection" type="property"/>
-						</plx:initialize>
-					</plx:local>
+						<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
+							<plx:passTypeParam dataTypeName="Role"/>
+							<plx:initialize>
+								<plx:callThis name="RoleCollection" type="property"/>
+							</plx:initialize>
+						</plx:local>
 					</xsl:if>
 					<plx:local name="allFacts" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="FactType"/>

@@ -363,12 +363,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValueTypeHasDataType dataTypeLink = anchorType.GetDataTypeLink();
 			if (dataTypeLink != null)
 			{
+				ObjectType unattachedRolePlayer;
 				WalkDescendedValueRoles(
 					(unattachedRole != null) ? new Role[]{unattachedRole} as IList<Role> : anchorType.PlayedRoleCollection,
 					dataTypeLink,
 					anchorType.ValueConstraint,
 					null,
-					false,
+					(null == unattachedRole || null == (unattachedRolePlayer = unattachedRole.RolePlayer)) ? false : !unattachedRolePlayer.IsValueType,
 					visitor);
 			}
 			else
