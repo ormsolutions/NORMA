@@ -733,8 +733,8 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (presentationElement is FactTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
-					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AlignShapes;
 				}
 				else if (null != presentationElement)
 				{
@@ -746,15 +746,15 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
 				if (presentationElement is ObjectTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
-					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage;
+					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
 				}
 				else if (presentationElement is ObjectifiedFactTypeNameShape)
 				{
 					// Treat deletion of ObjectifiedFactTypeNameShape is the same as deleting the associated FactShape
 					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
 					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
-					toleratedCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+					toleratedCommands |= ORMDesignerCommands.AutoLayout;
 					if (!primarySelection)
 					{
 						toleratedCommands |= ORMDesignerCommands.AlignShapes;
@@ -770,7 +770,7 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
 				if (presentationElement != null)
 				{
-					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 				}
 			}
 			else if (setConstraint != null || element is SetComparisonConstraint)
@@ -778,8 +778,8 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
 				if (presentationElement is ExternalConstraintShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
-					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.AutoLayout;
+					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.AutoLayout;
 				}
 				else if (null != presentationElement)
 				{
@@ -791,7 +791,7 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
 				if (presentationElement != null)
 				{
-					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.CopyImage;
+					toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 					if (!primarySelection)
 					{
 						toleratedCommands |= ORMDesignerCommands.AlignShapes;
@@ -800,8 +800,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (element is ORMModel)
 			{
-				visibleCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
-				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
+				visibleCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
 			}
 			else if (null != (role = element as Role))
 			{
@@ -814,7 +814,7 @@ namespace Neumont.Tools.ORM.Shell
 
 				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
 				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
-				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+				toleratedCommands |= ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AutoLayout;
 				if (role.IsMandatory)
 				{
 					checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
@@ -902,8 +902,8 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteModelNote | ORMDesignerCommands.DeleteAny;
 				if (presentationElement is ModelNoteShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteModelNoteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
-					enabledCommands |= ORMDesignerCommands.DeleteModelNoteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.CopyImage | ORMDesignerCommands.AutoLayout;
+					visibleCommands |= ORMDesignerCommands.DeleteModelNoteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.AutoLayout;
+					enabledCommands |= ORMDesignerCommands.DeleteModelNoteShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes | ORMDesignerCommands.AutoLayout;
 				}
 				else if (null != presentationElement)
 				{
@@ -924,7 +924,6 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				toleratedCommands |=
 					ORMDesignerCommands.AutoLayout |
-					ORMDesignerCommands.CopyImage |
 					ORMDesignerCommands.Delete |
 					ORMDesignerCommands.DeleteAny |
 					ORMDesignerCommands.DeleteShape |
@@ -934,17 +933,9 @@ namespace Neumont.Tools.ORM.Shell
 					toleratedCommands |= ORMDesignerCommands.AlignShapes;
 				}
 			}
-			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
-
-#if !DISABLE_RELATIONAL_VIEW_HACK
-			if (!(CurrentDiagram is ORMDiagram))
-			{
-				visibleCommands |= ORMDesignerCommands.CopyImage;
-				enabledCommands |= ORMDesignerCommands.CopyImage;
-			}
-#endif //!DISABLE_RELATIONAL_VIEW_HACK
+			// Turn on standard commands for all selections
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, Role role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -2095,86 +2086,61 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 #endif
-
 		/// <summary>
 		/// Copies the selected elements as an image.
 		/// </summary>
 		protected virtual void OnMenuCopyImage()
 		{
-			if (this.CurrentDiagram != null && this.CurrentDiagram.ActiveDiagramView != null)
+			Diagram diagram;
+			DiagramView diagramView;
+			if (null != (diagram = CurrentDiagram) &&
+				null != (diagramView = diagram.ActiveDiagramView))
 			{
-				// Get the links for which both endpoints are in our selection
-				ArrayList selectedElements = new ArrayList(this.SelectedElements);
-				ArrayList elementsToDraw = new ArrayList(selectedElements.Count * 2);
-				for (int i = 0; i < selectedElements.Count; i++)
+				SelectedShapesCollection selectedShapes = diagramView.DiagramClientView.Selection;
+				Dictionary<ShapeElement, ShapeElement> shapesDictionary = null;
+				foreach (DiagramItem diagramItem in selectedShapes)
 				{
-					ShapeElement element = selectedElements[i] as ShapeElement;
-					if (element == null)
+					// Note that we ignore any field/subfield portions of
+					// diagramItem. These are automatically copied as part of the shape.
+					ShapeElement shape = diagramItem.Shape;
+					if (shape == diagram)
 					{
-						// If it is not a shape, just pass it on...
-						elementsToDraw.Add(selectedElements[i]);
+						// In this case, we want to copy the nested children
+						// of the diagram, not the diagram itself. Copying the
+						// diagram gets all of the extra whitespace in the diagram itself.
+						// Diagrams don't have relative children, so just do the nested.
+						diagram.CopyImageToClipboard(diagram.NestedChildShapes);
+						return;
 					}
-					else
+					shape = ResolveTopLevelShape(shape, diagram);
+					if (shapesDictionary == null)
 					{
-						if (element.IsDeleted)
-						{
-							continue;
-						}
-
-						Diagram diagram = element as Diagram;
-						if (diagram != null)
-						{
-							// Add the children of the diagram (but not the diagram itself) to the elements to be processed
-							selectedElements.AddRange(diagram.NestedChildShapes);
-							selectedElements.AddRange(diagram.RelativeChildShapes);
-							continue;
-						}
-						elementsToDraw.Add(element);
-
-						foreach (ElementLink link in DomainRoleInfo.GetAllElementLinks(element.ModelElement))
-						{
-							ModelElement element1;
-							ModelElement element2;
-							ReadOnlyCollection<DomainRoleInfo> domainRoles = link.GetDomainRelationship().DomainRoles;
-							element1 = domainRoles[0].GetRolePlayer(link);
-							Role role1 = element1 as Role;
-							if (role1 != null)
-							{
-								element1 = role1.FactType;
-							}
-							element2 = domainRoles[1].GetRolePlayer(link);
-							Role role2 = element2 as Role;
-							if (role2 != null)
-							{
-								element2 = role2.FactType;
-							}
-
-							foreach (PresentationElement presentationElement1 in PresentationViewsSubject.GetPresentation(element1))
-							{
-								if (selectedElements.Contains(presentationElement1))
-								{
-									foreach (PresentationElement presentationElement2 in PresentationViewsSubject.GetPresentation(element2))
-									{
-										if (selectedElements.Contains(presentationElement2))
-										{
-											elementsToDraw.AddRange(PresentationViewsSubject.GetPresentation(link));
-											break;
-										}
-									}
-									break;
-								}
-							}
-						}
+						shapesDictionary = new Dictionary<ShapeElement, ShapeElement>(selectedShapes.Count * 2);
+					}
+					if (!shapesDictionary.ContainsKey(shape))
+					{
+						shapesDictionary.Add(shape, shape);
 					}
 				}
+				if (shapesDictionary != null)
+				{
+					Dictionary<ShapeElement, ShapeElement>.ValueCollection values = shapesDictionary.Values;
+
+					// We have the top-level shapes, now go on a link walk to
+					// find all links not currently selected that are linked
+					// directly or indirectly at both ends to a selected shape.
+					int topLevelShapesCount = values.Count;
+					ShapeElement[] topLevelShapes = new ShapeElement[topLevelShapesCount];
+					values.CopyTo(topLevelShapes, 0);
+					AddSharedLinkShapes(shapesDictionary, topLevelShapes, diagram);
 #if !CUSTOM_COPY_IMAGE
-				this.CurrentDiagram.CopyImageToClipboard(elementsToDraw);
+					diagram.CopyImageToClipboard(values);
 #else
 #if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
-				System.Drawing.Imaging.Metafile createdMetafile = this.CurrentDiagram.CreateMetafile(elementsToDraw);
+				System.Drawing.Imaging.Metafile createdMetafile = diagram.CreateMetafile(values);
 				
 				NativeMethods.MakeBackgroundTransparent(createdMetafile);
-				NativeMethods.CopyMetafileToClipboard(this.CurrentDiagram.ActiveDiagramView.Handle, createdMetafile);
+				NativeMethods.CopyMetafileToClipboard(diagramView.Handle, createdMetafile);
 #else
 				System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
 				
@@ -2186,9 +2152,9 @@ namespace Neumont.Tools.ORM.Shell
 				}
 								
 				RectangleD rect = default(RectangleD);
-				object[] parameters = new object[] { elementsToDraw, rect };
+				object[] parameters = new object[] { values, rect };
 
-				ArrayList shapesToDraw = getShapesToDraw.Invoke(this.CurrentDiagram, parameters) as ArrayList;
+				ArrayList shapesToDraw = getShapesToDraw.Invoke(diagram, parameters) as ArrayList;
 				rect = (RectangleD)parameters[1];
 
 				const double imageMargin = 0.1;
@@ -2220,10 +2186,100 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 				
-				NativeMethods.CopyMetafileToClipboard(this.CurrentDiagram.ActiveDiagramView.Handle, metafile);
+				NativeMethods.CopyMetafileToClipboard(diagramView.Handle, metafile);
 #endif
 #endif
+				}
 			}
+		}
+		/// <summary>
+		/// Helper function for OnMenuCopyImage. Recursively add link shapes
+		/// to the shapes to draw.
+		/// </summary>
+		/// <param name="shapesDictionary">A dictionary of shapes currently being drawn</param>
+		/// <param name="shapes">The set of shapes to walk and attach links to.</param>
+		/// <param name="diagram">The current diagram</param>
+		private static void AddSharedLinkShapes(Dictionary<ShapeElement, ShapeElement> shapesDictionary, IList<ShapeElement> shapes, Diagram diagram)
+		{
+			int shapesCount = shapes.Count;
+			for (int i = 0; i < shapesCount; ++i)
+			{
+				ShapeElement shape = shapes[i];
+				NodeShape nodeShape = shape as NodeShape;
+				if (null != nodeShape)
+				{
+					LinkedElementCollection<LinkShape> linkShapes = LinkConnectsToNode.GetLink(nodeShape);
+					int linkShapeCount = linkShapes.Count;
+					for (int j = 0; j < linkShapeCount; ++j)
+					{
+						LinkShape currentLinkShape = linkShapes[j];
+						if (shapesDictionary.ContainsKey(currentLinkShape))
+						{
+							continue;
+						}
+						LinkedElementCollection<NodeShape> nodes = currentLinkShape.Nodes;
+						int nodesCount = nodes.Count;
+						for (int k = 0; k < nodesCount; ++k)
+						{
+							NodeShape currentNode = nodes[k];
+							if (currentNode != nodeShape)
+							{
+								ShapeElement resolvedShape = ResolveTopLevelShape(currentNode, diagram);
+								LinkShape resolvedLinkShape;
+								if (shapesDictionary.ContainsKey(resolvedShape))
+								{
+									shapesDictionary.Add(currentLinkShape, currentLinkShape);
+								}
+								else if (null != (resolvedLinkShape = resolvedShape as LinkShape))
+								{
+									// Check independently if the link can be added. This removes
+									// selection order dependencies for links connected to links.
+									LinkedElementCollection<NodeShape> secondaryNodes = resolvedLinkShape.Nodes;
+									int secondaryNodesCount = secondaryNodes.Count;
+									int l = 0;
+									for (; l < secondaryNodesCount; ++l)
+									{
+										if (!shapesDictionary.ContainsKey(ResolveTopLevelShape(secondaryNodes[l], diagram)))
+										{
+											break;
+										}
+									}
+									if (l == secondaryNodesCount)
+									{
+										shapesDictionary.Add(resolvedLinkShape, resolvedLinkShape);
+										shapesDictionary.Add(currentLinkShape, currentLinkShape);
+									}
+								}
+							}
+						}
+					}
+				}
+				AddSharedLinkShapes(shapesDictionary, shape.NestedChildShapes, diagram);
+				AddSharedLinkShapes(shapesDictionary, shape.RelativeChildShapes, diagram);
+			}
+		}
+		/// <summary>
+		/// Helper function for OnMenuCopyImage. Given a shape and a diagram,
+		/// find the shape that is an ancestor (or self) of the shape and a
+		/// direct child of the diagram.
+		/// </summary>
+		/// <param name="shape">A shape element</param>
+		/// <param name="diagram">The containing diagram</param>
+		/// <returns>The top level shape, or the starting shape if resolution fails (very unlikely)</returns>
+		private static ShapeElement ResolveTopLevelShape(ShapeElement shape, Diagram diagram)
+		{
+			ShapeElement startShape = shape;
+			ShapeElement parentShape = shape.ParentShape;
+			while (parentShape != diagram)
+			{
+				if (parentShape == null)
+				{
+					return startShape;
+				}
+				shape = parentShape;
+				parentShape = shape.ParentShape;
+			}
+			return shape;
 		}
 		#endregion
 

@@ -2889,7 +2889,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				oppositeShape = oppositeShape.ParentShape as NodeShape;
 			}
-			GC.KeepAlive(linkElement);
 			int factRoleCount = 0;
 			int roleIndex = -1;
 			bool attachBeforeRole = false; // If true, attach before roleIndex, not in the middle of it
