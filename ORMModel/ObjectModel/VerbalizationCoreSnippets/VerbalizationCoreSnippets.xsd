@@ -353,23 +353,21 @@
 						<xs:documentation>{0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="InstanceBlockStart">
+				<xs:enumeration value="FactTypeInstanceBlockStart">
 					<xs:annotation>
-						<xs:documentation>Examples:</xs:documentation>
+						<xs:documentation>Examples: </xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="InstanceBlockEnd">
+				<xs:enumeration value="FactTypeInstanceBlockEnd">
 					<xs:annotation>
 						<xs:documentation></xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="Conditional">
-					<xs:annotation>
-						<xs:documentation>if {0} then {1}</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				
-				
+				<xs:enumeration value="ObjectTypeInstanceListOpen"/>
+				<xs:enumeration value="ObjectTypeInstanceListPairSeparator"/>
+				<xs:enumeration value="ObjectTypeInstanceListSeparator"/>
+				<xs:enumeration value="ObjectTypeInstanceListFinalSeparator"/>
+				<xs:enumeration value="ObjectTypeInstanceListClose"/>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:redefine>

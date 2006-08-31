@@ -84,9 +84,8 @@
 		<xsl:apply-templates select="cvg:Constraint" mode="ConstraintVerbalization"/>
 	</xsl:template>
 	<xsl:template match="cvg:SampleInstances" mode="GenerateClasses">
-		<xsl:apply-templates select="cvg:InstanceBlockStart" mode="GenerateClasses"/>
+		<xsl:apply-templates select="cvg:SingleSnippet" mode="GenerateClasses"/>
 		<xsl:apply-templates select="cvg:SampleInstance" mode="GenerateClasses"/>
-		<xsl:apply-templates select="cvg:InstanceBlockEnd" mode="GenerateClasses"/>
 	</xsl:template>
 	<xsl:template match="cvg:NoteText" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
@@ -168,9 +167,10 @@
 			</plx:initialize>
 		</plx:local>
 	</xsl:template>
-	<xsl:template match="cvg:InstanceBlockStart" mode="GenerateClasses">
+	<xsl:template match="cvg:SingleSnippet" mode="GenerateClasses">
 		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
 		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
+		<xsl:variable name="snippetRef" select="string(@snippetRef)"/>
 		<xsl:if test="$isChildHelper">
 			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:class name="]]></xsl:text>
 			<xsl:value-of select="$parentClass"/>
@@ -188,6 +188,10 @@
 				<plx:pragma type="closeRegion" data="FactType verbalization block start"/>
 			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<xsl:call-template name="GetVerbalizer">
+				<xsl:with-param name="type" select="@type"/>
+				<xsl:with-param name="useDisposeHelper" select="false()"/>
+			</xsl:call-template>
 			<plx:function name="GetVerbalization" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -203,23 +207,10 @@
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
-
 				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
 					 Leverage the code snippets we use for constraints by setting the right
 					 variable names and calling the constraint verbalization templates -->
 				<xsl:call-template name="DeclareSnippetsLocal"/>
-				<!-- Don't proceed with verbalization if blocking errors are present -->
-				<xsl:call-template name="CheckErrorConditions"/>
-				<plx:callInstance name="WriteLine" type="methodCall">
-					<plx:callObject>
-						<plx:nameRef name="writer" type="local"/>
-					</plx:callObject>
-				</plx:callInstance>
-				<plx:callInstance name="WriteLine" type="methodCall">
-					<plx:callObject>
-						<plx:nameRef name="writer" type="local"/>
-					</plx:callObject>
-				</plx:callInstance>
 				<plx:callInstance name="Write" type="methodCall">
 					<plx:callObject>
 						<plx:nameRef name="writer" type="local"/>
@@ -230,101 +221,7 @@
 								<plx:nameRef name="snippets"/>
 							</plx:callObject>
 							<plx:passParam>
-								<plx:callStatic name="InstanceBlockStart" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:falseKeyword/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:falseKeyword/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:return>
-					<plx:trueKeyword/>
-				</plx:return>
-			</plx:function>
-		</plx:class>
-		<xsl:if test="$isChildHelper">
-			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:class>]]></xsl:text>
-		</xsl:if>
-	</xsl:template>
-	<xsl:template match="cvg:InstanceBlockEnd" mode="GenerateClasses">
-		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
-		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
-		<xsl:if test="$isChildHelper">
-			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:class name="]]></xsl:text>
-			<xsl:value-of select="$parentClass"/>
-			<xsl:text disable-output-escaping="yes"><![CDATA[" visibility="public" partial="true"><plx:leadingInfo><plx:pragma type="region" data="]]></xsl:text>
-			<xsl:value-of select="concat($parentClass,'.',@type)"/>
-			<xsl:text disable-output-escaping="yes"><![CDATA[ verbalization"/></plx:leadingInfo><plx:trailingInfo><plx:pragma type="closeRegion" data="]]></xsl:text>
-			<xsl:value-of select="concat($parentClass,'.',@type)"/>
-			<xsl:text disable-output-escaping="yes"><![CDATA[ verbalization"/></plx:trailingInfo>]]></xsl:text>
-		</xsl:if>
-		<plx:class name="{@type}" visibility="private" partial="true">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="FactType verbalization block end"/>
-			</plx:leadingInfo>
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="FactType verbalization block end"/>
-			</plx:trailingInfo>
-			<plx:implementsInterface dataTypeName="IVerbalize"/>
-			<plx:function name="GetVerbalization" visibility="protected">
-				<plx:leadingInfo>
-					<plx:docComment>
-						<summary>IVerbalize.GetVerbalization implementation</summary>
-					</plx:docComment>
-				</plx:leadingInfo>
-				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
-				<plx:param name="writer" dataTypeName="TextWriter"/>
-				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
-					<plx:passTypeParam dataTypeName="Type"/>
-					<plx:passTypeParam dataTypeName="I{$VerbalizationSets}"/>
-				</plx:param>
-				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
-				<plx:param name="isNegative" dataTypeName=".boolean"/>
-				<plx:returns dataTypeName=".boolean"/>
-
-				<!-- Verbalizing a fact type is a simple case of verbalizing a constraint.
-					 Leverage the code snippets we use for constraints by setting the right
-					 variable names and calling the constraint verbalization templates -->
-				<xsl:call-template name="DeclareSnippetsLocal"/>
-				<!-- Don't proceed with verbalization if blocking errors are present -->
-				<xsl:call-template name="CheckErrorConditions"/>
-
-				<plx:callInstance name="Write" type="methodCall">
-					<plx:callObject>
-						<plx:nameRef name="writer" type="local"/>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:callInstance name="GetSnippet">
-							<plx:callObject>
-								<plx:nameRef name="snippets"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:callStatic name="InstanceBlockEnd" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:falseKeyword/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:falseKeyword/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:passParam>
-				</plx:callInstance>
-				<plx:callInstance name="Write" type="methodCall">
-					<plx:callObject>
-						<plx:nameRef name="writer" type="local"/>
-					</plx:callObject>
-					<plx:passParam>
-						<plx:callInstance name="GetSnippet">
-							<plx:callObject>
-								<plx:nameRef name="snippets"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:callStatic name="IndentedListClose" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
+								<plx:callStatic name="{$snippetRef}" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
 							</plx:passParam>
 							<plx:passParam>
 								<plx:falseKeyword/>
@@ -358,12 +255,15 @@
 		</xsl:if>
 		<plx:class name="{@type}" visibility="private" partial="true">
 			<plx:leadingInfo>
-				<plx:pragma type="region" data="FactType verbalization"/>
+				<plx:pragma type="region" data="{$parentClass} Instance Verbalization"/>
 			</plx:leadingInfo>
 			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="FactType verbalization"/>
+				<plx:pragma type="closeRegion" data="{$parentClass} Instance Verbalization"/>
 			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<xsl:call-template name="GetVerbalizer">
+				<xsl:with-param name="type" select="@type"/>
+			</xsl:call-template>
 			<plx:function name="GetVerbalization" visibility="protected">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -386,76 +286,84 @@
 				<xsl:call-template name="DeclareSnippetsLocal"/>
 				<!-- Don't proceed with verbalization if blocking errors are present -->
 				<xsl:call-template name="CheckErrorConditions"/>
-				<plx:local name="parentFact" dataTypeName="FactType">
-					<plx:initialize>
-						<plx:callThis name="FactType" type="property" />
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
-					<plx:passTypeParam dataTypeName="RoleBase"/>
-					<plx:initialize>
-						<plx:callInstance name="RoleCollection" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parentFact" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="factArity" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="Count" type="property">
-							<plx:callObject>
-								<plx:nameRef name="factRoles"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
-					<plx:passTypeParam dataTypeName="ReadingOrder"/>
-					<plx:initialize>
-						<plx:callInstance name="ReadingOrderCollection" type="property">
-							<plx:callObject>
-								<plx:nameRef name="parentFact" type="local" />
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
-					<plx:initialize>
-						<plx:falseKeyword/>
-					</plx:initialize>
-				</plx:local>
-				<!--<plx:local name="readingOrder" dataTypeName="ReadingOrder"/>-->
-				<plx:local name="reading" dataTypeName="Reading"/>
-				<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
-				<plx:local name="instanceRoles" dataTypeName="LinkedElementCollection">
-					<plx:passTypeParam dataTypeName="FactTypeRoleInstance"/>
-					<plx:initialize>
-						<plx:callInstance name="RoleInstanceCollection" type="property">
-							<plx:callObject>
-								<plx:nameRef name="Instance" type="local"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="instanceRoleCount" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:callInstance name="Count" type="property">
-							<plx:callObject>
-								<plx:nameRef name="instanceRoles" type="local"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<xsl:call-template name="PopulateBasicRoleReplacements">
-					<xsl:with-param name="IncludeInstanceData" select="true()"/>
-				</xsl:call-template>
-				<xsl:variable name="factMockup">
-					<cvg:Fact />
-				</xsl:variable>
-				<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
-					<xsl:with-param name="TopLevel" select="true()"/>
-				</xsl:apply-templates>
+				<xsl:if test="$parentClass='FactType'">
+					<plx:local name="parentFact" dataTypeName="FactType">
+						<plx:initialize>
+							<plx:callThis name="FactType" type="property" />
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="factRoles" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="RoleBase"/>
+						<plx:initialize>
+							<plx:callInstance name="RoleCollection" type="property">
+								<plx:callObject>
+									<plx:nameRef name="parentFact" type="local" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="factArity" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="Count" type="property">
+								<plx:callObject>
+									<plx:nameRef name="factRoles"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="allReadingOrders" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="ReadingOrder"/>
+						<plx:initialize>
+							<plx:callInstance name="ReadingOrderCollection" type="property">
+								<plx:callObject>
+									<plx:nameRef name="parentFact" type="local" />
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+						<plx:initialize>
+							<plx:falseKeyword/>
+						</plx:initialize>
+					</plx:local>
+					<!--<plx:local name="readingOrder" dataTypeName="ReadingOrder"/>-->
+					<plx:local name="reading" dataTypeName="Reading"/>
+					<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
+					<plx:local name="instanceRoles" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="FactTypeRoleInstance"/>
+						<plx:initialize>
+							<plx:callInstance name="RoleInstanceCollection" type="property">
+								<plx:callObject>
+									<plx:nameRef name="Instance" type="local"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="instanceRoleCount" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:callInstance name="Count" type="property">
+								<plx:callObject>
+									<plx:nameRef name="instanceRoles" type="local"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<xsl:call-template name="PopulateBasicRoleReplacements">
+						<xsl:with-param name="IncludeInstanceData" select="true()"/>
+					</xsl:call-template>
+					<xsl:variable name="factMockup">
+						<cvg:Fact />
+					</xsl:variable>
+					<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
+						<xsl:with-param name="TopLevel" select="true()"/>
+					</xsl:apply-templates>
+				</xsl:if>
+				<!-- End FactType Parent -->
+				<!-- Check if we are iterating for ObjectType -->
+				<xsl:if test="$parentClass='ObjectType'">
+					<xsl:apply-templates select="child::*" mode="ConstraintVerbalization"/>
+				</xsl:if>
+				<!-- End check if we are iterating for ObjectType -->
 				<xsl:call-template name="CheckErrorConditions">
 					<xsl:with-param name="Primary" select="false()"/>
 					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
@@ -605,6 +513,7 @@
 		<xsl:variable name="isSingleColumn" select="$patternGroup='SetConstraint'"/>
 		<xsl:variable name="parentClass" select="string(@childHelperFor)"/>
 		<xsl:variable name="isChildHelper" select="boolean($parentClass)"/>
+		<xsl:variable name="isSetComparisonConstraint" select="$patternGroup='SetComparisonConstraint'"/>
 		<xsl:variable name="compatibleColumns" select="@compatibleColumns='true' or @compatibleColumns='1'"/>
 		<xsl:if test="$isChildHelper">
 			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:class name="]]></xsl:text>
@@ -633,106 +542,9 @@
 			</xsl:choose>
 			<plx:implementsInterface dataTypeName="IVerbalize"/>
 			<xsl:if test="$isChildHelper">
-				<plx:implementsInterface dataTypeName="IDisposable"/>
-				<plx:field name="myCache"  visibility="private" static="true" dataTypeName="{@type}">
-					<plx:leadingInfo>
-						<plx:comment>Cache an instance so we only create one helper in single-threaded scenarios</plx:comment>
-					</plx:leadingInfo>
-				</plx:field>
-				<plx:function name="GetVerbalizer" visibility="public" modifier="static">
-					<plx:returns dataTypeName="{@type}"/>
-					<plx:local name="retVal" dataTypeName="{@type}">
-						<plx:initialize>
-							<plx:callThis accessor="static" name="myCache" type="field"/>
-						</plx:initialize>
-					</plx:local>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityInequality">
-								<plx:left>
-									<plx:nameRef name="retVal"/>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="retVal"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
-									<plx:passMemberTypeParam dataTypeName="{@type}"/>
-									<plx:passParam type="inOut">
-										<plx:callThis name="myCache" accessor="static" type="field"/>
-									</plx:passParam>
-									<plx:passParam>
-										<plx:cast dataTypeName="{@type}" type="testCast">
-											<plx:nullKeyword/>
-										</plx:cast>
-									</plx:passParam>
-									<plx:passParam>
-										<plx:nameRef name="retVal"/>
-									</plx:passParam>
-								</plx:callStatic>
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:nameRef name="retVal"/>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="retVal"/>
-							</plx:left>
-							<plx:right>
-								<plx:callNew dataTypeName="{@type}" />
-							</plx:right>
-						</plx:assign>
-					</plx:branch>
-					<plx:return>
-						<plx:nameRef name="retVal"/>
-					</plx:return>
-				</plx:function>
-				<plx:function name="Dispose" visibility="privateInterfaceMember">
-					<plx:interfaceMember memberName="Dispose" dataTypeName="IDisposable"/>
-					<plx:callThis name="DisposeHelper"/>
-					<plx:branch>
-						<plx:condition>
-							<plx:binaryOperator type="identityEquality">
-								<plx:left>
-									<plx:callThis name="myCache" accessor="static" type="field"/>
-								</plx:left>
-								<plx:right>
-									<plx:nullKeyword/>
-								</plx:right>
-							</plx:binaryOperator>
-						</plx:condition>
-						<plx:callStatic name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
-							<plx:passMemberTypeParam dataTypeName="{@type}"/>
-							<plx:passParam type="inOut">
-								<plx:callThis name="myCache" accessor="static" type="field"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:thisKeyword/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:cast dataTypeName="{@type}" type="testCast">
-									<plx:nullKeyword/>
-								</plx:cast>
-							</plx:passParam>
-						</plx:callStatic>
-					</plx:branch>
-				</plx:function>
+				<xsl:call-template name="GetVerbalizer">
+					<xsl:with-param name="type" select="@type"/>
+				</xsl:call-template>
 			</xsl:if>
 			<plx:function name="GetVerbalization" visibility="protected">
 				<plx:leadingInfo>
@@ -825,9 +637,7 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<!-- UNDONE: Forcing the issue for RingConstraint, the requirements for this are too hard
-					 to test and we will probably need this as the data for RingConstraint is filled in -->
-				<xsl:if test="not($isValueTypeValueConstraint or ($isSingleColumn and @type='RingConstraint'))">
+				<xsl:if test="not($isValueTypeValueConstraint)">
 					<plx:local name="parentFact" dataTypeName="FactType">
 						<xsl:choose>
 							<xsl:when test="$isInternal and not($isRoleValue)">
@@ -918,12 +728,14 @@
 					</plx:local>
 				</xsl:if>
 				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint)">
+					<xsl:if test="not($isSetComparisonConstraint)">
 					<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="Role"/>
 						<plx:initialize>
 							<plx:callThis name="RoleCollection" type="property"/>
 						</plx:initialize>
 					</plx:local>
+					</xsl:if>
 					<plx:local name="allFacts" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="FactType"/>
 						<plx:initialize>
@@ -963,6 +775,14 @@
 							<plx:falseKeyword/>
 						</plx:return>
 					</plx:branch>
+				</xsl:if>
+				<xsl:if test="$isSetComparisonConstraint">
+					<plx:local name="roleSequences" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="SetComparisonConstraintRoleSequence"/>
+						<plx:initialize>
+							<plx:callThis type="property" name="RoleSequenceCollection"/>
+						</plx:initialize>
+					</plx:local>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$isInternal">
@@ -1018,7 +838,7 @@
 							</plx:return>
 						</plx:branch>
 					</xsl:when>
-					<xsl:when test="$isSingleColumn">
+					<xsl:when test="$isSingleColumn or $isSetComparisonConstraint">
 						<plx:local name="allBasicRoleReplacements" dataTypeName=".string">
 							<plx:arrayDescriptor rank="1">
 								<plx:arrayDescriptor rank="1"/>
@@ -1199,24 +1019,26 @@
 								</plx:right>
 							</plx:assign>
 						</plx:loop>
-						<plx:local name="constraintRoleArity" dataTypeName=".i4">
-							<plx:initialize>
-								<plx:callInstance name="Count" type="property">
-									<plx:callObject>
-										<plx:nameRef name="allConstraintRoles"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:initialize>
-						</plx:local>
-						<plx:local name="allConstraintRoleReadings" dataTypeName="Reading" dataTypeIsSimpleArray="true">
-							<plx:initialize>
-								<plx:callNew dataTypeName="Reading" dataTypeIsSimpleArray="true">
-									<plx:passParam>
-										<plx:nameRef name="constraintRoleArity"/>
-									</plx:passParam>
-								</plx:callNew>
-							</plx:initialize>
-						</plx:local>
+						<xsl:if test="not($isSetComparisonConstraint)">
+							<plx:local name="constraintRoleArity" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:callInstance name="Count" type="property">
+										<plx:callObject>
+											<plx:nameRef name="allConstraintRoles"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<plx:local name="allConstraintRoleReadings" dataTypeName="Reading" dataTypeIsSimpleArray="true">
+								<plx:initialize>
+									<plx:callNew dataTypeName="Reading" dataTypeIsSimpleArray="true">
+										<plx:passParam>
+											<plx:nameRef name="constraintRoleArity"/>
+										</plx:passParam>
+									</plx:callNew>
+								</plx:initialize>
+							</plx:local>
+						</xsl:if>
 					</xsl:when>
 				</xsl:choose>
 				<xsl:if test="$isInternal">
@@ -3212,6 +3034,7 @@
 		<xsl:param name="ReplacementContents" select="child::*"/>
 		<xsl:param name="SnippetTypeVariable" select="''"/>
 		<xsl:param name="ConditionalMatch" select="@conditionalMatch"/>
+		<xsl:variable name="byPassTopLevel" select="boolean(@byPassTopLevel)"/>
 		<xsl:variable name="conditionFragment">
 			<xsl:if test="$TopLevel and string-length($ConditionalMatch)">
 				<xsl:call-template name="ConditionalMatchCondition">
@@ -3267,65 +3090,67 @@
 				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
-		<xsl:variable name="formatCall">
-			<plx:callStatic name="Format" dataTypeName=".string">
-				<plx:passParam>
-					<plx:callInstance name="FormatProvider" type="property">
-						<plx:callObject>
-							<plx:nameRef type="parameter" name="writer"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:passParam>
-				<plx:passParam>
-					<plx:nameRef name="{$VariablePrefix}{$FormatVariablePart}{$VariableDecorator}"/>
-				</plx:passParam>
-				<xsl:choose>
-					<xsl:when test="$ReplacementContents">
-						<xsl:for-each select="$ReplacementContents">
-							<plx:passParam>
-								<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
-							</plx:passParam>
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:for-each select="child::*">
-							<plx:passParam>
-								<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
-							</plx:passParam>
-						</xsl:for-each>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:callStatic>
-		</xsl:variable>
-		<xsl:choose>
-			<xsl:when test="$TopLevel">
-				<!-- Write the snippet directly to the text writer after sentence modification -->
-				<plx:callStatic name="WriteVerbalizerSentence" dataTypeName="FactType">
+		<xsl:if test="not($byPassTopLevel)">
+			<xsl:variable name="formatCall">
+				<plx:callStatic name="Format" dataTypeName=".string">
 					<plx:passParam>
-						<plx:nameRef type="parameter" name="writer"/>
+						<plx:callInstance name="FormatProvider" type="property">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="writer"/>
+							</plx:callObject>
+						</plx:callInstance>
 					</plx:passParam>
 					<plx:passParam>
-						<xsl:copy-of select="$formatCall"/>
+						<plx:nameRef name="{$VariablePrefix}{$FormatVariablePart}{$VariableDecorator}"/>
 					</plx:passParam>
-					<plx:passParam>
-						<xsl:call-template name="SnippetFor">
-							<xsl:with-param name="SnippetType" select="'CloseVerbalizationSentence'"/>
-						</xsl:call-template>
-					</plx:passParam>
+					<xsl:choose>
+						<xsl:when test="$ReplacementContents">
+							<xsl:for-each select="$ReplacementContents">
+								<plx:passParam>
+									<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
+								</plx:passParam>
+							</xsl:for-each>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:for-each select="child::*">
+								<plx:passParam>
+									<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
+								</plx:passParam>
+							</xsl:for-each>
+						</xsl:otherwise>
+					</xsl:choose>
 				</plx:callStatic>
-			</xsl:when>
-			<xsl:otherwise>
-				<!-- Snippet is used as a replacement field in another snippet -->
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
-					</plx:left>
-					<plx:right>
-						<xsl:copy-of select="$formatCall"/>
-					</plx:right>
-				</plx:assign>
-			</xsl:otherwise>
-		</xsl:choose>
+			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="$TopLevel">
+					<!-- Write the snippet directly to the text writer after sentence modification -->
+					<plx:callStatic name="WriteVerbalizerSentence" dataTypeName="FactType">
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="writer"/>
+						</plx:passParam>
+						<plx:passParam>
+							<xsl:copy-of select="$formatCall"/>
+						</plx:passParam>
+						<plx:passParam>
+							<xsl:call-template name="SnippetFor">
+								<xsl:with-param name="SnippetType" select="'CloseVerbalizationSentence'"/>
+							</xsl:call-template>
+						</plx:passParam>
+					</plx:callStatic>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- Snippet is used as a replacement field in another snippet -->
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
+						</plx:left>
+						<plx:right>
+							<xsl:copy-of select="$formatCall"/>
+						</plx:right>
+					</plx:assign>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
 		<xsl:if test="$condition">
 			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:branch>]]></xsl:text>
 		</xsl:if>
@@ -4660,6 +4485,46 @@
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:call-template>
 	</xsl:template>
+	<!-- An IterateInstances tag is used to walk a set of instances and combine the verbalizations for
+			those instances into a single list. The type of verbalization is not necessarily flexible, aside from
+			allowing the user to rework the TextInstanceValue and NonTextInstanceValue snippets. -->
+	<xsl:template match="cvg:IterateInstances" mode="ConstraintVerbalization">
+		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<xsl:param name="CompositeCount"/>
+		<xsl:param name="CompositeIterator"/>
+		<xsl:param name="ListStyle" select="@listStyle"/>
+		<xsl:param name="PatternGroup"/>
+		<plx:local dataTypeName=".boolean" name="isDeontic" const="true">
+			<plx:initialize>
+				<plx:falseKeyword/>
+			</plx:initialize>
+		</plx:local>
+		<plx:local dataTypeName="StringBuilder" name="sbTemp">
+			<plx:initialize>
+				<plx:nullKeyword/>
+			</plx:initialize>
+		</plx:local>
+		<plx:local dataTypeName=".i4" name="instanceCount">
+			<plx:initialize>
+				<plx:callInstance name="Length" type="property">
+					<plx:callObject>
+						<plx:callThis name="Instances" type="property"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:initialize>
+		</plx:local>
+		<xsl:call-template name="InstanceIterator">
+			<xsl:with-param name="TopLevel" select="$TopLevel"/>
+			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+			<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+			<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
+			<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+			<xsl:with-param name="ListStyle" select="$ListStyle"/>
+			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+		</xsl:call-template>
+	</xsl:template>
 	<xsl:template match="cvg:IterateFacts" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
@@ -5179,6 +5044,234 @@
 				</plx:assign>
 			</xsl:when>
 		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="InstanceIterator">
+		<xsl:param name="TopLevel"/>
+		<xsl:param name="VariableDecorator"/>
+		<xsl:param name="VariablePrefix"/>
+		<xsl:param name="CompositeCount"/>
+		<xsl:param name="CompositeIterator"/>
+		<xsl:param name="ListStyle"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:param name="IteratorContext" select="''"/>
+		<xsl:variable name="contextMatch" select="string('all')"/>
+		<xsl:variable name="iterVarName" select="string('InstanceIter1')"/>
+		<xsl:if test="$TopLevel">
+			<xsl:choose>
+				<xsl:when test="position()&gt;1">
+					<plx:callInstance name="WriteLine">
+						<plx:callObject>
+							<plx:nameRef type="parameter" name="writer"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:callInstance name=".implied" type="delegateCall">
+						<plx:callObject>
+							<plx:nameRef type="parameter" name="beginVerbalization"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic name="Normal" dataTypeName="VerbalizationContent" type="field"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+		<xsl:if test="0=string-length($CompositeCount) and not($IteratorContext)">
+			<xsl:call-template name="EnsureTempStringBuilder"/>
+		</xsl:if>
+		<xsl:variable name="filteredCountVarName" select="concat($VariablePrefix,'FilteredCount',$VariableDecorator)"/>
+		<xsl:variable name="filteredIterVarName" select="concat($VariablePrefix,'FilteredIter',$VariableDecorator)"/>
+		<xsl:variable name="trackFirstPass" select="0!=count(descendant::cvg:PredicateReplacement[@pass='first'])"/>
+		<xsl:variable name="trackFirstPassVarName" select="concat($VariablePrefix,'IsFirstPass',$VariableDecorator)"/>
+		<xsl:variable name="createList" select="not($ListStyle='null')"/>
+		<xsl:variable name="createListOrTrackFirstPass" select="$trackFirstPass or $createList"/>
+		<xsl:variable name="hyphenBind" select="@hyphenBind='true' or @hyphenBind='1'"/>
+
+		<xsl:if test="$trackFirstPass">
+			<plx:local name="{$trackFirstPassVarName}" dataTypeName=".boolean">
+				<plx:initialize>
+					<plx:trueKeyword/>
+				</plx:initialize>
+			</plx:local>
+		</xsl:if>
+		<plx:loop>
+			<plx:initializeLoop>
+				<plx:local name="{$iterVarName}" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:value type="i4" data="0"/>
+					</plx:initialize>
+				</plx:local>
+			</plx:initializeLoop>
+			<plx:condition>
+				<plx:binaryOperator type="lessThan">
+					<plx:left>
+						<plx:nameRef name="{$iterVarName}"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="instanceCount" type="local"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:condition>
+			<plx:beforeLoop>
+				<plx:increment>
+					<plx:nameRef name="{$iterVarName}"/>
+				</plx:increment>
+			</plx:beforeLoop>
+			<!-- Cannot use predefined pattern for instances - names conflict as well do the conditions -->
+			<xsl:variable name="IterateRanges" select="$contextMatch='rangeCount'"/>
+			<xsl:if test="$createList">
+				<plx:local name="listSnippet" dataTypeName="{$VerbalizationTextSnippetType}"/>
+			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="not($createList)"/>
+				<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
+					<xsl:call-template name="SetSnippetVariable">
+						<xsl:with-param name="SnippetType" select="concat($ListStyle,'Open')"/>
+						<xsl:with-param name="VariableName" select="'listSnippet'"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="PopulateListSnippet">
+						<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
+						<xsl:with-param name="ListStyle" select="$ListStyle"/>
+						<xsl:with-param name="IteratorBound">
+							<plx:nameRef name="instanceCount" type="local"/>
+						</xsl:with-param>
+						<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:if test="$createList">
+				<xsl:call-template name="AppendListSnippet"/>
+			</xsl:if>
+
+			<!-- Process the child contents for this role -->
+			<xsl:variable name="children" select="child::*"/>
+			<xsl:if test="$children">
+				<xsl:if test="$hyphenBind">
+					<xsl:message terminate="yes">IterateInstances/@hyphenBind only supported if IterateInstances has no children</xsl:message>
+				</xsl:if>
+				<xsl:for-each select="$children">
+					<!-- Let children assign directly to the normal replacement variable so
+						 that we don't have to communicate down the stack that they should assign
+						 directly to the temp string builder. -->
+					<plx:callInstance name="Append">
+						<plx:callObject>
+							<plx:nameRef name="sbTemp"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic name="GetDisplayString" dataTypeName="ObjectTypeInstance">
+								<plx:passParam>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:callThis name="Instances" type="property"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="{$iterVarName}" type="local" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callThis name="ParentObject" type="property"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="FormatProvider" type="property">
+										<plx:callObject>
+											<plx:nameRef name="writer" type="local"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="GetSnippet">
+										<plx:callObject>
+											<plx:nameRef name="snippets"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic name="TextInstanceValue" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="isDeontic" type="local" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="isNegative" type="local" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="GetSnippet">
+										<plx:callObject>
+											<plx:nameRef name="snippets"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callStatic name="NonTextInstanceValue" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="isDeontic" type="local" />
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="isNegative" type="local" />
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:for-each>
+			</xsl:if>
+			<!-- Use the current snippets data to close the list -->
+			<xsl:choose>
+				<xsl:when test="not($createList)"/>
+				<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
+					<plx:callInstance name="Append">
+						<plx:callObject>
+							<plx:nameRef name="sbTemp"/>
+						</plx:callObject>
+						<plx:passParam>
+							<xsl:call-template name="SnippetFor">
+								<xsl:with-param name="SnippetType" select="concat($ListStyle,'Close')"/>
+							</xsl:call-template>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="CloseList">
+						<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
+						<xsl:with-param name="ListStyle" select="$ListStyle"/>
+						<xsl:with-param name="IteratorBound">
+							<plx:nameRef name="instanceCount" type="local"/>
+						</xsl:with-param>
+						<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- End inline template -->
+			<xsl:if test="$trackFirstPass">
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="{$trackFirstPassVarName}"/>
+					</plx:left>
+					<plx:right>
+						<plx:falseKeyword/>
+					</plx:right>
+				</plx:assign>
+			</xsl:if>
+		</plx:loop>
+		<xsl:variable name="getListText">
+			<plx:callInstance name="ToString">
+				<plx:callObject>
+					<plx:nameRef name="sbTemp"/>
+				</plx:callObject>
+			</plx:callInstance>
+		</xsl:variable>
+		<plx:callInstance name="Write">
+			<plx:callObject>
+				<plx:nameRef name="writer"/>
+			</plx:callObject>
+			<plx:passParam>
+				<xsl:copy-of select="$getListText"/>
+			</plx:passParam>
+		</plx:callInstance>
 	</xsl:template>
 	<xsl:template name="ReferenceIteratorBound">
 		<xsl:param name="CompositeCount" select="''"/>
@@ -6376,5 +6469,111 @@
 				</plx:assign>
 			</xsl:when>
 		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="GetVerbalizer" match="*">
+		<xsl:param name="type"/>
+		<xsl:param name="useDisposeHelper" select="true()"/>
+		<plx:implementsInterface dataTypeName="IDisposable"/>
+		<plx:field name="myCache"  visibility="private" static="true" dataTypeName="{@type}">
+			<plx:leadingInfo>
+				<plx:comment>Cache an instance so we only create one helper in single-threaded scenarios</plx:comment>
+			</plx:leadingInfo>
+		</plx:field>
+		<plx:function name="GetVerbalizer" visibility="public" modifier="static">
+			<plx:returns dataTypeName="{$type}"/>
+			<plx:local name="retVal" dataTypeName="{$type}">
+				<plx:initialize>
+					<plx:callThis accessor="static" name="myCache" type="field"/>
+				</plx:initialize>
+			</plx:local>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nameRef name="retVal"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="retVal"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+							<plx:passMemberTypeParam dataTypeName="{$type}"/>
+							<plx:passParam type="inOut">
+								<plx:callThis name="myCache" accessor="static" type="field"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:cast dataTypeName="{$type}" type="testCast">
+									<plx:nullKeyword/>
+								</plx:cast>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="retVal"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:right>
+				</plx:assign>
+			</plx:branch>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="identityEquality">
+						<plx:left>
+							<plx:nameRef name="retVal"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="retVal"/>
+					</plx:left>
+					<plx:right>
+						<plx:callNew dataTypeName="{$type}" />
+					</plx:right>
+				</plx:assign>
+			</plx:branch>
+			<plx:return>
+				<plx:nameRef name="retVal"/>
+			</plx:return>
+		</plx:function>
+		<plx:function name="Dispose" visibility="privateInterfaceMember">
+			<plx:interfaceMember memberName="Dispose" dataTypeName="IDisposable"/>
+			<xsl:if test="boolean($useDisposeHelper)">
+				<plx:callThis name="DisposeHelper"/>
+			</xsl:if>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="identityEquality">
+						<plx:left>
+							<plx:callThis name="myCache" accessor="static" type="field"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:callStatic name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
+					<plx:passMemberTypeParam dataTypeName="{@type}"/>
+					<plx:passParam type="inOut">
+						<plx:callThis name="myCache" accessor="static" type="field"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:thisKeyword/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:cast dataTypeName="{@type}" type="testCast">
+							<plx:nullKeyword/>
+						</plx:cast>
+					</plx:passParam>
+				</plx:callStatic>
+			</plx:branch>
+		</plx:function>
 	</xsl:template>
 </xsl:stylesheet>

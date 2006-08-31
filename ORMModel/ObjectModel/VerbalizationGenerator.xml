@@ -757,13 +757,18 @@
 			</Constraint>
 		</Constraints>
 		<SampleInstances>
-			<InstanceBlockStart type="FactTypeInstanceBlockStart" childHelperFor="FactType" />
+			<SingleSnippet type="FactTypeInstanceBlockStart"	childHelperFor="FactType" snippetRef="FactTypeInstanceBlockStart"/>
+			<SingleSnippet type="FactTypeInstanceBlockEnd" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockEnd"/>
 			<SampleInstance type="FactTypeInstanceVerbalizer" childHelperFor="FactType">
 				<Fact>
 					<InstanceRoleReplacement/>
 				</Fact>
 			</SampleInstance>
-			<InstanceBlockEnd type="FactTypeInstanceBlockEnd" childHelperFor="FactType" />
+			<SampleInstance type="ObjectTypeInstanceVerbalizer" childHelperFor="ObjectType">
+				<IterateInstances listStyle="ObjectTypeInstanceList">
+					<ObjectTypeInstanceValue/>
+				</IterateInstances>
+			</SampleInstance>
 		</SampleInstances>
 	</Constructs>
 </VerbalizationRoot>

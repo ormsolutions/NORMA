@@ -92,10 +92,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		CompoundListSeparator,
 		/// <summary>
-		/// The 'Conditional' format string snippet. Contains 2 replacement fields.
-		/// </summary>
-		Conditional,
-		/// <summary>
 		/// The 'ConstraintProvidesPreferredIdentifier' format string snippet. Contains 2 replacement fields.
 		/// </summary>
 		ConstraintProvidesPreferredIdentifier,
@@ -151,6 +147,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		ExistentialQuantifier,
+		/// <summary>
+		/// The 'FactTypeInstanceBlockEnd' simple snippet value.
+		/// </summary>
+		FactTypeInstanceBlockEnd,
+		/// <summary>
+		/// The 'FactTypeInstanceBlockStart' simple snippet value.
+		/// </summary>
+		FactTypeInstanceBlockStart,
 		/// <summary>
 		/// The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.
 		/// </summary>
@@ -284,14 +288,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		InQuantifier,
 		/// <summary>
-		/// The 'InstanceBlockEnd' simple snippet value.
-		/// </summary>
-		InstanceBlockEnd,
-		/// <summary>
-		/// The 'InstanceBlockStart' simple snippet value.
-		/// </summary>
-		InstanceBlockStart,
-		/// <summary>
 		/// The 'MinClosedMaxClosed' format string snippet. Contains 2 replacement fields.
 		/// </summary>
 		MinClosedMaxClosed,
@@ -359,6 +355,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'ObjectType' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		ObjectType,
+		/// <summary>
+		/// The 'ObjectTypeInstanceListClose' simple snippet value.
+		/// </summary>
+		ObjectTypeInstanceListClose,
+		/// <summary>
+		/// The 'ObjectTypeInstanceListFinalSeparator' simple snippet value.
+		/// </summary>
+		ObjectTypeInstanceListFinalSeparator,
+		/// <summary>
+		/// The 'ObjectTypeInstanceListOpen' simple snippet value.
+		/// </summary>
+		ObjectTypeInstanceListOpen,
+		/// <summary>
+		/// The 'ObjectTypeInstanceListPairSeparator' simple snippet value.
+		/// </summary>
+		ObjectTypeInstanceListPairSeparator,
+		/// <summary>
+		/// The 'ObjectTypeInstanceListSeparator' simple snippet value.
+		/// </summary>
+		ObjectTypeInstanceListSeparator,
 		/// <summary>
 		/// The 'ObjectTypeMissing' format string snippet. Contains 1 replacement field.
 		/// </summary>
@@ -884,7 +900,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"",
 				"; ",
 				"; ",
-				@"<span class=""quantifier"">if</span> {0} <span class=""quantifier"">then</span> {1}",
 				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
@@ -899,6 +914,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">some</span> {0}",
+				"</span>",
+				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				"{0}{{0}}{1}",
@@ -932,8 +949,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				"</span>",
-				@"<span class=""quantifier"">Examples:</span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
 				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 				@"at least <span class=""objectType"">{0}</span>",
@@ -951,6 +966,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
+				".",
+				@"<span class=""listSeparator"">, </span>",
+				@"<br /><br /><span class=""quantifier"">Examples:</span> ",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 				@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
@@ -1040,7 +1060,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"",
 				"; ",
 				"; ",
-				@"<span class=""quantifier"">if</span> {0} <span class=""quantifier"">then</span> {1}",
 				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
@@ -1055,6 +1074,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">some</span> {0}",
+				"</span>",
+				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				"{0}{{0}}{1}",
@@ -1088,8 +1109,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				"</span>",
-				@"<span class=""quantifier"">Examples:</span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
 				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 				@"at least <span class=""objectType"">{0}</span>",
@@ -1107,6 +1126,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
+				".",
+				@"<span class=""listSeparator"">, </span>",
+				@"<br /><br /><span class=""quantifier"">Examples:</span> ",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 				@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
@@ -1196,7 +1220,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"",
 				"; ",
 				"; ",
-				@"<span class=""quantifier"">if</span> {0} <span class=""quantifier"">then</span> {1}",
 				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
@@ -1211,6 +1234,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}",
+				"</span>",
+				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				"{0}{{0}}{1}",
@@ -1244,8 +1269,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				"</span>",
-				@"<span class=""quantifier"">Examples:</span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
 				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 				@"at least <span class=""objectType"">{0}</span>",
@@ -1263,6 +1286,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
+				".",
+				@"<span class=""listSeparator"">, </span>",
+				@"<br /><br /><span class=""quantifier"">Examples:</span> ",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 				@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
@@ -1352,7 +1380,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"",
 				"; ",
 				"; ",
-				@"<span class=""quantifier"">if</span> {0} <span class=""quantifier"">then</span> {1}",
 				@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 				@"<span class=""quantifier"">context: </span>{0}",
 				@"<span class=""quantifier"">in this context,</span> {0}",
@@ -1367,6 +1394,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				"Model Error: {0}",
 				@"<span class=""quantifier"">exactly one</span> {0}",
 				@"<span class=""quantifier"">no</span> {0}",
+				"</span>",
+				@"<br /><br /><span class=""quantifier"">Examples: </span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				"{0}{{0}}{1}",
@@ -1400,8 +1429,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
-				"</span>",
-				@"<span class=""quantifier"">Examples:</span><span class=""smallIndent"">",
 				@"<span class=""quantifier"">at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span></span>",
 				@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 				@"at least <span class=""objectType"">{0}</span>",
@@ -1419,6 +1446,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"{0} <span class=""quantifier"">objectifies</span> ""{1}""",
 				@"<span class=""objectType"">{0}</span>",
+				".",
+				@"<span class=""listSeparator"">, </span>",
+				@"<br /><br /><span class=""quantifier"">Examples:</span> ",
+				@"<span class=""listSeparator"">, </span>",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 				@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 				@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
@@ -5798,6 +5830,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
+			FactType parentFact;
 			LinkedElementCollection<RoleBase> factRoles = null;
 			int factArity = 0;
 			LinkedElementCollection<ReadingOrder> allReadingOrders;
@@ -6002,61 +6035,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactType
 	{
 		#region FactType verbalization block start
-		private partial class FactTypeInstanceBlockStart : IVerbalize
+		private partial class FactTypeInstanceBlockStart : IVerbalize, IDisposable
 		{
+			// Cache an instance so we only create one helper in single-threaded scenarios
+			private static FactTypeInstanceBlockStart myCache;
+			public static FactTypeInstanceBlockStart GetVerbalizer()
+			{
+				FactTypeInstanceBlockStart retVal = myCache;
+				if (retVal != null)
+				{
+					retVal = System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockStart>(ref myCache, null as FactTypeInstanceBlockStart, retVal);
+				}
+				if (retVal == null)
+				{
+					retVal = new FactTypeInstanceBlockStart();
+				}
+				return retVal;
+			}
+			void IDisposable.Dispose()
+			{
+				if (myCache == null)
+				{
+					System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockStart>(ref myCache, this, null as FactTypeInstanceBlockStart);
+				}
+			}
 			/// <summary>
 			/// IVerbalize.GetVerbalization implementation
 			/// </summary>
 			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 			{
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
-				IModelErrorOwner errorOwner = this as IModelErrorOwner;
-				bool firstErrorPending;
-				if (errorOwner != null)
-				{
-					firstErrorPending = true;
-					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
-					{
-						if (firstErrorPending)
-						{
-							firstErrorPending = false;
-							beginVerbalization(VerbalizationContent.ErrorReport);
-							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
-						}
-						else
-						{
-							writer.WriteLine();
-						}
-						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.Name));
-					}
-					if (!(firstErrorPending))
-					{
-						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
-						firstErrorPending = true;
-						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
-						{
-							if (firstErrorPending)
-							{
-								firstErrorPending = false;
-								writer.WriteLine();
-								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
-							}
-							else
-							{
-								writer.WriteLine();
-							}
-							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
-						}
-						if (!(firstErrorPending))
-						{
-							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
-						}
-						return true;
-					}
-				}
-				writer.WriteLine();
-				writer.WriteLine();
-				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.InstanceBlockStart, false, false));
+				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceBlockStart, false, false));
 				return true;
 			}
 			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -6067,12 +6076,80 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // FactType verbalization block start
 	}
 	#endregion // FactType.FactTypeInstanceBlockStart verbalization
+	#region FactType.FactTypeInstanceBlockEnd verbalization
+	public partial class FactType
+	{
+		#region FactType verbalization block start
+		private partial class FactTypeInstanceBlockEnd : IVerbalize, IDisposable
+		{
+			// Cache an instance so we only create one helper in single-threaded scenarios
+			private static FactTypeInstanceBlockEnd myCache;
+			public static FactTypeInstanceBlockEnd GetVerbalizer()
+			{
+				FactTypeInstanceBlockEnd retVal = myCache;
+				if (retVal != null)
+				{
+					retVal = System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockEnd>(ref myCache, null as FactTypeInstanceBlockEnd, retVal);
+				}
+				if (retVal == null)
+				{
+					retVal = new FactTypeInstanceBlockEnd();
+				}
+				return retVal;
+			}
+			void IDisposable.Dispose()
+			{
+				if (myCache == null)
+				{
+					System.Threading.Interlocked.CompareExchange<FactTypeInstanceBlockEnd>(ref myCache, this, null as FactTypeInstanceBlockEnd);
+				}
+			}
+			/// <summary>
+			/// IVerbalize.GetVerbalization implementation
+			/// </summary>
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			{
+				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeInstanceBlockEnd, false, false));
+				return true;
+			}
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+			{
+				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
+			}
+		}
+		#endregion // FactType verbalization block start
+	}
+	#endregion // FactType.FactTypeInstanceBlockEnd verbalization
 	#region FactType.FactTypeInstanceVerbalizer verbalization
 	public partial class FactType
 	{
-		#region FactType verbalization
-		private partial class FactTypeInstanceVerbalizer : IVerbalize
+		#region FactType Instance Verbalization
+		private partial class FactTypeInstanceVerbalizer : IVerbalize, IDisposable
 		{
+			// Cache an instance so we only create one helper in single-threaded scenarios
+			private static FactTypeInstanceVerbalizer myCache;
+			public static FactTypeInstanceVerbalizer GetVerbalizer()
+			{
+				FactTypeInstanceVerbalizer retVal = myCache;
+				if (retVal != null)
+				{
+					retVal = System.Threading.Interlocked.CompareExchange<FactTypeInstanceVerbalizer>(ref myCache, null as FactTypeInstanceVerbalizer, retVal);
+				}
+				if (retVal == null)
+				{
+					retVal = new FactTypeInstanceVerbalizer();
+				}
+				return retVal;
+			}
+			void IDisposable.Dispose()
+			{
+				this.DisposeHelper();
+				if (myCache == null)
+				{
+					System.Threading.Interlocked.CompareExchange<FactTypeInstanceVerbalizer>(ref myCache, this, null as FactTypeInstanceVerbalizer);
+				}
+			}
 			/// <summary>
 			/// IVerbalize.GetVerbalization implementation
 			/// </summary>
@@ -6204,15 +6281,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 			}
 		}
-		#endregion // FactType verbalization
+		#endregion // FactType Instance Verbalization
 	}
 	#endregion // FactType.FactTypeInstanceVerbalizer verbalization
-	#region FactType.FactTypeInstanceBlockEnd verbalization
-	public partial class FactType
+	#region ObjectType.ObjectTypeInstanceVerbalizer verbalization
+	public partial class ObjectType
 	{
-		#region FactType verbalization block end
-		private partial class FactTypeInstanceBlockEnd : IVerbalize
+		#region ObjectType Instance Verbalization
+		private partial class ObjectTypeInstanceVerbalizer : IVerbalize, IDisposable
 		{
+			// Cache an instance so we only create one helper in single-threaded scenarios
+			private static ObjectTypeInstanceVerbalizer myCache;
+			public static ObjectTypeInstanceVerbalizer GetVerbalizer()
+			{
+				ObjectTypeInstanceVerbalizer retVal = myCache;
+				if (retVal != null)
+				{
+					retVal = System.Threading.Interlocked.CompareExchange<ObjectTypeInstanceVerbalizer>(ref myCache, null as ObjectTypeInstanceVerbalizer, retVal);
+				}
+				if (retVal == null)
+				{
+					retVal = new ObjectTypeInstanceVerbalizer();
+				}
+				return retVal;
+			}
+			void IDisposable.Dispose()
+			{
+				this.DisposeHelper();
+				if (myCache == null)
+				{
+					System.Threading.Interlocked.CompareExchange<ObjectTypeInstanceVerbalizer>(ref myCache, this, null as ObjectTypeInstanceVerbalizer);
+				}
+			}
 			/// <summary>
 			/// IVerbalize.GetVerbalization implementation
 			/// </summary>
@@ -6263,8 +6363,69 @@ namespace Neumont.Tools.ORM.ObjectModel
 						return true;
 					}
 				}
-				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.InstanceBlockEnd, false, false));
-				writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.IndentedListClose, false, false));
+				const bool isDeontic = false;
+				StringBuilder sbTemp = null;
+				int instanceCount = this.Instances.Length;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int InstanceIter1 = 0; InstanceIter1 < instanceCount; ++InstanceIter1)
+				{
+					CoreVerbalizationSnippetType listSnippet;
+					if (InstanceIter1 == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListOpen;
+					}
+					else if (InstanceIter1 == (instanceCount - 1))
+					{
+						if (InstanceIter1 == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.ObjectTypeInstanceListSeparator;
+					}
+					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+					sbTemp.Append(ObjectTypeInstance.GetDisplayString(this.Instances[InstanceIter1], this.ParentObject, writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.TextInstanceValue, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.NonTextInstanceValue, isDeontic, isNegative)));
+					if (InstanceIter1 == (instanceCount - 1))
+					{
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeInstanceListClose, isDeontic, isNegative));
+					}
+				}
+				writer.Write(sbTemp.ToString());
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.Name));
+					}
+					if (!(firstErrorPending))
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
 				return true;
 			}
 			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -6272,7 +6433,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return this.GetVerbalization(writer, snippetsDictionary, beginVerbalization, isNegative);
 			}
 		}
-		#endregion // FactType verbalization block end
+		#endregion // ObjectType Instance Verbalization
 	}
-	#endregion // FactType.FactTypeInstanceBlockEnd verbalization
+	#endregion // ObjectType.ObjectTypeInstanceVerbalizer verbalization
 }

@@ -63,7 +63,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SkipFollowingSiblings,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
-	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner
+	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IVerbalizeCustomChildren
 	{
 		#region Public token values
 		/// <summary>
@@ -2529,6 +2529,53 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // CheckForIncompatibleRelationshipRolePlayerChangeRule class
+
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
+		/// for instance verbalizations
+		/// </summary>
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(bool isNegative)
+		{
+			ObjectTypeInstance[] instances = (IsValueType ? (ObjectTypeInstance[])ValueTypeInstanceCollection.ToArray() : (ObjectTypeInstance[])EntityTypeInstanceCollection.ToArray());
+			int instanceCount = instances.Length;
+			if (instanceCount > 0)
+			{
+				ObjectTypeInstanceVerbalizer verbalizer = ObjectTypeInstanceVerbalizer.GetVerbalizer();
+				verbalizer.Initialize(this, instances);
+				yield return new CustomChildVerbalizer(verbalizer, true);
+			}
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(bool isNegative)
+		{
+			return GetCustomChildVerbalizations(isNegative);
+		}
+
+		#endregion
+		#region ObjectTypeInstanceVerbalizer class
+		private partial class ObjectTypeInstanceVerbalizer
+		{
+			private ObjectType myParentObject;
+			private ObjectTypeInstance[] myInstances;
+			public void Initialize(ObjectType parentObject, ObjectTypeInstance[] instances)
+			{
+				myParentObject = parentObject;
+				myInstances = instances;
+			}
+			private void DisposeHelper()
+			{
+				myInstances = null;
+			}
+			private ObjectType ParentObject
+			{
+				get { return myParentObject; }
+			}
+			private ObjectTypeInstance[] Instances
+			{
+				get { return myInstances; }
+			}
+		}
+		#endregion // ObjectTypeInstanceVerbalizer class
 	}
 	#region ValueTypeHasDataType class
 	public partial class ValueTypeHasDataType : IElementLinkRoleHasIndirectModelErrorOwner

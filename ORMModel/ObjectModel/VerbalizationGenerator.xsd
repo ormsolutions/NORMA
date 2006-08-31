@@ -84,6 +84,11 @@
 					<xs:documentation>Use with the DefaultBinaryMissingUniquenessVerbalizer and CombinedMandatoryUniqueVerbalizer types</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ObjectType">
+				<xs:annotation>
+					<xs:documentation>Use with the ObjectTypeInstanceVerbalizer</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintPatternGroupEnum">
@@ -164,6 +169,7 @@
 			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="IndentedLogicalAndList"/>
 			<xs:enumeration value="IndentedLogicalOrList"/>
+			<xs:enumeration value="ObjectTypeInstanceList"/>
 			<xs:enumeration value="SimpleList"/>
 			<xs:enumeration value="SimpleLogicalAndList"/>
 			<xs:enumeration value="SimpleLogicalOrList"/>
@@ -216,6 +222,7 @@
 				</xs:union>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="reverseSign" use="optional"/>
 	</xs:complexType>
 	<xs:complexType name="SnippetLeafTypeWithConditionalMatch">
 		<xs:complexContent>
@@ -628,6 +635,13 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="ObjectTypeInstanceValueType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the value of the Object Type Instance
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="NoteTextType">
 		<xs:annotation>
 			<xs:documentation>
@@ -704,6 +718,7 @@
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+			<xs:element name="IterateInstances" type="IterateInstancesType" />
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="FactType">
@@ -741,6 +756,12 @@
 				<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IterateInstancesType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ObjectTypeInstanceValue" type="ObjectTypeInstanceValueType"/>
+		</xs:choice>
+		<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
 	</xs:complexType>
 	<xs:complexType name="IterateFactsType">
 		<xs:annotation>
@@ -813,8 +834,28 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="SampleInstancesConstructType">
+		<xs:annotation>
+			<xs:documentation>
+				Allows for generation of Verbalizers for Instances
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="SampleInstance" type="SampleInstanceType"/>
+			<xs:element name="SingleSnippet" type="SingleSnippetType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="EnableSubscriptsType">
+		<xs:attribute name="minFactArity" type="xs:positiveInteger" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="RingTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Irreflexive"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="ConstraintType">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="EnableSubscripts" type="EnableSubscriptsType"/>
 			<xs:element name="ConstrainedRoles">
 				<xs:complexType>
 					<xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -832,6 +873,7 @@
 					</xs:choice>
 					<xs:attribute name="span" type="SpanEnum" use="optional"/>
 					<xs:attribute name="sign" type="ve:SignEnum" use="optional"/>
+					<xs:attribute name="ringType" type="RingTypeEnum" use="optional"/>
 					<xs:attributeGroup ref="FactArityAttributes"/>
 				</xs:complexType>
 			</xs:element>
@@ -841,6 +883,35 @@
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
 		<xs:attribute name="compatibleColumns" type="xs:boolean" default="false"/>
 		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="SampleInstanceType">
+		<xs:annotation>
+			<xs:documentation>
+				Constructs IVerbalizer implementations for Sample Instance Data
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:element name="IterateInstances" type="IterateInstancesType"/>
+			<xs:element name="Fact">
+				<xs:complexType>
+					<xs:choice minOccurs="1" maxOccurs="1">
+						<xs:element name="InstanceRoleReplacement"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="type" use="required"/>
+		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="SingleSnippetType">
+		<xs:annotation>
+			<xs:documentation>
+				Constructs IVerbalizer implementation to verbalize a single snippet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" use="required"/>
+		<xs:attribute name="childHelperFor" type="ChildHelperForEnum" use="optional"/>
+		<xs:attribute name="snippetRef" use="required" type="ve:SnippetTypeEnum"/>
 	</xs:complexType>
 	<xs:element name="VerbalizationRoot">
 		<xs:complexType>
@@ -861,6 +932,7 @@
 						<xs:all>
 							<xs:element name="FactType" type="FactConstructType"/>
 							<xs:element name="Constraints" type="ConstraintsConstructType"/>
+							<xs:element name="SampleInstances" type="SampleInstancesConstructType"/>
 							<xs:element name="ObjectType" type="ObjectConstructType" />
 							<xs:element name="Note" type="NoteConstructType" />
 						</xs:all>

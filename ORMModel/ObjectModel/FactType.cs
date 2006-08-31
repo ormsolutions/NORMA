@@ -2156,14 +2156,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int instanceCount = instances.Count;
 				if (instanceCount != 0)
 				{
-					yield return new CustomChildVerbalizer(new FactTypeInstanceBlockStart());
+					yield return new CustomChildVerbalizer(FactTypeInstanceBlockStart.GetVerbalizer(), true);
 					for (int i = 0; i < instanceCount; ++i)
 					{
-						FactTypeInstanceVerbalizer verbalizer = new FactTypeInstanceVerbalizer();
+						FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
 						verbalizer.Initialize(this, instances[i]);
 						yield return new CustomChildVerbalizer(verbalizer, true);
 					}
-					yield return new CustomChildVerbalizer(new FactTypeInstanceBlockEnd());
+					yield return new CustomChildVerbalizer(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
 				}
 			}
 		}
