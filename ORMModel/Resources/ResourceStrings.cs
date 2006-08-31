@@ -16,10 +16,11 @@
 
 using System;
 using System.Diagnostics;
-using Neumont.Tools.ORM.ObjectModel;
-using Neumont.Tools.ORM.ShapeModel;
 using System.Resources;
 using System.Windows.Forms;
+using Neumont.Tools.Modeling.Design;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM
 {
@@ -74,29 +75,19 @@ namespace Neumont.Tools.ORM
 			}
 		}
 
-		private static ResourceManager myDiagramResourceManager;
 		private static ResourceManager DiagramResourceManager
 		{
 			get
 			{
-				if (myDiagramResourceManager == null)
-				{
-					LoadResourceManagerForType(ref myDiagramResourceManager, typeof(ORMDiagram));
-				}
-				return myDiagramResourceManager;
+				return ResourceAccessor<ORMDiagram>.ResourceManager;
 			}
 		}
 
-		private static ResourceManager myModelResourceManager;
 		private static ResourceManager ModelResourceManager
 		{
 			get
 			{
-				if (myModelResourceManager == null)
-				{
-					LoadResourceManagerForType(ref myModelResourceManager, typeof(ORMModel));
-				}
-				return myModelResourceManager;
+				return ResourceAccessor<ORMModel>.ResourceManager;
 			}
 		}
 		

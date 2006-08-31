@@ -21,61 +21,33 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 
 namespace Neumont.Tools.Modeling.Design
 {
-	#region EnumConverterBase class
-	/// <summary>
-	/// This class should not be used directly.
-	/// See <see cref="EnumConverter{TEnum,TResourceManagerSource}"/> instead.
-	/// </summary>
-	[Browsable(false)]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public abstract class EnumConverterBase<TResourceManagerSource> : EnumConverter
-	{
-		// This class exists solely as a performance hack, so that only one reference to the ResourceManager
-		// is kept per type of TResourceManagerSource, and so that it only has to be looked up once.
-		// Pretend it is not even here.
-
-		// This is internal so that this class cannot be dervied from from outside this assembly.
-		internal EnumConverterBase(Type type)
-			: base(type)
-		{
-		}
-
-		/// <summary>
-		/// The <see cref="ResourceManager"/> obtained from <typeparamref name="TResourceManagerSource"/>.
-		/// </summary>
-		protected static readonly ResourceManager ResourceManager =
-			(ResourceManager)typeof(TResourceManagerSource).GetProperty("SingletonResourceManager",
-				BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy,
-				null, typeof(ResourceManager), Type.EmptyTypes, null).GetValue(null, null);
-	}
-	#endregion // EnumConverterBase class
-
 	/// <summary>
 	/// Supports localized display names for <see cref="Enum"/>s, and ensures that the current value is always shown
-	/// in editing dropdowns if <see cref="Enum.IsDefined"/> returns <see langword="true"/> for it.
+	/// in editor dropdowns if <see cref="Enum.IsDefined"/> returns <see langword="true"/> for it.
 	/// </summary>
 	/// <typeparam name="TEnum">
-	/// The type of the <see cref="Enum"/> that this <see cref="EnumConverter"/> is for.
+	/// The type of the <see cref="Enum"/> that this <see cref="EnumConverter{TEnum,TResourceManagerSource}"/> is for.
 	/// </typeparam>
 	/// <typeparam name="TResourceManagerSource">
-	/// The type from which the <see cref="ResourceManager"/> should be obtained. <typeparamref name="TResourceManagerSource"/>
-	/// must have a gettable static property named <c>SingletonResourceManager</c> with a return type of <see cref="ResourceManager"/>.
+	/// The type from which the <see cref="ResourceManager"/> should be obtained.
 	/// </typeparam>
+	/// <remarks>
+	/// <see cref="ResourceAccessor{TResourceManagerSource}"/> is used to obtain the <see cref="ResourceManager"/> for <typeparamref name="TResourceManagerSource"/>.
+	/// </remarks>
 	[CLSCompliant(false)] // IConvertible is not CLS-compliant
-	[Browsable(true)]
-	[EditorBrowsable(EditorBrowsableState.Always)]
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public sealed class EnumConverter<TEnum, TResourceManagerSource> : EnumConverterBase<TResourceManagerSource>
+	public sealed class EnumConverter<TEnum, TResourceManagerSource> : EnumConverter
 		where TEnum : struct, IFormattable, IComparable, IConvertible // This is as close as we can get to 'System.Enum'
 	{
 		#region EnumValueInfo struct
+		[StructLayout(LayoutKind.Auto, CharSet = CharSet.Unicode)]
 		private struct EnumValueInfo : IEquatable<EnumValueInfo>
 		{
 			private static readonly string ResourceNamePrefix = EnumType.Name + Type.Delimiter;
@@ -97,7 +69,7 @@ namespace Neumont.Tools.Modeling.Design
 			}
 			public override bool Equals(object obj)
 			{
-				return obj is EnumValueInfo && this.Equals((EnumValueInfo)obj);
+				return obj is EnumValueInfo && this.Value.Equals(((EnumValueInfo)obj).Value);
 			}
 			public bool Equals(EnumValueInfo other)
 			{
@@ -114,39 +86,27 @@ namespace Neumont.Tools.Modeling.Design
 		}
 		#endregion // EnumValueInfo struct
 
-		#region LocalizedNameDictionary struct
-		private struct LocalizedNameDictionary
+		#region LocalizedNameDictionary class
+		private sealed class LocalizedNameDictionary
 		{
-			private Dictionary<string, TEnum> ValuesByName;
-			private Dictionary<TEnum, string> NamesByValue;
+			private readonly Dictionary<string, TEnum> ValuesByName = new Dictionary<string, TEnum>(DefinedValuesCount, StringComparer.Ordinal);
+			private readonly Dictionary<TEnum, string> NamesByValue = new Dictionary<TEnum, string>(DefinedValuesCount);
 
 			public bool TryGetName(TEnum value, out string name)
 			{
-				name = null;
-				return NamesByValue != null && NamesByValue.TryGetValue(value, out name);
+				return NamesByValue.TryGetValue(value, out name);
 			}
 			public bool TryGetValue(string name, out TEnum value)
 			{
-				value = default(TEnum);
-				return ValuesByName != null && ValuesByName.TryGetValue(name, out value);
+				return ValuesByName.TryGetValue(name, out value);
 			}
 			public void Add(string name, TEnum value)
 			{
-				// We must be sure to not replace an existing Dictionary (thereby losing the data it contains),
-				// so we're using Interlocked.CompareExchange
-				if (ValuesByName == null)
-				{
-					System.Threading.Interlocked.CompareExchange(ref ValuesByName, new Dictionary<string, TEnum>(DefinedValuesCount, StringComparer.Ordinal), null);
-				}
-				if (NamesByValue == null)
-				{
-					System.Threading.Interlocked.CompareExchange(ref NamesByValue, new Dictionary<TEnum, string>(DefinedValuesCount), null);
-				}
 				ValuesByName.Add(name, value);
 				NamesByValue.Add(value, name);
 			}
 		}
-		#endregion // LocalizedNameDictionary struct
+		#endregion // LocalizedNameDictionary class
 
 		#region Static helper methods
 		static EnumConverter()
@@ -243,18 +203,29 @@ namespace Neumont.Tools.Modeling.Design
 			string invariantName = valueInfo.InvariantName;
 			Dictionary<string, LocalizedNameDictionary> localizedNamesByCultureName = LocalizedNamesByCultureName;
 
-			CultureInfo originalCulture = null;
+			CultureInfo originalCulture = CultureInfo.CurrentCulture;
 
-			// Yes, we want reference equality here, not value equality.
-			if (culture == CultureInfo.CurrentCulture)
+			// Yes, we want reference equality here, not value equality. We only want to do this if we were passed
+			// the actual CurrentCulture object, not just a culture that happens to be equal to it.
+			if (culture == originalCulture)
 			{
 				// Normally, TypeConverters do actual conversion, not resource lookups, so they are usually passed
 				// CurrentCulture, rather than CurrentUICulture (which will often be a neutral culture that throws
 				// if used for anything other than resource lookup). Since we ARE actually doing resource lookups,
 				// it is reasonable to try the CurrentUICulture first instead of the CurrentCulture, if that is
 				// indeed what was passed to us.
-				originalCulture = culture;
 				culture = CultureInfo.CurrentUICulture;
+
+				// However, if the CurrentCulture and the CurrentUICulture are equal, we can just null out
+				// originalCulture so that we don't try to do lookups against that culture twice.
+				if (culture.Equals(originalCulture))
+				{
+					originalCulture = null;
+				}
+			}
+			else
+			{
+				originalCulture = null;
 			}
 
 		L_ProcessCulture:
@@ -267,7 +238,7 @@ namespace Neumont.Tools.Modeling.Design
 			{
 				return localizedName;
 			}
-			localizedName = ResourceManager.GetString(valueInfo.ResourceName, culture);
+			localizedName = ResourceAccessor<TResourceManagerSource>.ResourceManager.GetString(valueInfo.ResourceName, culture);
 			bool localizedNameIsNullOrEmpty = string.IsNullOrEmpty(localizedName);
 			if (localizedNameIsNullOrEmpty || localizedName == invariantName)
 			{
@@ -296,7 +267,7 @@ namespace Neumont.Tools.Modeling.Design
 					{
 						if (!localizedNamesByCultureName.TryGetValue(cultureName, out localizedNameDictionary))
 						{
-							localizedNamesByCultureName[cultureName] = localizedNameDictionary;
+							localizedNamesByCultureName[cultureName] = localizedNameDictionary = new LocalizedNameDictionary();
 						}
 					}
 				}

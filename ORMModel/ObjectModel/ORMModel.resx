@@ -132,6 +132,21 @@
 			You must not remove this notice, or any other, from this software.
 		</value>
   </metadata>
+  <data name="ConstraintModality.Alethic" xml:space="preserve">
+    <value>Alethic</value>
+  </data>
+  <data name="ConstraintModality.Deontic" xml:space="preserve">
+    <value>Deontic</value>
+  </data>
+  <data name="DerivationStorageType.Derived" xml:space="preserve">
+    <value>Derived</value>
+  </data>
+  <data name="DerivationStorageType.DerivedAndStored" xml:space="preserve">
+    <value>Derived And Stored</value>
+  </data>
+  <data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
+    <value>Partially Derived</value>
+  </data>
   <data name="ImpliedFactType.PredicateInverseReading" xml:space="preserve">
     <value>{0} involves {1}</value>
     <comment>The inverse reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
@@ -528,6 +543,15 @@
     <value>{0} has {1}</value>
     <comment>The reading for the predicate created by setting the ref mode.</comment>
   </data>
+  <data name="ReferenceModeType.General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="ReferenceModeType.Popular" xml:space="preserve">
+    <value>Popular</value>
+  </data>
+  <data name="ReferenceModeType.UnitBased" xml:space="preserve">
+    <value>Unit-based</value>
+  </data>
   <data name="SubtypeFact.ComponentNameFormat" xml:space="preserve">
     <value>{0}-&gt;{1}</value>
     <comment>String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
@@ -587,6 +611,57 @@
   <data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text" xml:space="preserve">
     <value>Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on fact '{1}'.</value>
     <comment>Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
+  </data>
+  <data name="RingConstraintType.Undefined" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="RingConstraintType.Irreflexive" xml:space="preserve">
+    <value>Irreflexive</value>
+  </data>
+  <data name="RingConstraintType.Acyclic" xml:space="preserve">
+    <value>Acyclic</value>
+  </data>
+  <data name="RingConstraintType.Intransitive" xml:space="preserve">
+    <value>Intransitive</value>
+  </data>
+  <data name="RingConstraintType.Symmetric" xml:space="preserve">
+    <value>Symmetric</value>
+  </data>
+  <data name="RingConstraintType.Asymmetric" xml:space="preserve">
+    <value>Asymmetric</value>
+  </data>
+  <data name="RingConstraintType.AntiSymmetric" xml:space="preserve">
+    <value>AntiSymmetric</value>
+  </data>
+  <data name="RingConstraintType.AcyclicIntransitive" xml:space="preserve">
+    <value>Acyclic and Intransitive</value>
+  </data>
+  <data name="RingConstraintType.SymmetricIrreflexive" xml:space="preserve">
+    <value>Symmetric and Irreflexive</value>
+  </data>
+  <data name="RingConstraintType.SymmetricIntransitive" xml:space="preserve">
+    <value>Symmetric and Intransitive</value>
+  </data>
+  <data name="RingConstraintType.AsymmetricIntransitive" xml:space="preserve">
+    <value>Asymmetric and Intransitive</value>
+  </data>
+  <data name="RoleMultiplicity.ExactlyOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="RoleMultiplicity.Indeterminate" xml:space="preserve">
+    <value>Indeterminate</value>
+  </data>
+  <data name="RoleMultiplicity.OneToMany" xml:space="preserve">
+    <value>1..*</value>
+  </data>
+  <data name="RoleMultiplicity.Unspecified" xml:space="preserve">
+    <value>Unspecified</value>
+  </data>
+  <data name="RoleMultiplicity.ZeroToMany" xml:space="preserve">
+    <value>*</value>
+  </data>
+  <data name="RoleMultiplicity.ZeroToOne" xml:space="preserve">
+    <value>0..1</value>
   </data>
   <data name="Verbalization.SnippetsDefaultDescription" xml:space="preserve">
     <value>Default Verbalization</value>

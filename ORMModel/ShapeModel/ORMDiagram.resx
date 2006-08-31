@@ -202,6 +202,12 @@
     <value xml:space="preserve">Swap Role Order</value>
     <comment xml:space="preserve">This text appears on the move role left/right when the fact type is binary.</comment>
   </data>
+  <data name="ConstraintDisplayPosition.Bottom" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
+  <data name="ConstraintDisplayPosition.Top" xml:space="preserve">
+    <value>Top</value>
+  </data>
   <data name="DeleteRoleSequence.TransactionName">
     <value xml:space="preserve">Delete Role Sequence</value>
     <comment xml:space="preserve">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -221,6 +227,15 @@
   <data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Resources/DiagramTabImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment xml:space="preserve">The image shown on the tab for ORM diagrams.</comment>
+  </data>
+  <data name="DisplayRoleNames.Off">
+    <value xml:space="preserve">Off</value>
+  </data>
+  <data name="DisplayRoleNames.On">
+    <value xml:space="preserve">On</value>
+  </data>
+  <data name="DisplayRoleNames.UserDefault">
+    <value xml:space="preserve">User Default</value>
   </data>
   <data name="ExtensionLoadFailure.Message">
     <value xml:space="preserve">ORM Designer extension '{1}' failed to load.{0}{0}{0}----BEGIN EXCEPTION----{0}{0}{2}{0}----END EXCEPTION----{0}{0}{0}Abort  = Allow ORM Designer package load to fail and signal a breakpoint{0}Retry  = Retry loading the extension{0}Ignore = Ignore the extension load failure and continue with the next extension{0}</value>

@@ -1221,7 +1221,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// Used to specify how/whether the contents of the fact should be stored by
 	/// generated systems.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DerivationStorageType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum DerivationStorageType
 	{
@@ -1251,7 +1251,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: ConstraintModality
 	/// Description for Neumont.Tools.ORM.ObjectModel.ConstraintModality
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ConstraintModality, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ConstraintModality
 	{
@@ -1278,7 +1278,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// based on the existing mandatory and internal uniqueness constraints associated
 	/// with the fact.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RoleMultiplicity, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RoleMultiplicity
 	{
@@ -1328,7 +1328,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: RingConstraintType
 	/// Description for Neumont.Tools.ORM.ObjectModel.RingConstraintType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RingConstraintType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RingConstraintType
 	{
@@ -1396,7 +1396,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: ReferenceModeType
 	/// Description for Neumont.Tools.ORM.ObjectModel.ReferenceModeType
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<ReferenceModeType, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum ReferenceModeType
 	{
@@ -1426,7 +1426,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// DomainEnumeration: RangeInclusion
 	/// Description for Neumont.Tools.ORM.ObjectModel.RangeInclusion
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<RangeInclusion, global::Neumont.Tools.ORM.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
 	public enum RangeInclusion
 	{

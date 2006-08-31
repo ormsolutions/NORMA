@@ -132,12 +132,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConstraintDisplayPosition.Bottom" xml:space="preserve">
-    <value>Bottom</value>
-  </data>
-  <data name="ConstraintDisplayPosition.Top" xml:space="preserve">
-    <value>Top</value>
-  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition" xml:space="preserve">
     <value>ConstraintDisplayPosition</value>
   </data>
@@ -489,14 +483,5 @@
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayRoleName" xml:space="preserve">
     <value>DisplayRoleName</value>
-  </data>
-  <data name="DisplayRoleNames.UserDefault">
-    <value xml:space="preserve">User Default</value>
-  </data>
-  <data name="DisplayRoleNames.On">
-    <value xml:space="preserve">On</value>
-  </data>
-  <data name="DisplayRoleNames.Off">
-    <value xml:space="preserve">Off</value>
   </data>
 </root>

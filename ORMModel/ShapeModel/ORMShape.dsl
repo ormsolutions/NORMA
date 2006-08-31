@@ -61,7 +61,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;ConstraintDisplayPosition, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -75,7 +75,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel&gt;)"/>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DisplayRoleNames, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

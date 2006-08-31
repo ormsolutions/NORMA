@@ -427,13 +427,13 @@ namespace Neumont.Tools.ORM.Shell
 
 				Store store = document.Store;
 				// Add our existing diagrams, or make a new one if we don't already have one
-				IList existingDiagrams = store.ElementDirectory.FindElements(ORMDiagram.DomainClassId, true);
+				ReadOnlyCollection<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
 				if (existingDiagrams.Count > 0)
 				{
 					for (int i = 0; i < existingDiagrams.Count; i++)
 					{
 						// Make the first diagram be selected
-						base.AddDiagram((Diagram)existingDiagrams[i], i == 0);
+						base.AddDiagram(existingDiagrams[i], i == 0);
 					}
 				}
 				else
@@ -443,15 +443,15 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						// Make sure the diagram element is correctly attached to the model, and
 						// create a model if we don't have one yet.
-						IList elements = store.ElementDirectory.FindElements(ORMModel.DomainClassId, true);
-						if (elements.Count == 0)
+						ReadOnlyCollection<ORMModel> elements = store.ElementDirectory.FindElements<ORMModel>(true);
+						if (elements.Count <= 0)
 						{
 							diagram.Associate(new ORMModel(store));
 						}
 						else
 						{
 							Debug.Assert(elements.Count == 1);
-							diagram.Associate((ModelElement)elements[0]);
+							diagram.Associate(elements[0]);
 						}
 					}
 					// The DocData events for adding new Diagrams to the DocView are not yet hooked up, so
@@ -475,11 +475,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Get the default context menu for this view
 		/// </summary>
-		protected override System.ComponentModel.Design.CommandID ContextMenuId
+		protected override CommandID ContextMenuId
 		{
 			get
 			{
-				return default(System.ComponentModel.Design.CommandID);
+				return default(CommandID);
 			}
 		}
 

@@ -402,62 +402,11 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ValueType" xml:space="preserve">
     <value>ValueType</value>
   </data>
-	<data name="Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern" xml:space="preserve">
     <value>{0}_RefMode{1}</value>
   </data>
-	<data name="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern" xml:space="preserve">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern" xml:space="preserve">
     <value>ValueType{0}</value>
-  </data>
-	<data name="RoleMultiplicity.ExactlyOne" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="RoleMultiplicity.Indeterminate" xml:space="preserve">
-    <value>Indeterminate</value>
-  </data>
-  <data name="RoleMultiplicity.OneToMany" xml:space="preserve">
-    <value>1..*</value>
-  </data>
-  <data name="RoleMultiplicity.Unspecified" xml:space="preserve">
-    <value>Unspecified</value>
-  </data>
-  <data name="RoleMultiplicity.ZeroToMany" xml:space="preserve">
-    <value>*</value>
-  </data>
-  <data name="RoleMultiplicity.ZeroToOne" xml:space="preserve">
-    <value>0..1</value>
-  </data>
-  <data name="RingConstraintType.Undefined" xml:space="preserve">
-    <value>Undefined</value>
-  </data>
-  <data name="RingConstraintType.Irreflexive" xml:space="preserve">
-    <value>Irreflexive</value>
-  </data>
-  <data name="RingConstraintType.Acyclic" xml:space="preserve">
-    <value>Acyclic</value>
-  </data>
-  <data name="RingConstraintType.Intransitive" xml:space="preserve">
-    <value>Intransitive</value>
-  </data>
-  <data name="RingConstraintType.Symmetric" xml:space="preserve">
-    <value>Symmetric</value>
-  </data>
-  <data name="RingConstraintType.Asymmetric" xml:space="preserve">
-    <value>Asymmetric</value>
-  </data>
-  <data name="RingConstraintType.AntiSymmetric" xml:space="preserve">
-    <value>AntiSymmetric</value>
-  </data>
-  <data name="RingConstraintType.AcyclicIntransitive" xml:space="preserve">
-    <value>Acyclic and Intransitive</value>
-  </data>
-  <data name="RingConstraintType.SymmetricIrreflexive" xml:space="preserve">
-    <value>Symmetric and Irreflexive</value>
-  </data>
-  <data name="RingConstraintType.SymmetricIntransitive" xml:space="preserve">
-    <value>Symmetric and Intransitive</value>
-  </data>
-  <data name="RingConstraintType.AsymmetricIntransitive" xml:space="preserve">
-    <value>Asymmetric and Intransitive</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role.Name" xml:space="preserve">
     <value>Name</value>
@@ -467,15 +416,6 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.FactType.DerivationStorageDisplay" xml:space="preserve">
     <value>DerivationStorage</value>
-  </data>
-  <data name="DerivationStorageType.Derived" xml:space="preserve">
-    <value>Derived</value>
-  </data>
-  <data name="DerivationStorageType.DerivedAndStored" xml:space="preserve">
-    <value>Derived And Stored</value>
-  </data>
-  <data name="DerivationStorageType.PartiallyDerived" xml:space="preserve">
-    <value>Partially Derived</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.MandatoryConstraint.IsSimple" xml:space="preserve">
     <value>IsSimple</value>

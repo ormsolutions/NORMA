@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\Design\ResourceAccessor.cs" />
     <Compile Include="Framework\Design\ExpandableElementConverter.cs" />
     <Compile Include="Framework\Design\DomainTypeDescriptor.cs" />
     <Compile Include="Framework\Design\ElementTypeDescriptor.cs" />
