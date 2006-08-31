@@ -403,6 +403,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.
+		/// </summary>
+		public static string ValueTypeAutoCreateReferenceModeNamePattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern");
+			}
+		}
+		/// <summary>
 		/// The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.
 		/// </summary>
 		public static string ValueTypeDefaultNamePattern

@@ -261,6 +261,14 @@
     <value>ValueRange</value>
     <comment>DisplayName for DomainProperty &apos;ValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueTypeValueRange</value>
+    <comment>Description for DomainProperty &apos;ValueTypeValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.DisplayName" xml:space="preserve">
+    <value>ValueTypeValueRange</value>
+    <comment>DisplayName for DomainProperty &apos;ValueTypeValueRangeText&apos; on DomainClass &apos;ObjectType&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType/IsPersonal.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal</value>
     <comment>Description for DomainProperty &apos;IsPersonal&apos; on DomainClass &apos;ObjectType&apos;</comment>
@@ -1228,6 +1236,14 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint/Text.DisplayName" xml:space="preserve">
     <value>Text</value>
     <comment>DisplayName for DomainProperty &apos;Text&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint/TextChanged.Description" xml:space="preserve">
+    <value>Description for Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextChanged</value>
+    <comment>Description for DomainProperty &apos;TextChanged&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint/TextChanged.DisplayName" xml:space="preserve">
+    <value>TextChanged</value>
+    <comment>DisplayName for DomainProperty &apos;TextChanged&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ValueMismatchError.Description" xml:space="preserve">
     <value></value>

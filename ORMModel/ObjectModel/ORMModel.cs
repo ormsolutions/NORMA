@@ -164,6 +164,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent
 	{
+		#region Public token values
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate that
+		/// we should generate duplicate name errors for like-named objects or constraints
+		/// instead of throwing an exception.
+		/// </summary>
+		public static readonly object AllowDuplicateNamesKey = new object();
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate that
+		/// we should generate duplicate name errors for like-named objects instead of
+		/// throwing an exception.
+		/// </summary>
+		public static readonly object AllowDuplicateConstraintNamesKey = new object();
+		#endregion // Public token values
 		#region INamedElementDictionaryParent implementation
 		[NonSerialized]
 		private NamedElementDictionary myObjectTypesDictionary;
@@ -239,9 +253,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			object retVal = null;
 			Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 			if (!contextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
-				contextInfo.ContainsKey(ObjectType.AllowDuplicateObjectNamesKey))
+				contextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey))
 			{
-				// Use to their value so they don't have to look up ours again
+				// Use their value so they don't have to look up ours again
 				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
 			}
 			return retVal;
@@ -677,7 +691,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			protected override string GetRootNamePattern(ModelElement element)
 			{
 				Debug.Assert(element is SetComparisonConstraint || element is SetConstraint || element is ValueConstraint);
-				// UNDONE: How explicit do we want to be on constraint naming?
+				// UNDONE: How explicit do we want to be on constraint naming? Note that if this is changed, then
+				// we also need to update the ValueRange.DataTypeDeleting rule, which assumes the base implementation.
 				return base.GetRootNamePattern(element);
 			}
 			/// <summary>

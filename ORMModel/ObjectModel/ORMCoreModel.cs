@@ -113,7 +113,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="element">The element to validate</param>
 		/// <param name="validator">The validation function to run</param>
-		public static void DelayValidateElement(ModelElement element, ElementValidator validator)
+		/// <returns>true if this element/validator pair is being added for the first time in this transaction</returns>
+		public static bool DelayValidateElement(ModelElement element, ElementValidator validator)
 		{
 			Store store = element.Store;
 			Debug.Assert(store.TransactionActive);
@@ -125,7 +126,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				dictionary = (Dictionary<ElementValidatorKey, object>)contextDictionary[DelayedValidationContextKey];
 				if (dictionary.ContainsKey(key))
 				{
-					return; // We're already validating this one
+					return false; // We're already validating this one
 				}
 			}
 			else
@@ -134,6 +135,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				contextDictionary[DelayedValidationContextKey] = dictionary;
 			}
 			dictionary[key] = null;
+			return true;
 		}
 		#endregion // Delayed Model Validation
 		#region IORMModelEventSubscriber Implementation

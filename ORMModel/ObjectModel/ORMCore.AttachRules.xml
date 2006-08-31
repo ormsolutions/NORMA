@@ -18,6 +18,7 @@
 	<arg:Model class="ORMCoreDomainModel">
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.ModalityChangeRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule"/>
@@ -178,10 +179,14 @@
 		<arg:Rule class="UniquenessConstraint.NMinusOneDeleteRuleModelConstraintDeleteValidation"/>
 		<arg:Rule class="UniquenessConstraint.NMinusOneDeleteRuleModelFactDeleteValidation"/>
 		<arg:Rule class="UniquenessConstraint.UniquenessConstraintChangeRule"/>
-		<arg:Rule class="ValueConstraint.DataTypeAddRule"/>
 		<arg:Rule class="ValueConstraint.DataTypeChangeRule"/>
+		<arg:Rule class="ValueConstraint.DataTypeDeletingRule"/>
 		<arg:Rule class="ValueConstraint.DataTypeRolePlayerChangeRule"/>
 		<arg:Rule class="ValueConstraint.ObjectTypeRoleAdded"/>
+		<arg:Rule class="ValueConstraint.PreferredIdentifierDeletingRule"/>
+		<arg:Rule class="ValueConstraint.PreferredIdentifierRoleAddRule"/>
+		<arg:Rule class="ValueConstraint.RolePlayerDeleting"/>
+		<arg:Rule class="ValueConstraint.RolePlayerRolePlayerChangeRule"/>
 		<arg:Rule class="ValueConstraint.RoleValueConstraintAdded"/>
 		<arg:Rule class="ValueConstraint.ValueConstraintAddRule"/>
 		<arg:Rule class="ValueConstraint.ValueConstraintChangeRule"/>

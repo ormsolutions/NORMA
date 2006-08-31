@@ -54,6 +54,10 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 			{
 				return objectType.IsValueType || objectType.HasReferenceMode;
 			}
+			else if (propertyId.Equals(ObjectType.ValueTypeValueRangeTextDomainPropertyId))
+			{
+				return objectType.HasReferenceMode;
+			}
 			else if (propertyId.Equals(ObjectType.NestedFactTypeDisplayDomainPropertyId) ||
 				propertyId.Equals(ObjectType.ReferenceModeDisplayDomainPropertyId))
 			{

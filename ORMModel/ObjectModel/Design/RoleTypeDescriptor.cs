@@ -76,10 +76,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Design
 		{
 			if (propertyDescriptor.DomainPropertyInfo.Id == Role.ValueRangeTextDomainPropertyId)
 			{
-				Role role = ModelElement;
-				FactType fact = role.FactType;
-				ObjectType rolePlayer = role.RolePlayer;
-				return fact != null && rolePlayer != null && !(rolePlayer.IsValueType || rolePlayer.HasReferenceMode);
+				return !ModelElement.IsValueRole;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}

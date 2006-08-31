@@ -85,10 +85,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						typeof(ReadingShape).GetNestedType("RoleDisplayOrderAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("RoleDisplayOrderPositionChanged", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RingConstraintShape).GetNestedType("RingConstraintPropertyChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraintShape).GetNestedType("ValueRangeChanged", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraintShape).GetNestedType("ValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeRolePlayerChange", BindingFlags.Public | BindingFlags.NonPublic)};
+						typeof(ValueConstraintShape).GetNestedType("ValueConstraintTextChanged", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMShapeDomainModel.myCustomDomainModelTypes = retVal;
 					System.Diagnostics.Debug.Assert(Array.IndexOf<Type>(retVal, null) < 0, "One or more rule types failed to resolve. The file and/or package will fail to load.");
 				}
@@ -652,39 +649,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 	}
 	public partial class ValueConstraintShape
 	{
-		private partial class ValueRangeChanged
+		private partial class ValueConstraintTextChanged
 		{
-			public ValueRangeChanged()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ValueConstraintShape
-	{
-		private partial class ValueConstraintAdded
-		{
-			public ValueConstraintAdded()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ValueConstraintShape
-	{
-		private partial class ValueTypeHasDataTypeAdded
-		{
-			public ValueTypeHasDataTypeAdded()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	public partial class ValueConstraintShape
-	{
-		private partial class ValueTypeHasDataTypeRolePlayerChange
-		{
-			public ValueTypeHasDataTypeRolePlayerChange()
+			public ValueConstraintTextChanged()
 			{
 				base.IsEnabled = false;
 			}

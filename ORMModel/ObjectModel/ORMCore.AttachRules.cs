@@ -36,6 +36,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					retVal = new Type[]{
 						typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("ModalityChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierConstraintRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierObjectificationAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -196,10 +197,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneDeleteRuleModelConstraintDeleteValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneDeleteRuleModelFactDeleteValidation", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("UniquenessConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ValueConstraint).GetNestedType("DataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("DataTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("DataTypeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("DataTypeRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("ObjectTypeRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("PreferredIdentifierDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("PreferredIdentifierRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("RolePlayerDeleting", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueConstraint).GetNestedType("RolePlayerRolePlayerChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("RoleValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("ValueConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("ValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -276,6 +281,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class CustomReferenceModeChangeRule
 		{
 			public CustomReferenceModeChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		private partial class ModalityChangeRule
+		{
+			public ModalityChangeRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -1853,9 +1868,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class ValueConstraint
 	{
-		private partial class DataTypeAddRule
+		private partial class DataTypeChangeRule
 		{
-			public DataTypeAddRule()
+			public DataTypeChangeRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -1863,9 +1878,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	public partial class ValueConstraint
 	{
-		private partial class DataTypeChangeRule
+		private partial class DataTypeDeletingRule
 		{
-			public DataTypeChangeRule()
+			public DataTypeDeletingRule()
 			{
 				base.IsEnabled = false;
 			}
@@ -1886,6 +1901,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class ObjectTypeRoleAdded
 		{
 			public ObjectTypeRoleAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class PreferredIdentifierDeletingRule
+		{
+			public PreferredIdentifierDeletingRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class PreferredIdentifierRoleAddRule
+		{
+			public PreferredIdentifierRoleAddRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class RolePlayerDeleting
+		{
+			public RolePlayerDeleting()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class ValueConstraint
+	{
+		private partial class RolePlayerRolePlayerChangeRule
+		{
+			public RolePlayerRolePlayerChangeRule()
 			{
 				base.IsEnabled = false;
 			}

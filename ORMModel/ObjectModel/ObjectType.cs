@@ -37,8 +37,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <param name="type">The ObjectType being visited</param>
 	/// <param name="depth">The distance from the initial recursion point. depth
 	/// 0 is the starting object.</param>
-	/// <returns>true to continue iteration, false to stop</returns>
-	public delegate ObjectTypeVisitorResult ObjectTypeVisitor(ObjectType type, int depth);
+	/// <param name="isPrimary">true if the object type is reached through a primary SubtypeFact</param>
+	/// <returns>Value from <see cref="ObjectTypeVisitorResult"/> enum</returns>
+	public delegate ObjectTypeVisitorResult ObjectTypeVisitor(ObjectType type, int depth, bool isPrimary);
 	/// <summary>
 	/// Expected results from the ObjectTypeVisitor delegate
 	/// </summary>
@@ -49,13 +50,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		Continue,
 		/// <summary>
-		/// Stop recursion
+		/// Stop recursion of both following siblings and children
 		/// </summary>
 		Stop,
 		/// <summary>
 		/// Continue iterating siblings, but not children
 		/// </summary>
 		SkipChildren,
+		/// <summary>
+		/// Continue iterating children, but not following siblings
+		/// </summary>
+		SkipFollowingSiblings,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
 	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner
@@ -69,12 +74,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the user.
 		/// </summary>
 		public static readonly object DeleteReferenceModeValueType = new object();
-		/// <summary>
-		/// A key to set in the top-level transaction context to indicate that
-		/// we should generate duplicate name errors for like-named objects instead of
-		/// throwing an exception.
-		/// </summary>
-		public static readonly object AllowDuplicateObjectNamesKey = new object();
 		#endregion // Public token values
 		#region CustomStorage handlers
 		private void SetIsValueTypeValue(bool newValue)
@@ -113,6 +112,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			// Handled by ObjectTypeChangeRule
 		}
+		private void SetValueTypeValueRangeTextValue(string newValue)
+		{
+			// Handled by ObjectTypeChangeRule
+		}
 		private void SetNoteTextValue(string newValue)
 		{
 			// Handled by ObjectTypeChangeRule
@@ -121,6 +124,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private bool GetIsValueTypeValue()
 		{
 			return this.DataType != null;
+		}
+		/// <summary>
+		/// A variant on the <see cref="IsValueType"/> property.
+		/// This will return false if the conditions to make this
+		/// a value type are currently being deleted independently
+		/// of the ObjecType itself.
+		/// </summary>
+		public bool IsValueTypeCheckDeleting
+		{
+			get
+			{
+				ValueTypeHasDataType link = ValueTypeHasDataType.GetLinkToDataType(this);
+				return link != null && (!link.IsDeleting || IsDeleting);
+			}
 		}
 		private int GetScaleValue()
 		{
@@ -182,6 +199,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private string GetValueRangeTextValue()
 		{
 			ValueConstraint valueConstraint = FindValueConstraint(false);
+			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
+		}
+		private string GetValueTypeValueRangeTextValue()
+		{
+			ValueConstraint valueConstraint = FindValueTypeValueConstraint(false);
 			return (valueConstraint != null) ? valueConstraint.Text : String.Empty;
 		}
 		private string GetNoteTextValue()
@@ -408,10 +430,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,
-								// RoleHasRolePlayer, ModelHasObjectType, and
-								// 0 or more (ignored) SubjectHasPresentation
-								// and ORMExtendableElementHasExtensionElement-derived
-								// links. Any other links indicate a shared value type.
+								// ObjectTypePlaysRole, and ModelHasObjectType from our
+								// object model, plus an arbitrary number of links from
+								// outside our model. Any other links (except
+								// ORMExtendableElementHasExtensionElement-derived links)
+								// indicate a shared value type.
 								if (count > 3)
 								{
 									return true;
@@ -556,6 +579,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return valueConstraint as ValueConstraint;
 		}
+		/// <summary>
+		/// Get the ValueTypeValueConstraint for a reference mode
+		/// </summary>
+		/// <param name="autoCreate">Force the value constraint to be created</param>
+		/// <returns>A ValueTypeValueConstraint, or null if this is not called on an EntityType with a reference mode</returns>
+		private ValueTypeValueConstraint FindValueTypeValueConstraint(bool autoCreate)
+		{
+			ObjectType associatedValueType = GetValueTypeForPreferredConstraint();
+			ValueTypeValueConstraint valueConstraint = null;
+			if (associatedValueType != null)
+			{
+				valueConstraint = associatedValueType.ValueConstraint;
+				if (valueConstraint == null && autoCreate)
+				{
+					associatedValueType.ValueConstraint = valueConstraint = new ValueTypeValueConstraint(this.Store);
+				}
+			}
+			return valueConstraint;
+		}
 		#endregion // Customize property display
 		#region Subtype and Supertype routines
 		/// <summary>
@@ -620,6 +662,37 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Get the PreferredIdentifier for this object type, walking primary supertypes
+		/// as needed.
+		/// </summary>
+		public UniquenessConstraint ResolvedPreferredIdentifier
+		{
+			get
+			{
+				UniquenessConstraint retVal = PreferredIdentifier;
+				if (retVal == null)
+				{
+					WalkSupertypes(
+						this,
+						delegate(ObjectType type, int depth, bool isPrimary)
+						{
+							ObjectTypeVisitorResult result = ObjectTypeVisitorResult.Continue;
+							if (isPrimary)
+							{
+								retVal = type.PreferredIdentifier;
+								result = (retVal == null) ? ObjectTypeVisitorResult.SkipFollowingSiblings : ObjectTypeVisitorResult.Stop;
+							}
+							else if (depth != 0)
+							{
+								result = ObjectTypeVisitorResult.SkipChildren;
+							}
+							return result;
+						});
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
 		/// Recursively walk all supertypes of a given type (including the type itself).
 		/// </summary>
 		/// <param name="startingType">The type to begin recursion with</param>
@@ -627,33 +700,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSupertypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			return (startingType != null) ? WalkSupertypes(startingType, startingType, 0, visitor) : false;
+			return (startingType != null) ? WalkSupertypes(startingType, startingType, 0, false, visitor) == ObjectTypeVisitorResult.Continue : false;
 		}
-		private static bool WalkSupertypes(ObjectType startingType, ObjectType currentType, int depth, ObjectTypeVisitor visitor)
+		private static ObjectTypeVisitorResult WalkSupertypes(ObjectType startingType, ObjectType currentType, int depth, bool isPrimary, ObjectTypeVisitor visitor)
 		{
 			if (depth != 0 && startingType == currentType)
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
 			}
-			ObjectTypeVisitorResult result = visitor(currentType, depth);
+			ObjectTypeVisitorResult result = visitor(currentType, depth, isPrimary);
 			switch (result)
 			{
+				//case ObjectTypeVisitorResult.SkipFollowingSiblings:
 				//case ObjectTypeVisitorResult.Continue:
 				//    break;
 				case ObjectTypeVisitorResult.SkipChildren:
-					return true;
 				case ObjectTypeVisitorResult.Stop:
-					return false;
+					return result;
 			}
 			++depth;
-			foreach (ObjectType superType in currentType.SupertypeCollection)
+			LinkedElementCollection<Role> playedRoles = currentType.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
 			{
-				if (!WalkSupertypes(startingType, superType, depth, visitor))
+				Role role = playedRoles[i];
+				if (role is SubtypeMetaRole)
 				{
-					return false;
+					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+					switch (WalkSupertypes(startingType, subtypeFact.Supertype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+					{
+						case ObjectTypeVisitorResult.Stop:
+							return ObjectTypeVisitorResult.Stop;
+						case ObjectTypeVisitorResult.SkipChildren:
+							if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
+							{
+								result = ObjectTypeVisitorResult.SkipChildren;
+							}
+							break;
+					}
+					if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
+					{
+						break;
+					}
 				}
 			}
-			return true;
+			return result;
 		}
 		/// <summary>
 		/// Recursively walk all subtypes of a given type (including the type itself).
@@ -663,33 +754,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSubtypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			return (startingType != null) ? WalkSubtypes(startingType, startingType, 0, visitor) : false;
+			return (startingType != null) ? WalkSubtypes(startingType, startingType, 0, false, visitor) == ObjectTypeVisitorResult.Continue : false;
 		}
-		private static bool WalkSubtypes(ObjectType startingType, ObjectType currentType, int depth, ObjectTypeVisitor visitor)
+		private static ObjectTypeVisitorResult WalkSubtypes(ObjectType startingType, ObjectType currentType, int depth, bool isPrimary, ObjectTypeVisitor visitor)
 		{
 			if (depth != 0 && startingType == currentType)
 			{
 				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactCycle);
 			}
-			ObjectTypeVisitorResult result = visitor(currentType, depth);
+			ObjectTypeVisitorResult result = visitor(currentType, depth, isPrimary);
 			switch (result)
 			{
+				//case ObjectTypeVisitorResult.SkipFollowingSiblings:
 				//case ObjectTypeVisitorResult.Continue:
 				//    break;
 				case ObjectTypeVisitorResult.SkipChildren:
-					return true;
 				case ObjectTypeVisitorResult.Stop:
-					return false;
+					return result;
 			}
 			++depth;
-			foreach (ObjectType subType in currentType.SubtypeCollection)
+			LinkedElementCollection<Role> playedRoles = currentType.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
 			{
-				if (!WalkSubtypes(startingType, subType, depth, visitor))
+				Role role = playedRoles[i];
+				if (role is SupertypeMetaRole)
 				{
-					return false;
+					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+					switch (WalkSubtypes(startingType, subtypeFact.Subtype, depth, subtypeFact.IsPrimary && !subtypeFact.IsDeleting, visitor))
+					{
+						case ObjectTypeVisitorResult.Stop:
+							return ObjectTypeVisitorResult.Stop;
+						case ObjectTypeVisitorResult.SkipChildren:
+							if (result != ObjectTypeVisitorResult.SkipFollowingSiblings)
+							{
+								result = ObjectTypeVisitorResult.SkipChildren;
+							}
+							break;
+					}
+					if (result == ObjectTypeVisitorResult.SkipFollowingSiblings)
+					{
+						break;
+					}
 				}
 			}
-			return true;
+			return result;
 		}
 		#region Helper class for GetNearestCompatibleTypes
 		/// <summary>
@@ -1048,6 +1157,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType objectType = e.ModelElement as ObjectType;
 					ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
 					valueConstraint.Text = (string)e.NewValue;
+				}
+				else if (attributeGuid == ObjectType.ValueTypeValueRangeTextDomainPropertyId)
+				{
+					ObjectType objectType = e.ModelElement as ObjectType;
+					ValueTypeValueConstraint valueConstraint = objectType.FindValueTypeValueConstraint(true);
+					if (valueConstraint != null)
+					{
+						valueConstraint.Text = (string)e.NewValue;
+					}
 				}
 				else if (attributeGuid == ObjectType.NoteTextDomainPropertyId)
 				{
@@ -1545,12 +1663,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 							switch (constraint.ConstraintType)
 							{
 								case ConstraintType.SimpleMandatory:
-									hasError = false;
+									if (constraint.Modality == ConstraintModality.Alethic)
+									{
+										hasError = false;
+									}
 									break;
 								case ConstraintType.DisjunctiveMandatory:
 									// If all of the roles are opposite to preferred
 									// identifier then this is sufficient to satisfy the
 									// mandatory condition.
+									if (constraint.Modality == ConstraintModality.Alethic)
 									{
 										LinkedElementCollection<Role> intersectingRoles = roleSequence.RoleCollection;
 										int intersectingRolesCount = intersectingRoles.Count;
@@ -1629,7 +1751,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Dictionary<ObjectType, int> visitedNodes = null;
 				bool firstSupertypeComplete = false;
 				ObjectTypeVisitorResult lastResult = ObjectTypeVisitorResult.Continue;
-				WalkSupertypes(this, delegate(ObjectType type, int depth)
+				WalkSupertypes(this, delegate(ObjectType type, int depth, bool isPrimary)
 				{
 					switch (depth)
 					{
@@ -1798,7 +1920,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					ObjectType objectType = link.RolePlayer;
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 					ORMCoreDomainModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
-					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
 						ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
 						ValidateAttachedConstraintColumnCompatibility(type);
@@ -1807,7 +1929,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (role is SupertypeMetaRole)
 				{
-					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
 						if (depth != 0)
 						{
@@ -1851,7 +1973,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Role role = link.PlayedRole;
 				if (role is SubtypeMetaRole)
 				{
-					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
 						ORMCoreDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
 						// Keep going while we're here to see if we need to validate compatible role
@@ -1861,7 +1983,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else if (role is SupertypeMetaRole)
 				{
-					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 					{
 						if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
 						{
@@ -1914,11 +2036,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return;
 				}
-				ConstraintType constraintType = ((IConstraint)sequence).ConstraintType;
+				IConstraint constraint = ((IConstraint)sequence);
+				ConstraintType constraintType = constraint.ConstraintType;
 				switch (constraintType)
 				{
 					case ConstraintType.SimpleMandatory:
 					case ConstraintType.DisjunctiveMandatory:
+						if (constraint.Modality != ConstraintModality.Alethic)
+						{
+							break;
+						}
 						LinkedElementCollection<Role> roles = sequence.RoleCollection;
 						int roleCount = roles.Count;
 						for (int i = 0; i < roleCount; ++i)
@@ -1949,11 +2076,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return;
 				}
-				ConstraintType constraintType = ((IConstraint)sequence).ConstraintType;
+				IConstraint constraint = (IConstraint)sequence;
+				ConstraintType constraintType = constraint.ConstraintType;
 				switch (constraintType)
 				{
 					case ConstraintType.SimpleMandatory:
 					case ConstraintType.DisjunctiveMandatory:
+						if (constraint.Modality != ConstraintModality.Alethic)
+						{
+							break;
+						}
 						LinkedElementCollection<Role> roles = sequence.RoleCollection;
 						int roleCount = roles.Count;
 						for (int i = 0; i < roleCount; ++i)
@@ -1999,27 +2131,81 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactPrimaryMustBeTrue);
 					}
-					SubtypeFact changedFact = e.ModelElement as SubtypeFact;
-					ObjectType subtype = changedFact.Subtype;
 					try
 					{
 						myIgnoreRule = true;
+						SubtypeFact changedFact = e.ModelElement as SubtypeFact;
+						ObjectType subtype = changedFact.Subtype;
+						Role oldSupertypeRole = null;
 						foreach (Role role in subtype.PlayedRoleCollection)
 						{
-							if (role is SubtypeMetaRole)
+							SubtypeMetaRole testSubtypeRole = role as SubtypeMetaRole;
+							if (testSubtypeRole != null)
 							{
 								SubtypeFact subtypeFact = role.FactType as SubtypeFact;
 								if (subtypeFact != changedFact)
 								{
 									subtypeFact.IsPrimary = false;
+									oldSupertypeRole = subtypeFact.SupertypeRole;
+									break;
 								}
 							}
 						}
+
+						// Now walk value roles and figure out if they need to be deleted.
+						// UNDONE: VALUEROLE Note that this code makes two assumptions that may not be
+						// value long term:
+						// 1) Subtype and supertype meta roles are not value roles
+						// 2) We only consider value constraints on the primary subtype
+						//    path back to a value type, not the secondary subtyping paths.
+						// This code is here instead of in ValueConstraint because of the difficulty in
+						// establishing the oldSupertypeRole after this rule has been completed,
+						// and the duplication of work necessary to find it before this rule runs.
+						UniquenessConstraint oldIdentifier;
+						LinkedElementCollection<Role> identifierRoles;
+						ObjectType oldSupertype;
+						if (null != oldSupertypeRole &&
+							null != (oldSupertype = oldSupertypeRole.RolePlayer) &&
+							null != (oldIdentifier = oldSupertype.ResolvedPreferredIdentifier) &&
+							1 == (identifierRoles = oldIdentifier.RoleCollection).Count &&
+							identifierRoles[0].IsValueRole)
+						{
+							// The old primary identification allowed value roles. If we still do, then
+							// revalidate them, otherwise, delete them.
+							bool visited = false;
+							Role.WalkDescendedValueRoles(changedFact.Supertype, null, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+							{
+								// If we get any callback here, then the role can still be a value role
+								visited = true;
+								if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+								{
+									// Make sure that this value constraint is compatible with
+									// other constraints above it.
+									ObjectModel.ValueConstraint.DelayValidateValueConstraint(currentValueConstraint);
+								}
+								return true;
+							});
+							if (!visited)
+							{
+								// The old role player supported values, the new one does not.
+								// Delete any downstream value constraints. Skip from the entity
+								// type attached to the preferred identifier directly to the old
+								// supertype role.
+								Role.WalkDescendedValueRoles(oldIdentifier.PreferredIdentifierFor, oldSupertypeRole, delegate(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+								{
+									if (currentValueConstraint != null && !currentValueConstraint.IsDeleting)
+									{
+										currentValueConstraint.Delete();
+									}
+									return true;
+								});
+							}
+						}
+						ORMCoreDomainModel.DelayValidateElement(subtype, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 					}
 					finally
 					{
 						myIgnoreRule = false;
-						ORMCoreDomainModel.DelayValidateElement(subtype, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 					}
 				}
 			}

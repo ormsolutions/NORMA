@@ -232,6 +232,11 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="ValueTypeValueRangeText" DefaultValue="" DisplayName="ValueTypeValueRange" Id="6EBE45BB-1054-4785-8C9D-905A41599EF9" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="IsPersonal" DefaultValue="false" DisplayName="IsPersonal" Id="EF9AE461-4327-46DC-8FE0-D1388F061B30">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
@@ -1096,6 +1101,11 @@
 				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="410FCE34-DACB-4F59-94A6-FF7E42108E74" Kind="CustomStorage">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="TextChanged" DefaultValue="" DisplayName="TextChanged" Id="ACB49806-A830-431D-959F-20C7DD9C1D4D" IsBrowsable="false" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
 			</Properties>

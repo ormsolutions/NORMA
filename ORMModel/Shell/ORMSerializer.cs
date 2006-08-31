@@ -1836,7 +1836,7 @@ namespace Neumont.Tools.ORM.Shell
 				Type implClass = classInfo.ImplementationClass;
 				if (implClass.IsAbstract || implClass == typeof(ModelElement)) // The class factory won't create a raw model element
 				{
-					DomainClassInfo descendantInfo = FindCreatableClass(classInfo.AllDescendants); // Try the cheap search first
+					DomainClassInfo descendantInfo = FindCreatableClass(classInfo.LocalDescendants); // Try the cheap search first
 					if (descendantInfo != null)
 					{
 						descendantInfo = FindCreatableClass(classInfo.AllDescendants);

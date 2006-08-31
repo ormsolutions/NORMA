@@ -1287,9 +1287,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (!IsDeleted)
 			{
-				ObjectType parentType = this.RolePlayer;
-				MandatoryConstraint constraint = this.SimpleMandatoryConstraint;
-				if (constraint != null)
+				ObjectType parentType;
+				MandatoryConstraint constraint;
+				if (null != (parentType = this.RolePlayer) &&
+					null != (constraint = this.SimpleMandatoryConstraint))
 				{
 					List<ObjectTypeInstance> instances = new List<ObjectTypeInstance>(RoleInstance.GetObjectTypeInstanceCollection(this));
 					instances.Sort(HashCodeComparer<ObjectTypeInstance>.Instance);

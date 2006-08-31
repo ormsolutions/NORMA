@@ -67,9 +67,6 @@
 		<arg:Rule class="ReadingShape.RoleDisplayOrderAdded"/>
 		<arg:Rule class="ReadingShape.RoleDisplayOrderPositionChanged"/>
 		<arg:Rule class="RingConstraintShape.RingConstraintPropertyChangeRule"/>
-		<arg:Rule class="ValueConstraintShape.ValueRangeChanged"/>
-		<arg:Rule class="ValueConstraintShape.ValueConstraintAdded"/>
-		<arg:Rule class="ValueConstraintShape.ValueTypeHasDataTypeAdded"/>
-		<arg:Rule class="ValueConstraintShape.ValueTypeHasDataTypeRolePlayerChange"/>
+		<arg:Rule class="ValueConstraintShape.ValueConstraintTextChanged"/>
 	</arg:Model>
 </arg:Rules>

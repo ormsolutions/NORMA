@@ -131,25 +131,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			myDisplayText = null;
 		}
-		/// <summary>
-		/// Invalidate the display text on all presentation role players associated
-		/// with the given ValueConstraint.
-		/// </summary>
-		/// <param name="e">The ValueConstraint to update.</param>
-		protected static void UpdatePresentationRolePlayers(ModelElement e)
-		{
-			if (e != null && !e.IsDeleted)
-			{
-				foreach (ShapeElement pel in PresentationViewsSubject.GetPresentation(e))
-				{
-					ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
-					if (valueConstraintShape != null)
-					{
-						valueConstraintShape.InvalidateDisplayText();
-					}
-				}
-			}
-		}
 		#endregion // Helper methods
 		#region properties
 		/// <summary>
@@ -175,92 +156,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // properties
-		#region change rules
+		#region Shape fixup rules
+		#region ValueConstraintTextChanged class
 		/// <summary>
-		/// Rule to update an associated ValueConstraintShape when a DataType is added.
+		/// Rule to watch the ValueConstraint.TextChanged property so that we can
+		/// update text as needed. TextChanged is triggered when the ValueConstraint is
+		/// first added, so this is sufficient for updating.
 		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed partial class ValueTypeHasDataTypeAdded : AddRule
+		[RuleOn(typeof(ValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
+		private sealed partial class ValueConstraintTextChanged : ChangeRule 
 		{
-			public static void Process(ValueTypeHasDataType link)
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				ObjectType objectType = link.ValueType;
-				ValueConstraint defn = objectType.ValueConstraint;
-				//Update the display on the objectType
-				UpdatePresentationRolePlayers(defn);
-				//Update the display on any attached roles
-				if (objectType != null)
+				if (e.DomainProperty.Id == ValueConstraint.TextChangedDomainPropertyId)
 				{
-					foreach (Role r in objectType.PlayedRoleCollection)
+					ValueConstraint constraint = e.ModelElement as ValueConstraint;
+					if (!constraint.IsDeleted)
 					{
-						defn = r.ValueConstraint;
-						UpdatePresentationRolePlayers(defn);
+						foreach (ShapeElement pel in PresentationViewsSubject.GetPresentation(constraint))
+						{
+							ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
+							if (valueConstraintShape != null)
+							{
+								valueConstraintShape.InvalidateDisplayText();
+							}
+						}
 					}
 				}
 			}
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				Process(e.ModelElement as ValueTypeHasDataType);
-			}
 		}
-		/// <summary>
-		/// Rule to update an associated ValueConstraintShape when a DataType is changed.
-		/// </summary>
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // RolePlayerChangeRule
-		private sealed partial class ValueTypeHasDataTypeRolePlayerChange : RolePlayerChangeRule
-		{
-			public override void RolePlayerChanged(RolePlayerChangedEventArgs e)
-			{
-				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
-				{
-					ValueTypeHasDataTypeAdded.Process(e.ElementLink as ValueTypeHasDataType);
-				}
-			}
-		}
-		/// <summary>
-		/// Rule to notice changes to ValueRange properties so that the
-		/// value range shapes can have their display text invalidated.
-		/// </summary>
-		[RuleOn(typeof(ValueRange), FireTime = TimeToFire.TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority)] // ChangeRule
-		private sealed partial class ValueRangeChanged : ChangeRule
-		{
-			/// <summary>
-			/// Notice when the Min or Max properties are changed and invalidate
-			/// display text of the ValueConstraintShapes.
-			/// </summary>
-			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
-			{
-				Guid attrId = e.DomainProperty.Id;
-				ValueRange valueRange = e.ModelElement as ValueRange;
-				Debug.Assert(valueRange != null);
-				if (attrId == ValueRange.MaxValueDomainPropertyId ||
-					attrId == ValueRange.MinValueDomainPropertyId)
-				{
-					Debug.Assert(valueRange.ValueConstraint != null);
-					ValueConstraint defn = valueRange.ValueConstraint;
-					UpdatePresentationRolePlayers(defn);
-				}
-			}
-		}
-		/// <summary>
-		/// Rule to notice the addition of ValueConstraintHasValueRange links so that the
-		/// value range shapes can have their display text invalidated.
-		/// </summary>
-		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)] // AddRule
-		private sealed partial class ValueConstraintAdded : AddRule
-		{
-			/// <summary>
-			/// Notice when the ValueConstraintHasValueRange link is added
-			/// and invalidate display text of the ValueConstraintShapes.
-			/// </summary>
-			public sealed override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
-				ValueConstraint defn = link.ValueConstraint;
-				UpdatePresentationRolePlayers(defn);
-			}
-		}
-		#endregion // change rules
+		#endregion // ValueConstraintTextChanged class
+		#endregion // Shape fixup rules
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError.

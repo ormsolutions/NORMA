@@ -1674,6 +1674,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
+		#region ValueTypeValueRangeText domain property code
+		
+		/// <summary>
+		/// ValueTypeValueRangeText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueTypeValueRangeTextDomainPropertyId = new global::System.Guid(0x6ebe45bb, 0x1054, 0x4785, 0x8c, 0x9d, 0x90, 0x5a, 0x41, 0x59, 0x9e, 0xf9);
+		
+		/// <summary>
+		/// Gets or sets the value of ValueTypeValueRangeText domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ObjectType.ValueTypeValueRange
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ObjectType/ValueTypeValueRangeText.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("6ebe45bb-1054-4785-8c9d-905a41599ef9")]
+		public global::System.String ValueTypeValueRangeText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return ValueTypeValueRangeTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ValueTypeValueRangeTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectType.ValueTypeValueRangeText domain property.
+		/// </summary>
+		internal sealed partial class ValueTypeValueRangeTextPropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectType, global::System.String>
+		{
+			private ValueTypeValueRangeTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectType.ValueTypeValueRangeText domain property value handler.
+			/// </summary>
+			public static readonly ValueTypeValueRangeTextPropertyHandler Instance = new ValueTypeValueRangeTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectType.ValueTypeValueRangeText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ValueTypeValueRangeTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ObjectType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for ValueTypeValueRangeText because its Kind is
+				// set to CustomStorage. Please provide the GetValueTypeValueRangeTextValue()
+				// method on the domain class.
+				return element.GetValueTypeValueRangeTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectType element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for ValueTypeValueRangeText because its Kind is
+					// set to CustomStorage. Please provide the SetValueTypeValueRangeTextValue()
+					// method on the domain class.
+					element.SetValueTypeValueRangeTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region IsPersonal domain property code
 		
 		/// <summary>
@@ -10281,6 +10371,97 @@ namespace Neumont.Tools.ORM.ObjectModel
 					// set to CustomStorage. Please provide the SetTextValue()
 					// method on the domain class.
 					element.SetTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region TextChanged domain property code
+		
+		/// <summary>
+		/// TextChanged domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TextChangedDomainPropertyId = new global::System.Guid(0xacb49806, 0xa830, 0x431d, 0x95, 0x9f, 0x20, 0xc7, 0xdd, 0x9c, 0x1d, 0x4d);
+		
+		/// <summary>
+		/// Gets or sets the value of TextChanged domain property.
+		/// Description for Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextChanged
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint/TextChanged.DisplayName", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ObjectModel.ValueConstraint/TextChanged.Description", typeof(global::Neumont.Tools.ORM.ObjectModel.ORMCoreDomainModel), "Neumont.Tools.ORM.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("acb49806-a830-431d-959f-20c7dd9c1d4d")]
+		public global::System.Int64 TextChanged
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return TextChangedPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TextChangedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueConstraint.TextChanged domain property.
+		/// </summary>
+		internal sealed partial class TextChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraint, global::System.Int64>
+		{
+			private TextChangedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueConstraint.TextChanged domain property value handler.
+			/// </summary>
+			public static readonly TextChangedPropertyHandler Instance = new TextChangedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueConstraint.TextChanged domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TextChangedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(ValueConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for TextChanged because its Kind is
+				// set to CustomStorage. Please provide the GetTextChangedValue()
+				// method on the domain class.
+				return element.GetTextChangedValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueConstraint element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for TextChanged because its Kind is
+					// set to CustomStorage. Please provide the SetTextChangedValue()
+					// method on the domain class.
+					element.SetTextChangedValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}

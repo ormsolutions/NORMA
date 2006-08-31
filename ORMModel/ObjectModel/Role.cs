@@ -27,6 +27,19 @@ using Neumont.Tools.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region ValueRoleVisitor delegate definition
+	/// <summary>
+	/// Visit a role with ValueConstraint information when a dataType or
+	/// role change is made that could affect the constraint's existence.
+	/// Used with the <see cref="Role.WalkDescendedValueRoles(ObjectType, Role, ValueRoleVisitor)"/> method.
+	/// </summary>
+	/// <param name="role">A role that is allowed to have values associated with it</param>
+	/// <param name="dataTypeLink">The link to the data type</param>
+	/// <param name="currentValueConstraint">The value constraint for the current role.</param>
+	/// <param name="previousValueConstraint">The last value constraint encountered during the walk</param>
+	/// <returns>true to continue walking</returns>
+	public delegate bool ValueRoleVisitor(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
+	#endregion // ValueRoleVisitor delegate definition
 	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner
 	{
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
@@ -246,6 +259,232 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return (roleProxy != null && (proxyOppositeRole = roleProxy.OppositeRole as Role) != null) ? proxyOppositeRole.Name : String.Empty;
 		}
 		#endregion // CustomStorage handlers
+		#region ValueRole methods
+		/// <summary>
+		/// Retrieve an array of roles starting with a role
+		/// attached to a ValueType and ending with this role.
+		/// If this role cannot have a ValueConstraint attached
+		/// to it, then an empty array will get returned.
+		/// </summary>
+		public Role[] GetValueRoles()
+		{
+			Role[] retVal;
+			GetValueRoles(this, this.RolePlayer, 0, out retVal);
+			return retVal;
+		}
+
+		/// <summary>
+		/// true is a ValueConstraint may be attached to this role. This
+		/// duplicates the work of <see cref="GetValueRoles()"/> without actually
+		/// retrieving the roles, so call GetValueRoles directly and test for
+		/// null if you need the sequence of roles from the value type role back
+		/// to this one.
+		/// </summary>
+		public bool IsValueRole
+		{
+			get
+			{
+				Role[] dummy;
+				return GetValueRoles(this, this.RolePlayer, -1, out dummy);
+			}
+		}
+		/// <summary>
+		/// Ask the <see cref="IsValueRole"/> question with an object
+		/// that is not the current role player.
+		/// </summary>
+		/// <param name="alternateRolePlayer">An alternate role player.</param>
+		/// <returns>true if this role attached to the alternate role player would be a value role</returns>
+		public bool IsValueRoleForAlternateRolePlayer(ObjectType alternateRolePlayer)
+		{
+			Role[] dummy;
+			return GetValueRoles(this, alternateRolePlayer, -1, out dummy);
+		}
+		/// <summary>
+		/// Recursively retrieve a sequence of roles that are
+		/// allowed to have value constraints.
+		/// </summary>
+		/// <param name="currentRole">The current role to test</param>
+		/// <param name="rolePlayer">The role player for the current role.</param>
+		/// <param name="depth">The current depth. Pass in -1 to skip populating the output
+		/// roles and 0 to seed recursion.</param>
+		/// <param name="roles">An array of roles. The roles are in reverse order, so
+		/// roles[0] will always have a ValueType as its RolePlayer.</param>
+		/// <returns>true if the current role can have a value constraint</returns>
+		private static bool GetValueRoles(Role currentRole, ObjectType rolePlayer, int depth, out Role[] roles)
+		{
+			roles = null;
+			if (rolePlayer != null)
+			{
+				if (rolePlayer.IsValueType)
+				{
+					if (depth == -1)
+					{
+						return true;
+					}
+					// This is the first element in the chain and
+					// can be used to retrieve the value type.
+					roles = new Role[depth + 1];
+					roles[0] = currentRole;
+				}
+				else
+				{
+					UniquenessConstraint preferredIdentifier = rolePlayer.ResolvedPreferredIdentifier;
+					LinkedElementCollection<Role> identifierRoles;
+					Role nextRole;
+					if (preferredIdentifier != null &&
+						(identifierRoles = preferredIdentifier.RoleCollection).Count == 1 &&
+						(nextRole = identifierRoles[0]).FactType != currentRole.FactType)
+					{
+						if (depth == -1)
+						{
+							return GetValueRoles(nextRole, nextRole.RolePlayer, -1, out roles);
+						}
+						if (GetValueRoles(nextRole, nextRole.RolePlayer, depth + 1, out roles))
+						{
+							roles[roles.Length - depth - 1] = currentRole;
+						}
+					}
+				}
+			}
+			return roles != null;
+		}
+		/// <summary>
+		/// Get all value roles including all roles directly attached to the provided
+		/// object type and any roles descended from this one through prefererred identifiers.
+		/// Walks the opposite direction of <see cref="Role.GetValueRoles()"/>
+		/// </summary>
+		/// <param name="anchorType">The <see cref="ObjectType"/> to walk descended roles for</param>
+		/// <param name="unattachedRole">A role to test that is not currently attached to the anchorType.
+		/// If unattachedRole is null, then only this role will be tested. Otherwise, all current played
+		/// roles will be walked.</param>
+		/// <param name="visitor">A <see cref="ValueRoleVisitor"/> callback delegate.</param>
+		public static void WalkDescendedValueRoles(ObjectType anchorType, Role unattachedRole, ValueRoleVisitor visitor)
+		{
+			ValueTypeHasDataType dataTypeLink = anchorType.GetDataTypeLink();
+			if (dataTypeLink != null)
+			{
+				WalkDescendedValueRoles(
+					(unattachedRole != null) ? new Role[]{unattachedRole} as IList<Role> : anchorType.PlayedRoleCollection,
+					dataTypeLink,
+					anchorType.ValueConstraint,
+					null,
+					false,
+					visitor);
+			}
+			else
+			{
+				LinkedElementCollection<Role> roles;
+				UniquenessConstraint preferredIdentifier;
+				if (null != (preferredIdentifier = anchorType.ResolvedPreferredIdentifier) &&
+					(roles = preferredIdentifier.RoleCollection).Count == 1)
+				{
+					Role currentRole = roles[0];
+					Role[] valueRoles = currentRole.GetValueRoles();
+					if (valueRoles != null)
+					{
+						ValueConstraint nearestValueConstraint = null;
+						int valueRolesCount = valueRoles.Length;
+						for (int i = valueRolesCount - 1; i >= 0; --i)
+						{
+							nearestValueConstraint = valueRoles[i].ValueConstraint;
+							if (nearestValueConstraint != null)
+							{
+								break;
+							}
+						}
+						ObjectType valueType = valueRoles[0].RolePlayer;
+						dataTypeLink = valueType.GetDataTypeLink();
+						if (nearestValueConstraint == null)
+						{
+							nearestValueConstraint = valueType.ValueConstraint;
+						}
+						WalkDescendedValueRoles(
+							(unattachedRole != null) ? new Role[] { unattachedRole } as IList<Role> : anchorType.PlayedRoleCollection,
+							dataTypeLink,
+							nearestValueConstraint,
+							currentRole.OppositeRole.Role,
+							true,
+							visitor);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Helper method to recursively walk value roles. A value role
+		/// is any role that is allowed to have a value type.
+		/// </summary>
+		/// <param name="playedRoles">Roles from an ObjectType to walk. The assumption is made that the
+		/// owning ObjectType is either a value type or has a preferred identifier with exactly one role</param>
+		/// <param name="dataTypeLink">The data type information for the constraint</param>
+		/// <param name="previousValueConstraint">The value constraint nearest this value role.
+		/// Any value constraint on the current set of roles must be a subset of the previousValueConstraint.</param>
+		/// <param name="skipRole">A role to skip. If the playedRoles came from a preferred identifier,
+		/// then the skipRole is the opposite role.</param>
+		/// <param name="walkSubtypes">true to walk subtypes. Should be true if the playedRoles come from an
+		/// EntityType and false if they come from a ValueType</param>
+		/// <param name="visitor">The callback delegate</param>
+		/// <returns>true to continue iteration</returns>
+		private static bool WalkDescendedValueRoles(IList<Role> playedRoles, ValueTypeHasDataType dataTypeLink, ValueConstraint previousValueConstraint, Role skipRole, bool walkSubtypes, ValueRoleVisitor visitor)
+		{
+			int playedRolesCount = playedRoles.Count;
+			for (int i = 0; i < playedRolesCount; ++i)
+			{
+				Role role = playedRoles[i];
+				SupertypeMetaRole supertypeRole;
+				if (role == skipRole)
+				{
+					// Nothing to do
+				}
+				else if (null != (supertypeRole = role as SupertypeMetaRole))
+				{
+					if (walkSubtypes)
+					{
+						SubtypeFact subtypeFact = (SubtypeFact)role.FactType;
+						ObjectType subtype = subtypeFact.Subtype;
+						if (subtype.PreferredIdentifier == null)
+						{
+							if (!WalkDescendedValueRoles(subtype.PlayedRoleCollection, dataTypeLink, previousValueConstraint, null, true, visitor))
+							{
+								return false;
+							}
+						}
+					}
+				}
+				else if (!(role is SubtypeMetaRole))
+				{
+					RoleValueConstraint currentValueConstraint = role.ValueConstraint;
+					if (!visitor(role, dataTypeLink, currentValueConstraint, previousValueConstraint))
+					{
+						return false;
+					}
+					if (currentValueConstraint != null && !currentValueConstraint.IsDeleted)
+					{
+						previousValueConstraint = currentValueConstraint;
+					}
+
+					// Walk sequences to find a single-role preferred identifier so
+					// we can get to the next link.
+					LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
+					int sequencesCount = sequences.Count;
+					for (int j = 0; j < sequencesCount; ++j)
+					{
+						UniquenessConstraint constraint = sequences[j] as UniquenessConstraint;
+						ObjectType identifierFor;
+						if (null != (constraint = sequences[j] as UniquenessConstraint) &&
+							null != (identifierFor = constraint.PreferredIdentifierFor) &&
+							constraint.RoleCollection.Count == 1)
+						{
+							if (!WalkDescendedValueRoles(identifierFor.PlayedRoleCollection, dataTypeLink, previousValueConstraint, role.OppositeRole.Role, true, visitor))
+							{
+								return false;
+							}
+						}
+					}
+				}
+			}
+			return true;
+		}
+		#endregion // ValueRole methods
 		#region RoleChangeRule class
 		[RuleOn(typeof(Role))] // ChangeRule
 		private sealed partial class RoleChangeRule : ChangeRule
@@ -879,10 +1118,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
 		/// </summary>
-		protected static object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
+		protected object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			// Use the default settings (allow duplicates during load time only)
-			return null;
+			object retVal = null;
+			Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			if (!contextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
+				contextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey))
+			{
+				// Use their value so they don't have to look up ours again
+				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
+			}
+			return retVal;
 		}
 		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{

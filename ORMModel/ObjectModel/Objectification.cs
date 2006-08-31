@@ -126,16 +126,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 							}
 						}
-
-						// Preferred identifiers must be alethic
-						if (constraint.Modality != ConstraintModality.Alethic)
-						{
-							EntityTypeHasPreferredIdentifier identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifierFor(constraint);
-							if (identifierLink != null)
-							{
-								identifierLink.Delete();
-							}
-						}
 					}
 				}
 			}
@@ -703,7 +693,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType fact = role.FactType;
 				// Note if the roleplayer is removed, then the links all go away
 				// automatically. There is no additional work to do or checks to make.
-				if (!(rolePlayer.IsDeleted || rolePlayer .IsDeleting) &&
+				if (!(rolePlayer.IsDeleted || rolePlayer.IsDeleting) &&
 					(null != (fact = role.FactType)))
 				{
 					Objectification objectificationLink;
@@ -891,12 +881,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 				try
 				{
-					contextInfo[ObjectType.AllowDuplicateObjectNamesKey] = null;
+					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
 					objectifyingType.Model = factType.Model;
 				}
 				finally
 				{
-					contextInfo.Remove(ObjectType.AllowDuplicateObjectNamesKey);
+					contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
 				}
 			}
 			else

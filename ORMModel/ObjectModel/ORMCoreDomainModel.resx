@@ -402,10 +402,13 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ValueType" xml:space="preserve">
     <value>ValueType</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern" xml:space="preserve">
+	<data name="Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern" xml:space="preserve">
+    <value>{0}_RefMode{1}</value>
+  </data>
+	<data name="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern" xml:space="preserve">
     <value>ValueType{0}</value>
   </data>
-  <data name="RoleMultiplicity.ExactlyOne" xml:space="preserve">
+	<data name="RoleMultiplicity.ExactlyOne" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="RoleMultiplicity.Indeterminate" xml:space="preserve">

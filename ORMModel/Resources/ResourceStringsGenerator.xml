@@ -186,6 +186,9 @@
 	<ResourceString name="PortableDataTypeOtherObjectId" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text">
 		<comment type="summary">An object id data type (can not be classified in any of the groups above)</comment>
 	</ResourceString>
+	<ResourceString name="ValueTypeAutoCreateReferenceModeNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.AutoCreateReferenceModeNamePattern">
+		<comment type="summary">Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
+	</ResourceString>
 	<ResourceString name="ValueTypeDefaultNamePattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
 		<comment type="summary">The base name used to create a name for a new ValueType. This is a format string with {0} being the placeholder for the number placement.</comment>
 	</ResourceString>

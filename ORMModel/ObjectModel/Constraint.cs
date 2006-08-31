@@ -719,7 +719,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								// Populate the cache
 								superTypesCache = new Collection<ObjectType>();
-								ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth)
+								ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 								{
 									superTypesCache.Add(type);
 									return ObjectTypeVisitorResult.Continue;
@@ -727,7 +727,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							// If the type is contained, WalkSupertype will return false because the iteration
 							// did not complete.
-							isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth)
+							isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 							{
 								// Continue iteration if the type is recognized in the cache
 								return superTypesCache.Contains(type) ? ObjectTypeVisitorResult.Stop : ObjectTypeVisitorResult.Continue;
@@ -1465,7 +1465,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									{
 										// Populate the cache
 										superTypesCache = new Collection<ObjectType>();
-										ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth)
+										ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 										{
 											superTypesCache.Add(type);
 											return ObjectTypeVisitorResult.Continue;
@@ -1473,7 +1473,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									// If the type is contained, WalkSupertype will return false because the iteration
 									// did not complete.
-									bool isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth)
+									bool isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
 									{
 										// Continue iteration if the type is recognized in the cache
 										return superTypesCache.Contains(type) ? ObjectTypeVisitorResult.Stop : ObjectTypeVisitorResult.Continue;
@@ -2304,7 +2304,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 											SetConstraint testConstraint;
 											if (!oppositeRoleConstraintLink.IsDeleting &&
 												!(testRoleSequence = oppositeRoleConstraintLink.ConstraintRoleSequence).IsDeleting &&
-												null != (testConstraint = testRoleSequence as SetConstraint))
+												null != (testConstraint = testRoleSequence as SetConstraint) &&
+												testConstraint.Modality == ConstraintModality.Alethic)
 											{
 												switch (testConstraint.Constraint.ConstraintType)
 												{
@@ -2380,7 +2381,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 										factType = factConstraint.FactType;
 										if (!factType.IsDeleting)
 										{
-											++remainingFactsCount;
+											LinkedElementCollection<ConstraintRoleSequenceHasRole> attachedLinks = factConstraint.ConstrainedRoleCollection;
+											int attachedLinksCount = attachedLinks.Count;
+											for (int j = 0; j < attachedLinksCount; ++j)
+											{
+												if (!attachedLinks[j].IsDeleting)
+												{
+													++remainingFactsCount;
+													break;
+												}
+											}
 										}
 									}
 								}
@@ -2445,7 +2455,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											foreach (ConstraintRoleSequence oppositeSequence in oppositeRole.ConstraintRoleSequenceCollection)
 											{
 												UniquenessConstraint oppositeUniqueness = oppositeSequence as UniquenessConstraint;
-												if (oppositeUniqueness != null && oppositeUniqueness.IsInternal)
+												if (oppositeUniqueness != null && oppositeUniqueness.IsInternal && oppositeUniqueness.Modality == ConstraintModality.Alethic)
 												{
 													ReadOnlyCollection<ConstraintRoleSequenceHasRole> roleLinks = DomainRoleInfo.GetElementLinks<ConstraintRoleSequenceHasRole>(oppositeSequence, ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 													int roleLinkCount = roleLinks.Count;
@@ -2616,6 +2626,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// that is acting as a preferred identifier
 		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole))] // AddRule
+		// Note that Priority=0 (the default) is assumed by ValueConstraint.PreferredIdentifierRoleAddRule
 		private sealed partial class TestRemovePreferredIdentifierConstraintRoleAddRule : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
@@ -2835,7 +2846,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// for object types with preferred identifiers) is enforced in
 				// ObjectType.CheckForIncompatibleRelationshipRule
 				ObjectType entityType = link.PreferredIdentifierFor;
-				if (entityType.IsValueType)
+				if (entityType.IsValueTypeCheckDeleting)
 				{
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForEntityType);
 				}
@@ -2975,6 +2986,84 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // PreferredIdentifierAddedRule class
+		#region ModalityChangeRule class
+		/// <summary>
+		/// Modify preferred identifier status for modality changes
+		/// </summary>
+		[RuleOn(typeof(SetConstraint))] // ChangeRule
+		private sealed partial class ModalityChangeRule : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == SetConstraint.ModalityDomainPropertyId)
+				{
+					SetConstraint setConstraint = e.ModelElement as SetConstraint;
+					EntityTypeHasPreferredIdentifier identifierLink;
+					bool testRemoveOpposite = false;
+					bool testMandatoryRequired = false;
+					bool notAlethic = setConstraint.Modality != ConstraintModality.Alethic;
+					switch ((setConstraint as IConstraint).ConstraintType)
+					{
+						case ConstraintType.InternalUniqueness:
+							testRemoveOpposite = notAlethic;
+							goto case ConstraintType.ExternalUniqueness;
+						case ConstraintType.ExternalUniqueness:
+							if (notAlethic)
+							{
+								// Preferred identifiers must be alethic
+								identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifierFor(setConstraint as UniquenessConstraint);
+								if (identifierLink != null)
+								{
+									testRemoveOpposite = false;
+									identifierLink.Delete();
+								}
+							}
+							break;
+						case ConstraintType.SimpleMandatory:
+							testRemoveOpposite = notAlethic;
+							testMandatoryRequired = true;
+							break;
+						case ConstraintType.DisjunctiveMandatory:
+							testMandatoryRequired = true;
+							break;
+					}
+					if (testRemoveOpposite)
+					{
+						// Remove preferred identifiers for modality changes on
+						// constraints required by the preferred identifier pattern.
+						LinkedElementCollection<Role> roles;
+						ObjectType rolePlayer;
+						if ((roles = setConstraint.RoleCollection).Count == 1 &&
+							null != (rolePlayer = roles[0].RolePlayer) &&
+							null != (identifierLink = EntityTypeHasPreferredIdentifier.GetLinkToPreferredIdentifier(rolePlayer)))
+						{
+							// Note that this will also call ObjectType.ValidateMandatoryRolesForPreferredIdentifier
+							testMandatoryRequired = false; // TestRemovePreferredIdentifier will do the same test
+							identifierLink.TestRemovePreferredIdentifier();
+						}
+					}
+					if (testMandatoryRequired)
+					{
+						LinkedElementCollection<Role> roles = setConstraint.RoleCollection;
+						int roleCount = roles.Count;
+						for (int i = 0; i < roleCount; ++i)
+						{
+							Role role = roles[i];
+							ObjectType objectType;
+							UniquenessConstraint pid;
+							if (null != (objectType = role.RolePlayer) &&
+								null != (pid = objectType.PreferredIdentifier) &&
+								!pid.IsInternal &&
+								pid.FactTypeCollection.Contains(role.FactType))
+							{
+								objectType.ValidateMandatoryRolesForPreferredIdentifier();
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // ModalityChangeRule class
 	}
 	#endregion // EntityTypeHasPreferredIdentifier pattern enforcement
 	#region UniquenessConstraint class
@@ -3093,7 +3182,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								{
 									if (rolePlayer != null &&
 										(forType == null || forType == rolePlayer) &&
-										!rolePlayer.IsValueType) // Condition 5
+										!rolePlayer.IsValueTypeCheckDeleting) // Condition 5
 									{
 										patternOK = true;
 										prevRolePlayer = rolePlayer;
@@ -3101,7 +3190,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									if (impliedRolePlayer != null &&
 										(forType == null || forType == impliedRolePlayer))
 									{
-										Debug.Assert(!impliedRolePlayer.IsValueType, "Objectifying types cannot be value types"); // Condition 5
+										Debug.Assert(!impliedRolePlayer.IsValueTypeCheckDeleting, "Objectifying types cannot be value types"); // Condition 5
 										patternOK = true;
 										prevImpliedRolePlayer = impliedRolePlayer;
 									}

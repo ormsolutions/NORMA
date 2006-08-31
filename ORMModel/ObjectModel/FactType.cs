@@ -1015,12 +1015,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								factType.Name = newGeneratedName;
 								factType.myGeneratedName = newGeneratedName; // See notes in SetValueForCustomStoredAttribute on setting myGeneratedName
-								contextInfo[ObjectType.AllowDuplicateObjectNamesKey] = null;
+								contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
 								nestingType.Name = newGeneratedName;
 							}
 							finally
 							{
-								contextInfo.Remove(ObjectType.AllowDuplicateObjectNamesKey);
+								contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
 								if (ruleDisabled)
 								{
 									ruleManager.EnableRule(typeof(FactTypeChangeRule));
