@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="parentDomainRoleId">Guid</param>
 		/// <param name="childDomainRoleId">Guid</param>
 		/// <returns>Dictionaries for object types, fact types, and constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
+		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			if (parentDomainRoleId == ModelHasObjectType.ModelDomainRoleId)
 			{

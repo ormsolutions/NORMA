@@ -28,6 +28,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private ORMDesignerDocData myCurrentDocument;
 		/// <summary>
+		/// The current diagram docview.
+		/// </summary>
+		private DiagramDocView myCurrentDocumentView;
+		/// <summary>
 		/// The service provider passed to the constructor. The base class messes with this.
 		/// </summary>
 		private readonly IServiceProvider myCtorServiceProvider;
@@ -42,38 +46,61 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return myCurrentDocument;
 			}
-			private set
+		}
+		/// <summary>
+		/// Sets the current ORMDesignerDocData and DiagramDocView.
+		/// </summary>
+		/// <param name="docData">The doc data.</param>
+		/// <param name="docView">The doc view.</param>
+		private void SetCurrentDocument(ORMDesignerDocData docData, DiagramDocView docView)
+		{
+			if (myCurrentDocument == docData)
 			{
-				if (myCurrentDocument == value)
+				if (myCurrentDocumentView != docView)
 				{
-					return;
+					myCurrentDocumentView = docView;
+					OnCurrentDocumentViewChanged();
 				}
-				if (myCurrentDocument != null && myCurrentDocument.Store != null)	// If the current document is not null
+				return;
+			}
+			if (myCurrentDocument != null && myCurrentDocument.Store != null)	// If the current document is not null
+			{
+				// If we get to this point, we know that the document window
+				// has really changed, so we need to unwire the event handlers
+				// from the model store.
+				DetachEventHandlers(myCurrentDocument.Store);
+			}
+			myCurrentDocument = docData;
+			myCurrentDocumentView = docView;
+			if (docData != null)	// If the new DocData is actually an ORMDesignerDocData,
+			{
+				Store newStore = docData.Store;
+				if (newStore != null)
 				{
-					// If we get to this point, we know that the document window
-					// has really changed, so we need to unwire the event handlers
-					// from the model store.
-					DetachEventHandlers(myCurrentDocument.Store);
-				}
-				myCurrentDocument = value;
-				if (value != null)	// If the new DocData is actually an ORMDesignerDocData,
-				{
-					Store newStore = value.Store;
-					if (newStore != null)
-					{
-						AttachEventHandlers(newStore);	// wire the event handlers to the model store.
-					}
-					else
-					{
-						myCurrentDocument = null;
-					}
+					AttachEventHandlers(newStore);	// wire the event handlers to the model store.
 				}
 				else
 				{
-					myCurrentORMSelectionContainer = null;
-					OnORMSelectionContainerChanged();
+					myCurrentDocumentView = null;
+					myCurrentDocument = null;
 				}
-				OnCurrentDocumentChanged();
+			}
+			else
+			{
+				myCurrentORMSelectionContainer = null;
+				myCurrentDocumentView = null;
+				OnORMSelectionContainerChanged();
+			}
+			OnCurrentDocumentChanged();
+		}
+		/// <summary>
+		/// Get the current DiagramDocView. This will be null if CurrentDocument is null.
+		/// </summary>
+		protected DiagramDocView CurrentDocumentView
+		{
+			get
+			{
+				return myCurrentDocumentView;
 			}
 		}
 		/// <summary>
@@ -81,6 +108,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// default implemention is empty.
 		/// </summary>
 		protected virtual void OnCurrentDocumentChanged() { }
+		/// <summary>
+		/// Provide a notification when the current document view has been modified.
+		/// This will be called only if the current document is not modified at the same time.
+		/// </summary>
+		protected virtual void OnCurrentDocumentViewChanged() { }
 		/// <summary>
 		/// Get the current IORMSelectionContainer. Tracking this separate
 		/// from CurrentDocument allows us to switch between multiple
@@ -128,7 +160,8 @@ namespace Neumont.Tools.ORM.Shell
 			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChanged);
 			try
 			{
-				CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
+				//CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
+				SetCurrentDocument(monitor.CurrentDocument as ORMDesignerDocData, monitor.CurrentDocumentView as DiagramDocView);
 				CurrentORMSelectionContainer = monitor.CurrentSelectionContainer as IORMSelectionContainer;
 			}
 			catch (COMException)
@@ -150,7 +183,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private void DocumentWindowChanged(object sender, MonitorSelectionEventArgs e)
 		{
-			CurrentDocument = ((IMonitorSelectionService)sender).CurrentDocument as ORMDesignerDocData;
+			IMonitorSelectionService monitor = (IMonitorSelectionService)sender;
+			SetCurrentDocument(monitor.CurrentDocument as ORMDesignerDocData, monitor.CurrentDocumentView as DiagramDocView);
 		}
 		#endregion // IMonitorSelectionService Event Handlers
 		#region Abstract Methods and Properties

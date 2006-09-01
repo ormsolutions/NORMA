@@ -933,6 +933,72 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IConstraint Implementation
 	}
+	public partial class SetConstraint : IHierarchyContextEnabled
+	{
+		#region IHierarchyContextEnabled Members
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.ForwardHierarchyContextTo"/>
+		/// </summary>
+		protected static IHierarchyContextEnabled ForwardHierarchyContextTo
+		{
+			get { return null; }
+		}
+		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
+		{
+			get { return ForwardHierarchyContextTo; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.ForcedHierarchyContextElementCollection"/>
+		/// </summary>
+		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		{
+			get { return null; }
+		}
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		{
+			get { return ForcedHierarchyContextElementCollection; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextPlacementPriority"/>
+		/// </summary>
+		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority.VeryLow; }
+		}
+		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
+		/// </summary>
+		protected static int HierarchyContextDecrementCount
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		int IHierarchyContextEnabled.HierarchyContextDecrementCount
+		{
+			get
+			{
+				return HierarchyContextDecrementCount;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.ContinueWalkingHierarchyContext"/>
+		/// </summary>
+		protected static bool ContinueWalkingHierarchyContext
+		{
+			get { return false; }
+		}
+		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
+		{
+			get { return ContinueWalkingHierarchyContext; }
+		}
+		#endregion
+	}
 	#endregion // SetConstraint class
 	#region SetComparisonConstraint class
 	public partial class SetComparisonConstraint : IModelErrorOwner
@@ -1892,6 +1958,66 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValidateColumnCompatibility();
 		}
 		#endregion // IConstraint Implementation
+	}
+	public partial class SetComparisonConstraint : IHierarchyContextEnabled
+	{
+		#region IHierarchyContextEnabled Members
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.ForwardHierarchyContextTo"/>
+		/// </summary>
+		protected static IHierarchyContextEnabled ForwardHierarchyContextTo
+		{
+			get { return null; }
+		}
+		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
+		{
+			get { return ForwardHierarchyContextTo; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.ForcedHierarchyContextElementCollection"/>
+		/// </summary>
+		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		{
+			get { return null; }
+		}
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		{
+			get { return ForcedHierarchyContextElementCollection; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextPlacementPriority"/>
+		/// </summary>
+		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority.VeryLow; }
+		}
+		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
+		/// </summary>
+		protected static int HierarchyContextDecrementCount
+		{
+			get { return 0; }
+		}
+		int IHierarchyContextEnabled.HierarchyContextDecrementCount
+		{
+			get { return HierarchyContextDecrementCount; }
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.ContinueWalkingHierarchyContext"/>
+		/// </summary>
+		protected static bool ContinueWalkingHierarchyContext
+		{
+			get { return false; }
+		}
+		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
+		{
+			get { return ContinueWalkingHierarchyContext; }
+		}
+		#endregion
 	}
 	#endregion // SetComparisonConstraint class
 	#region FactConstraint classes

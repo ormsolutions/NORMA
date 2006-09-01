@@ -102,6 +102,7 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdViewSamplePopulationEditor,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0400,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Sample Pop&ulation Editor";
 		guidORMDesignerCommandSet:cmdIdViewNotesWindow,				guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0500,		guidORMToolWindowIcons:bmpIdToolWindowNotesEditor,					BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Notes Editor";
 		guidORMDesignerCommandSet:cmdIdViewReferenceModeEditor,		guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0600,		guidORMToolWindowIcons:bmpIdToolWindowReferenceModeEditor,			BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM Refere&nce Mode Editor";
+		guidORMDesignerCommandSet:cmdIdNewContextWindow,		guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0700,		guidOfficeIcon:msotcidNoIcon,			BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"New ORM Context &Window";
 
 		guidORMDesignerCommandSet:cmdIdCopyImage,					guidORMDesignerCommandSet:groupIdModelCommands,			0x0200,		guidOfficeIcon:msotcidCamera,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Copy &Image";
 		guidORMDesignerCommandSet:cmdIdAutoLayout,					guidORMDesignerCommandSet:groupIdModelCommands,			0x0400,		guidOfficeIcon:msotcidNoIcon,										BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Auto &Layout";

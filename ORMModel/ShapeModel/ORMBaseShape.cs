@@ -99,11 +99,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				int pelCount = presentationElements.Count;
 				if (pelCount != 0)
 				{
+					Partition shapePartition = shapeElement.Partition;
 					Type thisType = shapeElement.GetType();
 					for (int i = 0; i < pelCount; ++i)
 					{
 						PresentationElement pel = presentationElements[i];
-						if (shapeElement != pel && thisType.IsAssignableFrom(pel.GetType()))
+						if (shapeElement != pel && shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
 						{
 							return true;
 						}

@@ -159,6 +159,10 @@
     <value>{{deleted}}</value>
     <comment>Text used to replace a role place holder when the role is deleted</comment>
   </data>
+  <data name="ModelContextWindow.WindowTitle" xml:space="preserve">
+    <value>ORM Context Window</value>
+    <comment>Text to place in the title bar of the context tool window.</comment>
+  </data>
   <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text" xml:space="preserve">
     <value>Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
     <comment>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>

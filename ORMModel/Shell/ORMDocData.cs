@@ -499,6 +499,10 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Diagram diagram = e.ModelElement as Diagram;
 			Store store = diagram.Store;
+			if (diagram.Partition != store.DefaultPartition)
+			{
+				return;
+			}
 			IMonitorSelectionService monitorSelection = (IMonitorSelectionService)ServiceProvider.GetService(typeof(IMonitorSelectionService));
 			MultiDiagramDocView activeView = (monitorSelection != null) ? (monitorSelection.CurrentDocumentView as MultiDiagramDocView) : null;
 			foreach (ModelingDocView view in DocViews)

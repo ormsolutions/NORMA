@@ -36,6 +36,22 @@
 		</se:OmittedDomainElements>
 	</se:DomainModel>
 	<se:Element Class="ORMDiagram" SortChildElements="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:callInstance name="DefaultPartition" type="property">
+							<plx:callObject>
+								<plx:callThis name="Store" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="Partition" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Attribute ID="DiagramId" WriteStyle="NotWritten"/>
 		<se:Attribute ID="AutoPopulateShapes" WriteStyle="NotWritten"/>
 		<se:Attribute ID="DoLineRouting" WriteStyle="NotWritten"/>

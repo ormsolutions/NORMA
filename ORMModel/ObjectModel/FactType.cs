@@ -58,7 +58,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region ReadingOrder acquisition
 		/// <summary>
@@ -2210,6 +2210,106 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // DefaultBinaryMissingUniquenessVerbalizer
+		#region IHierarchyContextEnabled Members
+		/// <summary>
+		/// Gets the contextable object that this instance should resolve to.
+		/// </summary>
+		/// <value>The forward context. Null if none</value>
+		/// <remarks>For example a role should resolve to a fact type since a role is displayed with a fact type</remarks>
+		protected static IHierarchyContextEnabled ForwardHierarchyContextTo
+		{
+			get
+			{
+				return null;
+			}
+		}
+		/// <summary>
+		/// Gets the elements that the current instance is dependant on for display.
+		/// The returned elements will be forced to display in the context window.
+		/// </summary>
+		/// <value>The dependant context elements.</value>
+		protected IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		{
+			get
+			{
+				LinkedElementCollection<RoleBase> collection = RoleCollection;
+				int collectionCount = collection.Count;
+				for (int i = 0; i < collectionCount; ++i)
+				{
+					IHierarchyContextEnabled rolePlayer = collection[i].Role.RolePlayer as IHierarchyContextEnabled;
+					if (rolePlayer != null)
+					{
+						yield return rolePlayer;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Gets the place priority. The place priority specifies the order in which the element will
+		/// be placed on the context diagram.
+		/// </summary>
+		/// <value>The place priority.</value>
+		protected HierarchyContextPlacementPriority HierarchyContextPlacementPriority
+		{
+			get
+			{
+				if (this.Objectification == null)
+				{
+					return HierarchyContextPlacementPriority.Medium;
+				}
+				else
+				{
+					return HierarchyContextPlacementPriority.High;
+				}
+			}
+		}
+		/// <summary>
+		/// Gets the number of generations to decriment when this object is walked.
+		/// </summary>
+		/// <value>The number of generations.</value>
+		protected int HierarchyContextDecrementCount
+		{
+			get
+			{
+				if (NestingType != null)
+				{
+					return 1;
+				}
+				return 0;
+			}
+		}
+		/// <summary>
+		/// Gets a value indicating whether the path through the diagram should be followed through
+		/// this element.
+		/// </summary>
+		/// <value><c>true</c> to continue walking; otherwise, <c>false</c>.</value>
+		protected static bool ContinueWalkingHierarchyContext
+		{
+			get { return true; }
+		}
+		#region IHierarchyContextEnabled Members
+		int IHierarchyContextEnabled.HierarchyContextDecrementCount
+		{
+			get { return HierarchyContextDecrementCount; }
+		}
+		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
+		{
+			get { return ContinueWalkingHierarchyContext; }
+		}
+		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
+		{
+			get { return ForwardHierarchyContextTo; }
+		}
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		{
+			get { return ForcedHierarchyContextElementCollection; }
+		}
+		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority; }
+		}
+		#endregion
+		#endregion
 	}
 	#region FactType Model Validation Errors
 

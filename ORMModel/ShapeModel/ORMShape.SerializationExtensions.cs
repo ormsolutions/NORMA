@@ -365,13 +365,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.ShouldSerialize
 		/// </summary>
-		protected static bool ShouldSerialize()
+		protected bool ShouldSerialize()
 		{
-			return true;
+			return this.Store.DefaultPartition == this.Partition;
 		}
 		bool IORMCustomSerializedElement.ShouldSerialize()
 		{
-			return ShouldSerialize();
+			return this.ShouldSerialize();
 		}
 	}
 	#endregion // ORMDiagram serialization

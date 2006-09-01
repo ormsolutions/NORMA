@@ -121,6 +121,7 @@
     <Compile Include="ObjectModel\Design\Editors\DataTypePicker.cs" />
     <Compile Include="ObjectModel\Design\Editors\ReferenceModePickers.cs" />
     <Compile Include="ObjectModel\Design\Editors\ObjectificationPickers.cs" />
+    <Compile Include="ObjectModel\HierarchyContext.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseBinaryLinkShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMPresentationElementTypeDescriptor.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
     <Compile Include="ShapeModel\ModelNoteConnectAction.cs" />
     <Compile Include="ShapeModel\ModelNoteShape.cs" />
+    <Compile Include="Shell\ORMContextWindow.cs">
+    </Compile>
     <Compile Include="Shell\FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="Shell\FactEditor\FactColorizer.cs" />
     <Compile Include="Shell\FactEditor\FactCompletionSet.cs" />

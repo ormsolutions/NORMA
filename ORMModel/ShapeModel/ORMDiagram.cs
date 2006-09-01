@@ -94,6 +94,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
 		#endregion
+		#region members
+		/// <summary>
+		/// True if processing a drag and drop operation; otherwise false
+		/// </summary>
+		private bool myInDragAndDrop = false;
+		/// <summary>
+		/// The drag and drop undostate
+		/// </summary>
+		private UndoState? myDragDropUndoState;
+		#endregion
+		#region Properties
+		/// <summary>
+		/// Gets a value indicating whether an processing is being done in response to a drag and drop.
+		/// </summary>
+		/// <value><c>true</c> if processing is being done in response to a drag and drop; otherwise, <c>false</c>.</value>
+		[CLSCompliant(false)]
+		public bool InDragAndDrop
+		{
+			get { return myInDragAndDrop; }
+		}
+		/// <summary>
+		/// Gets or sets the state of the drag drop undo.
+		/// </summary>
+		/// <value>The state of the drag drop undo.</value>
+		public UndoState? DragDropUndoState
+		{
+			get { return myDragDropUndoState; }
+			set { myDragDropUndoState = value; }
+		}
+		#endregion
 		#region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
@@ -124,6 +154,55 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return;
 			}
+			this.myInDragAndDrop = true;
+			try
+			{
+				Microsoft.VisualStudio.Modeling.UndoManager undoManager = Store.CurrentContext.UndoManager;
+				bool restoreUndoState = false;
+				UndoState originalUndoState = 0;
+				if (myDragDropUndoState.HasValue)
+				{
+					UndoState newUndoState = myDragDropUndoState.Value;
+					originalUndoState = undoManager.UndoState;
+					if (originalUndoState != newUndoState)
+					{
+						restoreUndoState = true;
+						undoManager.UndoState = newUndoState;
+					}
+				}
+				try
+				{
+					if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition))
+					{
+						e.Effect = DragDropEffects.All;
+						e.Handled = true;
+					}
+					base.OnDragDrop(e);
+				}
+				finally
+				{
+					if (restoreUndoState)
+					{
+						undoManager.UndoState = originalUndoState;
+					}
+				}
+			}
+			finally
+			{
+				this.myInDragAndDrop = false;
+			}
+		}
+		/// <summary>
+		/// Place a new shape for an existing element onto this diagram
+		/// </summary>
+		/// <param name="dataObject">The dataObject containing the element to place. If this is set, elementToPlace must be null.</param>
+		/// <param name="elementToPlace">The the element to place. If this is set, dataObject must be null.</param>
+		/// <param name="elementPosition">An initial position for the element</param>
+		/// <returns>true if the element was placed</returns>
+		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition)
+		{
+			Debug.Assert((dataObject == null) ^ (elementToPlace == null), "Pass in dataObject or elementToPlace");
+			bool retVal = false;
 			ObjectType objectType = null;
 			FactType factType = null;
 			SetComparisonConstraint multiCol = null;
@@ -132,15 +211,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ModelElement element = null;
 			bool[] factsContained;
 			int factsRemaining;
-			if (null != (objectType = dataObject.GetData(typeof(ObjectType)) as ObjectType))
+			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
 				element = objectType;
 			}
-			else if (null != (factType = dataObject.GetData(typeof(FactType)) as FactType))
+			else if (null != (factType = (dataObject == null) ? elementToPlace as FactType : dataObject.GetData(typeof(FactType)) as FactType))
 			{
 				element = factType;
 			}
-			else if (null != (multiCol = dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
+			else if (null != (multiCol = (dataObject == null) ? elementToPlace as SetComparisonConstraint : dataObject.GetData(typeof(SetComparisonConstraint)) as SetComparisonConstraint))
 			{
 				LinkedElementCollection<FactType> factTypeList = multiCol.FactTypeCollection;
 				factsContained = new bool[factTypeList.Count];
@@ -167,7 +246,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			else if (null != (singleCol = dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
+			else if (null != (singleCol = (dataObject == null) ? elementToPlace as SetConstraint : dataObject.GetData(typeof(SetConstraint)) as SetConstraint))
 			{
 				LinkedElementCollection<FactType> factTypeList = singleCol.FactTypeCollection;
 				factsContained = new bool[factTypeList.Count];
@@ -194,55 +273,60 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
-			else if (null != (modelNote = dataObject.GetData(typeof(ModelNote)) as ModelNote))
+			else if (null != (modelNote = (dataObject == null) ? elementToPlace as ModelNote : dataObject.GetData(typeof(ModelNote)) as ModelNote))
 			{
 				element = modelNote;
 			}
 			if (element != null)
 			{
-				e.Effect = DragDropEffects.All;
-				e.Handled = true;
-				using (Transaction transaction = this.Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
-				{
-					ModelElement droppedOnElement = this.ModelElement;
-					DropTargetContext.Set(transaction, Id, e.MousePosition, null);
-					Diagram.FixUpDiagram(droppedOnElement, element);
-					if (factType != null)
-					{
-						foreach (RoleBase roleBase in factType.RoleCollection)
-						{
-							Role role = roleBase.Role;
+				retVal = true;
 
+				using (Transaction transaction = Store.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
+				{
+					if (!elementPosition.IsEmpty)
+					{
+						DropTargetContext.Set(transaction, Id, elementPosition, null);
+					}
+					FixUpLocalDiagram(null, element);
+					if (factType != null && factType.RoleCollection != null)
+					{
+						LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
+						for (int i = 0; i < roleCollection.Count; i++)
+						{
+							//Role role = roleBase.Role;
+							Role role = roleCollection[i].Role;
 							// Pick up role players
-							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
+							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, ObjectTypePlaysRole.PlayedRoleDomainRoleId));
 
 							// Pick up attached constraints
-							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
-							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
-							
+							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetConstraint.FactTypeDomainRoleId));
+							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
+
 							// Pick up the role shape
-							FixUpDiagram(factType, role);
+							FixUpLocalDiagram(factType, role);
 
 							// Get the role value constraint and the link to it.
 							RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
+
 							if (valueConstraintLink != null)
 							{
-								FixUpDiagram(factType, valueConstraintLink.ValueConstraint);
-								FixUpDiagram(droppedOnElement, valueConstraintLink);
+								FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
+								//FixUpDiagram(null, valueConstraintLink);
 							}
+
 						}
 						LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
 						if (orders.Count != 0)
 						{
-							FixUpDiagram(factType, orders[0]);
+							FixUpLocalDiagram(factType, orders[0]);
 						}
-						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
+						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(factType, ModelNoteReferencesFactType.ElementDomainRoleId));
 						Objectification objectification = factType.Objectification;
 						if (objectification != null && !objectification.IsImplied)
 						{
 							ObjectType nestingType = objectification.NestingType;
-							FixUpDiagram(factType, nestingType);
-							FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+							FixUpLocalDiagram(factType, nestingType);
+							FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(nestingType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 						}
 					}
 					else if (objectType != null)
@@ -266,43 +350,72 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							if (subtypeFact != null)
 							{
-								FixUpDiagram(droppedOnElement, subtypeFact);
+								FixUpLocalDiagram(null, subtypeFact);
 							}
 							else
 							{
-								FixUpDiagram(droppedOnElement, link);
+								FixUpLocalDiagram(null, link);
 							}
 						}
 						ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
 						if (valueConstraint != null)
 						{
-							FixUpDiagram(objectType, valueConstraint);
+							FixUpLocalDiagram(objectType, valueConstraint);
 						}
-						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
+						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(objectType, ModelNoteReferencesObjectType.ElementDomainRoleId));
 					}
 					else if (singleCol != null)
 					{
-						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(singleCol, FactSetConstraint.SetConstraintDomainRoleId));
+						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(singleCol, FactSetConstraint.SetConstraintDomainRoleId));
 					}
 					else if (multiCol != null)
 					{
-						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId));
+						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(multiCol, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId));
 					}
 					else if (modelNote != null)
 					{
-						FixupRelatedLinks(droppedOnElement, DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
+						FixupRelatedLinks(null, DomainRoleInfo.GetElementLinks<ElementLink>(modelNote, ModelNoteReferencesModelElement.NoteDomainRoleId));
 					}
 					transaction.Commit();
 				}
 			}
-			base.OnDragDrop(e);
+			return retVal;
 		}
-		private static void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links)
+		/// <summary>
+		/// Fixes up the local diagram for each of the links related to the specified ModelElement.
+		/// </summary>
+		/// <param name="droppedOnElement">The dropped on element.</param>
+		/// <param name="links">The links.</param>
+		private void FixupRelatedLinks(ModelElement droppedOnElement, ReadOnlyCollection<ElementLink> links)
 		{
 			int linksCount = links.Count;
 			for (int i = 0; i < linksCount; ++i)
 			{
-				FixUpDiagram(droppedOnElement, links[i]);
+				FixUpLocalDiagram(droppedOnElement, links[i]);
+			}
+		}
+		/// <summary>
+		/// Do the same work as <see cref="Diagram.FixUpDiagram"/> for just
+		/// this diagram.
+		/// </summary>
+		/// <param name="existingParent">An element with a shape on this diagram.
+		/// Pass in null to use the model.</param>
+		/// <param name="newChild">The new element to add.</param>
+		public void FixUpLocalDiagram(ModelElement existingParent, ModelElement newChild)
+		{
+			ShapeElement parentShape = this;
+			if (existingParent != null && existingParent != ModelElement)
+			{
+				parentShape = FindShapeForElement(existingParent);
+				if (parentShape == null)
+				{
+					return;
+				}
+			}
+			ShapeElement newChildShape = parentShape.FixUpChildShapes(newChild);
+			if (newChildShape != null && newChildShape.Diagram == this)
+			{
+				FixUpDiagramSelection(newChildShape);
 			}
 		}
 		# endregion // DragDrop overrides

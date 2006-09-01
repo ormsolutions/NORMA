@@ -67,9 +67,10 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
 #if !HIDENEWMODELBROWSER
-	[ProvideToolWindow(typeof(NewORMModelBrowser), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(NewORMModelBrowser), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.SolutionExplorer)]
 #endif
 	[ProvideToolWindow(typeof(ORMNotesToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMContextWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMSamplePopulationToolWindow), ORMDesignerEditorFactory.GuidString)]
@@ -80,6 +81,7 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindowVisibility(typeof(NewORMModelBrowser), ORMDesignerEditorFactory.GuidString)]
 #endif
 	[ProvideToolWindowVisibility(typeof(ORMNotesToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMContextWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(1000, 1)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
@@ -292,6 +294,7 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMSamplePopulationToolWindow));
 				AddToolWindow(typeof(ORMVerbalizationToolWindow));
 				AddToolWindow(typeof(ORMNotesToolWindow));
+				AddToolWindow(typeof(ORMContextWindow));
 				EnsureFactEditorToolWindow();
 				
 				// Make sure our options are loaded from the registry
@@ -612,6 +615,19 @@ namespace Neumont.Tools.ORM.Shell
 				return (ORMNotesToolWindow)mySingleton.GetToolWindow(typeof(ORMNotesToolWindow), true);
 			}
 		}
+
+		/// <summary>
+		/// Gets the context tool window.
+		/// </summary>
+		/// <value>The context tool window.</value>
+		public static ORMContextWindow ContextWindow
+		{
+			get
+			{
+				return (ORMContextWindow)mySingleton.GetToolWindow(typeof(ORMContextWindow), true);
+			}
+		}
+	
 		/// <summary>
 		/// The reference mode editor window.
 		/// </summary>

@@ -56,12 +56,12 @@ namespace Neumont.Tools.ORM.Shell
 					IList<ISurveyNodeProvider> nodeProviderList = new List<ISurveyNodeProvider>();
 					IList<ISurveyQuestionProvider> questionProviderList = new List<ISurveyQuestionProvider>();
 					ICollection<DomainModel> domainModels = this.Store.DomainModels;
-					foreach(DomainModel domainModel in domainModels)
+					foreach (DomainModel domainModel in domainModels)
 					{
 						ISurveyNodeProvider nodeProvider = domainModel as ISurveyNodeProvider;
 						if (nodeProvider != null)
 						{
-							nodeProviderList.Add(nodeProvider);	
+							nodeProviderList.Add(nodeProvider);
 						}
 						ISurveyQuestionProvider questionProvider = domainModel as ISurveyQuestionProvider;
 						if (questionProvider != null)
@@ -106,7 +106,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			/// <param name="services">IORMToolServices to defer to</param>
 			/// <param name="serviceProvider">Global service provider</param>
-			public ORMStore(IORMToolServices services, IServiceProvider serviceProvider) : base(serviceProvider)
+			public ORMStore(IORMToolServices services, IServiceProvider serviceProvider)
+				: base(serviceProvider)
 			{
 				myServices = services;
 			}
@@ -505,8 +506,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Create a new ORMUndoUnit
 			/// </summary>
-			public ORMUndoUnit(IServiceProvider serviceProvider, Context context, TransactionItem transactionItem) :
-				base(serviceProvider, context, transactionItem)
+			public ORMUndoUnit(IServiceProvider serviceProvider, Context context, TransactionItem transactionItem)
+				: base(serviceProvider, context, transactionItem)
 			{
 				myInUndoState = true;
 				myServiceProvider = serviceProvider;
@@ -863,7 +864,7 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				Store store = Store;
-				return !store.Disposed &&!store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
+				return !store.Disposed && !store.InUndoRedoOrRollback && myCustomBlockCanAddTransactionCount == 0;
 			}
 			set
 			{
@@ -906,7 +907,8 @@ namespace Neumont.Tools.ORM.Shell
 			/// Create a task provider for this document
 			/// </summary>
 			/// <param name="document"></param>
-			public ORMTaskProvider(ORMDesignerDocData document) : base(document.ServiceProvider)
+			public ORMTaskProvider(ORMDesignerDocData document)
+				: base(document.ServiceProvider)
 			{
 				Debug.Assert(document.myTaskProvider == null); // Only need one
 				myDocument = document;
@@ -1205,7 +1207,7 @@ namespace Neumont.Tools.ORM.Shell
 									if (selectOnView != null)
 									{
 										selectOnView.Selection.Set(new DiagramItem(shape));
-										selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[]{shape});
+										selectOnView.DiagramClientView.EnsureVisible(new ShapeElement[] { shape });
 										ModelError error;
 										IModelErrorActivation activator;
 										if (null != (error = locator as ModelError) &
@@ -1284,7 +1286,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			IRepresentModelElements IORMToolTaskItem.ElementLocator
 			{
-				get	{ return ElementLocator; }
+				get { return ElementLocator; }
 				set { ElementLocator = value; }
 			}
 			/// <summary>

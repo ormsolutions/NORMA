@@ -82,6 +82,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuNotesWindow),
 				ORMDesignerCommandIds.ViewNotesWindow)
 				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusStandardWindow),
+				new EventHandler(OnMenuContextWindow),
+				ORMDesignerCommandIds.NewContextWindow)
+				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusCopyImage),
 				new EventHandler(OnMenuCopyImage),
 				ORMDesignerCommandIds.CopyImage)
@@ -796,6 +800,17 @@ namespace Neumont.Tools.ORM.Shell
 				ORMNotesToolWindow notesWindow = ORMDesignerPackage.NotesWindow;
 				notesWindow.Show();
 			}
+
+			/// <summary>
+			/// Context window menu handler
+			/// </summary>
+			/// <param name="sender">The sender.</param>
+			/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+			protected void OnMenuContextWindow(object sender, EventArgs e)
+			{
+				ORMContextWindow contextWindow = ORMDesignerPackage.ContextWindow;
+				contextWindow.Show();
+			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
@@ -1064,6 +1079,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Note Window item on the context menu
 			/// </summary>
 			public static readonly CommandID ViewNotesWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewNotesWindow);
+			/// <summary>
+			/// The ORM Note Window item on the context menu
+			/// </summary>
+			public static readonly CommandID NewContextWindow = new CommandID(guidORMDesignerCommandSet, cmdIdNewORMContextWindow);
 			/// <summary>
 			/// Insert a role after the selected role
 			/// </summary>
@@ -1339,6 +1358,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdMoveRoleRight = 0x2916;
 			/// <summary>
+			/// The ORM Context Window
+			/// </summary>
+			private const int cmdIdNewORMContextWindow = 0x2917;
+			/// <summary>
 			/// Initiates the drop down to add a new reading in the Reading Editor
 			/// </summary>
 			private const int cmdIdReadingEditorAddReading = 0x2918;
@@ -1366,7 +1389,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// Demotes the RoleOrder in the Reading Editor
 			/// </summary>
 			private const int cmdIdReadingEditorDemoteReadingOrder = 0x291E;
-
 			/// <summary>
 			/// Objectifies the fact type.
 			/// </summary>

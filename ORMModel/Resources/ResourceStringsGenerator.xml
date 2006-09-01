@@ -483,6 +483,9 @@
 	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle">
 		<comment type="summary">Text to place in the title bar of the notes tool window.</comment>
 	</ResourceString>
+	<ResourceString name="ModelContextWindowTitle" model="Model" resourceName="ModelContextWindow.WindowTitle">
+		<comment type="summary">Text to place in the title bar of the context tool window.</comment>
+	</ResourceString>
 	<ResourceString name="ModelNotesWindowRootTypeNameNotesSeparatorFormatString" model="Model" resourceName="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString">
 		<comment type="summary">Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
 	</ResourceString>

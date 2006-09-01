@@ -1393,6 +1393,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Text to place in the title bar of the context tool window.
+		/// </summary>
+		public static string ModelContextWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelContextWindow.WindowTitle");
+			}
+		}
+		/// <summary>
 		/// Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.
 		/// </summary>
 		public static string ModelNotesWindowRootTypeNameNotesSeparatorFormatString

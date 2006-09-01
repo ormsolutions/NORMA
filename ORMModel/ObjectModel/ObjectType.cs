@@ -63,7 +63,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		SkipFollowingSiblings,
 	}
 	#endregion // ObjectTypeVisitor delegate definition
-	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IVerbalizeCustomChildren
+	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -1324,7 +1324,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="parentDomainRoleId">Guid</param>
 		/// <param name="childDomainRoleId">Guid</param>
 		/// <returns>Model-owned dictionary for constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
+		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			if (parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId)
 			{
@@ -2529,7 +2529,78 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // CheckForIncompatibleRelationshipRolePlayerChangeRule class
-
+		#region IHierarchyContextEnabled Members
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
+		/// </summary>
+		protected static int HierarchyContextDecrementCount
+		{
+			get
+			{
+				return 1;
+			}
+		}
+		/// <summary>
+		/// Gets a value indicating whether the path through the diagram should be followed through
+		/// this element.
+		/// </summary>
+		/// <value><c>true</c> to continue walking; otherwise, <c>false</c>.</value>
+		int IHierarchyContextEnabled.HierarchyContextDecrementCount
+		{
+			get { return HierarchyContextDecrementCount; }
+		}
+		/// <summary>
+		/// Gets the number of generations to decriment when this object is walked.
+		/// </summary>
+		/// <value>The number of generations.</value>
+		protected static bool ContinueWalkingHierarchyContext
+		{
+			get { return true; }
+		}
+		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
+		{
+			get { return ContinueWalkingHierarchyContext; }
+		}
+		/// <summary>
+		/// Gets the contextable object that this instance should resolve to.
+		/// </summary>
+		/// <value>The forward context. Null if none</value>
+		/// <remarks>For example a role should resolve to a fact type since a role is displayed with a fact type</remarks>
+		protected IHierarchyContextEnabled ForwardHierarchyContextTo
+		{
+			get { return this.NestedFactType; }
+		}
+		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
+		{
+			get { return ForwardHierarchyContextTo; }
+		}
+		/// <summary>
+		/// Gets the elements that the current instance is dependant on for display.
+		/// The returned elements will be forced to display in the context window.
+		/// </summary>
+		/// <value>The dependant context elements.</value>
+		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		{
+			get { return null; }
+		}
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		{
+			get { return ForcedHierarchyContextElementCollection; }
+		}
+		/// <summary>
+		/// Gets the place priority. The place priority specifies the order in which the element will
+		/// be placed on the context diagram.
+		/// </summary>
+		/// <value>The place priority.</value>
+		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority.VeryHigh; }
+		}
+		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority; }
+		}
+		#endregion
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible

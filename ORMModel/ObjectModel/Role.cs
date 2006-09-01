@@ -40,7 +40,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <returns>true to continue walking</returns>
 	public delegate bool ValueRoleVisitor(Role role, ValueTypeHasDataType dataTypeLink, RoleValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint);
 	#endregion // ValueRoleVisitor delegate definition
-	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner
+	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
 		/// <summary>
@@ -1102,7 +1102,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="parentDomainRoleId">Guid</param>
 		/// <param name="childDomainRoleId">Guid</param>
 		/// <returns>Model-owned dictionary for constraints</returns>
-		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
+		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			if (parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
 			{
@@ -1152,6 +1152,83 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetNamedElementDictionaryLinkRoles();
 		}
 		#endregion // INamedElementDictionaryRemoteParent implementation
+		#region IHierarchyContextEnabled Members
+		/// <summary>
+		/// Gets the model that the current <see cref="T:ORMModel"/> that the <see cref="T:ModelElement"/> is related to.
+		/// </summary>
+		/// <value>The model.</value>
+		protected ORMModel Model
+		{
+			get { return this.FactType.Model; }
+		}
+		ORMModel IHierarchyContextEnabled.Model
+		{
+			get { return Model; }
+		}
+		/// <summary>
+		/// Gets the FactType that this instance resolves to.
+		/// </summary>
+		/// <value>The FactType</value>
+		protected IHierarchyContextEnabled ForwardHierarchyContextTo
+		{
+			get { return this.FactType; }
+		}
+		IHierarchyContextEnabled IHierarchyContextEnabled.ForwardHierarchyContextTo
+		{
+			get { return ForwardHierarchyContextTo; }
+		}
+		/// <summary>
+		/// Gets the elements that the current instance is dependant on for display.
+		/// The returned elements will be forced to display in the context window.
+		/// </summary>
+		/// <value>The dependant context elements.</value>
+		protected static IEnumerable<IHierarchyContextEnabled> ForcedHierarchyContextElementCollection
+		{
+			get { return null; }
+		}
+		IEnumerable<IHierarchyContextEnabled> IHierarchyContextEnabled.ForcedHierarchyContextElementCollection
+		{
+			get { return ForcedHierarchyContextElementCollection; }
+		}
+		/// <summary>
+		/// Gets the place priority. The place priority specifies the order in which the element will
+		/// be placed on the context diagram.
+		/// </summary>
+		/// <value>The place priority.</value>
+		protected static HierarchyContextPlacementPriority HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority.Low; }
+		}
+		HierarchyContextPlacementPriority IHierarchyContextEnabled.HierarchyContextPlacementPriority
+		{
+			get { return HierarchyContextPlacementPriority; }
+		}
+		/// <summary>
+		/// Gets the number of generations to decriment when this object is walked.
+		/// </summary>
+		/// <value>The number of generations.</value>
+		protected static int HierarchyContextDecrementCount
+		{
+			get { return 0; }
+		}
+		int IHierarchyContextEnabled.HierarchyContextDecrementCount
+		{
+			get { return HierarchyContextDecrementCount; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the path through the diagram should be followed through
+		/// this element.
+		/// </summary>
+		/// <value><c>true</c> to continue walking; otherwise, <c>false</c>.</value>
+		protected static bool ContinueWalkingHierarchyContext
+		{
+			get { return true; }
+		}
+		bool IHierarchyContextEnabled.ContinueWalkingHierarchyContext
+		{
+			get { return ContinueWalkingHierarchyContext; }
+		}
+		#endregion
 	}
 	public partial class RoleBase
 	{

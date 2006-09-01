@@ -75,8 +75,8 @@
 #define cmdIdDeleteAlternate			0x2914
 #define cmdIdMoveRoleLeft				0x2915
 #define cmdIdMoveRoleRight				0x2916
+#define cmdIdNewContextWindow	0x2917
 
-// 0x2917 available
 #define cmdIdReadingEditorAddReading			0x2918
 #define cmdIdReadingEditorAddReadingOrder		0x2919
 #define cmdIdReadingEditorDeleteReading			0x291A
