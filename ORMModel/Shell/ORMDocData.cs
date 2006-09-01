@@ -99,7 +99,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override IList<Type> GetDomainModels()
 		{
-			// UNDONE: 2006-08 DSL Tools port: Store keys don't seem to exist any more...
 			// Always have 1 for the CoreDesignSurface. Note that the framework automatically
 			// loads the core model (ModelElement, ElementLink, etc).
 			int knownCount = 1 + myStandardSubStores.Count;

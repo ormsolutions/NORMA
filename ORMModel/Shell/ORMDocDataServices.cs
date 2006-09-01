@@ -18,10 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Reflection;
+using System.Reflection.Emit;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
+using StoreUndoManager = Microsoft.VisualStudio.Modeling.UndoManager;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
+using ShellUndoManager = Microsoft.VisualStudio.Modeling.Shell.UndoManager;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
@@ -85,12 +89,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override Store CreateStore()
 		{
-			// UNDONE: 2006-08 DSL Tools port: Store keys don't seem to exist any more...
-			//Debug.Assert(storeKey == ModelingDocData.PrimaryStoreKey);
-			// UNDONE: (MCurland) The base implementation of this method was supposed
-			// to do nothing but create the store, so that derived documents could
-			// extend it without breaking code. However, the current implementation
-			// does other stuff. This needs to be fixed on the framework side.
 			return new ORMStore(this, ServiceProvider);
 		}
 		/// <summary>
@@ -234,7 +232,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>See <see cref="ModelingDocData.CreateModelingDocStore"/>.</summary>
 		protected override ModelingDocStore CreateModelingDocStore(Store store)
 		{
-			// UNDONE: 2006-08 DSL Tools port: Store keys don't seem to exist any more...
 			return new ORMModelingDocStore(ServiceProvider, store);
 		}
 		/// <summary>
@@ -243,13 +240,242 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected class ORMModelingDocStore : ModelingDocStore
 		{
+			#region AddUndoUnit filtering
+			#region Dynamic Microsoft.VisualStudio.Modeling.TransactionItem.ChangesPartition implementation
+			private delegate bool TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition);
 			/// <summary>
-			/// Create a new ORMModelingDocStore. Pass through to constructor on base type
+			/// Microsoft.VisualStudio.Modeling.UndoManager has a TopmostUndableTransaction property,
+			/// but not a TopmostRedoableTransaction property. Generate a dynamic method to emulate this functionality.
+			/// </summary>
+			private static readonly TransactionItemChangesPartitionDelegate TransactionItemChangesPartition = CreateTransactionItemChangesPartitionDelegate();
+			private static TransactionItemChangesPartitionDelegate CreateTransactionItemChangesPartitionDelegate()
+			{
+				Type transactionItemType = typeof(TransactionItem);
+				Type partitionType = typeof(Partition);
+				Assembly modelingAssembly = transactionItemType.Assembly;
+				string privateTypeBaseName = transactionItemType.Namespace + Type.Delimiter;
+				Type modelCommandType;
+				Type modelCommandListType;
+				Type elementCommandType;
+				PropertyInfo commandsProperty;
+				MethodInfo getCommandsMethod;
+				PropertyInfo partitionProperty;
+				MethodInfo getPartitionMethod;
+				if (null == (modelCommandType = modelingAssembly.GetType(privateTypeBaseName + "ModelCommand", false)) ||
+					null == (elementCommandType = modelingAssembly.GetType(privateTypeBaseName + "ElementCommand", false)) ||
+					!modelCommandType.IsAssignableFrom(elementCommandType) ||
+					null == (modelCommandListType = typeof(List<>).MakeGenericType(modelCommandType)) ||
+					null == (commandsProperty = transactionItemType.GetProperty("Commands", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)) ||
+					commandsProperty.PropertyType != modelCommandListType ||
+					null == (getCommandsMethod = commandsProperty.GetGetMethod(true)) ||
+					null == (partitionProperty = elementCommandType.GetProperty("Partition", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)) ||
+					partitionProperty.PropertyType != partitionType ||
+					null == (getPartitionMethod = partitionProperty.GetGetMethod(true)))
+				{
+					// The structure of the internal dll implementation has changed, il generation will fail
+					return null;
+				}
+
+				// Approximate method being written (assuming TransactionItem context):
+				// bool ChangesPartitionDelegate(Partition partition)
+				// {
+				//     List<ModelCommand> commands = Commands;
+				//     commandsCount = commands.Count;
+				//     for (int i = 0; i < commandsCount; ++i)
+				//     {
+				//         ElementCommand currentCommand = commands[i] as ElementCommand;
+				//         if (currentCommand != null && currentCommand.Partition == partition)
+				//         {
+				//             return true;
+				//         }
+				//     }
+				//     return false;
+				// }
+				DynamicMethod dynamicMethod = new DynamicMethod("TransactionItemChangesPartition", typeof(bool), new Type[] { transactionItemType, partitionType }, transactionItemType, true);
+				// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for more than the required 55 bytes
+				// to avoid a resize to an even larger buffer.
+				ILGenerator il = dynamicMethod.GetILGenerator(64);
+				Label loopBodyLabel = il.DefineLabel();
+				Label loopTestLabel = il.DefineLabel();
+				Label notAnElementCommandLabel = il.DefineLabel();
+				Label loopIncrementLabel = il.DefineLabel();
+				il.DeclareLocal(typeof(int)); // commandsCount
+				il.DeclareLocal(typeof(int)); // i
+				il.Emit(OpCodes.Ldarg_0);
+				il.Emit(OpCodes.Call, getCommandsMethod);
+				il.Emit(OpCodes.Dup); // Save for the loop, repush each time before getting instance
+
+				// Cache the loop count
+				il.Emit(OpCodes.Call, modelCommandListType.GetProperty("Count").GetGetMethod());
+				il.Emit(OpCodes.Stloc_0);
+
+				// Initialize the loop
+				il.Emit(OpCodes.Ldc_I4_0);
+				il.Emit(OpCodes.Stloc_1);
+				il.Emit(OpCodes.Br_S, loopTestLabel);
+
+				// Loop contents
+				il.MarkLabel(loopBodyLabel);
+				il.Emit(OpCodes.Dup); // Get copy of commands
+				il.Emit(OpCodes.Ldloc_1); // push i
+				il.Emit(OpCodes.Call, modelCommandListType.GetProperty("Item").GetGetMethod());
+				il.Emit(OpCodes.Isinst, elementCommandType);
+				il.Emit(OpCodes.Dup); // For test
+				il.Emit(OpCodes.Brfalse_S, notAnElementCommandLabel);
+				il.Emit(OpCodes.Call, getPartitionMethod);
+				il.Emit(OpCodes.Ldarg_1);
+				il.Emit(OpCodes.Bne_Un_S, loopIncrementLabel);
+
+				// Have a match, get out
+				il.Emit(OpCodes.Pop); // Pop commands
+				il.Emit(OpCodes.Ldc_I4_1);
+				il.Emit(OpCodes.Ret);
+
+				// Cast failed, pop extra item
+				il.MarkLabel(notAnElementCommandLabel);
+				il.Emit(OpCodes.Pop); // Pops elementCommand instance
+
+				// Loop index increment
+				il.MarkLabel(loopIncrementLabel);
+				il.Emit(OpCodes.Ldloc_1);
+				il.Emit(OpCodes.Ldc_I4_1);
+				il.Emit(OpCodes.Add);
+				il.Emit(OpCodes.Stloc_1);
+
+				// Loop test
+				il.MarkLabel(loopTestLabel);
+				il.Emit(OpCodes.Ldloc_1);
+				il.Emit(OpCodes.Ldloc_0);
+				il.Emit(OpCodes.Blt_S, loopBodyLabel);
+
+				// Return false
+				il.Emit(OpCodes.Pop);
+				il.Emit(OpCodes.Ldc_I4_0);
+				il.Emit(OpCodes.Ret);
+				return (TransactionItemChangesPartitionDelegate)dynamicMethod.CreateDelegate(typeof(TransactionItemChangesPartitionDelegate));
+			}
+			#endregion // Dynamic Microsoft.VisualStudio.Modeling.TransactionItem.ChangesPartition implementation
+			private EventHandler<UndoItemEventArgs> myFilteredUndoItemAddedHandler;
+			private EventHandler<UndoItemEventArgs> myFilteredUndoItemDiscardedHandler;
+			/// <summary>
+			/// Create a new ORMModelingDocStore.
 			/// </summary>
 			public ORMModelingDocStore(IServiceProvider serviceProvider, Store store)
 				: base(serviceProvider, store)
 			{
+				FieldInfo undoItemAddedFieldInfo;
+				FieldInfo undoItemDiscardedFieldInfo;
+				StoreUndoManager undoManager;
+				EventHandler<UndoItemEventArgs> undoItemAddedField;
+				EventHandler<UndoItemEventArgs> undoItemDiscardedField;
+				// Make sure everything is set up as we expected in the current assembly version
+				if (ORMUndoUnit.SupportsUndoFiltering &&
+					null != TransactionItemChangesPartition &&
+					null != (undoManager = store.UndoManager) &&
+					null != (undoItemAddedFieldInfo = typeof(StoreUndoManager).GetField("UndoItemAdded", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)) &&
+					null != (undoItemDiscardedFieldInfo = typeof(StoreUndoManager).GetField("UndoItemDiscarded", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)) &&
+					null != (undoItemAddedField = (EventHandler<UndoItemEventArgs>)undoItemAddedFieldInfo.GetValue(undoManager)) &&
+					null != (undoItemDiscardedField = (EventHandler<UndoItemEventArgs>)undoItemDiscardedFieldInfo.GetValue(undoManager)))
+				{
+					// Grab the private base handlers by walking invocation lists
+					EventHandler<UndoItemEventArgs> filteredUndoItemAddedHandler = null;
+					EventHandler<UndoItemEventArgs> filteredUndoItemDiscardedHandler = null;
+					Delegate[] delegates = ((MulticastDelegate)undoItemAddedField).GetInvocationList();
+					int delegatesCount = delegates.Length;
+					for (int i = 0; i < delegatesCount; ++i)
+					{
+						Delegate currentDelegate = delegates[i];
+						if (currentDelegate.Target == this)
+						{
+							filteredUndoItemAddedHandler = (EventHandler<UndoItemEventArgs>)currentDelegate;
+							break;
+						}
+					}
+					delegates = ((MulticastDelegate)undoItemDiscardedField).GetInvocationList();
+					delegatesCount = delegates.Length;
+					for (int i = 0; i < delegatesCount; ++i)
+					{
+						Delegate currentDelegate = delegates[i];
+						if (currentDelegate.Target == this)
+						{
+							filteredUndoItemDiscardedHandler = (EventHandler<UndoItemEventArgs>)currentDelegate;
+							break;
+						}
+					}
+
+					// If we go everthing we needed, then attach the handlers
+					if (filteredUndoItemAddedHandler != null &&
+						filteredUndoItemDiscardedHandler != null)
+					{
+						myFilteredUndoItemAddedHandler = filteredUndoItemAddedHandler;
+						undoManager.UndoItemAdded -= filteredUndoItemAddedHandler;
+						undoManager.UndoItemAdded += new EventHandler<UndoItemEventArgs>(UndoItemAddedFilter);
+						myFilteredUndoItemDiscardedHandler = filteredUndoItemDiscardedHandler;
+						undoManager.UndoItemDiscarded -= filteredUndoItemDiscardedHandler;
+						undoManager.UndoItemDiscarded += new EventHandler<UndoItemEventArgs>(UndoItemDiscardedFilter);
+					}
+				}
 			}
+			/// <summary>
+			/// Restore all event handlers in the base to the original state,
+			/// then Dispose the base
+			/// </summary>
+			protected override void Dispose(bool disposing)
+			{
+				Store store = Store;
+				if (store != null)
+				{
+					// Add back the original handlers so the base can dispose cleanly
+					StoreUndoManager undoManager = store.UndoManager;
+					if (null != myFilteredUndoItemAddedHandler)
+					{
+						undoManager.UndoItemAdded -= new EventHandler<UndoItemEventArgs>(UndoItemAddedFilter);
+						undoManager.UndoItemAdded += myFilteredUndoItemAddedHandler;
+					}
+					if (null != myFilteredUndoItemDiscardedHandler)
+					{
+						undoManager.UndoItemDiscarded -= new EventHandler<UndoItemEventArgs>(UndoItemDiscardedFilter);
+						undoManager.UndoItemDiscarded += myFilteredUndoItemDiscardedHandler;
+					}
+				}
+				base.Dispose(true);
+			}
+			private void UndoItemAddedFilter(object sender, UndoItemEventArgs e)
+			{
+				TransactionItem transactionItem = e.TransactionItem;
+				if (TransactionItemChangesPartition(transactionItem, transactionItem.Store.DefaultPartition))
+				{
+					myFilteredUndoItemAddedHandler(sender, e);
+				}
+			}
+			private void UndoItemDiscardedFilter(object sender, UndoItemEventArgs e)
+			{
+				// If the item we're discarding is not the current item in the
+				// undo manager, then we didn't create an undo unit for it and
+				// there is nothing to do.
+				ShellUndoManager shellUndoManager;
+				MSOLE.IOleUndoManager oleUndoManager;
+				if (null != (shellUndoManager = UndoManager) &&
+					null != (oleUndoManager = shellUndoManager.VSUndoManager))
+				{
+					MSOLE.IEnumOleUndoUnits enumUnits;
+					oleUndoManager.EnumUndoable(out enumUnits);
+					enumUnits.Reset();
+					MSOLE.IOleUndoUnit[] undoUnitArray = new MSOLE.IOleUndoUnit[1];
+					uint unitsCount;
+					enumUnits.Next(1, undoUnitArray, out unitsCount);
+					ORMUndoUnit undoUnit;
+					if (1 == unitsCount &&
+						null != (undoUnit = undoUnitArray[0] as ORMUndoUnit) &&
+						undoUnit.TransactionItem != e.TransactionItem)
+					{
+						return;
+					}
+
+				}
+				myFilteredUndoItemDiscardedHandler(sender, e);
+			}
+			#endregion // AddUndoUnit filtering
 			/// <summary>
 			/// Create a custom undo unit
 			/// </summary>
@@ -292,6 +518,18 @@ namespace Neumont.Tools.ORM.Shell
 			// Note that there are other constructors defined on Microsoft.VisualStudio.Modeling.Shell.UndoUnit,
 			// but none that are actually called.
 			#endregion  // Constructors
+			#region Accessor Properties
+			/// <summary>
+			/// The TransactionItem passed to the constructor
+			/// </summary>
+			public TransactionItem TransactionItem
+			{
+				get
+				{
+					return myTransactionItem;
+				}
+			}
+			#endregion // Accessor Properties
 			#region Helper Properties
 			// UNDONE: Consider restoring current docview/diagram/selection/toolwindow focus when
 			// an undo/redo occurs.
@@ -316,6 +554,52 @@ namespace Neumont.Tools.ORM.Shell
 			//    }
 			//}
 			#endregion // Helper Properties
+			#region Dynamic Microsoft.VisualStudio.Modeling.UndoManager.TopmostRedoableTransaction implementation
+			private delegate Guid GetTopmostRedoableTransactionDelegate(StoreUndoManager @this);
+			/// <summary>
+			/// Microsoft.VisualStudio.Modeling.UndoManager has a TopmostUndableTransaction property,
+			/// but not a TopmostRedoableTransaction property. Generate a dynamic method to emulate this functionality.
+			/// </summary>
+			private static readonly GetTopmostRedoableTransactionDelegate GetTopmostRedoableTransaction = CreateGetTopmostRedoableTransactionDelegate();
+			private static GetTopmostRedoableTransactionDelegate CreateGetTopmostRedoableTransactionDelegate()
+			{
+				Type undoManagerType = typeof(StoreUndoManager);
+				Type listType = typeof(List<TransactionItem>);
+				FieldInfo redoStackField = undoManagerType.GetField("redoStack", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+				if (redoStackField == null || !listType.IsAssignableFrom(redoStackField.FieldType))
+				{
+					return null;
+				}
+				DynamicMethod dynamicMethod = new DynamicMethod("GetTopmostRedoableTransaction", typeof(Guid), new Type[] { undoManagerType }, undoManagerType, true);
+				// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for more than the required 36 bytes
+				// to avoid a resize to an even larger buffer.
+				ILGenerator il = dynamicMethod.GetILGenerator(48);
+				Label emptyStackLabel = il.DefineLabel();
+				il.Emit(OpCodes.Ldarg_0);
+				il.Emit(OpCodes.Ldfld, redoStackField); // Use to get the count
+				il.Emit(OpCodes.Dup); // Used to call get_Item
+				il.Emit(OpCodes.Call, listType.GetProperty("Count").GetGetMethod());
+				il.Emit(OpCodes.Dup); // Used to call get_Item
+				il.Emit(OpCodes.Brfalse_S, emptyStackLabel);
+				il.Emit(OpCodes.Ldc_I4_1);
+				il.Emit(OpCodes.Sub);
+				il.Emit(OpCodes.Call, listType.GetProperty("Item").GetGetMethod());
+				il.Emit(OpCodes.Call, typeof(TransactionItem).GetProperty("Id").GetGetMethod());
+				il.Emit(OpCodes.Ret);
+				il.MarkLabel(emptyStackLabel);
+				il.Emit(OpCodes.Pop);
+				il.Emit(OpCodes.Pop);
+				il.Emit(OpCodes.Ldsfld, typeof(Guid).GetField("Empty"));
+				il.Emit(OpCodes.Ret);
+
+				return (GetTopmostRedoableTransactionDelegate)dynamicMethod.CreateDelegate(typeof(GetTopmostRedoableTransactionDelegate));
+			}
+			/// <summary>
+			/// Returns true if the undo unit implementation allows items in the store's undo stacks that do
+			/// not appear on the corresponding VS undo stacks.
+			/// </summary>
+			public static readonly bool SupportsUndoFiltering = GetTopmostRedoableTransaction != null;
+			#endregion // Dynamic Microsoft.VisualStudio.Modeling.UndoManager.TopmostRedoableTransaction implementation
 			#region IOleUndoUnit Implementation
 			/// <summary>
 			/// Implements IOleUndoUnit.Do
@@ -344,15 +628,36 @@ namespace Neumont.Tools.ORM.Shell
 							//}
 							Context context = myContext;
 							store.PushContext(context);
-							Microsoft.VisualStudio.Modeling.UndoManager modelingUndoManager = context.UndoManager;
+							StoreUndoManager modelingUndoManager = context.UndoManager;
 							bool undoState = myInUndoState;
+							Guid transactionItemId = transactionItem.Id;
+							int successfulChangeCount = 0;
+
+							// The ORMModelingDocStore class does not create undo units for
+							// transactions with no changes in the default partition. This means
+							// that IOleUndoManager may have fewer undo items than the store
+							// has. The loops here catch the stores undo manager up to the current
+							// item in the store proceeed safely.
 							if (undoState)
 							{
-								modelingUndoManager.Undo(transactionItem.Id);
+								while (modelingUndoManager.TopmostUndoableTransaction != transactionItemId)
+								{
+									modelingUndoManager.Undo();
+									++successfulChangeCount;
+								}
+								modelingUndoManager.Undo(transactionItemId);
+								++successfulChangeCount;
 							}
 							else
 							{
-								modelingUndoManager.Redo(transactionItem.Id);
+								GetTopmostRedoableTransactionDelegate callGetTopmostRedoableTransaction = GetTopmostRedoableTransaction;
+								while (callGetTopmostRedoableTransaction(modelingUndoManager) != transactionItemId)
+								{
+									modelingUndoManager.Redo();
+									++successfulChangeCount;
+								}
+								modelingUndoManager.Redo(transactionItemId);
+								++successfulChangeCount;
 							}
 							store.PopContext();
 							try
@@ -368,11 +673,19 @@ namespace Neumont.Tools.ORM.Shell
 								store.PushContext(context);
 								if (undoState)
 								{
-									modelingUndoManager.Redo(transactionItem.Id);
+									while (successfulChangeCount != 0)
+									{
+										modelingUndoManager.Redo();
+										--successfulChangeCount;
+									}
 								}
 								else
 								{
-									modelingUndoManager.Undo(transactionItem.Id);
+									while (successfulChangeCount != 0)
+									{
+										modelingUndoManager.Undo();
+										--successfulChangeCount;
+									}
 								}
 								store.PopContext();
 							}
