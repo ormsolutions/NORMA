@@ -1167,7 +1167,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (!isCustomProperty)
 			{
-				if (property.Kind != DomainPropertyKind.CustomStorage)
+				if (property.Kind == DomainPropertyKind.Normal)
 				{
 					file.WriteAttributeString(property.Name, ToXml(element, property));
 				}
@@ -1176,7 +1176,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			ORMCustomSerializedPropertyInfo customInfo = customElement.GetCustomSerializedPropertyInfo(property, rolePlayedInfo);
 
-			if (property.Kind != DomainPropertyKind.CustomStorage || customInfo.WriteCustomStorage)
+			if (property.Kind == DomainPropertyKind.Normal || customInfo.WriteCustomStorage)
 			{
 				if (customInfo.WriteStyle != ORMCustomSerializedAttributeWriteStyle.Attribute || file.WriteState != WriteState.Element)
 				{

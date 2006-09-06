@@ -1166,10 +1166,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Element, null);
 			}
-			if (domainPropertyInfo.Id == ValueTypeInstance.NameDomainPropertyId)
-			{
-				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -1250,7 +1246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo)));
+				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1309,25 +1305,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return this.CustomSerializedElementInfo;
 			}
-		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
-		/// </summary>
-		protected new ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			if (domainPropertyInfo.Id == EntityTypeInstance.NameDomainPropertyId)
-			{
-				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-			}
-			if (0 != (ORMCustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
-			{
-				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
-			}
-			return ORMCustomSerializedPropertyInfo.Default;
-		}
-		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
-		{
-			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo

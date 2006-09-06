@@ -249,6 +249,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 	public partial class FactTypeInstance : IModelErrorOwner
 	{
+		#region Helper Methods
 		/// <summary>
 		/// Finds the FactTypeRoleInstance for the given Role.
 		/// Returns null if no matching RoleInstance is found.
@@ -269,6 +270,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return null;
 		}
+		#endregion
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -581,6 +583,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 	public partial class EntityTypeInstance : IModelErrorOwner
 	{
+		#region Helper Methods
 		/// <summary>
 		/// Finds the EntityTypeRoleInstance for the given Role.
 		/// Returns null if no matching RoleInstance is found.
@@ -601,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return null;
 		}
-
+		#endregion
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -786,11 +789,53 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region EntityTypeInstance Rules
+
+		[RuleOn(typeof(EntityTypeInstance))] // DeletingRule
+		private sealed partial class EntityTypeInstanceDeleting : DeletingRule
+		{
+			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
+			{
+				EntityTypeInstance instance = e.ModelElement as EntityTypeInstance;
+				ObjectType parent = instance.EntityType;
+				UniquenessConstraint identifier = parent.PreferredIdentifier;
+				if (identifier != null)
+				{
+					LinkedElementCollection<Role> roles = identifier.RoleCollection;
+					if (roles.Count == 1)
+					{
+						ObjectType identifierPlayer = roles[0].RolePlayer;
+						int allowedRoleCount = 1;
+						if (!identifierPlayer.IsValueType)
+						{
+							UniquenessConstraint playerIdentifier = identifierPlayer.PreferredIdentifier;
+							if (playerIdentifier != null)
+							{
+								if (playerIdentifier.RoleCollection.Count == 1)
+								{
+									allowedRoleCount = 2;
+								}
+							}
+						}
+						if (identifierPlayer.PlayedRoleCollection.Count == allowedRoleCount)
+						{
+							LinkedElementCollection<EntityTypeRoleInstance> roleInstances = instance.RoleInstanceCollection;
+							int roleInstanceCount = roleInstances.Count;
+							for (int i = 0; i < roleInstanceCount; ++i)
+							{
+								EntityTypeRoleInstance roleInstance = roleInstances[0];
+								roleInstance.ObjectTypeInstance.Delete();
+							}
+						}
+					}
+				}
+			}
+		}
+
 		/// <summary>
 		/// Clean up ValueTypeInstances when an ObjectType becomes an EntityType
 		/// </summary>
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // AddRule
-		private sealed class EntityTypeHasPreferredIdentifierAdded : AddRule
+		private sealed partial class EntityTypeHasPreferredIdentifierAdded : AddRule
 		{
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -807,7 +852,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Clean up EntityTypeInstances when an ObjectType becomes a ValueTypeInstance
 		/// </summary>
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))] // DeleteRule
-		private sealed class EntityTypeHasPreferredIdentifierDeleted : DeleteRule
+		private sealed partial class EntityTypeHasPreferredIdentifierDeleted : DeleteRule
 		{
 			public sealed override void ElementDeleted(ElementDeletedEventArgs e)
 			{
@@ -1205,7 +1250,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class Role : IModelErrorOwner
 	{
 		private ICollection<RoleInstance> myPopulation;
-
 		#region PopulationUniquenessError Validation
 		/// <summary>
 		/// Validator callback for PopulationUniquenessError

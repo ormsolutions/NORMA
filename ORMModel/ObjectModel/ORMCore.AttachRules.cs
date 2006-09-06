@@ -47,6 +47,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeHasEntityTypeInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceDeleting", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EntityTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceDeleted", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
@@ -391,6 +392,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private partial class EntityTypeHasEntityTypeInstanceAdded
 		{
 			public EntityTypeHasEntityTypeInstanceAdded()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	public partial class EntityTypeInstance
+	{
+		private partial class EntityTypeInstanceDeleting
+		{
+			public EntityTypeInstanceDeleting()
 			{
 				base.IsEnabled = false;
 			}

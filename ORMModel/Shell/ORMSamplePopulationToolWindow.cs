@@ -25,10 +25,12 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using MSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Neumont.Tools.Modeling.Design;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Design;
@@ -40,7 +42,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("051209C1-250B-45a7-B7B1-8AFB50BEC9B7")]
 	[CLSCompliant(false)]
-	public class ORMSamplePopulationToolWindow : ORMToolWindow
+	public class ORMSamplePopulationToolWindow : ORMToolWindow, MSOLE.IOleCommandTarget
 	{
 		private SamplePopulationEditor myEditor;
 
@@ -296,5 +298,150 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // ORMToolWindow Implementation
+		#region IOleCommandTarget Members
+
+		/// <summary>
+		/// Provides a first chance to tell the shell that this window is capable of handling certain commands. Implements IOleCommandTarget.QueryStatus
+		/// </summary>
+		protected int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			int hr = VSConstants.S_OK;
+			bool handled = true;
+			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				// There typically is only one command passed in to this array - in any case, we only care
+				// about the first command.
+				MSOLE.OLECMD cmd = prgCmds[0];
+				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
+				{
+					case VSConstants.VSStd97CmdID.Delete:
+						// Inform the shell that we should have a chance to handle the delete command.
+						if (this.myEditor.FullRowSelect)
+						{
+							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+							prgCmds[0] = cmd;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					default:
+						// Inform the shell that we don't support any other commands.
+						handled = false;
+						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+						break;
+				}
+			}
+			else
+			{
+				// Inform the shell that we don't recognize this command group.
+				handled = false;
+				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
+			}
+			if (!handled)
+			{
+				Debug.Assert(ErrorHandler.Failed(hr));
+				ModelingDocData docData = CurrentDocument;
+				Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager;
+				MSOLE.IOleCommandTarget forwardTo;
+				if ((docData != null &&
+					null != (undoManager = docData.UndoManager) &&
+					null != (forwardTo = undoManager.VSUndoManager as MSOLE.IOleCommandTarget)) ||
+					null != (forwardTo = GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget))
+				{
+					// If the command wasn't handled already, forward it to the undo manager.
+					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+				}
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+		}
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+		/// <summary>
+		/// Provides a first chance to handle any command that MSOLE.IOleCommandTarget.QueryStatus
+		/// informed the shell to pass to this window. Implements IOleCommandTarget.Exec
+		/// </summary>
+		protected int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			int hr = 0;
+			bool handled = true;
+			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				SamplePopulationEditor samplePopulationEditor = this.myEditor;
+				// Default to a not-supported status.
+				switch ((VSConstants.VSStd97CmdID)nCmdID)
+				{
+					case VSConstants.VSStd97CmdID.Delete:
+						if (samplePopulationEditor.SelectedEntityType != null
+							|| samplePopulationEditor.SelectedFactType != null
+							|| samplePopulationEditor.SelectedValueType != null)
+						{
+							if (samplePopulationEditor.FullRowSelect)
+							{
+								samplePopulationEditor.DeleteSelectedSamplePopulationInstance();
+							}
+							else
+							{
+								Control editControl = samplePopulationEditor.LabelEditControl;
+								if (editControl != null)
+								{
+									IntPtr editHandle = editControl.Handle;
+									// WM_KEYDOWN == 0x100
+									SendMessage(editHandle, 0x100, (int)Keys.Delete, 1);
+									// WM_KEYUP == 0x101
+									SendMessage(editHandle, 0x101, (int)Keys.Delete, 0x40000001);
+								}
+							}
+							// We enabled the command, so we say we handled it regardless of the further conditions
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+					default:
+						// If the command is from our command set, but not explicitly handled, inform the shell
+						// that we didn't handle the command.
+						handled = false;
+						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+						break;
+				}
+			}
+			// The command is from an unknown group.
+			else
+			{
+				handled = false;
+				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
+			}
+			if (!handled)
+			{
+				Debug.Assert(ErrorHandler.Failed(hr));
+				ModelingDocData docData = CurrentDocument;
+				Microsoft.VisualStudio.Modeling.Shell.UndoManager undoManager;
+				MSOLE.IOleCommandTarget forwardTo;
+				if ((docData != null &&
+					null != (undoManager = docData.UndoManager) &&
+					null != (forwardTo = undoManager.VSUndoManager as MSOLE.IOleCommandTarget)) ||
+					null != (forwardTo = GetService(typeof(MSOLE.IOleCommandTarget)) as MSOLE.IOleCommandTarget))
+				{
+					// If the command wasn't handled already, give the undo manager a chance to handle the command.
+					hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+				}
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			return Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+		}
+		#endregion
 	}
 }

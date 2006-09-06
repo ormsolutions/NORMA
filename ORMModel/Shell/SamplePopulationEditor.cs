@@ -308,6 +308,37 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
+		/// Deletes selected row of the branch
+		/// </summary>
+		public void DeleteSelectedSamplePopulationInstance()
+		{
+			VirtualTreeControl vtr = vtrSamplePopulation;
+			ITree tree = vtr.Tree;
+			if (tree != null)
+			{
+				int currentColumn = vtr.CurrentColumn;
+				int currentRow = vtr.CurrentIndex;
+				VirtualTreeItemInfo info = tree.GetItemInfo(currentRow, currentColumn, false);
+				SamplePopulationBaseBranch baseBranch = info.Branch as SamplePopulationBaseBranch;
+				if (null != baseBranch)
+				{
+					baseBranch.DeleteInstance(currentRow, currentColumn);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns a bool representing if the control is currently performing a full row select
+		/// </summary>
+		public bool FullRowSelect
+		{
+			get
+			{
+				return vtrSamplePopulation.MultiColumnHighlight;
+			}
+		}
+
+		/// <summary>
 		/// Attempts to fix a PopulationMandatoryError
 		/// </summary>
 		public void AutoCorrectMandatoryError(PopulationMandatoryError error)
@@ -1558,6 +1589,9 @@ namespace Neumont.Tools.ORM.Shell
 				Debug.Assert(removeInstance != null);
 				removeInstance.Delete();
 			}
+
+			// Remove the instance at the given row
+			public abstract void DeleteInstance(int row, int column);
 			#endregion
 		}
 		private sealed class SamplePopulationValueTypeBranch : SamplePopulationBaseBranch, IBranch
@@ -1723,6 +1757,17 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion
+			public override void DeleteInstance(int row, int column)
+			{
+				if(base.IsFullRowSelectColumn(column) && row < myCachedInstances.Count)
+				{
+					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, myValueType.Name)))
+					{
+						myValueType.ValueTypeInstanceCollection[row].Delete();
+						t.Commit();
+					}
+				}
+			}
 		}
 		private sealed class SamplePopulationEntityTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
@@ -2254,6 +2299,17 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion
+			public override void DeleteInstance(int row, int column)
+			{
+				if (base.IsFullRowSelectColumn(column) && row < myCachedInstances.Count)
+				{
+					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, myEntityType.Name)))
+					{
+						myEntityType.EntityTypeInstanceCollection[row].Delete();
+						t.Commit();
+					}
+				}
+			}
 		}
 		private sealed class SamplePopulationFactTypeBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
@@ -2464,14 +2520,17 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						else
 						{
-							LinkedElementCollection<EntityTypeRoleInstance> roleInstances = myProxyObjectType.EntityTypeInstanceCollection[row].RoleInstanceCollection;
-							int roleInstanceCount = roleInstances.Count;
-							for (int i = 0; i < roleInstanceCount; ++i)
+							if (myProxyObjectType != null)
 							{
-								if (roleInstances[i].Role == selectedRole)
+								LinkedElementCollection<EntityTypeRoleInstance> roleInstances = myProxyObjectType.EntityTypeInstanceCollection[row].RoleInstanceCollection;
+								int roleInstanceCount = roleInstances.Count;
+								for (int i = 0; i < roleInstanceCount; ++i)
 								{
-									instance = roleInstances[i].ObjectTypeInstance;
-									break;
+									if (roleInstances[i].Role == selectedRole)
+									{
+										instance = roleInstances[i].ObjectTypeInstance;
+										break;
+									}
 								}
 							}
 						}
@@ -2983,6 +3042,17 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion
+			public override void DeleteInstance(int row, int column)
+			{
+				if (base.IsFullRowSelectColumn(column) && row < myCachedInstances.Count)
+				{
+					using (Transaction t = Store.TransactionManager.BeginTransaction(String.Format(ResourceStrings.ModelSamplePopulationEditorRemoveInstanceTransactionText, myFactType.Name)))
+					{
+						myFactType.FactTypeInstanceCollection[row].Delete();
+						t.Commit();
+					}
+				}
+			}
 		}
 		private sealed class SamplePopulationEntityEditorBranch : SamplePopulationBaseBranch, IBranch, IMultiColumnBranch
 		{
@@ -3423,6 +3493,10 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			#endregion
+			public override void DeleteInstance(int row, int column)
+			{
+				// Empty implementation
+			}
 		}
 		#endregion
 		#region Nested Class SamplePopulationVirtualTree

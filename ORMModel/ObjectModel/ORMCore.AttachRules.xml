@@ -29,6 +29,7 @@
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EntityTypeInstance.ConstraintRoleSequenceHasRoleDeleted"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeHasEntityTypeInstanceAdded"/>
+		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceDeleting"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceAdded"/>
 		<arg:Rule class="EntityTypeInstance.EntityTypeInstanceHasRoleInstanceDeleted"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
