@@ -19,10 +19,38 @@
 	</se:Copyright>
 	<se:DomainModel Class="RelationalShapeDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="relationalDiagram" URI="http://schemas.neumont.edu/ORM/Views/RelationalView" SchemaFile="RelationalShape.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="rvw" URI="http://schemas.neumont.edu/ORM/Views/RelationalView" SchemaFile="RelationalShape.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="RelationalModel" />
+			<se:RootElement Class="RelationalDiagram"/>
+		</se:RootElements>
 		<se:OmittedDomainElements>
+			<se:OmitRelationship Class="RelationalModelHasTable"/>
+			<se:OmitRelationship Class="ParentShapeContainsNestedChildShapes"/>
+			<se:OmitRelationship Class="PresentationViewsSubject"/>
 			<se:OmitClass Class="TableShape" Namespace="Neumont.Tools.ORM.Views.RelationalView"/>
 		</se:OmittedDomainElements>
 	</se:DomainModel>
+	<se:Element Class="RelationalDiagram">
+		<se:Attribute ID="IsCompleteView" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+		<se:Attribute ID="BaseFontName" WriteStyle="NotWritten"/>
+		<se:Attribute ID="BaseFontSize" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DiagramId" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoLineRouting" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoResizeParent" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoShapeAnchoring" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DoViewFixup" WriteStyle="NotWritten"/>
+		<se:Attribute ID="PlaceUnplacedShapes" WriteStyle="NotWritten"/>
+	</se:Element>
+	<!--<se:Element Class="TableShape">
+		<se:Attribute ID="AbsoluteBounds" />
+	</se:Element>-->
+	<se:Element Class="RelationalModel">
+		<se:Attribute ID="Name" WriteStyle="NotWritten" />
+		<se:Link Name="OIALModel" RelationshipName="RelationalModelHasOIALModel" RoleName="OIALModel" />
+		<se:Link Name="" RelationshipName="RelationalModelHasTable" RoleName="Table" WriteStyle="NotWritten" />
+		<se:Link Name="" RelationshipName="PresentationViewsSubject" RoleName="Presentation" WriteStyle="NotWritten" />
+	</se:Element>
 </se:CustomSerializedElements>

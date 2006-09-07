@@ -1754,14 +1754,22 @@ namespace Neumont.Tools.ORM.Shell
 					Guid[] metaClasses = ns.GetRootElementClasses();
 					if (metaClasses != null)
 					{
-						int classCount = metaClasses.Length;
-						for (int i = 0; i < classCount; ++i)
+						for (int i = 0; i < metaClasses.Length; ++i)
 						{
 							ReadOnlyCollection<ModelElement> elements = elementDir.FindElements(metaClasses[i]);
 							int elementCount = elements.Count;
 							for (int j = 0; j < elementCount; ++j)
 							{
-								SerializeElement(file, elements[j]);
+								ModelElement element = elements[j];
+								System.Xml.Serialization.IXmlSerializable serializableElement = element as System.Xml.Serialization.IXmlSerializable;
+								if (serializableElement != null)
+								{
+									serializableElement.WriteXml(file);
+								}
+								else
+								{
+									SerializeElement(file, elements[j]);
+								}
 							}
 						}
 					}
@@ -2141,7 +2149,19 @@ namespace Neumont.Tools.ORM.Shell
 												if (!classGuid.Equals(Guid.Empty))
 												{
 													processedRootElement = true;
-													ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid), null);
+													ModelElement rootElement = CreateElement(reader.GetAttribute("id"), null, classGuid);
+													System.Xml.Serialization.IXmlSerializable serializableRootElement = rootElement as System.Xml.Serialization.IXmlSerializable;
+													if (serializableRootElement != null)
+													{
+														using (XmlReader subtreeReader = reader.ReadSubtree())
+														{
+															serializableRootElement.ReadXml(subtreeReader);
+														}
+													}
+													else
+													{
+														ProcessClassElement(reader, metaModel, rootElement, null);
+													}
 												}
 											}
 											if (!processedRootElement)

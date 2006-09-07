@@ -173,6 +173,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				case 2: return new Column(partition, propertyAssignments);
 				case 3: return new ForeignKey(partition, propertyAssignments);
 				case 4: return new UniquenessConstraint(partition, propertyAssignments);
+				// A constructor was not generated for RelationalDiagram because it had HasCustomConstructor
+				// set to true. Please provide the constructor below.
 				case 5: return new RelationalDiagram(partition, propertyAssignments);
 				case 6: return new ForeignKeyConnector(partition, propertyAssignments);
 				// A constructor was not generated for TableShape because it had HasCustomConstructor
@@ -404,7 +406,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableHasConstraint.ConstraintDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesTable.TableDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferenceHasForeignKey.TableReferencesTableDomainRoleId, true);
-			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType.TableDomainRoleId, true);
 			DomainRoles.Add(global::Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel.RelationalModelDomainRoleId, true);
 			#endregion
 		}

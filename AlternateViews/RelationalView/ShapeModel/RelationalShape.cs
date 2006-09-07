@@ -35,7 +35,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 	/// Based on the current version of DCIL.xsd.
 	/// </remarks>
 	internal partial class RelationalModel
-	{
+	{		
 		#region Validation Rules
 		[RuleOn(typeof(Table))]
 		private sealed partial class DelayedFixUpDiagram : AddRule
@@ -138,7 +138,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			private void AddRelationalModel(ModelElement element)
 			{
 				OIALModel.OIALModel oialModel = element as OIALModel.OIALModel;
-				if (oialModel != null)
+				if (oialModel != null && RelationalModelHasOIALModel.GetRelationalModel(oialModel) == null)
 				{
 					RelationalModel relationalModel = new RelationalModel(oialModel.Store,
 						new PropertyAssignment(RelationalModel.NameDomainPropertyId, oialModel.Name));
@@ -164,6 +164,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					ORMCoreDomainModel.DelayValidateElement(childElement, AddTables);
 				}
 			}
+			private bool myRegisteredRegeneratingHandler;
 			/// <summary>
 			/// The callback function sent to <see cref="ORMCoreDomainModel.DelayValidateElement"/> to add function to the
 			/// <see cref="RelationalModel"/>.
@@ -180,11 +181,73 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					relationalModel = new RelationalModel(oialModel.Store);
 					relationalModel.OIALModel = oialModel;
 				}
+				if (!myRegisteredRegeneratingHandler)
+				{
+					oialModel.OIALRegenerating += delegate(object sender, OIALRegenerationEventArgs e)
+					{
+						Transaction transaction = e.Transaction.TopLevelTransaction;
+						Dictionary<object, object> contextInfo = transaction.Context.ContextInfo;
+						object positionDictionaryObject;
+						Dictionary<ObjectType, PointD> positionDictionary;
+						if (!contextInfo.TryGetValue(TablePositionDictionaryKey, out positionDictionaryObject) || (positionDictionary = positionDictionaryObject as Dictionary<ObjectType, PointD>) == null)
+						{
+							contextInfo[TablePositionDictionaryKey] = positionDictionary = new Dictionary<ObjectType, PointD>();
+						}
+						foreach (Table table in relationalModel.TableCollection)
+						{
+							LinkedElementCollection<PresentationElement> tableShapes = PresentationViewsSubject.GetPresentation(table);
+							int tableShapesCount = tableShapes.Count;
+							if (tableShapesCount > 0)
+							{
+								positionDictionary.Add(table.ConceptType.ObjectType, ((NodeShape)tableShapes[0]).Location);
+								Debug.Assert(tableShapesCount == 1);
+							}
+						}
+
+					};
+					myRegisteredRegeneratingHandler = true;
+				}
 				LinkedElementCollection<PresentationElement> presentationElement = PresentationViewsSubject.GetPresentation(relationalModel);
 				if (presentationElement.Count != 0 && ++myConceptTypeCount == oialModel.ConceptTypeCollection.Count)
 				{
 					myConceptTypeCount = 0;
 					relationalModel.GenerateTables(oialModel);
+				}
+			}
+		}
+		public static readonly object TablePositionDictionaryKey = new object();
+		[RuleOn(typeof(TableShape))] // AddRule
+		private sealed partial class TableShapeAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelElement modelElement = e.ModelElement;
+				if (modelElement is TableShape)
+				{
+					ORMCoreDomainModel.DelayValidateElement(modelElement, ProcessTableShape);
+				}
+			}
+
+			private void ProcessTableShape(ModelElement modelElement)
+			{
+				TableShape tableShape = modelElement as TableShape;
+				if (tableShape != null)
+				{
+					Table table = PresentationViewsSubject.GetSubject(tableShape) as Table;
+					if (table != null)
+					{
+						object tablePositionsObject;
+						table.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(TablePositionDictionaryKey, out tablePositionsObject);
+						Dictionary<ObjectType, PointD> tablePositions = tablePositionsObject as Dictionary<ObjectType, PointD>;
+						if (tablePositions != null)
+						{
+							PointD initialLocation;
+							if (tablePositions.TryGetValue(table.ConceptType.ObjectType, out initialLocation))
+							{
+								tableShape.Location = initialLocation;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -202,10 +265,6 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// The string that prepends a foreign key.
 		/// </summary>
 		private const string FOREIGN_KEY = "FK";
-		///// <summary>
-		///// A counter for foreign key constraints used when generating <see cref="ForeignKey"/> names.
-		///// </summary>
-		//private static int myForeignKeyCount = 0;
 		/// <summary>
 		/// A counter for <see cref="T:Neumont.Tools.ORM.OIALModel.ConceptType"/>s that call the
 		/// <see cref="T:Neumont.Tools.ORM.Views.RelationalView.RelationalModel.DelayedConceptTypeAddedRule"/>. Ensures
@@ -222,6 +281,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			using (Transaction t = Store.TransactionManager.BeginTransaction())
 			{
 				myConceptTypeCount = 0;
+				//RecordTablePositions(t);
 				// Reset the tables and foreign key count.
 				TableCollection.Clear();
 
@@ -241,13 +301,27 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				int uniquenessCount = 0, foreignKeyCount = 0;
 				foreach (Table table in tables)
 				{
-					GenerateColumnsForConceptType(table, model, table.ConceptType, true, ref uniquenessCount, ref foreignKeyCount);
+					ConceptType conceptType = table.ConceptType;
+					GenerateColumnsForConceptType(table, model, conceptType, true, ref uniquenessCount, ref foreignKeyCount);
 					uniquenessCount = 0;
 					foreignKeyCount = 0;
 				}
 				if (t.HasPendingChanges)
 				{
 					t.Commit();
+				}
+			}
+		}
+
+		private void RecordTablePositions(Transaction currentTransaction)
+		{
+			Dictionary<ObjectType, PointD> tablePositions = currentTransaction.TopLevelTransaction.Context.ContextInfo[TablePositionDictionaryKey] as Dictionary<ObjectType, PointD>;
+			if (tablePositions != null)
+			{
+				foreach (Table table in TableCollection)
+				{
+					TableShape tableShape = PresentationViewsSubject.GetPresentation(table)[0] as TableShape;
+					tablePositions.Add(table.ConceptType.ObjectType, tableShape.Location);
 				}
 			}
 		}
@@ -290,15 +364,18 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 					tableColumns.Add(column);
 					foreach (SingleChildUniquenessConstraint uConstraint in informationType.SingleChildConstraintCollection)
 					{
-						bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
-						string constraintName = isPrimary ? PRIMARY_KEY : string.Concat(ALTERNATE_KEY, ++uniquenessConstraintCount);
+						if (uConstraint.Modality == ConstraintModality.Alethic)
+						{
+							bool isPrimary = isTopLevel ? uConstraint.IsPreferred : false;
+							string constraintName = isPrimary ? PRIMARY_KEY : string.Concat(ALTERNATE_KEY, ++uniquenessConstraintCount);
 
-						// Uniqueness constraints cannot be preferred if the ConceptType of interest is not top-level.
-						UniquenessConstraint relationalUniquenessConstraint = new UniquenessConstraint(theStore,
-							new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, constraintName),
-							new PropertyAssignment(UniquenessConstraint.IsPreferredDomainPropertyId, isPrimary));
-						relationalUniquenessConstraint.ColumnCollection.Add(column);
-						table.ConstraintCollection.Add(relationalUniquenessConstraint);
+							// Uniqueness constraints cannot be preferred if the ConceptType of interest is not top-level.
+							UniquenessConstraint relationalUniquenessConstraint = new UniquenessConstraint(theStore,
+								new PropertyAssignment(UniquenessConstraint.NameDomainPropertyId, constraintName),
+								new PropertyAssignment(UniquenessConstraint.IsPreferredDomainPropertyId, isPrimary));
+							relationalUniquenessConstraint.ColumnCollection.Add(column);
+							table.ConstraintCollection.Add(relationalUniquenessConstraint);
+						}
 					}
 				}
 				else if ((conceptTypeRef = ctc as ConceptTypeRef) != null)
@@ -364,7 +441,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 						foreach (ConstraintRoleSequence constraintRoleSequence in roleConstraints)
 						{
 							ObjectModel.UniquenessConstraint objUniquenessConstraint = constraintRoleSequence.Constraint as ObjectModel.UniquenessConstraint;
-							if (objUniquenessConstraint != null && objUniquenessConstraint.IsPreferred)
+							if (objUniquenessConstraint != null && objUniquenessConstraint.IsPreferred && objUniquenessConstraint.Modality == ConstraintModality.Alethic)
 							{
 								firstRoleHasUniquenessConstraint = true;
 								break;
@@ -496,6 +573,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 							}
 							else if ((conceptTypeRef = child as ConceptTypeRef) != null)
 							{
+								if (conceptTypeRef.Name != prefix)
+								{
+									prefix = conceptTypeRef.Name;
+								}
 								columns.AddRange(GetPreferredIdentifierColumnsForConceptTypeRef(oialModel, conceptTypeRef, isTopLevel, prefix));
 							}
 							else
@@ -627,6 +708,10 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 							}
 							else if ((conceptTypeRef = child as ConceptTypeRef) != null)
 							{
+								if (conceptTypeRef.Name != prefix)
+								{
+									prefix = conceptTypeRef.Name;
+								}
 								list.AddRange(GetPreferredIdentifierColumnRefsForConceptType(tableColumns, oialModel, conceptTypeRef.ReferencedConceptType, isTopLevel, prefix));
 							}
 							else
@@ -721,7 +806,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			foreach (ChildSequenceConstraint childSequenceConstraint in childSequenceConstraints)
 			{
 				ChildSequenceUniquenessConstraint uConstraint = childSequenceConstraint as ChildSequenceUniquenessConstraint;
-				if (uConstraint != null && uConstraint.IsPreferred)
+				if (uConstraint != null && uConstraint.IsPreferred && uConstraint.Modality == ConstraintModality.Alethic)
 				{
 					bool addConstraint = false;
 					foreach (ConceptTypeChild conceptTypeChild in uConstraint.ChildSequence.ConceptTypeChildCollection)
@@ -759,7 +844,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				{
 					foreach (SingleChildUniquenessConstraint uConstraint in informationType.SingleChildConstraintCollection)
 					{
-						if (uConstraint.IsPreferred)
+						if (uConstraint.IsPreferred && uConstraint.Modality == ConstraintModality.Alethic)
 						{
 							preferredIdentifierInformationTypes.Add(informationType);
 						}
@@ -900,6 +985,28 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 
 	internal partial class RelationalDiagram
 	{
+		private const string myDefaultName = "Relational View";
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RelationalDiagram(Store store, params PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RelationalDiagram(Partition partition, params PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+			this.Name = myDefaultName;
+		}
 		/// <summary>
 		/// Stop all auto shape selection on transaction commit except when
 		/// the item is being dropped.
@@ -911,6 +1018,21 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 				return base.FixUpDiagramSelection(newChildShape);
 			}
 			return null;
+		}
+		[RuleOn(typeof(RelationalDiagram))]
+		private class NameChangeRule : ChangeRule
+		{
+			public override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == Diagram.NameDomainPropertyId)
+				{
+					RelationalDiagram diagram = e.ModelElement as RelationalDiagram;
+					if (diagram != null && diagram.Name != myDefaultName)
+					{
+						diagram.Name = myDefaultName;
+					}
+				}
+			}
 		}
 	}
 }

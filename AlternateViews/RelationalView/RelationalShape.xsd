@@ -17,4 +17,31 @@
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
 	</xs:annotation>
+	<xs:element name="RelationalModel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OIALModel">
+					<xs:complexType>
+						<xs:attribute name="ref" type="xs:IDREF" use="required" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="DisplayDataTypes" type="xs:boolean" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RelationalDiagram">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TableShape" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="ObjectTypeRef" type="xs:IDREF" use="required"/>
+						<xs:attribute name="Location" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="SubjectRef" type="xs:IDREF" use="required"/>
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

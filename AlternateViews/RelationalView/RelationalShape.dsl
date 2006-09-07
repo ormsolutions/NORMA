@@ -278,14 +278,14 @@
 		<DomainRelationship Name="TableReferencesConceptType" Namespace="Neumont.Tools.ORM.Views.RelationalView" Id="B286333F-1047-44D1-9459-5735F428913D" AccessModifier="Assembly">
 
 			<Source>
-				<DomainRole Name="Table" PropertyName="ConceptType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Table" Id="1697C628-0BA4-4A2E-9A7A-3BEA6A08FAC1" IsPropertyBrowsable="false">
+				<DomainRole Name="Table" PropertyName="ConceptType" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Table" Id="1697C628-0BA4-4A2E-9A7A-3BEA6A08FAC1" IsPropertyBrowsable="false">
 					<RolePlayer>
 						<DomainClassMoniker Name="Table"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ConceptType" PropertyName="Table" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConceptType" Id="A1840588-8A18-4673-A4D9-A35C81E8500D">
+				<DomainRole Name="ConceptType" PropertyName="Table" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="ConceptType" Id="A1840588-8A18-4673-A4D9-A35C81E8500D">
 					<RolePlayer>
 						<DomainClassMoniker Name="/Neumont.Tools.ORM.OIALModel/ConceptType" />
 					</RolePlayer>
@@ -296,7 +296,7 @@
 		<DomainRelationship Name="RelationalModelHasOIALModel" Namespace="Neumont.Tools.ORM.Views.RelationalView" Id="1D3A4CB0-B28D-4AE8-BCD5-723EC645EAE9" AccessModifier="Assembly">
 
 			<Source>
-				<DomainRole Name="RelationalModel" PropertyName="OIALModel" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RelationalModel" Id="02FCACDA-1000-49E1-AC8E-5046AC1DE79F" IsPropertyBrowsable="false">
+				<DomainRole Name="RelationalModel" PropertyName="OIALModel" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RelationalModel" Id="02FCACDA-1000-49E1-AC8E-5046AC1DE79F" IsPropertyBrowsable="false">
 					<RolePlayer>
 						<DomainClassMoniker Name="RelationalModel"/>
 					</RolePlayer>
@@ -327,7 +327,7 @@
 	
 	<XmlSerializationBehavior Name="RelationalShapeModelSerializationBehavior" Namespace="Neumont.Tools.ORM.Views.RelationalView"/>
 
-	<Diagram Name="RelationalDiagram" Namespace="Neumont.Tools.ORM.Views.RelationalView" Id="9DD5AFCE-2B3C-4854-AE9F-8FF5D5B7BF08" AccessModifier="Assembly">
+	<Diagram Name="RelationalDiagram" Namespace="Neumont.Tools.ORM.Views.RelationalView" Id="9DD5AFCE-2B3C-4854-AE9F-8FF5D5B7BF08" AccessModifier="Assembly" HasCustomConstructor="true">
 		<Class>
 			<DomainClassMoniker Name="/Neumont.Tools.ORM.Views.RelationalView/RelationalModel"/>
 		</Class>

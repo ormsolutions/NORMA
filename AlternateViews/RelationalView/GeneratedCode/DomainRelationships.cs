@@ -1513,7 +1513,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConceptType", PropertyDisplayNameKey="Neumont.Tools.ORM.Views.RelationalView.TableReferencesConceptType/Table.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("1697c628-0ba4-4a2e-9a7a-3bea6a08fac1")]
 		public virtual Table Table
 		{
@@ -1773,7 +1773,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.DisplayName", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.Description", typeof(global::Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel), "Neumont.Tools.ORM.Views.RelationalView.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OIALModel", PropertyDisplayNameKey="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OIALModel", PropertyDisplayNameKey="Neumont.Tools.ORM.Views.RelationalView.RelationalModelHasOIALModel/RelationalModel.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("02fcacda-1000-49e1-ac8e-5046ac1de79f")]
 		public virtual RelationalModel RelationalModel
 		{

@@ -404,23 +404,40 @@ namespace Neumont.Tools.ORM.Shell
 
 				#region HACK: Temporary RelationalView Context Menu stuff
 #if !DISABLE_RELATIONAL_VIEW_HACK
+				bool haveRelationalShapeDomainModel = false;
 				foreach (DomainModel model in document.Store.DomainModels)
 				{
 					if (model.GetType().FullName == "Neumont.Tools.ORM.Views.RelationalView.RelationalShapeDomainModel")
 					{
+						haveRelationalShapeDomainModel = true;
+						break;
+					}
+				}
+				if (haveRelationalShapeDomainModel)
+				{
+					bool haveRelationalDiagram = false;
+					foreach (Diagram diagram in document.Store.ElementDirectory.FindElements<Diagram>(true))
+					{
+						if (diagram.GetType().FullName == "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram")
+						{
+							haveRelationalDiagram = true;
+							break;
+						}
+					}
+					if (!haveRelationalDiagram)
+					{
 						ToolStripMenuItem relationalViewMenuItem = new ToolStripMenuItem("&Relational View");
 						relationalViewMenuItem.Click += ContextMenuNewPageRelationalView;
 						newPageMenuItem.DropDownItems.Add(relationalViewMenuItem);
-						contextMenu.Opening += delegate(object sender, CancelEventArgs e)
-						{
-							DiagramView designer = base.GetDesignerAtPoint(((ContextMenuStrip)sender).Location);
-							if (designer != null)
-							{
-								deletePageMenuItem.Enabled = designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram";
-							}
-						};
-						break;
 					}
+					contextMenu.Opening += delegate(object sender, CancelEventArgs e)
+					{
+						DiagramView designer = base.GetDesignerAtPoint(((ContextMenuStrip)sender).Location);
+						if (designer != null)
+						{
+							renamePageMenuItem.Enabled = deletePageMenuItem.Enabled = designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram";
+						}
+					};
 				}
 #endif // !DISABLE_RELATIONAL_VIEW_HACK
 				#endregion // HACK: Temporary RelationalView Context Menu stuff

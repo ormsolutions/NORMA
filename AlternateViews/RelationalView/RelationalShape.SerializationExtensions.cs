@@ -38,7 +38,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			get
 			{
-				return "relationalDiagram";
+				return "rvw";
 			}
 		}
 		string IORMCustomSerializedDomainModel.DefaultElementPrefix
@@ -54,7 +54,7 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		protected static string[,] GetCustomElementNamespaces()
 		{
 			string[,] ret = new string[1, 3];
-			ret[0, 0] = "relationalDiagram";
+			ret[0, 0] = "rvw";
 			ret[0, 1] = "http://schemas.neumont.edu/ORM/Views/RelationalView";
 			ret[0, 2] = "RelationalShape.xsd";
 			return ret;
@@ -68,6 +68,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		{
 			Dictionary<DomainClassInfo, object> retVal = new Dictionary<DomainClassInfo, object>();
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			retVal[dataDir.FindDomainRelationship(RelationalModelHasTable.DomainClassId)] = null;
+			retVal[dataDir.FindDomainRelationship(ParentShapeContainsNestedChildShapes.DomainClassId)] = null;
+			retVal[dataDir.FindDomainRelationship(PresentationViewsSubject.DomainClassId)] = null;
 			retVal[dataDir.FindDomainClass(Neumont.Tools.ORM.Views.RelationalView.TableShape.DomainClassId)] = null;
 			return retVal;
 		}
@@ -95,7 +98,9 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		protected static Guid[] GetRootElementClasses()
 		{
-			return new Guid[0];
+			return new Guid[]{
+				RelationalModel.DomainClassId,
+				RelationalDiagram.DomainClassId};
 		}
 		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
@@ -106,6 +111,14 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
+			if ((elementName == "RelationalModel") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView"))
+			{
+				return RelationalModel.DomainClassId;
+			}
+			if ((elementName == "RelationalDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/Views/RelationalView"))
+			{
+				return RelationalDiagram.DomainClassId;
+			}
 			return default(Guid);
 		}
 		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
@@ -128,6 +141,8 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 			if (classNameMap == null)
 			{
 				classNameMap = new Dictionary<string, Guid>();
+				classNameMap.Add("RelationalDiagram", RelationalDiagram.DomainClassId);
+				classNameMap.Add("RelationalModel", RelationalModel.DomainClassId);
 				RelationalShapeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -142,4 +157,317 @@ namespace Neumont.Tools.ORM.Views.RelationalView
 		}
 	}
 	#endregion // RelationalShapeDomainModel model serialization
+	#region RelationalDiagram serialization
+	internal partial class RelationalDiagram : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return ORMCustomSerializedElementSupportedOperations.PropertyInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
+		/// </summary>
+		protected ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
+		/// </summary>
+		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
+		/// </summary>
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == RelationalDiagram.IsCompleteViewDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.NameDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.BaseFontNameDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.BaseFontSizeDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.DiagramIdDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.DoLineRoutingDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.DoResizeParentDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.DoShapeAnchoringDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.DoViewFixupDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == RelationalDiagram.PlaceUnplacedShapesDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			return ORMCustomSerializedPropertyInfo.Default;
+		}
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		/// </summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return default(ORMCustomSerializedElementMatch);
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapAttribute
+		/// </summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.ShouldSerialize
+		/// </summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // RelationalDiagram serialization
+	#region RelationalModel serialization
+	internal partial class RelationalModel : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return ORMCustomSerializedElementSupportedOperations.PropertyInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedChildElementInfo
+		/// </summary>
+		protected ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
+		/// </summary>
+		protected ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedPropertyInfo
+		/// </summary>
+		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == RelationalModel.NameDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			return ORMCustomSerializedPropertyInfo.Default;
+		}
+		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == RelationalModelHasOIALModel.OIALModelDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, "OIALModel", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == RelationalModelHasTable.TableDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (roleId == PresentationViewsSubject.PresentationDomainRoleId)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		/// </summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = RelationalModel.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(RelationalModelHasOIALModel.OIALModelDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/Views/RelationalView|OIALModel", match);
+				RelationalModel.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapAttribute
+		/// </summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.ShouldSerialize
+		/// </summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // RelationalModel serialization
 }

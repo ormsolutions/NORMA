@@ -30,6 +30,39 @@ using ObjModel = Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
+	public class OIALRegenerationEventArgs : ModelingEventArgs
+	{
+		private readonly OIALModel myOIALModel;
+		private readonly Transaction myTransaction;
+		public OIALRegenerationEventArgs(OIALModel oialModel, Transaction transaction)
+		{
+			if (oialModel == null)
+			{
+				throw new ArgumentNullException("oialModel");
+			}
+			if (transaction == null)
+			{
+				throw new ArgumentNullException("transaction");
+			}
+			this.myOIALModel = oialModel;
+			this.myTransaction = transaction;
+		}
+
+		public OIALModel OIALModel
+		{
+			get
+			{
+				return this.myOIALModel;
+			}
+		}
+		public Transaction Transaction
+		{
+			get
+			{
+				return this.myTransaction;
+			}
+		}
+	}
 	#region OIALModel Rules and Validation
 	public partial class OIALModel
 	{
@@ -221,7 +254,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		private static partial class CheckConceptTypeParentExclusiveMandatory
 		{
 			/// <summary>
-			/// Checks if a ConcepType is its own parent.
+			/// Checks if a ConceptType is its own parent.
 			/// </summary>
 			/// <param name="childConceptType"></param>
 			private static void ProcessConceptType(ConceptType childConceptType)
@@ -233,7 +266,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					if ((hasParentModel && hasParentConceptType) || (!hasParentModel && !hasParentConceptType))
 					{
 						// UNDONE: Localize this
-						//throw new InvalidOperationException("A ConceptType must have exactly one parent (either the OIALModel, or a ConceptType that absorbed it).");
+						// throw new InvalidOperationException("A ConceptType must have exactly one parent (either the OIALModel, or a ConceptType that absorbed it).");
 					}
 				}
 			}
@@ -730,6 +763,10 @@ namespace Neumont.Tools.ORM.OIALModel
 		private bool myUnariesExist = false;
 #endif
 		/// <summary>
+		/// Raised when this <see cref="OIALModel"/> is about to regenerate itself.
+		/// </summary>
+		public event EventHandler<OIALRegenerationEventArgs> OIALRegenerating;
+		/// <summary>
 		/// Processes the current ORM Model by determining which facts and objects
 		/// should be noted by this <see cref="PrimaryElementTracker"/>
 		/// </summary>
@@ -737,6 +774,12 @@ namespace Neumont.Tools.ORM.OIALModel
 		private void ProcessModelForTopLevelTypes()
 		{
 			Store store = this.Store;
+			EventHandler<OIALRegenerationEventArgs> oialRegenerating = this.OIALRegenerating;
+			if ((object)oialRegenerating != null)
+			{
+				oialRegenerating(this, new OIALRegenerationEventArgs(this, store.TransactionManager.CurrentTransaction));
+			}
+
 			// Clears the OIALModel previous to re-processing.
 			LinkedElementCollection<ConceptType> thisConceptTypeCollection = ConceptTypeCollection;
 			thisConceptTypeCollection.Clear();
@@ -825,7 +868,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					foreach (SetConstraint scc in factType.SetConstraintCollection)
 					{
 						UniquenessConstraint uConstraint = scc as UniquenessConstraint;
-						if (uConstraint != null && uConstraint.RoleCollection.Count > 2)
+						if (uConstraint != null && uConstraint.Modality == ConstraintModality.Alethic && uConstraint.RoleCollection.Count > 2)
 						{
 							hasSpanningUniqueness = true;
 							break;
@@ -1198,14 +1241,14 @@ namespace Neumont.Tools.ORM.OIALModel
 				// from this object type: Lines 591 - 594 of ORMtoOIAL. However, exclude any fact types that
 				// could result in nested concept types, as we have already dealt with these.
 				Role role = roleCollection[j];
-				if (role is SubtypeMetaRole)
+				if (role is SubtypeMetaRole && !conceptObjectType.IsIndependent)
 				{
 					continue;
 				}
 				FactType factType = role.FactType;
 				// We have already accounted for nested concept types
 				int roleCount = factType.RoleCollection.Count;
-				if (roleCount > 2 || !string.IsNullOrEmpty(factType.DerivationRuleDisplay))
+				if (roleCount > 2 || (factType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(factType.DerivationRuleDisplay)))
 				{
 					continue;
 				}
@@ -1238,7 +1281,7 @@ namespace Neumont.Tools.ORM.OIALModel
 					for (int k = 0; k < count; ++k)
 					{
 						UniquenessConstraint uniquenessConstraint = constraints[k] as UniquenessConstraint;
-						if (uniquenessConstraint != null && uniquenessConstraint.IsInternal && uniquenessConstraint.RoleCollection.Count == 1)
+						if (uniquenessConstraint != null && uniquenessConstraint.IsInternal && uniquenessConstraint.RoleCollection.Count == 1 && uniquenessConstraint.Modality == ConstraintModality.Alethic)
 						{
 							AbsorbedFactType absorbedFactType;
 							myAbsorbedFactTypes.TryGetValue(factType.Id, out absorbedFactType);
@@ -1248,6 +1291,7 @@ namespace Neumont.Tools.ORM.OIALModel
 							// and we need to generate only one ConceptTypeRef instead of two. Is there a better way to do this without
 							// the check
 							int factListCount = factList.Count;
+							ObjectType oppositeRolePlayer = role.OppositeRole.Role.RolePlayer;
 							if ((id == Guid.Empty || id == objectId) && role.OppositeRole.Role.RolePlayer != null &&
 								(factListCount == 0 || factList[factListCount - 1] != factType))
 							{
@@ -1484,7 +1528,7 @@ namespace Neumont.Tools.ORM.OIALModel
 						// We cannot be sure that constraints that we receive span only one role,
 						// so we must check for this.
 						bool hasCompositeIdentifier = constraintRoleSequence.RoleCollection.Count != 1;
-						if (uConstraint != null && uConstraint.IsPreferred && ((!hasCompositeIdentifier && uConstraint.IsInternal) || !uConstraint.IsInternal))
+						if (uConstraint != null && uConstraint.Modality == ConstraintModality.Alethic && uConstraint.IsPreferred && ((!hasCompositeIdentifier && uConstraint.IsInternal) || !uConstraint.IsInternal))
 						{
 							// If it is part of a composite identifier, then we try to use the role name. If there is no role name,
 							// then we concatenate the previous name with the current object type name.
@@ -1747,7 +1791,7 @@ namespace Neumont.Tools.ORM.OIALModel
 				// never reach the continue statement. Also we do not want to interpret any fact types that are
 				// not binarized.
 				FactType roleFactType = role.FactType;
-				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || !string.IsNullOrEmpty(roleFactType.DerivationRuleDisplay))
+				if (role.Equals(startingRole) || roleFactType.Objectification != null || roleFactType.RoleCollection.Count != 2 || (roleFactType.DerivationStorageDisplay == DerivationStorageType.Derived && !string.IsNullOrEmpty(roleFactType.DerivationRuleDisplay)))
 				{
 					continue;
 				}

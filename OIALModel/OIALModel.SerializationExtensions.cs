@@ -95,7 +95,8 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected static Guid[] GetRootElementClasses()
 		{
-			return new Guid[0];
+			return new Guid[]{
+				OIALModel.DomainClassId};
 		}
 		Guid[] IORMCustomSerializedDomainModel.GetRootElementClasses()
 		{
@@ -106,6 +107,10 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
+			if ((elementName == "Model") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-01/OIALModel"))
+			{
+				return OIALModel.DomainClassId;
+			}
 			return default(Guid);
 		}
 		Guid IORMCustomSerializedDomainModel.MapRootElement(string xmlNamespace, string elementName)
@@ -161,7 +166,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles));
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | (ORMCustomSerializedElementSupportedOperations.ElementInfo | (ORMCustomSerializedElementSupportedOperations.PropertyInfo | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -181,9 +186,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			if (ret == null)
 			{
 				ret = new ORMCustomSerializedChildElementInfo[3];
-				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
-				ret[1] = new ORMCustomSerializedChildElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
-				ret[2] = new ORMCustomSerializedChildElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, OIALModelHasConceptType.ConceptTypeDomainRoleId);
+				ret[0] = new ORMCustomSerializedChildElementInfo(null, "ChildSequenceConstraints", null, ORMCustomSerializedElementWriteStyle.NotWritten, null, OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
+				ret[1] = new ORMCustomSerializedChildElementInfo(null, "InformationTypeFormats", null, ORMCustomSerializedElementWriteStyle.NotWritten, null, OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
+				ret[2] = new ORMCustomSerializedChildElementInfo(null, "ConceptTypes", null, ORMCustomSerializedElementWriteStyle.NotWritten, null, OIALModelHasConceptType.ConceptTypeDomainRoleId);
 				OIALModel.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -214,7 +219,11 @@ namespace Neumont.Tools.ORM.OIALModel
 		/// </summary>
 		protected ORMCustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			throw new NotSupportedException();
+			if (domainPropertyInfo.Id == OIALModel.NameDomainPropertyId)
+			{
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			return ORMCustomSerializedPropertyInfo.Default;
 		}
 		ORMCustomSerializedPropertyInfo IORMCustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
