@@ -1159,7 +1159,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <value>The model.</value>
 		protected ORMModel Model
 		{
-			get { return this.FactType.Model; }
+			get
+			{
+				FactType factType = this.FactType;
+				return (factType != null) ? factType.Model : null;
+			}
 		}
 		ORMModel IHierarchyContextEnabled.Model
 		{

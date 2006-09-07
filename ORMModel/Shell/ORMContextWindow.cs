@@ -242,35 +242,48 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			IHierarchyContextEnabled element = null;
+			IHierarchyContextEnabled hierarchyElement = null;
+			ModelElement element = null;
 			object[] selectedElements = GetSelectedElements();
 			foreach (object obj in selectedElements)
 			{
-				element = EditorUtility.ResolveContextInstance(obj, false) as IHierarchyContextEnabled;
-				if (element != null)
+				if (null != (element = EditorUtility.ResolveContextInstance(obj, false) as ModelElement) &&
+					!element.IsDeleted &&
+					null != (hierarchyElement = element as IHierarchyContextEnabled))
 				{
 					break;
 				}
 			}
-			if (element == null && myDiagram == null)
+			if (hierarchyElement == null && myDiagram == null)
 			{
-				element = myCurrentlySelectedObject;
+				element = myCurrentlySelectedObject as ModelElement;
+				if (element != null && element.IsDeleted)
+				{
+					myCurrentlySelectedObject = null;
+					RemoveDiagram();
+				}
+				hierarchyElement = myCurrentlySelectedObject;
 			}
-			else if (element == myCurrentlySelectedObject && refresh == false)
+			else if (hierarchyElement == myCurrentlySelectedObject && refresh == false)
 			{
 				return;
 			}
-			if (element == null)
+			if (hierarchyElement == null)
 			{
 				return;
 			}
-			myCurrentlySelectedObject = element;
-			this.EnsureDiagram(element.Model);
+			myCurrentlySelectedObject = hierarchyElement;
+			ORMModel model = hierarchyElement.Model;
+			if (model == null)
+			{
+				return;
+			}
+			this.EnsureDiagram(model);
 			if (myDiagram == null)
 			{
 				return;
 			}
-			Store store = element.Model.Store;
+			Store store = element.Store;
 			Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
 			UndoState restoreUndoState = undoManager.UndoState;
 			try
@@ -280,7 +293,7 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					myDiagram.NestedChildShapes.Clear();
 					myDiagram.AutoPopulateShapes = true;
-					PlaceObject(element);
+					PlaceObject(hierarchyElement);
 					myDiagram.AutoPopulateShapes = false;
 					if (t.HasPendingChanges)
 					{
