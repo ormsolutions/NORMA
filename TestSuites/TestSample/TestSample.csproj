@@ -65,12 +65,8 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2b.Compare.stage1.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2a.Compare.orm" />
-    <EmbeddedResource Include="NMinus1Tests\missing2b.Compare.stage1.orm" />
-    <EmbeddedResource Include="NMinus1Tests\missing2a.Compare.orm" />
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Compare.orm" />
-    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2b.Compare.stage2.orm" />
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2b.Compare.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Load.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Compare.orm" />
@@ -154,9 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Report.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="NMinus1Tests\missing1a.Report.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Report.xml" />

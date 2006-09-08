@@ -126,8 +126,6 @@ namespace TestSample.NMinus1Tests
 				}
 				t.Commit();
 			}
-			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "stage1");
-			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "stage2");
 			myTestServices.LogValidationErrors("After repair");
 
 		}
