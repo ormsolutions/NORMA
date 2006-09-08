@@ -8,7 +8,8 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Shell;
 using System.Xml;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
+
 
 #endregion
 
@@ -37,6 +38,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				get
 				{
 					return myServices.TaskProvider;
+				}
+			}
+			bool IORMToolServices.CanAddTransaction
+			{
+				get
+				{
+					return true;
+				}
+				set
+				{
 				}
 			}
 			IORMFontAndColorService IORMToolServices.FontAndColorService
@@ -68,6 +79,8 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					return null;
 				}
 			}
+
+
 			#endregion // IORMToolServices Implementation
 		}
 	}

@@ -9,6 +9,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.XmlDiffPatch;
 
+
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
 	#region SuiteCategory structure

@@ -14,11 +14,11 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Runtime.Serialization;
 using Neumont.Tools.ORM.Shell;
-using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.Modeling;
 using System.Xml;
 using System.Xml.Xsl;
 using Microsoft.XmlDiffPatch;
-using Neumont.Tools.ORM.Framework.DynamicSurveyTreeGrid;
+using Neumont.Tools.Modeling.Shell.DynamicSurveyTreeGrid;
 
 namespace Neumont.Tools.ORM.SDK.TestEngine
 {
@@ -76,6 +76,16 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				get
 				{
 					return null;
+				}
+			}
+			bool IORMToolServices.CanAddTransaction
+			{
+				get
+				{
+					return true;
+				}
+				set
+				{
 				}
 			}
 			#endregion // IORMToolServices Implementation
@@ -189,20 +199,21 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				ORMStore store = new ORMStore(this);
 				store.UndoManager.UndoState = UndoState.Disabled;
-				Type[] subStores = new Type[4] { typeof(Core), typeof(CoreDesignSurface), typeof(ORMMetaModel), typeof(ORMShapeModel) };
-				store.LoadMetaModels(subStores);
-				using (Transaction t = store.TransactionManager.BeginTransaction("Initialization"))
-				{
-					foreach (Type subStoreType in subStores)
-					{
-						if (subStoreType == null)
-							continue;
+				Type[] domainModels = new Type[4] { typeof(CoreDomainModel), typeof(CoreDesignSurface), typeof(ORMCoreModel), typeof(ORMShapeModel) };
+				store.LoadDomainModels(domainModels);
+				//using (Transaction t = store.TransactionManager.BeginTransaction("Initialization"))
+				//{
+				//    foreach (Type domainModelType in domainModels)
+				//    {
+				//        if (domainModelType == null)
+				//            continue;
 
-						object[] createArgs = new Object[1] { store };
-						SubStore subStoreInstance = (SubStore)subStoreType.Assembly.CreateInstance(subStoreType.FullName, false, BindingFlags.Public | BindingFlags.Instance, null, createArgs, null, null);
-					}
-					t.Commit();
-				}
+				//        object[] createArgs = new Object[1] { store };
+				//        DomainModel domainModelInstance = (DomainModel)domainModelType.Assembly.CreateInstance(domainModelType.FullName, false, BindingFlags.Public | BindingFlags.Instance, null, createArgs, null, null);
+				//        //Object ozzie = domainModelType.Assembly.CreateInstance(domainModelType.FullName, false, BindingFlags.Public | BindingFlags.Instance, null, createArgs, null, null);
+				//    }
+				//    t.Commit();
+				//}
 
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))
 				{
@@ -651,6 +662,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				LogException(myReportWriter, exception);
 			}
+
 			private static void LogException(XmlWriter writer, Exception exception)
 			{
 				writer.WriteStartElement("Exception");
@@ -881,9 +893,9 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			/// </summary>
 			private IEnumerable<IDeserializationFixupListener> GetDeserializationFixupListeners(Store store)
 			{
-				foreach (object subStore in store.SubStores.Values)
+				foreach (object domainModel in store.DomainModels)
 				{
-					IDeserializationFixupListenerProvider provider = subStore as IDeserializationFixupListenerProvider;
+					IDeserializationFixupListenerProvider provider = domainModel as IDeserializationFixupListenerProvider;
 					if (provider != null)
 					{
 						foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
@@ -897,22 +909,22 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			#region Model Event Manipulation
 			private void AddErrorReportingEvents(Store store)
 			{
-				MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+				DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 				EventManagerDirectory eventDirectory = store.EventManagerDirectory;
-				MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ModelHasError.MetaRelationshipGuid);
+				DomainClassInfo classInfo = dataDirectory.FindDomainRelationship(ModelHasError.DomainClassId);
 
-				eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ErrorAddedEvent));
+				eventDirectory.ElementAdded.Add(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorAddedEvent));
 
-				classInfo = dataDirectory.FindMetaClass(ModelError.MetaClassGuid);
-				eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ErrorRemovedEvent));
-				eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ErrorChangedEvent));
+				classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
+				eventDirectory.ElementDeleted.Add(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent));
+				eventDirectory.ElementPropertyChanged.Add(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent));
 			}
 
 			private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)
 			{
 				ModelError.AddToTaskProvider(e.ModelElement as ModelHasError);
 			}
-			private void ErrorRemovedEvent(object sender, ElementRemovedEventArgs e)
+			private void ErrorRemovedEvent(object sender, ElementDeletedEventArgs e)
 			{
 				ModelError error = e.ModelElement as ModelError;
 				IORMToolTaskItem taskData = error.TaskData as IORMToolTaskItem;
@@ -922,7 +934,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					(this as IORMToolServices).TaskProvider.RemoveTask(taskData);
 				}
 			}
-			private void ErrorChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+			private void ErrorChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 			{
 				ModelError error = e.ModelElement as ModelError;
 				IORMToolTaskItem taskData = error.TaskData as IORMToolTaskItem;

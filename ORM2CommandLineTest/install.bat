@@ -33,6 +33,20 @@ if exist "%NORMADir%\bin\ORMTestDriver.pdb" (
 del "%NORMADir%\bin\ORMTestDriver.pdb"
 )
 )
+
+
+xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReportViewer.exe" "%NORMADir%\bin\"
+if exist "%rootPath%%outDir%ORMTestReportViewer.pdb" (
+xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReportViewer.pdb" "%NORMADir%\bin\"
+) else (
+if exist "%NORMADir%\bin\ORMTestReportViewer.pdb" (
+del "%NORMADir%\bin\ORMTestReportViewer.pdb"
+)
+)
+
+
+
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReport.xsd" "%envPath%Xml\Schemas\"
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuite.xsd" "%envPath%Xml\Schemas\"
+xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuiteReport.xsd" "%envPath%Xml\Schemas\"
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuiteReport.xsd" "%envPath%Xml\Schemas\"
