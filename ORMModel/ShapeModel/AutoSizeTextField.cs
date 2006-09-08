@@ -32,8 +32,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public AutoSizeTextField()
-			: base(ResourceStrings.ShapeFieldName_HACK)
+		/// <param name="fieldName">Non-localized name for the field, forwarded to base class.</param>
+		public AutoSizeTextField(string fieldName)
+			: base(fieldName)
 		{
 			base.DefaultAutoSize = true;
 		}

@@ -107,9 +107,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.
 		/// </summary>
-		protected override AutoSizeTextField CreateAutoSizeTextField()
+		/// <param name="fieldName">Non-localized name for the field</param>
+		protected override AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
-			return new ValueRangeAutoSizeTextField();
+			return new ValueRangeAutoSizeTextField(fieldName);
 		}
 		#endregion
 		#region Helper methods
@@ -269,6 +270,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private sealed class ValueRangeAutoSizeTextField : AutoSizeTextField
 		{
+			/// <summary>
+			/// Create a new ValueRangeAutoSizeTextField
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ValueRangeAutoSizeTextField(string fieldName)
+				: base(fieldName)
+			{
+			}
 			/// <summary>
 			/// Code that handles retrieval of the text to display in ValueConstraintShape.
 			/// </summary>

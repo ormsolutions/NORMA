@@ -711,6 +711,94 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		
 		#endregion
+		#region DisplayOrientation domain property code
+		
+		/// <summary>
+		/// DisplayOrientation domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayOrientationDomainPropertyId = new global::System.Guid(0x31a8f13e, 0x97c6, 0x421f, 0x82, 0x0d, 0x00, 0x1c, 0xd8, 0xe7, 0x74, 0xf3);
+		
+		/// <summary>
+		/// Storage for DisplayOrientation
+		/// </summary>
+		private DisplayOrientation displayOrientationPropertyStorage = Neumont.Tools.ORM.ShapeModel.DisplayOrientation.Horizontal;
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayOrientation domain property.
+		/// Determines if the fact type is shown horizontally or vertically.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(Neumont.Tools.ORM.ShapeModel.DisplayOrientation.Horizontal)]
+		[DslModeling::DomainObjectId("31a8f13e-97c6-421f-820d-001cd8e774f3")]
+		public DisplayOrientation DisplayOrientation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return displayOrientationPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayOrientationPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.DisplayOrientation domain property.
+		/// </summary>
+		internal sealed partial class DisplayOrientationPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, DisplayOrientation>
+		{
+			private DisplayOrientationPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.DisplayOrientation domain property value handler.
+			/// </summary>
+			public static readonly DisplayOrientationPropertyHandler Instance = new DisplayOrientationPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.DisplayOrientation domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayOrientationDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed DisplayOrientation GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.displayOrientationPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, DisplayOrientation newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				DisplayOrientation oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.displayOrientationPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region RolesPosition domain property code
 		
 		/// <summary>

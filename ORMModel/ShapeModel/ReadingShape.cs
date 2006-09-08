@@ -302,9 +302,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.
 		/// </summary>
-		protected override AutoSizeTextField CreateAutoSizeTextField()
+		/// <param name="fieldName">Non-localized name for the field</param>
+		protected override AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
-			return new ReadingAutoSizeTextField();
+			return new ReadingAutoSizeTextField(fieldName);
 		}
 		/// <summary>
 		/// Create a new reading shape for a remaining reading order if this reading order
@@ -568,7 +569,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Initialize a ReadingAutoSizeTextField
 			/// </summary>
-			public ReadingAutoSizeTextField()
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ReadingAutoSizeTextField(string fieldName)
+				: base(fieldName)
 			{
 				StringFormat format = new StringFormat();
 				format.Alignment = StringAlignment.Near;

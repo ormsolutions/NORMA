@@ -31,9 +31,6 @@ namespace Neumont.Tools.ORM
 	/// </summary>
 	internal static partial class ResourceStrings
 	{
-		// UNDONE: 2006-06 DSL Tools port: Temporary hack until we figure out what we want to do for ShapeField names.
-		public const string ShapeFieldName_HACK = null;
-
 		#region Supported Resource Managers
 		/// <summary>
 		/// Recognized resource managers

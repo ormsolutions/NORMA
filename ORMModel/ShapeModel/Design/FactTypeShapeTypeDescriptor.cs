@@ -50,6 +50,8 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 		private static volatile bool Initialized;
 		private static DomainPropertyInfo ConstraintDisplayPositionDomainPropertyInfo;
 		private static Attribute[] ConstraintDisplayPositionDomainPropertyAttributes;
+		private static DomainPropertyInfo DisplayOrientationDomainPropertyInfo;
+		private static Attribute[] DisplayOrientationDomainPropertyAttributes;
 		private static DomainPropertyInfo DisplayRoleNamesDomainPropertyInfo;
 		private static Attribute[] DisplayRoleNamesDomainPropertyAttributes;
 		private static DomainPropertyInfo NameDomainPropertyInfo;
@@ -70,6 +72,7 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 					if (!Initialized)
 					{
 						ConstraintDisplayPositionDomainPropertyAttributes = GetDomainPropertyAttributes(ConstraintDisplayPositionDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId));
+						DisplayOrientationDomainPropertyAttributes = GetDomainPropertyAttributes(DisplayOrientationDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId));
 						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(DisplayRoleNamesDomainPropertyInfo = domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(NameDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(IsIndependentDomainPropertyInfo = domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
@@ -122,6 +125,7 @@ namespace Neumont.Tools.ORM.ShapeModel.Design
 
 				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
 					CreatePropertyDescriptor(factTypeShape, ConstraintDisplayPositionDomainPropertyInfo, ConstraintDisplayPositionDomainPropertyAttributes),
+					CreatePropertyDescriptor(factTypeShape, DisplayOrientationDomainPropertyInfo, DisplayOrientationDomainPropertyAttributes),
 					CreatePropertyDescriptor(factTypeShape, DisplayRoleNamesDomainPropertyInfo, DisplayRoleNamesDomainPropertyAttributes),
 					CreatePropertyDescriptor(nestingType, NameDomainPropertyInfo, NameDomainPropertyAttributes),
 					CreatePropertyDescriptor(nestingType, IsIndependentDomainPropertyInfo, IsIndependentDomainPropertyAttributes),

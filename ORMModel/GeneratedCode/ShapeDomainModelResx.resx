@@ -197,6 +197,30 @@
     <value>Never draw the RoleNameShapes.</value>
     <comment>Description for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
   </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/Horizontal.DisplayName" xml:space="preserve">
+    <value>Horizontal</value>
+    <comment>Display name for EnumerationLiteral &apos;Horizontal&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/Horizontal.Description" xml:space="preserve">
+    <value>The fact type is drawn with a horizontal orientation.</value>
+    <comment>Description for EnumerationLiteral &apos;Horizontal&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedRight.DisplayName" xml:space="preserve">
+    <value>VerticalRotatedRight</value>
+    <comment>Display name for EnumerationLiteral &apos;VerticalRotatedRight&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description" xml:space="preserve">
+    <value>The fact type is drawn with a vertical orientation rotated to the right.</value>
+    <comment>Description for EnumerationLiteral &apos;VerticalRotatedRight&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedLeft.DisplayName" xml:space="preserve">
+    <value>VerticalRotatedLeft</value>
+    <comment>Display name for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description" xml:space="preserve">
+    <value>The fact type is drawn with a vertical orientation rotated to the left.</value>
+    <comment>Description for EnumerationLiteral &apos;VerticalRotatedLeft&apos; on DomainEnumeration &apos;DisplayOrientation&apos;</comment>
+  </data>
   <data name="Neumont.Tools.ORM.ShapeModel.ORMBaseShape.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ShapeModel.ORMBaseShape</value>
     <comment>Description for DomainClass &apos;ORMBaseShape&apos;</comment>
@@ -252,6 +276,14 @@
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName" xml:space="preserve">
     <value>DisplayRoleNames</value>
     <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.Description" xml:space="preserve">
+    <value>Determines if the fact type is shown horizontally or vertically.</value>
+    <comment>Description for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/DisplayOrientation.DisplayName" xml:space="preserve">
+    <value>DisplayOrientation</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
     <value>Description for Neumont.Tools.ORM.ShapeModel.FactTypeShape.Roles Position</value>

@@ -104,6 +104,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				new DomainMemberInfo(typeof(ObjectTypeShape), "ExpandRefMode", ObjectTypeShape.ExpandRefModeDomainPropertyId, typeof(ObjectTypeShape.ExpandRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId, typeof(FactTypeShape.ConstraintDisplayPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId, typeof(FactTypeShape.DisplayRoleNamesPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId, typeof(FactTypeShape.DisplayOrientationPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "RolesPosition", FactTypeShape.RolesPositionDomainPropertyId, typeof(FactTypeShape.RolesPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectifiedFactTypeNameShape), "ExpandRefMode", ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId, typeof(ObjectifiedFactTypeNameShape.ExpandRefModePropertyHandler)),
 			};
@@ -556,6 +557,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayRoleNames/Off.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
 		Off = 2,
+	}
+}
+namespace Neumont.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: DisplayOrientation
+	/// Determines whether a FactTypeShape is drawn horizontally or vertically.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::Neumont.Tools.Modeling.Design.EnumConverter<DisplayOrientation, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram>))]
+	[global::System.CLSCompliant(true)]
+	public enum DisplayOrientation
+	{
+		/// <summary>
+		/// Horizontal
+		/// The fact type is drawn with a horizontal orientation.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayOrientation/Horizontal.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		Horizontal = 0,
+		/// <summary>
+		/// VerticalRotatedRight
+		/// The fact type is drawn with a vertical orientation rotated to the right.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedRight.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		VerticalRotatedRight = 1,
+		/// <summary>
+		/// VerticalRotatedLeft
+		/// The fact type is drawn with a vertical orientation rotated to the left.
+		/// </summary>
+		[DslDesign::DescriptionResource("Neumont.Tools.ORM.ShapeModel.DisplayOrientation/VerticalRotatedLeft.Description", typeof(global::Neumont.Tools.ORM.ShapeModel.ORMShapeDomainModel), "Neumont.Tools.ORM.GeneratedCode.ShapeDomainModelResx")]
+		VerticalRotatedLeft = 2,
 	}
 }
 

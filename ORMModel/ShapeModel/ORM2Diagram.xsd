@@ -111,6 +111,15 @@
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
+				<xs:attribute name="DisplayOrientation" default="Horizontal">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Horizontal"/>
+							<xs:enumeration value="VerticalRotatedRight"/>
+							<xs:enumeration value="VerticalRotatedLeft"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

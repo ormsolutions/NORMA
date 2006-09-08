@@ -163,7 +163,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.InitializeShapeFields(shapeFields);
 
 			// Initialize field
-			AutoSizeTextField field = CreateObjectNameTextField();
+			AutoSizeTextField field = CreateObjectNameTextField("ObjectNameTextField");
 			field.DrawBorder = false;
 			field.FillBackground = false;
 			field.DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
@@ -178,7 +178,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			field.AssociateValueWith(Store, ORMNamedElement.NameDomainPropertyId);
 
 			// Initialize reference mode field
-			AutoSizeTextField referenceModeField = CreateReferenceModeTextField();
+			AutoSizeTextField referenceModeField = CreateReferenceModeTextField("RefModeTextField");
 			referenceModeField.DrawBorder = false;
 			referenceModeField.DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
 			referenceModeField.DefaultPenId = DiagramPens.ShapeOutline;
@@ -656,10 +656,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Create the text field used for displaying the reference mode
 		/// </summary>
+		/// <param name="fieldName">Non-localized name for the field</param>
 		/// <returns>ReferenceModeTextField</returns>
-		protected virtual ReferenceModeTextField CreateReferenceModeTextField()
+		protected virtual ReferenceModeTextField CreateReferenceModeTextField(string fieldName)
 		{
-			return new ReferenceModeTextField();
+			return new ReferenceModeTextField(fieldName);
 		}
 		/// <summary>
 		/// Class to show reference mode
@@ -669,7 +670,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Default constructor
 			/// </summary>
-			public ReferenceModeTextField()
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ReferenceModeTextField(string fieldName)
+				: base(fieldName)
 			{
 				DefaultFocusable = true;
 			}
@@ -718,10 +721,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Create the text field used for displaying the object name
 		/// </summary>
+		/// <param name="fieldName">Non-localized name for the field</param>
 		/// <returns>ObjectNameTextField</returns>
-		protected virtual ObjectNameTextField CreateObjectNameTextField()
+		protected virtual ObjectNameTextField CreateObjectNameTextField(string fieldName)
 		{
-			return new ObjectNameTextField();
+			return new ObjectNameTextField(fieldName);
 		}
 		/// <summary>
 		/// Class to show a decorated object name
@@ -729,6 +733,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected class ObjectNameTextField : AutoSizeTextField
 		{
 			/// <summary>
+			/// Create a new ObjectNameTextField
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ObjectNameTextField(string fieldName)
+			    : base(fieldName)
+			{
+			}			/// <summary>
 			/// Modify the display text for independent object types.
 			/// </summary>
 			/// <param name="parentShape">The ShapeElement to get the display text for.</param>

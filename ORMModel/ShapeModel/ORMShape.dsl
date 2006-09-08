@@ -80,6 +80,20 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
+		<DomainEnumeration Namespace="Neumont.Tools.ORM.ShapeModel" Name="DisplayOrientation" Description="Determines whether a FactTypeShape is drawn horizontally or vertically.">
+			<Literals>
+				<EnumerationLiteral Name="Horizontal" Value="0" Description="The fact type is drawn with a horizontal orientation."/>
+				<EnumerationLiteral Name="VerticalRotatedRight" Value="1" Description="The fact type is drawn with a vertical orientation rotated to the right."/>
+				<EnumerationLiteral Name="VerticalRotatedLeft" Value="2" Description="The fact type is drawn with a vertical orientation rotated to the left."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::Neumont.Tools.Modeling.Design.EnumConverter&lt;DisplayOrientation, global::Neumont.Tools.ORM.ShapeModel.ORMDiagram&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
 	</Types>
 
 	<Shapes>
@@ -131,6 +145,11 @@
 				<DomainProperty Name="DisplayRoleNames" DisplayName="DisplayRoleNames" Id="9607AF0F-2E12-4215-B8A5-91B67C1A9F08" DefaultValue="UserDefault" Description="Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting." >
 					<Type>
 						<DomainEnumerationMoniker Name="DisplayRoleNames"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayOrientation" DisplayName="DisplayOrientation" Id="31A8F13E-97C6-421F-820D-001CD8E774F3" DefaultValue="Horizontal" Description="Determines if the fact type is shown horizontally or vertically.">
+					<Type>
+						<DomainEnumerationMoniker Name="DisplayOrientation"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="RolesPosition" Id="89244439-FBB1-4DEB-BFF3-69D47CB90A6B" DefaultValue="0" IsBrowsable="false">

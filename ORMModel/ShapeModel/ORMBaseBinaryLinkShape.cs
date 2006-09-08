@@ -235,7 +235,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override void OnDeleting()
 		{
 			base.OnDeleting();
-			PurgeLayoutObjects();
+			if (!Store.InUndoRedoOrRollback)
+			{
+				PurgeLayoutObjects();
+			}
 		}
 		#endregion // Accessibility Properties
 	}
@@ -320,7 +323,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override void OnDeleting()
 		{
 			base.OnDeleting();
-			PurgeLayoutObjects();
+			if (!Store.InUndoRedoOrRollback)
+			{
+				PurgeLayoutObjects();
+			}
 		}
 	}
 	#endregion // LinkConnectorShape class

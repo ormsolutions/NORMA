@@ -41,9 +41,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Sets the AutoSizeTextField to be added to the ShapeFieldCollection, is only run once
 		/// </summary>
-		protected override AutoSizeTextField CreateAutoSizeTextField()
+		/// <param name="fieldName">Non-localized name for the field</param>
+		protected override AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
-			AutoSizeTextField newTextField = new RoleNameAutoSizeTextField();
+			AutoSizeTextField newTextField = new RoleNameAutoSizeTextField(fieldName);
 			newTextField.DefaultFocusable = true;
 			newTextField.DefaultTextBrushId = RoleNameTextBrush;
 			return newTextField;
@@ -230,6 +231,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private sealed class RoleNameAutoSizeTextField : AutoSizeTextField
 		{
+			/// <summary>
+			/// Create a new RoleNameAutoSizeTextField
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public RoleNameAutoSizeTextField(string fieldName)
+			    : base(fieldName)
+			{
+			}			
 			/// <summary>
 			/// Gets the text to display in the RoleNameShape and appends square brackets to beginning and end
 			/// </summary>

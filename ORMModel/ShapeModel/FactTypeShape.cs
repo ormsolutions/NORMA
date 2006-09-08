@@ -681,11 +681,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// which roles are active for the constraint, and the constraint type.
 		/// </summary>
 		/// <param name="shapeField">The ShapeField whose bounds define the space that the ConstraintBoxes will be built in.</param>
-		/// <param name="displayPosition">The position the constraint will be displayed in</param>
+		/// <param name="attachPosition">The position the constraints are attached to the role</param>
 		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes produced by WalkConstraintBoxes.</param>
-		protected void WalkConstraintBoxes(ShapeField shapeField, ConstraintDisplayPosition displayPosition, VisitConstraintBox boxUser)
+		protected void WalkConstraintBoxes(ShapeField shapeField, ConstraintAttachPosition attachPosition, VisitConstraintBox boxUser)
 		{
-			WalkConstraintBoxes(shapeField.GetBounds(this), displayPosition, boxUser);
+			WalkConstraintBoxes(shapeField.GetBounds(this), attachPosition,  boxUser);
 		}
 
 		/// <summary>
@@ -695,22 +695,72 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// which roles are active for the constraint, and the constraint type.
 		/// </summary>
 		/// <param name="fullBounds">The bounds the rectangles need to fit in.  Pass RectangleD.Empty if unknown.</param>
-		/// <param name="displayPosition">The position the constraint will be displayed in</param>
+		/// <param name="attachPosition">The position the constraints are attached to the role</param>
 		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes 
 		/// produced by WalkConstraintBoxes.</param>
-		protected void WalkConstraintBoxes(RectangleD fullBounds, ConstraintDisplayPosition displayPosition, VisitConstraintBox boxUser)
+		protected void WalkConstraintBoxes(RectangleD fullBounds, ConstraintAttachPosition attachPosition, VisitConstraintBox boxUser)
 		{
+			ConstraintDisplayPosition displayPosition = ConstraintDisplayPosition.Top;
+			DisplayOrientation orientation = DisplayOrientation;
+			bool isVertical = orientation != DisplayOrientation.Horizontal;
+			switch (attachPosition)
+			{
+				case ConstraintAttachPosition.Left:
+					if (!isVertical)
+					{
+						return;
+					}
+					if (orientation == DisplayOrientation.VerticalRotatedRight)
+					{
+						displayPosition = ConstraintDisplayPosition.Bottom;
+					}
+					break;
+				case ConstraintAttachPosition.Right:
+					if (!isVertical)
+					{
+						return;
+					}
+					if (orientation == DisplayOrientation.VerticalRotatedLeft)
+					{
+						displayPosition = ConstraintDisplayPosition.Bottom;
+					}
+					break;
+				case ConstraintAttachPosition.Top:
+					if (isVertical)
+					{
+						return;
+					}
+					break;
+				case ConstraintAttachPosition.Bottom:
+					if (isVertical)
+					{
+						return;
+					}
+					displayPosition = ConstraintDisplayPosition.Bottom;
+					break;
+			}
 			// initialize variables
+			bool reverseVertical = orientation == DisplayOrientation.VerticalRotatedLeft;
 			FactType parentFact = AssociatedFactType;
 			LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
 			int factRoleCount = factRoles.Count;
 			if (fullBounds.IsEmpty)
 			{
-				fullBounds = new RectangleD(0, 0, RoleBoxWidth, 0);
+				fullBounds = isVertical ?
+					new RectangleD(0, 0, 0, RoleBoxWidth) :
+					new RectangleD(0, 0, RoleBoxWidth, 0);
 			}
 			else
 			{
-				fullBounds.Inflate(StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width / -2, 0d);
+				float adjustBy = StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width / -2;
+				if (isVertical)
+				{
+					fullBounds.Inflate(0d, adjustBy);
+				}
+				else
+				{
+					fullBounds.Inflate(adjustBy, 0d);
+				}
 			}
 
 			// First, gather the various constraints that are associated with the parent FactTypeShape.
@@ -957,16 +1007,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 					//    In practice, displaying the bar moves the center point. Finding
 					//    the center point requires a size for all of the constraint boxes,
 					//    which requires this routine. To avoid blowing the stack, we just
-					//    use the center point that we would have if there were no extenal
+					//    use the center point that we would have if there were no external
 					//    bars and call this sufficient.
 					int externalsCount = significantConstraintCount - internalsCount;
-					double testVerticalPoint = Location.Y + mySpacerShapeField.GetMinimumSize(this).Height + RoleBoxHeight / 2;
+					double testCenter = isVertical ?
+						Location.X + myLeftSpacerShapeField.GetMinimumSize(this).Width + RoleBoxHeight / 2 :
+						Location.Y + myTopSpacerShapeField.GetMinimumSize(this).Height + RoleBoxHeight / 2;
 					ORMDiagram diagram = Diagram as ORMDiagram;
 					if (currentDisplayPosition == ConstraintDisplayPosition.Top)
 					{
-						// Offset by the internals. These display above the externals for
-						// the top box, and below them for the bottom box.
-						testVerticalPoint += internalsCount * ConstraintHeight;
+						testCenter += internalsCount * ConstraintHeight;
 					}
 					for (int i = internalsCount; i < significantConstraintCount; ++i)
 					{
@@ -1011,10 +1061,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								double constraintVerticalCenter = constraintShape.AbsoluteCenter.Y;
+								double constraintCenter = isVertical ? constraintShape.AbsoluteCenter.X : constraintShape.AbsoluteCenter.Y;
 								showConstraint = (displayPosition == ConstraintDisplayPosition.Top) ?
-									constraintVerticalCenter < testVerticalPoint :
-									constraintVerticalCenter >= testVerticalPoint;
+									(orientation == DisplayOrientation.VerticalRotatedRight) ? constraintCenter >= testCenter : constraintCenter < testCenter :
+									(orientation == DisplayOrientation.VerticalRotatedRight) ? constraintCenter < testCenter : constraintCenter >= testCenter;
 							}
 						}
 						if (!showConstraint)
@@ -1034,11 +1084,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 				// Walk the constraintBoxes array and assign a physical location to each constraint box,
 				double constraintHeight = ConstraintHeight;
-				double constraintWidth = fullBounds.Width / (double)factRoleCount;
-				fullBounds.Height = constraintHeight;
+				double constraintWidth;
+				if (isVertical)
+				{
+					constraintWidth = fullBounds.Height / (double)factRoleCount;
+					fullBounds.Width = constraintHeight;
+				}
+				else
+				{
+					constraintWidth = fullBounds.Width / (double)factRoleCount;
+					fullBounds.Height = constraintHeight;
+				}
 				int iBox;
 				int incr;
-				if (ConstraintDisplayPosition == ConstraintDisplayPosition.Bottom)
+				if (currentDisplayPosition == ((orientation == DisplayOrientation.VerticalRotatedRight) ? ConstraintDisplayPosition.Top : ConstraintDisplayPosition.Bottom))
 				{
 					// walk the constraints from top to bottom
 					iBox = significantConstraintCount - 1;
@@ -1059,8 +1118,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					for (; iBox >= 0 && iBox < significantConstraintCount; iBox += incr)
 					{
 						ConstraintBox box = constraintBoxes[iBox];
-						box.Bounds = fullBounds;
-						RectangleD bounds = box.Bounds;
+						RectangleD bounds = fullBounds;
 
 						ConstraintBoxRoleActivity[] activeRoles = box.ActiveRoles;
 						if (activeRoles.Length == 2) // Weed out fully spanning and antispanning
@@ -1068,22 +1126,45 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (nextCompressedConstraint == iBox)
 							{
 								nextCompressedConstraint = -1;
-								if (activeRoles[0] == ConstraintBoxRoleActivity.Inactive)
+								int inactiveSide = (activeRoles[0] == ConstraintBoxRoleActivity.Inactive) ? 0 : 1;
+								if (reverseVertical)
 								{
-									bounds.X += constraintWidth;
+									if (inactiveSide == 1)
+									{
+										bounds.Y += constraintWidth;
+									}
+								}
+								else if (inactiveSide == 0)
+								{
+									if (isVertical)
+									{
+										bounds.Y += constraintWidth;
+									}
+									else
+									{
+										bounds.X += constraintWidth;
+									}
 								}
 								box.CompressBinaryActiveRoles();
-								bounds.Width -= constraintWidth;
-								bounds.Y = lastCompressedBottom;
+								if (isVertical)
+								{
+									bounds.Height -= constraintWidth;
+									bounds.X = lastCompressedBottom;
+								}
+								else
+								{
+									bounds.Width -= constraintWidth;
+									bounds.Y = lastCompressedBottom;
+								}
 								skippedRow = true;
 							}
 							else
 							{
-								int checkSide = (activeRoles[0] == ConstraintBoxRoleActivity.Inactive) ? 0 : 1;
+								int inactiveSide = (activeRoles[0] == ConstraintBoxRoleActivity.Inactive) ? 0 : 1;
 								for (int j = iBox + incr; j >= 0 && j < significantConstraintCount; j += incr)
 								{
 									ConstraintBoxRoleActivity[] testActiveRoles = constraintBoxes[j].ActiveRoles;
-									if (testActiveRoles.Length == 2 && testActiveRoles[checkSide] == ConstraintBoxRoleActivity.Active)
+									if (testActiveRoles.Length == 2 && testActiveRoles[inactiveSide] == ConstraintBoxRoleActivity.Active)
 									{
 										nextCompressedConstraint = j;
 										break;
@@ -1091,13 +1172,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 								if (nextCompressedConstraint != -1)
 								{
-									lastCompressedBottom = bounds.Y;
-									if (checkSide == 0)
+									lastCompressedBottom = isVertical ? bounds.X : bounds.Y;
+									if (reverseVertical)
 									{
-										bounds.X += constraintWidth;
+										if (inactiveSide == 1)
+										{
+											bounds.Y += constraintWidth;
+										}
+									}
+									else if (inactiveSide == 0)
+									{
+										if (isVertical)
+										{
+											bounds.Y += constraintWidth;
+										}
+										else
+										{
+											bounds.X += constraintWidth;
+										}
 									}
 									box.CompressBinaryActiveRoles();
-									bounds.Width -= constraintWidth;
+									if (isVertical)
+									{
+										bounds.Height -= constraintWidth;
+									}
+									else
+									{
+										bounds.Width -= constraintWidth;
+									}
 								}
 							}
 						}
@@ -1109,6 +1211,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (skippedRow)
 						{
 							skippedRow = false;
+						}
+						else if (isVertical)
+						{
+							fullBounds.Offset(constraintHeight, 0);
 						}
 						else
 						{
@@ -1130,8 +1236,58 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							break;
 						}
-						fullBounds.Offset(0, constraintHeight);
+						if (isVertical)
+						{
+							fullBounds.Offset(constraintHeight, 0);
+						}
+						else
+						{
+							fullBounds.Offset(0, constraintHeight);
+						}
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// Convert a <see cref="ConstraintAttachPosition"/> into a <see cref="ConstraintDisplayPosition"/> depending
+		/// on the current <see cref="DisplayOrientation"/> value.
+		/// </summary>
+		protected ConstraintDisplayPosition DisplayPositionFromAttachPosition(ConstraintAttachPosition attachPosition)
+		{
+			bool isBottom = false;
+			switch (attachPosition)
+			{
+				//case ConstraintAttachPosition.Top:
+				case ConstraintAttachPosition.Bottom:
+					isBottom = true;
+					break;
+				case ConstraintAttachPosition.Left:
+					isBottom = DisplayOrientation == DisplayOrientation.VerticalRotatedRight;
+					break;
+				case ConstraintAttachPosition.Right:
+					isBottom = DisplayOrientation == DisplayOrientation.VerticalRotatedLeft;
+					break;
+			}
+			return isBottom ? ConstraintDisplayPosition.Bottom : ConstraintDisplayPosition.Top;
+		}
+		/// <summary>
+		/// Get the constraint shape field that corresponds to the internal constraints
+		/// </summary>
+		private ConstraintShapeField InternalConstraintShapeField
+		{
+			get
+			{
+				bool useTop = ConstraintDisplayPosition == ConstraintDisplayPosition.Top;
+				switch (DisplayOrientation)
+				{
+					case DisplayOrientation.Horizontal:
+						return useTop ? myTopConstraintShapeField : myBottomConstraintShapeField;
+					case DisplayOrientation.VerticalRotatedRight:
+						return useTop ? myRightConstraintShapeField : myLeftConstraintShapeField;
+					//case DisplayOrientation.VerticalRotatedLeft:
+					default:
+						Debug.Assert(DisplayOrientation == DisplayOrientation.VerticalRotatedLeft);
+						return useTop ? myLeftConstraintShapeField : myRightConstraintShapeField;
 				}
 			}
 		}
@@ -1141,11 +1297,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private const double RoleBoxWidth = 0.16;
 		private const double NestedFactHorizontalMargin = 0.09;
 		private const double NestedFactVerticalMargin = 0.056;
-		private static readonly SizeD NestedFactMarginSize = new SizeD(NestedFactHorizontalMargin, NestedFactVerticalMargin);
+		private static readonly SizeD NestedFactHorizontalMarginSize = new SizeD(NestedFactHorizontalMargin, NestedFactVerticalMargin);
+		private static readonly SizeD NestedFactVerticalMarginSize = new SizeD(NestedFactVerticalMargin, NestedFactHorizontalMargin);
 		private const double ConstraintHeight = 0.07;
 		private const double ExternalConstraintBarCenterAdjust = ConstraintHeight / 5;
-		private const double BorderMargin = 0.05;
-		private static readonly SizeD BorderMarginSize = new SizeD(0, BorderMargin / 2);
+		private const double BorderMargin = 0.025;
+		private static readonly SizeD BorderHorizontalMarginSize = new SizeD(0, BorderMargin);
+		private static readonly SizeD BorderVerticalMarginSize = new SizeD(BorderMargin, 0);
 		private const double FocusIndicatorInsideMargin = .019;
 		#endregion // Size Constants
 		#region SpacerShapeField : ShapeField
@@ -1154,50 +1312,91 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private sealed class SpacerShapeField : ShapeField
 		{
+			private readonly bool myIsVertical;
+
 			/// <summary>
-			/// Construct a default SpacerShapeField
+			/// A shape field to add differing amounts of padding depending on
+			/// whether a fact type shape is objectified or not.
 			/// </summary>
-			public SpacerShapeField()
-				: base(ResourceStrings.ShapeFieldName_HACK)
+			/// <param name="fieldName">Non-localized name for the field</param>
+			/// <param name="isVertical">Spacer is used when the fact type shape is displayed with a vertical orientation</param>
+			public SpacerShapeField(string fieldName, bool isVertical)
+				: base(fieldName)
 			{
 				DefaultFocusable = false;
 				DefaultSelectable = false;
 				DefaultVisibility = false;
+				myIsVertical = isVertical;
 			}
 
 			/// <summary>
-			/// Returns <see cref="NestedFactMarginSize"/> if <see cref="FactTypeShape.ShouldDrawObjectified"/> is
-			/// <see langword="true"/> for <paramref name="parentShape"/>, otherwise <see cref="BorderMarginSize"/>.
+			/// Returns <see cref="NestedFactHorizontalMarginSize"/> if <see cref="FactTypeShape.ShouldDrawObjectified"/> is
+			/// <see langword="true"/> for <paramref name="parentShape"/>, otherwise <see cref="BorderHorizontalMarginSize"/>.
 			/// </summary>
 			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
-				return (parentShape as FactTypeShape).ShouldDrawObjectified ? NestedFactMarginSize : BorderMarginSize;
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				bool isVertical = myIsVertical;
+				bool isObjectified = factTypeShape.ShouldDrawObjectified;
+				double offset = ((factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ^ isVertical) ? // verticalMatchesShape
+					(isObjectified ? NestedFactVerticalMargin : BorderMargin) :
+					(isObjectified ? NestedFactHorizontalMargin : BorderMargin);
+				return isVertical ?
+					new SizeD(offset, 0d) :
+					new SizeD(0d, offset);
 			}
 
 			// Nothing to paint for the spacer. So, no DoPaint override needed.
 		}
 		#endregion // SpacerShapeField class
 		#region ConstraintShapeField : ShapeField
+		/// <summary>
+		/// Indicate which side of a <see cref="FactTypeShape"/> a <see cref="ConstraintShapeField"/> is attached to
+		/// </summary>
+		protected enum ConstraintAttachPosition
+		{
+			/// <summary>
+			/// Attach to the top of the role boxes
+			/// </summary>
+			Top,
+			/// <summary>
+			/// Attach to the right of the role boxes
+			/// </summary>
+			Right,
+			/// <summary>
+			/// Attach to the bottom of the role boxes
+			/// </summary>
+			Bottom,
+			/// <summary>
+			/// Attach to the left of the role boxes
+			/// </summary>
+			Left,
+		}
 		private sealed class ConstraintShapeField : ShapeField
 		{
-			private readonly ConstraintDisplayPosition myDisplayPosition;
+			private readonly ConstraintAttachPosition myAttachPosition;
 
-			public ConstraintShapeField(ConstraintDisplayPosition displayPosition)
-				: base(ResourceStrings.ShapeFieldName_HACK)
+			/// <summary>
+			/// Create a new constraint shape field
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field, forwarded to base class.</param>
+			/// <param name="attachPosition">The position for attaching this shape field, relative to the role boxes</param>
+			public ConstraintShapeField(string fieldName, ConstraintAttachPosition attachPosition)
+				: base(fieldName)
 			{
 				DefaultFocusable = true;
 				DefaultSelectable = true;
 				DefaultVisibility = true;
-				myDisplayPosition = displayPosition;
+				myAttachPosition = attachPosition;
 			}
 			/// <summary>
-			/// Accessor property for display position provided to constructor
+			/// Accessor property for position provided to constructor
 			/// </summary>
-			public ConstraintDisplayPosition DisplayPosition
+			public ConstraintAttachPosition AttachPosition
 			{
 				get
 				{
-					return myDisplayPosition;
+					return myAttachPosition;
 				}
 			}
 			/// <summary>
@@ -1211,7 +1410,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				((FactTypeShape)parentShape).WalkConstraintBoxes(
 					this,
-					myDisplayPosition,
+					AttachPosition,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						RectangleD fullBounds = constraintBox.Bounds;
@@ -1234,7 +1433,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				int total = 0;
 				((FactTypeShape)parentShape).WalkConstraintBoxes(
 					this,
-					myDisplayPosition,
+					AttachPosition,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						++total;
@@ -1253,7 +1452,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ShapeSubField retVal = null;
 				((FactTypeShape)parentShape).WalkConstraintBoxes(
 					this,
-					myDisplayPosition,
+					AttachPosition,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						if (index == 0)
@@ -1274,31 +1473,79 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="ConstraintShapeField"/>.</returns>
 			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
+				FactTypeShape factTypeShape = (FactTypeShape)parentShape;
+				bool isVertical = IsVertical;
+				if ((factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ^ !isVertical)
+				{
+					return SizeD.Empty;
+				}
 				double minY = double.MaxValue;
 				double maxY = double.MinValue;
 				bool wasVisited = false;
-				((FactTypeShape)parentShape).WalkConstraintBoxes(
+				factTypeShape.WalkConstraintBoxes(
 					RectangleD.Empty,
-					myDisplayPosition,
+					AttachPosition,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						wasVisited = true;
 						RectangleD bounds = constraintBox.Bounds;
-						minY = Math.Min(minY, bounds.Top);
-						maxY = Math.Max(maxY, bounds.Bottom);
+						if (isVertical)
+						{
+							minY = Math.Min(minY, bounds.Left);
+							maxY = Math.Max(maxY, bounds.Right);
+						}
+						else
+						{
+							minY = Math.Min(minY, bounds.Top);
+							maxY = Math.Max(maxY, bounds.Bottom);
+						}
 						return true;
 					});
-				return new SizeD(RolesShape.GetMinimumSize(parentShape).Width, wasVisited ? maxY - minY : 0);
+				return isVertical ?
+					new SizeD(wasVisited ? maxY - minY : 0, RolesShape.GetMinimumSize(parentShape).Height) :
+					new SizeD(RolesShape.GetMinimumSize(parentShape).Width, wasVisited ? maxY - minY : 0);
 			}
-
 			/// <summary>
-			/// Paints the contstraints.
+			/// Return true if the constraint box is displayed vertically
+			/// </summary>
+			private bool IsVertical
+			{
+				get
+				{
+					ConstraintAttachPosition attachPosition = myAttachPosition;
+					switch (attachPosition)
+					{
+						case ConstraintAttachPosition.Left:
+						case ConstraintAttachPosition.Right:
+							return true;
+					}
+					return false;
+				}
+			}
+			/// <summary>
+			/// Constraint fields are only visible if the orientation matches the parent shape
+			/// </summary>
+			/// <param name="parentShape">The <see cref="FactTypeShape"/> that this <see cref="ConstraintShapeField"/> is associated with.</param>
+			/// <returns>True if the orientation of the shape matches the orientation of the constraint field</returns>
+			public override bool GetVisible(ShapeElement parentShape)
+			{
+				return ((parentShape as FactTypeShape).DisplayOrientation == DisplayOrientation.Horizontal) ^ IsVertical;
+			}
+			/// <summary>
+			/// Paints the constraints.
 			/// </summary>
 			/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
 			/// <param name="parentShape">ConstraintShapeField to draw to.</param>
 			public sealed override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
 				FactTypeShape factShape = parentShape as FactTypeShape;
+				DisplayOrientation orientation = factShape.DisplayOrientation;
+				bool isVertical = IsVertical;
+				if ((orientation == DisplayOrientation.Horizontal) ^ !isVertical)
+				{
+					return;
+				}
+				bool reverseVertical = orientation == DisplayOrientation.VerticalRotatedLeft;
 				Graphics g = e.Graphics;
 				HighlightedShapesCollection highlightedShapes = null;
 				SelectedShapesCollection selection = null;
@@ -1329,13 +1576,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Pen alethicConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
 				Pen deonticConstraintPen = styleSet.GetPen(DeonticInternalFactConstraintPen);
 				float gap = alethicConstraintPen.Width;
-				ConstraintDisplayPosition position = myDisplayPosition;
+				ConstraintAttachPosition attachPosition = AttachPosition;
+				ConstraintDisplayPosition position = factShape.DisplayPositionFromAttachPosition(attachPosition);
 				ORMDiagram diagram = (ORMDiagram)factShape.Diagram;
 				StyleSet diagramStyleSet = diagram.StyleSet;
 
 				factShape.WalkConstraintBoxes(
 					this,
-					position,
+					attachPosition,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						bool isInternalConstraint = constraintBox.ConstraintType == ConstraintType.InternalUniqueness;
@@ -1344,7 +1592,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						IFactConstraint factConstraint = constraintBox.FactConstraint;
 						IConstraint currentConstraint = factConstraint.Constraint;
 						RectangleF boundsF = RectangleD.ToRectangleF(constraintBox.Bounds);
-						float verticalPos = boundsF.Top + (float)(ConstraintHeight / 2);
+						float verticalPos = (isVertical ? boundsF.Left : boundsF.Top) + (float)(ConstraintHeight / 2);
 						ConstraintBoxRoleActivity[] rolePosToDraw = constraintBox.ActiveRoles;
 						int numRoles = rolePosToDraw.Length;
 						float roleWidth = (float)FactTypeShape.RoleBoxWidth;
@@ -1471,13 +1719,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 									g.DrawRectangle(styleSet.GetPen(pen2Id), constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
 								}
 							}
-							float startPos = boundsF.Left, endPos = startPos;
+							float startPos = isVertical ? (reverseVertical ? boundsF.Bottom : boundsF.Top) : boundsF.Left;
+							float endPos = startPos;
 							bool drawConstraintPreffered = factShape.ShouldDrawConstraintPreferred(currentConstraint);
 							if (constraintBox.IsSpanning || constraintBox.IsAntiSpanning)
 							{
-								endPos = boundsF.Right;
+								endPos = isVertical ? (reverseVertical ? boundsF.Top : boundsF.Bottom) : boundsF.Right;
 								//draw fully spanning constraint
-								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && constraintBox.IsSpanning);
+								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && constraintBox.IsSpanning, isVertical, reverseVertical);
 							}
 							else
 							{
@@ -1507,7 +1756,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											//draw constraint
 											if (constraintHasDrawn)
 											{
-												DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && !drawCalled);
+												DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && !drawCalled, isVertical, reverseVertical);
 												drawCalled = true;
 											}
 											startPos = endPos;
@@ -1518,13 +1767,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 									// move to next position
 									if (currentActivity != ConstraintBoxRoleActivity.NotInBox)
 									{
-										endPos += roleWidth;
+										endPos += reverseVertical ? -roleWidth : roleWidth;
 										positionChanged = true;
 									}
-									else if (boundsF.Width > roleWidth)
+									else if ((isVertical ? boundsF.Height : boundsF.Width) > roleWidth)
 									{
 										// this covers BinaryRights when not compressing constraints
-										startPos += roleWidth;
+										startPos += reverseVertical ? -roleWidth : roleWidth;
 										endPos = startPos;
 										positionChanged = false;
 									}
@@ -1535,9 +1784,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 									constraintPen.DashStyle = startDashStyle;
 								}
 								//We've reached the end. Draw out any right constraints that may exist.
-								if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
+								if (currentActivity == ConstraintBoxRoleActivity.Active &&
+									(reverseVertical ? endPos < startPos : endPos > startPos))
 								{
-									DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && !drawCalled);
+									DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered && constraintPen.DashStyle == startDashStyle, isDeontic && !drawCalled, isVertical, reverseVertical);
 								}
 							}
 						}
@@ -1546,22 +1796,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 							int firstActive = -1;
 							int lastActive = -1;
 							float targetVertical;
-							if (position == ConstraintDisplayPosition.Bottom)
+							if (position == ((orientation == DisplayOrientation.VerticalRotatedRight) ? ConstraintDisplayPosition.Top : ConstraintDisplayPosition.Bottom))
 							{
 								verticalPos += (float)ExternalConstraintBarCenterAdjust;
-								targetVertical = boundsF.Top;
+								targetVertical = isVertical ? boundsF.Left : boundsF.Top;
 							}
 							else
 							{
 								verticalPos -= (float)ExternalConstraintBarCenterAdjust;
-								targetVertical = boundsF.Bottom;
+								targetVertical = isVertical ? boundsF.Right : boundsF.Bottom;
 							}
 							bool fullySpanning = rolePosToDraw == PreDefinedConstraintBoxRoleActivities_FullySpanning;
 							if (fullySpanning)
 							{
 								numRoles = factConstraint.FactType.RoleCollection.Count;
 							}
-							float startPos = boundsF.Left;
+							float startPos = isVertical ? (reverseVertical ? boundsF.Bottom : boundsF.Top) : boundsF.Left;
 							for (int i = 0; i < numRoles; ++i)
 							{
 								ConstraintBoxRoleActivity currentActivity = fullySpanning ? ConstraintBoxRoleActivity.Active : rolePosToDraw[i];
@@ -1573,16 +1823,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 									else
 									{
-										float x = startPos + (firstActive + .5f) * roleWidth;
-										g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
-										x += (i - firstActive) * roleWidth;
-										g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+										float xChange = (firstActive + .5f) * roleWidth;
+										if (isVertical)
+										{
+											float x = startPos + (reverseVertical ? -xChange : xChange);
+											g.DrawLine(constraintPen, verticalPos, x, targetVertical, x);
+											x += (reverseVertical ? (firstActive - i) : (i - firstActive)) * roleWidth;
+											g.DrawLine(constraintPen, verticalPos, x, targetVertical, x);
+										}
+										else
+										{
+											float x = startPos + xChange;
+											g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+											x += (i - firstActive) * roleWidth;
+											g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+										}
 									}
 									lastActive = i;
 								}
 								else if (firstActive == -1 && currentActivity == ConstraintBoxRoleActivity.NotInBox)
 								{
-									startPos -= roleWidth;
+									startPos += reverseVertical ? roleWidth : -roleWidth;
 								}
 							}
 							if (lastActive == firstActive)
@@ -1591,15 +1852,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 								// cases when the ExternalConstraintRoleBarDisplay is set to AnyRole.
 								// This is designed to provide a selectable accessibility object for
 								// all constraints associated with a fact.
-								float x1 = startPos + (firstActive + .3f) * roleWidth;
-								float x2 = x1 + .4f * roleWidth;
-								g.DrawLine(constraintPen, x1, verticalPos, x1, targetVertical);
-								g.DrawLine(constraintPen, x1, verticalPos, x2, verticalPos);
-								g.DrawLine(constraintPen, x2, verticalPos, x2, targetVertical);
+								float x1;
+								float x2;
+								if (reverseVertical)
+								{
+									x1 = startPos - (firstActive + .3f) * roleWidth;
+									x2 = x1 - .4f * roleWidth;
+								}
+								else
+								{
+									x1 = startPos + (firstActive + .3f) * roleWidth;
+									x2 = x1 + .4f * roleWidth;
+								}
+								if (isVertical)
+								{
+									g.DrawLine(constraintPen, verticalPos, x1, targetVertical, x1);
+									g.DrawLine(constraintPen, verticalPos, x1, verticalPos, x2);
+									g.DrawLine(constraintPen, verticalPos, x2, targetVertical, x2);
+								}
+								else
+								{
+									g.DrawLine(constraintPen, x1, verticalPos, x1, targetVertical);
+									g.DrawLine(constraintPen, x1, verticalPos, x2, verticalPos);
+									g.DrawLine(constraintPen, x2, verticalPos, x2, targetVertical);
+								}
 							}
 							else
 							{
-								g.DrawLine(constraintPen, startPos + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
+								if (isVertical)
+								{
+									if (reverseVertical)
+									{
+										g.DrawLine(constraintPen, verticalPos, startPos - (firstActive + .5f) * roleWidth, verticalPos, boundsF.Top + (numRoles - lastActive - .5f) * roleWidth);
+									}
+									else
+									{
+										g.DrawLine(constraintPen, verticalPos, startPos + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Bottom - (numRoles - lastActive - .5f) * roleWidth);
+									}
+								}
+								else
+								{
+									g.DrawLine(constraintPen, startPos + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
+								}
 							}
 						}
 
@@ -1629,24 +1923,62 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="gap">The gap to leave at the ends of the constraint line</param>
 			/// <param name="preferred">Whether or not to draw the constraint as preffered.</param>
 			/// <param name="deontic">Whether or not to draw this portion of the constraint as deontic.</param>
-			private static void DrawInternalConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos, float gap, bool preferred, bool deontic)
+			/// <param name="vertical">Whether or not to draw the constraint vertical. Inverts x/y meanings of other parameters</param>
+			/// <param name="reverseVertical">True if drawing from bottom to top instead of top to bottom</param>
+			private static void DrawInternalConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos, float gap, bool preferred, bool deontic, bool vertical, bool reverseVertical)
 			{
 				if (deontic)
 				{
 					float deonticRadius = (float)(FactTypeShape.ConstraintHeight / 2) - gap;
 					float deonticDiameter = deonticRadius + deonticRadius;
-					g.DrawArc(pen, startPos + gap, verticalPos - deonticRadius, deonticDiameter, deonticDiameter, 0, 360);
-					startPos += deonticDiameter;
+					if (vertical)
+					{
+						if (reverseVertical)
+						{
+							gap = -gap;
+							g.DrawArc(pen, verticalPos - deonticRadius, startPos - deonticDiameter + gap, deonticDiameter, deonticDiameter, 0, 360);
+							startPos -= deonticDiameter;
+						}
+						else
+						{
+							g.DrawArc(pen, verticalPos - deonticRadius, startPos + gap, deonticDiameter, deonticDiameter, 0, 360);
+							startPos += deonticDiameter;
+						}
+					}
+					else
+					{
+						g.DrawArc(pen, startPos + gap, verticalPos - deonticRadius, deonticDiameter, deonticDiameter, 0, 360);
+						startPos += deonticDiameter;
+					}
+				}
+				else if (reverseVertical)
+				{
+					gap = -gap;
 				}
 				if (preferred)
 				{
 					float vAdjust = gap * .75f;
-					g.DrawLine(pen, startPos + gap, verticalPos - vAdjust, endPos - gap, verticalPos - vAdjust);
-					g.DrawLine(pen, startPos + gap, verticalPos + vAdjust, endPos - gap, verticalPos + vAdjust);
+					if (vertical)
+					{
+						g.DrawLine(pen, verticalPos - vAdjust, startPos + gap, verticalPos - vAdjust, endPos - gap);
+						g.DrawLine(pen, verticalPos + vAdjust, startPos + gap, verticalPos + vAdjust, endPos - gap);
+					}
+					else
+					{
+						g.DrawLine(pen, startPos + gap, verticalPos - vAdjust, endPos - gap, verticalPos - vAdjust);
+						g.DrawLine(pen, startPos + gap, verticalPos + vAdjust, endPos - gap, verticalPos + vAdjust);
+					}
 				}
 				else
 				{
-					g.DrawLine(pen, startPos + gap, verticalPos, endPos - gap, verticalPos);
+					if (vertical)
+					{
+						g.DrawLine(pen, verticalPos, startPos + gap, verticalPos, endPos - gap);
+					}
+					else
+					{
+						g.DrawLine(pen, startPos + gap, verticalPos, endPos - gap, verticalPos);
+					}
 				}
 			}
 		}
@@ -1781,8 +2113,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Construct a default RolesShapeField (Visible, but not selectable or focusable)
 			/// </summary>
-			public RolesShapeField()
-				: base(ResourceStrings.ShapeFieldName_HACK)
+			/// <param name="fieldName">Non-localized name for the field, forwarded to base class.</param>
+			public RolesShapeField(string fieldName)
+				: base(fieldName)
 			{
 				DefaultFocusable = false;
 				DefaultSelectable = false;
@@ -1801,7 +2134,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 					int roleCount = roles.Count;
 					if (roleCount != 0)
 					{
-						int roleIndex = Math.Min((int)((point.X - fullBounds.Left) * roleCount / fullBounds.Width), roleCount - 1);
+						int roleIndex;
+						switch (parentFactShape.DisplayOrientation)
+						{
+							case DisplayOrientation.Horizontal:
+								roleIndex = (int)((point.X - fullBounds.Left) * roleCount / fullBounds.Width);
+								break;
+							case DisplayOrientation.VerticalRotatedRight:
+								roleIndex = (int)((point.Y - fullBounds.Top) * roleCount / fullBounds.Height);
+								break;
+							//case DisplayOrientation.VerticalRotatedLeft:
+							default:
+								Debug.Assert(parentFactShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft);
+								roleIndex = (int)((fullBounds.Bottom - point.Y) * roleCount / fullBounds.Height);
+								break;
+
+						}
+						roleIndex = Math.Min(roleIndex, roleCount - 1); // Deal with potential roundoff error on last role
 						diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new RoleSubField(roles[roleIndex]));
 					}
 				}
@@ -1828,10 +2177,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The minimum <see cref="SizeD"/> of this <see cref="RolesShapeField"/>.</returns>
 			public sealed override SizeD GetMinimumSize(ShapeElement parentShape)
 			{
-				double margin = parentShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
-				double width = FactTypeShape.RoleBoxWidth * Math.Max(1, (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count) + margin;
+				FactTypeShape factTypeShape = (parentShape as FactTypeShape);
+				double margin = factTypeShape.StyleSet.GetPen(FactTypeShape.RoleBoxResource).Width;
+				double width = FactTypeShape.RoleBoxWidth * Math.Max(1, factTypeShape.AssociatedFactType.RoleCollection.Count) + margin;
 				double height = FactTypeShape.RoleBoxHeight + margin;
-				return new SizeD(width, height);
+				return (factTypeShape.DisplayOrientation == DisplayOrientation.Horizontal) ? new SizeD(width, height) : new SizeD(height, width);
 			}
 			/// <summary>
 			/// Paint the RolesShapeField
@@ -1848,6 +2198,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (roleCount > 0 || objectified)
 				{
 					int highlightRoleBox = -1;
+					DisplayOrientation orientation = parentFactShape.DisplayOrientation;
+					bool drawHorizontal = orientation == DisplayOrientation.Horizontal;
 					RoleSubField testSubField = new RoleSubField();
 					DiagramItem testSelect = new DiagramItem(parentShape, this, testSubField);
 					DiagramClientView clientView = e.View;
@@ -1855,11 +2207,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					bool factShapeHighlighted = false;
 					if (clientView != null)
 					{
-						FactTypeShape factShape = PresentationViewsSubject.GetPresentation(factType)[0] as FactTypeShape;
 						selection = clientView.Selection;
 						foreach (DiagramItem item in clientView.HighlightedShapes)
 						{
-							if (parentShape == item.Shape)
+							if (parentFactShape == item.Shape)
 							{
 								RoleSubField roleField = item.SubField as RoleSubField;
 								if (roleField != null)
@@ -1879,15 +2230,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 					bounds.Inflate(-margin, -margin);
 
 					Graphics g = e.Graphics;
-					double offsetBy = bounds.Width / roleCount;
-					double lastX = bounds.Left;
+					double offsetBy;
+					double lastX;
+					float top;
+					float verticalLineBottom;
+					float height;
+					if (drawHorizontal)
+					{
+						offsetBy = bounds.Width / roleCount;
+						lastX = bounds.Left;
+						top = (float)bounds.Top;
+						verticalLineBottom = (float)bounds.Bottom - (float)margin;
+						height = (float)bounds.Height;
+					}
+					else
+					{
+						offsetBy = bounds.Height / roleCount;
+						lastX = bounds.Top;
+						top = (float)bounds.Left;
+						verticalLineBottom = (float)bounds.Right - (float)margin;
+						height = (float)bounds.Width;
+					}
+					float verticalLineTop = top + (float)margin;
 					StyleSet styleSet = parentShape.StyleSet;
 					Pen pen = styleSet.GetPen(FactTypeShape.RoleBoxResource);
 					int activeRoleIndex;
-					float top = (float)bounds.Top;
-					float verticalLineTop = top + (float)margin;
-					float verticalLineBottom = (float)bounds.Bottom - (float)margin;
-					float height = (float)bounds.Height;
 					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
 					InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
 					ORMDiagram currentDiagram = parentFactShape.Diagram as ORMDiagram;
@@ -1897,12 +2264,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Font constraintSequenceFont = null;
 					Brush constraintSequenceBrush = null;
 					bool highlightThisRole = false;
+					bool reverseRoleOrder = orientation == DisplayOrientation.VerticalRotatedLeft;
 					try
 					{
 						for (int i = 0; i < roleCount; ++i)
 						{
-							RectangleF roleBounds = new RectangleF((float)lastX, top, (float)offsetBy, height);
-							RoleBase currentRole = roles[i];
+							RectangleF roleBounds = drawHorizontal ?
+								new RectangleF((float)lastX, top, (float)offsetBy, height) :
+								new RectangleF(top, (float)lastX, height, (float)offsetBy);
+							RoleBase currentRole = roles[reverseRoleOrder ? roleCount - i - 1 : i];
 							highlightThisRole = i == highlightRoleBox || factShapeHighlighted;
 
 							Brush roleCenterBrush;
@@ -1912,8 +2282,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								ShapeElement shpe = parentShape as ShapeElement;
-								roleCenterBrush = shpe.ParentShape.StyleSet.GetBrush(DiagramBrushes.DiagramBackground);
+								roleCenterBrush = parentShape.ParentShape.StyleSet.GetBrush(DiagramBrushes.DiagramBackground);
 							}
 							g.FillRectangle(roleCenterBrush, roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
 
@@ -2087,7 +2456,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 							// Draw the line between the role boxes
 							if (i != 0)
 							{
-								g.DrawLine(pen, (float)lastX, verticalLineTop, (float)lastX, verticalLineBottom);
+								if (drawHorizontal)
+								{
+									g.DrawLine(pen, (float)lastX, verticalLineTop, (float)lastX, verticalLineBottom);
+								}
+								else
+								{
+									g.DrawLine(pen, verticalLineTop, (float)lastX, verticalLineBottom, (float)lastX);
+								}
 							}
 							lastX += offsetBy;
 						}
@@ -2256,7 +2632,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private static RolesShapeField myRolesShapeField;
 		private static ConstraintShapeField myTopConstraintShapeField;
 		private static ConstraintShapeField myBottomConstraintShapeField;
-		private static SpacerShapeField mySpacerShapeField;
+		private static SpacerShapeField myTopSpacerShapeField;
+		private static ConstraintShapeField myLeftConstraintShapeField;
+		private static ConstraintShapeField myRightConstraintShapeField;
+		private static SpacerShapeField myLeftSpacerShapeField;
 		/// <summary>
 		/// Pen to draw a role box outline
 		/// </summary>
@@ -2471,35 +2850,58 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.InitializeShapeFields(shapeFields);
 
 			// Initialize fields
-			RolesShapeField field = new RolesShapeField();
-			ConstraintShapeField topConstraintField = new ConstraintShapeField(ConstraintDisplayPosition.Top);
-			ConstraintShapeField bottomConstraintField = new ConstraintShapeField(ConstraintDisplayPosition.Bottom);
-			SpacerShapeField spacer = new SpacerShapeField();
+			RolesShapeField rolesField = new RolesShapeField("Roles");
+			ConstraintShapeField topConstraintField = new ConstraintShapeField("TopConstraints", ConstraintAttachPosition.Top);
+			ConstraintShapeField bottomConstraintField = new ConstraintShapeField("BottomConstraints", ConstraintAttachPosition.Bottom);
+			ConstraintShapeField leftConstraintField = new ConstraintShapeField("LeftConstraints", ConstraintAttachPosition.Left);
+			ConstraintShapeField rightConstraintField = new ConstraintShapeField("RightConstraints", ConstraintAttachPosition.Right);
+			SpacerShapeField topSpacer = new SpacerShapeField("TopSpacer", false);
+			SpacerShapeField leftSpacer = new SpacerShapeField("LeftSpacer", true);
 
 			// Add all shapes before modifying anchoring behavior
-			shapeFields.Add(spacer);
+			shapeFields.Add(topSpacer);
 			shapeFields.Add(topConstraintField);
 			shapeFields.Add(bottomConstraintField);
-			shapeFields.Add(field);
+			shapeFields.Add(leftSpacer);
+			shapeFields.Add(leftConstraintField);
+			shapeFields.Add(rightConstraintField);
+			shapeFields.Add(rolesField);
 
 			// Modify anchoring behavior
 			AnchoringBehavior bottomConstraintAnchor = bottomConstraintField.AnchoringBehavior;
 			bottomConstraintAnchor.CenterHorizontally();
-			bottomConstraintAnchor.SetTopAnchor(field, 1);
+			bottomConstraintAnchor.SetTopAnchor(rolesField, 1);
+			bottomConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.VerticallyToTop;
 
-			AnchoringBehavior anchor = field.AnchoringBehavior;
-			anchor.CenterHorizontally();
+			AnchoringBehavior anchor = rolesField.AnchoringBehavior;
+			//anchor.CenterHorizontally();
+			anchor.SetLeftAnchor(leftConstraintField, 1);
 			anchor.SetTopAnchor(topConstraintField, 1);
 
 			AnchoringBehavior topConstraintAnchor = topConstraintField.AnchoringBehavior;
 			topConstraintAnchor.CenterHorizontally();
-			topConstraintAnchor.SetTopAnchor(spacer, 1);
+			topConstraintAnchor.SetTopAnchor(topSpacer, 1);
+			topConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.VerticallyToTop;
 
-			AnchoringBehavior spacerAnchor = spacer.AnchoringBehavior;
-			spacerAnchor.CenterHorizontally();
+			AnchoringBehavior topSpacerAnchor = topSpacer.AnchoringBehavior;
+			topSpacerAnchor.CenterHorizontally();
+
+			AnchoringBehavior rightConstraintAnchor = rightConstraintField.AnchoringBehavior;
+			rightConstraintAnchor.CenterVertically();
+			rightConstraintAnchor.SetLeftAnchor(rolesField, 1);
+			rightConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.HorizontallyToLeft;
+
+			AnchoringBehavior leftConstraintAnchor = leftConstraintField.AnchoringBehavior;
+			leftConstraintAnchor.CenterVertically();
+			leftConstraintAnchor.SetLeftAnchor(leftSpacer, 1);
+			leftConstraintAnchor.InvisibleCollapseFlags = InvisibleCollapseFlags.HorizontallyToLeft;
+
+			AnchoringBehavior leftSpacerAnchor = leftSpacer.AnchoringBehavior;
+			//leftSpacerAnchor.SetLeftAnchor(AnchoringBehavior.Edge.Left, 0);
+			leftSpacerAnchor.CenterVertically();
 
 			Debug.Assert(myRolesShapeField == null); // Only called once
-			myRolesShapeField = field;
+			myRolesShapeField = rolesField;
 
 			Debug.Assert(myTopConstraintShapeField == null); // Only called once
 			myTopConstraintShapeField = topConstraintField;
@@ -2507,8 +2909,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Debug.Assert(myBottomConstraintShapeField == null); // Only called once
 			myBottomConstraintShapeField = bottomConstraintField;
 
-			Debug.Assert(mySpacerShapeField == null); // Only called once
-			mySpacerShapeField = spacer;
+			Debug.Assert(myTopSpacerShapeField == null); // Only called once
+			myTopSpacerShapeField = topSpacer;
+
+			Debug.Assert(myLeftConstraintShapeField == null); // Only called once
+			myLeftConstraintShapeField = leftConstraintField;
+
+			Debug.Assert(myRightConstraintShapeField == null); // Only called once
+			myRightConstraintShapeField = rightConstraintField;
+
+			Debug.Assert(myLeftSpacerShapeField == null); // Only called once
+			myLeftSpacerShapeField = leftSpacer;
 		}
 		/// <summary>
 		/// The shape field used to display roles
@@ -2546,13 +2957,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 					double width, height;
 					SizeD rolesShapeSize = rolesShape.GetMinimumSize(this);
 					width = rolesShapeSize.Width;
+					width += myLeftConstraintShapeField.GetMinimumSize(this).Width;
+					width += myRightConstraintShapeField.GetMinimumSize(this).Width;
 					height = rolesShapeSize.Height;
 					height += myTopConstraintShapeField.GetMinimumSize(this).Height;
 					height += myBottomConstraintShapeField.GetMinimumSize(this).Height;
 					if (!ShouldDrawObjectified)
 					{
-						width += BorderMargin;
-						height += BorderMargin;
+						width += BorderMargin + BorderMargin;
+						height += BorderMargin + BorderMargin;
 					}
 					retVal = new SizeD(width, height);
 				}
@@ -2569,8 +2982,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				if (ShouldDrawObjectified)
 				{
-					contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
-					contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
+					if (DisplayOrientation == DisplayOrientation.Horizontal)
+					{
+						contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
+						contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
+					}
+					else
+					{
+						contentSize.Width += NestedFactVerticalMargin + NestedFactVerticalMargin;
+						contentSize.Height += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
+					}
 				}
 				if (!UpdateRolesPosition(contentSize))
 				{
@@ -2588,14 +3009,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			bool retVal = false;
 			double oldRolesPosition = RolesPosition;
-			double newRolesPosition = myRolesShapeField.GetBounds(this).Center.Y;
+			PointD centerPoint = myRolesShapeField.GetBounds(this).Center;
+			bool isVertical = DisplayOrientation != DisplayOrientation.Horizontal;
+			double newRolesPosition = isVertical ? centerPoint.X : centerPoint.Y;
 			if (!VGConstants.FuzzEqual(oldRolesPosition, newRolesPosition, VGConstants.FuzzDistance))
 			{
 				RolesPosition = newRolesPosition;
 				if (oldRolesPosition != 0)
 				{
 					PointD newLocation = Location;
-					newLocation.Offset(0, oldRolesPosition - newRolesPosition);
+					if (isVertical)
+					{
+						newLocation.Offset(oldRolesPosition - newRolesPosition, 0);
+					}
+					else
+					{
+						newLocation.Offset(0, oldRolesPosition - newRolesPosition);
+					}
 					if (newSize.IsEmpty)
 					{
 						newSize = Size;
@@ -2833,7 +3263,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ConstraintShapeField constraintField;
 			if (null != (constraintField = field as ConstraintShapeField))
 			{
-				ConstraintDisplayPosition position = constraintField.DisplayPosition;
+				ConstraintDisplayPosition position = DisplayPositionFromAttachPosition(constraintField.AttachPosition);
 				return ORMShapeDomainModel.SingletonResourceManager.GetString("ConstraintDisplayPosition." + position.ToString());
 			}
 			return base.GetFieldAccessibleValue(field);
@@ -3042,13 +3472,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 				PointD objCenter = oppositeShape.AbsoluteCenter;
 				RectangleD factBox = myRolesShapeField.GetBounds(this); // This finds the role box for both objectified and simple fact types
 				factBox.Offset(AbsoluteBounds.Location);
+				DisplayOrientation orientation = DisplayOrientation;
 
-				// Decide whether top or bottom works best
-				double finalY = (Math.Abs(objCenter.Y - factBox.Top) <= Math.Abs(objCenter.Y - factBox.Bottom)) ? factBox.Top : factBox.Bottom;
-
-				// Find the left/right position
-				double roleWidth = factBox.Width / factRoleCount;
-				double finalX = factBox.Left + roleWidth * (roleIndex + (attachBeforeRole ? 0 : .5));
+				double finalY;
+				double roleWidth;
+				double finalX;
+				switch (orientation)
+				{
+					case DisplayOrientation.Horizontal:
+						// Decide whether top or bottom works best
+						finalY = (Math.Abs(objCenter.Y - factBox.Top) <= Math.Abs(objCenter.Y - factBox.Bottom)) ? factBox.Top : factBox.Bottom;
+						// Find the left/right position
+						roleWidth = factBox.Width / factRoleCount;
+						finalX = factBox.Left + roleWidth * (roleIndex + (attachBeforeRole ? 0 : .5));
+						break;
+					default:
+						// Decide whether the left or right works best
+						finalX = (Math.Abs(objCenter.X - factBox.Left) <= Math.Abs(objCenter.X - factBox.Right)) ? factBox.Left : factBox.Right;
+						// Find the top/bottom position
+						roleWidth = factBox.Height / factRoleCount;
+						finalY = roleWidth * (roleIndex + (attachBeforeRole ? 0 : .5));
+						if (orientation == DisplayOrientation.VerticalRotatedLeft)
+						{
+							finalY = factBox.Bottom - finalY;
+						}
+						else
+						{
+							finalY += factBox.Top;
+						}
+						break;
+				}
 
 				if (!attachBeforeRole)
 				{
@@ -3061,47 +3514,110 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else if (roleIndex == 0)
 					{
-						if (objCenter.X < factBox.Left)
+						switch (orientation)
 						{
-							testCenter = new PointD(factBox.Left + roleWidth * .5, factBox.Center.Y);
+							case DisplayOrientation.Horizontal:
+								if (objCenter.X < factBox.Left)
+								{
+									testCenter = new PointD(factBox.Left + roleWidth * .5, factBox.Center.Y);
+								}
+								break;
+							case DisplayOrientation.VerticalRotatedRight:
+								if (objCenter.Y < factBox.Top)
+								{
+									testCenter = new PointD(factBox.Center.X, factBox.Top + roleWidth * .5);
+								}
+								break;
+							case DisplayOrientation.VerticalRotatedLeft:
+								if (objCenter.Y > factBox.Bottom)
+								{
+									testCenter = new PointD(factBox.Center.X, factBox.Bottom - roleWidth * .5);
+								}
+								break;
 						}
 					}
 					else if (roleIndex == (factRoleCount - 1))
 					{
-						if (objCenter.X > factBox.Right)
+						switch (orientation)
 						{
-							testCenter = new PointD(factBox.Right - roleWidth * .5, factBox.Center.Y);
+							case DisplayOrientation.Horizontal:
+								if (objCenter.X > factBox.Right)
+								{
+									testCenter = new PointD(factBox.Right - roleWidth * .5, factBox.Center.Y);
+								}
+								break;
+							case DisplayOrientation.VerticalRotatedRight:
+								if (objCenter.Y > factBox.Top)
+								{
+									testCenter = new PointD(factBox.Center.X, factBox.Bottom - roleWidth * .5);
+								}
+								break;
+							case DisplayOrientation.VerticalRotatedLeft:
+								if (objCenter.Y < factBox.Top)
+								{
+									testCenter = new PointD(factBox.Center.X, factBox.Top + roleWidth * .5);
+								}
+								break;
 						}
 					}
 					if (!testCenter.IsEmpty)
 					{
 						// Compare the slope to a single role box height/width to see
 						// if we should connect to the edge or the top/bottom
-						double run = objCenter.X - testCenter.X;
-						if (!VGConstants.FuzzZero(run, VGConstants.FuzzDistance))
+						if (orientation == DisplayOrientation.Horizontal)
 						{
-							double slope = (objCenter.Y - testCenter.Y) / run;
-							if (Math.Abs(slope) < (factBox.Height / roleWidth))
+							double run = objCenter.X - testCenter.X;
+							if (!VGConstants.FuzzZero(run, VGConstants.FuzzDistance))
 							{
-								finalY = testCenter.Y;
-								// The line coming in is flatter than the line
-								// across opposite corners of the role box,
-								// connect to the left/right edge
-								if (factRoleCount == 1)
+								double slope = (objCenter.Y - testCenter.Y) / run;
+								if (Math.Abs(slope) < (factBox.Height / roleWidth))
 								{
-									finalX = (objCenter.X < factBox.Left) ? factBox.Left : factBox.Right;
-								}
-								else if (roleIndex == 0)
-								{
-									finalX = factBox.Left;
-								}
-								else if (roleIndex == (factRoleCount - 1))
-								{
-									finalX = factBox.Right;
+									finalY = testCenter.Y;
+									// The line coming in is flatter than the line
+									// across opposite corners of the role box,
+									// connect to the left/right edge
+									if (factRoleCount == 1)
+									{
+										finalX = (objCenter.X < factBox.Left) ? factBox.Left : factBox.Right;
+									}
+									else if (roleIndex == 0)
+									{
+										finalX = factBox.Left;
+									}
+									else if (roleIndex == (factRoleCount - 1))
+									{
+										finalX = factBox.Right;
+									}
 								}
 							}
 						}
-
+						else
+						{
+							double rise = objCenter.Y - testCenter.Y;
+							if (!VGConstants.FuzzZero(rise, VGConstants.FuzzDistance))
+							{
+								double inverseSlope = (objCenter.X - testCenter.X) / rise;
+								if (Math.Abs(inverseSlope) < (factBox.Width / roleWidth))
+								{
+									finalX = testCenter.X;
+									// The line coming in is flatter than the line
+									// across opposite corners of the role box,
+									// connect to the left/right edge
+									if (factRoleCount == 1)
+									{
+										finalY = (objCenter.Y < factBox.Top) ? factBox.Top : factBox.Bottom;
+									}
+									else if (roleIndex == 0)
+									{
+										finalY = (orientation == DisplayOrientation.VerticalRotatedRight) ? factBox.Top : factBox.Bottom;
+									}
+									else if (roleIndex == (factRoleCount - 1))
+									{
+										finalY = (orientation == DisplayOrientation.VerticalRotatedRight) ? factBox.Bottom : factBox.Top;
+									}
+								}
+							}
+						}
 					}
 				}
 				return new PointD(finalX, finalY);
@@ -3480,10 +3996,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (constraint.ConstraintIsInternal)
 			{
 				// We know the attach location of an internal constraint
-				ConstraintDisplayPosition position = ConstraintDisplayPosition;
+				ConstraintShapeField constraintShapeField = InternalConstraintShapeField;
 				WalkConstraintBoxes(
-					(position == ConstraintDisplayPosition.Top) ? myTopConstraintShapeField.GetBounds(this) : myBottomConstraintShapeField.GetBounds(this),
-					position,
+					constraintShapeField.GetBounds(this),
+					constraintShapeField.AttachPosition,
 					delegate(ref ConstraintBox constraintBox)
 					{
 						if (constraintBox.FactConstraint.Constraint == constraint)
@@ -3503,12 +4019,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// to be in the middle of the first/last active roles, not just
 				// in the raw middle.
 				ConstraintDisplayPosition position = ConstraintDisplayPosition.Top;
-				ConstraintShapeField constraintShapeField = myTopConstraintShapeField;
+				DisplayOrientation orientation = DisplayOrientation;
+				ConstraintShapeField constraintShapeField;
+				ConstraintShapeField pendingConstraintShapeField;
+				switch (orientation)
+				{
+					case DisplayOrientation.Horizontal:
+						constraintShapeField = myTopConstraintShapeField;
+						pendingConstraintShapeField = myBottomConstraintShapeField;
+						break;
+					case DisplayOrientation.VerticalRotatedRight:
+						constraintShapeField = myRightConstraintShapeField;
+						pendingConstraintShapeField = myLeftConstraintShapeField;
+						break;
+					//case DisplayOrientation.VerticalRotatedLeft:
+					default:
+						Debug.Assert(orientation == DisplayOrientation.VerticalRotatedLeft);
+						constraintShapeField = myLeftConstraintShapeField;
+						pendingConstraintShapeField = myRightConstraintShapeField;
+						break;
+				}
 				for (int iShape = 0; iShape < 2; ++iShape)
 				{
 					WalkConstraintBoxes(
 						constraintShapeField.GetBounds(this),
-						position,
+						constraintShapeField.AttachPosition,
 						delegate(ref ConstraintBox constraintBox)
 						{
 							if (constraintBox.FactConstraint.Constraint == constraint)
@@ -3556,18 +4091,51 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 								}
 								Debug.Assert(firstActive != -1 && lastActive != -1);
-								if (firstActive > 0)
-								{
-									rect.X += (firstActive - leadingNotInBox) * RoleBoxWidth;
-									if (leadingNotInBox == 0 && firstActive != 0)
-									{
-										rect.Width -= firstActive * RoleBoxWidth;
-									}
-								}
 								int trailingCount = roleCount - trailingNotInBox - lastActive - 1;
-								if (trailingCount > 0)
+								if (firstActive > 0 || trailingCount > 0)
 								{
-									rect.Width -= trailingCount * RoleBoxWidth;
+									bool isVertical = orientation != DisplayOrientation.Horizontal;
+									bool reverseVertical = orientation == DisplayOrientation.VerticalRotatedLeft;
+									int widthAdjust = 0;
+									if (firstActive > 0)
+									{
+										if (!reverseVertical)
+										{
+											double adjust = (firstActive - leadingNotInBox) * RoleBoxWidth;
+											if (isVertical)
+											{
+												rect.Y += adjust;
+											}
+											else
+											{
+												rect.X += adjust;
+											}
+										}
+										if (leadingNotInBox == 0)
+										{
+											widthAdjust = firstActive;
+										}
+									}
+									if (trailingCount > 0)
+									{
+										widthAdjust += trailingCount;
+										if (reverseVertical)
+										{
+											rect.Offset(0, trailingCount * RoleBoxWidth);
+										}
+									}
+									if (widthAdjust != 0)
+									{
+										double adjust =  widthAdjust * RoleBoxWidth;
+										if (isVertical)
+										{
+											rect.Height -= adjust;
+										}
+										else
+										{
+											rect.Width -= adjust;
+										}
+									}
 								}
 								return false;
 							}
@@ -3577,11 +4145,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						rect.Offset(Bounds.Location);
 						retVal = rect.Center;
-						retVal.Y += (position == ConstraintDisplayPosition.Bottom) ? ExternalConstraintBarCenterAdjust : -ExternalConstraintBarCenterAdjust;
+						double constraintBarAdjust = (position == ConstraintDisplayPosition.Bottom) ? ExternalConstraintBarCenterAdjust : -ExternalConstraintBarCenterAdjust;
+						switch (orientation)
+						{
+							case DisplayOrientation.Horizontal:
+								retVal.Y += constraintBarAdjust;
+								break;
+							case DisplayOrientation.VerticalRotatedLeft:
+								retVal.X += constraintBarAdjust;
+								break;
+							case DisplayOrientation.VerticalRotatedRight:
+								retVal.X -= constraintBarAdjust;
+								break;
+						}
 						break;
 					}
 					position = ConstraintDisplayPosition.Bottom;
-					constraintShapeField = myBottomConstraintShapeField;
+					constraintShapeField = pendingConstraintShapeField;
 				}
 			}
 			return retVal;
@@ -3613,7 +4193,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return new PointD(Size.Width / 2, RolesPosition);
+				return (DisplayOrientation == DisplayOrientation.Horizontal) ?
+					new PointD(Size.Width / 2, RolesPosition) :
+					new PointD(RolesPosition, Size.Height / 2);
 			}
 		}
 		/// <summary>
@@ -4116,7 +4698,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
 				Guid attributeId = e.DomainProperty.Id;
-				if (attributeId == ConstraintDisplayPositionDomainPropertyId)
+				bool orientationChange = false;
+				if (attributeId == ConstraintDisplayPositionDomainPropertyId ||
+					(orientationChange = (attributeId == DisplayOrientationDomainPropertyId)))
 				{
 					FactTypeShape factTypeShape = e.ModelElement as FactTypeShape;
 					if (!factTypeShape.IsDeleted)
@@ -4127,6 +4711,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (binaryLink != null)
 							{
 								binaryLink.RecalculateRoute();
+							}
+						}
+						if (orientationChange)
+						{
+							// Seed the RolesPosition value and adjust the location so that
+							// any AutoSize changes make the fact type shape look like it
+							// rotated around the center of the role box
+							switch ((DisplayOrientation)e.OldValue)
+							{
+								case DisplayOrientation.Horizontal:
+									{
+										RectangleD bounds = factTypeShape.AbsoluteBounds;
+										SizeD size = bounds.Size;
+										PointD location = bounds.Location;
+										double halfWidth = size.Width / 2;
+										location.Offset(0, factTypeShape.RolesPosition - halfWidth);
+										factTypeShape.AbsoluteBounds = new RectangleD(location, size);
+										factTypeShape.RolesPosition = halfWidth;
+										break;
+									}
+								case DisplayOrientation.VerticalRotatedRight:
+								case DisplayOrientation.VerticalRotatedLeft:
+									if ((DisplayOrientation)e.NewValue == DisplayOrientation.Horizontal)
+									{
+										RectangleD bounds = factTypeShape.AbsoluteBounds;
+										SizeD size = bounds.Size;
+										PointD location = bounds.Location;
+										double halfHeight = size.Height / 2;
+										location.Offset(factTypeShape.RolesPosition - halfHeight, 0);
+										factTypeShape.AbsoluteBounds = new RectangleD(location, size);
+										factTypeShape.RolesPosition = halfHeight;
+									}
+									break;
 							}
 						}
 						factTypeShape.AutoResize();
@@ -4606,15 +5223,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Create a text field that will correctly display objectified type names
 		/// </summary>
-		protected override AutoSizeTextField CreateAutoSizeTextField()
+		/// <param name="fieldName">Non-localized name for the field</param>
+		protected override AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
-			return new ObjectNameTextField();
+			return new ObjectNameTextField(fieldName);
 		}
 		/// <summary>
 		/// Class to show a decorated object name
 		/// </summary>
 		protected class ObjectNameTextField : AutoSizeTextField
 		{
+			/// <summary>
+			/// Create a new ObjectNameTextField
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public ObjectNameTextField(string fieldName)
+				: base(fieldName)
+			{
+			}
 			/// <summary>
 			/// Modify the display text for independent object types.
 			/// </summary>

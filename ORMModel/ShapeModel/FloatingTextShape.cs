@@ -78,7 +78,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override void InitializeShapeFields(IList<ShapeField> shapeFields)
 		{
 			Store store = Store;
-			AutoSizeTextField textField = CreateAutoSizeTextField();
+			AutoSizeTextField textField = CreateAutoSizeTextField("TextField");
 			textField.AssociateValueWith(Store, AssociatedModelDomainPropertyId);
 			textField.DefaultFocusable = true;
 			shapeFields.Add(textField);
@@ -135,12 +135,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Method to allow inheritors to provide custom implementations of the AutoSizeTextField.
 		/// </summary>
 		/// <returns>The AutoSizeTextField to use.</returns>
-		protected virtual AutoSizeTextField CreateAutoSizeTextField()
+		/// <param name="fieldName">Non-localized name for the field</param>
+		protected virtual AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
 			// Note: Don't add any other code here. The override
 			// is here specifically to enable creation of a more
 			// derived text field.
-			return new AutoSizeTextField();
+			return new AutoSizeTextField(fieldName);
 		}
 	}
 }

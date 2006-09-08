@@ -109,6 +109,18 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="DisplayOrientation">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayOrientation" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="DisplayOrientation" name="Horizontal" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Attribute ID="RolesPosition" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="RoleDisplayOrder">
 			<se:Link RelationshipName="FactTypeShapeHasRoleDisplayOrder" RoleName="RoleDisplayOrder"/>

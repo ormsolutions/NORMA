@@ -214,7 +214,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override void OnDeleting()
 		{
 			base.OnDeleting();
-			PurgeLayoutObjects();
+			if (!Store.InUndoRedoOrRollback)
+			{
+				PurgeLayoutObjects();
+			}
 		}
 		/// <summary>
 		/// Defer to ConfiguringAsChildOf for ORMBaseShape children

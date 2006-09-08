@@ -137,17 +137,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Create the text field
 		/// </summary>
-		/// <returns></returns>
-		protected override AutoSizeTextField CreateAutoSizeTextField()
+		/// <param name="fieldName">Non-localized name for the field</param>
+		/// <returns>AutoSizeTextField</returns>
+		protected override AutoSizeTextField CreateAutoSizeTextField(string fieldName)
 		{
-			return new NoteTextField();
+			return new NoteTextField(fieldName);
 		}
 		/// <summary>
 		/// An auto-size text field for the diagram shape
 		/// </summary>
 		private class NoteTextField : AutoSizeTextField
 		{
-			public NoteTextField() : base()
+			/// <summary>
+			/// Create a new NoteTextField
+			/// </summary>
+			/// <param name="fieldName">Non-localized name for the field</param>
+			public NoteTextField(string fieldName)
+				: base(fieldName)
 			{
 				DefaultMultipleLine = true;
 				StringFormat fieldFormat = new StringFormat(StringFormatFlags.NoClip);

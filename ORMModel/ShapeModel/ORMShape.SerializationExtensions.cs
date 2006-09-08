@@ -869,6 +869,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == FactTypeShape.DisplayOrientationDomainPropertyId)
+			{
+				if (this.DisplayOrientation == DisplayOrientation.Horizontal)
+				{
+					return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			if (domainPropertyInfo.Id == FactTypeShape.RolesPositionDomainPropertyId)
 			{
 				return new ORMCustomSerializedPropertyInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
@@ -1006,6 +1014,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId);
+				customSerializedAttributes.Add("DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId);
 				FactTypeShape.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
