@@ -1,8 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="Before repair">
 		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint7' on fact type 'PersonPlayedSportForCountry' in model 'NewModel' must span at least 2 roles.</ValidationError>
 	</ValidationErrors>
+	<Compare name="stage1" result="pass" />
+	<Compare name="stage2" result="pass" />
 	<ValidationErrors name="After repair" />
 	<Compare result="pass" />
 </TestReport>

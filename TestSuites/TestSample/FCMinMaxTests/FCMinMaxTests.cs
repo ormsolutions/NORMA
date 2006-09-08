@@ -80,7 +80,7 @@ namespace TestSample.FCMinMaxTests
 			
 			myTestServices.LogValidationErrors("Before adding error");
 
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
 			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement; 
 			int min = constraint.MinFrequency;
 			int max = constraint.MaxFrequency;
@@ -108,7 +108,7 @@ namespace TestSample.FCMinMaxTests
 
 			myTestServices.LogValidationErrors("Before removing error");
 
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
 			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement;
 			int min = constraint.MinFrequency;
 			int max = constraint.MaxFrequency;

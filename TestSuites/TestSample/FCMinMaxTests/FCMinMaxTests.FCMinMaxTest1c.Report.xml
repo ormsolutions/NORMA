@@ -1,4 +1,3 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<Compare result="pass" />
 </TestReport>

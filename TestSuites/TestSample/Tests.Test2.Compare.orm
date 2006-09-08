@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_A7018655-7E2D-4152-82F6-5AD119C62B6D" Name="NewModel">
 		<orm:Objects>
 			<orm:EntityType id="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" Name="EntityType1" _ReferenceMode="id">
@@ -14,7 +13,7 @@
 			</orm:EntityType>
 			<orm:EntityType id="_9501399B-71C1-41A5-BA64-E5BF8FCB8763" Name="EntityType2" _ReferenceMode="#">
 				<orm:PlayedRoles>
-					<orm:Role ref="_2CE0107A-AD26-4DB6-A5A6-DD3E7ADDA5AC" />
+					<orm:Role ref="_2CE0107A-AD26-4DB6-A5A6-DD3E7ADDA5AC" /> 
 					<orm:Role ref="_E9839284-995B-48EC-9BC8-F3F56F689342" />
 					<orm:Role ref="_24E72CA2-9772-4457-A4B9-A29739BE9AB2" />
 					<orm:Role ref="_A6CFBBC5-5E5D-4C84-B30F-66BC502137C9" />

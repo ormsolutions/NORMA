@@ -77,9 +77,10 @@ namespace TestSample.DTBlankTests
 		{
 			myTestServices.LogValidationErrors("Before adding error");
 
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-
-			UnspecifiedDataType unspecified = (UnspecifiedDataType)model.Store.ElementDirectory.GetElements(UnspecifiedDataType.MetaClassGuid)[0];
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
+			model.Store.ElementDirectory.FindElement(UnspecifiedDataType.DomainClassId);
+			UnspecifiedDataType unspecified = model.Store.ElementDirectory.FindElements<UnspecifiedDataType>()[0];
+			
 			ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
 
 
@@ -104,12 +105,9 @@ namespace TestSample.DTBlankTests
 		{
 
 			myTestServices.LogValidationErrors("Before removing error");
-
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-			FloatingPointNumericDataType numeric = (FloatingPointNumericDataType)model.Store.ElementDirectory.GetElements(FloatingPointNumericDataType.MetaClassGuid)[0];
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0]; 
+			FloatingPointNumericDataType numeric = model.Store.ElementDirectory.FindElements<FloatingPointNumericDataType>()[0];
 			ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
-
-
 			using (Transaction t = store.TransactionManager.BeginTransaction("Remove invalid data type error"))
 			{
 				//remove

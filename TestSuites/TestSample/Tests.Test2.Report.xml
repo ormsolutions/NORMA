@@ -1,23 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
+﻿<TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="Before constraint duplication/implication repair">
+		<ValidationError>Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a primary reference scheme.</ValidationError>
 		<ValidationError>FactType 'EntityType1HadTeaAndCrumpetsWithEntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>
 		<ValidationError>FactType 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint1' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint8' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint9' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
 	</ValidationErrors>
 	<ValidationErrors name="After constraint duplication/implication repair">
+		<ValidationError>Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a primary reference scheme.</ValidationError>
 		<ValidationError>FactType 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint1' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint8' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint9' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
 	</ValidationErrors>
 	<Compare result="pass" />
 	<ValidationErrors>
+		<ValidationError>Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a primary reference scheme.</ValidationError>
 		<ValidationError>FactType 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint1' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint8' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
-		<ValidationError>Uniqueness constraint 'InternalUniquenessConstraint9' on fact type 'FactType1' in model 'NewModel' must span at least 1 roles.</ValidationError>
 	</ValidationErrors>
 </TestReport>

@@ -78,11 +78,11 @@ namespace TestSample.NMinus1Tests
 		public void NMinus1Test2a(Store store)
 		{
 			myTestServices.LogValidationErrors("Before adding error");
-
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
 			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("655E4D9B-9835-4BE2-A7BC-FEBE51A32E84"));
-			RoleBaseMoveableCollection roles = fact.RoleCollection;
+			LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
+			
+
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
 				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
@@ -96,7 +96,6 @@ namespace TestSample.NMinus1Tests
 				t.Commit();
 			}
 			myTestServices.LogValidationErrors("After adding error");
-
 		}
 
 		[Test(Description = "Verify NMinusOneError removed automatically")]
@@ -110,11 +109,9 @@ namespace TestSample.NMinus1Tests
 		public void NMinus1Test2b(Store store)
 		{
 			myTestServices.LogValidationErrors("Before repair");
-
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0]; 
 			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("655E4D9B-9835-4BE2-A7BC-FEBE51A32E84"));
-			RoleBaseMoveableCollection roles = fact.RoleCollection;
+			LinkedElementCollection<RoleBase> roles = fact.RoleCollection;
 			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
 			{
 				foreach (UniquenessConstraint constraint in fact.GetInternalConstraints<UniquenessConstraint>())
@@ -127,9 +124,10 @@ namespace TestSample.NMinus1Tests
 					}
 					break;
 				}
-
 				t.Commit();
 			}
+			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "stage1");
+			myTestServices.Compare(store, (MethodInfo)MethodInfo.GetCurrentMethod(), "stage2");
 			myTestServices.LogValidationErrors("After repair");
 
 		}

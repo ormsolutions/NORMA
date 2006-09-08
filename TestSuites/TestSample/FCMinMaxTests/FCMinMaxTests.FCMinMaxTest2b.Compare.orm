@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
+﻿<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-04/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-04/ORMRoot">
 	<orm:ORMModel id="_F538EB82-4A8A-4ABE-93AA-5B0D24EDB933" Name="NewModel">
 		<orm:Objects>
 			<orm:EntityType id="_B7F0A79A-511E-4050-90DC-9E40C7486D53" Name="Paper" _ReferenceMode="paperId">
@@ -302,7 +301,7 @@
 			<orm:ReferenceModeKind id="_630F0600-13A1-4181-BDF3-FA38160C7230" FormatString="{1}Value" ReferenceModeType="UnitBased" />
 		</orm:ReferenceModeKinds>
 	</orm:ORMModel>
-	<ormDiagram:ORMDiagram id="_EF4B0B09-608E-4B8C-A957-538D8B66E54E" IsCompleteView="false" Name="" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
+	<ormDiagram:ORMDiagram id="_EF4B0B09-608E-4B8C-A957-538D8B66E54E" IsCompleteView="false" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068" Name="">
 		<ormDiagram:Shapes>
 			<ormDiagram:ObjectTypeShape id="_89A2A768-B60E-4AD4-BBC0-144E52392474" IsExpanded="true" AbsoluteBounds="0.70000000000000007, 1.3250000000000002, 0.68374041080474857, 0.37900605320930481">
 				<ormDiagram:Subject ref="_B7F0A79A-511E-4050-90DC-9E40C7486D53" />

@@ -5,7 +5,8 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using NUnit.Framework;
 using NUnitCategory = NUnit.Framework.CategoryAttribute;
-
+//using Neumont.Tools.ORM.
+using Neumont.Tools.Modeling.Design;
 namespace TestSample
 {
 	/// <summary>
@@ -65,7 +66,8 @@ namespace TestSample
 			myTestServices.LogValidationErrors("Before constraint repair");
 
 			// Find the fact that that needs fixing and repair it
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			//ORMModel model = (ORMModel)store.ElementDirectory.GetElement(ORMModel.DomainClassId);
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
 			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("CB33E377-9ADC-46BA-8E1B-24AE46BC0854"));
 			Role role = fact.RoleCollection[1].Role;
 
@@ -73,12 +75,17 @@ namespace TestSample
 			// using (Transaction t = store.TransactionManager.BeginTransaction("Transaction name"))
 			// or we grab the property descriptor, which emulates setting the property through the
 			// property grid and pushes a transaction for us.
-			role.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(Role.MultiplicityMetaAttributeGuid), role).SetValue(role, RoleMultiplicity.ExactlyOne);
+			
+			DomainTypeDescriptor.CreatePropertyDescriptor(role, Role.MultiplicityDomainPropertyId).SetValue(role, RoleMultiplicity.ExactlyOne);
 
 			// Turn the following code back on to demonstrate a comparison failure
+			
+					// ~~ outdated code, do not turn on ~~//
 			//fact = (FactType)model.FactTypesDictionary.GetElement("FactType2").SingleElement;
 			//fact.CreatePropertyDescriptor(store.MetaDataDirectory.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), fact).SetValue(fact, "changeFactType2");
-
+					// ~~ /outdated code, do not turn on ~~//
+			
+			
 			// After the method exits, the Compare and LogValidationErrors methods will be run automatically against
 			// the test service. The expected results for the Compare are in Tests.Test1.Compare.orm. You can also
 			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
@@ -99,7 +106,7 @@ namespace TestSample
 			myTestServices.LogValidationErrors("Before constraint duplication/implication repair");
 
 			// Find the fact that that needs fixing and repair it
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			ORMModel model = store.ElementDirectory.FindElements<ORMModel>()[0];
 			FactType fact = (FactType)store.ElementDirectory.GetElement(new Guid("009787C8-37C8-43EB-933A-7C5B469D1310"));
 			fact.RemoveImpliedInternalUniquenessConstraints();
 			myTestServices.LogValidationErrors("After constraint duplication/implication repair");
