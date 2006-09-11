@@ -27,12 +27,13 @@ namespace Neumont.Tools.Modeling.Design
 	/// Provides access to the singleton <see cref="ResourceManager"/> instance for <typeparamref name="TResourceManagerSource"/>.
 	/// </summary>
 	/// <typeparam name="TResourceManagerSource">
-	/// The type from which the <see cref="T:ResourceManager"/> should be obtained.
+	/// The type from which the <see cref="System.Resources.ResourceManager"/> should be obtained.
 	/// </typeparam>
 	/// <remarks>
 	/// If <typeparamref name="TResourceManagerSource"/> does not have a gettable <see langword="static"/> property named
-	/// <c>SingletonResourceManager</c> with a return type of <see cref="T:ResourceManager"/>, a <see cref="T:ResourceManager"/>
-	/// will be created by calling <see cref="T:ResourceManager(String,Assembly)"/>, passing the <see cref="Type.FullName"/> of
+	/// <c>SingletonResourceManager</c> with a return type of <see cref="System.Resources.ResourceManager"/>, a
+	/// <see cref="System.Resources.ResourceManager"/> will be created by calling
+	/// <see cref="System.Resources.ResourceManager(String,Assembly)"/>, passing the <see cref="Type.FullName"/> of
 	/// <typeparamref name="TResourceManagerSource"/> as the first parameter and the <see cref="Type.Assembly"/> of
 	/// <typeparamref name="TResourceManagerSource"/> as the second parameter.
 	/// </remarks>
@@ -41,9 +42,16 @@ namespace Neumont.Tools.Modeling.Design
 	public static class ResourceAccessor<TResourceManagerSource>
 	{
 		/// <summary>
-		/// The <see cref="T:ResourceManager"/> obtained for <typeparamref name="TResourceManagerSource"/>.
+		/// The <see cref="System.Resources.ResourceManager"/> obtained for <typeparamref name="TResourceManagerSource"/>.
 		/// </summary>
-		public static readonly ResourceManager ResourceManager = RetrieveResourceManager();
+		public static ResourceManager ResourceManager
+		{
+			get
+			{
+				return resourceManager;
+			}
+		}
+		private static readonly ResourceManager resourceManager = RetrieveResourceManager();
 
 		private static ResourceManager RetrieveResourceManager()
 		{
