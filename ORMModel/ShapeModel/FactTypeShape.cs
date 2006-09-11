@@ -2306,7 +2306,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 								{
 									connectActionBrush = styleSet.GetBrush(RolePickerForeground);
 								}
-								g.DrawString((activeRoleIndex + 1).ToString(CultureInfo.InvariantCulture), connectActionFont, connectActionBrush, roleBounds, stringFormat);
+								if (drawHorizontal)
+								{
+									g.DrawString((activeRoleIndex + 1).ToString(CultureInfo.InvariantCulture), connectActionFont, connectActionBrush, roleBounds, stringFormat);
+								}
+								else
+								{
+									GraphicsState state = g.Save();
+									if (orientation == DisplayOrientation.VerticalRotatedRight)
+									{
+										g.TranslateTransform(roleBounds.Right, roleBounds.Top);
+										g.RotateTransform(90, MatrixOrder.Prepend);
+									}
+									else
+									{
+										g.TranslateTransform(roleBounds.Left, roleBounds.Bottom);
+										g.RotateTransform(-90, MatrixOrder.Prepend);
+									}
+									g.DrawString((activeRoleIndex + 1).ToString(CultureInfo.InvariantCulture), connectActionFont, connectActionBrush, new RectangleF(0, 0, roleBounds.Height, roleBounds.Width), stringFormat);
+									g.Restore(state);
+								}
 							}
 							// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
 							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole.Role)))
@@ -2409,7 +2428,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 												{
 													constraintSequenceBrush = currentDiagram.StyleSet.GetBrush(ORMDiagram.StickyForegroundResource);
 												}
-												g.DrawString(indexString, constraintSequenceFont, constraintSequenceBrush, roleBounds, stringFormat);
+												if (drawHorizontal)
+												{
+													g.DrawString(indexString, constraintSequenceFont, constraintSequenceBrush, roleBounds, stringFormat);
+												}
+												else
+												{
+													GraphicsState state = g.Save();
+													if (orientation == DisplayOrientation.VerticalRotatedRight)
+													{
+														g.TranslateTransform(roleBounds.Right, roleBounds.Top);
+														g.RotateTransform(90, MatrixOrder.Prepend);
+													}
+													else
+													{
+														g.TranslateTransform(roleBounds.Left, roleBounds.Bottom);
+														g.RotateTransform(-90, MatrixOrder.Prepend);
+													}
+													g.DrawString(indexString, constraintSequenceFont, constraintSequenceBrush, new RectangleF(0, 0, roleBounds.Height, roleBounds.Width), stringFormat);
+													g.Restore(state);
+												}
 											}
 										}
 									}

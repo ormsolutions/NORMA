@@ -16,15 +16,17 @@ set envPath=C:\Program Files\Microsoft Visual Studio 8\
 set envPath=%~dp3
 )
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
-xcopy /Y /D /Q "%rootPath%%outDir%Neumont.Tools.ORM.SDK.TestEngine.dll" "%NORMADir%\bin\"
-xcopy /Y /D /Q "%rootPath%%outDir%Neumont.Tools.ORM.SDK.TestEngine.XML" "%NORMADir%\bin\"
-if exist "%rootPath%%outDir%Neumont.Tools.ORM.SDK.TestEngine.pdb" (
-xcopy /Y /D /Q "%rootPath%%outDir%Neumont.Tools.ORM.SDK.TestEngine.pdb" "%NORMADir%\bin\"
+
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.dll" "%NORMADir%\bin\"
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.XML" "%NORMADir%\bin\"
+if exist "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.pdb" (
+xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\Neumont.Tools.ORM.SDK.TestEngine.pdb" "%NORMADir%\bin\"
 ) else (
 if exist "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb" (
 del "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb"
 )
 )
+
 if exist "%rootPath%%outDir%ORMTestDriver.exe" (
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestDriver.exe" "%NORMADir%\bin\"
 if exist "%rootPath%%outDir%ORMTestDriver.pdb" (
@@ -46,8 +48,6 @@ del "%NORMADir%\bin\ORMTestReportViewer.pdb"
 )
 )
 )
-
-
 
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReport.xsd" "%envPath%Xml\Schemas\"
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuite.xsd" "%envPath%Xml\Schemas\"
