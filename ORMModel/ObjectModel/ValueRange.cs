@@ -810,11 +810,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						originalRole = roles[1];
 					}
 					ObjectType originalRolePlayer;
+					RoleBase oppositeRoleBase;
+					RoleProxy proxyRole;
 					Role oppositeRole;
 					if (null != (originalRolePlayer = originalRole.RolePlayer) &&
-						null != (oppositeRole = originalRole.OppositeRole.Role))
+						null != (oppositeRoleBase = (null != (proxyRole = originalRole.Proxy)) ? proxyRole.OppositeRole : originalRole.OppositeRole) &&
+						null != (oppositeRole = oppositeRoleBase.Role))
 					{
-						Debug.Assert(oppositeRole.RolePlayer == identifiedObject);
+						Debug.Assert((proxyRole != null) ? (oppositeRole.RolePlayer == originalRole.FactType.NestingType) : oppositeRole.RolePlayer == identifiedObject);
 						LinkedElementCollection<Role> playedRoles = identifiedObject.PlayedRoleCollection;
 						int playedRolesCount = playedRoles.Count;
 						for (int i = 0; i < playedRolesCount; ++i)

@@ -199,22 +199,8 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				}
 				ORMStore store = new ORMStore(this);
 				store.UndoManager.UndoState = UndoState.Disabled;
-				Type[] domainModels = new Type[4] { typeof(CoreDomainModel), typeof(CoreDesignSurface), typeof(ORMCoreModel), typeof(ORMShapeModel) };
+				Type[] domainModels = new Type[4] { typeof(CoreDomainModel), typeof(CoreDesignSurfaceDomainModel), typeof(ORMCoreDomainModel), typeof(ORMShapeDomainModel) };
 				store.LoadDomainModels(domainModels);
-				//using (Transaction t = store.TransactionManager.BeginTransaction("Initialization"))
-				//{
-				//    foreach (Type domainModelType in domainModels)
-				//    {
-				//        if (domainModelType == null)
-				//            continue;
-
-				//        object[] createArgs = new Object[1] { store };
-				//        DomainModel domainModelInstance = (DomainModel)domainModelType.Assembly.CreateInstance(domainModelType.FullName, false, BindingFlags.Public | BindingFlags.Instance, null, createArgs, null, null);
-				//        //Object ozzie = domainModelType.Assembly.CreateInstance(domainModelType.FullName, false, BindingFlags.Public | BindingFlags.Instance, null, createArgs, null, null);
-				//    }
-				//    t.Commit();
-				//}
-
 				using (Transaction t = store.TransactionManager.BeginTransaction("File load and fixup"))
 				{
 					if (stream.Length > 1)

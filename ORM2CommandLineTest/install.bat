@@ -25,6 +25,7 @@ if exist "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb" (
 del "%NORMADir%\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb"
 )
 )
+if exist "%rootPath%%outDir%ORMTestDriver.exe" (
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestDriver.exe" "%NORMADir%\bin\"
 if exist "%rootPath%%outDir%ORMTestDriver.pdb" (
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestDriver.pdb" "%NORMADir%\bin\"
@@ -33,14 +34,16 @@ if exist "%NORMADir%\bin\ORMTestDriver.pdb" (
 del "%NORMADir%\bin\ORMTestDriver.pdb"
 )
 )
+)
 
-
+if exist "%rootPath%%outDir%ORMTestReportViewer.exe" (
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReportViewer.exe" "%NORMADir%\bin\"
 if exist "%rootPath%%outDir%ORMTestReportViewer.pdb" (
 xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReportViewer.pdb" "%NORMADir%\bin\"
 ) else (
 if exist "%NORMADir%\bin\ORMTestReportViewer.pdb" (
 del "%NORMADir%\bin\ORMTestReportViewer.pdb"
+)
 )
 )
 
