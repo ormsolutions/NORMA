@@ -445,15 +445,24 @@ namespace Neumont.Tools.ORM.Shell
 				Store store = document.Store;
 				// Add our existing diagrams, or make a new one if we don't already have one
 				ReadOnlyCollection<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
-				if (existingDiagrams.Count > 0)
+				int existingDiagramsCount = existingDiagrams.Count;
+				bool addDefaultDiagram = existingDiagramsCount == 0;
+				if (!addDefaultDiagram)
 				{
-					for (int i = 0; i < existingDiagrams.Count; i++)
+					addDefaultDiagram = true;
+					Partition defaultPartition = store.DefaultPartition;
+					for (int i = 0; i < existingDiagramsCount; ++i)
 					{
-						// Make the first diagram be selected
-						base.AddDiagram(existingDiagrams[i], i == 0);
+						Diagram existingDiagram = existingDiagrams[i];
+						if (existingDiagram.Partition == defaultPartition)
+						{
+							// Make the first diagram be selected
+							base.AddDiagram(existingDiagram, addDefaultDiagram);
+							addDefaultDiagram = false;
+						}
 					}
 				}
-				else
+				if (addDefaultDiagram)
 				{
 					Diagram diagram = new ORMDiagram(store);
 					if (diagram.ModelElement == null)
