@@ -110,11 +110,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				ModelNoteReferencesModelElement link = ModelElement as ModelNoteReferencesModelElement;
 				ORMBaseShape fromShape;
-				ORMBaseShape toShape;
+				ShapeElement untypedToShape;
 				if (null != (fromShape = diagram.FindShapeForElement<ORMBaseShape>(link.Note)) &&
-					null != (toShape = diagram.FindShapeForElement<ORMBaseShape>(link.Element)))
+					null != (untypedToShape = diagram.FindShapeForElement(link.Element)))
 				{
-					Connect(fromShape, toShape);
+					NodeShape toShape = untypedToShape as NodeShape;
+					if (null == toShape)
+					{
+						SubtypeLink subTypeLink = untypedToShape as SubtypeLink;
+						if (null != subTypeLink)
+						{
+							toShape = subTypeLink.EnsureLinkConnectorShape();
+						}
+					}
+					if (toShape != null)
+					{
+						Connect(fromShape, toShape);
+					}
 				}
 			}
 		}
