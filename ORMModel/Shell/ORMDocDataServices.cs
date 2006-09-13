@@ -448,6 +448,44 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					myFilteredUndoItemAddedHandler(sender, e);
 				}
+				else
+				{
+					// If we didn't add, then we need to explicitly clear the redo stack. This is
+					// normally a side effect of adding, but we're not adding.
+					ShellUndoManager shellUndoManager;
+					MSOLE.IOleUndoManager oleUndoManager;
+					if (null != (shellUndoManager = UndoManager) &&
+						null != (oleUndoManager = shellUndoManager.VSUndoManager))
+					{
+						MSOLE.IEnumOleUndoUnits enumUnits;
+						oleUndoManager.EnumRedoable(out enumUnits);
+						enumUnits.Reset();
+						MSOLE.IOleUndoUnit[] undoUnitArray = new MSOLE.IOleUndoUnit[1];
+						uint unitsCount = 0;
+						MSOLE.IOleUndoUnit lastUndoUnit = null;
+						for (;;)
+						{
+							if (unitsCount == 1)
+							{
+								lastUndoUnit = undoUnitArray[0];
+							}
+							int hr;
+							if (ErrorHandler.Failed(hr = enumUnits.Next(1, undoUnitArray, out unitsCount)))
+							{
+								lastUndoUnit = null;
+								break;
+							}
+							if (hr == VSConstants.S_FALSE)
+							{
+								break;
+							}
+						}
+						if (lastUndoUnit != null)
+						{
+							oleUndoManager.DiscardFrom(lastUndoUnit);
+						}
+					}
+				}
 			}
 			private void UndoItemDiscardedFilter(object sender, UndoItemEventArgs e)
 			{

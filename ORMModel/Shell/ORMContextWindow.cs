@@ -264,7 +264,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				hierarchyElement = myCurrentlySelectedObject;
 			}
-			else if (hierarchyElement == myCurrentlySelectedObject && refresh == false)
+			else if (hierarchyElement == myCurrentlySelectedObject && refresh == false && (myDiagram != null && myDiagram.HasChildren))
 			{
 				return;
 			}
@@ -285,25 +285,16 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			Store store = element.Store;
 			Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
-			UndoState restoreUndoState = undoManager.UndoState;
-			try
+			using (Transaction t = store.TransactionManager.BeginTransaction("Draw Context Diagram"))
 			{
-				undoManager.UndoState = UndoState.DisabledNoFlush;
-				using (Transaction t = store.TransactionManager.BeginTransaction("Draw Context Diagram"))
+				myDiagram.NestedChildShapes.Clear();
+				myDiagram.AutoPopulateShapes = true;
+				PlaceObject(hierarchyElement);
+				myDiagram.AutoPopulateShapes = false;
+				if (t.HasPendingChanges)
 				{
-					myDiagram.NestedChildShapes.Clear();
-					myDiagram.AutoPopulateShapes = true;
-					PlaceObject(hierarchyElement);
-					myDiagram.AutoPopulateShapes = false;
-					if (t.HasPendingChanges)
-					{
-						t.Commit();
-					}
+					t.Commit();
 				}
-			}
-			finally
-			{
-				undoManager.UndoState = restoreUndoState;
 			}
 			return;
 		}
@@ -313,12 +304,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element.</param>
 		private void PlaceObject(IHierarchyContextEnabled element)
 		{
-			List<IHierarchyContextEnabled> elementsToPlace = GetRelatedContextableElements(element, myGenerations);
-			elementsToPlace.Sort(delegate(IHierarchyContextEnabled x, IHierarchyContextEnabled y)
-			{
-				return y.HierarchyContextPlacementPriority - x.HierarchyContextPlacementPriority;
-			});
-			foreach (IHierarchyContextEnabled elem in elementsToPlace)
+			SortedList<IHierarchyContextEnabled, int> elementsToPlace = new SortedList<IHierarchyContextEnabled, int>(HierarchyContextPlacePrioritySortComparer.Instance);
+			elementsToPlace = GetRelatedContextableElements(element, myGenerations);
+			IList<IHierarchyContextEnabled> elements = elementsToPlace.Keys;
+			foreach (IHierarchyContextEnabled elem in elements)
 			{
 				if (elem.ForwardHierarchyContextTo != null)
 				{
@@ -333,14 +322,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element.</param>
 		/// <param name="generations">The numeber of generations out to go.</param>
 		/// <returns></returns>
-		private static List<IHierarchyContextEnabled> GetRelatedContextableElements(IHierarchyContextEnabled element, int generations)
+		private static SortedList<IHierarchyContextEnabled, int> GetRelatedContextableElements(IHierarchyContextEnabled element, int generations)
 		{
-			List<IHierarchyContextEnabled> relatedElementsCollection = new List<IHierarchyContextEnabled>();
+			SortedList<IHierarchyContextEnabled, int> relatedElementsCollection = new SortedList<IHierarchyContextEnabled, int>(HierarchyContextPlacePrioritySortComparer.Instance);
 			GetRelatedContextableElementsHelper(element, ref relatedElementsCollection, generations);
-			int relatedElementsCount = relatedElementsCollection.Count;
+			IList<IHierarchyContextEnabled> keys = relatedElementsCollection.Keys;
+			int relatedElementsCount = keys.Count;
 			for (int i = 0; i < relatedElementsCount; ++i)
 			{
-				IEnumerable<IHierarchyContextEnabled> forcedContextElements = relatedElementsCollection[i].ForcedHierarchyContextElementCollection;
+				IEnumerable<IHierarchyContextEnabled> forcedContextElements = keys[i].ForcedHierarchyContextElementCollection;
 				if (forcedContextElements != null)
 				{
 					foreach (IHierarchyContextEnabled dependantContextableElement in forcedContextElements)
@@ -358,7 +348,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element.</param>
 		/// <param name="relatedElementsCollection">The related elements collection.</param>
 		/// <param name="generations">The generations.</param>
-		private static void GetRelatedContextableElementsHelper(IHierarchyContextEnabled element, ref List<IHierarchyContextEnabled> relatedElementsCollection, int generations)
+		private static void GetRelatedContextableElementsHelper(IHierarchyContextEnabled element, ref SortedList<IHierarchyContextEnabled, int> relatedElementsCollection, int generations)
 		{
 			if (element == null)
 			{
@@ -369,17 +359,28 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return;
 			}
-			if (!relatedElementsCollection.Contains(contextableElement))
+			if (!relatedElementsCollection.ContainsKey(contextableElement))
 			{
-				relatedElementsCollection.Add(contextableElement);
-				if (contextableElement.ForwardHierarchyContextTo != null)
+				relatedElementsCollection.Add(contextableElement, generations);
+			}
+			else
+			{
+				if (relatedElementsCollection[contextableElement] >= generations)
 				{
-					GetRelatedContextableElementsHelper(contextableElement.ForwardHierarchyContextTo, ref relatedElementsCollection, generations);
+					return;
 				}
-				if (generations > 0 && (relatedElementsCollection.Count == 1 || contextableElement.ContinueWalkingHierarchyContext))
+				else
 				{
-					GetLinkedElements(contextableElement, ref relatedElementsCollection, generations);
+					relatedElementsCollection[contextableElement] = generations;
 				}
+			}
+			if (contextableElement.ForwardHierarchyContextTo != null)
+			{
+				GetRelatedContextableElementsHelper(contextableElement.ForwardHierarchyContextTo, ref relatedElementsCollection, generations);
+			}
+			if (generations > 0 && (relatedElementsCollection.Count == 1 || contextableElement.ContinueWalkingHierarchyContext))
+			{
+				GetLinkedElements(contextableElement, ref relatedElementsCollection, generations);
 			}
 		}
 		/// <summary>
@@ -388,7 +389,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element.</param>
 		/// <param name="relatedElementsCollection">The related elements collection.</param>
 		/// <param name="generations">The generations.</param>
-		private static void GetLinkedElements(IHierarchyContextEnabled element, ref List<IHierarchyContextEnabled> relatedElementsCollection, int generations)
+		private static void GetLinkedElements(IHierarchyContextEnabled element, ref SortedList<IHierarchyContextEnabled, int> relatedElementsCollection, int generations)
 		{
 			ReadOnlyCollection<ElementLink> col = DomainRoleInfo.GetAllElementLinks((ModelElement)element);
 			foreach (ElementLink link in col)
@@ -445,7 +446,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			if (myDiagram == null || myDiagram.Store != model.Store)
+			if (myDiagram == null || myDiagram.IsDeleted || myDiagram.Store != model.Store)
 			{
 				ResetDiagram(model);
 			}
@@ -476,35 +477,25 @@ namespace Neumont.Tools.ORM.Shell
 				this.myPartition = partition = new Partition(store);
 				this.myContext = context = new Context(store);
 				partition.AddContext(context);
-				partition.RemoveContext(previousContext);
-				store.CurrentContext.RemovePartition(partition);
-				context.UndoManager.UndoState = UndoState.Disabled;
+				// UNDONE: See if we really need a different context
+				//partition.RemoveContext(previousContext);
+				//store.CurrentContext.RemovePartition(partition);
 			}
 
 			Microsoft.VisualStudio.Modeling.UndoManager undoManager = store.CurrentContext.UndoManager;
-			UndoState restoreUndoState = undoManager.UndoState;
-			try
+			using (Transaction t = store.TransactionManager.BeginTransaction("Create Context Diagram"))
 			{
-				undoManager.UndoState = UndoState.DisabledNoFlush;
-				using (Transaction t = store.TransactionManager.BeginTransaction("Create Context Diagram"))
+				this.myContextGuid = context.Id;
+				this.myPartitionGuid = partition.Id;
+				ORMDiagram diagram = new ORMDiagram(partition);
+				this.myDiagram = diagram;
+				diagram.Associate(myDiagramView);
+				diagram.ModelElement = model;
+				diagram.AutoPopulateShapes = false;
+				if (t.HasPendingChanges)
 				{
-					this.myContextGuid = context.Id;
-					this.myPartitionGuid = partition.Id;
-					ORMDiagram diagram = new ORMDiagram(partition);
-					this.myDiagram = diagram;
-					diagram.Associate(myDiagramView);
-					diagram.ModelElement = model;
-					diagram.AutoPopulateShapes = false;
-					diagram.DragDropUndoState = UndoState.DisabledNoFlush;
-					if (t.HasPendingChanges)
-					{
-						t.Commit();
-					}
+					t.Commit();
 				}
-			}
-			finally
-			{
-				undoManager.UndoState = restoreUndoState;
 			}
 			myDiagram.Store.StoreDisposing += new EventHandler(Store_StoreDisposing);
 		}
@@ -554,14 +545,12 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			Microsoft.VisualStudio.Modeling.UndoManager undoManager = currentStore.CurrentContext.UndoManager;
-			UndoState restoreUndoState = undoManager.UndoState;
 			// UNDONE: MSBUG This rule should not be doing anything if the parent is deleted.
 			// Causes diagram deletion to crash VS
 			bool turnedOffResizeRule = false;
 			Type ruleType = typeof(Diagram).Assembly.GetType("Microsoft.VisualStudio.Modeling.Diagrams.ResizeParentRule");
 			try
 			{
-				undoManager.UndoState = UndoState.DisabledNoFlush;
 				using (Transaction t = currentStore.TransactionManager.BeginTransaction("Transaction"))
 				{
 					if (ruleType != null)
@@ -593,12 +582,11 @@ namespace Neumont.Tools.ORM.Shell
 				myContext = null;
 				myContextGuid = Guid.Empty;
 				myPartitionGuid = Guid.Empty;
-				undoManager.UndoState = restoreUndoState;
 				myDiagramView.Diagram = null;
 				myCurrentlySelectedObject = null;
 			}
 		}
-#endregion
+		#endregion
 		#region ORMToolWindow Implementation
 		/// <summary>
 		/// Provide a notification when the selection container has been modified. The
@@ -663,5 +651,18 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 		#endregion // ORMToolWindow Implementation
+		private sealed class HierarchyContextPlacePrioritySortComparer : IComparer<IHierarchyContextEnabled>
+		{
+			private HierarchyContextPlacePrioritySortComparer() { }
+			/// <summary>
+			/// Singleton IComparer&lt;IHierarchyContextEnabled&gt; implementation
+			/// </summary>
+			public static readonly IComparer<IHierarchyContextEnabled> Instance = new HierarchyContextPlacePrioritySortComparer();
+			int IComparer<IHierarchyContextEnabled>.Compare(IHierarchyContextEnabled x, IHierarchyContextEnabled y)
+			{
+				int priorityDifference = y.HierarchyContextPlacementPriority - x.HierarchyContextPlacementPriority;
+				return (priorityDifference == 0) ? x.Id.CompareTo(y.Id) : priorityDifference;
+			}
+		}
 	}
 }
