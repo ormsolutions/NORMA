@@ -755,9 +755,71 @@
 					</Snippet>
 				</ConstrainedRoles>
 			</Constraint>
+			<Constraint type="SubsetConstraint" patternGroup="SetComparisonConstraint">
+				<ConstrainedRoles columnArity="1">
+					<ConditionalReading>
+						<ReadingChoice match="RequireAllPrimaryLeadReading">
+							<Snippet ref="Conditional">
+								<IterateRoles match="setConstraintRoles" listStyle="null" pass="first">
+									<Fact>
+										<PredicateReplacement match="included" pass="first">
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+								<IterateRoles match="setConstraintRoles" listStyle="null" pass="notFirst">
+									<Fact>
+										<PredicateReplacement match="included">
+											<Snippet ref="DefiniteArticle"/>
+										</PredicateReplacement>
+										<PredicateReplacement pass="notFirst">
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</Snippet>
+						</ReadingChoice>
+						<ReadingChoice match="RequireAllNonPrimaryLeadReading">
+							<Snippet ref="ForEachIndentedQuantifier">
+								<IterateRoles match="setConstraintRoles" pass="notFirst" listStyle="null">
+									<RolePlayer/>
+								</IterateRoles>
+								<Snippet ref="Conditional">
+									<IterateRoles match="setConstraintRoles" listStyle="null" pass="first">
+										<Fact>
+											<PredicateReplacement match="included">
+												<Snippet ref="DefiniteArticle"/>
+											</PredicateReplacement>
+											<PredicateReplacement>
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateRoles>
+									<IterateRoles match="setConstraintRoles" listStyle="null" pass="notFirst">
+										<Fact>
+											<PredicateReplacement match="included">
+												<Snippet ref="DefiniteArticle"/>
+											</PredicateReplacement>
+											<PredicateReplacement pass="notFirst">
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateRoles>
+								</Snippet>
+							</Snippet>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+			</Constraint>
 		</Constraints>
 		<SampleInstances>
-			<SingleSnippet type="FactTypeInstanceBlockStart"	childHelperFor="FactType" snippetRef="FactTypeInstanceBlockStart"/>
+			<SingleSnippet type="FactTypeInstanceBlockStart" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockStart"/>
 			<SingleSnippet type="FactTypeInstanceBlockEnd" childHelperFor="FactType" snippetRef="FactTypeInstanceBlockEnd"/>
 			<SampleInstance type="FactTypeInstanceVerbalizer" childHelperFor="FactType">
 				<Fact>

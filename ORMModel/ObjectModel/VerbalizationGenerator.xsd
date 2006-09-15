@@ -26,6 +26,7 @@
 	<xs:simpleType name="PassEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="first"/>
+			<xs:enumeration value="notFirst"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="SpanEnum">
@@ -744,6 +745,7 @@
 			<xs:element name="Fact" type="FactType"/>
 			<xs:element name="Snippet" type="SnippetType"/>			
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
+			<xs:element name="RolePlayer" type="RolePlayerType"/>
 		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>
@@ -874,6 +876,7 @@
 					<xs:attribute name="span" type="SpanEnum" use="optional"/>
 					<xs:attribute name="sign" type="ve:SignEnum" use="optional"/>
 					<xs:attribute name="ringType" type="RingTypeEnum" use="optional"/>
+					<xs:attribute name="columnArity" type="xs:positiveInteger" use="optional"/>
 					<xs:attributeGroup ref="FactArityAttributes"/>
 				</xs:complexType>
 			</xs:element>

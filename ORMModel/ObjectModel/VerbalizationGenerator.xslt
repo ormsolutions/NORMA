@@ -24,7 +24,7 @@
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:preserve-space elements="cvg:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
-	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
+<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 
 	<!-- Names of the different classes we generate -->
 	<xsl:param name="VerbalizationTextSnippetType" select="'CoreVerbalizationSnippetType'"/>
@@ -729,15 +729,113 @@
 						</xsl:if>
 					</plx:local>
 				</xsl:if>
+				<xsl:if test="$isSetComparisonConstraint">
+					<plx:local name="constraintSequences" dataTypeName="LinkedElementCollection">
+						<plx:passTypeParam dataTypeName="SetComparisonConstraintRoleSequence"/>
+						<plx:initialize>
+							<plx:callThis type="property" name="RoleSequenceCollection"/>
+						</plx:initialize>
+					</plx:local>
+				</xsl:if>
 				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint)">
-					<xsl:if test="not($isSetComparisonConstraint)">
-						<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
-							<plx:passTypeParam dataTypeName="Role"/>
-							<plx:initialize>
-								<plx:callThis name="RoleCollection" type="property"/>
-							</plx:initialize>
-						</plx:local>
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="not($isSetComparisonConstraint)">
+							<plx:local name="allConstraintRoles" dataTypeName="LinkedElementCollection">
+								<plx:passTypeParam dataTypeName="Role"/>
+								<plx:initialize>
+									<plx:callThis name="RoleCollection" type="property"/>
+								</plx:initialize>
+							</plx:local>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:local name="constraintRoleArity" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:callInstance name="Count" type="property">
+										<plx:callObject>
+											<plx:nameRef name="constraintSequences" type="local"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<plx:local name="allConstraintSequences" dataTypeIsSimpleArray="true" dataTypeName="IList">
+								<plx:passTypeParam dataTypeName="Role"/>
+								<plx:initialize>
+									<plx:callNew dataTypeName="IList" dataTypeIsSimpleArray="true">
+										<plx:passTypeParam dataTypeName="Role"/>
+										<plx:passParam>
+											<plx:nameRef name="constraintRoleArity" type="local"/>
+										</plx:passParam>
+									</plx:callNew>
+								</plx:initialize>
+							</plx:local>
+							<plx:loop>
+								<plx:initializeLoop>
+									<plx:local name="i" dataTypeName=".i4">
+										<plx:initialize>
+											<plx:value type="i4" data="0"/>
+										</plx:initialize>
+									</plx:local>
+								</plx:initializeLoop>
+								<plx:condition>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:nameRef name="i"/>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="constraintRoleArity"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:beforeLoop>
+									<plx:increment>
+										<plx:nameRef name="i"/>
+									</plx:increment>
+								</plx:beforeLoop>
+								<plx:assign>
+									<plx:left>
+										<plx:callInstance name=".implied" type="arrayIndexer">
+											<plx:callObject>
+												<plx:nameRef name="allConstraintSequences" type="local"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:nameRef name="i" type="local" />
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:callInstance name="RoleCollection" type="property">
+											<plx:callObject>
+												<plx:callInstance name=".implied" type="indexerCall">
+													<plx:callObject>
+														<plx:nameRef name="constraintSequences" type="local"/>
+													</plx:callObject>
+													<plx:passParam>
+														<plx:nameRef name="i" type="local" />
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:right>
+								</plx:assign>
+							</plx:loop>
+							<plx:local name="columnArity" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:callInstance name="Count" type="property">
+										<plx:callObject>
+											<plx:callInstance name=".implied" type="indexerCall">
+												<plx:callObject>
+													<plx:nameRef name="allConstraintSequences" type="local"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:value data="0" type="i4"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+						</xsl:otherwise>
+					</xsl:choose>
 					<plx:local name="allFacts" dataTypeName="LinkedElementCollection">
 						<plx:passTypeParam dataTypeName="FactType"/>
 						<plx:initialize>
@@ -777,14 +875,6 @@
 							<plx:falseKeyword/>
 						</plx:return>
 					</plx:branch>
-				</xsl:if>
-				<xsl:if test="$isSetComparisonConstraint">
-					<plx:local name="roleSequences" dataTypeName="LinkedElementCollection">
-						<plx:passTypeParam dataTypeName="SetComparisonConstraintRoleSequence"/>
-						<plx:initialize>
-							<plx:callThis type="property" name="RoleSequenceCollection"/>
-						</plx:initialize>
-					</plx:local>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$isInternal">
@@ -1031,16 +1121,16 @@
 									</plx:callInstance>
 								</plx:initialize>
 							</plx:local>
-							<plx:local name="allConstraintRoleReadings" dataTypeName="Reading" dataTypeIsSimpleArray="true">
-								<plx:initialize>
-									<plx:callNew dataTypeName="Reading" dataTypeIsSimpleArray="true">
-										<plx:passParam>
-											<plx:nameRef name="constraintRoleArity"/>
-										</plx:passParam>
-									</plx:callNew>
-								</plx:initialize>
-							</plx:local>
 						</xsl:if>
+						<plx:local name="allConstraintRoleReadings" dataTypeName="Reading" dataTypeIsSimpleArray="true">
+							<plx:initialize>
+								<plx:callNew dataTypeName="Reading" dataTypeIsSimpleArray="true">
+									<plx:passParam>
+										<plx:nameRef name="constraintRoleArity"/>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:initialize>
+						</plx:local>
 					</xsl:when>
 				</xsl:choose>
 				<xsl:if test="$isInternal">
@@ -1484,6 +1574,16 @@
 			</plx:left>
 			<plx:right>
 				<plx:callStatic dataTypeName="RingConstraintType" name="{.}" type="field"/>
+			</plx:right>
+		</plx:binaryOperator>
+	</xsl:template>
+	<xsl:template match="@columnArity" mode="ConstraintConditionOperator">
+		<plx:binaryOperator type="equality">
+			<plx:left>
+				<plx:nameRef name="columnArity" type="local"/>
+			</plx:left>
+			<plx:right>
+				<plx:value data="{.}" type="i4"/>
 			</plx:right>
 		</plx:binaryOperator>
 	</xsl:template>
@@ -2510,6 +2610,9 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="Match" select="string(@match)"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="CurrentColumnExpression">
+			<plx:value type="i4" data="0"/>
+		</xsl:param>
 		<xsl:choose>
 			<xsl:when test="contains($Match,'All')">
 				<xsl:variable name="singleMatch" select="concat(substring-before($Match,'All'), substring-after($Match,'All'))"/>
@@ -2555,12 +2658,31 @@
 					<plx:local name="primaryRole" dataTypeName="RoleBase">
 						<plx:initialize>
 							<plx:callInstance name=".implied" type="indexerCall">
-								<plx:callObject>
-									<plx:nameRef name="allConstraintRoles"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="{$readingMatchIndexLocalName}"/>
-								</plx:passParam>
+								<xsl:choose>
+									<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+										<plx:callObject>
+											<plx:callInstance name=".implied" type="arrayIndexer">
+												<plx:callObject>
+													<plx:nameRef name="allConstraintSequences"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:nameRef name="{$readingMatchIndexLocalName}"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:callObject>
+										<plx:passParam>
+											<xsl:copy-of select="$CurrentColumnExpression"/>
+										</plx:passParam>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:callObject>
+											<plx:nameRef name="allConstraintRoles"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="{$readingMatchIndexLocalName}"/>
+										</plx:passParam>
+									</xsl:otherwise>
+								</xsl:choose>
 							</plx:callInstance>
 						</plx:initialize>
 					</plx:local>
@@ -3256,6 +3378,16 @@
 									</plx:passParam>
 								</plx:callInstance>
 							</xsl:when>
+							<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+								<plx:callInstance name=".implied" type="arrayIndexer">
+									<plx:callObject>
+										<plx:nameRef name="allBasicRoleReplacements"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value data="0" type="i4"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</xsl:when>
 							<xsl:otherwise>
 								<plx:nameRef name="basicRoleReplacements"/>
 							</xsl:otherwise>
@@ -3807,8 +3939,18 @@
 					</xsl:choose>
 				</xsl:when>
 			</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="@pass='notFirst'">
+					<plx:unaryOperator type="booleanNot">
+						<plx:nameRef name="{$FirstPassVariable}"/>
+					</plx:unaryOperator>
+				</xsl:when>
+				<xsl:when test="@pass='first'">
+					<plx:nameRef name="{$FirstPassVariable}"/>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:if test="@pass='first'">
-				<plx:nameRef name="{$FirstPassVariable}"/>
+				
 			</xsl:if>
 		</xsl:variable>
 		<xsl:for-each select="exsl:node-set($operatorsFragment)/child::*">
@@ -4487,6 +4629,11 @@
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:call-template>
 	</xsl:template>
+	<!-- An IterateSequences tag is used to walk a set of RoleSequences and transform them to be compatible with the
+			patterns already in place to verbalize constraints. -->
+	<xsl:template match="cvg:IterateSequences" mode="ConstraintVerbalization">
+		
+	</xsl:template>
 	<!-- An IterateInstances tag is used to walk a set of instances and combine the verbalizations for
 			those instances into a single list. The type of verbalization is not necessarily flexible, aside from
 			allowing the user to rework the TextInstanceValue and NonTextInstanceValue snippets. -->
@@ -4634,7 +4781,8 @@
 		<xsl:variable name="filterTest" select="exsl:node-set($filterTestFragment)/child::*"/>
 		<xsl:variable name="filteredCountVarName" select="concat($VariablePrefix,'FilteredCount',$VariableDecorator)"/>
 		<xsl:variable name="filteredIterVarName" select="concat($VariablePrefix,'FilteredIter',$VariableDecorator)"/>
-		<xsl:variable name="trackFirstPass" select="0!=count(descendant::cvg:PredicateReplacement[@pass='first'])"/>
+		<xsl:variable name="trackFirstPass" select="0!=count(descendant::cvg:PredicateReplacement[@pass='first']) or 0!=count(descendant::cvg:PredicateReplacement[@pass='notFirst'])"/>
+		<xsl:variable name="isNotFirst" select="0!=count(descendant::cvg:PredicateReplacement[@pass='notFirst'])"/>
 		<xsl:variable name="trackFirstPassVarName" select="concat($VariablePrefix,'IsFirstPass',$VariableDecorator)"/>
 		<xsl:variable name="createList" select="not($ListStyle='null')"/>
 		<xsl:variable name="createListOrTrackFirstPass" select="$trackFirstPass or $createList"/>
@@ -4702,7 +4850,14 @@
 			<plx:initializeLoop>
 				<plx:local name="{$iterVarName}" dataTypeName=".i4">
 					<plx:initialize>
-						<plx:value type="i4" data="0"/>
+						<xsl:choose>
+							<xsl:when test="@pass='notFirst'">
+								<plx:value type="i4" data="1"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:value type="i4" data="0"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:initialize>
 				</plx:local>
 			</plx:initializeLoop>
@@ -4731,6 +4886,21 @@
 					<plx:nameRef name="{$iterVarName}"/>
 				</plx:increment>
 			</plx:beforeLoop>
+			<xsl:if test="$PatternGroup = 'SetComparisonConstraint'">
+				<plx:local name="includedFactRoles" dataTypeName="IList">
+					<plx:passTypeParam dataTypeName="Role"/>
+					<plx:initialize>
+						<plx:callInstance name=".implied" type="indexerCall">
+							<plx:callObject>
+								<plx:nameRef name="allConstraintSequences" type="local"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="{$iterVarName}" type="local"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
 			<xsl:if test="$contextMatch='setConstraintRoles' or $contextMatch='preferredIdentifier' or descendant::cvg:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasReferenceScheme'] or descendant::cvg:RoleName or descendant::cvg:IterateContextRoles or $IteratorContext">
 				<xsl:variable name="primaryRoleInitializerFragment">
 					<plx:callInstance name=".implied" type="arrayIndexer">
@@ -4741,7 +4911,15 @@
 							</xsl:call-template>
 						</plx:callObject>
 						<plx:passParam>
-							<plx:nameRef name="{$iterVarName}"/>
+							<xsl:choose>
+								<xsl:when test="$PatternGroup = 'SetComparisonConstraint'">
+									<!-- TODO: This should be a column index expression -->
+									<plx:value data="0" type="i4"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nameRef name="{$iterVarName}"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</plx:passParam>
 					</plx:callInstance>
 				</xsl:variable>
@@ -5293,7 +5471,7 @@
 					</xsl:when>
 					<xsl:when test="$ContextMatch='included'">
 						<xsl:choose>
-							<xsl:when test="$PatternGroup='InternalSetConstraint'">
+							<xsl:when test="$PatternGroup='InternalSetConstraint' or $PatternGroup='SetComparisonConstraint'">
 								<xsl:text>constraintRoleArity</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -5334,13 +5512,23 @@
 							<xsl:when test="$PatternGroup='InternalSetConstraint'">
 								<xsl:text>allConstraintRoles</xsl:text>
 							</xsl:when>
+							<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+								<xsl:text>includedFactRoles</xsl:text>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:text>includedRoles</xsl:text>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 					<xsl:when test="$ContextMatch='setConstraintRoles'">
-						<xsl:text>allConstraintRoles</xsl:text>
+						<xsl:choose>
+							<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+								<xsl:text>includedFactRoles</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>allConstraintRoles</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:when>
 					<xsl:when test="$ContextMatch='excluded'">
 						<xsl:text>factRoles</xsl:text>
@@ -5380,7 +5568,7 @@
 		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="not($createList)"/>
-			<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
+			<xsl:when test="(@pass='first' or @pass='notFirst') and 0=string-length($CompositeCount)">
 				<xsl:call-template name="SetSnippetVariable">
 					<xsl:with-param name="SnippetType" select="concat($ListStyle,'Open')"/>
 					<xsl:with-param name="VariableName" select="'listSnippet'"/>
@@ -5404,7 +5592,6 @@
 		<xsl:if test="$createList">
 			<xsl:call-template name="AppendListSnippet"/>
 		</xsl:if>
-
 		<!-- Process the child contents for this role -->
 		<xsl:variable name="children" select="child::*"/>
 		<xsl:choose>
@@ -5585,7 +5772,7 @@
 		<!-- Use the current snippets data to close the list -->
 		<xsl:choose>
 			<xsl:when test="not($createList)"/>
-			<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
+			<xsl:when test="(@pass='first' or @pass='notFirst') and 0=string-length($CompositeCount)">
 				<plx:callInstance name="Append">
 					<plx:callObject>
 						<plx:nameRef name="sbTemp"/>
@@ -6398,6 +6585,12 @@
 										<xsl:choose>
 											<xsl:when test="$PatternGroup='InternalSetConstraint'">
 												<plx:nameRef name="allConstraintRoles"/>
+											</xsl:when>
+											<xsl:when test="$PatternGroup='SetComparisonConstraint'">
+												<plx:nameRef name="factRoles"/>
+												<!--<plx:cast dataTypeName="IList" dataTypeQualifier="System.Collections">
+													<plx:nameRef name="includedFactRoles"/>
+												</plx:cast>-->
 											</xsl:when>
 											<xsl:otherwise>
 												<plx:nameRef name="includedRoles"/>
