@@ -23,16 +23,15 @@
 	exclude-result-prefixes="oil odt"
 	extension-element-prefixes="exsl">
 
-	<!--<xsl:import href="OIALtoPLiX.xslt"/>-->
+	<xsl:import href="OIALtoPLiX.xslt"/>
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	<xsl:param name="OIAL"/>
-	<!--<xsl:param name="SprocParam" />-->
+	<xsl:param name="OIAL" select="document('C:\Documents and Settings\ttubbs\Desktop\SummitAwardsSummer06\SummitAwardsSummer06\Restaurant.OIAL.xml')/child::*"/>
+	<xsl:param name="SprocParam" />
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
 	<xsl:variable name="ModelName" select="$OIAL/@name"/>
 	<xsl:variable name="ConceptTypes" select="$OIAL//oil:conceptType"/>
-	<!--<xsl:variable name="SprocFree" select="boolean($SprocParam/dataLayerImplementation/@sprocFree)"/>-->
-	<xsl:variable name="SprocFree" select="false()"/>
+	<xsl:variable name="SprocFree" select="boolean($SprocParam/dataLayerImplementation/@sprocFree)"/>
 	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties"/>
 	<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$OIAL//oil:roleSequenceUniquenessConstraint"/>
 
@@ -1981,7 +1980,8 @@
 							<xsl:call-template name="GetPreferredIdentifierProperties">
 								<xsl:with-param name="Model" select="$Model"/>
 								<xsl:with-param name="AllProperties" select="$AllProperties"/>
-								<xsl:with-param name="TargetConceptTypeName" select="@targetConceptType"/>
+								<!-- CHANGE: @targetConceptType to @target -->
+								<xsl:with-param name="TargetConceptTypeName" select="@target"/>
 								<xsl:with-param name="ParentName" select="$ParentName"/>
 							</xsl:call-template>
 						</xsl:when>

@@ -435,7 +435,7 @@ namespace Neumont.Tools.ORM.Shell
 						DiagramView designer = base.GetDesignerAtPoint(((ContextMenuStrip)sender).Location);
 						if (designer != null)
 						{
-							renamePageMenuItem.Enabled = deletePageMenuItem.Enabled = designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram";
+							//renamePageMenuItem.Enabled = deletePageMenuItem.Enabled = designer.Diagram.GetType().FullName != "Neumont.Tools.ORM.Views.RelationalView.RelationalDiagram";
 						}
 					};
 				}

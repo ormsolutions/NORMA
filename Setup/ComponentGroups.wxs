@@ -64,6 +64,7 @@
 		<ComponentGroup Id="RelationalSchemaGenerationFeatureComponents">
 			<!-- OIAL-to-SQL transforms go here. -->
 			<ComponentRef Id="ORMRelationalSchemaTransformsComponent"/>
+			<ComponentRef Id="DataLayerTestFormComponent"/>
 			<ComponentRef Id="DILSchemaCatalogComponent"/>
 			<ComponentRef Id="DILSchemasComponent"/>
 			<ComponentRef Id="DILTransformsComponent"/>

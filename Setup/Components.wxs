@@ -360,6 +360,219 @@
 									<Registry Type="string" Name="TransformUri" Value="[#OIALtoDCIL.xslt]"/>
 								</Registry>
 							</Component>
+							<Directory Id="ORMDataLayerTestFormDIR" Name="DtaTstFm" LongName="DataLayerTestForm">
+								<Component Id="DataLayerTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" Name="OIL2DLTF.xsl" LongName="OIALtoPLiX_DataLayerTestForm.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoPLiX_DataLayerTestForm.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<File Id="OIALtoPLiX_DataLayerTestForm_Designer.xslt" Name="OIL2DLFD.xsl" LongName="OIALtoPLiX_DataLayerTestForm_Designer.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoPLiX_DataLayerTestForm_Designer.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<File Id="OIALtoPLiX_InputControl.xslt" Name="OIL2IC.xsl" LongName="OIALtoPLiX_InputControl.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoPLiX_InputControl.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<File Id="OIALtoPLiX_InputControl_Designer.xslt" Name="OIL2ICD.xsl" LongName="OIALtoPLiX_InputControl_Designer.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoPLiX_InputControl_Designer.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<File Id="OIALtoInputControl.resx.xslt" Name="OIL2ICDR.xsl" LongName="OIALtoInputControl.resx.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoInputControl.resx.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<File Id="OIALtoPLiX_Program.xslt" Name="OIL2DLTP.xsl" LongName="OIALtoPLiX_Program.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoPLiX_Program.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<File Id="OIALtoDataLayerTestForm.resx.xslt" Name="OIL2DTFR.xsl" LongName="OIALtoDataLayerTestForm.resx.xslt" src="../XML/OIALtoPLiX/DataLayerTestForm/OIALtoDataLayerTestForm.resx.xslt"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestForm">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestForm"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.PLiX.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayerTestForm.xslt]"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormDesigner">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormDesigner"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Designer"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.Designer.PLiX.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormDesigner"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_DataLayerTestForm_Designer.xslt]"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormInputControl">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormInputControl"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.PLiX.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControl"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InputControl.xslt]"/>
+										<Registry Type="string" Name="ReferenceInputFormats" Value="OIAL"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormInputControlDesigner">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormInputControlDesigner"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control Designer"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.Designer.PLiX.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControlDesigner"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InputControl_Designer.xslt]"/>
+										<Registry Type="string" Name="ReferenceInputFormats" Value="OIAL"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormInputControlResx">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormInputControlResx"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control Resx"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.resx"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControlResx"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoInputControl.resx.xslt]"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormProgram">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormProgram"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Program Class"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates the Program.cs file to launch the generated form."/>
+										<Registry Type="string" Name="FileExtension" Value=".Program.PLiX.xml"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormProgram"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoPLiX_Program.xslt]"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormProgram_CSharp">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormProgram_CSharp"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to C# Program.cs"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to C#."/>
+										<Registry Type="string" Name="FileExtension" Value=".Program.cs"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormProgram"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormProgram_CSharp"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXCS.xslt"/>
+										<Registry Type="string" Name="PrequisiteInputFormats" Value="DataLayerTestForm_CSharp"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormProgram_VisualBasic">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormProgram_VisualBasic"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to Visual Basic Program.vb"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to Visual Basic."/>
+										<Registry Type="string" Name="FileExtension" Value=".Program.vb"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormProgram"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormProgram_VisualBasic"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXVB.xslt"/>
+										<Registry Type="string" Name="PrequisiteInputFormats" Value="DataLayerTestForm_VisualBasic"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\DataLayerTestFormResx">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="DataLayerTestFormResx"/>
+										<Registry Type="string" Name="DisplayName" Value="Data Layer Test Form Resx"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.resx"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="PLiX_Implementation"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormResx"/>
+										<Registry Type="string" Name="TransformUri" Value="[#OIALtoDataLayerTestForm.resx.xslt]"/>
+										<Registry Type="integer" Name="Compilable" Value="0"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoCSharpDataLayerTestFrom">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoCSharpDataLayerTestFrom"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to C# Data Layer Test Form"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to C#."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.cs"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestForm"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm_CSharp"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXCS.xslt"/>
+										<Registry Type="string" Name="PrequisiteInputFormats" Value="CSharp_Implementation DataLayerTestFormDesigner_CSharp DataLayerTestFormResx DataLayerTestFormInputControl_CSharp"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoCSharpDataLayerTestFromDesigner">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoCSharpDataLayerTestFromDesigner"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to C# Data Layer Test Form Designer"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to C#."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.Designer.cs"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormDesigner"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormDesigner_CSharp"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXCS.xslt"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoCSharpDataLayerTestFromInputControl">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoCSharpDataLayerTestFromInputControl"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to C# DataLayerTestFormInputControl"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to C#."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.cs"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormInputControl"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControl_CSharp"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXCS.xslt"/>
+										<Registry Type="string" Name="PrequisiteInputFormats" Value="DataLayerTestFormInputControlDesigner_CSharp DataLayerTestFormInputControlResx"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoCSharpDataLayerTestFromInputControlDesigner">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoCSharpDataLayerTestFromInputControlDesigner"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to C# DataLayerTestFormInputControlDesigner"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to C#."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.Designer.cs"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormInputControlDesigner"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControlDesigner_CSharp"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXCS.xslt"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoVisualBasicDataLayerTestFrom">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoVisualBasicDataLayerTestFrom"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to Visual Basic Data Layer Test Form"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to Visual Basic."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.vb"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestForm"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestForm_VisualBasic"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXVB.xslt"/>
+										<Registry Type="string" Name="PrequisiteInputFormats" Value="VisualBasic_Implementation DataLayerTestFormDesigner_VisualBasic DataLayerTestFormResx DataLayerTestFormInputControl_VisualBasic"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoVisualBasicDataLayerTestFromDesigner">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoVisualBasicDataLayerTestFromDesigner"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to VisualBasic Data Layer Test Form Designer"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to Visual Basic."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestForm.Designer.vb"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormDesigner"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormDesigner_VisualBasic"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXVB.xslt"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoVisualBasicpDataLayerTestFromInputControl">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoVisualBasicpDataLayerTestFromInputControl"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to Visual Basic DataLayerTestFormInputControl"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to Visual Basic."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.vb"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormInputControl"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControl_VisualBasic"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXVB.xslt"/>
+										<Registry Type="string" Name="PrequisiteInputFormats" Value="DataLayerTestFormInputControlDesigner_VisualBasic DataLayerTestFormInputControlResx"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+									<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPLiX\DataLayerTestForm\PLiXtoVisualBasicDataLayerTestFromInputControlDesigner">
+										<Registry Type="string" Name="Type" Value="XSLT"/>
+										<Registry Type="string" Name="OfficialName" Value="PLiXtoVisualBasicDataLayerTestFromInputControlDesigner"/>
+										<Registry Type="string" Name="DisplayName" Value="PLiX to Visual Basic DataLayerTestFormInputControlDesigner"/>
+										<Registry Type="string" Name="DisplayDescription" Value="Transforms PLiX to Visual Basic."/>
+										<Registry Type="string" Name="FileExtension" Value=".DataLayerTestFormInputControl.Designer.vb"/>
+										<Registry Type="string" Name="SourceInputFormat" Value="DataLayerTestFormInputControlDesigner"/>
+										<Registry Type="string" Name="ProvidesOutputFormat" Value="DataLayerTestFormInputControlDesigner_VisualBasic"/>
+										<Registry Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXVB.xslt"/>
+										<Registry Type="integer" Name="Compilable" Value="1"/>
+									</Registry>
+								</Component>
+							</Directory>
 						</Directory>
 					</Directory>
 					
